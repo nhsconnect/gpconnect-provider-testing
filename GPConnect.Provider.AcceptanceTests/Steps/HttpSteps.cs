@@ -83,10 +83,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             requestHeaders.Add("Ssp-TraceID", Guid.NewGuid().ToString(""));
         }
 
-        [Given(@"I am generating the authorization header")]
-        public void GivenIAmGeneratingTheAuthorizationHeader()
+        [Given(@"I am generating an organization authorization header")]
+        public void GivenIAmGeneratingAnOrganizationAuthorizationHeader()
         {
-            requestHeaders.Add("Authorization", "Bearer " + jwtHelper.buildBearerToken());
+            requestHeaders.Add("Authorization", "Bearer " + jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I am generating a patient authorization header with nhs number ""(.*)""")]
+        public void GivenIAmGeneratingAPatientAuthorizationHeader(string nhsNumber)
+        {
+            requestHeaders.Add("Authorization", "Bearer " + jwtHelper.buildBearerTokenPatientResource(nhsNumber));
         }
 
         [When(@"I make a GET request to ""(.*)""")]
