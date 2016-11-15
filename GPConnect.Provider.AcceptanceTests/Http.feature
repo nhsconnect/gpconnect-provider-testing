@@ -10,7 +10,6 @@ Scenario: Perform a successful GET request
 	And the response body should be FHIR JSON
 	And the JSON value "resourceType" should be "Conformance"
 
-@stdHeaders
 Scenario: GET_MetaData
 	Given I am using server "http://gpconnect-uat.answerappcloud.com/"
 	And I am not using a proxy server
@@ -21,6 +20,7 @@ Scenario: GET_MetaData
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	And I am connecting to accredited system "200000000360"
 	And I am generating a random message trace identifier
+	And I am generating the authorization header
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate success
 	And the response body should be FHIR JSON
