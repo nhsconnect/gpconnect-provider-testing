@@ -5,17 +5,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 {
 
     [Binding]
-    public class Security
+    public class Security : TechTalk.SpecFlow.Steps
     {
         private readonly ScenarioContext _scenarioContext;
-        private HeaderController headerController;
-        private JwtHelper jwtHelper;
+        private HeaderController _headerController;
+        private JwtHelper _jwtHelper;
 
         public Security(ScenarioContext scenarioContext)
         {
-            this._scenarioContext = scenarioContext;
-            headerController = HeaderController.Instance;
-            jwtHelper = JwtHelper.Instance;
+            _scenarioContext = scenarioContext;
+            _headerController = HeaderController.Instance;
+            _jwtHelper = JwtHelper.Instance;
         }
 
         

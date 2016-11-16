@@ -6,23 +6,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 {
 
     [Binding]
-    public class Generic
+    public class Generic : TechTalk.SpecFlow.Steps
     {
         private readonly ScenarioContext _scenarioContext;
-        private HeaderController headerController;
-        private JwtHelper jwtHelper;
+        private readonly HeaderController _headerController;
+        private readonly JwtHelper _jwtHelper;
 
-        public Generic(ScenarioContext scenarioContext)
+        public Generic(ScenarioContext scenarioContext, JwtHelper jwtHelper)
         {
-            this._scenarioContext = scenarioContext;
-            headerController = HeaderController.Instance;
+            _scenarioContext = scenarioContext;
+            _jwtHelper = jwtHelper;
+            _headerController = HeaderController.Instance;
         }
 
         [BeforeScenario]
         public void preScenarioSteps()
         {
             Console.WriteLine("Header Clear Down");
-            headerController.headerClearDown();
+            _headerController.headerClearDown();
         }
         
     }

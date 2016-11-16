@@ -10,17 +10,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 {
 
     [Binding]
-    public class Http
+    public class Http : TechTalk.SpecFlow.Steps
     {
         private readonly ScenarioContext _scenarioContext;
-        private HeaderController headerController;
-        private JwtHelper jwtHelper;
+        private readonly HeaderController _headerController;
+        private readonly JwtHelper _jwtHelper;
 
         public Http(ScenarioContext scenarioContext)
         {
-            this._scenarioContext = scenarioContext;
-            headerController = HeaderController.Instance;
-            jwtHelper = JwtHelper.Instance;
+            _scenarioContext = scenarioContext;
+            _headerController = HeaderController.Instance;
+            _jwtHelper = JwtHelper.Instance;
         }
 
         // Server Endpoint Configuration Steps
@@ -70,57 +70,57 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am using ""(.*)"" to communicate with the server")]
         public void GivenIAmUsingToCommunicateWithTheServer(string requestContentType)
         {
-            headerController.removeHeader("Content-Type");
-            headerController.addHeader("Content-Type", requestContentType);
+            _headerController.removeHeader("Accept");
+            _headerController.addHeader("Accept", requestContentType);
         }
 
         [Given(@"I set ""(.*)"" request header to ""(.*)""")]
         public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
         {
-            headerController.removeHeader(headerKey);
-            headerController.addHeader(headerKey, headerValue);
+            _headerController.removeHeader(headerKey);
+            _headerController.addHeader(headerKey, headerValue);
         }
 
         [Given(@"I am accredited system ""(.*)""")]
         public void GivenIAmAccreditedSystem(string fromASID)
         {
-            headerController.removeHeader("Ssp-From");
-            headerController.addHeader("Ssp-From", fromASID);
+            _headerController.removeHeader("Ssp-From");
+            _headerController.addHeader("Ssp-From", fromASID);
         }
 
         [Given(@"I am performing the ""(.*)"" interaction")]
         public void GivenIAmPerformingTheInteraction(string interactionId)
         {
-            headerController.removeHeader("Ssp-InteractionId");
-            headerController.addHeader("Ssp-InteractionId", interactionId);
+            _headerController.removeHeader("Ssp-InteractionId");
+            _headerController.addHeader("Ssp-InteractionId", interactionId);
         }
 
         [Given(@"I am connecting to accredited system ""(.*)""")]
         public void GivenIConnectingToAccreditedSystem(string toASID)
         {
-            headerController.removeHeader("Ssp-To");
-            headerController.addHeader("Ssp-To", toASID);
+            _headerController.removeHeader("Ssp-To");
+            _headerController.addHeader("Ssp-To", toASID);
         }
 
         [Given(@"I am generating a random message trace identifier")]
         public void GivenIAmGeneratingARandomMessageTraceIdentifier()
         {
-            headerController.removeHeader("Ssp-TraceID");
-            headerController.addHeader("Ssp-TraceID", Guid.NewGuid().ToString(""));
+            _headerController.removeHeader("Ssp-TraceID");
+            _headerController.addHeader("Ssp-TraceID", Guid.NewGuid().ToString(""));
         }
 
         [Given(@"I am generating an organization authorization header")]
         public void GivenIAmGeneratingAnOrganizationAuthorizationHeader()
         {
-            headerController.removeHeader("Authorization");
-            headerController.addHeader("Authorization", "Bearer " + jwtHelper.buildBearerTokenOrgResource());
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
         [Given(@"I am generating a patient authorization header with nhs number ""(.*)""")]
         public void GivenIAmGeneratingAPatientAuthorizationHeader(string nhsNumber)
         {
-            headerController.removeHeader("Authorization");
-            headerController.addHeader("Authorization", "Bearer " + jwtHelper.buildBearerTokenPatientResource(nhsNumber));
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenPatientResource(nhsNumber));
         }
 
 
@@ -138,7 +138,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var restRequest = new RestRequest(fullUrl, Method.GET);
 
             // Add Headers
-            foreach (KeyValuePair<string, string> header in headerController.getRequestHeaders())
+            foreach (KeyValuePair<string, string> header in _headerController.getRequestHeaders())
             {
                 Console.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
                 restRequest.AddHeader(header.Key, header.Value);
@@ -164,6 +164,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _scenarioContext.Get<HttpStatusCode>("responseStatusCode").ShouldBe(HttpStatusCode.OK);
             Console.Out.WriteLine("Response HttpStatusCode={0}", HttpStatusCode.OK);
+        }
+
+        // Demonstartor Steps
+        [Given(@"I am using the gpconnect demonstator")]
+        public void GivenIAmUsingTheGPConnectDemonstrator()
+        {
+            Given("I am using server 'http://gpconnect-uat.answerappcloud.com' on port '80'");
+            And("I am not using the spine proxy server");
+            And("I am using 'application/json+fhir' to communicate with the server");
+            And("I set base URL to '/fhir'");
+            And("I set 'Accept' request header to 'application/json+fhir'");
+            And("I am accredited system '200000000359'");
+            And("I am performing the 'urn:nhs:names:services:gpconnect:fhir:rest:read:metadata' interaction");
+            And("I am connecting to accredited system '200000000360'");
+            And("I am generating a random message trace identifier");
+            And("I am generating an organization authorization header");
         }
 
     }

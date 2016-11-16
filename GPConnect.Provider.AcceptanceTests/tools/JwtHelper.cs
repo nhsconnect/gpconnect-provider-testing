@@ -8,25 +8,14 @@ using System.Security.Claims;
 
 namespace GPConnect.Provider.AcceptanceTests.tools
 {
-    class JwtHelper
+    public class JwtHelper
     {
         private static JwtHelper jwtHelper;
 
         private JwtHelper() {
         }
 
-        public static JwtHelper Instance
-        {
-            get
-            {
-                if (jwtHelper == null)
-                {
-                    jwtHelper = new JwtHelper();
-
-                }
-                return jwtHelper;
-            }
-        }
+        public static JwtHelper Instance => jwtHelper ?? (jwtHelper = new JwtHelper());
 
         public string buildEncodedHeader() {
             return new JwtHeader().Base64UrlEncode();
