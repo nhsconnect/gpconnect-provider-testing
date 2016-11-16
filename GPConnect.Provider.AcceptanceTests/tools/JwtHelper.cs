@@ -10,6 +10,24 @@ namespace GPConnect.Provider.AcceptanceTests.tools
 {
     class JwtHelper
     {
+        private static JwtHelper jwtHelper;
+
+        private JwtHelper() {
+        }
+
+        public static JwtHelper Instance
+        {
+            get
+            {
+                if (jwtHelper == null)
+                {
+                    jwtHelper = new JwtHelper();
+
+                }
+                return jwtHelper;
+            }
+        }
+
         public string buildEncodedHeader() {
             return new JwtHeader().Base64UrlEncode();
         }

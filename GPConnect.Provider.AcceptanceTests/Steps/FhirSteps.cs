@@ -15,13 +15,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     {
         private readonly ScenarioContext _scenarioContext;
         private HeaderController headerController;
-        private JwtHelper jwtHelper = new JwtHelper();
+        private JwtHelper jwtHelper;
 
         public FhirSteps(ScenarioContext scenarioContext)
         {
             this._scenarioContext = scenarioContext;
-
             headerController = HeaderController.Instance;
+            jwtHelper = JwtHelper.Instance;
         }
 
         [BeforeScenario]
@@ -33,7 +33,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"Test FhirStep")]
         public void GivenTestFhirStep()
         {
-            Console.WriteLine("Test Fhir Step");
             Console.WriteLine(headerController.getRequestHeaders());
         }
     }
