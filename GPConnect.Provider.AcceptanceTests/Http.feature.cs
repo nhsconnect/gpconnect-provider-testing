@@ -73,7 +73,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 4
  testRunner.Given("I am using server \"http://fhirtest.uhn.ca\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 5
- testRunner.And("I am not using a proxy server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I am not using the spine proxy server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 6
  testRunner.And("I set base URL to \"/baseDstu2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 7
@@ -100,7 +100,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
  testRunner.Given("I am using server \"http://gpconnect-uat.answerappcloud.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 15
- testRunner.And("I am not using a proxy server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I am not using the spine proxy server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
  testRunner.And("I set base URL to \"/fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17

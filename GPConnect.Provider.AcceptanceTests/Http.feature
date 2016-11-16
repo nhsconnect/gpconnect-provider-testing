@@ -2,7 +2,7 @@
 
 Scenario: Perform a successful GET request
 	Given I am using server "http://fhirtest.uhn.ca"
-	And I am not using a proxy server
+	And I am not using the spine proxy server
 	And I set base URL to "/baseDstu2"
 	And I am using "application/json+fhir" to communicate with the server
 	When I make a GET request to "/metadata"
@@ -12,7 +12,7 @@ Scenario: Perform a successful GET request
 
 Scenario: GET_MetaData
 	Given I am using server "http://gpconnect-uat.answerappcloud.com"
-	And I am not using a proxy server
+	And I am not using the spine proxy server
 	And I set base URL to "/fhir"
 	And I am using "application/json+fhir" to communicate with the server
 	And I set "Accept" request header to "application/json+fhir"

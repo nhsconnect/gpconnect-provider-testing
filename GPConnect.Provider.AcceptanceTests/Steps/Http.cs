@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 using Shouldly;
 using TechTalk.SpecFlow;
@@ -24,7 +23,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             jwtHelper = JwtHelper.Instance;
         }
         
-        // Server Endpoint Configuration
+        // Server Endpoint Configuration Steps
 
         [Given(@"I am using server ""(.*)""")]
         public void GivenIAmUsingServer(string serverUrl)
@@ -44,15 +43,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _scenarioContext.Set(baseUrl, "baseUrl");
         }
-        
 
 
-        [Given(@"I am not using a proxy server")]
-        public void GivenIAmNotUsingAProxyServer()
+        // Spine Proxy Configuration Steps
+
+        [Given(@"I am not using the spine proxy server")]
+        public void GivenIAmNotUsingTheSpineProxyServer()
         {
             _scenarioContext.Set(false, "useProxy");
         }
         
+
+        // HTTP Header Configuration Steps
 
         [Given(@"I am using ""(.*)"" to communicate with the server")]
         public void GivenIAmUsingToCommunicateWithTheServer(string requestContentType)
@@ -110,6 +112,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             headerController.addHeader("Authorization", "Bearer " + jwtHelper.buildBearerTokenPatientResource(nhsNumber));
         }
 
+
+        // Generic Request Steps
+
         [When(@"I make a GET request to ""(.*)""")]
         public void WhenIMakeAGETRequestTo(string relativeUrl)
         {
@@ -150,6 +155,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Console.Out.WriteLine("Response Content={0}", restResponse.Content);
         }
 
+
+        // Response Validation Steps
+
         [Then(@"the response status code should indicate success")]
         public void ThenTheResponseStatusCodeShouldIndicateSuccess()
         {
@@ -157,20 +165,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Console.Out.WriteLine("Response HttpStatusCode={0}", HttpStatusCode.OK);
         }
 
-        [Then(@"the response body should be FHIR JSON")]
-        public void ThenTheResponseBodyShouldBeFHIRJSON()
-        {
-            _scenarioContext.Get<string>("responseContentType").ShouldStartWith("application/json+fhir");
-            Console.Out.WriteLine("Response ContentType={0}", "application/json+fhir");
-            _scenarioContext.Set(JObject.Parse(_scenarioContext.Get<string>("responseBody")), "responseJSON");
-        }
-
-        [Then(@"the JSON value ""(.*)"" should be ""(.*)""")]
-        public void ThenTheJSONValueShouldBe(string key, string value)
-        {
-            var json = _scenarioContext.Get<JObject>("responseJSON");
-            Console.Out.WriteLine("Json Key={0} Value={1} Expect={2}", key, json[key], value);
-            json[key].ShouldBe(value);
-        }
     }
 }
