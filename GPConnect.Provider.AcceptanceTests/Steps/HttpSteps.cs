@@ -23,19 +23,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             headerController = HeaderController.Instance;
             jwtHelper = JwtHelper.Instance;
         }
-
-        [BeforeScenario]
-        public void preScenarioSteps() {
-            headerController.headerClearDown();
-        }
-
-        [Given(@"Test HttpStep")]
-        public void GivenTestHttpStep()
-        {
-            Console.WriteLine(headerController.getRequestHeaders());
-        }
-
-
+        
         [Given(@"I am using server ""(.*)""")]
         public void GivenIAmUsingServer(string serverUrl)
         {

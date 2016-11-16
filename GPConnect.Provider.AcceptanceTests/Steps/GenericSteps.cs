@@ -1,21 +1,28 @@
-﻿using TechTalk.SpecFlow;
+﻿using System;
+using TechTalk.SpecFlow;
 using GPConnect.Provider.AcceptanceTests.tools;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
 
     [Binding]
-    public class FhirSteps
+    public class GenericSteps
     {
         private readonly ScenarioContext _scenarioContext;
         private HeaderController headerController;
         private JwtHelper jwtHelper;
 
-        public FhirSteps(ScenarioContext scenarioContext)
+        public GenericSteps(ScenarioContext scenarioContext)
         {
             this._scenarioContext = scenarioContext;
             headerController = HeaderController.Instance;
-            jwtHelper = JwtHelper.Instance;
+        }
+
+        [BeforeScenario]
+        public void preScenarioSteps()
+        {
+            Console.WriteLine("Header Clear Down");
+            headerController.headerClearDown();
         }
         
     }

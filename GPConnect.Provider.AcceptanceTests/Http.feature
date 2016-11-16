@@ -12,8 +12,6 @@ Scenario: Perform a successful GET request
 
 Scenario: GET_MetaData
 	Given I am using server "http://gpconnect-uat.answerappcloud.com/"
-	And Test HttpStep
-	And Test FhirStep
 	And I am not using a proxy server
 	And I set base URL to "/fhir"
 	And I am using "application/json+fhir" to communicate with the server
