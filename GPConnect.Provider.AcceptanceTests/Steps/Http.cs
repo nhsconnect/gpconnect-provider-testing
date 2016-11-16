@@ -11,29 +11,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 {
 
     [Binding]
-    public class HttpSteps
+    public class Http
     {
         private readonly ScenarioContext _scenarioContext;
         private HeaderController headerController;
         private JwtHelper jwtHelper;
 
-        public HttpSteps(ScenarioContext scenarioContext)
+        public Http(ScenarioContext scenarioContext)
         {
             this._scenarioContext = scenarioContext;
             headerController = HeaderController.Instance;
             jwtHelper = JwtHelper.Instance;
         }
         
+        // Server Endpoint Configuration
+
         [Given(@"I am using server ""(.*)""")]
         public void GivenIAmUsingServer(string serverUrl)
         {
             _scenarioContext.Set(serverUrl, "serverUrl");
         }
 
-        [Given(@"I am not using a proxy server")]
-        public void GivenIAmNotUsingAProxyServer()
+        [Given(@"I am using server ""(.*)"" on port ""(.*)""")]
+        public void GivenIAmUsingServer(string serverUrl, string serverPort)
         {
-            _scenarioContext.Set(false, "useProxy");
+            _scenarioContext.Set(serverUrl, "serverUrl");
+            _scenarioContext.Set(serverPort, "serverPort");
         }
 
         [Given(@"I set base URL to ""(.*)""")]
@@ -41,6 +44,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _scenarioContext.Set(baseUrl, "baseUrl");
         }
+        
+
+
+        [Given(@"I am not using a proxy server")]
+        public void GivenIAmNotUsingAProxyServer()
+        {
+            _scenarioContext.Set(false, "useProxy");
+        }
+        
 
         [Given(@"I am using ""(.*)"" to communicate with the server")]
         public void GivenIAmUsingToCommunicateWithTheServer(string requestContentType)
@@ -103,7 +115,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _scenarioContext.Set(relativeUrl, "relativeUrl");
             // Build The Request
-            var restClient = new RestClient(_scenarioContext.Get<string>("serverUrl"));
+            var serverURL = _scenarioContext.Get<string>("serverUrl");
+            try {
+                var serverPort = _scenarioContext.Get<string>("serverPort");
+                if (serverPort == null)
+                {
+                    serverURL = serverURL + ":" + _scenarioContext.Get<string>("serverPort");
+                }
+            } catch (KeyNotFoundException e) {
+                // Do nothing as it should not matter if not port was specified
+            }
+            var restClient = new RestClient(serverURL);
             _scenarioContext.Set(restClient, "restClient");
             var fullUrl = _scenarioContext.Get<string>("baseUrl") + _scenarioContext.Get<string>("relativeUrl");
             Console.Out.WriteLine("GET fullUrl={0}", fullUrl);

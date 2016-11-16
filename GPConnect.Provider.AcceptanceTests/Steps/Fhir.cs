@@ -5,13 +5,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 {
 
     [Binding]
-    public class FhirSteps
+    public class Fhir
     {
         private readonly ScenarioContext _scenarioContext;
         private HeaderController headerController;
         private JwtHelper jwtHelper;
 
-        public FhirSteps(ScenarioContext scenarioContext)
+        public Fhir(ScenarioContext scenarioContext)
         {
             this._scenarioContext = scenarioContext;
             headerController = HeaderController.Instance;

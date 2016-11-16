@@ -6,13 +6,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 {
 
     [Binding]
-    public class GenericSteps
+    public class Generic
     {
         private readonly ScenarioContext _scenarioContext;
         private HeaderController headerController;
         private JwtHelper jwtHelper;
 
-        public GenericSteps(ScenarioContext scenarioContext)
+        public Generic(ScenarioContext scenarioContext)
         {
             this._scenarioContext = scenarioContext;
             headerController = HeaderController.Instance;

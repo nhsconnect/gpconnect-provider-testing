@@ -101,9 +101,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Http.feature</DependentUpon>
     </Compile>
-    <Compile Include="Steps\GenericSteps.cs" />
-    <Compile Include="Steps\FhirSteps.cs" />
-    <Compile Include="Steps\HttpSteps.cs" />
+    <Compile Include="Steps\Security.cs" />
+    <Compile Include="Steps\Generic.cs" />
+    <Compile Include="Steps\Fhir.cs" />
+    <Compile Include="Steps\Http.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security.feature.cs">
       <AutoGen>True</AutoGen>

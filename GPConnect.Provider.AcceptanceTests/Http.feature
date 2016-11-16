@@ -1,7 +1,7 @@
 ﻿Feature: Http
 
 Scenario: Perform a successful GET request
-	Given I am using server "http://fhirtest.uhn.ca/"
+	Given I am using server "http://fhirtest.uhn.ca"
 	And I am not using a proxy server
 	And I set base URL to "/baseDstu2"
 	And I am using "application/json+fhir" to communicate with the server
@@ -11,7 +11,7 @@ Scenario: Perform a successful GET request
 	And the JSON value "resourceType" should be "Conformance"
 
 Scenario: GET_MetaData
-	Given I am using server "http://gpconnect-uat.answerappcloud.com/"
+	Given I am using server "http://gpconnect-uat.answerappcloud.com"
 	And I am not using a proxy server
 	And I set base URL to "/fhir"
 	And I am using "application/json+fhir" to communicate with the server

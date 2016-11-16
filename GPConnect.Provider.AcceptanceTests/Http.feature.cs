@@ -71,7 +71,7 @@ namespace GPConnect.Provider.AcceptanceTests
 #line 3
 this.ScenarioSetup(scenarioInfo);
 #line 4
- testRunner.Given("I am using server \"http://fhirtest.uhn.ca/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I am using server \"http://fhirtest.uhn.ca\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 5
  testRunner.And("I am not using a proxy server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 6
@@ -98,7 +98,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
 this.ScenarioSetup(scenarioInfo);
 #line 14
- testRunner.Given("I am using server \"http://gpconnect-uat.answerappcloud.com/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I am using server \"http://gpconnect-uat.answerappcloud.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 15
  testRunner.And("I am not using a proxy server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
