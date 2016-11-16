@@ -55,13 +55,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am using the spine proxy server ""([^\s]*)""")]
         public void GivenIAmUsingTheSpineProxyServer(string proxyServerUrl)
         {
-            _scenarioContext.Set(proxyServerUrl, "spineProxyUrl");
+            _scenarioContext.Set(proxyServerUrl + "/", "spineProxyUrl");
         }
 
         [Given(@"I am using the spine proxy server ""([^\s]*)"" on port ""([^\s]*)""")]
         public void GivenIAmUsingTheSpineProxyServerOnPort(string proxyServerUrl, string proxyServerPort)
         {
-            _scenarioContext.Set(proxyServerUrl + ":" + proxyServerPort, "spineProxyUrl");
+            _scenarioContext.Set(proxyServerUrl + ":" + proxyServerPort + "/", "spineProxyUrl");
         }
 
 
