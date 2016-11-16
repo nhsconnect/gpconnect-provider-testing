@@ -14,15 +14,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class HttpSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private Dictionary<string, string> requestHeaders;
+        private HeaderController headerController;
         private JwtHelper jwtHelper = new JwtHelper();
 
         public HttpSteps(ScenarioContext scenarioContext)
         {
             this._scenarioContext = scenarioContext;
-            requestHeaders = new Dictionary<string, string>();
+            headerController = HeaderController.Instance;
         }
-        
+
+        [BeforeScenario]
+        public void preScenarioSteps() {
+            headerController.headerClearDown();
+        }
+
+        [Given(@"Test HttpStep")]
+        public void GivenTestHttpStep()
+        {
+            Console.WriteLine("Test Http Step");
+            Console.WriteLine(headerController.getRequestHeaders());
+        }
+
+
         [Given(@"I am using server ""(.*)""")]
         public void GivenIAmUsingServer(string serverUrl)
         {
@@ -44,55 +57,57 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am using ""(.*)"" to communicate with the server")]
         public void GivenIAmUsingToCommunicateWithTheServer(string requestContentType)
         {
-            requestHeaders.Remove("Content-Type");
-            requestHeaders.Add("Content-Type", requestContentType);
+            headerController.removeHeader("Content-Type");
+            headerController.addHeader("Content-Type", requestContentType);
         }
 
         [Given(@"I set ""(.*)"" request header to ""(.*)""")]
         public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
         {
-            requestHeaders.Remove(headerKey);
-            requestHeaders.Add(headerKey, headerValue);
+            headerController.removeHeader(headerKey);
+            headerController.addHeader(headerKey, headerValue);
         }
 
         [Given(@"I am accredited system ""(.*)""")]
         public void GivenIAmAccreditedSystem(string fromASID)
         {
-            requestHeaders.Remove("Ssp-From");
-            requestHeaders.Add("Ssp-From", fromASID);
+            headerController.removeHeader("Ssp-From");
+            headerController.addHeader("Ssp-From", fromASID);
         }
 
         [Given(@"I am performing the ""(.*)"" interaction")]
         public void GivenIAmPerformingTheInteraction(string interactionId)
         {
-            requestHeaders.Remove("Ssp-InteractionId");
-            requestHeaders.Add("Ssp-InteractionId", interactionId);
+            headerController.removeHeader("Ssp-InteractionId");
+            headerController.addHeader("Ssp-InteractionId", interactionId);
         }
 
         [Given(@"I am connecting to accredited system ""(.*)""")]
         public void GivenIConnectingToAccreditedSystem(string toASID)
         {
-            requestHeaders.Remove("Ssp-To");
-            requestHeaders.Add("Ssp-To", toASID);
+            headerController.removeHeader("Ssp-To");
+            headerController.addHeader("Ssp-To", toASID);
         }
 
         [Given(@"I am generating a random message trace identifier")]
         public void GivenIAmGeneratingARandomMessageTraceIdentifier()
         {
-            requestHeaders.Remove("Ssp-TraceID");
-            requestHeaders.Add("Ssp-TraceID", Guid.NewGuid().ToString(""));
+            headerController.removeHeader("Ssp-TraceID");
+            headerController.addHeader("Ssp-TraceID", Guid.NewGuid().ToString(""));
         }
 
         [Given(@"I am generating an organization authorization header")]
         public void GivenIAmGeneratingAnOrganizationAuthorizationHeader()
         {
-            requestHeaders.Add("Authorization", "Bearer " + jwtHelper.buildBearerTokenOrgResource());
+            headerController.removeHeader("Authorization");
+            headerController.addHeader("Authorization", "Bearer " + jwtHelper.buildBearerTokenOrgResource());
         }
 
         [Given(@"I am generating a patient authorization header with nhs number ""(.*)""")]
         public void GivenIAmGeneratingAPatientAuthorizationHeader(string nhsNumber)
         {
-            requestHeaders.Add("Authorization", "Bearer " + jwtHelper.buildBearerTokenPatientResource(nhsNumber));
+            headerController.removeHeader("Authorization");
+            headerController.addHeader("Authorization", "Bearer " + jwtHelper.buildBearerTokenPatientResource(nhsNumber));
         }
 
         [When(@"I make a GET request to ""(.*)""")]
@@ -107,7 +122,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var restRequest = new RestRequest(fullUrl, Method.GET);
 
             // Add Headers
-            foreach (KeyValuePair<string, string> header in requestHeaders)
+            foreach (KeyValuePair<string, string> header in headerController.getRequestHeaders())
             {
                 Console.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
                 restRequest.AddHeader(header.Key, header.Value);
