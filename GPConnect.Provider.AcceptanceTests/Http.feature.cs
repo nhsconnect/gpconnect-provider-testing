@@ -98,7 +98,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
 this.ScenarioSetup(scenarioInfo);
 #line 14
- testRunner.Given("I am using server \"http://gpconnect-uat.answerappcloud.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I am using server \"http://gpconnect-uat.answerappcloud.com\" on port \"80\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 15
  testRunner.And("I am not using the spine proxy server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16

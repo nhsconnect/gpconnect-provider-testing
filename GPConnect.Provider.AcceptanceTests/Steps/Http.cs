@@ -22,23 +22,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             headerController = HeaderController.Instance;
             jwtHelper = JwtHelper.Instance;
         }
-        
+
         // Server Endpoint Configuration Steps
 
-        [Given(@"I am using server ""(.*)""")]
+        [Given(@"I am using server ""([^\s]*)""")]
         public void GivenIAmUsingServer(string serverUrl)
         {
             _scenarioContext.Set(serverUrl, "serverUrl");
         }
 
-        [Given(@"I am using server ""(.*)"" on port ""(.*)""")]
-        public void GivenIAmUsingServer(string serverUrl, string serverPort)
+        [Given(@"I am using server ""([^\s]*)"" on port ""([^\s]*)""")]
+        public void GivenIAmUsingServerOnPort(string serverUrl, string serverPort)
         {
-            _scenarioContext.Set(serverUrl, "serverUrl");
-            _scenarioContext.Set(serverPort, "serverPort");
+            _scenarioContext.Set(serverUrl + ":" + serverPort, "serverUrl");
         }
-
-        [Given(@"I set base URL to ""(.*)""")]
+        
+        [Given(@"I set base URL to ""([^\s]*)""")]
         public void GivenISetBaseURLTo(string baseUrl)
         {
             _scenarioContext.Set(baseUrl, "baseUrl");
@@ -50,9 +49,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am not using the spine proxy server")]
         public void GivenIAmNotUsingTheSpineProxyServer()
         {
-            _scenarioContext.Set(false, "useProxy");
+            _scenarioContext.Set("", "spineProxyUrl");
         }
-        
+
+        [Given(@"I am using the spine proxy server ""([^\s]*)""")]
+        public void GivenIAmUsingTheSpineProxyServer(string proxyServerUrl)
+        {
+            _scenarioContext.Set(proxyServerUrl, "spineProxyUrl");
+        }
+
+        [Given(@"I am using the spine proxy server ""([^\s]*)"" on port ""([^\s]*)""")]
+        public void GivenIAmUsingTheSpineProxyServerOnPort(string proxyServerUrl, string proxyServerPort)
+        {
+            _scenarioContext.Set(proxyServerUrl + ":" + proxyServerPort, "spineProxyUrl");
+        }
+
 
         // HTTP Header Configuration Steps
 
@@ -120,17 +131,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _scenarioContext.Set(relativeUrl, "relativeUrl");
             // Build The Request
-            var serverURL = _scenarioContext.Get<string>("serverUrl");
-            try {
-                var serverPort = _scenarioContext.Get<string>("serverPort");
-                if (serverPort == null)
-                {
-                    serverURL = serverURL + ":" + _scenarioContext.Get<string>("serverPort");
-                }
-            } catch (KeyNotFoundException e) {
-                // Do nothing as it should not matter if not port was specified
-            }
-            var restClient = new RestClient(serverURL);
+            var restClient = new RestClient(_scenarioContext.Get<string>("spineProxyUrl") + _scenarioContext.Get<string>("serverUrl"));
             _scenarioContext.Set(restClient, "restClient");
             var fullUrl = _scenarioContext.Get<string>("baseUrl") + _scenarioContext.Get<string>("relativeUrl");
             Console.Out.WriteLine("GET fullUrl={0}", fullUrl);

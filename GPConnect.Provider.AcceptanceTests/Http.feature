@@ -11,7 +11,7 @@ Scenario: Perform a successful GET request
 	And the JSON value "resourceType" should be "Conformance"
 
 Scenario: GET_MetaData
-	Given I am using server "http://gpconnect-uat.answerappcloud.com"
+	Given I am using server "http://gpconnect-uat.answerappcloud.com" on port "80"
 	And I am not using the spine proxy server
 	And I set base URL to "/fhir"
 	And I am using "application/json+fhir" to communicate with the server
