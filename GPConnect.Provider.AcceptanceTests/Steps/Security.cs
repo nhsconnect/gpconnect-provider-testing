@@ -32,13 +32,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
-        // Certificate handling steps
+        // Certificate configruation steps
 
         [Given(@"I do not want to verify the server certificate")]
         public void IDoNotWantToVerifyTheServerCertificate()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.MaxServicePointIdleTime = 0;
         }
-
+        
     }
 }

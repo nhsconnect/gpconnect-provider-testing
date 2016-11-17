@@ -1,6 +1,7 @@
 ﻿using System;
 using TechTalk.SpecFlow;
 using GPConnect.Provider.AcceptanceTests.tools;
+using System.Net;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -24,7 +25,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Console.WriteLine("Header Clear Down");
             _headerController.headerClearDown();
+
+            Console.WriteLine("SSL certificate validation reset");
+            SSLValidationRestore();
         }
-        
+
+        public void SSLValidationRestore()
+        {
+            ServicePointManager.ServerCertificateValidationCallback = null;
+            ServicePointManager.MaxServicePointIdleTime = 0;
+        }
+
     }
 }
