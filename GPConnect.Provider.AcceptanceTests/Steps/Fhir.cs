@@ -72,7 +72,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 _scenarioContext.Set(fhirClient.LastResponse.StatusCode, "responseStatusCode");
                 Console.Out.WriteLine("Response StatusCode={0}", fhirClient.LastResponse.StatusCode);
-                _scenarioContext.Set(fhirClient.LastRequest.ContentType, "responseContentType");
+                _scenarioContext.Set(fhirClient.LastResponse.ContentType, "responseContentType");
                 Console.Out.WriteLine("Response ContentType={0}", fhirClient.LastResponse.ContentType);
             };
             _scenarioContext.Set(fhirClient, "fhirClient");
