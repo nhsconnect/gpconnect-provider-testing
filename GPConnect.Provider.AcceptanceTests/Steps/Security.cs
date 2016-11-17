@@ -48,7 +48,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAmUsingClientCertificateWithThumbprint(string thumbPrint)
         {
             thumbPrint = Regex.Replace(thumbPrint, @"[^\da-zA-z]", string.Empty).ToUpper();
-            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             try
             {
                 store.Open(OpenFlags.ReadOnly);
@@ -57,6 +57,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     throw new FileNotFoundException(string.Format("Cert with thumbprint: '{0}' not found in local machine cert store.", thumbPrint));
                 }
+                Console.WriteLine("Certificate Found = " + signingCert[0]);
                 _scenarioContext.Set(signingCert[0], "clientCertificate");
             }
             finally

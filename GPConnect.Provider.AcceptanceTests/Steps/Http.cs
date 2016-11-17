@@ -141,6 +141,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             try
             {
                 X509Certificate2 clientCertificate = _scenarioContext.Get<X509Certificate2>("clientCertificate");
+                if (restClient.ClientCertificates == null) {
+                    restClient.ClientCertificates = new X509CertificateCollection();
+                }
                 restClient.ClientCertificates.Add(clientCertificate);
             }
             catch (KeyNotFoundException e) {
