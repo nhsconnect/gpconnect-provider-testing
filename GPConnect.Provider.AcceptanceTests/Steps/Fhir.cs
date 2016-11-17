@@ -37,7 +37,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And(@"I am accredited system ""200000000359""");
             And(@"I am connecting to accredited system ""200000000360""");
             And(@"I am generating a random message trace identifier");
-            And(@"I am generating an organization authorization header");
+            And(@"I am generating an organization JWT header");
         }
 
         // FHIR Operation Steps

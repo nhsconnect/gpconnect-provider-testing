@@ -109,14 +109,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Ssp-TraceID", Guid.NewGuid().ToString(""));
         }
 
-        [Given(@"I am generating an organization authorization header")]
+        [Given(@"I am generating an organization JWT header")]
         public void GivenIAmGeneratingAnOrganizationAuthorizationHeader()
         {
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
-        [Given(@"I am generating a patient authorization header with nhs number ""(.*)""")]
+        [Given(@"I am generating a patient JWT header with nhs number ""(.*)""")]
         public void GivenIAmGeneratingAPatientAuthorizationHeader(string nhsNumber)
         {
             _headerController.removeHeader("Authorization");
@@ -163,8 +163,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheResponseStatusCodeShouldIndicateSuccess()
         {
             _scenarioContext.Get<HttpStatusCode>("responseStatusCode").ShouldBe(HttpStatusCode.OK);
-            Console.Out.WriteLine("Response HttpStatusCode={0}", HttpStatusCode.OK);
+            Console.Out.WriteLine("Response HttpStatusCode={0}", _scenarioContext.Get<HttpStatusCode>("responseStatusCode"));
         }
-        
+
+        [Then(@"the response status code should indicate failure")]
+        public void ThenTheResponseStatusCodeShouldIndicateFailure()
+        {
+            _scenarioContext.Get<HttpStatusCode>("responseStatusCode").ShouldNotBe(HttpStatusCode.OK);
+            Console.Out.WriteLine("Response HttpStatusCode={0}", _scenarioContext.Get<HttpStatusCode>("responseStatusCode"));
+        }
+
     }
 }

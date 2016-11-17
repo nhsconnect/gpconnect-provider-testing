@@ -10,12 +10,19 @@ namespace GPConnect.Provider.AcceptanceTests.tools
 {
     public class JwtHelper
     {
-        private static JwtHelper jwtHelper;
+        private static JwtHelper _jwtHelper;
+        private DateTime _jwtCreationTime;
+        private DateTime _jwtExpiryTime;
 
         private JwtHelper() {
         }
 
-        public static JwtHelper Instance => jwtHelper ?? (jwtHelper = new JwtHelper());
+        public static JwtHelper Instance => _jwtHelper ?? (_jwtHelper = new JwtHelper());
+
+        public void setJwtDefaultValues() {
+            _jwtCreationTime = DateTime.UtcNow;
+            _jwtExpiryTime = _jwtCreationTime.AddMinutes(5);
+        }
 
         public string buildEncodedHeader() {
             return new JwtHeader().Base64UrlEncode();
@@ -73,16 +80,13 @@ namespace GPConnect.Provider.AcceptanceTests.tools
 
             var requesting_system_url = "https://[ConsumerSystemURL]";
             var requesting_system_token_url = "https://authorize.fhir.nhs.net/token";
-            var now = DateTime.UtcNow;
-            var expires = now.AddMinutes(5);
-
             
             var claims = new List<System.Security.Claims.Claim> {
                 new System.Security.Claims.Claim("iss", requesting_system_url, ClaimValueTypes.String),
                 new System.Security.Claims.Claim("sub", requesting_practitioner.Id, ClaimValueTypes.String),
                 new System.Security.Claims.Claim("aud", requesting_system_token_url, ClaimValueTypes.String),
-                new System.Security.Claims.Claim("exp", EpochTime.GetIntDate(expires).ToString(), ClaimValueTypes.Integer64),
-                new System.Security.Claims.Claim("iat", EpochTime.GetIntDate(now).ToString(), ClaimValueTypes.Integer64),
+                new System.Security.Claims.Claim("exp", EpochTime.GetIntDate(_jwtExpiryTime).ToString(), ClaimValueTypes.Integer64),
+                new System.Security.Claims.Claim("iat", EpochTime.GetIntDate(_jwtCreationTime).ToString(), ClaimValueTypes.Integer64),
                 new System.Security.Claims.Claim("reason_for_request", "directcare", ClaimValueTypes.String),
                 new System.Security.Claims.Claim("requesting_device", FhirSerializer.SerializeToJson(requesting_device), JsonClaimValueTypes.Json),
                 new System.Security.Claims.Claim("requesting_organization", FhirSerializer.SerializeToJson(requesting_organization), JsonClaimValueTypes.Json),
@@ -103,12 +107,18 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         }
 
         public string buildBearerTokenOrgResource() {
+            setJwtDefaultValues();
             return buildEncodedHeader() + "." + buildEncodedPayload(null) + ".";
         }
 
         public string buildBearerTokenPatientResource(string nhsNumber)
         {
+            setJwtDefaultValues();
             return buildEncodedHeader() + "." + buildEncodedPayload(nhsNumber) + ".";
+        }
+
+        public void setJWTExpiryTimeInSeconds(double seconds) {
+            _jwtExpiryTime = _jwtCreationTime.AddSeconds(seconds);
         }
     }
 }
