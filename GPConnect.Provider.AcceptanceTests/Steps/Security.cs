@@ -1,5 +1,7 @@
 ﻿using TechTalk.SpecFlow;
 using GPConnect.Provider.AcceptanceTests.tools;
+using System.Net;
+using System;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -18,6 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _jwtHelper = JwtHelper.Instance;
         }
 
+
         // JWT configuration steps
 
         [Given(@"I set the JWT expiry time to ""(.*)"" seconds after creation time")]
@@ -26,6 +29,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _jwtHelper.setJWTExpiryTimeInSeconds(expirySeconds);
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+
+        // Certificate handling steps
+
+        [Given(@"I do not want to verify the server certificate")]
+        public void IDoNotWantToVerifyTheServerCertificate()
+        {
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
         }
 
     }
