@@ -7,6 +7,8 @@ using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
 using Newtonsoft.Json.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Net;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -67,6 +69,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     if (header.Key != "Accept")
                         args.RawRequest.Headers.Add(header.Key, header.Value);
                 }
+
+                try
+                {
+                    X509Certificate2 clientCertificate = _scenarioContext.Get<X509Certificate2>("clientCertificate");
+                    args.RawRequest.ClientCertificates.Add(clientCertificate);
+                }
+                catch (KeyNotFoundException e)
+                {
+                    // No client certificate found in scenario context
+                    Console.WriteLine("No client certificate found in scenario context");
+                }
+
             };
             fhirClient.OnAfterResponse += (sender, args) =>
             {
@@ -76,6 +90,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Console.Out.WriteLine("Response ContentType={0}", fhirClient.LastResponse.ContentType);
             };
             _scenarioContext.Set(fhirClient, "fhirClient");
+
             var fhirResource = fhirClient.TypeOperation<Patient>(operation, _scenarioContext.Get<Parameters>("fhirRequestParameters"));
             _scenarioContext.Set(fhirResource, "fhirResource");
             var fhirResponse = FhirSerializer.SerializeResourceToJson(fhirResource);

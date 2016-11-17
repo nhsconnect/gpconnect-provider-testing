@@ -2,6 +2,9 @@
 using GPConnect.Provider.AcceptanceTests.tools;
 using System.Net;
 using System;
+using System.Text.RegularExpressions;
+using System.Security.Cryptography.X509Certificates;
+using System.IO;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -40,6 +43,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.MaxServicePointIdleTime = 0;
         }
-        
+
+        [Given(@"I am using client certificate with thumbprint ""(.*)""")]
+        public void IAmUsingClientCertificateWithThumbprint(string thumbPrint)
+        {
+            thumbPrint = Regex.Replace(thumbPrint, @"[^\da-zA-z]", string.Empty).ToUpper();
+            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            try
+            {
+                store.Open(OpenFlags.ReadOnly);
+                var signingCert = store.Certificates.Find(X509FindType.FindByThumbprint, thumbPrint, false);
+                if (signingCert.Count == 0)
+                {
+                    throw new FileNotFoundException(string.Format("Cert with thumbprint: '{0}' not found in local machine cert store.", thumbPrint));
+                }
+                _scenarioContext.Set(signingCert[0], "clientCertificate");
+            }
+            finally
+            {
+                store.Close();
+            }
+        }
+
     }
 }

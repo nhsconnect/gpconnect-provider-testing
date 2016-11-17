@@ -5,6 +5,7 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using System.Collections.Generic;
 using GPConnect.Provider.AcceptanceTests.tools;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -136,6 +137,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var fullUrl = _scenarioContext.Get<string>("baseUrl") + _scenarioContext.Get<string>("relativeUrl");
             Console.Out.WriteLine("GET fullUrl={0}", fullUrl);
             var restRequest = new RestRequest(fullUrl, Method.GET);
+
+            try
+            {
+                X509Certificate2 clientCertificate = _scenarioContext.Get<X509Certificate2>("clientCertificate");
+                restClient.ClientCertificates.Add(clientCertificate);
+            }
+            catch (KeyNotFoundException e) {
+                // No client certificate found in scenario context
+                Console.WriteLine("No client certificate found in scenario context");
+            }
 
             // Add Headers
             foreach (KeyValuePair<string, string> header in _headerController.getRequestHeaders())
