@@ -165,22 +165,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _scenarioContext.Get<HttpStatusCode>("responseStatusCode").ShouldBe(HttpStatusCode.OK);
             Console.Out.WriteLine("Response HttpStatusCode={0}", HttpStatusCode.OK);
         }
-
-        // Demonstartor Steps
-        [Given(@"I am using the gpconnect demonstator")]
-        public void GivenIAmUsingTheGPConnectDemonstrator()
-        {
-            Given("I am using server 'http://gpconnect-uat.answerappcloud.com' on port '80'");
-            And("I am not using the spine proxy server");
-            And("I am using 'application/json+fhir' to communicate with the server");
-            And("I set base URL to '/fhir'");
-            And("I set 'Accept' request header to 'application/json+fhir'");
-            And("I am accredited system '200000000359'");
-            And("I am performing the 'urn:nhs:names:services:gpconnect:fhir:rest:read:metadata' interaction");
-            And("I am connecting to accredited system '200000000360'");
-            And("I am generating a random message trace identifier");
-            And("I am generating an organization authorization header");
-        }
-
+        
     }
 }

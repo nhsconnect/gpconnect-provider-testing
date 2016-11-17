@@ -11,16 +11,8 @@ Scenario: Perform a successful GET request
 	And the JSON value "resourceType" should be "Conformance"
 
 Scenario: GET_MetaData
-	Given I am using server "http://gpconnect-uat.answerappcloud.com" on port "80"
-	And I am not using the spine proxy server
-	And I set base URL to "/fhir"
-	And I am using "application/json+fhir" to communicate with the server
-	And I set "Accept" request header to "application/json+fhir"
-	And I am accredited system "200000000359"
+	Given I am using the gpconnect FHIR demonstator
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	And I am connecting to accredited system "200000000360"
-	And I am generating a random message trace identifier
-	And I am generating an organization authorization header
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate success
 	And the response body should be FHIR JSON
