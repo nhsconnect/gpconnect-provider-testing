@@ -44,6 +44,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ServicePointManager.MaxServicePointIdleTime = 0;
         }
 
+        [Given(@"I do want to verify the server certificate")]
+        public void IDoWantToVerifyTheServerCertificate()
+        {
+            ServicePointManager.ServerCertificateValidationCallback =
+                (sender, cert, chain, error) =>
+                {
+                    Console.Write("Check if server cert is in certificate store : ");
+                    var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+                    var returnValue = false;
+                    try
+                    {
+                        store.Open(OpenFlags.ReadOnly);
+                        returnValue = store.Certificates.Contains(cert);
+                    }
+                    finally
+                    {
+                        store.Close();
+                    }
+                    Console.WriteLine(returnValue);
+                    return returnValue;
+                };
+            ServicePointManager.MaxServicePointIdleTime = 0;
+        }
+
         [Given(@"I am using client certificate with thumbprint ""(.*)""")]
         public void IAmUsingClientCertificateWithThumbprint(string thumbPrint)
         {
