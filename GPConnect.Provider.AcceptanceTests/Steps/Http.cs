@@ -5,6 +5,7 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using System.Collections.Generic;
 using GPConnect.Provider.AcceptanceTests.tools;
+using System.Configuration;
 using System.Security.Cryptography.X509Certificates;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
@@ -26,22 +27,63 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         // Server Endpoint Configuration Steps
 
+        [Given(@"I am using the default server")]
+        public void GivenIAmUsingTheDefaultServer()
+        {
+            // Default to HTTP or HTTPS
+            if ("true".Equals(ConfigurationManager.AppSettings["useTLS"]))
+            {
+                _scenarioContext.Set(true, "useTLS");
+            }
+            else {
+                _scenarioContext.Set(false, "useTLS");
+            }
+
+        // Fhir Server Details from config file
+        _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerUrl"], "serverUrl");
+            _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerPort"], "serverPort");
+            _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerFhirBase"], "fhirServerFhirBase");
+
+            // Spine Proxy Details from config file
+            _scenarioContext.Set(false, "useSpineProxy");
+            _scenarioContext.Set(ConfigurationManager.AppSettings["spineProxyUrl"], "spineProxyUrl");
+            _scenarioContext.Set(ConfigurationManager.AppSettings["spineProxyPort"], "spineProxyPort");
+
+            // Certificates
+            _scenarioContext.Set(ConfigurationManager.AppSettings["clientCertThumbPrint"], "clientCertThumbPrint");
+            _scenarioContext.Set(true, "sendClientCert");
+            _scenarioContext.Set(true, "validateServerCert");
+
+            Given(@"I configure server certificate and ssl");
+            And(@"I am using ""application/json+fhir"" to communicate with the server");
+            And(@"I set base URL to ""/fhir""");
+            And(@"I am accredited system ""200000000359""");
+            And(@"I am connecting to accredited system ""200000000360""");
+            And(@"I am generating a random message trace identifier");
+            And(@"I am generating an organization JWT header");
+        }
+
+
         [Given(@"I am using server ""([^\s]*)""")]
         public void GivenIAmUsingServer(string serverUrl)
         {
             _scenarioContext.Set(serverUrl, "serverUrl");
+            _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerPort"], "serverPort");
+            _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerFhirBase"], "fhirServerFhirBase");
         }
 
         [Given(@"I am using server ""([^\s]*)"" on port ""([^\s]*)""")]
         public void GivenIAmUsingServerOnPort(string serverUrl, string serverPort)
         {
-            _scenarioContext.Set(serverUrl + ":" + serverPort, "serverUrl");
+            _scenarioContext.Set(serverUrl, "serverUrl");
+            _scenarioContext.Set(serverPort, "serverPort");
+            _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerFhirBase"], "fhirServerFhirBase");
         }
         
         [Given(@"I set base URL to ""([^\s]*)""")]
         public void GivenISetBaseURLTo(string baseUrl)
         {
-            _scenarioContext.Set(baseUrl, "baseUrl");
+            _scenarioContext.Set(baseUrl, "fhirServerFhirBase");
         }
 
 
@@ -50,19 +92,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am not using the spine proxy server")]
         public void GivenIAmNotUsingTheSpineProxyServer()
         {
-            _scenarioContext.Set("", "spineProxyUrl");
+            _scenarioContext.Set(false, "useSpineProxy");
         }
 
         [Given(@"I am using the spine proxy server ""([^\s]*)""")]
         public void GivenIAmUsingTheSpineProxyServer(string proxyServerUrl)
         {
-            _scenarioContext.Set(proxyServerUrl + "/", "spineProxyUrl");
+            _scenarioContext.Set(true, "useSpineProxy");
+            _scenarioContext.Set(proxyServerUrl, "spineProxyUrl");
+            _scenarioContext.Set(ConfigurationManager.AppSettings["spineProxyPort"], "spineProxyPort");
         }
 
         [Given(@"I am using the spine proxy server ""([^\s]*)"" on port ""([^\s]*)""")]
         public void GivenIAmUsingTheSpineProxyServerOnPort(string proxyServerUrl, string proxyServerPort)
         {
-            _scenarioContext.Set(proxyServerUrl + ":" + proxyServerPort + "/", "spineProxyUrl");
+            _scenarioContext.Set(true, "useSpineProxy");
+            _scenarioContext.Set(proxyServerUrl, "spineProxyUrl");
+            _scenarioContext.Set(proxyServerPort, "spineProxyPort");
         }
 
 
@@ -130,25 +176,33 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I make a GET request to ""(.*)""")]
         public void WhenIMakeAGETRequestTo(string relativeUrl)
         {
-            _scenarioContext.Set(relativeUrl, "relativeUrl");
             // Build The Request
-            var restClient = new RestClient(_scenarioContext.Get<string>("spineProxyUrl") + _scenarioContext.Get<string>("serverUrl"));
-            _scenarioContext.Set(restClient, "restClient");
-            var fullUrl = _scenarioContext.Get<string>("baseUrl") + _scenarioContext.Get<string>("relativeUrl");
-            Console.Out.WriteLine("GET fullUrl={0}", fullUrl);
-            var restRequest = new RestRequest(fullUrl, Method.GET);
 
-            try
-            {
-                X509Certificate2 clientCertificate = _scenarioContext.Get<X509Certificate2>("clientCertificate");
-                if (restClient.ClientCertificates == null) {
-                    restClient.ClientCertificates = new X509CertificateCollection();
+            string httpProtocol = _scenarioContext.Get<bool>("useTLS") ? "https://" : "http://";
+            string spineProxyUrl = _scenarioContext.Get<bool>("useSpineProxy") ? spineProxyUrl = httpProtocol + _scenarioContext.Get<string>("spineProxyUrl") + ":" + _scenarioContext.Get<string>("spineProxyPort") + "/" : "";
+            string serverUrl = httpProtocol + _scenarioContext.Get<string>("serverUrl") + ":" + _scenarioContext.Get<string>("serverPort") + _scenarioContext.Get<string>("fhirServerFhirBase");
+
+            Console.WriteLine("SpineProxyURL = " + spineProxyUrl);
+            Console.WriteLine("ServerURL = " + serverUrl);
+
+            var restClient = new RestClient(spineProxyUrl + serverUrl);
+
+            Console.Out.WriteLine("GET relative Fhir URL = {0}", relativeUrl);
+            var restRequest = new RestRequest(relativeUrl, Method.GET);
+
+            if (_scenarioContext.Get<bool>("sendClientCert")) {
+                try
+                {
+                    X509Certificate2 clientCertificate = _scenarioContext.Get<X509Certificate2>("clientCertificate");
+                    if (restClient.ClientCertificates == null) {
+                        restClient.ClientCertificates = new X509CertificateCollection();
+                    }
+                    restClient.ClientCertificates.Add(clientCertificate);
                 }
-                restClient.ClientCertificates.Add(clientCertificate);
-            }
-            catch (KeyNotFoundException e) {
-                // No client certificate found in scenario context
-                Console.WriteLine("No client certificate found in scenario context");
+                catch (KeyNotFoundException e) {
+                    // No client certificate found in scenario context
+                    Console.WriteLine("No client certificate found in scenario context");
+                }
             }
 
             // Add Headers

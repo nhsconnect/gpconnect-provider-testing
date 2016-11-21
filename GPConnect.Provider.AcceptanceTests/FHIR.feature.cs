@@ -71,7 +71,7 @@ namespace GPConnect.Provider.AcceptanceTests
 #line 3
 this.ScenarioSetup(scenarioInfo);
 #line 4
- testRunner.Given("I am using the gpconnect FHIR demonstator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 5
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

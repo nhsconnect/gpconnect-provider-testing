@@ -40,54 +40,95 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I do not want to verify the server certificate")]
         public void IDoNotWantToVerifyTheServerCertificate()
         {
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            ServicePointManager.MaxServicePointIdleTime = 0;
+            _scenarioContext.Set(false, "validateServerCert");
         }
 
         [Given(@"I do want to verify the server certificate")]
         public void IDoWantToVerifyTheServerCertificate()
         {
-            ServicePointManager.ServerCertificateValidationCallback =
-                (sender, cert, chain, error) =>
-                {
-                    Console.Write("Check if server cert is in certificate store : ");
-                    var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-                    var returnValue = false;
-                    try
-                    {
-                        store.Open(OpenFlags.ReadOnly);
-                        returnValue = store.Certificates.Contains(cert);
-                    }
-                    finally
-                    {
-                        store.Close();
-                    }
-                    Console.WriteLine(returnValue);
-                    return returnValue;
-                };
-            ServicePointManager.MaxServicePointIdleTime = 0;
+            _scenarioContext.Set(true, "validateServerCert");
+        }
+
+        [Given(@"I am not using a client certificate")]
+        public void IAmNotUsingAClientCertificate()
+        {
+            _scenarioContext.Set(false, "sendClientCert");
         }
 
         [Given(@"I am using client certificate with thumbprint ""(.*)""")]
         public void IAmUsingClientCertificateWithThumbprint(string thumbPrint)
         {
-            thumbPrint = Regex.Replace(thumbPrint, @"[^\da-zA-z]", string.Empty).ToUpper();
-            var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-            try
-            {
-                store.Open(OpenFlags.ReadOnly);
-                var signingCert = store.Certificates.Find(X509FindType.FindByThumbprint, thumbPrint, false);
-                if (signingCert.Count == 0)
+            _scenarioContext.Set(thumbPrint, "clientCertThumbPrint");
+            _scenarioContext.Set(true, "sendClientCert");
+        }
+
+        [Given(@"I am using TLS Connection")]
+        public void IAmUsingTLSConnection()
+        {
+            _scenarioContext.Set(true, "useTLS");
+        }
+
+        [Given(@"I am not using TLS Connection")]
+        public void IAmNotUsingTLSConnection()
+        {
+            _scenarioContext.Set(false, "useTLS");
+            Given(@"I do not want to verify the server certificate");
+            And(@"I am not using a client certificate");
+        }
+
+        [Given(@"I configure server certificate and ssl")]
+        public void IConfigureServerCertificatesAndSsl() {
+            
+            // Client Certificate
+            if (_scenarioContext.Get<bool>("sendClientCert")) {
+                var thumbPrint = _scenarioContext.Get<string>("clientCertThumbPrint");
+                var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+                try
                 {
-                    throw new FileNotFoundException(string.Format("Cert with thumbprint: '{0}' not found in local machine cert store.", thumbPrint));
+                    store.Open(OpenFlags.ReadOnly);
+                    var signingCert = store.Certificates.Find(X509FindType.FindByThumbprint, thumbPrint, false);
+                    if (signingCert.Count == 0)
+                    {
+                        throw new FileNotFoundException(string.Format("Cert with thumbprint: '{0}' not found in local machine cert store.", thumbPrint));
+                    }
+                    Console.WriteLine("Certificate Found = " + signingCert[0]);
+                    _scenarioContext.Set(signingCert[0], "clientCertificate");
                 }
-                Console.WriteLine("Certificate Found = " + signingCert[0]);
-                _scenarioContext.Set(signingCert[0], "clientCertificate");
+                finally
+                {
+                    store.Close();
+                }
             }
-            finally
+
+            // Server Certificate
+            if (_scenarioContext.Get<bool>("validateServerCert"))
             {
-                store.Close();
+                // Validate Server Certificate
+                ServicePointManager.ServerCertificateValidationCallback =
+                    (sender, cert, chain, error) =>
+                    {
+                        var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+                        var returnValue = false;
+                        try
+                        {
+                            store.Open(OpenFlags.ReadOnly);
+                            returnValue = store.Certificates.Contains(cert);
+                        }
+                        finally
+                        {
+                            store.Close();
+                        }
+                        Console.WriteLine(returnValue);
+                        return returnValue;
+                    };
+                ServicePointManager.MaxServicePointIdleTime = 0;
             }
+            else {
+                // Do NOT Validate Server Certificate
+                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                ServicePointManager.MaxServicePointIdleTime = 0;
+            }
+
         }
 
     }

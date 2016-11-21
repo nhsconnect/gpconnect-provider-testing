@@ -26,22 +26,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController = HeaderController.Instance;
             _jwtHelper = JwtHelper.Instance;
         }
-
-        // FHIR Demonstartor Steps
-
-        [Given(@"I am using the gpconnect FHIR demonstator")]
-        public void GivenIAmUsingTheGPConnectDemonstrator()
-        {
-            Given(@"I am using server ""http://gpconnect-uat.answerappcloud.com""");
-            And(@"I am not using the spine proxy server");
-            And(@"I am using ""application/json+fhir"" to communicate with the server");
-            And(@"I set base URL to ""/fhir""");
-            And(@"I am accredited system ""200000000359""");
-            And(@"I am connecting to accredited system ""200000000360""");
-            And(@"I am generating a random message trace identifier");
-            And(@"I am generating an organization JWT header");
-        }
-
+        
         // FHIR Operation Steps
 
         [Given(@"I author a request for the ""(.*)"" care record section for patient with NHS Number ""(.*)""")]
@@ -56,7 +41,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
         public void IRequestTheFHIROperation(string operation)
         {
-            var fhirClient = new FhirClient(_scenarioContext.Get<string>("spineProxyUrl") + _scenarioContext.Get<string>("serverUrl") + _scenarioContext.Get<string>("baseUrl"))
+            string httpProtocol = _scenarioContext.Get<bool>("useTLS") ? "https://" : "http://";
+            string spineProxyUrl = _scenarioContext.Get<bool>("useSpineProxy") ? spineProxyUrl = httpProtocol + _scenarioContext.Get<string>("spineProxyUrl") + ":" + _scenarioContext.Get<string>("spineProxyPort") + "/" : "";
+            string serverUrl = httpProtocol + _scenarioContext.Get<string>("serverUrl") + ":" + _scenarioContext.Get<string>("serverPort") + _scenarioContext.Get<string>("fhirServerFhirBase");
+
+            Console.WriteLine("SpineProxyURL = " + spineProxyUrl);
+            Console.WriteLine("ServerURL = " + serverUrl);
+
+            var fhirClient = new FhirClient(spineProxyUrl + serverUrl)
             {
                 PreferredFormat = ResourceFormat.Json
             };
@@ -70,15 +62,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         args.RawRequest.Headers.Add(header.Key, header.Value);
                 }
 
-                try
+                if (_scenarioContext.Get<bool>("sendClientCert"))
                 {
-                    X509Certificate2 clientCertificate = _scenarioContext.Get<X509Certificate2>("clientCertificate");
-                    args.RawRequest.ClientCertificates.Add(clientCertificate);
-                }
-                catch (KeyNotFoundException e)
-                {
-                    // No client certificate found in scenario context
-                    Console.WriteLine("No client certificate found in scenario context");
+                    try
+                    {
+                        X509Certificate2 clientCertificate = _scenarioContext.Get<X509Certificate2>("clientCertificate");
+                        args.RawRequest.ClientCertificates.Add(clientCertificate);
+                    }
+                    catch (KeyNotFoundException e)
+                    {
+                        // No client certificate found in scenario context
+                        Console.WriteLine("No client certificate found in scenario context");
+                    }
                 }
 
             };
