@@ -102,6 +102,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Http.feature</DependentUpon>
     </Compile>
+    <Compile Include="JWT.feature.cs">
+      <DependentUpon>JWT.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Steps\Security.cs" />
     <Compile Include="Steps\Generic.cs" />
     <Compile Include="Steps\Fhir.cs" />
@@ -143,6 +148,10 @@
       <LastGenOutput>Http.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="JWT.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>JWT.feature.cs</LastGenOutput>
+    </None>
     <None Include="Security.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Security.feature.cs</LastGenOutput>

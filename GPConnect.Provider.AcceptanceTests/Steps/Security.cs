@@ -5,6 +5,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using Shouldly;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -60,6 +61,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _scenarioContext.Set(thumbPrint, "clientCertThumbPrint");
             _scenarioContext.Set(true, "sendClientCert");
+            Console.WriteLine("client certificate thumb print");
+            Given(@"I configure server certificate and ssl");
         }
 
         [Given(@"I am using TLS Connection")]
@@ -78,7 +81,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         [Given(@"I configure server certificate and ssl")]
         public void IConfigureServerCertificatesAndSsl() {
-            
+
             // Client Certificate
             if (_scenarioContext.Get<bool>("sendClientCert")) {
                 var thumbPrint = _scenarioContext.Get<string>("clientCertThumbPrint");
@@ -129,6 +132,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 ServicePointManager.MaxServicePointIdleTime = 0;
             }
 
+        }
+
+
+        [Then(@"the response status code should indicate authentication failure")]
+        public void ThenTheResponseStatusCodeShouldIndicateAuthenticationFailure()
+        {
+            _scenarioContext.Get<HttpStatusCode>("responseStatusCode").ShouldBe(HttpStatusCode.Forbidden);
+            Console.Out.WriteLine("Response HttpStatusCode={0}", _scenarioContext.Get<HttpStatusCode>("responseStatusCode"));
         }
 
     }

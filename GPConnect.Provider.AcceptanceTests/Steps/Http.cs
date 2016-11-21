@@ -39,8 +39,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 _scenarioContext.Set(false, "useTLS");
             }
 
-        // Fhir Server Details from config file
-        _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerUrl"], "serverUrl");
+            // Fhir Server Details from config file
+            _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerUrl"], "serverUrl");
             _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerPort"], "serverPort");
             _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerFhirBase"], "fhirServerFhirBase");
 
@@ -79,7 +79,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _scenarioContext.Set(serverPort, "serverPort");
             _scenarioContext.Set(ConfigurationManager.AppSettings["fhirServerFhirBase"], "fhirServerFhirBase");
         }
-        
+
+        [Given(@"I am connecting to server on port ""([^\s]*)""")]
+        public void GivenIAmConnectingToServerOnPort(string serverPort)
+        {
+            _scenarioContext.Set(serverPort, "serverPort");
+        }
+
         [Given(@"I set base URL to ""([^\s]*)""")]
         public void GivenISetBaseURLTo(string baseUrl)
         {
@@ -237,8 +243,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response status code should indicate failure")]
         public void ThenTheResponseStatusCodeShouldIndicateFailure()
         {
+            Console.Out.WriteLine("Response HttpStatusCode should not be '{0}' but was '{1}'", HttpStatusCode.OK, _scenarioContext.Get<HttpStatusCode>("responseStatusCode"));
             _scenarioContext.Get<HttpStatusCode>("responseStatusCode").ShouldNotBe(HttpStatusCode.OK);
-            Console.Out.WriteLine("Response HttpStatusCode={0}", _scenarioContext.Get<HttpStatusCode>("responseStatusCode"));
         }
 
     }
