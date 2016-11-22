@@ -28,7 +28,11 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             return new JwtHeader().Base64UrlEncode();
         }
 
-        public string buildEncodedPayload(string nhsNumber)
+        public string buildEncodedPayload(string nhsNumber) {
+            return buildPayload(nhsNumber).Base64UrlEncode();
+        }
+
+        public JwtPayload buildPayload(string nhsNumber)
         {
             var requesting_device = new Device
             {
@@ -102,8 +106,14 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             }
 
             // Serialize To Json and base64 encode
-            JwtPayload payload = new JwtPayload(claims);
-            return payload.Base64UrlEncode();
+            return new JwtPayload(claims);
+        }
+
+        public string buildBearerTokenOrgResourceWithoutEncoding() {
+            setJwtDefaultValues();
+            var token = new JwtHeader().SerializeToJson() + "." + buildPayload(null).SerializeToJson() + ".";
+            Console.WriteLine("Token = " + token);
+            return token;
         }
 
         public string buildBearerTokenOrgResource() {
