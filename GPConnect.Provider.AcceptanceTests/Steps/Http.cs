@@ -217,9 +217,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Console.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
                 restRequest.AddHeader(header.Key, header.Value);
             }
-
+            
             // Execute The Request
             var restResponse = restClient.Execute(restRequest);
+            Console.WriteLine("Error Message = " + restResponse.ErrorMessage);
+            Console.WriteLine("Error Exception = " + restResponse.ErrorException);
+            
             // Pull Apart The Response
             _scenarioContext.Set(restResponse, "restResponse");
             _scenarioContext.Set(restResponse.StatusCode, "responseStatusCode");

@@ -139,8 +139,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 26
- testRunner.And("I am using client certificate with thumbprint \"c3 1b 74 39 4b a1 60 c5 62 f1 dc 6" +
-                    "8 ee 3e 5a 3c 85 0b 32 62\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I am using client certificate with thumbprint \"ea 57 be 3c 6c da 33 e6 d8 75 88 9" +
+                    "9 44 ee 61 28 4e 39 d9 1d\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

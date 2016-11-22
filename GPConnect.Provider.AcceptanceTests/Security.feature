@@ -23,7 +23,7 @@ Scenario: Security no client certificate sent
 
 Scenario: Security invalid client certificate sent
 	Given I am using the default server
-	And I am using client certificate with thumbprint "c3 1b 74 39 4b a1 60 c5 62 f1 dc 68 ee 3e 5a 3c 85 0b 32 62"
+	And I am using client certificate with thumbprint "ea 57 be 3c 6c da 33 e6 d8 75 88 99 44 ee 61 28 4e 39 d9 1d"
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate authentication failure
