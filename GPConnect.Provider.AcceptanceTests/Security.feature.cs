@@ -124,7 +124,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 21
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 22
- testRunner.Then("the response status code should indicate authentication failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"496\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -147,7 +147,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 28
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
- testRunner.Then("the response status code should indicate authentication failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"495\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

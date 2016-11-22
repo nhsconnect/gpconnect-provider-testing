@@ -149,5 +149,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Console.Out.WriteLine("Response HttpStatusCode={0}", _scenarioContext.Get<HttpStatusCode>("responseStatusCode"));
         }
 
+        [Then(@"the response status code should be ""(.*)""")]
+        public void ThenTheResponseStatusCodeShouldBe(string statusCode)
+        {
+            _scenarioContext.Get<HttpStatusCode>("responseStatusCode").ToString().ShouldBe(statusCode);
+            Console.Out.WriteLine("Response HttpStatusCode should be {0} but was {1}", statusCode, _scenarioContext.Get<HttpStatusCode>("responseStatusCode"));
+        }
+
     }
 }
