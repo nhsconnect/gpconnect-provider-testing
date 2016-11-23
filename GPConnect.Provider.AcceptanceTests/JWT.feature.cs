@@ -150,6 +150,28 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("JWT creation time in the future")]
+        public virtual void JWTCreationTimeInTheFuture()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT creation time in the future", ((string[])(null)));
+#line 31
+this.ScenarioSetup(scenarioInfo);
+#line 32
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 33
+ testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
+                    "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
+ testRunner.And("I set the JWT creation time to \"200\" seconds after the current time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 36
+ testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

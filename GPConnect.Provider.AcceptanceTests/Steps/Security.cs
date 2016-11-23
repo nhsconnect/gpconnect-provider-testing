@@ -35,6 +35,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
+        
+        [Given(@"I set the JWT creation time to ""(.*)"" seconds after the current time")]
+        public void ISetTheJWTCreationTimeToSecondsAfterTheCurrentTime(double secondsInFuture)
+        {
+            _jwtHelper.setJwtDefaultValues();
+            _jwtHelper.setJWTCreationTimeSeconds(secondsInFuture);
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
 
         [Given(@"I set the default JWT without base64 encoding")]
         public void ISetTheJWTWithoutBase64Encoding()

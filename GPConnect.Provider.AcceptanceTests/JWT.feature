@@ -27,3 +27,10 @@ Scenario: JWT expiry time before creation time
 	And I set the JWT expiry time to "-1" seconds after creation time
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
+
+Scenario: JWT creation time in the future
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set the JWT creation time to "200" seconds after the current time
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure

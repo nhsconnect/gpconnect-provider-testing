@@ -127,5 +127,11 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         public void setJWTExpiryTimeInSeconds(double seconds) {
             _jwtExpiryTime = _jwtCreationTime.AddSeconds(seconds);
         }
+
+        public void setJWTCreationTimeSeconds(double seconds)
+        {
+            _jwtCreationTime = DateTime.UtcNow.AddSeconds(seconds);
+            _jwtExpiryTime = _jwtCreationTime.AddMinutes(5);
+        }
     }
 }
