@@ -30,6 +30,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the JWT expiry time to ""(.*)"" seconds after creation time")]
         public void ISetTheJWTExpiryTimeToSecondsAfterCreationTime(double expirySeconds)
         {
+            _jwtHelper.setJwtDefaultValues();
             _jwtHelper.setJWTExpiryTimeInSeconds(expirySeconds);
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
@@ -38,6 +39,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the default JWT without base64 encoding")]
         public void ISetTheJWTWithoutBase64Encoding()
         {
+            _jwtHelper.setJwtDefaultValues();
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResourceWithoutEncoding());
         }

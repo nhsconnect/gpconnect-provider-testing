@@ -110,20 +110,17 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         }
 
         public string buildBearerTokenOrgResourceWithoutEncoding() {
-            setJwtDefaultValues();
             var token = new JwtHeader().SerializeToJson() + "." + buildPayload(null).SerializeToJson() + ".";
             Console.WriteLine("Token = " + token);
             return token;
         }
 
         public string buildBearerTokenOrgResource() {
-            setJwtDefaultValues();
             return buildEncodedHeader() + "." + buildEncodedPayload(null) + ".";
         }
 
         public string buildBearerTokenPatientResource(string nhsNumber)
         {
-            setJwtDefaultValues();
             return buildEncodedHeader() + "." + buildEncodedPayload(nhsNumber) + ".";
         }
 

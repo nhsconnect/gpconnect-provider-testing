@@ -20,3 +20,10 @@ Scenario: JWT not base64 encoded
 	And I set the default JWT without base64 encoding
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
+
+Scenario: JWT expiry time before creation time
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set the JWT expiry time to "-1" seconds after creation time
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure

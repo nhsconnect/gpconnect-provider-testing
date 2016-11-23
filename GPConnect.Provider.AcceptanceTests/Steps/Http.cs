@@ -165,6 +165,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am generating an organization JWT header")]
         public void GivenIAmGeneratingAnOrganizationAuthorizationHeader()
         {
+            _jwtHelper.setJwtDefaultValues();
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
@@ -172,6 +173,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am generating a patient JWT header with nhs number ""(.*)""")]
         public void GivenIAmGeneratingAPatientAuthorizationHeader(string nhsNumber)
         {
+            _jwtHelper.setJwtDefaultValues();
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenPatientResource(nhsNumber));
         }
