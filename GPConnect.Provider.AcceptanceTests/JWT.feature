@@ -34,3 +34,10 @@ Scenario: JWT creation time in the future
 	And I set the JWT creation time to "200" seconds after the current time
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
+
+Scenario: JWT reason for request is not directcare
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set the JWT reason for request to "notdirectcare"
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure

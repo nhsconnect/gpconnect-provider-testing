@@ -27,20 +27,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         // JWT configuration steps
 
-        [Given(@"I set the JWT expiry time to ""(.*)"" seconds after creation time")]
-        public void ISetTheJWTExpiryTimeToSecondsAfterCreationTime(double expirySeconds)
+        [Given(@"I set the default JWT")]
+        public void ISetTheDefaultJWT()
         {
             _jwtHelper.setJwtDefaultValues();
-            _jwtHelper.setJWTExpiryTimeInSeconds(expirySeconds);
-            _headerController.removeHeader("Authorization");
-            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
-        }
-        
-        [Given(@"I set the JWT creation time to ""(.*)"" seconds after the current time")]
-        public void ISetTheJWTCreationTimeToSecondsAfterTheCurrentTime(double secondsInFuture)
-        {
-            _jwtHelper.setJwtDefaultValues();
-            _jwtHelper.setJWTCreationTimeSeconds(secondsInFuture);
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
@@ -51,6 +41,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _jwtHelper.setJwtDefaultValues();
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResourceWithoutEncoding());
+        }
+
+        [Given(@"I set the JWT expiry time to ""(.*)"" seconds after creation time")]
+        public void ISetTheJWTExpiryTimeToSecondsAfterCreationTime(double expirySeconds)
+        {
+            _jwtHelper.setJWTExpiryTimeInSeconds(expirySeconds);
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+        
+        [Given(@"I set the JWT creation time to ""(.*)"" seconds after the current time")]
+        public void ISetTheJWTCreationTimeToSecondsAfterTheCurrentTime(double secondsInFuture)
+        {
+            _jwtHelper.setJWTCreationTimeSeconds(secondsInFuture);
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+        
+        [Given(@"I set the JWT reason for request to ""(.*)""")]
+        public void ISetTheJWTReasonForRequestTo(string reasonForRequest)
+        {
+            _jwtHelper.setJWTReasonForRequest(reasonForRequest);
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
 

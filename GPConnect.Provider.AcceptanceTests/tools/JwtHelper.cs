@@ -13,6 +13,7 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         private static JwtHelper _jwtHelper;
         private DateTime _jwtCreationTime;
         private DateTime _jwtExpiryTime;
+        private string _jwtReasonForRequest;
 
         private JwtHelper() {
         }
@@ -22,6 +23,7 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         public void setJwtDefaultValues() {
             _jwtCreationTime = DateTime.UtcNow;
             _jwtExpiryTime = _jwtCreationTime.AddMinutes(5);
+            _jwtReasonForRequest = "directcare";
         }
 
         public string buildEncodedHeader() {
@@ -91,7 +93,7 @@ namespace GPConnect.Provider.AcceptanceTests.tools
                 new System.Security.Claims.Claim("aud", requesting_system_token_url, ClaimValueTypes.String),
                 new System.Security.Claims.Claim("exp", EpochTime.GetIntDate(_jwtExpiryTime).ToString(), ClaimValueTypes.Integer64),
                 new System.Security.Claims.Claim("iat", EpochTime.GetIntDate(_jwtCreationTime).ToString(), ClaimValueTypes.Integer64),
-                new System.Security.Claims.Claim("reason_for_request", "directcare", ClaimValueTypes.String),
+                new System.Security.Claims.Claim("reason_for_request", _jwtReasonForRequest, ClaimValueTypes.String),
                 new System.Security.Claims.Claim("requesting_device", FhirSerializer.SerializeToJson(requesting_device), JsonClaimValueTypes.Json),
                 new System.Security.Claims.Claim("requesting_organization", FhirSerializer.SerializeToJson(requesting_organization), JsonClaimValueTypes.Json),
                 new System.Security.Claims.Claim("requesting_practitioner", FhirSerializer.SerializeToJson(requesting_practitioner), JsonClaimValueTypes.Json)
@@ -132,6 +134,10 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         {
             _jwtCreationTime = DateTime.UtcNow.AddSeconds(seconds);
             _jwtExpiryTime = _jwtCreationTime.AddMinutes(5);
+        }
+
+        public void setJWTReasonForRequest(string reasonForRequest) {
+            _jwtReasonForRequest = reasonForRequest;
         }
     }
 }
