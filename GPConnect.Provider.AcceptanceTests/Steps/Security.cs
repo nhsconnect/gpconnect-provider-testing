@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using Shouldly;
+using Hl7.Fhir.Model;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -71,6 +72,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISetTheJWTAuthorizationServerTokenTo(string autTokenUrl)
         {
             _jwtHelper.setJWTAuthTokenURL(autTokenUrl);
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        public class InvalidDeviceResource : Device
+        {
+            public string invalidFieldInObject { get; set; }
+        }
+
+        [Given(@"I set an invalid JWT requesting device resource")]
+        public void ISetAnInvalidJWTRequestingDeviceResource()
+        {
+            _jwtHelper.setJWTRequestingDevice(new Device()); // Invalid as there will be no resource ID
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }

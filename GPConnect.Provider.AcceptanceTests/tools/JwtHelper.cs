@@ -15,6 +15,7 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         private DateTime _jwtExpiryTime;
         private string _jwtReasonForRequest;
         private string _jwtAuthTokenURL;
+        private Device _jwtDevice;
 
         private JwtHelper() {
         }
@@ -26,6 +27,15 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             _jwtExpiryTime = _jwtCreationTime.AddMinutes(5);
             _jwtReasonForRequest = "directcare";
             _jwtAuthTokenURL = "https://authorize.fhir.nhs.net/token";
+            _jwtDevice = new Device
+            {
+                Id = "[DeviceID]",
+                Model = "[SoftwareName]",
+                Version = "[SoftwareVersion]",
+                Identifier = {
+                    new Identifier("[DeviceSystem]", "[DeviceID]")
+                }
+            };
         }
 
         public string buildEncodedHeader() {
@@ -38,16 +48,6 @@ namespace GPConnect.Provider.AcceptanceTests.tools
 
         public JwtPayload buildPayload(string nhsNumber)
         {
-            var requesting_device = new Device
-            {
-                Id = "[DeviceID]",
-                Model = "[SoftwareName]",
-                Version = "[SoftwareVersion]",
-                Identifier = {
-                    new Identifier("[DeviceSystem]", "[DeviceID]")
-                }
-            };
-
             var requesting_organization = new Organization
             {
                 Id = "[OrganizationID]",
@@ -95,7 +95,7 @@ namespace GPConnect.Provider.AcceptanceTests.tools
                 new System.Security.Claims.Claim("exp", EpochTime.GetIntDate(_jwtExpiryTime).ToString(), ClaimValueTypes.Integer64),
                 new System.Security.Claims.Claim("iat", EpochTime.GetIntDate(_jwtCreationTime).ToString(), ClaimValueTypes.Integer64),
                 new System.Security.Claims.Claim("reason_for_request", _jwtReasonForRequest, ClaimValueTypes.String),
-                new System.Security.Claims.Claim("requesting_device", FhirSerializer.SerializeToJson(requesting_device), JsonClaimValueTypes.Json),
+                new System.Security.Claims.Claim("requesting_device", FhirSerializer.SerializeToJson(_jwtDevice), JsonClaimValueTypes.Json),
                 new System.Security.Claims.Claim("requesting_organization", FhirSerializer.SerializeToJson(requesting_organization), JsonClaimValueTypes.Json),
                 new System.Security.Claims.Claim("requesting_practitioner", FhirSerializer.SerializeToJson(requesting_practitioner), JsonClaimValueTypes.Json)
             };
@@ -144,6 +144,11 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         public void setJWTAuthTokenURL(string autTokenUrl)
         {
             _jwtAuthTokenURL = autTokenUrl;
+        }
+
+        public void setJWTRequestingDevice(Device device)
+        {
+            _jwtDevice = device;
         }
     }
 }
