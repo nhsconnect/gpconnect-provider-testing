@@ -67,6 +67,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
+        [Given(@"I set the JWT authorization server token URL to ""(.*)""")]
+        public void ISetTheJWTAuthorizationServerTokenTo(string autTokenUrl)
+        {
+            _jwtHelper.setJWTAuthTokenURL(autTokenUrl);
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
 
         // Certificate configruation steps
 

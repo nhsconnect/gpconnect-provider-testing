@@ -14,6 +14,7 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         private DateTime _jwtCreationTime;
         private DateTime _jwtExpiryTime;
         private string _jwtReasonForRequest;
+        private string _jwtAuthTokenURL;
 
         private JwtHelper() {
         }
@@ -24,6 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             _jwtCreationTime = DateTime.UtcNow;
             _jwtExpiryTime = _jwtCreationTime.AddMinutes(5);
             _jwtReasonForRequest = "directcare";
+            _jwtAuthTokenURL = "https://authorize.fhir.nhs.net/token";
         }
 
         public string buildEncodedHeader() {
@@ -85,12 +87,11 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             };
 
             var requesting_system_url = "https://[ConsumerSystemURL]";
-            var requesting_system_token_url = "https://authorize.fhir.nhs.net/token";
             
             var claims = new List<System.Security.Claims.Claim> {
                 new System.Security.Claims.Claim("iss", requesting_system_url, ClaimValueTypes.String),
                 new System.Security.Claims.Claim("sub", requesting_practitioner.Id, ClaimValueTypes.String),
-                new System.Security.Claims.Claim("aud", requesting_system_token_url, ClaimValueTypes.String),
+                new System.Security.Claims.Claim("aud", _jwtAuthTokenURL, ClaimValueTypes.String),
                 new System.Security.Claims.Claim("exp", EpochTime.GetIntDate(_jwtExpiryTime).ToString(), ClaimValueTypes.Integer64),
                 new System.Security.Claims.Claim("iat", EpochTime.GetIntDate(_jwtCreationTime).ToString(), ClaimValueTypes.Integer64),
                 new System.Security.Claims.Claim("reason_for_request", _jwtReasonForRequest, ClaimValueTypes.String),
@@ -138,6 +139,11 @@ namespace GPConnect.Provider.AcceptanceTests.tools
 
         public void setJWTReasonForRequest(string reasonForRequest) {
             _jwtReasonForRequest = reasonForRequest;
+        }
+
+        public void setJWTAuthTokenURL(string autTokenUrl)
+        {
+            _jwtAuthTokenURL = autTokenUrl;
         }
     }
 }

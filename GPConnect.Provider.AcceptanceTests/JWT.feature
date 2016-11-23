@@ -41,3 +41,10 @@ Scenario: JWT reason for request is not directcare
 	And I set the JWT reason for request to "notdirectcare"
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
+
+Scenario: JWT authorization server token incorrect
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set the JWT authorization server token URL to "https://notValid.fhir.nhs.net/tokenEndpoint"
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure
