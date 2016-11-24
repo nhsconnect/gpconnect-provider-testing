@@ -55,3 +55,10 @@ Scenario: JWT requesting device is not valid FHIR device resource
 	And I set an invalid JWT requesting device resource
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
+
+Scenario: JWT requesting organization is not valid FHIR device resource
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set an invalid JWT requesting organization resource
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure

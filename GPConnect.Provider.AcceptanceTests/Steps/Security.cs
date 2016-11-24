@@ -7,6 +7,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using Shouldly;
 using Hl7.Fhir.Model;
+using Newtonsoft.Json.Linq;
+using Hl7.Fhir.Serialization;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -84,7 +86,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set an invalid JWT requesting device resource")]
         public void ISetAnInvalidJWTRequestingDeviceResource()
         {
-            _jwtHelper.setJWTRequestingDevice(new Device()); // Invalid as there will be no resource ID
+            dynamic jsonDeviceObject = new JObject();
+            jsonDeviceObject.resourceType = "Device";
+            jsonDeviceObject.id = "1";
+            jsonDeviceObject.invalidFhirResourceField = "ValidationTestElement";
+            _jwtHelper.setJWTRequestingDevice(jsonDeviceObject.ToString());
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set an invalid JWT requesting organization resource")]
+        public void ISetAnInvalidJWTRequestingOrganizationResource()
+        {
+            dynamic jsonOrganizationObject = new JObject();
+            jsonOrganizationObject.resourceType = "Organization";
+            jsonOrganizationObject.id = "1";
+            jsonOrganizationObject.invalidFhirResourceField = "ValidationTestElement";
+            _jwtHelper.setJWTRequestingOrganization(jsonOrganizationObject.ToString());
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
