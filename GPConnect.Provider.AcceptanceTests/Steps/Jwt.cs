@@ -135,6 +135,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
-        
+
+        [Given(@"I set a JWT requesting practitioner without SDS id")]
+        public void ISetAJWTRequestingPractitionerWithoutSDSId()
+        {
+            _jwtHelper.setJWTRequestingPractitioner("1", FhirSerializer.SerializeToJson(
+                new Practitioner()
+                {
+                    Id = "1",
+                    Name = new HumanName()
+                    {
+                        Prefix = new[] { "Mr" },
+                        Given = new[] { "AssuranceTest" },
+                        Family = new[] { "AssurancePractitioner" }
+                    },
+                    Identifier = {
+                        new Identifier("http://IdentifierServer/RandomId", "ABC123"),
+                    }
+                }
+                ));
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
     }
 }

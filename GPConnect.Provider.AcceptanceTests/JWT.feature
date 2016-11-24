@@ -76,3 +76,10 @@ Scenario: JWT requesting practitioner is not valid FHIR practitioner resource
 	And I set an invalid JWT requesting practitioner resource
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
+
+Scenario: JWT requesting practitioner identifier does not contain an SDS Id
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT requesting practitioner without SDS id
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure
