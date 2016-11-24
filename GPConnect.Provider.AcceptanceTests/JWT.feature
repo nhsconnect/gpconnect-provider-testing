@@ -69,3 +69,10 @@ Scenario: JWT requesting organization identifier does not contain an ODS code
 	And I set JWT requesting organization resource without ODS Code
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
+
+Scenario: JWT requesting practitioner is not valid FHIR practitioner resource
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set an invalid JWT requesting practitioner resource
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure

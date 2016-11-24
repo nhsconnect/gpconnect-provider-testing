@@ -17,6 +17,8 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         private string _jwtAuthTokenURL;
         private string _jwtDevice;
         private string _jwtOrganization;
+        private string _jwtPractitioner;
+        private string _jwtPractitionerId;
 
         private JwtHelper() {
         }
@@ -50,6 +52,22 @@ namespace GPConnect.Provider.AcceptanceTests.tools
                         }
                     }
                 );
+            var practitioner = new Practitioner
+            {
+                Id = "1",
+                Name = new HumanName()
+                {
+                    Prefix = new[] { "Mr" },
+                    Given = new[] { "AssuranceTest" },
+                    Family = new[] { "AssurancePractitioner" }
+                },
+                Identifier = {
+                    new Identifier("http://fhir.nhs.net/sds-user-id", "GCASDS0001"),
+                    new Identifier("LocalIdentifierSystem", "1")
+                }
+            };
+            _jwtPractitionerId = practitioner.Id;
+            _jwtPractitioner = FhirSerializer.SerializeToJson(practitioner);
         }
 
         public string buildEncodedHeader() {
@@ -62,21 +80,6 @@ namespace GPConnect.Provider.AcceptanceTests.tools
 
         public JwtPayload buildPayload(string nhsNumber)
         {
-            var requesting_practitioner = new Practitioner
-            {
-                Id = "1",
-                Name = new HumanName()
-                {
-                    Prefix = new[] { "[Prefix]" },
-                    Given = new[] { "[Given]" },
-                    Family = new[] { "[Family]" }
-                },
-                Identifier = {
-                    new Identifier("http://fhir.nhs.net/sds-user-id", "[SDSUserID]"),
-                    new Identifier("[UserSystem]", "[UserID]")
-                }
-            };
-
             var subject_patient = new Patient
             {
                 Identifier = {
@@ -95,14 +98,14 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             
             var claims = new List<System.Security.Claims.Claim> {
                 new System.Security.Claims.Claim("iss", requesting_system_url, ClaimValueTypes.String),
-                new System.Security.Claims.Claim("sub", requesting_practitioner.Id, ClaimValueTypes.String),
+                new System.Security.Claims.Claim("sub", _jwtPractitionerId, ClaimValueTypes.String),
                 new System.Security.Claims.Claim("aud", _jwtAuthTokenURL, ClaimValueTypes.String),
                 new System.Security.Claims.Claim("exp", EpochTime.GetIntDate(_jwtExpiryTime).ToString(), ClaimValueTypes.Integer64),
                 new System.Security.Claims.Claim("iat", EpochTime.GetIntDate(_jwtCreationTime).ToString(), ClaimValueTypes.Integer64),
                 new System.Security.Claims.Claim("reason_for_request", _jwtReasonForRequest, ClaimValueTypes.String),
                 new System.Security.Claims.Claim("requesting_device", _jwtDevice, JsonClaimValueTypes.Json),
                 new System.Security.Claims.Claim("requesting_organization", _jwtOrganization, JsonClaimValueTypes.Json),
-                new System.Security.Claims.Claim("requesting_practitioner", FhirSerializer.SerializeToJson(requesting_practitioner), JsonClaimValueTypes.Json)
+                new System.Security.Claims.Claim("requesting_practitioner", _jwtPractitioner, JsonClaimValueTypes.Json)
             };
 
             if (nhsNumber != null)
@@ -159,6 +162,12 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         public void setJWTRequestingOrganization(string organizationJson)
         {
             _jwtOrganization = organizationJson;
+        }
+
+        public void setJWTRequestingPractitioner(string practitionerId, string practitionerJson)
+        {
+            _jwtPractitionerId = practitionerId;
+            _jwtPractitioner = practitionerJson;
         }
 
     }

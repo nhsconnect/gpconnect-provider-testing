@@ -124,6 +124,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
+        [Given(@"I set an invalid JWT requesting practitioner resource")]
+        public void ISetAnInvalidJWTRequestingPractitionerResource()
+        {
+            dynamic jsonPractitionerObject = new JObject();
+            jsonPractitionerObject.resourceType = "Practitioner";
+            jsonPractitionerObject.id = "1";
+            jsonPractitionerObject.invalidFhirResourceField = "ValidationTestElement";
+            _jwtHelper.setJWTRequestingPractitioner("1", jsonPractitionerObject.ToString());
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+
         // Certificate configruation steps
 
         [Given(@"I do not want to verify the server certificate")]
