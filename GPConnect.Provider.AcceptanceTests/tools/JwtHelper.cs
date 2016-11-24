@@ -43,10 +43,10 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             _jwtOrganization = FhirSerializer.SerializeToJson(
                     new Organization()
                     {
-                        Id = "[OrganizationID]",
-                        Name = "Requesting Organisation Name",
+                        Id = "1",
+                        Name = "GP Connect Assurance",
                         Identifier = {
-                            new Identifier("http://fhir.nhs.net/Id/ods-organization-code", "[ODSCode]")
+                            new Identifier("http://fhir.nhs.net/Id/ods-organization-code", "GPCA0001")
                         }
                     }
                 );
@@ -160,5 +160,6 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         {
             _jwtOrganization = organizationJson;
         }
+
     }
 }

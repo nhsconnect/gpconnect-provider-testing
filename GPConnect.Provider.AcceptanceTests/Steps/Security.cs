@@ -107,6 +107,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
+        [Given(@"I set JWT requesting organization resource without ODS Code")]
+        public void ISetJWTRequestingOrganizaitonResourceWithoutODSCode()
+        {
+            _jwtHelper.setJWTRequestingOrganization(FhirSerializer.SerializeToJson(
+                    new Organization()
+                    {
+                        Id = "1",
+                        Name = "GP Connect Assurance",
+                        Identifier = {
+                            new Identifier("http://fhir.nhs.net/Id/someOtherCodingSystem", "NoOdsCode")
+                        }
+                    }
+                ));
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
         // Certificate configruation steps
 
         [Given(@"I do not want to verify the server certificate")]
