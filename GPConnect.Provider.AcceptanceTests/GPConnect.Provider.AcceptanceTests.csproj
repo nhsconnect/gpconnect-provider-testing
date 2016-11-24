@@ -107,6 +107,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Steps\Jwt.cs" />
     <Compile Include="Steps\Security.cs" />
     <Compile Include="Steps\Generic.cs" />
     <Compile Include="Steps\Fhir.cs" />
