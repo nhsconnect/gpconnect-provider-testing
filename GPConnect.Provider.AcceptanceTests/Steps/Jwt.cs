@@ -71,12 +71,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
-
-        public class InvalidDeviceResource : Device
-        {
-            public string invalidFieldInObject { get; set; }
-        }
-
+        
         [Given(@"I set an invalid JWT requesting device resource")]
         public void ISetAnInvalidJWTRequestingDeviceResource()
         {
@@ -104,16 +99,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set JWT requesting organization resource without ODS Code")]
         public void ISetJWTRequestingOrganizaitonResourceWithoutODSCode()
         {
-            _jwtHelper.setJWTRequestingOrganization(FhirSerializer.SerializeToJson(
-                    new Organization()
-                    {
-                        Id = "1",
-                        Name = "GP Connect Assurance",
-                        Identifier = {
-                            new Identifier("http://fhir.nhs.net/Id/someOtherCodingSystem", "NoOdsCode")
-                        }
-                    }
-                ));
+            Organization organization = _jwtHelper.getDefaultOrganization();
+            organization.Identifier.Clear();
+            organization.Identifier.Add(new Identifier("http://fhir.nhs.net/Id/someOtherCodingSystem", "NoOdsCode"));
+            _jwtHelper.setJWTRequestingOrganization(FhirSerializer.SerializeToJson(organization));
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }

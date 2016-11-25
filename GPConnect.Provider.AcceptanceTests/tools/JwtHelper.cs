@@ -32,28 +32,8 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             _jwtExpiryTime = _jwtCreationTime.AddMinutes(5);
             _jwtReasonForRequest = "directcare";
             _jwtAuthTokenURL = "https://authorize.fhir.nhs.net/token";
-            _jwtDevice = FhirSerializer.SerializeToJson(
-                    new Device()
-                    {
-                        Id = "1",
-                        Model = "v1",
-                        Version = "1.1",
-                        Identifier = {
-                            new Identifier("GPConnectTestSystem", "Client")
-                        },
-                        Type = new CodeableConcept("DeviceIdentifierSystem","DeviceIdentifier")
-                    }
-                );
-            _jwtOrganization = FhirSerializer.SerializeToJson(
-                    new Organization()
-                    {
-                        Id = "1",
-                        Name = "GP Connect Assurance",
-                        Identifier = {
-                            new Identifier("http://fhir.nhs.net/Id/ods-organization-code", "GPCA0001")
-                        }
-                    }
-                );
+            _jwtDevice = FhirSerializer.SerializeToJson(getDefaultDevice());
+            _jwtOrganization = FhirSerializer.SerializeToJson(getDefaultOrganization());
             _jwtPractitionerId = getDefaultPractitioner().Id;
             _jwtPractitioner = FhirSerializer.SerializeToJson(getDefaultPractitioner());
             _jwtRequestedScope = "organization/*.read";
@@ -84,6 +64,32 @@ namespace GPConnect.Provider.AcceptanceTests.tools
                     new Identifier("LocalIdentifierSystem", "1")
                 },
                 PractitionerRole = getPractitionerRoleComponent("http://fhir.nhs.net/ValueSet/sds-job-role-name-1", "AssuranceJobRole")
+            };
+        }
+
+        public Organization getDefaultOrganization()
+        {
+            return new Organization()
+            {
+                Id = "1",
+                Name = "GP Connect Assurance",
+                Identifier = {
+                            new Identifier("http://fhir.nhs.net/Id/ods-organization-code", "GPCA0001")
+                        }
+            };
+        }
+
+        public Device getDefaultDevice()
+        {
+            return new Device()
+            {
+                Id = "1",
+                Model = "v1",
+                Version = "1.1",
+                Identifier = {
+                            new Identifier("GPConnectTestSystem", "Client")
+                        },
+                Type = new CodeableConcept("DeviceIdentifierSystem", "DeviceIdentifier")
             };
         }
 
