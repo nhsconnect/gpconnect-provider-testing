@@ -1,8 +1,11 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using static Hl7.Fhir.Model.Practitioner;
@@ -198,5 +201,14 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             _jwtRequestedScope = requestedScope;
         }
 
+        // To create an invalid fhir resource this method is called with the default fhir resource and this 
+        // adds an additional field to the resource which should make it invalid
+        public string addInvalidFieldToResourceJson(string jsonResource) {
+            var expandoConvert = new ExpandoObjectConverter();
+            dynamic dynamicDeviceObj = JsonConvert.DeserializeObject<ExpandoObject>(jsonResource);
+            dynamicDeviceObj.invalidField = "Assurance Testing";
+            Console.WriteLine("Dynamic Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
+            return JsonConvert.SerializeObject(dynamicDeviceObj);
+        }
     }
 }

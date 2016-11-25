@@ -1,7 +1,6 @@
 ﻿using TechTalk.SpecFlow;
 using GPConnect.Provider.AcceptanceTests.tools;
 using Hl7.Fhir.Model;
-using Newtonsoft.Json.Linq;
 using Hl7.Fhir.Serialization;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
@@ -75,11 +74,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set an invalid JWT requesting device resource")]
         public void ISetAnInvalidJWTRequestingDeviceResource()
         {
-            dynamic jsonDeviceObject = new JObject();
-            jsonDeviceObject.resourceType = "Device";
-            jsonDeviceObject.id = "1";
-            jsonDeviceObject.invalidFhirResourceField = "ValidationTestElement";
-            _jwtHelper.setJWTRequestingDevice(jsonDeviceObject.ToString());
+            _jwtHelper.setJWTRequestingDevice(_jwtHelper.addInvalidFieldToResourceJson(FhirSerializer.SerializeResourceToJson(_jwtHelper.getDefaultDevice())));
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
@@ -87,11 +82,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set an invalid JWT requesting organization resource")]
         public void ISetAnInvalidJWTRequestingOrganizationResource()
         {
-            dynamic jsonOrganizationObject = new JObject();
-            jsonOrganizationObject.resourceType = "Organization";
-            jsonOrganizationObject.id = "1";
-            jsonOrganizationObject.invalidFhirResourceField = "ValidationTestElement";
-            _jwtHelper.setJWTRequestingOrganization(jsonOrganizationObject.ToString());
+            _jwtHelper.setJWTRequestingOrganization(_jwtHelper.addInvalidFieldToResourceJson(FhirSerializer.SerializeResourceToJson(_jwtHelper.getDefaultOrganization())));
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
@@ -110,11 +101,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set an invalid JWT requesting practitioner resource")]
         public void ISetAnInvalidJWTRequestingPractitionerResource()
         {
-            dynamic jsonPractitionerObject = new JObject();
-            jsonPractitionerObject.id = "1";
-            jsonPractitionerObject.resourceType = "Practitioner";
-            jsonPractitionerObject.invalidFhirResourceField = "ValidationTestElement";
-            _jwtHelper.setJWTRequestingPractitioner("1", jsonPractitionerObject.ToString());
+            _jwtHelper.setJWTRequestingPractitioner("1", _jwtHelper.addInvalidFieldToResourceJson(FhirSerializer.SerializeResourceToJson(_jwtHelper.getDefaultPractitioner())));
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
