@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using static Hl7.Fhir.Model.Practitioner;
 
 namespace GPConnect.Provider.AcceptanceTests.tools
 {
@@ -52,7 +53,22 @@ namespace GPConnect.Provider.AcceptanceTests.tools
                         }
                     }
                 );
-            var practitioner = new Practitioner
+            _jwtPractitionerId = getDefaultPractitioner().Id;
+            _jwtPractitioner = FhirSerializer.SerializeToJson(getDefaultPractitioner());
+        }
+
+        public List<PractitionerRoleComponent> getPractitionerRoleComponent(string system, string value) {
+            var practitionerRoleList = new List<PractitionerRoleComponent>();
+            PractitionerRoleComponent practitionerRole = new PractitionerRoleComponent()
+            {
+                Role = new CodeableConcept(system, value)
+            };
+            practitionerRoleList.Add(practitionerRole);
+            return practitionerRoleList;
+        }
+
+        public Practitioner getDefaultPractitioner() {
+            return new Practitioner
             {
                 Id = "1",
                 Name = new HumanName()
@@ -64,10 +80,9 @@ namespace GPConnect.Provider.AcceptanceTests.tools
                 Identifier = {
                     new Identifier("http://fhir.nhs.net/sds-user-id", "GCASDS0001"),
                     new Identifier("LocalIdentifierSystem", "1")
-                }
+                },
+                PractitionerRole = getPractitionerRoleComponent("http://fhir.nhs.net/ValueSet/sds-job-role-name-1", "AssuranceJobRole")
             };
-            _jwtPractitionerId = practitioner.Id;
-            _jwtPractitioner = FhirSerializer.SerializeToJson(practitioner);
         }
 
         public string buildEncodedHeader() {

@@ -1,11 +1,5 @@
 ﻿using TechTalk.SpecFlow;
 using GPConnect.Provider.AcceptanceTests.tools;
-using System.Net;
-using System;
-using System.Text.RegularExpressions;
-using System.Security.Cryptography.X509Certificates;
-using System.IO;
-using Shouldly;
 using Hl7.Fhir.Model;
 using Newtonsoft.Json.Linq;
 using Hl7.Fhir.Serialization;
@@ -128,8 +122,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISetAnInvalidJWTRequestingPractitionerResource()
         {
             dynamic jsonPractitionerObject = new JObject();
-            jsonPractitionerObject.resourceType = "Practitioner";
             jsonPractitionerObject.id = "1";
+            jsonPractitionerObject.resourceType = "Practitioner";
             jsonPractitionerObject.invalidFhirResourceField = "ValidationTestElement";
             _jwtHelper.setJWTRequestingPractitioner("1", jsonPractitionerObject.ToString());
             _headerController.removeHeader("Authorization");
@@ -139,21 +133,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set a JWT requesting practitioner without SDS id")]
         public void ISetAJWTRequestingPractitionerWithoutSDSId()
         {
-            _jwtHelper.setJWTRequestingPractitioner("1", FhirSerializer.SerializeToJson(
-                new Practitioner()
-                {
-                    Id = "1",
-                    Name = new HumanName()
-                    {
-                        Prefix = new[] { "Mr" },
-                        Given = new[] { "AssuranceTest" },
-                        Family = new[] { "AssurancePractitioner" }
-                    },
-                    Identifier = {
-                        new Identifier("http://IdentifierServer/RandomId", "ABC123"),
-                    }
-                }
-                ));
+            Practitioner practitioner = _jwtHelper.getDefaultPractitioner();
+            practitioner.Identifier.Clear();
+            practitioner.Identifier.Add(new Identifier("http://IdentifierServer/RandomId", "ABC123"));
+            _jwtHelper.setJWTRequestingPractitioner("1", FhirSerializer.SerializeToJson(practitioner));
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
@@ -161,38 +144,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set a JWT requesting practitioner with miss matched user id")]
         public void ISetAJWTRequestingPractitionerWithMissMatchedUserId()
         {
-            _jwtHelper.setJWTRequestingPractitioner("2", FhirSerializer.SerializeToJson(
-                new Practitioner()
-                {
-                    Id = "1",
-                    Name = new HumanName()
-                    {
-                        Prefix = new[] { "Mr" },
-                        Given = new[] { "AssuranceTest" },
-                        Family = new[] { "AssurancePractitioner" }
-                    },
-                    Identifier = {
-                        new Identifier("http://fhir.nhs.net/sds-user-id", "GCASDS0001"),
-                    }
-                }
-                ));
+            _jwtHelper.setJWTRequestingPractitioner("2", FhirSerializer.SerializeToJson(_jwtHelper.getDefaultPractitioner()));
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
-        //I set a JWT requesting practitioner with miss name element
         [Given(@"I set a JWT requesting practitioner with missing name element")]
         public void ISetAJWTRequestingPractitionerWithMissingNameElement()
         {
-            _jwtHelper.setJWTRequestingPractitioner("1", FhirSerializer.SerializeToJson(
-                new Practitioner()
-                {
-                    Id = "1",
-                    Identifier = {
-                        new Identifier("http://fhir.nhs.net/sds-user-id", "GCASDS0001"),
-                    }
-                }
-                ));
+            Practitioner practitioner = _jwtHelper.getDefaultPractitioner();
+            practitioner.Name = null;
+            _jwtHelper.setJWTRequestingPractitioner("1", FhirSerializer.SerializeToJson(practitioner));
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT requesting practitioner with missing SDS Job Role")]
+        public void ISetAJWTRequestingPractitionerWithMissingSDSJobRole()
+        {
+            Practitioner practitioner = _jwtHelper.getDefaultPractitioner();
+            practitioner.PractitionerRole = _jwtHelper.getPractitionerRoleComponent("http://invalidValueSetServer.nhs.uk", "NonSDSJobRoleName");
+            _jwtHelper.setJWTRequestingPractitioner("1", FhirSerializer.SerializeToJson(practitioner));
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
