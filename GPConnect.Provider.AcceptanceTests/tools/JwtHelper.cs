@@ -20,7 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         private string _jwtOrganization;
         private string _jwtPractitioner;
         private string _jwtPractitionerId;
-        private string _jwtRequestScope;
+        private string _jwtRequestedScope;
 
         private JwtHelper() {
         }
@@ -56,7 +56,7 @@ namespace GPConnect.Provider.AcceptanceTests.tools
                 );
             _jwtPractitionerId = getDefaultPractitioner().Id;
             _jwtPractitioner = FhirSerializer.SerializeToJson(getDefaultPractitioner());
-            _jwtRequestScope = "organization/*.read";
+            _jwtRequestedScope = "organization/*.read";
         }
 
         public List<PractitionerRoleComponent> getPractitionerRoleComponent(string system, string value) {
@@ -123,7 +123,7 @@ namespace GPConnect.Provider.AcceptanceTests.tools
                 new System.Security.Claims.Claim("requesting_device", _jwtDevice, JsonClaimValueTypes.Json),
                 new System.Security.Claims.Claim("requesting_organization", _jwtOrganization, JsonClaimValueTypes.Json),
                 new System.Security.Claims.Claim("requesting_practitioner", _jwtPractitioner, JsonClaimValueTypes.Json),
-                new System.Security.Claims.Claim("requested_scope", _jwtRequestScope, ClaimValueTypes.String),
+                new System.Security.Claims.Claim("requested_scope", _jwtRequestedScope, ClaimValueTypes.String)
             };
 
             if (nhsNumber != null)
@@ -186,6 +186,10 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         {
             _jwtPractitionerId = practitionerId;
             _jwtPractitioner = practitionerJson;
+        }
+
+        public void setJWTRequestedScope(string requestedScope) {
+            _jwtRequestedScope = requestedScope;
         }
 
     }

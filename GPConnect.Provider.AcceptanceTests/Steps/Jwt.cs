@@ -169,6 +169,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
+        [Given(@"I set the JWT requested scope to ""(.*)""")]
+        public void ISetTheJWTRequestedScopeTo(string requestedScope)
+        {
+            _jwtHelper.setJWTRequestedScope(requestedScope);
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
 
     }
 }
