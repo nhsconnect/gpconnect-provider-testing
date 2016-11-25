@@ -157,5 +157,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
+
+        [Given(@"I set a JWT requesting practitioner with miss matched user id")]
+        public void ISetAJWTRequestingPractitionerWithMissMatchedUserId()
+        {
+            _jwtHelper.setJWTRequestingPractitioner("2", FhirSerializer.SerializeToJson(
+                new Practitioner()
+                {
+                    Id = "1",
+                    Name = new HumanName()
+                    {
+                        Prefix = new[] { "Mr" },
+                        Given = new[] { "AssuranceTest" },
+                        Family = new[] { "AssurancePractitioner" }
+                    },
+                    Identifier = {
+                        new Identifier("http://fhir.nhs.net/sds-user-id", "GCASDS0001"),
+                    }
+                }
+                ));
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
     }
 }

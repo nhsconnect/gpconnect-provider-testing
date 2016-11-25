@@ -83,3 +83,10 @@ Scenario: JWT requesting practitioner identifier does not contain an SDS Id
 	And I set a JWT requesting practitioner without SDS id
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
+
+Scenario: JWT User Id does not match requesting practitioner id
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT requesting practitioner with miss matched user id
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure
