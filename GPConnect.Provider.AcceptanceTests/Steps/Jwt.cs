@@ -180,5 +180,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
+        //I set a JWT requesting practitioner with miss name element
+        [Given(@"I set a JWT requesting practitioner with missing name element")]
+        public void ISetAJWTRequestingPractitionerWithMissingNameElement()
+        {
+            _jwtHelper.setJWTRequestingPractitioner("1", FhirSerializer.SerializeToJson(
+                new Practitioner()
+                {
+                    Id = "1",
+                    Identifier = {
+                        new Identifier("http://fhir.nhs.net/sds-user-id", "GCASDS0001"),
+                    }
+                }
+                ));
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+
     }
 }

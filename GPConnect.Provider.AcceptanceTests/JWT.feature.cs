@@ -349,6 +349,28 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner name does not contain a family or given name")]
+        public virtual void JWTRequestingPractitionerNameDoesNotContainAFamilyOrGivenName()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner name does not contain a family or given name", ((string[])(null)));
+#line 94
+this.ScenarioSetup(scenarioInfo);
+#line 95
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 96
+ testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
+                    "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 97
+ testRunner.And("I set a JWT requesting practitioner with missing name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 98
+ testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 99
+ testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
