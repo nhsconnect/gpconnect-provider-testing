@@ -64,10 +64,10 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Fhir Get MetaData One")]
-        public virtual void FhirGetMetaDataOne()
+        [NUnit.Framework.DescriptionAttribute("Fhir Get MetaData")]
+        public virtual void FhirGetMetaData()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir Get MetaData One", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir Get MetaData", ((string[])(null)));
 #line 3
 this.ScenarioSetup(scenarioInfo);
 #line 4

@@ -1,6 +1,6 @@
 ﻿Feature: Fhir
 
-Scenario: Fhir Get MetaData One
+Scenario: Fhir Get MetaData
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	When I make a GET request to "/metadata"
