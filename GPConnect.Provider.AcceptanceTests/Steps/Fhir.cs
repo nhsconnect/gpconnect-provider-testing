@@ -48,14 +48,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Console.WriteLine("SpineProxyURL = " + spineProxyUrl);
             Console.WriteLine("ServerURL = " + serverUrl);
 
-            var payloadFormat = ResourceFormat.Json;
+            var preferredFormat = ResourceFormat.Json;
             if (!_headerController.getHeaderValue("Accept").Equals("application/json+fhir"))
             {
-                payloadFormat = ResourceFormat.Xml;
+                preferredFormat = ResourceFormat.Xml;
             }
             var fhirClient = new FhirClient(spineProxyUrl + serverUrl)
             {
-                PreferredFormat = payloadFormat
+                PreferredFormat = preferredFormat
             };
             fhirClient.OnBeforeRequest += (sender, args) =>
             {
