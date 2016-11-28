@@ -41,6 +41,12 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             return requestHeaders;
         }
 
+        public string getHeaderValue(string key) {
+            string returnValue = "";
+            requestHeaders.TryGetValue(key, out returnValue);
+            return returnValue;
+        }
+
         public void headerClearDown() {
             requestHeaders.Clear();
         }

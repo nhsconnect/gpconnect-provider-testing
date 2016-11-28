@@ -48,9 +48,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Console.WriteLine("SpineProxyURL = " + spineProxyUrl);
             Console.WriteLine("ServerURL = " + serverUrl);
 
+            var payloadFormat = ResourceFormat.Json;
+            if (!_headerController.getHeaderValue("Accept").Equals("application/json+fhir"))
+            {
+                payloadFormat = ResourceFormat.Xml;
+            }
             var fhirClient = new FhirClient(spineProxyUrl + serverUrl)
             {
-                PreferredFormat = ResourceFormat.Json
+                PreferredFormat = payloadFormat
             };
             fhirClient.OnBeforeRequest += (sender, args) =>
             {
@@ -99,7 +104,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheResponseBodyShouldBeFHIRJSON()
         {
             _scenarioContext.Get<string>("responseContentType").ShouldStartWith("application/json+fhir");
-            Console.Out.WriteLine("Response ContentType={0}", "application/json+fhir");
+            Console.Out.WriteLine("Response ContentType={0}", _scenarioContext.Get<string>("responseContentType"));
+            _scenarioContext.Set(JObject.Parse(_scenarioContext.Get<string>("responseBody")), "responseJSON");
+        }
+
+        [Then(@"the response body should be FHIR XML")]
+        public void ThenTheResponseBodyShouldBeFHIRXML()
+        {
+            _scenarioContext.Get<string>("responseContentType").ShouldStartWith("application/xml+fhir");
+            Console.Out.WriteLine("Response ContentType={0}", _scenarioContext.Get<string>("responseContentType"));
             _scenarioContext.Set(JObject.Parse(_scenarioContext.Get<string>("responseBody")), "responseJSON");
         }
 
