@@ -178,6 +178,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenPatientResource(nhsNumber));
         }
 
+        [Given(@"I do not send header ""(.*)""")]
+        public void GivenIDoNotSendHeader(string headerKey)
+        {
+            _headerController.removeHeader(headerKey);
+        }
+
 
         // Generic Request Steps
 
