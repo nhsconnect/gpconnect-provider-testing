@@ -70,6 +70,13 @@ Scenario: JWT requesting organization identifier does not contain an ODS code
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 
+Scenario: JWT requesting organization does not contain and identifier
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set JWT requesting organization resource without identifier
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure
+
 Scenario: JWT requesting practitioner is not valid FHIR practitioner resource
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -81,6 +88,13 @@ Scenario: JWT requesting practitioner identifier does not contain an SDS Id
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	And I set a JWT requesting practitioner without SDS id
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure
+
+Scenario: JWT requesting practitioner does not contain identifier
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT requesting practitioner without identifier
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 

@@ -98,6 +98,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
+        [Given(@"I set JWT requesting organization resource without identifier")]
+        public void ISetJWTRequestingOrganizaitonResourceWithoutIdentifier()
+        {
+            Organization organization = _jwtHelper.getDefaultOrganization();
+            organization.Identifier.Clear();
+            _jwtHelper.setJWTRequestingOrganization(FhirSerializer.SerializeToJson(organization));
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
         [Given(@"I set an invalid JWT requesting practitioner resource")]
         public void ISetAnInvalidJWTRequestingPractitionerResource()
         {
@@ -112,6 +122,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Practitioner practitioner = _jwtHelper.getDefaultPractitioner();
             practitioner.Identifier.Clear();
             practitioner.Identifier.Add(new Identifier("http://IdentifierServer/RandomId", "ABC123"));
+            _jwtHelper.setJWTRequestingPractitioner("1", FhirSerializer.SerializeToJson(practitioner));
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT requesting practitioner without identifier")]
+        public void ISetAJWTRequestingPractitionerWithoutIdentifier()
+        {
+            Practitioner practitioner = _jwtHelper.getDefaultPractitioner();
+            practitioner.Identifier.Clear();
             _jwtHelper.setJWTRequestingPractitioner("1", FhirSerializer.SerializeToJson(practitioner));
             _headerController.removeHeader("Authorization");
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
