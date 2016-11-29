@@ -9,6 +9,7 @@ using Shouldly;
 using Hl7.Fhir.Model;
 using Newtonsoft.Json.Linq;
 using Hl7.Fhir.Serialization;
+using System.Configuration;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -52,10 +53,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _scenarioContext.Set(thumbPrint, "clientCertThumbPrint");
             _scenarioContext.Set(true, "sendClientCert");
-            Console.WriteLine("client certificate thumb print");
             Given(@"I configure server certificate and ssl");
         }
 
+        [Given(@"I am using an invalid client certificate")]
+        public void IAmUsingAnInvalidClientCertificate()
+        {
+            _scenarioContext.Set(ConfigurationManager.AppSettings["clientInvalidCertThumbPrint"], "clientCertThumbPrint");
+            _scenarioContext.Set(true, "sendClientCert");
+            Given(@"I configure server certificate and ssl");
+        }
+        
+        [Given(@"I am using an expired client certificate")]
+        public void IAmUsingAnExpiredClientCertificate()
+        {
+            _scenarioContext.Set(ConfigurationManager.AppSettings["clientExpiredCertThumbPrint"], "clientCertThumbPrint");
+            _scenarioContext.Set(true, "sendClientCert");
+            Given(@"I configure server certificate and ssl");
+        }
+        
         [Given(@"I am using TLS Connection")]
         public void IAmUsingTLSConnection()
         {
