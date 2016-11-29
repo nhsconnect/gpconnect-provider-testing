@@ -54,11 +54,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _scenarioContext.Set(true, "sendClientCert");
             _scenarioContext.Set(true, "validateServerCert");
 
+            GivenIAmAccreditedSystem(ConfigurationManager.AppSettings["testSuitASID"]);
+            GivenIConnectingToAccreditedSystem(ConfigurationManager.AppSettings["providerSystemASID"]);
+
             Given(@"I configure server certificate and ssl");
             And(@"I am using ""application/json+fhir"" to communicate with the server");
-            And(@"I set base URL to ""/fhir""");
-            And(@"I am accredited system ""200000000359""");
-            And(@"I am connecting to accredited system ""200000000360""");
             And(@"I am generating a random message trace identifier");
             And(@"I am generating an organization JWT header");
         }
