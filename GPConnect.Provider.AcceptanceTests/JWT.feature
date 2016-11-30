@@ -118,3 +118,73 @@ Scenario: JWT requesting practitioner practitionerRole does not contain a SDS Jo
 	And I set a JWT requesting practitioner with missing SDS Job Role
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
+
+Scenario: JWT missing sub claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without sub claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
+Scenario: JWT missing aud claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without aud claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
+Scenario: JWT missing exp claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without exp claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
+Scenario: JWT missing iat claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without iat claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
+Scenario: JWT missing reason for request claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without reason for request claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
+Scenario: JWT missing requested record claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without requested record claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
+Scenario: JWT missing requested scope claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without requested scope claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
+Scenario: JWT missing requesting device claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without requesting device claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
+Scenario: JWT missing requesting organization claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without requesting organization claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
+Scenario: JWT missing requesting practitioner claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without requesting practitioner claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"

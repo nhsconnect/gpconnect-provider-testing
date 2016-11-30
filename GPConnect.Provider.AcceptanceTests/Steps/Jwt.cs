@@ -173,5 +173,93 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
+        [Given(@"I set a JWT without iis claim")]
+        public void ISetAJWTWithoutIISClaim()
+        {
+            _jwtHelper.removeJWTRequestingSystemUrl();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT without sub claim")]
+        public void ISetAJWTWithoutSubClaim()
+        {
+            _jwtHelper.removeJWTRequestingPractitionerId();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT without aud claim")]
+        public void ISetAJWTWithoutAudClaim()
+        {
+            _jwtHelper.removeJWTTokenURL();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT without exp claim")]
+        public void ISetAJWTWithoutExpClaim()
+        {
+            _jwtHelper.removeJWTExpiryTime();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT without iat claim")]
+        public void ISetAJWTWithoutIatClaim()
+        {
+            _jwtHelper.removeJWTCreationTime();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT without reason for request claim")]
+        public void ISetAJWTWithoutReasonForRequestClaim()
+        {
+            _jwtHelper.removeJWTReasonForRequest();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT without requested record claim")]
+        public void ISetAJWTWithoutRequestedRecordClaim()
+        {
+            _jwtHelper.removeJWTRequestedRecord();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT without requested scope claim")]
+        public void ISetAJWTWithoutRequestedScopeClaim()
+        {
+            _jwtHelper.removeJWTRequestedScope();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT without requesting device claim")]
+        public void ISetAJWTWithoutRequestingDeviceClaim()
+        {
+            _jwtHelper.removeJWTRequestingDevice();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT without requesting organization claim")]
+        public void ISetAJWTWithoutRequestingOrganizationClaim()
+        {
+            _jwtHelper.removeJWTRequestingOrganization();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I set a JWT without requesting practitioner claim")]
+        public void ISetAJWTWithoutRequestingPractitionerClaim()
+        {
+            _jwtHelper.removeJWTRequestingPractitioner();
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
     }
 }
