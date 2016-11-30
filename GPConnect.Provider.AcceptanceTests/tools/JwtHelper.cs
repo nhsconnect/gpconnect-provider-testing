@@ -220,9 +220,19 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             _jwtDevice = deviceJson;
         }
 
+        public string getJWTRequestingDevice()
+        {
+            return _jwtDevice;
+        }
+
         public void removeJWTRequestingDevice()
         {
             _jwtDevice = null;
+        }
+
+        public string getJWTRequestingOrganization()
+        {
+            return _jwtOrganization;
         }
 
         public void setJWTRequestingOrganization(string organizationJson)
@@ -235,6 +245,11 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             _jwtOrganization = null;
         }
 
+        public string getJWTRequestingPractitioner()
+        {
+            return _jwtPractitioner;
+        }
+
         public void setJWTRequestingPractitioner(string practitionerId, string practitionerJson)
         {
             _jwtPractitionerId = practitionerId;
@@ -244,6 +259,11 @@ namespace GPConnect.Provider.AcceptanceTests.tools
         public void removeJWTRequestingPractitioner()
         {
             _jwtPractitioner = null;
+        }
+
+        public string getJWTRequestingPractitionerId()
+        {
+            return _jwtPractitionerId;
         }
 
         public void removeJWTRequestingPractitionerId()
@@ -277,5 +297,16 @@ namespace GPConnect.Provider.AcceptanceTests.tools
             Console.WriteLine("Dynamic Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
             return JsonConvert.SerializeObject(dynamicDeviceObj);
         }
+
+        public string changeResourceTypeString(string jsonResource, string newResourceType)
+        {
+            Console.WriteLine("Incomming JSon Object = " + jsonResource);
+            var expandoConvert = new ExpandoObjectConverter();
+            dynamic dynamicDeviceObj = JsonConvert.DeserializeObject<ExpandoObject>(jsonResource);
+            dynamicDeviceObj.resourceType = newResourceType;
+            Console.WriteLine("COnverted Type Json Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
+            return JsonConvert.SerializeObject(dynamicDeviceObj);
+        }
+
     }
 }

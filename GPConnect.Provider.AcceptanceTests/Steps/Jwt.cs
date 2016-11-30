@@ -261,5 +261,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
+        [Given(@"I change the JWT requesting device resource type to InvalidResourceType")]
+        public void IChangeTheJWTRequestingDeviceResourceTypeToInvalidResourceType()
+        {
+            _jwtHelper.setJWTRequestingDevice(_jwtHelper.changeResourceTypeString(_jwtHelper.getJWTRequestingDevice(), "InvalidResourceType")) ;
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I change the JWT requesting organization resource type to InvalidResourceType")]
+        public void IChangeTheJWTRequestingOrganizationResourceTypeToInvalidResourceType()
+        {
+            _jwtHelper.setJWTRequestingOrganization(_jwtHelper.changeResourceTypeString(_jwtHelper.getJWTRequestingOrganization(), "InvalidResourceType"));
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
+        [Given(@"I change the JWT requesting practitioner resource type to InvalidResourceType")]
+        public void IChangeTheJWTRequestingPractitionerResourceTypeToInvalidResourceType()
+        {
+            _jwtHelper.setJWTRequestingPractitioner(_jwtHelper.getJWTRequestingPractitionerId(), _jwtHelper.changeResourceTypeString(_jwtHelper.getJWTRequestingPractitioner(), "InvalidResourceType"));
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
     }
 }
