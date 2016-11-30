@@ -36,6 +36,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             parameters.Add("nhsNumber", new Identifier("http://fhir.nhs.net/Id/nhs-number", nhsNumber));
             parameters.Add("recordSection", new CodeableConcept("http://fhir.nhs.net/ValueSet/gpconnect-record-section-1-0", recordSectionCode));
             _scenarioContext.Set(parameters, "fhirRequestParameters");
+
+            Given(@"I set the JWT requested scope to ""patient/*.read""");
+
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]

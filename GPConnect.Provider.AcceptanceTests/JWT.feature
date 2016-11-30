@@ -209,3 +209,11 @@ Scenario: JWT requesting practitioner invalid resourceType
 	And I change the JWT requesting practitioner resource type to InvalidResourceType
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
+
+Scenario: JWT requested record patient does not match getCareRecord Payload patient
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+	And I author a request for the "SUM" care record section for patient with NHS Number "900 000 0033"
+	And I set the JWT requested record patient NHS number to "900 000 0009"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"

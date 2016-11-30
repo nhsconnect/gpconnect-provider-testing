@@ -285,5 +285,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
         }
 
+        [Given(@"I set the JWT requested record patient NHS number to ""(.*)""")]
+        public void ISetTheJWTRequestedRecordPatientNHSNumberTo(string nhsNumber)
+        {
+            _jwtHelper.buildBearerTokenPatientResource(nhsNumber);
+            _headerController.removeHeader("Authorization");
+            _headerController.addHeader("Authorization", "Bearer " + _jwtHelper.buildBearerTokenOrgResource());
+        }
+
     }
 }
