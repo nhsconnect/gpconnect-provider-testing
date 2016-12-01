@@ -213,7 +213,15 @@ Scenario: JWT requesting practitioner invalid resourceType
 Scenario: JWT requested record patient does not match getCareRecord Payload patient
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-	And I author a request for the "SUM" care record section for patient with NHS Number "900 000 0033"
-	And I set the JWT requested record patient NHS number to "900 000 0009"
+	And I author a request for the "SUM" care record section for patient with NHS Number "9000000033"
+	And I set the JWT requested record patient NHS number to "9000000009"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+
+Scenario: JWT requested scope for getCareRecord does not match type of request
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+	And I author a request for the "SUM" care record section for patient with NHS Number "9000000033"
+	And I set the JWT requested scope to "organization/.write"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"

@@ -38,7 +38,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _scenarioContext.Set(parameters, "fhirRequestParameters");
 
             Given(@"I set the JWT requested scope to ""patient/*.read""");
-
+            And(@"I set the JWT requested record patient NHS number to """ + nhsNumber + "\"");
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]

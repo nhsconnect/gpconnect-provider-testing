@@ -101,7 +101,7 @@ this.ScenarioSetup(scenarioInfo);
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
   testRunner.And("I author a request for the \"SUM\" care record section for patient with NHS Number " +
-                    "\"900 000 0033\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\"9000000033\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
@@ -130,7 +130,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am using \"application/json+fhir\" to communicate with the server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
   testRunner.And("I author a request for the \"SUM\" care record section for patient with NHS Number " +
-                    "\"900 000 0033\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\"9000000033\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 26
@@ -157,7 +157,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am using \"application/xml+fhir\" to communicate with the server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
   testRunner.And("I author a request for the \"SUM\" care record section for patient with NHS Number " +
-                    "\"900 000 0033\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\"9000000033\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 35
