@@ -222,6 +222,21 @@ Scenario: JWT requested scope for getCareRecord does not match type of request
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 	And I author a request for the "SUM" care record section for patient with NHS Number "9000000033"
-	And I set the JWT requested scope to "organization/.write"
+	And I set the JWT requested scope to "organization/*.write"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+
+Scenario: JWT requested scope is invalid type
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+	And I author a request for the "ENC" care record section for patient with NHS Number "9000000033"
+	And I set the JWT requested scope to "encounter/*.read"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+
+Scenario: JWT requested scope for metaData request does not match organization read
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set the JWT requested scope to "patient/*.read"
+	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
