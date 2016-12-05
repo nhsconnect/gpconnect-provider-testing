@@ -94,11 +94,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             };
             _scenarioContext.Set(fhirClient, "fhirClient");
 
-            var fhirResource = fhirClient.TypeOperation<Patient>(operation, _scenarioContext.Get<Parameters>("fhirRequestParameters"));
-            _scenarioContext.Set(fhirResource, "fhirResource");
-            var fhirResponse = FhirSerializer.SerializeResourceToJson(fhirResource);
-            _scenarioContext.Set(fhirResponse, "responseBody");
-            Console.Out.WriteLine("Response Content={0}", fhirResponse);
+            try
+            {
+                var fhirResource = fhirClient.TypeOperation<Patient>(operation, _scenarioContext.Get<Parameters>("fhirRequestParameters"));
+                _scenarioContext.Set(fhirResource, "fhirResource");
+                var fhirResponse = FhirSerializer.SerializeResourceToJson(fhirResource);
+                _scenarioContext.Set(fhirResponse, "responseBody");
+                Console.Out.WriteLine("Response Content={0}", fhirResponse);
+            }
+            catch (Exception e) {
+                Console.WriteLine("Operation Error = " + e.StackTrace);
+            }
         }
 
         // Response Validation Steps

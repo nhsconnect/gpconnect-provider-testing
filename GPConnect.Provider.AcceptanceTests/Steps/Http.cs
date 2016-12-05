@@ -290,7 +290,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response status code should indicate failure")]
         public void ThenTheResponseStatusCodeShouldIndicateFailure()
         {
-            Console.Out.WriteLine("Response HttpStatusCode should not be '{0}' but was '{1}'", HttpStatusCode.OK, _scenarioContext.Get<HttpStatusCode>("responseStatusCode"));
+            Console.Out.WriteLine("Response HttpStatusCode should not be '{0}' and was '{1}'", HttpStatusCode.OK, _scenarioContext.Get<HttpStatusCode>("responseStatusCode"));
             _scenarioContext.Get<HttpStatusCode>("responseStatusCode").ShouldNotBe(HttpStatusCode.OK);
         }
 

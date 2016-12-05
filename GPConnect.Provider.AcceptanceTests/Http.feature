@@ -46,3 +46,16 @@ Scenario: Http OPTIONS to valid endpoint
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	When I make a OPTIONS request to "/metadata"
 	Then the response status code should indicate failure
+
+Scenario: Http incorrect case on url fhir resource
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a OPTIONS request to "/Metadata"
+	Then the response status code should indicate failure
+
+Scenario: Http operation incorrect case
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+	And I author a request for the "SUM" care record section for patient with NHS Number "9000000033"
+	When I request the FHIR "gpc.getCareRecord" Patient Type operation
+	Then the response status code should indicate failure
