@@ -190,6 +190,41 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I make a GET request to ""(.*)""")]
         public void WhenIMakeAGETRequestTo(string relativeUrl)
         {
+            restRequest(Method.GET, relativeUrl);
+        }
+
+        [When(@"I make a POST request to ""(.*)""")]
+        public void WhenIMakeAPOSTRequestTo(string relativeUrl)
+        {
+            restRequest(Method.POST, relativeUrl);
+        }
+
+        [When(@"I make a PUT request to ""(.*)""")]
+        public void WhenIMakeAPUTRequestTo(string relativeUrl)
+        {
+            restRequest(Method.PUT, relativeUrl);
+        }
+
+        [When(@"I make a PATCH request to ""(.*)""")]
+        public void WhenIMakeAPATCHRequestTo(string relativeUrl)
+        {
+            restRequest(Method.PATCH, relativeUrl);
+        }
+
+        [When(@"I make a DELETE request to ""(.*)""")]
+        public void WhenIMakeADELETERequestTo(string relativeUrl)
+        {
+            restRequest(Method.DELETE, relativeUrl);
+        }
+
+        [When(@"I make a OPTIONS request to ""(.*)""")]
+        public void WhenIMakeAOPTIONSRequestTo(string relativeUrl)
+        {
+            restRequest(Method.OPTIONS, relativeUrl);
+        }
+
+        public void restRequest(Method method, string relativeUrl)
+        {
             // Build The Request
 
             string httpProtocol = _scenarioContext.Get<bool>("useTLS") ? "https://" : "http://";
@@ -202,7 +237,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var restClient = new RestClient(spineProxyUrl + serverUrl);
 
             Console.Out.WriteLine("GET relative Fhir URL = {0}", relativeUrl);
-            var restRequest = new RestRequest(relativeUrl, Method.GET);
+            var restRequest = new RestRequest(relativeUrl, method);
 
             if (_scenarioContext.Get<bool>("sendClientCert")) {
                 try
@@ -240,6 +275,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _scenarioContext.Set(restResponse.Content, "responseBody");
             Console.Out.WriteLine("Response Content={0}", restResponse.Content);
         }
+
 
 
         // Response Validation Steps
