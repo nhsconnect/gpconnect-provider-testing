@@ -14,8 +14,8 @@ Scenario: Conformance profile indicates acceptance of xml and json format
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON array "format" should contain "application/xml+fhir"
-		And the JSON array "format" should contain "application/json+fhir"
+		And the JSON array "format" should contain "application/xml+fhir" or "xml"
+		And the JSON array "format" should contain "application/json+fhir" or "json"
 
 Scenario: Fhir Retrieve the care record for a patient
 	Given I am using the default server

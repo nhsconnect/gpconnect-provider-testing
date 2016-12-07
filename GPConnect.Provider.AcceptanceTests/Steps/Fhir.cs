@@ -134,7 +134,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             json[key].ShouldBe(value);
         }
 
-        [Then(@"the JSON array ""(.*)"" should contain ""(.*)""")]
+        [Then(@"the JSON array ""([^""]*)"" should contain ""([^""]*)""")]
         public void ThenTheJSONArrayShouldContain(string key, string value)
         {
             var json = _scenarioContext.Get<JObject>("responseJSON");
@@ -142,6 +142,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var passed = false;
             foreach (var entry in json[key]) {
                 if (String.Equals(entry.Value<string>(), value)) {
+                    passed = true;
+                    break;
+                }
+            }
+            passed.ShouldBeTrue();
+        }
+
+        [Then(@"the JSON array ""([^""]*)"" should contain ""([^""]*)"" or ""([^""]*)""")]
+        public void ThenTheJSONArrayShouldContain(string key, string value1, string value2)
+        {
+            var json = _scenarioContext.Get<JObject>("responseJSON");
+            Console.WriteLine("Array " + json[key] + "should contain " + value1 + " or " + value2);
+            var passed = false;
+            foreach (var entry in json[key])
+            {
+                if (String.Equals(entry.Value<string>(), value1) || String.Equals(entry.Value<string>(), value2))
+                {
                     passed = true;
                     break;
                 }
