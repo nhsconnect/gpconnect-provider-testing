@@ -8,6 +8,15 @@ Scenario: Fhir Get MetaData
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "Conformance"
 
+Scenario: Conformance profile indicates acceptance of xml and json format
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON array "format" should contain "application/xml+fhir"
+		And the JSON array "format" should contain "application/json+fhir"
+
 Scenario: Fhir Retrieve the care record for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction

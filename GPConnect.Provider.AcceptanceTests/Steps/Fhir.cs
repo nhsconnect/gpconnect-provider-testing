@@ -9,6 +9,7 @@ using Hl7.Fhir.Serialization;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Net;
+using NUnit.Framework;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -131,6 +132,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var json = _scenarioContext.Get<JObject>("responseJSON");
             Console.Out.WriteLine("Json Key={0} Value={1} Expect={2}", key, json[key], value);
             json[key].ShouldBe(value);
+        }
+
+        [Then(@"the JSON array ""(.*)"" should contain ""(.*)""")]
+        public void ThenTheJSONArrayShouldContain(string key, string value)
+        {
+            var json = _scenarioContext.Get<JObject>("responseJSON");
+            Console.WriteLine("Array " + json[key] + "should contain " + value);
+            var passed = false;
+            foreach (var entry in json[key]) {
+                if (String.Equals(entry.Value<string>(), value)) {
+                    passed = true;
+                    break;
+                }
+            }
+            passed.ShouldBeTrue();
         }
 
     }
