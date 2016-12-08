@@ -12,6 +12,7 @@ using Hl7.Fhir.Serialization;
 using Newtonsoft.Json.Linq;
 using Shouldly;
 using TechTalk.SpecFlow;
+using static System.String;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
@@ -146,6 +147,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Console.WriteLine("Json Key={0} Value={1} Expect={2}", key, ResponseJSON[key], value);
             ResponseJSON[key].ShouldBe(value);
+        }
+
+        [Then(@"the JSON array ""([^""]*)"" should contain ""([^""]*)""")]
+        public void ThenTheJSONArrayShouldContain(string key, string value)
+        {
+            var json = _scenarioContext.Get<JObject>("responseJSON");
+            Console.WriteLine("Array " + json[key] + "should contain " + value);
+            var passed = json[key].Any(entry => string.Equals(entry.Value<string>(), value));
+            passed.ShouldBeTrue();
+        }
+
+        [Then(@"the JSON array ""([^""]*)"" should contain ""([^""]*)"" or ""([^""]*)""")]
+        public void ThenTheJSONArrayShouldContain(string key, string value1, string value2)
+        {
+            var json = _scenarioContext.Get<JObject>("responseJSON");
+            Console.WriteLine("Array " + json[key] + "should contain " + value1 + " or " + value2);
+            var passed = json[key].Any(entry => string.Equals(entry.Value<string>(), value1) || string.Equals(entry.Value<string>(), value2));
+            passed.ShouldBeTrue();
         }
 
     }
