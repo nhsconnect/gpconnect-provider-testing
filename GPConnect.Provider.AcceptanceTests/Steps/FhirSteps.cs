@@ -162,5 +162,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             passed.ShouldBeTrue();
         }
 
+        [Then(@"the JSON element ""(.*)"" should be present")]
+        public void ThenTheJSONElementShouldBePresent(string jsonPath)
+        {
+            Console.WriteLine("Json KeyPath={0} should be present", jsonPath);
+            ResponseJSON.SelectToken(jsonPath).ShouldNotBeNull();
+        }
+
     }
 }
