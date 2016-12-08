@@ -8,6 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Helpers;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using Shouldly;
@@ -113,7 +114,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         public HttpSteps(ScenarioContext scenarioContext, SecuritySteps securitySteps, HttpHeaderHelper headerHelper, JwtHelper jwtHelper)
         {
-            Console.WriteLine("HttpSteps() Constructor");
+            Log.WriteLine("HttpSteps() Constructor");
             _scenarioContext = scenarioContext;
             _securitySteps = securitySteps;
             Headers = headerHelper;
@@ -126,14 +127,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheResponseStatusCodeShouldIndicateAuthenticationFailure()
         {
             ResponseStatusCode.ShouldBe(HttpStatusCode.Forbidden);
-            Console.WriteLine("Response HttpStatusCode={0}", ResponseStatusCode);
+            Log.WriteLine("Response HttpStatusCode={0}", ResponseStatusCode);
         }
 
         [Then(@"the response status code should be ""(.*)""")]
         public void ThenTheResponseStatusCodeShouldBe(string statusCode)
         {
             ResponseStatusCode.ToString().ShouldBe(statusCode);
-            Console.WriteLine("Response HttpStatusCode should be {0} but was {1}", statusCode, ResponseStatusCode);
+            Log.WriteLine("Response HttpStatusCode should be {0} but was {1}", statusCode, ResponseStatusCode);
         }
 
         // Provider Configuration Steps
@@ -300,7 +301,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private void RestRequest(Method method, string relativeUrl)
         {
-            Console.WriteLine("{0} relative Fhir URL = {1}", method, relativeUrl);
+            Log.WriteLine("{0} relative Fhir URL = {1}", method, relativeUrl);
 
             // Build The Rest Request
             var restClient = new RestClient(EndpointHelper.GetProviderURL(_scenarioContext));
@@ -327,29 +328,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
                 catch (KeyNotFoundException)
                 {
-                    Console.WriteLine("No client certificate found in scenario context");
+                    Log.WriteLine("No client certificate found in scenario context");
                 }
             }
 
             // Add The Headers
             foreach (var header in Headers.GetRequestHeaders())
             {
-                Console.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
+                Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
                 restRequest.AddHeader(header.Key, header.Value);
             }
 
             // Execute The Request
             var restResponse = restClient.Execute(restRequest);
-            Console.WriteLine("Error Message = " + restResponse.ErrorMessage);
-            Console.WriteLine("Error Exception = " + restResponse.ErrorException);
+            Log.WriteLine("Error Message = " + restResponse.ErrorMessage);
+            Log.WriteLine("Error Exception = " + restResponse.ErrorException);
 
             // Pull Apart The Response
             _scenarioContext.Set(restResponse.StatusCode, Context.ResponseStatusCode);
-            Console.WriteLine("Response StatusCode={0}", restResponse.StatusCode);
+            Log.WriteLine("Response StatusCode={0}", restResponse.StatusCode);
             _scenarioContext.Set(restResponse.ContentType, Context.ResponseContentType);
-            Console.WriteLine("Response ContentType={0}", restResponse.ContentType);
+            Log.WriteLine("Response ContentType={0}", restResponse.ContentType);
             _scenarioContext.Set(restResponse.Content, Context.ResponseBody);
-            Console.WriteLine("Response Body={0}", restResponse.Content);
+            Log.WriteLine("Response Body={0}", restResponse.Content);
 
             // TODO Parse The XML or JSON For Easier Processing
         }
@@ -360,21 +361,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheResponseStatusCodeShouldIndicateSuccess()
         {
             ResponseStatusCode.ShouldBe(HttpStatusCode.OK);
-            Console.WriteLine("Response HttpStatusCode={0}", ResponseStatusCode);
+            Log.WriteLine("Response HttpStatusCode={0}", ResponseStatusCode);
         }
 
         [Then(@"the response status code should indicate failure")]
         public void ThenTheResponseStatusCodeShouldIndicateFailure()
         {
             ResponseStatusCode.ShouldNotBe(HttpStatusCode.OK);
-            Console.WriteLine("Response HttpStatusCode should not be '{0}' and was '{1}'", HttpStatusCode.OK, ResponseStatusCode);
+            Log.WriteLine("Response HttpStatusCode should not be '{0}' and was '{1}'", HttpStatusCode.OK, ResponseStatusCode);
         }
 
         [Then(@"the response body should be JSON")]
         public void ThenTheResponseBodyShouldBeJSON()
         {
             ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.Json);
-            Console.WriteLine("Response ContentType={0}", ResponseContentType);
+            Log.WriteLine("Response ContentType={0}", ResponseContentType);
             _scenarioContext.Set(JObject.Parse(ResponseBody), Context.ResponseJSON);
         }
 
@@ -382,7 +383,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheResponseBodyShouldBeXML()
         {
             ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.Xml);
-            Console.WriteLine("Response ContentType={0}", ResponseContentType);
+            Log.WriteLine("Response ContentType={0}", ResponseContentType);
             _scenarioContext.Set(XDocument.Parse(ResponseBody), Context.ResponseXML);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using Newtonsoft.Json;
 
@@ -95,16 +96,16 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         {
             dynamic dynamicDeviceObj = JsonConvert.DeserializeObject<ExpandoObject>(jsonResource);
             dynamicDeviceObj.invalidField = "Assurance Testing";
-            Console.WriteLine("Dynamic Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
+            Log.WriteLine("Dynamic Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
             return JsonConvert.SerializeObject(dynamicDeviceObj);
         }
 
         public static string ChangeResourceTypeString(string jsonResource, string newResourceType)
         {
-            Console.WriteLine("Incomming Json Object = " + jsonResource);
+            Log.WriteLine("Incomming Json Object = " + jsonResource);
             dynamic dynamicDeviceObj = JsonConvert.DeserializeObject<ExpandoObject>(jsonResource);
             dynamicDeviceObj.resourceType = newResourceType;
-            Console.WriteLine("Converted Type Json Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
+            Log.WriteLine("Converted Type Json Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
             return JsonConvert.SerializeObject(dynamicDeviceObj);
         }
     }

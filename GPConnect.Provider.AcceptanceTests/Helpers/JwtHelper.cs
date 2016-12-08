@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Extensions;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using Microsoft.IdentityModel.Tokens;
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -30,7 +31,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         private JwtHelper()
         {
-            Console.WriteLine("JwtHelper() Constructor");
+            Log.WriteLine("JwtHelper() Constructor");
             SetDefaultValues();
         }
 

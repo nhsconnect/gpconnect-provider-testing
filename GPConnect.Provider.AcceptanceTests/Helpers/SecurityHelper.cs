@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using GPConnect.Provider.AcceptanceTests.Logger;
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
@@ -18,7 +19,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 {
                     throw new FileNotFoundException(string.Format("Cert with thumbprint: '{0}' not found in local machine cert store.", clientCertThumbPrint));
                 }
-                Console.WriteLine("Client Certificate Found = " + signingCert[0]);
+                Log.WriteLine("Client Certificate Found = " + signingCert[0]);
                 return signingCert[0];
             }
             finally
@@ -44,25 +45,25 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                     {
                         store.Close();
                     }
-                    Console.WriteLine(returnValue);
+                    Log.WriteLine(returnValue.ToString());
                     return returnValue;
                 };
             ServicePointManager.MaxServicePointIdleTime = 0;
-            Console.WriteLine("Setup The Server Certificate Callback To Validate The Server Certificate.");
+            Log.WriteLine("Setup The Server Certificate Callback To Validate The Server Certificate.");
         }
 
         public static void ForceServerCertificateToValidate()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.MaxServicePointIdleTime = 0;
-            Console.WriteLine("Force The Server Certificate Callback To Always Be True.");
+            Log.WriteLine("Force The Server Certificate Callback To Always Be True.");
         }
 
         public static void DoNotValidateServerCertificate()
         {
             ServicePointManager.ServerCertificateValidationCallback = null;
             ServicePointManager.MaxServicePointIdleTime = 0;
-            Console.WriteLine("Reset The Server Certificate Callback.");
+            Log.WriteLine("Reset The Server Certificate Callback.");
         }
     }
 }

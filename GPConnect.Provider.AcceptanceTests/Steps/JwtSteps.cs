@@ -2,6 +2,7 @@
 using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Extensions;
 using GPConnect.Provider.AcceptanceTests.Helpers;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using TechTalk.SpecFlow;
 
@@ -18,7 +19,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper)
         {
-            Console.WriteLine("JwtSteps() Constructor");
+            Log.WriteLine("JwtSteps() Constructor");
             _headerController = headerHelper;
             _jwtHelper = jwtHelper;
         }

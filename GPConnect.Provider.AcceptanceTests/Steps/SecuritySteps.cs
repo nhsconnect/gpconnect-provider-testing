@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using GPConnect.Provider.AcceptanceTests.Helpers;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using Shouldly;
 using TechTalk.SpecFlow;
 
@@ -46,7 +47,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         public SecuritySteps(ScenarioContext scenarioContext)
         {
-            Console.WriteLine("SecuritySteps() Constructor");
+            Log.WriteLine("SecuritySteps() Constructor");
             _scenarioContext = scenarioContext;
         }
 

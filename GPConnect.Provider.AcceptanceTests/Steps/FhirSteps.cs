@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Extensions;
 using GPConnect.Provider.AcceptanceTests.Helpers;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Newtonsoft.Json.Linq;
@@ -41,7 +42,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         public FhirSteps(ScenarioContext scenarioContext, SecuritySteps securitySteps, HttpSteps httpSteps)
         {
-            Console.WriteLine("FhirSteps() Constructor");
+            Log.WriteLine("FhirSteps() Constructor");
             _scenarioContext = scenarioContext;
             _httpSteps = httpSteps;
             _securitySteps = securitySteps;
@@ -78,7 +79,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // On Before Request
             fhirClient.OnBeforeRequest += (sender, args) =>
             {
-                Console.WriteLine("*** OnBeforeRequest ***");
+                Log.WriteLine("*** OnBeforeRequest ***");
                 var client = (FhirClient)sender;
                 // Setup The Web Proxy
                 if (_httpSteps.UseWebProxy)
@@ -89,25 +90,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 foreach (var header in _httpSteps.Headers.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.Accept))
                 {
                     args.RawRequest.Headers.Add(header.Key, header.Value);
-                    Console.WriteLine("Added Header Key='{0}' Value='{1}'", header.Key, header.Value);
+                    Log.WriteLine("Added Header Key='{0}' Value='{1}'", header.Key, header.Value);
                 }
                 // Add The Client Certificate
                 if (_securitySteps.SendClientCert)
                 {
                     args.RawRequest.ClientCertificates.Add(_securitySteps.ClientCert);
-                    Console.WriteLine("Added ClientCertificate Thumbprint='{0}'", _securitySteps.ClientCertThumbPrint);
+                    Log.WriteLine("Added ClientCertificate Thumbprint='{0}'", _securitySteps.ClientCertThumbPrint);
                 }
             };
 
             // On After Request
             fhirClient.OnAfterResponse += (sender, args) =>
             {
-                Console.WriteLine("*** OnAfterResponse ***");
+                Log.WriteLine("*** OnAfterResponse ***");
                 var client = (FhirClient)sender;
                 _scenarioContext.Set(client.LastResponse.StatusCode, HttpSteps.Context.ResponseStatusCode);
-                Console.WriteLine("Response StatusCode={0}", client.LastResponse.StatusCode);
+                Log.WriteLine("Response StatusCode={0}", client.LastResponse.StatusCode);
                 _scenarioContext.Set(client.LastResponse.ContentType, HttpSteps.Context.ResponseContentType);
-                Console.WriteLine("Response ContentType={0}", client.LastResponse.ContentType);
+                Log.WriteLine("Response ContentType={0}", client.LastResponse.ContentType);
             };
 
             // Make The Request
@@ -117,7 +118,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Grab The Response Body
             var responseBody = fhirClient.LastBodyAsText;
             _scenarioContext.Set(responseBody, HttpSteps.Context.ResponseBody);
-            Console.WriteLine("Response Body={0}", responseBody);
+            Log.WriteLine("Response Body={0}", responseBody);
 
             // TODO Parse The XML or JSON For Easier Processing
         }
@@ -128,7 +129,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheResponseBodyShouldBeFHIRJSON()
         {
             _httpSteps.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.JsonFhir);
-            Console.WriteLine("Response ContentType={0}", _httpSteps.ResponseContentType);
+            Log.WriteLine("Response ContentType={0}", _httpSteps.ResponseContentType);
             // TODO Move JSON Parsing Out Of Here
             _scenarioContext.Set(JObject.Parse(_httpSteps.ResponseBody), HttpSteps.Context.ResponseJSON);
         }
@@ -137,7 +138,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheResponseBodyShouldBeFHIRXML()
         {
             _httpSteps.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.XmlFhir);
-            Console.WriteLine("Response ContentType={0}", _httpSteps.ResponseContentType);
+            Log.WriteLine("Response ContentType={0}", _httpSteps.ResponseContentType);
             // TODO Move XML Parsing Out Of Here
             _scenarioContext.Set(XDocument.Parse(_httpSteps.ResponseBody), HttpSteps.Context.ResponseXML);
         }
@@ -145,14 +146,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the JSON value ""(.*)"" should be ""(.*)""")]
         public void ThenTheJSONValueShouldBe(string key, string value)
         {
-            Console.WriteLine("Json Key={0} Value={1} Expect={2}", key, _httpSteps.ResponseJSON[key], value);
+            Log.WriteLine("Json Key={0} Value={1} Expect={2}", key, _httpSteps.ResponseJSON[key], value);
             _httpSteps.ResponseJSON[key].ShouldBe(value);
         }
 
         [Then(@"the JSON array ""([^""]*)"" should contain ""([^""]*)""")]
         public void ThenTheJSONArrayShouldContain(string key, string value)
         {
-            Console.WriteLine("Array " + _httpSteps.ResponseJSON[key] + "should contain " + value);
+            Log.WriteLine("Array " + _httpSteps.ResponseJSON[key] + "should contain " + value);
             var passed = _httpSteps.ResponseJSON[key].Any(entry => string.Equals(entry.Value<string>(), value));
             passed.ShouldBeTrue();
         }
@@ -160,7 +161,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the JSON array ""([^""]*)"" should contain ""([^""]*)"" or ""([^""]*)""")]
         public void ThenTheJSONArrayShouldContain(string key, string value1, string value2)
         {
-            Console.WriteLine("Array " + _httpSteps.ResponseJSON[key] + "should contain " + value1 + " or " + value2);
+            Log.WriteLine("Array " + _httpSteps.ResponseJSON[key] + "should contain " + value1 + " or " + value2);
             var passed = _httpSteps.ResponseJSON[key].Any(entry => string.Equals(entry.Value<string>(), value1) || string.Equals(entry.Value<string>(), value2));
             passed.ShouldBeTrue();
         }
@@ -168,7 +169,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the JSON element ""(.*)"" should be present")]
         public void ThenTheJSONElementShouldBePresent(string jsonPath)
         {
-            Console.WriteLine("Json KeyPath={0} should be present", jsonPath);
+            Log.WriteLine("Json KeyPath={0} should be present", jsonPath);
             _httpSteps.ResponseJSON.SelectToken(jsonPath).ShouldNotBeNull();
         }
 

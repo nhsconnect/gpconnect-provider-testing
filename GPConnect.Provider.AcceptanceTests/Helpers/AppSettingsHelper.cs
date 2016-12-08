@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Configuration;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using GPConnect.Provider.AcceptanceTests.Steps;
 using TechTalk.SpecFlow;
 
@@ -49,51 +50,51 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static void LoadAppSettings(ScenarioContext scenarioContext)
         {
-            Console.WriteLine("LoadAppSettings From App.Config");
+            Log.WriteLine("LoadAppSettings From App.Config");
 
             // Security Details from config file
             scenarioContext.Set(UseTLS, SecuritySteps.Context.UseTLS);
-            Console.WriteLine("UseTLS=" + UseTLS);
+            Log.WriteLine("UseTLS=" + UseTLS);
 
             // Fhir Server Details from config file
             scenarioContext.Set(FhirServerUrl, HttpSteps.Context.FhirServerUrl);
-            Console.WriteLine("FhirServerUrl=" + FhirServerUrl);
+            Log.WriteLine("FhirServerUrl=" + FhirServerUrl);
             scenarioContext.Set(FhirServerPort, HttpSteps.Context.FhirServerPort);
-            Console.WriteLine("FhirServerPort=" + FhirServerPort);
+            Log.WriteLine("FhirServerPort=" + FhirServerPort);
             scenarioContext.Set(FhirServerFhirBase, HttpSteps.Context.FhirServerFhirBase);
-            Console.WriteLine("FhirServerFhirBase=" + FhirServerFhirBase);
+            Log.WriteLine("FhirServerFhirBase=" + FhirServerFhirBase);
 
             // Web Proxy Details from config file
             scenarioContext.Set(UseWebProxy, HttpSteps.Context.UseWebProxy);
-            Console.WriteLine("UseWebProxy=" + UseWebProxy);
+            Log.WriteLine("UseWebProxy=" + UseWebProxy);
             scenarioContext.Set(WebProxyUrl, HttpSteps.Context.WebProxyUrl);
-            Console.WriteLine("WebProxyUrl=" + WebProxyUrl);
+            Log.WriteLine("WebProxyUrl=" + WebProxyUrl);
             scenarioContext.Set(WebProxyPort, HttpSteps.Context.WebProxyPort);
-            Console.WriteLine("WebProxyPort=" + WebProxyPort);
+            Log.WriteLine("WebProxyPort=" + WebProxyPort);
 
             // Spine Proxy Details from config file
             scenarioContext.Set(UseSpineProxy, HttpSteps.Context.UseSpineProxy);
-            Console.WriteLine("UseSpineProxy=" + UseSpineProxy);
+            Log.WriteLine("UseSpineProxy=" + UseSpineProxy);
             scenarioContext.Set(SpineProxyUrl, HttpSteps.Context.SpineProxyUrl);
-            Console.WriteLine("SpineProxyUrl=" + SpineProxyUrl);
+            Log.WriteLine("SpineProxyUrl=" + SpineProxyUrl);
             scenarioContext.Set(SpineProxyPort, HttpSteps.Context.SpineProxyPort);
-            Console.WriteLine("SpineProxyPort=" + SpineProxyPort);
+            Log.WriteLine("SpineProxyPort=" + SpineProxyPort);
 
             // Certificates from config file
             scenarioContext.Set(ClientCertThumbPrint, SecuritySteps.Context.ClientCertThumbPrint);
-            Console.WriteLine("ClientCertThumbPrint=" + ClientCertThumbPrint);
+            Log.WriteLine("ClientCertThumbPrint=" + ClientCertThumbPrint);
             scenarioContext.Set(SendClientCert, SecuritySteps.Context.SendClientCert);
-            Console.WriteLine("SendClientCert=" + SendClientCert);
+            Log.WriteLine("SendClientCert=" + SendClientCert);
             scenarioContext.Set(ValidateServerCert, SecuritySteps.Context.ValidateServerCert);
-            Console.WriteLine("ValidateServerCert=" + ValidateServerCert);
+            Log.WriteLine("ValidateServerCert=" + ValidateServerCert);
 
             // Provider from config file
             scenarioContext.Set(ProviderSystemASID, HttpSteps.Context.ProviderASID);
-            Console.WriteLine("ProviderSystemASID=" + ProviderSystemASID);
+            Log.WriteLine("ProviderSystemASID=" + ProviderSystemASID);
 
             // Consumer from config file
             scenarioContext.Set(TestSuitASID, HttpSteps.Context.ConsumerASID);
-            Console.WriteLine("TestSuitASID=" + TestSuitASID);
+            Log.WriteLine("TestSuitASID=" + TestSuitASID);
         }
     }
 }

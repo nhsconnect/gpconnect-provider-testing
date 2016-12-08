@@ -1,6 +1,7 @@
 ﻿using System;
 using BoDi;
 using GPConnect.Provider.AcceptanceTests.Helpers;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
@@ -15,7 +16,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         public GenericSteps(IObjectContainer objectContainer, ScenarioContext scenarioContext, HttpHeaderHelper headerHelper)
         {
-            Console.WriteLine("GenericSteps() Constructor");
+            Log.WriteLine("GenericSteps() Constructor");
             _objectContainer = objectContainer;
             _scenarioContext = scenarioContext;
             _httpHeaderHelper = headerHelper;
@@ -24,7 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [BeforeScenario(Order = 0)]
         public void InitializeContainer()
         {
-            Console.WriteLine("InitializeContainer For Dependency Injection");
+            Log.WriteLine("InitializeContainer For Dependency Injection");
             _objectContainer.RegisterTypeAs<SecuritySteps, ISecuritySteps>();
             _objectContainer.RegisterTypeAs<HttpSteps, IHttpSteps>();
         }
@@ -32,10 +33,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [BeforeScenario(Order=1)]
         public void OutputScenarioDetails()
         {
-            Console.WriteLine("Feature: " + FeatureContext.Current.FeatureInfo.Title);
-            Console.WriteLine(FeatureContext.Current.FeatureInfo.Description);
-            Console.WriteLine();
-            Console.WriteLine("Scenario: " + ScenarioContext.Current.ScenarioInfo.Title);
+            Log.WriteLine("Feature: " + FeatureContext.Current.FeatureInfo.Title);
+            Log.WriteLine(FeatureContext.Current.FeatureInfo.Description);
+            Log.WriteLine("");
+            Log.WriteLine("Scenario: " + ScenarioContext.Current.ScenarioInfo.Title);
         }
 
         [BeforeScenario(Order = 2)]
