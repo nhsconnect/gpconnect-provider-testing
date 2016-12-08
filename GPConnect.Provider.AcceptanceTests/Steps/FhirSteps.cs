@@ -169,7 +169,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheJSONElementShouldBePresent(string jsonPath)
         {
             Console.WriteLine("Json KeyPath={0} should be present", jsonPath);
-            ResponseJSON.SelectToken(jsonPath).ShouldNotBeNull();
+            _httpSteps.ResponseJSON.SelectToken(jsonPath).ShouldNotBeNull();
         }
 
     }
