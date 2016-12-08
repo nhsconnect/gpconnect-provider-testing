@@ -87,6 +87,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Audit.feature</DependentUpon>
     </Compile>
+    <Compile Include="Constants\SpineConst.cs" />
+    <Compile Include="Constants\FhirConst.cs" />
+    <Compile Include="Constants\HttpConst.cs" />
+    <Compile Include="Constants\JwtConst.cs" />
+    <Compile Include="Constants\SecurityConst.cs" />
+    <Compile Include="Extensions\BaseExtensions.cs" />
+    <Compile Include="Helpers\AppSettingsHelper.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="FHIR.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -97,6 +105,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Foundation.feature</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EndpointHelper.cs" />
+    <Compile Include="Helpers\FhirHelper.cs" />
+    <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Http.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -107,11 +118,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Steps\Jwt.cs" />
-    <Compile Include="Steps\Security.cs" />
-    <Compile Include="Steps\Generic.cs" />
-    <Compile Include="Steps\Fhir.cs" />
-    <Compile Include="Steps\Http.cs" />
+    <Compile Include="Steps\JwtSteps.cs" />
+    <Compile Include="Steps\SecuritySteps.cs" />
+    <Compile Include="Steps\GenericSteps.cs" />
+    <Compile Include="Steps\FhirSteps.cs" />
+    <Compile Include="Steps\HttpSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security.feature.cs">
       <AutoGen>True</AutoGen>
@@ -123,8 +134,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SpineSecurityProxy.feature</DependentUpon>
     </Compile>
-    <Compile Include="tools\HeaderController.cs" />
-    <Compile Include="tools\JwtHelper.cs" />
+    <Compile Include="Helpers\HttpHeaderHelper.cs" />
+    <Compile Include="Helpers\HttpHelper.cs" />
+    <Compile Include="Helpers\JwtHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AccessRecord.feature">
