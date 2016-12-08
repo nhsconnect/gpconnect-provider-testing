@@ -1,7 +1,11 @@
-﻿using BoDi;
+﻿using System;
+using System.IO;
+using BoDi;
+using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using TechTalk.SpecFlow;
+// ReSharper disable UnusedMember.Global
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -19,6 +23,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _objectContainer = objectContainer;
             _scenarioContext = scenarioContext;
             _httpHeaderHelper = headerHelper;
+        }
+
+        [BeforeTestRun]
+        public static void CreateTraceFolder()
+        {
+            if (!Directory.Exists(AppSettingsHelper.TraceBaseDirectory)) return;
+            var folderName = DateTime.Now.ToString("s").Replace(":", string.Empty);
+            var traceDirectory = Path.Combine(AppSettingsHelper.TraceBaseDirectory, folderName);
+            Log.WriteLine("Create Trace Directory = '{0}'", traceDirectory);
+            Directory.CreateDirectory(traceDirectory);
+            // Save The Newly Created Trace Directory To The Global Context
+            GlobalContext.SaveValue(GlobalConst.Trace.TraceDirectory, traceDirectory);
         }
 
         [BeforeScenario(Order = 0)]
@@ -54,6 +70,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void DoNotValidateServerCertificate()
         {
             SecurityHelper.DoNotValidateServerCertificate();
-        }
+        }        
+
     }
 }

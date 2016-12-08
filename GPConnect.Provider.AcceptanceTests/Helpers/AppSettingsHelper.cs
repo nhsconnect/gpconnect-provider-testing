@@ -8,6 +8,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
     public static class AppSettingsHelper
     {
+        // Trace Log Settings
+        public static bool TraceAllScenarios => Get<bool>("traceAllScenarios");
+        public static string TraceBaseDirectory => Get<string>("traceBaseDirectory");
+
         // Security Settings
         public static bool UseTLS => Get<bool>("useTLS");
 

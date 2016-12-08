@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
@@ -50,7 +51,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     {
         private readonly SecuritySteps _securitySteps;
         private readonly ScenarioContext _scenarioContext;
-        
+
         internal static class Context
         {
             // Provider
@@ -352,6 +353,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("Response Body={0}", restResponse.Content);
 
             // TODO Parse The XML or JSON For Easier Processing
+
+            LogResponseToDisk();
         }
 
         // Response Validation Steps
@@ -384,6 +387,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.Xml);
             Log.WriteLine("Response ContentType={0}", ResponseContentType);
             _scenarioContext.Set(XDocument.Parse(ResponseBody), Context.ResponseXML);
+        }
+
+        // Logger
+
+        private void LogResponseToDisk()
+        {
+            var traceDirectory = GlobalContext.GetValue<string>(GlobalConst.Trace.TraceDirectory);
+            if (!Directory.Exists(traceDirectory)) return;
+            var scenarioDirectory = Path.Combine(traceDirectory, _scenarioContext.ScenarioInfo.Title);
+            Directory.CreateDirectory(scenarioDirectory);
+            Log.WriteLine(scenarioDirectory);
         }
     }
 }

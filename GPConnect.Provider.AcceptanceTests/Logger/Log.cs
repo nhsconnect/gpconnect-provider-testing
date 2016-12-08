@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GPConnect.Provider.AcceptanceTests.Helpers;
 using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Logger
@@ -26,7 +27,7 @@ namespace GPConnect.Provider.AcceptanceTests.Logger
         [AfterScenario]
         public static void HandleScenarioFailure()
         {
-            if (ScenarioContext.Current.TestError != null)
+            if (ScenarioContext.Current.TestError != null || AppSettingsHelper.TraceAllScenarios)
                 DumpLog();
         }
 
