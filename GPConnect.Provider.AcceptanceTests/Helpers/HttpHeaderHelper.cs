@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+// ReSharper disable ClassNeverInstantiated.Global
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
     public class HttpHeaderHelper
     {
-        private static HttpHeaderHelper httpHeaderHelper;
-
         private readonly Dictionary<string, string> _requestHeaders;
 
         private HttpHeaderHelper()
         {
+            Console.WriteLine("HttpHeaderHelper() Constructor");
             _requestHeaders = new Dictionary<string, string>();
         }
-
-        public static HttpHeaderHelper Instance => httpHeaderHelper ?? (httpHeaderHelper = new HttpHeaderHelper());
 
         public void AddHeader(string key, string value)
         {

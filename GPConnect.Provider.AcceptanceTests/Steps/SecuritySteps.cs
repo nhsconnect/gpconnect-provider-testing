@@ -12,9 +12,16 @@ using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    public interface ISecuritySteps
+    {
+        bool SendClientCert { get; }
+        bool ValidateServerCert { get; }
+        string ClientCertThumbPrint { get; }
+        X509Certificate2 ClientCert { get; }
+    }
 
     [Binding]
-    public class SecuritySteps : TechTalk.SpecFlow.Steps
+    public class SecuritySteps : TechTalk.SpecFlow.Steps, ISecuritySteps
     {
         private readonly ScenarioContext _scenarioContext;
 
@@ -23,18 +30,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             public const string UseTLS = "useTLS";
             public const string ValidateServerCert = "validateServerCert";
             public const string SendClientCert = "sendClientCert";
-            public const string ClientCertThumbPrint = "clientCertThumbPrint";            
+            public const string ClientCertThumbPrint = "clientCertThumbPrint";
             public const string ClientCertificate = "clientCertificate";
         }
 
-        private bool SendClientCert => _scenarioContext.Get<bool>(Context.SendClientCert);
-        private bool ValidateServerCert => _scenarioContext.Get<bool>(Context.ValidateServerCert);
-        private string ClientCertThumbPrint => _scenarioContext.Get<string>(Context.ClientCertThumbPrint);
-        private X509Certificate2 ClientCert => _scenarioContext.Get<X509Certificate2>(Context.ClientCertificate);
-        private HttpStatusCode ResponseStatusCode => _scenarioContext.Get<HttpStatusCode>(HttpSteps.Context.ResponseStatusCode);
+        // Security Details
+
+        public bool UseTLS => _scenarioContext.Get<bool>(Context.UseTLS);
+        public bool ValidateServerCert => _scenarioContext.Get<bool>(Context.ValidateServerCert);
+        public bool SendClientCert => _scenarioContext.Get<bool>(Context.SendClientCert);
+        public string ClientCertThumbPrint => _scenarioContext.Get<string>(Context.ClientCertThumbPrint);
+        public X509Certificate2 ClientCert => _scenarioContext.Get<X509Certificate2>(Context.ClientCertificate);
+
+        // Constructor
 
         public SecuritySteps(ScenarioContext scenarioContext)
         {
+            Console.WriteLine("SecuritySteps() Constructor");
             _scenarioContext = scenarioContext;
         }
 
@@ -114,22 +126,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 SecurityHelper.DoNotValidateServerCertificate();
             }
-        }
-
-        // Security Validation Steps
-
-        [Then(@"the response status code should indicate authentication failure")]
-        public void ThenTheResponseStatusCodeShouldIndicateAuthenticationFailure()
-        {
-            ResponseStatusCode.ShouldBe(HttpStatusCode.Forbidden);
-            Console.WriteLine("Response HttpStatusCode={0}", ResponseStatusCode);
-        }
-
-        [Then(@"the response status code should be ""(.*)""")]
-        public void ThenTheResponseStatusCodeShouldBe(string statusCode)
-        {
-            ResponseStatusCode.ToString().ShouldBe(statusCode);
-            Console.WriteLine("Response HttpStatusCode should be {0} but was {1}", statusCode, ResponseStatusCode);
         }
     }
 }

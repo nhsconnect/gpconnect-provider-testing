@@ -1,4 +1,5 @@
 ﻿using System;
+using BoDi;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using TechTalk.SpecFlow;
 
@@ -8,13 +9,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     [Binding]
     public class GenericSteps : TechTalk.SpecFlow.Steps
     {
+        private readonly IObjectContainer _objectContainer;
         private readonly ScenarioContext _scenarioContext;
         private readonly HttpHeaderHelper _httpHeaderHelper;
 
-        public GenericSteps(ScenarioContext scenarioContext)
+        public GenericSteps(IObjectContainer objectContainer, ScenarioContext scenarioContext, HttpHeaderHelper headerHelper)
         {
+            Console.WriteLine("GenericSteps() Constructor");
+            _objectContainer = objectContainer;
             _scenarioContext = scenarioContext;
-            _httpHeaderHelper = HttpHeaderHelper.Instance;
+            _httpHeaderHelper = headerHelper;
+        }
+
+        [BeforeScenario(Order = 0)]
+        public void InitializeContainer()
+        {
+            Console.WriteLine("InitializeContainer For Dependency Injection");
+            _objectContainer.RegisterTypeAs<SecuritySteps, ISecuritySteps>();
+            _objectContainer.RegisterTypeAs<HttpSteps, IHttpSteps>();
         }
 
         [BeforeScenario(Order=1)]

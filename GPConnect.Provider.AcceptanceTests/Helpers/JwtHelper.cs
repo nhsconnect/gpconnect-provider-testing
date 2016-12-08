@@ -6,6 +6,7 @@ using System.Security.Claims;
 using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Extensions;
 using Microsoft.IdentityModel.Tokens;
+// ReSharper disable ClassNeverInstantiated.Global
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
@@ -13,8 +14,6 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
     {
         private const string Bearer = "Bearer ";
         private const int MaxExpiryTimeInMinutes = 5;
-
-        private static JwtHelper jwtHelper;
 
         public DateTime? CreationTime { get; set; }
         public DateTime? ExpiryTime { get; set; }
@@ -31,11 +30,11 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         private JwtHelper()
         {
+            Console.WriteLine("JwtHelper() Constructor");
+            SetDefaultValues();
         }
 
-        public static JwtHelper Instance => jwtHelper ?? (jwtHelper = new JwtHelper());
-
-        public void SetJwtDefaultValues()
+        public void SetDefaultValues()
         {
             CreationTime = DateTime.UtcNow;
             ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
@@ -52,7 +51,6 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             RequestedOrganizationODSCode = "OrgODSCode0001";
             RequestingSystemUrl = "https://ConsumerSystemURL";
         }
-
 
         private static string BuildEncodedHeader()
         {

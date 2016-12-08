@@ -107,6 +107,7 @@
     </Compile>
     <Compile Include="Helpers\EndpointHelper.cs" />
     <Compile Include="Helpers\FhirHelper.cs" />
+    <Compile Include="Helpers\MessageHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Http.feature.cs">
       <AutoGen>True</AutoGen>

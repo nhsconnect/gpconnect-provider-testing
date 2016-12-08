@@ -1,4 +1,5 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
+﻿using System;
+using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Extensions;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using Hl7.Fhir.Model;
@@ -12,32 +13,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     [Binding]
     public class JwtSteps : TechTalk.SpecFlow.Steps
     {
-        private readonly ScenarioContext _scenarioContext;
-
         private readonly HttpHeaderHelper _headerController;
         private readonly JwtHelper _jwtHelper;
 
-        public JwtSteps(ScenarioContext scenarioContext)
+        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper)
         {
-            _scenarioContext = scenarioContext;
-            // TODO Move To Injecting In These Helpers And Make Them Not Singletons
-            _headerController = HttpHeaderHelper.Instance;
-            _jwtHelper = JwtHelper.Instance;
+            Console.WriteLine("JwtSteps() Constructor");
+            _headerController = headerHelper;
+            _jwtHelper = jwtHelper;
         }
 
-        // JWT configuration steps
+        // JWT Configuration Steps
 
         [Given(@"I set the default JWT")]
         public void ISetTheDefaultJWT()
         {
-            _jwtHelper.SetJwtDefaultValues();
+            _jwtHelper.SetDefaultValues();
             _headerController.ReplaceHeader(HttpConst.Headers.Authorization, _jwtHelper.GetBearerToken());
         }
 
         [Given(@"I set the default JWT without base64 encoding")]
         public void ISetTheJWTWithoutBase64Encoding()
         {
-            _jwtHelper.SetJwtDefaultValues();
             _headerController.ReplaceHeader(HttpConst.Headers.Authorization, _jwtHelper.GetBearerTokenWithoutEncoding());
         }
 
