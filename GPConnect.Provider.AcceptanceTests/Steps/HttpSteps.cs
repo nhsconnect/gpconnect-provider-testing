@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using System.Xml.Linq;
@@ -66,6 +67,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             public const string UseSpineProxy = "useSpineProxy";
             public const string SpineProxyUrl = "spineProxyUrl";
             public const string SpineProxyPort = "spineProxyPort";
+            // Request
+            public const string RequestUrl = "requestUrl";
+            public const string RequestMethod = "requestMethod";
+            public const string RequestContentType = "requestContentType";
+            public const string RequestBody = "requestBody";
             // Raw Response
             public const string ResponseContentType = "responseContentType";
             public const string ResponseStatusCode = "responseStatusCode";
@@ -95,6 +101,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         // JWT Helper
         public JwtHelper Jwt { get; }
 
+        // Raw Request
+        public HttpMethod RequestMethod => _scenarioContext.Get<HttpMethod>(Context.RequestMethod);
+        public string RequestUrl => _scenarioContext.Get<string>(Context.RequestUrl);
+        public string RequestContentType => _scenarioContext.Get<string>(Context.RequestContentType);
+        public string RequestBody => _scenarioContext.Get<string>(Context.RequestBody);
+
         // Raw Response
         public string ResponseContentType => _scenarioContext.Get<string>(Context.ResponseContentType);
         public HttpStatusCode ResponseStatusCode => _scenarioContext.Get<HttpStatusCode>(Context.ResponseStatusCode);
@@ -117,8 +129,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("HttpSteps() Constructor");
             _scenarioContext = scenarioContext;
             _securitySteps = securitySteps;
+            // Helpers
             Headers = headerHelper;
             Jwt = jwtHelper;
+        }
+
+        // Before Scenarios
+
+        [BeforeScenario(Order = 3)]
+        public void ClearHttpHeaders()
+        {
+            Headers.Clear();
         }
 
         // Security Validation Steps
@@ -208,6 +229,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAmUsingToCommunicateWithTheServer(string requestContentType)
         {
             Headers.ReplaceHeader(HttpConst.Headers.Accept, requestContentType);
+            _scenarioContext.Set(requestContentType, Context.RequestContentType);
         }
 
         [Given(@"I set ""(.*)"" request header to ""(.*)""")]
@@ -261,6 +283,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         // Http Request Steps
 
+        [Given(@"I set a JSON request body ""(.*)""")]
+        public void GivenISetAJSONRequestBody(string body)
+        {
+            _scenarioContext.Set(HttpConst.ContentTypes.Json, Context.RequestContentType);
+            _scenarioContext.Set(body, Context.RequestBody);
+        }
+
+        [Given(@"I set an XML request body ""(.*)""")]
+        public void GivenISetAnXMLRequestBody(string body)
+        {
+            _scenarioContext.Set(HttpConst.ContentTypes.Xml, Context.RequestContentType);
+            _scenarioContext.Set(body, Context.RequestBody);
+        }
+
         [When(@"I make a GET request to ""(.*)""")]
         public void WhenIMakeAGETRequestTo(string relativeUrl)
         {
@@ -299,13 +335,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         // Rest Request Helper
 
-        private void RestRequest(Method method, string relativeUrl)
+        private void RestRequest(Method method, string relativeUrl, string body = null)
         {
-            Log.WriteLine("{0} relative Fhir URL = {1}", method, relativeUrl);
+            Log.WriteLine("{0} relative URL = {1}", method, relativeUrl);
+
+            // Save The Request Details
+            _scenarioContext.Set(method, Context.RequestMethod);
+            _scenarioContext.Set(relativeUrl, Context.RequestUrl);
+            _scenarioContext.Set(body, Context.RequestBody);
 
             // Build The Rest Request
             var restClient = new RestClient(EndpointHelper.GetProviderURL(_scenarioContext));
             var restRequest = new RestRequest(relativeUrl, method);
+            restRequest.AddParameter(HttpConst.ContentTypes.Json, body, ParameterType.RequestBody);
 
             // Setup The Web Proxy
             if (UseWebProxy)
@@ -344,7 +386,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("Error Message = " + restResponse.ErrorMessage);
             Log.WriteLine("Error Exception = " + restResponse.ErrorException);
 
-            // Pull Apart The Response
+            // Save The Response Details
             _scenarioContext.Set(restResponse.StatusCode, Context.ResponseStatusCode);
             Log.WriteLine("Response StatusCode={0}", restResponse.StatusCode);
             _scenarioContext.Set(restResponse.ContentType, Context.ResponseContentType);

@@ -47,6 +47,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _scenarioContext = scenarioContext;
         }
 
+        // Before Scenario
+
+        [BeforeScenario(Order = 4)]
+        public void DoNotValidateServerCertificate()
+        {
+            SecurityHelper.DoNotValidateServerCertificate();
+        }
+
         // Security Configuration Steps
 
         [Given(@"I do not want to verify the server certificate")]

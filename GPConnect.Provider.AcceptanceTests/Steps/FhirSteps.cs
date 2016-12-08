@@ -5,11 +5,13 @@ using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
+using GPConnect.Provider.AcceptanceTests.Tables;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Newtonsoft.Json.Linq;
 using Shouldly;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
@@ -45,6 +47,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _securitySteps = securitySteps;
         }
 
+        // Before Scenario
+
+        [BeforeScenario(Order = 4)]
+        public void ClearFhirOperationParameters()
+        {
+            Log.WriteLine("ClearFhirOperationParameters()");
+            _scenarioContext.Set(new Parameters(), Context.FhirRequestParameters);
+        }
+        
         // FHIR Operation Steps
 
         [Given(@"I author a request for the ""(.*)"" care record section for patient with NHS Number ""(.*)""")]
@@ -52,12 +63,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {            
             Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
             And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
-            
-            // TODO Make A Helper For Building Operation Parameter Sets
-            var parameters = new Parameters();
-            parameters.Add(FhirConst.GetCareRecordParams.NHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
-            parameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(recordSectionCode));
-            _scenarioContext.Set(parameters, Context.FhirRequestParameters);
+            And($@"I am requesting the record for patient with NHS Number ""{nhsNumber}""");
+            And($@"I am requesting the ""{recordSectionCode}"" care record section");
+        }
+
+        [Given(@"I am requesting the record for patient with NHS Number ""(.*)""")]
+        public void GivenIAmRequestingTheRecordForPatientWithNHSNumber(string nhsNumber)
+        {
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
+            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
+            FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
+        }
+
+        [Given(@"I am requesting the ""(.*)"" care record section")]
+        public void GivenIAmRequestingTheCareRecordSection(string careRecordSection)
+        {
+            // TODO Their Is A Bug In The Demonstrator -> It's Not Using A CodeableConcept For The RecordSection
+            //FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(careRecordSection));
+            FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, new FhirString(careRecordSection));
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]

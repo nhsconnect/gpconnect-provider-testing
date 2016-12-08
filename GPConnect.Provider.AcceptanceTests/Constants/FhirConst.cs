@@ -11,7 +11,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
 
         internal static class GetCareRecordParams
         {
-            public const string NHSNumber = "nhsNumber";
+            public const string PatientNHSNumber = "patientNHSNumber";
             public const string RecordSection = "recordSection";
         }
 

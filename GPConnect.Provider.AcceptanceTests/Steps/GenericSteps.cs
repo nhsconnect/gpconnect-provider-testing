@@ -15,14 +15,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     {
         private readonly IObjectContainer _objectContainer;
         private readonly ScenarioContext _scenarioContext;
-        private readonly HttpHeaderHelper _httpHeaderHelper;
 
-        public GenericSteps(IObjectContainer objectContainer, ScenarioContext scenarioContext, HttpHeaderHelper headerHelper)
+        public GenericSteps(IObjectContainer objectContainer, ScenarioContext scenarioContext)
         {
             Log.WriteLine("GenericSteps() Constructor");
             _objectContainer = objectContainer;
             _scenarioContext = scenarioContext;
-            _httpHeaderHelper = headerHelper;
         }
 
         [BeforeTestRun]
@@ -59,18 +57,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             AppSettingsHelper.LoadAppSettings(_scenarioContext);
         }
-
-        [BeforeScenario(Order = 3)]
-        public void ResetHttpHeaders()
-        {
-            _httpHeaderHelper.Clear();
-        }
-
-        [BeforeScenario(Order = 4)]
-        public void DoNotValidateServerCertificate()
-        {
-            SecurityHelper.DoNotValidateServerCertificate();
-        }        
-
     }
 }
