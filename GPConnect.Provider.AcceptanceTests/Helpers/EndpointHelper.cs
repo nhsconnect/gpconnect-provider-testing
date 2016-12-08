@@ -1,5 +1,4 @@
-﻿using System;
-using GPConnect.Provider.AcceptanceTests.Logger;
+﻿using GPConnect.Provider.AcceptanceTests.Logger;
 using GPConnect.Provider.AcceptanceTests.Steps;
 using TechTalk.SpecFlow;
 

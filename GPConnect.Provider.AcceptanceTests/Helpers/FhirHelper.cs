@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Dynamic;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;

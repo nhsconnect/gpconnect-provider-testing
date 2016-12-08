@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
 using System.Xml;
 using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Constants;
@@ -80,7 +79,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         // Web Proxy
-        public bool UseWebProxy => _scenarioContext.Get<bool>(HttpSteps.Context.UseWebProxy);
+        public bool UseWebProxy => _scenarioContext.Get<bool>(Context.UseWebProxy);
         public string WebProxyUrl => _scenarioContext.Get<string>(Context.WebProxyUrl);
         public string WebProxyPort => _scenarioContext.Get<string>(Context.WebProxyPort);
 

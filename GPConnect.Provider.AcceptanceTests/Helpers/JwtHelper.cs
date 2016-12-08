@@ -7,6 +7,7 @@ using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Extensions;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Microsoft.IdentityModel.Tokens;
+
 // ReSharper disable ClassNeverInstantiated.Global
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers

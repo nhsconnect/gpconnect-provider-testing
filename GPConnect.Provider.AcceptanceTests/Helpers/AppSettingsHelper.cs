@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Configuration;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using GPConnect.Provider.AcceptanceTests.Steps;

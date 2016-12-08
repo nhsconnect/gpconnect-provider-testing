@@ -1,5 +1,4 @@
-﻿using System;
-using GPConnect.Provider.AcceptanceTests.Constants;
+﻿using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Extensions;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;

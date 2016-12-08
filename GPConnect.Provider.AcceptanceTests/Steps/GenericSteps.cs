@@ -1,5 +1,4 @@
-﻿using System;
-using BoDi;
+﻿using BoDi;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using TechTalk.SpecFlow;

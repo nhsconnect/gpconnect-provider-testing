@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GPConnect.Provider.AcceptanceTests.Logger;
 
 // ReSharper disable ClassNeverInstantiated.Global
