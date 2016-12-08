@@ -23,7 +23,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class FhirSteps : TechTalk.SpecFlow.Steps
     {
         private readonly ScenarioContext _scenarioContext;
-        private readonly HttpHeaderHelper _headerController;
         private readonly HttpSteps _httpSteps;
         private readonly SecuritySteps _securitySteps;
 
@@ -36,14 +35,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         // FHIR Details
 
         private Parameters FhirRequestParameters => _scenarioContext.Get<Parameters>(Context.FhirRequestParameters);
-
+        private Resource FhirResponseResource => _scenarioContext.Get<Resource>(Context.FhirResponseResource);
+        
         // Constructor
 
-        public FhirSteps(ScenarioContext scenarioContext, SecuritySteps securitySteps, HttpHeaderHelper headerHelper, HttpSteps httpSteps)
+        public FhirSteps(ScenarioContext scenarioContext, SecuritySteps securitySteps, HttpSteps httpSteps)
         {
             Console.WriteLine("FhirSteps() Constructor");
             _scenarioContext = scenarioContext;
-            _headerController = headerHelper;
             _httpSteps = httpSteps;
             _securitySteps = securitySteps;
         }
@@ -52,22 +51,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         [Given(@"I author a request for the ""(.*)"" care record section for patient with NHS Number ""(.*)""")]
         public void IAuthorARequestForTheCareRecordSection(string recordSectionCode, string nhsNumber)
-        {
+        {            
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
+            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
+            
             // TODO Make A Helper For Building Operation Parameter Sets
             var parameters = new Parameters();
             parameters.Add(FhirConst.GetCareRecordParams.NHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
             parameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(recordSectionCode));
             _scenarioContext.Set(parameters, Context.FhirRequestParameters);
-
-            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
-            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
         public void IRequestTheFHIROperation(string operation)
         {
             var preferredFormat = ResourceFormat.Json;
-            if (!_headerController.GetHeaderValue(HttpConst.Headers.Accept).Equals(FhirConst.ContentTypes.JsonFhir))
+            if (!_httpSteps.Headers.GetHeaderValue(HttpConst.Headers.Accept).Equals(FhirConst.ContentTypes.JsonFhir))
             {
                 preferredFormat = ResourceFormat.Xml;
             }
@@ -87,7 +86,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     args.RawRequest.Proxy = new WebProxy(new Uri(EndpointHelper.GetWebProxyURL(_scenarioContext), UriKind.Absolute));
                 }
                 // Add The Request Headers Apart From The Accept Header
-                foreach (var header in _headerController.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.Accept))
+                foreach (var header in _httpSteps.Headers.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.Accept))
                 {
                     args.RawRequest.Headers.Add(header.Key, header.Value);
                     Console.WriteLine("Added Header Key='{0}' Value='{1}'", header.Key, header.Value);
@@ -119,6 +118,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var responseBody = fhirClient.LastBodyAsText;
             _scenarioContext.Set(responseBody, HttpSteps.Context.ResponseBody);
             Console.WriteLine("Response Body={0}", responseBody);
+
+            // TODO Parse The XML or JSON For Easier Processing
         }
 
         // Response Validation Steps
@@ -128,6 +129,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _httpSteps.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.JsonFhir);
             Console.WriteLine("Response ContentType={0}", _httpSteps.ResponseContentType);
+            // TODO Move JSON Parsing Out Of Here
             _scenarioContext.Set(JObject.Parse(_httpSteps.ResponseBody), HttpSteps.Context.ResponseJSON);
         }
 
@@ -136,6 +138,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _httpSteps.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.XmlFhir);
             Console.WriteLine("Response ContentType={0}", _httpSteps.ResponseContentType);
+            // TODO Move XML Parsing Out Of Here
             _scenarioContext.Set(XDocument.Parse(_httpSteps.ResponseBody), HttpSteps.Context.ResponseXML);
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Policy;
 using System.Xml;
 using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Constants;
@@ -27,6 +28,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         bool UseSpineProxy { get; }
         string SpineProxyUrl { get; }
         string SpineProxyPort { get; }
+        // Jwt
+        JwtHelper Jwt { get; }
+        // Headers
+        HttpHeaderHelper Headers { get; }
         // Raw Response
         string ResponseContentType { get; }
         HttpStatusCode ResponseStatusCode { get; }
@@ -43,11 +48,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     [Binding]
     public class HttpSteps : TechTalk.SpecFlow.Steps, IHttpSteps
     {
-        private readonly ScenarioContext _scenarioContext;
         private readonly SecuritySteps _securitySteps;
-        private readonly HttpHeaderHelper _headerController;
-        private readonly JwtHelper _jwtHelper;
-
+        private readonly ScenarioContext _scenarioContext;
+        
         internal static class Context
         {
             // Provider
@@ -85,6 +88,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public string SpineProxyUrl => _scenarioContext.Get<string>(Context.SpineProxyUrl);
         public string SpineProxyPort => _scenarioContext.Get<string>(Context.SpineProxyPort);
 
+        // Headers Helper
+        public HttpHeaderHelper Headers { get; }
+
+        // JWT Helper
+        public JwtHelper Jwt { get; }
+
         // Raw Response
         public string ResponseContentType => _scenarioContext.Get<string>(Context.ResponseContentType);
         public HttpStatusCode ResponseStatusCode => _scenarioContext.Get<HttpStatusCode>(Context.ResponseStatusCode);
@@ -107,8 +116,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Console.WriteLine("HttpSteps() Constructor");
             _scenarioContext = scenarioContext;
             _securitySteps = securitySteps;
-            _headerController = headerHelper;
-            _jwtHelper = jwtHelper;
+            Headers = headerHelper;
+            Jwt = jwtHelper;
         }
 
         // Security Validation Steps
@@ -197,56 +206,56 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am using ""(.*)"" to communicate with the server")]
         public void GivenIAmUsingToCommunicateWithTheServer(string requestContentType)
         {
-            _headerController.ReplaceHeader(HttpConst.Headers.Accept, requestContentType);
+            Headers.ReplaceHeader(HttpConst.Headers.Accept, requestContentType);
         }
 
         [Given(@"I set ""(.*)"" request header to ""(.*)""")]
         public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
         {
-            _headerController.ReplaceHeader(headerKey, headerValue);
+            Headers.ReplaceHeader(headerKey, headerValue);
         }
 
         [Given(@"I am accredited system ""(.*)""")]
         public void GivenIAmAccreditedSystem(string fromASID)
         {
-            _headerController.ReplaceHeader(HttpConst.Headers.SspFrom, fromASID);
+            Headers.ReplaceHeader(HttpConst.Headers.SspFrom, fromASID);
         }
 
         [Given(@"I am performing the ""(.*)"" interaction")]
         public void GivenIAmPerformingTheInteraction(string interactionId)
         {
-            _headerController.ReplaceHeader(HttpConst.Headers.SspInteractionId, interactionId);
+            Headers.ReplaceHeader(HttpConst.Headers.SspInteractionId, interactionId);
         }
 
         [Given(@"I am connecting to accredited system ""(.*)""")]
         public void GivenIConnectingToAccreditedSystem(string toASID)
         {
-            _headerController.ReplaceHeader(HttpConst.Headers.SspTo, toASID);
+            Headers.ReplaceHeader(HttpConst.Headers.SspTo, toASID);
         }
 
         [Given(@"I am generating a random message trace identifier")]
         public void GivenIAmGeneratingARandomMessageTraceIdentifier()
         {
-            _headerController.ReplaceHeader(HttpConst.Headers.SspTraceID, Guid.NewGuid().ToString(""));
+            Headers.ReplaceHeader(HttpConst.Headers.SspTraceID, Guid.NewGuid().ToString(""));
         }
 
         [Given(@"I am generating an organization JWT header")]
         public void GivenIAmGeneratingAnOrganizationAuthorizationHeader()
         {
-            _headerController.ReplaceHeader(HttpConst.Headers.Authorization, _jwtHelper.GetBearerToken());
+            Headers.ReplaceHeader(HttpConst.Headers.Authorization, Jwt.GetBearerToken());
         }
 
         [Given(@"I am generating a patient JWT header with nhs number ""(.*)""")]
         public void GivenIAmGeneratingAPatientAuthorizationHeader(string nhsNumber)
         {
-            _jwtHelper.RequestedPatientNHSNumber = nhsNumber;
-            _headerController.ReplaceHeader(HttpConst.Headers.Authorization, _jwtHelper.GetBearerToken());
+            Jwt.RequestedPatientNHSNumber = nhsNumber;
+            Headers.ReplaceHeader(HttpConst.Headers.Authorization, Jwt.GetBearerToken());
         }
 
         [Given(@"I do not send header ""(.*)""")]
         public void GivenIDoNotSendHeader(string headerKey)
         {
-            _headerController.RemoveHeader(headerKey);
+            Headers.RemoveHeader(headerKey);
         }
 
         // Http Request Steps
@@ -323,7 +332,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
 
             // Add The Headers
-            foreach (var header in _headerController.GetRequestHeaders())
+            foreach (var header in Headers.GetRequestHeaders())
             {
                 Console.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
                 restRequest.AddHeader(header.Key, header.Value);
