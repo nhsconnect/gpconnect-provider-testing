@@ -1,4 +1,5 @@
-﻿Feature: Security
+﻿@security
+Feature: Security
 
 Scenario: Security reject a  non ssl request
 	Given I am using the default server

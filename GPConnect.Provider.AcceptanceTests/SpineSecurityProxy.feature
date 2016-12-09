@@ -1,4 +1,5 @@
-﻿Feature: SpineSecurityProxy
+﻿@ssp
+Feature: SpineSecurityProxy
 
 Scenario: SSP TraceID header not included in request
 	Given I am using the default server

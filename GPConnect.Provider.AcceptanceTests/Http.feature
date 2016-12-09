@@ -1,4 +1,5 @@
-﻿Feature: Http
+﻿@http
+Feature: Http
 
 Scenario: Http Perform a successful GET request
 	Given I am using server "fhirtest.uhn.ca" on port "80"

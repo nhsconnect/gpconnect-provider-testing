@@ -1,4 +1,5 @@
-﻿Feature: JWT
+﻿@jwt
+Feature: JWT
 
 Scenario: JWT expiry time greater than 300 seconds
 	Given I am using the default server

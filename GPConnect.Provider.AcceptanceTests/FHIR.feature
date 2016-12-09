@@ -1,4 +1,5 @@
-﻿Feature: Fhir
+﻿@fhir
+Feature: Fhir
 
 Scenario: Fhir Retrieve the care record for a patient
 	Given I am using the default server
