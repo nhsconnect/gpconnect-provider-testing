@@ -69,8 +69,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAmRequestingTheCareRecordSection(string careRecordSection)
         {
             // TODO Their Is A Bug In The Demonstrator -> It's Not Using A CodeableConcept For The RecordSection
-            //FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(careRecordSection));
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, new FhirString(careRecordSection));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(careRecordSection));
+            //FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, new FhirString(careRecordSection));
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
