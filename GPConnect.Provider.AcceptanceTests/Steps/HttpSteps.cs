@@ -154,7 +154,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response status code should be ""(.*)""")]
         public void ThenTheResponseStatusCodeShouldBe(string statusCode)
         {
-            ResponseStatusCode.ToString().ShouldBe(statusCode);
+            ((int)ResponseStatusCode).ToString().ShouldBe(statusCode);
             Log.WriteLine("Response HttpStatusCode should be {0} but was {1}", statusCode, ResponseStatusCode);
         }
 
