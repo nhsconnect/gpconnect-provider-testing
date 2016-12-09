@@ -1,4 +1,4 @@
-﻿Feature: Fhir-Base
+﻿Feature: Fhir Base
 
 Scenario: Fhir Get MetaData
 	Given I am using the default server

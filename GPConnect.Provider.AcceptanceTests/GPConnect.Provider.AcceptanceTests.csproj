@@ -97,18 +97,13 @@
     <Compile Include="Context\HttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
-    <Compile Include="FHIR-Base.feature.cs">
-      <DependentUpon>FHIR-Base.feature</DependentUpon>
+    <Compile Include="FhirBase.feature.cs">
+      <DependentUpon>FhirBase.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Helpers\AppSettingsHelper.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
-    <Compile Include="FHIR.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FHIR.feature</DependentUpon>
-    </Compile>
     <Compile Include="Foundation.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -160,13 +155,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Audit.feature.cs</LastGenOutput>
     </None>
-    <None Include="FHIR-Base.feature">
+    <None Include="FhirBase.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FHIR-Base.feature.cs</LastGenOutput>
-    </None>
-    <None Include="FHIR.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FHIR.feature.cs</LastGenOutput>
+      <LastGenOutput>FhirBase.feature.cs</LastGenOutput>
     </None>
     <None Include="Foundation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
