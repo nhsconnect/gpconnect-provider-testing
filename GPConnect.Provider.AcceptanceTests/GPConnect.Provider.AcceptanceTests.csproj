@@ -93,6 +93,9 @@
     <Compile Include="Constants\HttpConst.cs" />
     <Compile Include="Constants\JwtConst.cs" />
     <Compile Include="Constants\SecurityConst.cs" />
+    <Compile Include="Context\FhirContext.cs" />
+    <Compile Include="Context\HttpContext.cs" />
+    <Compile Include="Context\SecurityContext.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
     <Compile Include="Helpers\AppSettingsHelper.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
@@ -106,7 +109,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Foundation.feature</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EndpointHelper.cs" />
     <Compile Include="Helpers\FhirHelper.cs" />
     <Compile Include="Helpers\GlobalContext.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />

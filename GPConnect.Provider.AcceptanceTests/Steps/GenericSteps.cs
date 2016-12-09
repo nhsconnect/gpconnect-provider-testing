@@ -2,6 +2,7 @@
 using System.IO;
 using BoDi;
 using GPConnect.Provider.AcceptanceTests.Constants;
+using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using TechTalk.SpecFlow;
@@ -9,18 +10,15 @@ using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-
     [Binding]
     public class GenericSteps : TechTalk.SpecFlow.Steps
     {
         private readonly IObjectContainer _objectContainer;
-        private readonly ScenarioContext _scenarioContext;
-
-        public GenericSteps(IObjectContainer objectContainer, ScenarioContext scenarioContext)
+        
+        public GenericSteps(IObjectContainer objectContainer)
         {
             Log.WriteLine("GenericSteps() Constructor");
             _objectContainer = objectContainer;
-            _scenarioContext = scenarioContext;
         }
 
         [BeforeTestRun]
@@ -39,8 +37,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void InitializeContainer()
         {
             Log.WriteLine("InitializeContainer For Dependency Injection");
-            _objectContainer.RegisterTypeAs<SecuritySteps, ISecuritySteps>();
-            _objectContainer.RegisterTypeAs<HttpSteps, IHttpSteps>();
+            _objectContainer.RegisterTypeAs<SecurityContext, ISecurityContext>();
+            _objectContainer.RegisterTypeAs<HttpContext, IHttpContext>();
         }
 
         [BeforeScenario(Order=1)]
@@ -50,12 +48,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine(FeatureContext.Current.FeatureInfo.Description);
             Log.WriteLine("");
             Log.WriteLine("Scenario: " + ScenarioContext.Current.ScenarioInfo.Title);
-        }
-
-        [BeforeScenario(Order = 2)]
-        public void LoadAppConfig()
-        {
-            AppSettingsHelper.LoadAppSettings(_scenarioContext);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Constants;
+using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using GPConnect.Provider.AcceptanceTests.Tables;
@@ -22,29 +23,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     [Binding]
     public class FhirSteps : TechTalk.SpecFlow.Steps
     {
-        private readonly ScenarioContext _scenarioContext;
-        private readonly HttpSteps _httpSteps;
-        private readonly SecuritySteps _securitySteps;
-
-        private static class Context
-        {
-            public const string FhirRequestParameters = "fhirRequestParameters";
-            public const string FhirResponseResource = "fhirResponseResource";
-        }
-
-        // FHIR Details
-
-        private Parameters FhirRequestParameters => _scenarioContext.Get<Parameters>(Context.FhirRequestParameters);
-        private Resource FhirResponseResource => _scenarioContext.Get<Resource>(Context.FhirResponseResource);
+        private readonly FhirContext FhirContext;
+        private readonly SecurityContext SecurityContext;
+        private readonly HttpContext HttpContext;
         
         // Constructor
 
-        public FhirSteps(ScenarioContext scenarioContext, SecuritySteps securitySteps, HttpSteps httpSteps)
+        public FhirSteps(SecurityContext securityContext, HttpContext httpContext, FhirContext fhirContext)
         {
             Log.WriteLine("FhirSteps() Constructor");
-            _scenarioContext = scenarioContext;
-            _httpSteps = httpSteps;
-            _securitySteps = securitySteps;
+            SecurityContext = securityContext;
+            HttpContext = httpContext;            
+            FhirContext = fhirContext;
         }
 
         // Before Scenario
@@ -53,14 +43,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ClearFhirOperationParameters()
         {
             Log.WriteLine("ClearFhirOperationParameters()");
-            _scenarioContext.Set(new Parameters(), Context.FhirRequestParameters);
+            FhirContext.FhirRequestParameters = new Parameters();
         }
-        
+
         // FHIR Operation Steps
 
         [Given(@"I author a request for the ""(.*)"" care record section for patient with NHS Number ""(.*)""")]
         public void IAuthorARequestForTheCareRecordSection(string recordSectionCode, string nhsNumber)
-        {            
+        {
             Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
             And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
             And($@"I am requesting the record for patient with NHS Number ""{nhsNumber}""");
@@ -72,26 +62,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
             And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
-            FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
         }
 
         [Given(@"I am requesting the ""(.*)"" care record section")]
         public void GivenIAmRequestingTheCareRecordSection(string careRecordSection)
         {
             // TODO Their Is A Bug In The Demonstrator -> It's Not Using A CodeableConcept For The RecordSection
-            FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(careRecordSection));
-            //FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, new FhirString(careRecordSection));
+            //FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(careRecordSection));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, new FhirString(careRecordSection));
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
         public void IRequestTheFHIROperation(string operation)
         {
             var preferredFormat = ResourceFormat.Json;
-            if (!_httpSteps.Headers.GetHeaderValue(HttpConst.Headers.Accept).Equals(FhirConst.ContentTypes.JsonFhir))
+            if (!HttpContext.Headers.GetHeaderValue(HttpConst.Headers.Accept).Equals(FhirConst.ContentTypes.JsonFhir))
             {
                 preferredFormat = ResourceFormat.Xml;
             }
-            var fhirClient = new FhirClient(EndpointHelper.GetProviderURL(_scenarioContext))
+            var fhirClient = new FhirClient(HttpContext.ProviderAddress)
             {
                 PreferredFormat = preferredFormat
             };
@@ -102,21 +92,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Log.WriteLine("*** OnBeforeRequest ***");
                 var client = (FhirClient)sender;
                 // Setup The Web Proxy
-                if (_httpSteps.UseWebProxy)
+                if (HttpContext.UseWebProxy)
                 {
-                    args.RawRequest.Proxy = new WebProxy(new Uri(EndpointHelper.GetWebProxyURL(_scenarioContext), UriKind.Absolute));
+                    args.RawRequest.Proxy = new WebProxy(new Uri(HttpContext.WebProxyAddress, UriKind.Absolute));
                 }
                 // Add The Request Headers Apart From The Accept Header
-                foreach (var header in _httpSteps.Headers.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.Accept))
+                foreach (var header in HttpContext.Headers.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.Accept))
                 {
                     args.RawRequest.Headers.Add(header.Key, header.Value);
                     Log.WriteLine("Added Header Key='{0}' Value='{1}'", header.Key, header.Value);
                 }
                 // Add The Client Certificate
-                if (_securitySteps.SendClientCert)
+                if (SecurityContext.SendClientCert)
                 {
-                    args.RawRequest.ClientCertificates.Add(_securitySteps.ClientCert);
-                    Log.WriteLine("Added ClientCertificate Thumbprint='{0}'", _securitySteps.ClientCertThumbPrint);
+                    args.RawRequest.ClientCertificates.Add(SecurityContext.ClientCert);
+                    Log.WriteLine("Added ClientCertificate Thumbprint='{0}'", SecurityContext.ClientCertThumbPrint);
                 }
             };
 
@@ -125,21 +115,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 Log.WriteLine("*** OnAfterResponse ***");
                 var client = (FhirClient)sender;
-                _scenarioContext.Set(client.LastResponse.StatusCode, HttpSteps.Context.ResponseStatusCode);
+                HttpContext.ResponseStatusCode = client.LastResponse.StatusCode;
                 Log.WriteLine("Response StatusCode={0}", client.LastResponse.StatusCode);
-                _scenarioContext.Set(client.LastResponse.ContentType, HttpSteps.Context.ResponseContentType);
+                HttpContext.ResponseContentType = client.LastResponse.ContentType;
                 Log.WriteLine("Response ContentType={0}", client.LastResponse.ContentType);
             };
 
-            // Make The Request
-            var fhirResource = fhirClient.TypeOperation<Patient>(operation, FhirRequestParameters);
-            _scenarioContext.Set(fhirResource, Context.FhirResponseResource);
+            // Make The Request And Save The Returned Resource
+            FhirContext.FhirResponseResource = fhirClient.TypeOperation<Patient>(operation, FhirContext.FhirRequestParameters);
 
             // Grab The Response Body
-            var responseBody = fhirClient.LastBodyAsText;
-            _scenarioContext.Set(responseBody, HttpSteps.Context.ResponseBody);
-            Log.WriteLine("Response Body={0}", responseBody);
-
+            HttpContext.ResponseBody = fhirClient.LastBodyAsText;
+            
             // TODO Parse The XML or JSON For Easier Processing
         }
 
@@ -148,41 +135,41 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response body should be FHIR JSON")]
         public void ThenTheResponseBodyShouldBeFHIRJSON()
         {
-            _httpSteps.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.JsonFhir);
-            Log.WriteLine("Response ContentType={0}", _httpSteps.ResponseContentType);
+            HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.JsonFhir);
+            Log.WriteLine("Response ContentType={0}", HttpContext.ResponseContentType);
             // TODO Move JSON Parsing Out Of Here
-            _scenarioContext.Set(JObject.Parse(_httpSteps.ResponseBody), HttpSteps.Context.ResponseJSON);
+            HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
         }
 
         [Then(@"the response body should be FHIR XML")]
         public void ThenTheResponseBodyShouldBeFHIRXML()
         {
-            _httpSteps.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.XmlFhir);
-            Log.WriteLine("Response ContentType={0}", _httpSteps.ResponseContentType);
+            HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.XmlFhir);
+            Log.WriteLine("Response ContentType={0}", HttpContext.ResponseContentType);
             // TODO Move XML Parsing Out Of Here
-            _scenarioContext.Set(XDocument.Parse(_httpSteps.ResponseBody), HttpSteps.Context.ResponseXML);
+            HttpContext.ResponseXML = XDocument.Parse(HttpContext.ResponseBody);
         }
 
         [Then(@"the JSON value ""(.*)"" should be ""(.*)""")]
         public void ThenTheJSONValueShouldBe(string key, string value)
         {
-            Log.WriteLine("Json Key={0} Value={1} Expect={2}", key, _httpSteps.ResponseJSON[key], value);
-            _httpSteps.ResponseJSON[key].ShouldBe(value);
+            Log.WriteLine("Json Key={0} Value={1} Expect={2}", key, HttpContext.ResponseJSON[key], value);
+            HttpContext.ResponseJSON[key].ShouldBe(value);
         }
 
         [Then(@"the JSON array ""([^""]*)"" should contain ""([^""]*)""")]
         public void ThenTheJSONArrayShouldContain(string key, string value)
         {
-            Log.WriteLine("Array " + _httpSteps.ResponseJSON[key] + "should contain " + value);
-            var passed = _httpSteps.ResponseJSON[key].Any(entry => string.Equals(entry.Value<string>(), value));
+            Log.WriteLine("Array " + HttpContext.ResponseJSON[key] + "should contain " + value);
+            var passed = HttpContext.ResponseJSON[key].Any(entry => string.Equals(entry.Value<string>(), value));
             passed.ShouldBeTrue();
         }
 
         [Then(@"the JSON array ""([^""]*)"" should contain ""([^""]*)"" or ""([^""]*)""")]
         public void ThenTheJSONArrayShouldContain(string key, string value1, string value2)
         {
-            Log.WriteLine("Array " + _httpSteps.ResponseJSON[key] + "should contain " + value1 + " or " + value2);
-            var passed = _httpSteps.ResponseJSON[key].Any(entry => string.Equals(entry.Value<string>(), value1) || string.Equals(entry.Value<string>(), value2));
+            Log.WriteLine("Array " + HttpContext.ResponseJSON[key] + "should contain " + value1 + " or " + value2);
+            var passed = HttpContext.ResponseJSON[key].Any(entry => string.Equals(entry.Value<string>(), value1) || string.Equals(entry.Value<string>(), value2));
             passed.ShouldBeTrue();
         }
 
@@ -190,7 +177,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheJSONElementShouldBePresent(string jsonPath)
         {
             Log.WriteLine("Json KeyPath={0} should be present", jsonPath);
-            _httpSteps.ResponseJSON.SelectToken(jsonPath).ShouldNotBeNull();
+            HttpContext.ResponseJSON.SelectToken(jsonPath).ShouldNotBeNull();
         }
 
     }

@@ -16,7 +16,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 var signingCert = store.Certificates.Find(X509FindType.FindByThumbprint, clientCertThumbPrint, false);
                 if (signingCert.Count != 1)
                 {
-                    throw new FileNotFoundException(string.Format("Cert with thumbprint: '{0}' not found in local machine cert store.", clientCertThumbPrint));
+                    throw new FileNotFoundException($"Cert with thumbprint: '{clientCertThumbPrint}' not found in local machine cert store.");
                 }
                 Log.WriteLine("Client Certificate Found = " + signingCert[0]);
                 return signingCert[0];

@@ -9,7 +9,6 @@ using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-
     [Binding]
     public class JwtSteps : TechTalk.SpecFlow.Steps
     {
