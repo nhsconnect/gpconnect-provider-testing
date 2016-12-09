@@ -68,10 +68,10 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Fhir Retrieve the care record for a patient")]
-        public virtual void FhirRetrieveTheCareRecordForAPatient()
+        [NUnit.Framework.DescriptionAttribute("Retrieve a care record section for a patient")]
+        public virtual void RetrieveACareRecordSectionForAPatient()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir Retrieve the care record for a patient", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a care record section for a patient", ((string[])(null)));
 #line 4
 this.ScenarioSetup(scenarioInfo);
 #line 5
@@ -95,7 +95,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Fhir Retrieve the care record sectons for a patient")]
+        [NUnit.Framework.DescriptionAttribute("Retrieve the care record sectons for a patient")]
         [NUnit.Framework.TestCaseAttribute("ADM", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ALL", new string[0])]
         [NUnit.Framework.TestCaseAttribute("CLI", new string[0])]
@@ -107,9 +107,9 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("PRB", new string[0])]
         [NUnit.Framework.TestCaseAttribute("REF", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", new string[0])]
-        public virtual void FhirRetrieveTheCareRecordSectonsForAPatient(string code, string[] exampleTags)
+        public virtual void RetrieveTheCareRecordSectonsForAPatient(string code, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir Retrieve the care record sectons for a patient", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the care record sectons for a patient", exampleTags);
 #line 13
 this.ScenarioSetup(scenarioInfo);
 #line 14

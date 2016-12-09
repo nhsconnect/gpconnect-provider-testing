@@ -1,7 +1,7 @@
 ﻿@fhir @accessrecord
 Feature: AccessRecord
 
-Scenario: Fhir Retrieve the care record for a patient
+Scenario: Retrieve a care record section for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "SUM" care record section for patient with NHS Number "9000000033"
@@ -10,7 +10,7 @@ Scenario: Fhir Retrieve the care record for a patient
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "Bundle"
 
-Scenario Outline: Fhir Retrieve the care record sectons for a patient
+Scenario Outline: Retrieve the care record sectons for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am requesting the record for patient with NHS Number "9000000033"
