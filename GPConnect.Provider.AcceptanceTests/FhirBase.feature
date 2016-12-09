@@ -1,6 +1,8 @@
 ﻿@fhir @dstu2
 Feature: Fhir Base
 
+# Conformance profile test scenarios
+
 Scenario: Fhir Get MetaData
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -35,7 +37,16 @@ Scenario: Conformance profile supported fhir version
 		And the response body should be FHIR JSON
 		And the JSON value "fhirVersion" should be "1.0.2"
 
-Scenario: Fhir Response ContentType JSON with Accept Header same as request type
+
+Scenario: Conformance profile supports the gpc.getcarerecord operation
+	# Check for name
+	# CHeck for reference
+
+
+
+# Content-Type test scenarios
+
+Scenario: Fhir content type test where Accept header is JSON and request payload is JSON
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am using "application/json+fhir" to communicate with the server
@@ -44,7 +55,7 @@ Scenario: Fhir Response ContentType JSON with Accept Header same as request type
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-Scenario: Fhir Response ContentType XML with Accept Header same as request type
+Scenario: Fhir content type test where Accept header is XML and request payload is XML
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am using "application/xml+fhir" to communicate with the server
@@ -52,3 +63,29 @@ Scenario: Fhir Response ContentType XML with Accept Header same as request type
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
+
+Scenario: Fhir content type test where Accept header is JSON and request payload is XML
+
+Scenario: Fhir content type test where Accept header is XML and request payload is JSON
+
+Scenario: Fhir content type test where _format parameter is JSON and request payload is JSON
+
+Scenario: Fhir content type test where _format parameter is JSON and request payload is XML
+
+Scenario: Fhir content type test where _format parameter is XML and request payload is XML
+
+Scenario: Fhir content type test where _format parameter is XML and request payload is JSON
+
+Scenario: Fhir content type test where Accept header is XML and _format parameter is XML
+
+Scenario: Fhir content type test where Accept header is XML and _format parameter is JSON
+
+Scenario: Fhir content type test where Accept header is JSON and _format parameter is JSON
+
+Scenario: Fhir content type test where Accept header is JSON and _format parameter is XML
+
+Scenario: FHIR content type test where Invalid content type application/xml is sent
+
+Scenario: FHIR content type test where Invalid content type application/json is sent
+
+Scenario: FHIR content type test where Invalid content type sent text/xml
