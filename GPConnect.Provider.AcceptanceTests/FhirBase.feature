@@ -1,4 +1,5 @@
-﻿Feature: Fhir Base
+﻿@fhir @dstu2
+Feature: Fhir Base
 
 Scenario: Fhir Get MetaData
 	Given I am using the default server
