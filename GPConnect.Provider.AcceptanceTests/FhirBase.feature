@@ -43,6 +43,22 @@ Scenario: Conformance profile supports the gpc.getcarerecord operation
 		And the response body should be FHIR JSON
 		And the conformance profile should contain the "gpc.getcarerecord" operation
 
+Scenario: FHIR request content type XML but no accept header or _format sent with request
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the request content type to "application/xml+fhir"
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+Scenario: FHIR request content type JSON but no accept header or _format sent with request
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the request content type to "application/json+fhir"
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
 Scenario: Fhir content type test where Accept header is JSON and request payload is JSON
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -62,8 +78,22 @@ Scenario: Fhir content type test where Accept header is XML and request payload 
 		And the response body should be FHIR XML
 
 Scenario: Fhir content type test where Accept header is JSON and request payload is XML
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the request content type to "application/xml+fhir"
+		And I set the Accept header to "application/json+fhir"
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
 
 Scenario: Fhir content type test where Accept header is XML and request payload is JSON
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the request content type to "application/json+fhir"
+		And I set the Accept header to "application/xml+fhir"
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
 
 Scenario: Fhir content type test where _format parameter is JSON and request payload is JSON
 
@@ -82,11 +112,32 @@ Scenario: Fhir content type test where Accept header is JSON and _format paramet
 Scenario: Fhir content type test where Accept header is JSON and _format parameter is XML
 
 Scenario: FHIR content type test where Invalid content type application/xml is sent
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the request content type to "application/xml"
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate unsupported media type error
 
 Scenario: FHIR content type test where Invalid content type application/json is sent
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the request content type to "applicaiton/json"
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate unsupported media type error
 
 Scenario: FHIR content type test where Invalid content type sent text/xml
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the request content type to "text/xml"
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate unsupported media type error
 
-Scenario: FHIR request content type XML but no accept header or _format sent with request
+Scenario: Fhir content type test where Accept header is unsupported media type and request payload is JSON
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the request content type to "application/json+fhir"
+		And I set the Accept header to "text/xml"
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate unsupported media type error
 
-Scenario: FHIR request content type JSON but no accept header or _format sent with request
+Scenario: Fhir content type test where _format parameter is an unsupported media type and request payload is xml

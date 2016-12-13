@@ -221,6 +221,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestBody = body;
         }
 
+        [Given(@"I set the request content type to ""(.*)""")]
+        public void GivenISetTheRequestTypeTo(string requestContentType)
+        {
+            HttpContext.RequestContentType = requestContentType;
+        }
+
+        [Given(@"I set the Accept header to ""(.*)""")]
+        public void GivenISetTheAcceptHeaderTo(string acceptContentType)
+        {
+            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.Accept, acceptContentType);
+        }
+
         [When(@"I make a GET request to ""(.*)""")]
         public void WhenIMakeAGETRequestTo(string relativeUrl)
         {
@@ -327,6 +339,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheResponseStatusCodeShouldIndicateFailure()
         {
             HttpContext.ResponseStatusCode.ShouldNotBe(HttpStatusCode.OK);
+        }
+
+        [Then(@"the response status code should indicate unsupported media type error")]
+        public void ThenTheResponseShouldIndicateUnsupportedMediaTypeError()
+        {
+            HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.UnsupportedMediaType);
+            Log.WriteLine("Response HttpStatusCode should be {0} but was {1}", HttpStatusCode.UnsupportedMediaType, HttpContext.ResponseStatusCode);
         }
 
         [Then(@"the response body should be JSON")]
