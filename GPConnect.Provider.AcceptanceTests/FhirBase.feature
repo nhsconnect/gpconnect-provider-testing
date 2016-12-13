@@ -47,6 +47,7 @@ Scenario: FHIR request content type XML but no accept header or _format sent wit
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 		And I set the request content type to "application/xml+fhir"
+		And I do not send header "Accept"
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
@@ -55,6 +56,7 @@ Scenario: FHIR request content type JSON but no accept header or _format sent wi
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 		And I set the request content type to "application/json+fhir"
+		And I do not send header "Accept"
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
