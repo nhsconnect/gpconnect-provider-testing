@@ -180,5 +180,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseJSON.SelectToken(jsonPath).ShouldNotBeNull();
         }
 
+        [Then(@"the conformance profile should contain the ""([^""]*)"" operation")]
+        public void ThenTheConformanceProfileShouldContainTheOperation(string operationName) {
+            Log.WriteLine("Conformance profile should contain operation = {0}", operationName);
+            var passed = false;
+            foreach (var rest in HttpContext.ResponseJSON.SelectToken("rest")) {
+                foreach (var operation in rest.SelectToken("operation"))
+                {
+                    if (string.Equals(operationName, operation["name"].Value<string>()) && operation.SelectToken("definition.reference") != null) {
+                        passed = true;
+                        break;
+                    }
+                }
+                if (passed) { break; }
+            }
+            passed.ShouldBeTrue();
+        }
+
     }
 }

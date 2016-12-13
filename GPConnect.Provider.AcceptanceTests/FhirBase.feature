@@ -1,8 +1,6 @@
 ﻿@fhir @dstu2
 Feature: Fhir Base
 
-# Conformance profile test scenarios
-
 Scenario: Fhir Get MetaData
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -37,14 +35,13 @@ Scenario: Conformance profile supported fhir version
 		And the response body should be FHIR JSON
 		And the JSON value "fhirVersion" should be "1.0.2"
 
-
 Scenario: Conformance profile supports the gpc.getcarerecord operation
-	# Check for name
-	# CHeck for reference
-
-
-
-# Content-Type test scenarios
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the conformance profile should contain the "gpc.getcarerecord" operation
 
 Scenario: Fhir content type test where Accept header is JSON and request payload is JSON
 	Given I am using the default server
@@ -89,3 +86,7 @@ Scenario: FHIR content type test where Invalid content type application/xml is s
 Scenario: FHIR content type test where Invalid content type application/json is sent
 
 Scenario: FHIR content type test where Invalid content type sent text/xml
+
+Scenario: FHIR request content type XML but no accept header or _format sent with request
+
+Scenario: FHIR request content type JSON but no accept header or _format sent with request
