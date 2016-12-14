@@ -13,6 +13,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
     {
         // Headers Helper
         HttpHeaderHelper Headers { get; }
+        // Http Helper
+        HttpHelper Http { get; }
         // JWT Helper
         JwtHelper Jwt { get; }
         // Security Context
@@ -59,18 +61,22 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
+        // Http Helper
+        public HttpHelper Http { get; }
+
         // JWT Helper
         public JwtHelper Jwt { get; }
 
         // Security Context
         public SecurityContext SecurityContext { get; }
 
-        public HttpContext(ScenarioContext scenarioContext, HttpHeaderHelper headerHelper, JwtHelper jwtHelper, SecurityContext securityContext)
+        public HttpContext(ScenarioContext scenarioContext, HttpHeaderHelper headerHelper, JwtHelper jwtHelper, SecurityContext securityContext, HttpHelper httpHelper)
         {
             ScenarioContext = scenarioContext;
             Headers = headerHelper;
             Jwt = jwtHelper;
             SecurityContext = securityContext;
+            Http = httpHelper;
         }
 
         private static class Context

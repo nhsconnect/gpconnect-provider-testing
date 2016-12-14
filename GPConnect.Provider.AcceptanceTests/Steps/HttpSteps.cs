@@ -44,6 +44,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.Headers.Clear();
         }
 
+        [BeforeScenario(Order = 3)]
+        public void ClearParameters()
+        {
+            HttpContext.Http.ClearParameters();
+        }
+
         // Security Validation Steps
 
         [Then(@"the response status code should indicate authentication failure")]
@@ -233,6 +239,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.Headers.ReplaceHeader(HttpConst.Headers.Accept, acceptContentType);
         }
 
+        [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
+        public void GivenIAddTheParameterWithTheValue(string parameterName, string parameterValue)
+        {
+            HttpContext.Http.AddParameter(parameterName, parameterValue);
+        }
+
         [When(@"I make a GET request to ""(.*)""")]
         public void WhenIMakeAGETRequestTo(string relativeUrl)
         {
@@ -314,6 +326,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
                 restRequest.AddHeader(header.Key, header.Value);
+            }
+
+            // Add Parameters
+            foreach (var parameter in HttpContext.Http.GetParameters())
+            {
+                Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
+                restRequest.AddParameter(parameter.Key, parameter.Value);
             }
 
             // Execute The Request
