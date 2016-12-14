@@ -210,14 +210,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set a JSON request body ""(.*)""")]
         public void GivenISetAJSONRequestBody(string body)
         {
-            HttpContext.RequestContentType = HttpConst.ContentTypes.Json;
+            HttpContext.RequestContentType = FhirConst.ContentTypes.JsonFhir;
             HttpContext.RequestBody = body;
         }
 
         [Given(@"I set an XML request body ""(.*)""")]
         public void GivenISetAnXMLRequestBody(string body)
         {
-            HttpContext.RequestContentType = HttpConst.ContentTypes.Xml;
+            HttpContext.RequestContentType = FhirConst.ContentTypes.XmlFhir;
             HttpContext.RequestBody = body;
         }
 
@@ -283,8 +283,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Build The Rest Request
             var restClient = new RestClient(HttpContext.EndpointAddress);
             var restRequest = new RestRequest(relativeUrl, method);
-            restRequest.AddParameter(HttpConst.ContentTypes.Json, body, ParameterType.RequestBody);
-
+            
             // Setup The Web Proxy
             if (HttpContext.UseWebProxy)
             {
@@ -302,6 +301,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 restClient.ClientCertificates.Clear();
                 restClient.ClientCertificates.Add(clientCert);
             }
+
+            // Remove default handlers to stop it sending default Accept header
+            restClient.ClearHandlers();
+
+            // Set the Content-Type header
+            restRequest.AddParameter(HttpContext.RequestContentType, body, ParameterType.RequestBody);
+            HttpContext.Headers.AddHeader(HttpConst.Headers.ContentType, HttpContext.RequestContentType);
 
             // Add The Headers
             foreach (var header in HttpContext.Headers.GetRequestHeaders())

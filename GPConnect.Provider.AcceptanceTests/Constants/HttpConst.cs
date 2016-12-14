@@ -17,6 +17,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string SspTo = "Ssp-To";
             public const string SspInteractionId = "Ssp-InteractionId";
             public const string SspTraceID = "Ssp-TraceID";
+            public const string ContentType = "Content-Type";
         }
     }
 }
