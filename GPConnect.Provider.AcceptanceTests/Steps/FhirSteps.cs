@@ -122,7 +122,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             };
 
             // Make The Request And Save The Returned Resource
-            FhirContext.FhirResponseResource = fhirClient.TypeOperation<Patient>(operation, FhirContext.FhirRequestParameters);
+            try
+            {
+                FhirContext.FhirResponseResource = fhirClient.TypeOperation<Patient>(operation, FhirContext.FhirRequestParameters);
+            }
+            catch (Exception e) {
+                Log.WriteLine(e.StackTrace);
+            }
 
             // Grab The Response Body
             HttpContext.ResponseBody = fhirClient.LastBodyAsText;
