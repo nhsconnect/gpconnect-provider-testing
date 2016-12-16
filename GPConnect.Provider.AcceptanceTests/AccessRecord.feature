@@ -46,11 +46,25 @@ Scenario: Invalid record section requested
 
 Scenario: Multiple record sections requested
 
+Scenario: Multiple duplication record sections in request
+
+Scenario: Record section with invalid system for codable concept
+
+Scenario: Request record sections with String type rather than CodableConcept
+
 Scenario: No patient NHS number supplied
 
 Scenario: Invalid NHS number supplied
 
+Scenario: Invalid identifier system for patient NHS number
+
+Scenario: Multiple different NHS number parameters in request
+
+Scenario: Duplicate NHS number parameters in request
+
 Scenario: No patient found with NHS number
+
+Scenario: Request care record section with patientNHSNumber using String type value
 
 Scenario: Invalid start date parameter
 
@@ -58,4 +72,16 @@ Scenario: Invalid end date parameter
 
 Scenario: Time period specified for a care record section that must not be filtered
 
+Scenario: Time period specified for a care record section that can be filtered
+	# make sure that these sections accept the time period parameter
+
 Scenario: Access blocked to care record as no patient consent
+
+Scenario: Request patient summary with parameters in oposite order to other tests
+
+Scenario: Request care record with resource type other than Parameters
+
+Scenario: response should be bundle containing all required elements
+
+Scenario: response bundle should contain all elements in correct order
+
