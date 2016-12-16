@@ -153,6 +153,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Headers.ReplaceHeader(HttpConst.Headers.Authorization, Jwt.GetBearerToken());
         }
 
+        [Given(@"I set a JWT requesting practitioner with missing Job Role")]
+        public void ISetAJWTRequestingPractitionerWithMissingJobRole()
+        {
+            var practitioner = FhirHelper.GetDefaultPractitioner();
+            practitioner.PractitionerRole = null;
+            Jwt.SetRequestingPractitioner("1", practitioner.ToJson());
+            Headers.ReplaceHeader(HttpConst.Headers.Authorization, Jwt.GetBearerToken());
+        }
+
         [Given(@"I set a JWT requesting practitioner with missing SDS Job Role")]
         public void ISetAJWTRequestingPractitionerWithMissingSDSJobRole()
         {

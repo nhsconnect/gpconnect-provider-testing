@@ -113,6 +113,13 @@ Scenario: JWT requesting practitioner name does not contain a family or given na
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 
+Scenario: JWT requesting practitioner does not contain a practitionerRole
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT requesting practitioner with missing Job Role
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
 Scenario: JWT requesting practitioner practitionerRole does not contain a SDS Job Role name
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
