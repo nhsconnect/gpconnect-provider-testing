@@ -15,7 +15,12 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static CodeableConcept GetRecordSectionCodeableConcept(string recordSectionCode)
         {
-            return new CodeableConcept("http://fhir.nhs.net/ValueSet/gpconnect-record-section-1", recordSectionCode);
+            return GetRecordSectionCodeableConcept("http://fhir.nhs.net/ValueSet/gpconnect-record-section-1", recordSectionCode);
+        }
+
+        public static CodeableConcept GetRecordSectionCodeableConcept(string system, string recordSectionCode)
+        {
+            return new CodeableConcept(system, recordSectionCode);
         }
 
         public static Identifier GetODSCodeIdentifier(string odsCode)

@@ -82,11 +82,25 @@ Scenario: Multiple duplication record sections in request
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Record section with invalid system for codable concept
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the "SUM" care record section with system "http://GPConnectTest.nhs.net/ValueSet/record-section"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Request record sections with String type rather than CodableConcept
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the "SUM" care record section with a string parameter
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
 @ignore
 Scenario: No patient NHS number supplied

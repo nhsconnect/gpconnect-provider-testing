@@ -65,12 +65,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
         }
 
-        [Given(@"I am requesting the ""(.*)"" care record section")]
+        [Given(@"I am requesting the ""([^""]*)"" care record section")]
         public void GivenIAmRequestingTheCareRecordSection(string careRecordSection)
         {
-            // TODO Their Is A Bug In The Demonstrator -> It's Not Using A CodeableConcept For The RecordSection
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(careRecordSection));
-            //FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, new FhirString(careRecordSection));
+        }
+
+        [Given(@"I am requesting the ""([^""]*)"" care record section with a string parameter")]
+        public void GivenIAmRequestingTheCareRecordSectionWithAStringParameter(string careRecordSection)
+        {
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, new FhirString(careRecordSection));
+        }
+
+        [Given(@"I am requesting the ""([^""]*)"" care record section with system ""([^""]*)""")]
+        public void GivenIAmRequestingTheCareRecordSectionWithSystem(string careRecordSection, string system)
+        {
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(system, careRecordSection));
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
