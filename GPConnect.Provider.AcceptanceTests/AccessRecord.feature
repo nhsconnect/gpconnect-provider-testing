@@ -99,7 +99,7 @@ Scenario: Request record sections with String type rather than CodableConcept
 		And I am requesting the record for config patient "patient1"
 		And I am requesting the "SUM" care record section with a string parameter
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "OperationOutcome"
 
@@ -170,7 +170,7 @@ Scenario: Request care record section with patientNHSNumber using String type va
 		And I am requesting the record for config patient "patient1" using a fhir string parameter
 		And I am requesting the "SUM" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "OperationOutcome"
 
@@ -239,12 +239,21 @@ Scenario: Request care record where request resource type is something other tha
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "SUM" care record section for config patient "patient1"
 	When I send a gpc.getcarerecord operation request with invalid resource type payload
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "OperationOutcome"
 
 @ignore
 Scenario: Invalid start date parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "patient1"
+		And I am requesting the "SUM" care record section
+		And I set a time period parameter start date to "abcd" and end date to "2016"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
 @ignore
 Scenario: Invalid end date parameter
