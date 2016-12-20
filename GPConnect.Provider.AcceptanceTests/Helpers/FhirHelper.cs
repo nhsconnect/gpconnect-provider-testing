@@ -122,5 +122,9 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static Period GetDefaultTimePeriodForGetCareRecord() {
             return new Period(new FhirDateTime(DateTime.Now.AddYears(-2)), new FhirDateTime(DateTime.Now));
         }
+
+        public static Period GetTimePeriod(string startDate, string endDate) {
+            return new Period(new FhirDateTime(startDate), new FhirDateTime(endDate));
+        }
     }
 }

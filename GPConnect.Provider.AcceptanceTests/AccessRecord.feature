@@ -243,7 +243,6 @@ Scenario: Request care record where request resource type is something other tha
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Invalid start date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -255,17 +254,49 @@ Scenario: Invalid start date parameter
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Invalid end date parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "patient1"
+		And I am requesting the "SUM" care record section
+		And I set a time period parameter start date to "2014" and end date to "abcd"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Time period where start date parameter is after end date parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "patient1"
+		And I am requesting the "SUM" care record section
+		And I set a time period parameter start date to "2016" and end date to "2014"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Time period with only start date parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "patient1"
+		And I am requesting the "SUM" care record section
+		And I set a time period parameter with start date "2012"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
 
-@ignore
 Scenario: Time period with only end date parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "patient1"
+		And I am requesting the "SUM" care record section
+		And I set a time period parameter with end date "2016"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
 
 @ignore
 Scenario: Time period format start and end date only contain year

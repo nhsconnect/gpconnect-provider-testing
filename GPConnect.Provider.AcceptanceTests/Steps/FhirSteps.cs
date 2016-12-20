@@ -11,6 +11,7 @@ using Hl7.Fhir.Rest;
 using Newtonsoft.Json.Linq;
 using Shouldly;
 using TechTalk.SpecFlow;
+using Hl7.Fhir.Serialization;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
@@ -120,6 +121,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenISetAValidTimePeriodStartAndEndDate()
         {
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.TimePeriod, FhirHelper.GetDefaultTimePeriodForGetCareRecord());
+        }
+
+        [Given(@"I set a time period parameter start date to ""([^""]*)"" and end date to ""([^""]*)""")]
+        public void GivenISetATimePeriodParameterStartDateToAndEndDateTo(string startDate, string endDate)
+        {
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.TimePeriod, FhirHelper.GetTimePeriod(startDate, endDate));
+        }
+
+        [Given(@"I set a time period parameter with start date ""([^""]*)""")]
+        public void GivenISetATimePeriodParameterWithStartDate(string startDate)
+        {
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.TimePeriod, FhirHelper.GetTimePeriod(startDate, null));
+        }
+
+        [Given(@"I set a time period parameter with end date ""([^""]*)""")]
+        public void GivenISetATimePeriodParameterWithEndDate(string endDate)
+        {
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.TimePeriod, FhirHelper.GetTimePeriod(null, endDate));
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
