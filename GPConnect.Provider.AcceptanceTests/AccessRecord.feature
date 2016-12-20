@@ -25,6 +25,7 @@ Examples:
 	| ADM |
 	| ALL |
 	| CLI |
+	| ENC |
 	| IMM |
 	| INV |
 	| MED |
@@ -163,13 +164,56 @@ Scenario: No patient found with NHS number
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Request care record section with patientNHSNumber using String type value
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "patient1" using a fhir string parameter
+		And I am requesting the "SUM" care record section
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
-Scenario: Time period specified for a care record section that can be filtered
-	# make sure that these sections accept the time period parameter
+Scenario Outline: Time period specified for a care record section that can be filtered
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "patient1"
+		And I am requesting the "<Code>" care record section
+		And I set a valid time period start and end date
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
 
+Examples:
+	| Code |
+	| ADM |
+	| CLI |
+	| ENC |
+	| INV |
+	| PAT |
+	| REF |
+	| SUM |
+
+Scenario Outline: Time period specified for a care record section that must not be filtered
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "patient1"
+		And I am requesting the "<Code>" care record section
+		And I set a valid time period start and end date
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
+
+Examples:
+	| Code |
+	| ALL |
+	| IMM |
+	| MED |
+	| OBS |
+	| PRB |
+	
 @ignore
 Scenario: Access blocked to care record as no patient consent
 
@@ -178,9 +222,6 @@ Scenario: Request patient summary with parameters in oposite order to other test
 
 @ignore
 Scenario: Request care record where request resource type is something other than Parameters
-
-@ignore
-Scenario: Time period specified for a care record section that must not be filtered
 
 @ignore
 Scenario: Invalid start date parameter
@@ -196,6 +237,12 @@ Scenario: Time period with only start date parameter
 
 @ignore
 Scenario: Time period with only end date parameter
+
+@ignore
+Scenario: Time period format start and end date only contain year
+
+@ignore
+Scenario: Time period format start and end date only contain year and month
 
 @ignore
 Scenario: response should be bundle containing all mandatory elements

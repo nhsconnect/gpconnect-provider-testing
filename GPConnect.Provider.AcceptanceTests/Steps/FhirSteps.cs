@@ -6,13 +6,11 @@ using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
-using GPConnect.Provider.AcceptanceTests.Tables;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Newtonsoft.Json.Linq;
 using Shouldly;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
@@ -83,6 +81,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
         }
 
+        [Given(@"I am requesting the record for config patient ""([^""]*)"" using a fhir string parameter")]
+        public void GivenIAmRequestingTheRecordForConfigPatientUsingAFHirStringParameter(string patient)
+        {
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
+            And($@"I set the JWT requested record patient NHS number to ""{AppSettingsHelper.Get<string>(patient)}""");
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, new FhirString(AppSettingsHelper.Get<string>(patient)));
+        }
+
+
         [Given(@"I am requesting the record for config patient ""([^""]*)"" of system ""([^""]*)""")]
         public void GivenIAmRequestingTheRecordForConfigPatientOfSystem(string patient, string system)
         {
@@ -107,6 +114,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAmRequestingTheCareRecordSectionWithSystem(string careRecordSection, string system)
         {
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(system, careRecordSection));
+        }
+
+        [Given(@"I set a valid time period start and end date")]
+        public void GivenISetAValidTimePeriodStartAndEndDate()
+        {
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.TimePeriod, FhirHelper.GetDefaultTimePeriodForGetCareRecord());
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]

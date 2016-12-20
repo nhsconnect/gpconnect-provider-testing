@@ -3,6 +3,7 @@ using System.Dynamic;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using Newtonsoft.Json;
+using System;
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
@@ -116,6 +117,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             dynamicDeviceObj.resourceType = newResourceType;
             Log.WriteLine("Converted Type Json Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
             return JsonConvert.SerializeObject(dynamicDeviceObj);
+        }
+
+        public static Period GetDefaultTimePeriodForGetCareRecord() {
+            return new Period(new FhirDateTime(DateTime.Now.AddYears(-2)), new FhirDateTime(DateTime.Now));
         }
     }
 }

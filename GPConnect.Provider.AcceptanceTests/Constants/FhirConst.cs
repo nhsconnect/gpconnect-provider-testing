@@ -13,6 +13,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         {
             public const string PatientNHSNumber = "patientNHSNumber";
             public const string RecordSection = "recordSection";
+            public const string TimePeriod = "timePeriod";
         }
 
         internal static class Resources
