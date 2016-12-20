@@ -282,5 +282,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Jwt.RequestedPatientNHSNumber = nhsNumber;
             Headers.ReplaceHeader(HttpConst.Headers.Authorization, Jwt.GetBearerToken());
         }
+
+        [Given(@"I set the JWT requested record NHS number to config patient ""(.*)""")]
+        public void ISetTheJWTRequestedRecordNHSnumberToConfigPatient(string patient)
+        {
+            Jwt.RequestedPatientNHSNumber = AppSettingsHelper.Get<string>(patient);
+            Headers.ReplaceHeader(HttpConst.Headers.Authorization, Jwt.GetBearerToken());
+        }
     }
 }

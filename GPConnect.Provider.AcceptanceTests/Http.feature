@@ -57,6 +57,6 @@ Scenario: Http incorrect case on url fhir resource
 Scenario: Http operation incorrect case
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-	And I author a request for the "SUM" care record section for patient with NHS Number "9000000033"
+	And I author a request for the "SUM" care record section for config patient "patient1"
 	When I request the FHIR "gpc.getCareRecord" Patient Type operation
 	Then the response status code should indicate failure

@@ -4,7 +4,7 @@ Feature: AccessRecord
 Scenario: Retrieve a care record section for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for patient with NHS Number "9000000033"
+		And I author a request for the "SUM" care record section for config patient "patient1"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -13,7 +13,7 @@ Scenario: Retrieve a care record section for a patient
 Scenario Outline: Retrieve the care record sectons for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the record for config patient "patient1"
 		And I am requesting the "<Code>" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
@@ -45,7 +45,7 @@ Scenario: Empty request
 Scenario: No record section requested
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the record for config patient "patient1"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -54,7 +54,7 @@ Scenario: No record section requested
 Scenario: Invalid record section requested
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "ZZZ" care record section for patient with NHS Number "9000000033"
+		And I author a request for the "ZZZ" care record section for config patient "patient1"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -63,7 +63,7 @@ Scenario: Invalid record section requested
 Scenario: Multiple record sections requested
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the record for config patient "patient1"
 		And I am requesting the "SUM" care record section
 		And I am requesting the "ALL" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -74,7 +74,7 @@ Scenario: Multiple record sections requested
 Scenario: Multiple duplication record sections in request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the record for config patient "patient1"
 		And I am requesting the "SUM" care record section
 		And I am requesting the "SUM" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -85,7 +85,7 @@ Scenario: Multiple duplication record sections in request
 Scenario: Record section with invalid system for codable concept
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the record for config patient "patient1"
 		And I am requesting the "SUM" care record section with system "http://GPConnectTest.nhs.net/ValueSet/record-section"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -95,7 +95,7 @@ Scenario: Record section with invalid system for codable concept
 Scenario: Request record sections with String type rather than CodableConcept
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the record for config patient "patient1"
 		And I am requesting the "SUM" care record section with a string parameter
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -106,7 +106,7 @@ Scenario: No patient NHS number supplied
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am requesting the "SUM" care record section
-		And I set the JWT header for getcarerecord patient with nhs number "9000000033"
+		And I set the JWT header for getcarerecord with config patient "patient1"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -125,7 +125,7 @@ Scenario: Invalid NHS number supplied
 Scenario: Invalid identifier system for patient NHS number
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for patient with identifier "9000000033" of system "http://GPConnectTest.nhs.net/Id/identifierSystem"
+		And I am requesting the record for config patient "patient1" of system "http://GPConnectTest.nhs.net/Id/identifierSystem"
 		And I am requesting the "SUM" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -135,8 +135,8 @@ Scenario: Invalid identifier system for patient NHS number
 Scenario: Multiple different NHS number parameters in request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for patient with NHS Number "9000000009"
-		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the record for config patient "patient1"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -146,16 +146,22 @@ Scenario: Multiple different NHS number parameters in request
 Scenario: Duplicate NHS number parameters in request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for patient with NHS Number "9000000033"
-		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the record for config patient "patient1"
+		And I am requesting the record for config patient "patient1"
 		And I am requesting the "SUM" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: No patient found with NHS number
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "SUM" care record section for config patient "patientNotInSystem"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "404"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
 @ignore
 Scenario: Request care record section with patientNHSNumber using String type value
