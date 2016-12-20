@@ -10,7 +10,12 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
     {
         public static Identifier GetNHSNumberIdentifier(string nhsNumber)
         {
-            return new Identifier("http://fhir.nhs.net/Id/nhs-number", nhsNumber);
+            return GetIdentifier("http://fhir.nhs.net/Id/nhs-number", nhsNumber);
+        }
+
+        public static Identifier GetIdentifier(string system, string nhsNumber)
+        {
+            return new Identifier(system, nhsNumber);
         }
 
         public static CodeableConcept GetRecordSectionCodeableConcept(string recordSectionCode)

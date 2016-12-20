@@ -102,20 +102,57 @@ Scenario: Request record sections with String type rather than CodableConcept
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: No patient NHS number supplied
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the "SUM" care record section
+		And I set the JWT header for getcarerecord patient with nhs number "9000000033"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Invalid NHS number supplied
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for patient with NHS Number "1234567891"
+		And I am requesting the "SUM" care record section
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Invalid identifier system for patient NHS number
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for patient with identifier "9000000033" of system "http://GPConnectTest.nhs.net/Id/identifierSystem"
+		And I am requesting the "SUM" care record section
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Multiple different NHS number parameters in request
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for patient with NHS Number "9000000009"
+		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the "SUM" care record section
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Duplicate NHS number parameters in request
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the record for patient with NHS Number "9000000033"
+		And I am requesting the "SUM" care record section
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
 @ignore
 Scenario: No patient found with NHS number

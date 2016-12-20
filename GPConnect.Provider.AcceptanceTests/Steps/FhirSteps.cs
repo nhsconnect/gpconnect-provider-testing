@@ -48,6 +48,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         // FHIR Operation Steps
 
+        [Given(@"I set the JWT header for getcarerecord patient with nhs number ""([^""]*)""")]
+        public void ISetTheJWTHeaderForGetcarerecordPatientWithNhsNhmber(string nhsNumber) {
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
+            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
+        }
+
+
         [Given(@"I author a request for the ""(.*)"" care record section for patient with NHS Number ""(.*)""")]
         public void IAuthorARequestForTheCareRecordSection(string recordSectionCode, string nhsNumber)
         {
@@ -63,6 +70,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
             And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
+        }
+
+        [Given(@"I am requesting the record for patient with identifier ""([^""]*)"" of system ""([^""]*)""")]
+        public void GivenIAmRequestingTheRecordForPatientWithIdentifierOfSystem(string nhsNumber, string system)
+        {
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
+            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, FhirHelper.GetIdentifier(system, nhsNumber));
         }
 
         [Given(@"I am requesting the ""([^""]*)"" care record section")]
