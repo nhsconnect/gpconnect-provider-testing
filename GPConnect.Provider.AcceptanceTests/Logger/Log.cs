@@ -10,6 +10,20 @@ namespace GPConnect.Provider.AcceptanceTests.Logger
     [Binding]
     internal static class Log
     {
+
+        public static void WriteLine(string message)
+        {
+            if (message == null) return;
+            if (ScenarioContext.Current == null) return;
+
+            if (!ScenarioContext.Current.ContainsKey(ScenarioLogKey))
+                ScenarioContext.Current[ScenarioLogKey] = new LogBuffer();
+
+            var log = (LogBuffer)ScenarioContext.Current[ScenarioLogKey];
+
+            log.Add(message);
+        }
+
         public static void WriteLine(string format, params object[] args)
         {
             if (format == null) return;
