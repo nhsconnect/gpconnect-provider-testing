@@ -214,14 +214,34 @@ Examples:
 	| OBS |
 	| PRB |
 	
-@ignore
 Scenario: Access blocked to care record as no patient consent
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "SUM" care record section for config patient "patientNoSharingConsent"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "403"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
-@ignore
 Scenario: Request patient summary with parameters in oposite order to other tests
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I set a valid time period start and end date
+		And I am requesting the "SUM" care record section
+		And I am requesting the record for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
 
-@ignore
 Scenario: Request care record where request resource type is something other than Parameters
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "SUM" care record section for config patient "patient1"
+	When I send a gpc.getcarerecord operation request with invalid resource type payload
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "OperationOutcome"
 
 @ignore
 Scenario: Invalid start date parameter

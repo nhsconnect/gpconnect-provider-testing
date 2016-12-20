@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using Shouldly;
 using TechTalk.SpecFlow;
+using Hl7.Fhir.Serialization;
 
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable InconsistentNaming
@@ -21,13 +22,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class HttpSteps : TechTalk.SpecFlow.Steps
     {
         private readonly HttpContext HttpContext;
-        
+        private readonly FhirContext FhirContext;
+
         // Constructor
 
-        public HttpSteps(HttpContext httpContext)
+        public HttpSteps(HttpContext httpContext, FhirContext fhirContext)
         {
             Log.WriteLine("HttpSteps() Constructor");
             HttpContext = httpContext;
+            FhirContext = fhirContext;
         }
 
         // Before Scenarios
@@ -350,6 +353,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // TODO Parse The XML or JSON For Easier Processing
 
             LogResponseToDisk();
+        }
+
+        [When(@"I send a gpc.getcarerecord operation request with invalid resource type payload")]
+        public void ISendAGpcGetcarerecordOperationRequestWithInvalidResourceTypePayload()
+        {
+            var parameterPayload = FhirHelper.ChangeResourceTypeString(FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), FhirConst.Resources.InvalidResourceType);
+            Console.WriteLine("parameters = " + parameterPayload);
+            RestRequest(Method.POST, "/Patient/$gpc.getcarerecord", parameterPayload);
         }
 
         // Response Validation Steps
