@@ -254,6 +254,31 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseJSON.SelectToken(jsonPath).ShouldNotBeNull();
         }
 
+        [Then(@"the JSON response bundle should contain the ""(.*)"" resource")]
+        public void ThenTheJSONResponseBundleShouldContainTheResource(string resourceType)
+        {
+            HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '"+resourceType+"')]").ShouldNotBeNull();
+        }
+
+        [Then(@"the JSON response bundle should contain the composition resource as the first entry")]
+        public void ThenTheJSONResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
+        {
+            string.Equals("Composition", HttpContext.ResponseJSON.SelectToken("$.entry[0].resource.resourceType").Value<string>()).ShouldBeTrue();
+        }
+
+        [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)""")]
+        public void ThenResponseBundleEntryShouldContainElement(string entryResourceType, string jsonPath) {
+            var resourceEntry = HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '" + entryResourceType + "')]");
+            resourceEntry.SelectToken(jsonPath).ShouldNotBeNull();
+        }
+
+        [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)"" with value ""([^""]*)""")]
+        public void ThenResponseBundleEntryShouldContainElementWithValue(string entryResourceType, string jsonPath, string elementValue)
+        {
+            var resourceEntry = HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '" + entryResourceType + "')]");
+            string.Equals(resourceEntry.SelectToken(jsonPath).Value<string>(), elementValue).ShouldBeTrue();
+        }
+
         [Then(@"the conformance profile should contain the ""([^""]*)"" operation")]
         public void ThenTheConformanceProfileShouldContainTheOperation(string operationName) {
             Log.WriteLine("Conformance profile should contain operation = {0}", operationName);

@@ -201,11 +201,11 @@
   </Target>
   -->
   <Target Name="AfterBuild">
-  <PropertyGroup>
-    <Pickles_Generate>True</Pickles_Generate>
-	<Pickles_FeatureDirectory>$(MSBuildProjectDirectory)</Pickles_FeatureDirectory>
-    <Pickles_DocumentationFormat>dhtml</Pickles_DocumentationFormat>
-    <Pickles_OutputDirectory>C:\Temp\GPConnect.Provider.AcceptanceTests.Doco</Pickles_OutputDirectory>
-  </PropertyGroup>
+    <PropertyGroup>
+      <Pickles_Generate>True</Pickles_Generate>
+      <Pickles_FeatureDirectory>$(MSBuildProjectDirectory)</Pickles_FeatureDirectory>
+      <Pickles_DocumentationFormat>dhtml</Pickles_DocumentationFormat>
+      <Pickles_OutputDirectory>C:\Temp\GPConnect.Provider.AcceptanceTests.Doco</Pickles_OutputDirectory>
+    </PropertyGroup>
   </Target>
 </Project>

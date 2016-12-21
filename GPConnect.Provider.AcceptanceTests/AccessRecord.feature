@@ -1,15 +1,6 @@
 ﻿@fhir @accessrecord
 Feature: AccessRecord
 
-Scenario: Retrieve a care record section for a patient
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "patient1"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
-
 Scenario Outline: Retrieve the care record sectons for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -298,35 +289,73 @@ Scenario: Time period with only end date parameter
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "Bundle"
 
-@ignore
-Scenario: Time period format start and end date only contain year
-
-@ignore
 Scenario: Time period format start and end date only contain year and month
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "patient1"
+		And I am requesting the "SUM" care record section
+		And I set a time period parameter start date to "2015-02" and end date to "2016-07"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
 
-@ignore
 Scenario: response should be bundle containing all mandatory elements
-	# Composition
-	# Patient
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "SUM" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response bundle should contain the "Composition" resource
+		And the JSON response bundle should contain the "Patient" resource
 	
-@ignore
-Scenario: response bundle should contain composition as the first element
-	# The first entry should be the composition
+Scenario: response bundle should contain composition as the first entry
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "SUM" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response bundle should contain the composition resource as the first entry
 
 @ignore
 Scenario: response conatin the structure definitions in the meta fields for all resources
 
-@ignore
-Scenario: composition contains generic mandatory fields
-	# Date field 
-	# Title (Patient Care Record)
-	# Status 
-		# System (http://hl7.org/fhir/ValueSet/composition-status)
-		# value (Final)
-	# Section 
-		#Title 
-		# Code - System, Code, Display and Text
-		# Text - status and div elements
+Scenario Outline: composition contains generic mandatory fields
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
+		And response bundle entry "Composition" should contain element "resource.date"
+		And response bundle entry "Composition" should contain element "resource.title" with value "Patient Care Record"
+		And response bundle entry "Composition" should contain element "resource.status" with value "final"
+		And response bundle entry "Composition" should contain element "resource.section[0].title" with value "<Title>"
+		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].system" with value "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1"
+		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].code" with value "<Code>"
+		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].display" with value "<Display>"
+		And response bundle entry "Composition" should contain element "resource.section[0].code.text"
+		And response bundle entry "Composition" should contain element "resource.section[0].text.status"
+		And response bundle entry "Composition" should contain element "resource.section[0].text.div"
+	Examples:
+	| Code | Title | Display |
+	| ADM  | Administrative Items | Administrative Items |
+	| ALL  | Allergies and Sensitivities | Allergies and Sensitivities |
+	| CLI  | Clinical Items | Clinical Items |
+	| ENC  | Encounters | Encounters |
+	| IMM  | Immunisations | Immunisations |
+	| INV  | Investigations | Investigations |
+	| MED  | Medications | Medications |
+	| OBS  | Observations | Observations |
+	| PAT  | Patient Details | Patient Details |
+	| PRB  | Problems | Problems |
+	| REF  | Referrals | Referrals |
+	| SUM  | Summary | Summary |
 
 @ignore
 Scenario: composition contains type element
