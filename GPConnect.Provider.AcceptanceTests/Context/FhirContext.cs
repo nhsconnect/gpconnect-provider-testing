@@ -16,8 +16,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         private static class Context
         {
-            public const string FhirRequestParameters = "fhirRequestParameters";
-            public const string FhirResponseResource = "fhirResponseResource";
+            public const string kFhirRequestParameters = "fhirRequestParameters";
+            public const string kFhirResponseResource = "fhirResponseResource";
         }
 
         public FhirContext(ScenarioContext scenarioContext)
@@ -29,11 +29,11 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         public Parameters FhirRequestParameters
         {
-            get { return _scenarioContext.Get<Parameters>(Context.FhirRequestParameters); }
+            get { return _scenarioContext.Get<Parameters>(Context.kFhirRequestParameters); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.FhirRequestParameters, value);
-                _scenarioContext.Set(value, Context.FhirRequestParameters);
+                Log.WriteLine("{0}={1}", Context.kFhirRequestParameters, value);
+                _scenarioContext.Set(value, Context.kFhirRequestParameters);
             }
         }
 
@@ -41,11 +41,11 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         public Resource FhirResponseResource
         {
-            get { return _scenarioContext.Get<Resource>(Context.FhirResponseResource); }
+            get { return _scenarioContext.Get<Resource>(Context.kFhirResponseResource); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.FhirResponseResource, value);
-                _scenarioContext.Set(value, Context.FhirResponseResource);
+                Log.WriteLine("{0}={1}", Context.kFhirResponseResource, value);
+                _scenarioContext.Set(value, Context.kFhirResponseResource);
             }
         }
     }

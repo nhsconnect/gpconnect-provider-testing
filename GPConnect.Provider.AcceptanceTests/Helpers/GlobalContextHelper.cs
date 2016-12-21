@@ -7,26 +7,15 @@ using System.Collections.Generic;
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
 
-    public class GlobalContext
+    public class GlobalContextHelper : IGlobalContextHelper
     {
         private static readonly Dictionary<string, object> GlobalContextItems = new Dictionary<string, object>();
 
-        private static readonly Guid TestRunIdentifier;
+        private static readonly Guid TestRunIdentifier = Guid.NewGuid();
 
-        static GlobalContext()
-        {
-            TestRunIdentifier = Guid.NewGuid();
-        }
+        public Guid TestRunId => TestRunIdentifier;
 
-        public static Guid TestRunId
-        {
-            get
-            {
-                return TestRunIdentifier;
-            }
-        }
-
-        public static void SaveValue<T>(T value)
+        public void SaveValue<T>(T value)
         {
             if (value.Equals(default(T)))
             {
@@ -37,7 +26,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             SaveValue(key, value);
         }
 
-        public static void SaveValue<T>(string key, T value)
+        public void SaveValue<T>(string key, T value)
         {
             if (GlobalContextItems.ContainsKey(key))
             {
@@ -49,14 +38,14 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             }
         }
 
-        public static T GetValue<T>()
+        public T GetValue<T>()
         {
             var key = typeof(T).FullName;
 
             return GetValue<T>(key);
         }
 
-        public static T GetValue<T>(string key)
+        public T GetValue<T>(string key)
         {
             if (!GlobalContextItems.ContainsKey(key))
             {

@@ -401,7 +401,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private void LogResponseToDisk()
         {
-            var traceDirectory = GlobalContext.GetValue<string>(GlobalConst.Trace.TraceDirectory);
+            var traceDirectory = GlobalContext.TraceDirectory;
             if (!Directory.Exists(traceDirectory)) return;
             var scenarioDirectory = Path.Combine(traceDirectory, HttpContext.ScenarioContext.ScenarioInfo.Title);
             Directory.CreateDirectory(scenarioDirectory);

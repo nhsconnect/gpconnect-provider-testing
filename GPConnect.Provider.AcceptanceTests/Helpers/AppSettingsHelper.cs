@@ -9,6 +9,9 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static bool TraceAllScenarios => Get<bool>("traceAllScenarios");
         public static string TraceBaseDirectory => Get<string>("traceBaseDirectory");
 
+        // Data Settings
+        public static string DataDirectory => Get<string>("dataDirectory");
+
         // Security Settings
         public static bool UseTLS => Get<bool>("useTLS");
 

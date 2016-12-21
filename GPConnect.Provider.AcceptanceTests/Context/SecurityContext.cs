@@ -29,62 +29,62 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         private static class Context
         {
-            public const string UseTLS = "useTLS";
-            public const string ValidateServerCert = "validateServerCert";
-            public const string SendClientCert = "sendClientCert";
-            public const string ClientCertThumbPrint = "clientCertThumbPrint";
-            public const string ClientCertificate = "clientCertificate";
+            public const string kUseTLS = "useTLS";
+            public const string kValidateServerCert = "validateServerCert";
+            public const string kSendClientCert = "sendClientCert";
+            public const string kClientCertThumbPrint = "clientCertThumbPrint";
+            public const string kClientCertificate = "clientCertificate";
         }
 
         // Security Details
 
         public bool UseTLS
         {
-            get { return _scenarioContext.Get<bool>(Context.UseTLS); }
+            get { return _scenarioContext.Get<bool>(Context.kUseTLS); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.UseTLS, value);
-                _scenarioContext.Set(value, Context.UseTLS);
+                Log.WriteLine("{0}={1}", Context.kUseTLS, value);
+                _scenarioContext.Set(value, Context.kUseTLS);
             }
         }
 
         public bool ValidateServerCert
         {
-            get { return _scenarioContext.Get<bool>(Context.ValidateServerCert); }
+            get { return _scenarioContext.Get<bool>(Context.kValidateServerCert); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.ValidateServerCert, value);
-                _scenarioContext.Set(value, Context.ValidateServerCert);
+                Log.WriteLine("{0}={1}", Context.kValidateServerCert, value);
+                _scenarioContext.Set(value, Context.kValidateServerCert);
             }
         }
 
         public bool SendClientCert
         {
-            get { return _scenarioContext.Get<bool>(Context.SendClientCert); }
+            get { return _scenarioContext.Get<bool>(Context.kSendClientCert); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.SendClientCert, value);
-                _scenarioContext.Set(value, Context.SendClientCert);
+                Log.WriteLine("{0}={1}", Context.kSendClientCert, value);
+                _scenarioContext.Set(value, Context.kSendClientCert);
             }
         }
 
         public string ClientCertThumbPrint
         {
-            get { return _scenarioContext.Get<string>(Context.ClientCertThumbPrint); }
+            get { return _scenarioContext.Get<string>(Context.kClientCertThumbPrint); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.ClientCertThumbPrint, value);
-                _scenarioContext.Set(value, Context.ClientCertThumbPrint);
+                Log.WriteLine("{0}={1}", Context.kClientCertThumbPrint, value);
+                _scenarioContext.Set(value, Context.kClientCertThumbPrint);
             }
         }
 
         public X509Certificate2 ClientCert
         {
-            get { return _scenarioContext.Get<X509Certificate2>(Context.ClientCertificate); }
+            get { return _scenarioContext.Get<X509Certificate2>(Context.kClientCertificate); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.ClientCertificate, value);
-                _scenarioContext.Set(value, Context.ClientCertificate);
+                Log.WriteLine("{0}={1}", Context.kClientCertificate, value);
+                _scenarioContext.Set(value, Context.kClientCertificate);
             }
         }
 

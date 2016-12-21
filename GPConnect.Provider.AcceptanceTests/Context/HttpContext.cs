@@ -82,33 +82,33 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         private static class Context
         {
             // Provider
-            public const string FhirServerUrl = "fhirServerUrl";
-            public const string FhirServerPort = "fhirServerPort";
-            public const string FhirServerFhirBase = "fhirServerFhirBase";
+            public const string kFhirServerUrl = "fhirServerUrl";
+            public const string kFhirServerPort = "fhirServerPort";
+            public const string kFhirServerFhirBase = "fhirServerFhirBase";
             // Web Proxy
-            public const string UseWebProxy = "useWebProxy";
-            public const string WebProxyUrl = "webProxyUrl";
-            public const string WebProxyPort = "webProxyPort";
+            public const string kUseWebProxy = "useWebProxy";
+            public const string kWebProxyUrl = "webProxyUrl";
+            public const string kWebProxyPort = "webProxyPort";
             // Spine Proxy
-            public const string UseSpineProxy = "useSpineProxy";
-            public const string SpineProxyUrl = "spineProxyUrl";
-            public const string SpineProxyPort = "spineProxyPort";
+            public const string kUseSpineProxy = "useSpineProxy";
+            public const string kSpineProxyUrl = "spineProxyUrl";
+            public const string kSpineProxyPort = "spineProxyPort";
             // Request
-            public const string RequestUrl = "requestUrl";
-            public const string RequestMethod = "requestMethod";
-            public const string RequestContentType = "requestContentType";
-            public const string RequestBody = "requestBody";
+            public const string kRequestUrl = "requestUrl";
+            public const string kRequestMethod = "requestMethod";
+            public const string kRequestContentType = "requestContentType";
+            public const string kRequestBody = "requestBody";
             // Raw Response
-            public const string ResponseContentType = "responseContentType";
-            public const string ResponseStatusCode = "responseStatusCode";
-            public const string ResponseBody = "responseBody";
+            public const string kResponseContentType = "responseContentType";
+            public const string kResponseStatusCode = "responseStatusCode";
+            public const string kResponseBody = "responseBody";
             // Parsed Response
-            public const string ResponseJSON = "responseJSON";
-            public const string ResponseXML = "responseXML";
+            public const string kResponseJSON = "responseJSON";
+            public const string kResponseXML = "responseXML";
             // Consumer
-            public const string ConsumerASID = "consumerASID";
+            public const string kConsumerASID = "consumerASID";
             // Producer
-            public const string ProviderASID = "providerASID";
+            public const string kProviderASID = "providerASID";
         }
 
         // Protocol
@@ -118,31 +118,31 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         // Web Proxy
         public bool UseWebProxy
         {
-            get { return ScenarioContext.Get<bool>(Context.UseWebProxy); }
+            get { return ScenarioContext.Get<bool>(Context.kUseWebProxy); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.UseWebProxy, value);
-                ScenarioContext.Set(value, Context.UseWebProxy);
+                Log.WriteLine("{0}={1}", Context.kUseWebProxy, value);
+                ScenarioContext.Set(value, Context.kUseWebProxy);
             }
         }
 
         public string WebProxyUrl
         {
-            get { return ScenarioContext.Get<string>(Context.WebProxyUrl); }
+            get { return ScenarioContext.Get<string>(Context.kWebProxyUrl); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.WebProxyUrl, value);
-                ScenarioContext.Set(value, Context.WebProxyUrl);
+                Log.WriteLine("{0}={1}", Context.kWebProxyUrl, value);
+                ScenarioContext.Set(value, Context.kWebProxyUrl);
             }
         }
 
         public string WebProxyPort
         {
-            get { return ScenarioContext.Get<string>(Context.WebProxyPort); }
+            get { return ScenarioContext.Get<string>(Context.kWebProxyPort); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.WebProxyPort, value);
-                ScenarioContext.Set(value, Context.WebProxyPort);
+                Log.WriteLine("{0}={1}", Context.kWebProxyPort, value);
+                ScenarioContext.Set(value, Context.kWebProxyPort);
             }
         }
 
@@ -159,27 +159,27 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         // Spine Proxy
         public bool UseSpineProxy
         {
-            get { return ScenarioContext.Get<bool>(Context.UseSpineProxy); }
-            set { ScenarioContext.Set(value, Context.UseSpineProxy); }
+            get { return ScenarioContext.Get<bool>(Context.kUseSpineProxy); }
+            set { ScenarioContext.Set(value, Context.kUseSpineProxy); }
         }
 
         public string SpineProxyUrl
         {
-            get { return ScenarioContext.Get<string>(Context.SpineProxyUrl); }
+            get { return ScenarioContext.Get<string>(Context.kSpineProxyUrl); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.SpineProxyUrl, value);
-                ScenarioContext.Set(value, Context.SpineProxyUrl);
+                Log.WriteLine("{0}={1}", Context.kSpineProxyUrl, value);
+                ScenarioContext.Set(value, Context.kSpineProxyUrl);
             }
         }
 
         public string SpineProxyPort
         {
-            get { return ScenarioContext.Get<string>(Context.SpineProxyPort); }
+            get { return ScenarioContext.Get<string>(Context.kSpineProxyPort); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.SpineProxyPort, value);
-                ScenarioContext.Set(value, Context.SpineProxyPort);
+                Log.WriteLine("{0}={1}", Context.kSpineProxyPort, value);
+                ScenarioContext.Set(value, Context.kSpineProxyPort);
             }
         }
 
@@ -196,141 +196,141 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         // Raw Request
         public string RequestMethod
         {
-            get { return ScenarioContext.Get<string>(Context.RequestMethod); }
+            get { return ScenarioContext.Get<string>(Context.kRequestMethod); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.RequestMethod, value);
-                ScenarioContext.Set(value, Context.RequestMethod);
+                Log.WriteLine("{0}={1}", Context.kRequestMethod, value);
+                ScenarioContext.Set(value, Context.kRequestMethod);
             }
         }
 
         public string RequestUrl
         {
-            get { return ScenarioContext.Get<string>(Context.RequestUrl); }
+            get { return ScenarioContext.Get<string>(Context.kRequestUrl); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.RequestUrl, value);
-                ScenarioContext.Set(value, Context.RequestUrl);
+                Log.WriteLine("{0}={1}", Context.kRequestUrl, value);
+                ScenarioContext.Set(value, Context.kRequestUrl);
             }
         }
 
         public string RequestContentType
         {
-            get { return ScenarioContext.Get<string>(Context.RequestContentType); }
+            get { return ScenarioContext.Get<string>(Context.kRequestContentType); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.RequestContentType, value);
-                ScenarioContext.Set(value, Context.RequestContentType);
+                Log.WriteLine("{0}={1}", Context.kRequestContentType, value);
+                ScenarioContext.Set(value, Context.kRequestContentType);
             }
         }
 
         public string RequestBody
         {
-            get { return ScenarioContext.Get<string>(Context.RequestBody); }
+            get { return ScenarioContext.Get<string>(Context.kRequestBody); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.RequestBody, value);
-                ScenarioContext.Set(value, Context.RequestBody);
+                Log.WriteLine("{0}={1}", Context.kRequestBody, value);
+                ScenarioContext.Set(value, Context.kRequestBody);
             }
         }
 
         // Raw Response
         public string ResponseContentType
         {
-            get { return ScenarioContext.Get<string>(Context.ResponseContentType); }
+            get { return ScenarioContext.Get<string>(Context.kResponseContentType); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.ResponseContentType, value);
-                ScenarioContext.Set(value, Context.ResponseContentType);
+                Log.WriteLine("{0}={1}", Context.kResponseContentType, value);
+                ScenarioContext.Set(value, Context.kResponseContentType);
             }
         }
 
         public HttpStatusCode ResponseStatusCode
         {
-            get { return ScenarioContext.Get<HttpStatusCode>(Context.ResponseStatusCode); }
+            get { return ScenarioContext.Get<HttpStatusCode>(Context.kResponseStatusCode); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.ResponseStatusCode, value);
-                ScenarioContext.Set(value, Context.ResponseStatusCode);
+                Log.WriteLine("{0}={1}", Context.kResponseStatusCode, value);
+                ScenarioContext.Set(value, Context.kResponseStatusCode);
             }
         }
 
         public string ResponseBody
         {
-            get { return ScenarioContext.Get<string>(Context.ResponseBody); }
+            get { return ScenarioContext.Get<string>(Context.kResponseBody); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.ResponseBody, value);
-                ScenarioContext.Set(value, Context.ResponseBody);
+                Log.WriteLine("{0}={1}", Context.kResponseBody, value);
+                ScenarioContext.Set(value, Context.kResponseBody);
             }
         }
 
         // Parsed Response
         public JObject ResponseJSON
         {
-            get { return ScenarioContext.Get<JObject>(Context.ResponseJSON); }
-            set { ScenarioContext.Set(value, Context.ResponseJSON); }
+            get { return ScenarioContext.Get<JObject>(Context.kResponseJSON); }
+            set { ScenarioContext.Set(value, Context.kResponseJSON); }
         }
 
         public XDocument ResponseXML
         {
-            get { return ScenarioContext.Get<XDocument>(Context.ResponseXML); }
+            get { return ScenarioContext.Get<XDocument>(Context.kResponseXML); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.ResponseXML, value);
-                ScenarioContext.Set(value, Context.ResponseXML);
+                Log.WriteLine("{0}={1}", Context.kResponseXML, value);
+                ScenarioContext.Set(value, Context.kResponseXML);
             }
         }
 
         // Consumer
         public string ConsumerASID
         {
-            get { return ScenarioContext.Get<string>(Context.ConsumerASID); }
+            get { return ScenarioContext.Get<string>(Context.kConsumerASID); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.ConsumerASID, value);
-                ScenarioContext.Set(value, Context.ConsumerASID);
+                Log.WriteLine("{0}={1}", Context.kConsumerASID, value);
+                ScenarioContext.Set(value, Context.kConsumerASID);
             }
         }
 
         // Provider
         public string ProviderASID
         {
-            get { return ScenarioContext.Get<string>(Context.ProviderASID); }
+            get { return ScenarioContext.Get<string>(Context.kProviderASID); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.ProviderASID, value);
-                ScenarioContext.Set(value, Context.ProviderASID);
+                Log.WriteLine("{0}={1}", Context.kProviderASID, value);
+                ScenarioContext.Set(value, Context.kProviderASID);
             }
         }
 
         public string FhirServerUrl
         {
-            get { return ScenarioContext.Get<string>(Context.FhirServerUrl); }
+            get { return ScenarioContext.Get<string>(Context.kFhirServerUrl); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.FhirServerUrl, value);
-                ScenarioContext.Set(value, Context.FhirServerUrl);
+                Log.WriteLine("{0}={1}", Context.kFhirServerUrl, value);
+                ScenarioContext.Set(value, Context.kFhirServerUrl);
             }
         }
 
         public string FhirServerPort
         {
-            get { return ScenarioContext.Get<string>(Context.FhirServerPort); }
+            get { return ScenarioContext.Get<string>(Context.kFhirServerPort); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.FhirServerPort, value);
-                ScenarioContext.Set(value, Context.FhirServerPort);
+                Log.WriteLine("{0}={1}", Context.kFhirServerPort, value);
+                ScenarioContext.Set(value, Context.kFhirServerPort);
             }
         }
 
         public string FhirServerFhirBase
         {
-            get { return ScenarioContext.Get<string>(Context.FhirServerFhirBase); }
+            get { return ScenarioContext.Get<string>(Context.kFhirServerFhirBase); }
             set
             {
-                Log.WriteLine("{0}={1}", Context.FhirServerFhirBase, value);
-                ScenarioContext.Set(value, Context.FhirServerFhirBase);
+                Log.WriteLine("{0}={1}", Context.kFhirServerFhirBase, value);
+                ScenarioContext.Set(value, Context.kFhirServerFhirBase);
             }
         }
 

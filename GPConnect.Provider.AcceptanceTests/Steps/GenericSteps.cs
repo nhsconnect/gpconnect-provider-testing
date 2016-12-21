@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using BoDi;
 using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
+using GPConnect.Provider.AcceptanceTests.Importers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using TechTalk.SpecFlow;
 // ReSharper disable UnusedMember.Global
@@ -14,7 +16,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class GenericSteps : TechTalk.SpecFlow.Steps
     {
         private readonly IObjectContainer _objectContainer;
-        
+
         public GenericSteps(IObjectContainer objectContainer)
         {
             Log.WriteLine("GenericSteps() Constructor");
@@ -30,7 +32,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("Create Trace Directory = '{0}'", traceDirectory);
             Directory.CreateDirectory(traceDirectory);
             // Save The Newly Created Trace Directory To The Global Context
-            GlobalContext.SaveValue(GlobalConst.Trace.TraceDirectory, traceDirectory);
+            GlobalContext.TraceDirectory = traceDirectory;
+            // Load The Global Test Data
+            var pdsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"PDS.csv");
+            Log.WriteLine("PDS CSV = '{0}'", pdsCSV);
+            GlobalContext.PDSData = PDSImporter.LoadCsv(pdsCSV);
         }
 
         [BeforeScenario(Order = 0)]
@@ -39,6 +45,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("InitializeContainer For Dependency Injection");
             _objectContainer.RegisterTypeAs<SecurityContext, ISecurityContext>();
             _objectContainer.RegisterTypeAs<HttpContext, IHttpContext>();
+            Log.WriteLine("{0} Patients Loaded From PDS CSV File.", GlobalContext.PDSData.ToList().Count);
         }
 
         [BeforeScenario(Order=1)]
