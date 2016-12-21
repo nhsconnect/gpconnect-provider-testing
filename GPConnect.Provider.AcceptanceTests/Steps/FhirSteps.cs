@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using Shouldly;
 using TechTalk.SpecFlow;
 using Hl7.Fhir.Serialization;
+using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
@@ -284,8 +285,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var resourceEntry = HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '" + entryResourceType + "')]");
             var internalReference = resourceEntry.SelectToken(jsonPath).Value<string>();
-            Console.WriteLine("Reference = " + internalReference);
-            Console.WriteLine("Resource referenced = " + HttpContext.ResponseJSON.SelectToken("$.entry[?(@.fullUrl == '" + internalReference + "')]"));
             HttpContext.ResponseJSON.SelectToken("$.entry[?(@.fullUrl == '" + internalReference + "')]").ShouldNotBeNull();
         }
 
@@ -306,5 +305,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             passed.ShouldBeTrue();
         }
 
+        [Then(@"if response bundle entry ""([^""]*)"" contains element ""([^""]*)""")]
+        public void ThenIfResponseBundleEntryContainsElement(string entryResourceType, string jsonPath)
+        {
+            var resourceEntry = HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '" + entryResourceType + "')]");
+            if (resourceEntry.SelectToken(jsonPath) == null) {
+                Log.WriteLine("No Reference in response bundle so skipping rest of test but giving Pass to scenario.");
+                Assert.Pass(); // If element is not present pass and ignore other steps
+            }
+        }
+        
     }
 }

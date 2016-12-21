@@ -359,7 +359,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISendAGpcGetcarerecordOperationRequestWithInvalidResourceTypePayload()
         {
             var parameterPayload = FhirHelper.ChangeResourceTypeString(FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), FhirConst.Resources.InvalidResourceType);
-            Console.WriteLine("parameters = " + parameterPayload);
             RestRequest(Method.POST, "/Patient/$gpc.getcarerecord", parameterPayload);
         }
 
