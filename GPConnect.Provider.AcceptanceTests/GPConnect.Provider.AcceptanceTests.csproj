@@ -127,6 +127,7 @@
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Logger\TestListener.cs" />
     <Compile Include="Steps\JwtSteps.cs" />
+    <Compile Include="Steps\ManualSteps.cs" />
     <Compile Include="Steps\SecuritySteps.cs" />
     <Compile Include="Steps\GenericSteps.cs" />
     <Compile Include="Steps\FhirSteps.cs" />
