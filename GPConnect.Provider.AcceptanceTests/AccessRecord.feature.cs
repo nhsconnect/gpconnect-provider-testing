@@ -994,25 +994,37 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.type.text\" w" +
                     "ith value \"record extract (record artifact)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 367
+  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.class.coding" +
+                    "[0].system\" with value \"http://snomed.info/sct\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 368
+  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.class.coding" +
+                    "[0].code\" with value \"700232004\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 369
+  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.class.coding" +
+                    "[0].display\" with value \"general medical service (qualifier value)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 370
+  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.class.text\" " +
+                    "with value \"general medical service (qualifier value)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 371
   testRunner.And(string.Format("response bundle entry \"Composition\" should contain element \"resource.section[0].t" +
                         "itle\" with value \"{0}\"", title), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 368
+#line 372
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
                     "ode.coding[0].system\" with value \"http://fhir.nhs.net/ValueSet/gpconnect-record-" +
                     "section-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 369
+#line 373
   testRunner.And(string.Format("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
                         "ode.coding[0].code\" with value \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 370
+#line 374
   testRunner.And(string.Format("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
                         "ode.coding[0].display\" with value \"{0}\"", display), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 371
+#line 375
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
                     "ode.text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 372
+#line 376
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].t" +
                     "ext.status\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 373
+#line 377
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].t" +
                     "ext.div\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1021,26 +1033,45 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("composition contains subject referencing a patient resource in the bundle")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void CompositionContainsSubjectReferencingAPatientResourceInTheBundle()
+        [NUnit.Framework.TestCaseAttribute("ADM", "Administrative Items", "Administrative Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "Allergies and Sensitivities", "Allergies and Sensitivities", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "Clinical Items", "Clinical Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "Encounters", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("IMM", "Immunisations", "Immunisations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("INV", "Investigations", "Investigations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "Medications", "Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OBS", "Observations", "Observations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PAT", "Patient Details", "Patient Details", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "Problems", "Problems", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "Referrals", "Referrals", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Summary", "Summary", new string[0])]
+        public virtual void CompositionContainsSubjectReferencingAPatientResourceInTheBundle(string code, string title, string display, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("composition contains subject referencing a patient resource in the bundle", new string[] {
-                        "ignore"});
-#line 390
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("composition contains subject referencing a patient resource in the bundle", exampleTags);
+#line 394
 this.ScenarioSetup(scenarioInfo);
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("if composition contains class element")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void IfCompositionContainsClassElement()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if composition contains class element", new string[] {
-                        "ignore"});
+#line 395
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 396
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 397
-this.ScenarioSetup(scenarioInfo);
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
+                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 398
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 399
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 400
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 401
+  testRunner.And("the JSON value \"resourceType\" should be \"Bundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 402
+  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.subject.refe" +
+                    "rence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 403
+  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.subject.refe" +
+                    "rence\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1052,7 +1083,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if composition contains author, the device reference can be found in the bundle", new string[] {
                         "ignore"});
-#line 405
+#line 420
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1065,7 +1096,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if composition contains custodian referenece", new string[] {
                         "ignore"});
-#line 411
+#line 426
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1078,7 +1109,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("patient contains a valid identifiers", new string[] {
                         "ignore"});
-#line 417
+#line 432
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1091,7 +1122,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains name elements", new string[] {
                         "ignore"});
-#line 422
+#line 437
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1104,7 +1135,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains telecom information", new string[] {
                         "ignore"});
-#line 428
+#line 443
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1117,7 +1148,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains gender", new string[] {
                         "ignore"});
-#line 434
+#line 449
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1130,7 +1161,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains address", new string[] {
                         "ignore"});
-#line 438
+#line 453
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1143,7 +1174,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains maritalStatus", new string[] {
                         "ignore"});
-#line 443
+#line 458
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1156,7 +1187,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains contect", new string[] {
                         "ignore"});
-#line 449
+#line 464
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1169,7 +1200,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contins communicaiton", new string[] {
                         "ignore"});
-#line 456
+#line 471
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1182,7 +1213,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains practitioner as care provider", new string[] {
                         "ignore"});
-#line 462
+#line 477
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1195,7 +1226,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains managingOrganizaiton", new string[] {
                         "ignore"});
-#line 468
+#line 483
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1208,7 +1239,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("patient does not contain disallowed fields", new string[] {
                         "ignore"});
-#line 474
+#line 489
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();

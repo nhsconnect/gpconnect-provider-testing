@@ -278,6 +278,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var resourceEntry = HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '" + entryResourceType + "')]");
             string.Equals(resourceEntry.SelectToken(jsonPath).Value<string>(), elementValue).ShouldBeTrue();
         }
+        
+        [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)"" and that element should reference a resource in the bundle")]
+        public void ThenResponseBundleEntryShouldContainElementAndThatElementShouldReferenceAResourceInTheBundle(string entryResourceType, string jsonPath)
+        {
+            var resourceEntry = HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '" + entryResourceType + "')]");
+            var internalReference = resourceEntry.SelectToken(jsonPath).Value<string>();
+            Console.WriteLine("Reference = " + internalReference);
+            Console.WriteLine("Resource referenced = " + HttpContext.ResponseJSON.SelectToken("$.entry[?(@.fullUrl == '" + internalReference + "')]"));
+            HttpContext.ResponseJSON.SelectToken("$.entry[?(@.fullUrl == '" + internalReference + "')]").ShouldNotBeNull();
+        }
 
         [Then(@"the conformance profile should contain the ""([^""]*)"" operation")]
         public void ThenTheConformanceProfileShouldContainTheOperation(string operationName) {

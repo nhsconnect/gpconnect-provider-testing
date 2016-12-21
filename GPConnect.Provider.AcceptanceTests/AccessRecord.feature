@@ -364,6 +364,10 @@ Scenario Outline: composition contains generic mandatory fields
 		And response bundle entry "Composition" should contain element "resource.type.coding[0].code" with value "425173008"
 		And response bundle entry "Composition" should contain element "resource.type.coding[0].display" with value "record extract (record artifact)"
 		And response bundle entry "Composition" should contain element "resource.type.text" with value "record extract (record artifact)"
+		And response bundle entry "Composition" should contain element "resource.class.coding[0].system" with value "http://snomed.info/sct"
+		And response bundle entry "Composition" should contain element "resource.class.coding[0].code" with value "700232004"
+		And response bundle entry "Composition" should contain element "resource.class.coding[0].display" with value "general medical service (qualifier value)"
+		And response bundle entry "Composition" should contain element "resource.class.text" with value "general medical service (qualifier value)"
 		And response bundle entry "Composition" should contain element "resource.section[0].title" with value "<Title>"
 		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].system" with value "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1"
 		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].code" with value "<Code>"
@@ -386,20 +390,31 @@ Scenario Outline: composition contains generic mandatory fields
 	| REF  | Referrals | Referrals |
 	| SUM  | Summary | Summary |
 
-@ignore
-Scenario: composition contains subject referencing a patient resource in the bundle
-	# Contains Subject
-	# Contains Reference
-	# Contains Display
-	# Referenced patient is in bundle
 
-@ignore
-Scenario: if composition contains class element
-	# System (http://fhir.nhs.net/ValueSet/care-setting-codes-snct-1)
-	# Contains System (http://snomed.info/sct)
-	# Code (700232004)
-	# Display (general medical service (qualifier value))
-	# Text (general medical service (qualifier value))
+Scenario Outline: composition contains subject referencing a patient resource in the bundle
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
+		And response bundle entry "Composition" should contain element "resource.subject.reference"
+		And response bundle entry "Composition" should contain element "resource.subject.reference" and that element should reference a resource in the bundle
+	Examples:
+	| Code | Title | Display |
+	| ADM  | Administrative Items | Administrative Items |
+	| ALL  | Allergies and Sensitivities | Allergies and Sensitivities |
+	| CLI  | Clinical Items | Clinical Items |
+	| ENC  | Encounters | Encounters |
+	| IMM  | Immunisations | Immunisations |
+	| INV  | Investigations | Investigations |
+	| MED  | Medications | Medications |
+	| OBS  | Observations | Observations |
+	| PAT  | Patient Details | Patient Details |
+	| PRB  | Problems | Problems |
+	| REF  | Referrals | Referrals |
+	| SUM  | Summary | Summary |
 
 @ignore
 Scenario: if composition contains author, the device reference can be found in the bundle
