@@ -40,13 +40,13 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         {
             CreationTime = DateTime.UtcNow;
             ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
-            ReasonForRequest = JwtConst.Values.DirectCare;
-            AuthTokenURL = JwtConst.Values.AuthTokenURL;
+            ReasonForRequest = JwtConst.Values.kDirectCare;
+            AuthTokenURL = JwtConst.Values.kAuthTokenURL;
             RequestingDevice = FhirHelper.GetDefaultDevice().ToJson();
             RequestingOrganization = FhirHelper.GetDefaultOrganization().ToJson();
             RequestingPractitionerId = FhirHelper.GetDefaultPractitioner().Id;
             RequestingPractitioner = FhirHelper.GetDefaultPractitioner().ToJson();
-            RequestedScope = JwtConst.Scope.OrganizationRead;
+            RequestedScope = JwtConst.Scope.kOrganizationRead;
             // TODO Check We're Using The Correct Scope For Metadata vs. GetCareRecord
             RequestedPatientNHSNumber = null;
             // TODO Move Dummy Data Out Into App.Config Or Somewhere Else
@@ -70,33 +70,33 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             var claims = new List<Claim>();
 
             if (RequestingSystemUrl != null)
-                claims.Add(new Claim(JwtConst.Claims.RequestingSystemUrl, RequestingSystemUrl, ClaimValueTypes.String));
+                claims.Add(new Claim(JwtConst.Claims.kRequestingSystemUrl, RequestingSystemUrl, ClaimValueTypes.String));
             if (RequestingPractitionerId != null)
-                claims.Add(new Claim(JwtConst.Claims.PractitionerId, RequestingPractitionerId, ClaimValueTypes.String));
+                claims.Add(new Claim(JwtConst.Claims.kPractitionerId, RequestingPractitionerId, ClaimValueTypes.String));
             if (AuthTokenURL != null)
-                claims.Add(new Claim(JwtConst.Claims.AuthTokenURL, AuthTokenURL, ClaimValueTypes.String));
+                claims.Add(new Claim(JwtConst.Claims.kAuthTokenURL, AuthTokenURL, ClaimValueTypes.String));
             if (ExpiryTime != null)
-                claims.Add(new Claim(JwtConst.Claims.ExpiryTime, EpochTime.GetIntDate(ExpiryTime.Value).ToString(), ClaimValueTypes.Integer64));
+                claims.Add(new Claim(JwtConst.Claims.kExpiryTime, EpochTime.GetIntDate(ExpiryTime.Value).ToString(), ClaimValueTypes.Integer64));
             if (CreationTime != null)
-                claims.Add(new Claim(JwtConst.Claims.CreationTime, EpochTime.GetIntDate(CreationTime.Value).ToString(), ClaimValueTypes.Integer64));
+                claims.Add(new Claim(JwtConst.Claims.kCreationTime, EpochTime.GetIntDate(CreationTime.Value).ToString(), ClaimValueTypes.Integer64));
             if (ReasonForRequest != null)
-                claims.Add(new Claim(JwtConst.Claims.ReasonForRequest, ReasonForRequest, ClaimValueTypes.String));
+                claims.Add(new Claim(JwtConst.Claims.kReasonForRequest, ReasonForRequest, ClaimValueTypes.String));
             if (RequestingDevice != null)
-                claims.Add(new Claim(JwtConst.Claims.RequestingDevice, RequestingDevice, JsonClaimValueTypes.Json));
+                claims.Add(new Claim(JwtConst.Claims.kRequestingDevice, RequestingDevice, JsonClaimValueTypes.Json));
             if (RequestingOrganization != null)
-                claims.Add(new Claim(JwtConst.Claims.RequestingOrganization, RequestingOrganization, JsonClaimValueTypes.Json));
+                claims.Add(new Claim(JwtConst.Claims.kRequestingOrganization, RequestingOrganization, JsonClaimValueTypes.Json));
             if (RequestingPractitioner != null)
-                claims.Add(new Claim(JwtConst.Claims.RequestingPractitioner, RequestingPractitioner, JsonClaimValueTypes.Json));
+                claims.Add(new Claim(JwtConst.Claims.kRequestingPractitioner, RequestingPractitioner, JsonClaimValueTypes.Json));
             if (RequestedScope != null)
-                claims.Add(new Claim(JwtConst.Claims.RequestedScope, RequestedScope, ClaimValueTypes.String));
+                claims.Add(new Claim(JwtConst.Claims.kRequestedScope, RequestedScope, ClaimValueTypes.String));
 
             if (RequestedPatientNHSNumber != null)
             {
-                claims.Add(new Claim(JwtConst.Claims.RequestedRecord, FhirHelper.GetDefaultPatient(RequestedPatientNHSNumber).ToJson(), JsonClaimValueTypes.Json));
+                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultPatient(RequestedPatientNHSNumber).ToJson(), JsonClaimValueTypes.Json));
             }
             else if (RequestedOrganizationODSCode != null)
             {
-                claims.Add(new Claim(JwtConst.Claims.RequestedRecord, FhirHelper.GetDefaultOrganization(RequestedOrganizationODSCode).ToJson(), JsonClaimValueTypes.Json));
+                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultOrganization(RequestedOrganizationODSCode).ToJson(), JsonClaimValueTypes.Json));
             }
 
             return new JwtPayload(claims);

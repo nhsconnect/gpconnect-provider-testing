@@ -5,8 +5,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
     {
         internal static class InteractionIds
         {
-            public const string FhirRestReadMetadata = "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata";
-            public const string FhirOperationGetCareRecord = "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord";
+            public const string kFhirRestReadMetadata = "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata";
+            public const string kFhirOperationGetCareRecord = "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord";
         }        
     }
 }

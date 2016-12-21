@@ -50,7 +50,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         [Given(@"I set the JWT header for getcarerecord with config patient ""([^""]*)""")]
         public void ISetTheJWTHeaderForGetcarerecordWithConfigPatient(string patient) {
-            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.kPatientRead}""");
             And($@"I set the JWT requested record patient NHS number to ""{AppSettingsHelper.Get<string>(patient)}""");
         }
 
@@ -63,7 +63,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I author a request for the ""(.*)"" care record section for patient with NHS Number ""(.*)""")]
         public void IAuthorARequestForTheCareRecordSection(string recordSectionCode, string nhsNumber)
         {
-            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.kPatientRead}""");
             And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
             And($@"I am requesting the record for patient with NHS Number ""{nhsNumber}""");
             And($@"I am requesting the ""{recordSectionCode}"" care record section");
@@ -78,75 +78,75 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am requesting the record for patient with NHS Number ""(.*)""")]
         public void GivenIAmRequestingTheRecordForPatientWithNHSNumber(string nhsNumber)
         {
-            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.kPatientRead}""");
             And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
         }
 
         [Given(@"I am requesting the record for config patient ""([^""]*)"" using a fhir string parameter")]
         public void GivenIAmRequestingTheRecordForConfigPatientUsingAFHirStringParameter(string patient)
         {
-            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.kPatientRead}""");
             And($@"I set the JWT requested record patient NHS number to ""{AppSettingsHelper.Get<string>(patient)}""");
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, new FhirString(AppSettingsHelper.Get<string>(patient)));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, new FhirString(AppSettingsHelper.Get<string>(patient)));
         }
 
 
         [Given(@"I am requesting the record for config patient ""([^""]*)"" of system ""([^""]*)""")]
         public void GivenIAmRequestingTheRecordForConfigPatientOfSystem(string patient, string system)
         {
-            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.PatientRead}""");
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.kPatientRead}""");
             And($@"I set the JWT requested record patient NHS number to ""{AppSettingsHelper.Get<string>(patient)}""");
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.PatientNHSNumber, FhirHelper.GetIdentifier(system, AppSettingsHelper.Get<string>(patient)));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, FhirHelper.GetIdentifier(system, AppSettingsHelper.Get<string>(patient)));
         }
 
         [Given(@"I am requesting the ""([^""]*)"" care record section")]
         public void GivenIAmRequestingTheCareRecordSection(string careRecordSection)
         {
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(careRecordSection));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kRecordSection, FhirHelper.GetRecordSectionCodeableConcept(careRecordSection));
         }
 
         [Given(@"I am requesting the ""([^""]*)"" care record section with a string parameter")]
         public void GivenIAmRequestingTheCareRecordSectionWithAStringParameter(string careRecordSection)
         {
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, new FhirString(careRecordSection));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kRecordSection, new FhirString(careRecordSection));
         }
 
         [Given(@"I am requesting the ""([^""]*)"" care record section with system ""([^""]*)""")]
         public void GivenIAmRequestingTheCareRecordSectionWithSystem(string careRecordSection, string system)
         {
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.RecordSection, FhirHelper.GetRecordSectionCodeableConcept(system, careRecordSection));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kRecordSection, FhirHelper.GetRecordSectionCodeableConcept(system, careRecordSection));
         }
 
         [Given(@"I set a valid time period start and end date")]
         public void GivenISetAValidTimePeriodStartAndEndDate()
         {
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.TimePeriod, FhirHelper.GetDefaultTimePeriodForGetCareRecord());
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kTimePeriod, FhirHelper.GetDefaultTimePeriodForGetCareRecord());
         }
 
         [Given(@"I set a time period parameter start date to ""([^""]*)"" and end date to ""([^""]*)""")]
         public void GivenISetATimePeriodParameterStartDateToAndEndDateTo(string startDate, string endDate)
         {
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.TimePeriod, FhirHelper.GetTimePeriod(startDate, endDate));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kTimePeriod, FhirHelper.GetTimePeriod(startDate, endDate));
         }
 
         [Given(@"I set a time period parameter with start date ""([^""]*)""")]
         public void GivenISetATimePeriodParameterWithStartDate(string startDate)
         {
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.TimePeriod, FhirHelper.GetTimePeriod(startDate, null));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kTimePeriod, FhirHelper.GetTimePeriod(startDate, null));
         }
 
         [Given(@"I set a time period parameter with end date ""([^""]*)""")]
         public void GivenISetATimePeriodParameterWithEndDate(string endDate)
         {
-            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.TimePeriod, FhirHelper.GetTimePeriod(null, endDate));
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kTimePeriod, FhirHelper.GetTimePeriod(null, endDate));
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
         public void IRequestTheFHIROperation(string operation)
         {
             var preferredFormat = ResourceFormat.Json;
-            if (!HttpContext.Headers.GetHeaderValue(HttpConst.Headers.Accept).Equals(FhirConst.ContentTypes.JsonFhir))
+            if (!HttpContext.Headers.GetHeaderValue(HttpConst.Headers.kAccept).Equals(FhirConst.ContentTypes.kJsonFhir))
             {
                 preferredFormat = ResourceFormat.Xml;
             }
@@ -166,7 +166,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     args.RawRequest.Proxy = new WebProxy(new Uri(HttpContext.WebProxyAddress, UriKind.Absolute));
                 }
                 // Add The Request Headers Apart From The Accept Header
-                foreach (var header in HttpContext.Headers.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.Accept))
+                foreach (var header in HttpContext.Headers.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.kAccept))
                 {
                     args.RawRequest.Headers.Add(header.Key, header.Value);
                     Log.WriteLine("Added Header Key='{0}' Value='{1}'", header.Key, header.Value);
@@ -210,7 +210,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response body should be FHIR JSON")]
         public void ThenTheResponseBodyShouldBeFHIRJSON()
         {
-            HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.JsonFhir);
+            HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.kJsonFhir);
             Log.WriteLine("Response ContentType={0}", HttpContext.ResponseContentType);
             // TODO Move JSON Parsing Out Of Here
             HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
@@ -219,7 +219,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response body should be FHIR XML")]
         public void ThenTheResponseBodyShouldBeFHIRXML()
         {
-            HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.XmlFhir);
+            HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.kXmlFhir);
             Log.WriteLine("Response ContentType={0}", HttpContext.ResponseContentType);
             // TODO Move XML Parsing Out Of Here
             HttpContext.ResponseXML = XDocument.Parse(HttpContext.ResponseBody);

@@ -6,29 +6,29 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
     {
         internal static class Claims
         {
-            public const string RequestingSystemUrl = "iss";
-            public const string PractitionerId = "sub";
-            public const string AuthTokenURL = "aud";
-            public const string ExpiryTime = "exp";
-            public const string CreationTime = "iat";
-            public const string ReasonForRequest = "reason_for_request";
-            public const string RequestingDevice = "requesting_device";
-            public const string RequestingOrganization = "requesting_organization";
-            public const string RequestingPractitioner = "requesting_practitioner";
-            public const string RequestedScope = "requested_scope";
-            public const string RequestedRecord = "requested_record";
+            public const string kRequestingSystemUrl = "iss";
+            public const string kPractitionerId = "sub";
+            public const string kAuthTokenURL = "aud";
+            public const string kExpiryTime = "exp";
+            public const string kCreationTime = "iat";
+            public const string kReasonForRequest = "reason_for_request";
+            public const string kRequestingDevice = "requesting_device";
+            public const string kRequestingOrganization = "requesting_organization";
+            public const string kRequestingPractitioner = "requesting_practitioner";
+            public const string kRequestedScope = "requested_scope";
+            public const string kRequestedRecord = "requested_record";
         }
 
         internal static class Values
         {
-            public const string DirectCare = "directcare";
-            public const string AuthTokenURL = "https://authorize.fhir.nhs.net/token";
+            public const string kDirectCare = "directcare";
+            public const string kAuthTokenURL = "https://authorize.fhir.nhs.net/token";
         }
 
         internal static class Scope
         {
-            public const string PatientRead = "patient/*.read";
-            public const string OrganizationRead = "organization/*.read";
+            public const string kPatientRead = "patient/*.read";
+            public const string kOrganizationRead = "organization/*.read";
         }
     }
 }

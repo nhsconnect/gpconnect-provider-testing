@@ -78,7 +78,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.LoadAppConfig();            
 
             Given(@"I configure server certificate and ssl");
-            And($@"I am using ""{FhirConst.ContentTypes.JsonFhir}"" to communicate with the server");
+            And($@"I am using ""{FhirConst.ContentTypes.kJsonFhir}"" to communicate with the server");
             And(@"I am generating a random message trace identifier");
             And($@"I am accredited system ""{HttpContext.ConsumerASID}""");
             And($@"I am connecting to accredited system ""{HttpContext.ProviderASID}""");
@@ -161,7 +161,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am using ""(.*)"" to communicate with the server")]
         public void GivenIAmUsingToCommunicateWithTheServer(string requestContentType)
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.Accept, requestContentType);
+            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kAccept, requestContentType);
             HttpContext.RequestContentType = requestContentType;
         }
 
@@ -174,38 +174,38 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am accredited system ""(.*)""")]
         public void GivenIAmAccreditedSystem(string fromASID)
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.SspFrom, fromASID);
+            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kSspFrom, fromASID);
         }
 
         [Given(@"I am performing the ""(.*)"" interaction")]
         public void GivenIAmPerformingTheInteraction(string interactionId)
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.SspInteractionId, interactionId);
+            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kSspInteractionId, interactionId);
         }
 
         [Given(@"I am connecting to accredited system ""(.*)""")]
         public void GivenIConnectingToAccreditedSystem(string toASID)
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.SspTo, toASID);
+            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kSspTo, toASID);
         }
 
         [Given(@"I am generating a random message trace identifier")]
         public void GivenIAmGeneratingARandomMessageTraceIdentifier()
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.SspTraceID, Guid.NewGuid().ToString(""));
+            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kSspTraceId, Guid.NewGuid().ToString(""));
         }
 
         [Given(@"I am generating an organization JWT header")]
         public void GivenIAmGeneratingAnOrganizationAuthorizationHeader()
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.Authorization, HttpContext.Jwt.GetBearerToken());
+            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, HttpContext.Jwt.GetBearerToken());
         }
 
         [Given(@"I am generating a patient JWT header with nhs number ""(.*)""")]
         public void GivenIAmGeneratingAPatientAuthorizationHeader(string nhsNumber)
         {
             HttpContext.Jwt.RequestedPatientNHSNumber = nhsNumber;
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.Authorization, HttpContext.Jwt.GetBearerToken());
+            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, HttpContext.Jwt.GetBearerToken());
         }
 
         [Given(@"I do not send header ""(.*)""")]
@@ -219,14 +219,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set a JSON request body ""(.*)""")]
         public void GivenISetAJSONRequestBody(string body)
         {
-            HttpContext.RequestContentType = FhirConst.ContentTypes.JsonFhir;
+            HttpContext.RequestContentType = FhirConst.ContentTypes.kJsonFhir;
             HttpContext.RequestBody = body;
         }
 
         [Given(@"I set an XML request body ""(.*)""")]
         public void GivenISetAnXMLRequestBody(string body)
         {
-            HttpContext.RequestContentType = FhirConst.ContentTypes.XmlFhir;
+            HttpContext.RequestContentType = FhirConst.ContentTypes.kXmlFhir;
             HttpContext.RequestBody = body;
         }
 
@@ -239,7 +239,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the Accept header to ""(.*)""")]
         public void GivenISetTheAcceptHeaderTo(string acceptContentType)
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.Accept, acceptContentType);
+            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kAccept, acceptContentType);
         }
 
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
@@ -322,7 +322,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // Set the Content-Type header
             restRequest.AddParameter(HttpContext.RequestContentType, body, ParameterType.RequestBody);
-            HttpContext.Headers.AddHeader(HttpConst.Headers.ContentType, HttpContext.RequestContentType);
+            HttpContext.Headers.AddHeader(HttpConst.Headers.kContentType, HttpContext.RequestContentType);
 
             // Add The Headers
             foreach (var header in HttpContext.Headers.GetRequestHeaders())
@@ -358,7 +358,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I send a gpc.getcarerecord operation request with invalid resource type payload")]
         public void ISendAGpcGetcarerecordOperationRequestWithInvalidResourceTypePayload()
         {
-            var parameterPayload = FhirHelper.ChangeResourceTypeString(FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), FhirConst.Resources.InvalidResourceType);
+            var parameterPayload = FhirHelper.ChangeResourceTypeString(FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), FhirConst.Resources.kInvalidResourceType);
             RestRequest(Method.POST, "/Patient/$gpc.getcarerecord", parameterPayload);
         }
 
@@ -386,14 +386,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response body should be JSON")]
         public void ThenTheResponseBodyShouldBeJSON()
         {
-            HttpContext.ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.Json);
+            HttpContext.ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.kJson);
             HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
         }
 
         [Then(@"the response body should be XML")]
         public void ThenTheResponseBodyShouldBeXML()
         {
-            HttpContext.ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.Xml);
+            HttpContext.ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.kXml);
             HttpContext.ResponseXML = XDocument.Parse(HttpContext.ResponseBody);
         }
 

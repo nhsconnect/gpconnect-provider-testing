@@ -5,20 +5,20 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
     {
         internal static class ContentTypes
         {
-            public const string JsonFhir = "application/json+fhir";
-            public const string XmlFhir = "application/xml+fhir";
+            public const string kJsonFhir = "application/json+fhir";
+            public const string kXmlFhir = "application/xml+fhir";
         }
 
         internal static class GetCareRecordParams
         {
-            public const string PatientNHSNumber = "patientNHSNumber";
-            public const string RecordSection = "recordSection";
-            public const string TimePeriod = "timePeriod";
+            public const string kPatientNHSNumber = "patientNHSNumber";
+            public const string kRecordSection = "recordSection";
+            public const string kTimePeriod = "timePeriod";
         }
 
         internal static class Resources
         {
-            public const string InvalidResourceType = "InvalidResourceType";
+            public const string kInvalidResourceType = "InvalidResourceType";
         }
     }
 }

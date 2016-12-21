@@ -5,19 +5,19 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
     {
         internal static class ContentTypes
         {
-            public const string Json = "application/json";
-            public const string Xml = "application/xml";
+            public const string kJson = "application/json";
+            public const string kXml = "application/xml";
         }
 
         internal static class Headers
         {
-            public const string Accept = "Accept";
-            public const string Authorization = "Authorization";
-            public const string SspFrom = "Ssp-From";
-            public const string SspTo = "Ssp-To";
-            public const string SspInteractionId = "Ssp-InteractionId";
-            public const string SspTraceID = "Ssp-TraceID";
-            public const string ContentType = "Content-Type";
+            public const string kAccept = "Accept";
+            public const string kAuthorization = "Authorization";
+            public const string kSspFrom = "Ssp-From";
+            public const string kSspTo = "Ssp-To";
+            public const string kSspInteractionId = "Ssp-InteractionId";
+            public const string kSspTraceId = "Ssp-TraceID";
+            public const string kContentType = "Content-Type";
         }
     }
 }
