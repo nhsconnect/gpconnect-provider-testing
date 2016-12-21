@@ -1,7 +1,15 @@
 ﻿@fhir @accessrecord
 Feature: AccessRecord
 
-Scenario Outline: Retrieve the care record sectons for a patient
+Background:
+	Given I have the following patient records
+		| Id                      | NHSNumber  |
+		| patient1                | 9000000033 |
+		| patient2                | 9000000009 |
+		| patientNotInSystem      | 9999999999 |
+		| patientNoSharingConsent | 9000000041 |
+
+Scenario Outline: Retrieve the care record sections for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am requesting the record for config patient "patient1"

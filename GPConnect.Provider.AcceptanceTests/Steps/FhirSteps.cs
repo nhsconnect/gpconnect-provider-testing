@@ -69,12 +69,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"I am requesting the ""{recordSectionCode}"" care record section");
         }
 
-        [Given(@"I am requesting the record for config patient ""([^""]*)""")]
-        public void GivenIAmRequestingTheRecordForConfigPatient(string patient)
-        {
-            Given($@"I am requesting the record for patient with NHS Number ""{AppSettingsHelper.Get<string>(patient)}""");
-        }
-
         [Given(@"I am requesting the record for patient with NHS Number ""(.*)""")]
         public void GivenIAmRequestingTheRecordForPatientWithNHSNumber(string nhsNumber)
         {
