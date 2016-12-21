@@ -355,7 +355,10 @@ Scenario Outline: response bundle should contain composition as the first entry
 	| SUM |
 
 @ignore
-Scenario: response conatin the structure definitions in the meta fields for all resources
+Scenario: request contain the structure definition in the meta fields for the operation
+
+@ignore
+Scenario: response contains the structure definitions in the meta fields for all resources
 
 Scenario Outline: composition contains generic mandatory fields
 	Given I am using the default server
