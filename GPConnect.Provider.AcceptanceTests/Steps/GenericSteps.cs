@@ -48,6 +48,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             GlobalContext.PDSData = PDSImporter.LoadCsv(pdsCSV);
         }
 
+        [BeforeTestRun(Order = 1)]
+        public static void LoadODSData()
+        {
+            if (Directory.Exists(AppSettingsHelper.DataDirectory) == false)
+                Assert.Fail("Data Directory Not Found.");
+            var odsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"ODS.csv");
+            Log.WriteLine("ODS CSV = '{0}'", odsCSV);
+            GlobalContext.ODSData = ODSImporter.LoadCsv(odsCSV);
+        }
+
         [BeforeTestRun(Order = 2)]
         public static void LoadFhirDefinitions()
         {
@@ -69,6 +79,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _objectContainer.RegisterTypeAs<HttpContext, IHttpContext>();
             // HACK To Be Able To See What We've Loaded In The BeforeTestRun Phase
             Log.WriteLine("{0} Patients Loaded From PDS CSV File.", GlobalContext.PDSData.ToList().Count);
+            Log.WriteLine("{0} Organisations Loaded From ODS CSV File.", GlobalContext.ODSData.ToList().Count);
             Log.WriteLine("{0} Genders Loaded From FHIR ValueSet File.", GlobalContext.FhirGenderValueSet.CodeSystem.Concept.Count);
         }
 

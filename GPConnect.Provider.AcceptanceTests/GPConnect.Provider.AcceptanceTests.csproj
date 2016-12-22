@@ -106,6 +106,7 @@
     <Compile Include="Context\FhirContext.cs" />
     <Compile Include="Context\HttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
+    <Compile Include="Data\ODS.cs" />
     <Compile Include="Data\PDS.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
     <Compile Include="FhirBase.feature.cs">
@@ -129,7 +130,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Http.feature</DependentUpon>
     </Compile>
+    <Compile Include="Importers\ODSImporter.cs" />
     <Compile Include="Importers\PDSImporter.cs" />
+    <Compile Include="Importers\ODSMap.cs" />
     <Compile Include="Importers\PDSMap.cs" />
     <Compile Include="JWT.feature.cs">
       <DependentUpon>JWT.feature</DependentUpon>
