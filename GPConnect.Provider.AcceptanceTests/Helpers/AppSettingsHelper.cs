@@ -12,6 +12,9 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         // Data Settings
         public static string DataDirectory => Get<string>("dataDirectory");
 
+        // FHIR Settings
+        public static string FhirDirectory => Get<string>("fhirDirectory");
+
         // Security Settings
         public static bool UseTLS => Get<bool>("useTLS");
 
