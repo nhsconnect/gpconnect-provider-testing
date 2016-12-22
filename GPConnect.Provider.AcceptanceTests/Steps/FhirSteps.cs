@@ -252,32 +252,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the JSON response bundle should contain the ""(.*)"" resource")]
         public void ThenTheJSONResponseBundleShouldContainTheResource(string resourceType)
         {
-            HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '"+resourceType+"')]").ShouldNotBeNull();
+            HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{resourceType}')]").ShouldNotBeNull();
         }
 
         [Then(@"the JSON response bundle should contain the composition resource as the first entry")]
         public void ThenTheJSONResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
         {
-            HttpContext.ResponseJSON.SelectToken("$.entry[0].resource.resourceType").Value<string>().ShouldBe("Composition");
+            HttpContext.ResponseJSON.SelectToken("$.entry[0].resource.resourceType").Value<string>().ShouldBe(ResourceType.Composition.ToString());
         }
 
         [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)""")]
         public void ThenResponseBundleEntryShouldContainElement(string entryResourceType, string jsonPath) {
-            var resourceEntry = HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '" + entryResourceType + "')]");
+            var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
             resourceEntry.SelectToken(jsonPath).ShouldNotBeNull();
         }
 
         [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)"" with value ""([^""]*)""")]
         public void ThenResponseBundleEntryShouldContainElementWithValue(string entryResourceType, string jsonPath, string elementValue)
         {
-            var resourceEntry = HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '" + entryResourceType + "')]");
+            var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
             string.Equals(resourceEntry.SelectToken(jsonPath).Value<string>(), elementValue).ShouldBeTrue();
         }
         
         [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)"" and that element should reference a resource in the bundle")]
         public void ThenResponseBundleEntryShouldContainElementAndThatElementShouldReferenceAResourceInTheBundle(string entryResourceType, string jsonPath)
         {
-            var resourceEntry = HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '" + entryResourceType + "')]");
+            var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
             var internalReference = resourceEntry.SelectToken(jsonPath).Value<string>();
             HttpContext.ResponseJSON.SelectToken("$.entry[?(@.fullUrl == '" + internalReference + "')]").ShouldNotBeNull();
         }
@@ -302,7 +302,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"if response bundle entry ""([^""]*)"" contains element ""([^""]*)""")]
         public void ThenIfResponseBundleEntryContainsElement(string entryResourceType, string jsonPath)
         {
-            var resourceEntry = HttpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == '" + entryResourceType + "')]");
+            var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
             if (resourceEntry.SelectToken(jsonPath) == null) {
                 Log.WriteLine("No Reference in response bundle so skipping rest of test but giving Pass to scenario.");
                 Assert.Pass(); // If element is not present pass and ignore other steps
