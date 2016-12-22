@@ -258,7 +258,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the JSON response bundle should contain the composition resource as the first entry")]
         public void ThenTheJSONResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
         {
-            string.Equals("Composition", HttpContext.ResponseJSON.SelectToken("$.entry[0].resource.resourceType").Value<string>()).ShouldBeTrue();
+            HttpContext.ResponseJSON.SelectToken("$.entry[0].resource.resourceType").Value<string>().ShouldBe("Composition");
         }
 
         [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)""")]
