@@ -1418,6 +1418,156 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("invalid request patientNHSNumber parameter names")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void InvalidRequestPatientNHSNumberParameterNames()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request patientNHSNumber parameter names", new string[] {
+                        "ignore"});
+#line 535
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("invalid request patientNHSNumber parameter case")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void InvalidRequestPatientNHSNumberParameterCase()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request patientNHSNumber parameter case", new string[] {
+                        "ignore"});
+#line 539
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("invalid request recordSection parameter names")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void InvalidRequestRecordSectionParameterNames()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request recordSection parameter names", new string[] {
+                        "ignore"});
+#line 543
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("invalid request recordSection parameter case")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void InvalidRequestRecordSectionParameterCase()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request recordSection parameter case", new string[] {
+                        "ignore"});
+#line 547
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("invalid request timePeriod parameter names")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void InvalidRequestTimePeriodParameterNames()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request timePeriod parameter names", new string[] {
+                        "ignore"});
+#line 551
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("invalid request timePeriod parameter case")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void InvalidRequestTimePeriodParameterCase()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request timePeriod parameter case", new string[] {
+                        "ignore"});
+#line 555
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Request parameter patientNHSNumber values is empty")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void RequestParameterPatientNHSNumberValuesIsEmpty()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter patientNHSNumber values is empty", new string[] {
+                        "ignore"});
+#line 559
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Request parameter patientNHSNumber system is empty")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void RequestParameterPatientNHSNumberSystemIsEmpty()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter patientNHSNumber system is empty", new string[] {
+                        "ignore"});
+#line 563
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Request parameter recordSection values is empty")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void RequestParameterRecordSectionValuesIsEmpty()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSection values is empty", new string[] {
+                        "ignore"});
+#line 567
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Request parameter recordSectoin system is empty")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void RequestParameterRecordSectoinSystemIsEmpty()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSectoin system is empty", new string[] {
+                        "ignore"});
+#line 571
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

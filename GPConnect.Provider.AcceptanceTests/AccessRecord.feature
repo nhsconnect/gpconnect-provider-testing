@@ -530,3 +530,43 @@ Scenario: patient does not contain disallowed fields
 @ignore
 Scenario: check all dateTime format variations are allowed
 	// https://www.hl7.org/fhir/datatypes.html#dateTime
+
+@ignore
+Scenario: invalid request patientNHSNumber parameter names
+	# Create Scenario with variation on parameter name
+
+@ignore
+Scenario: invalid request patientNHSNumber parameter case
+	# Create Scenario with variation on parameter case
+
+@ignore
+Scenario: invalid request recordSection parameter names
+	# Create Scenario with variation on parameter name
+
+@ignore
+Scenario: invalid request recordSection parameter case
+	# Create Scenario with variation on parameter case
+
+@ignore
+Scenario: invalid request timePeriod parameter names
+	# Create Scenario with variation on parameter name
+
+@ignore
+Scenario: invalid request timePeriod parameter case
+	# Create Scenario with variation on parameter case
+
+@ignore
+Scenario: Request parameter patientNHSNumber values is empty
+	# Send the parameter but leave the value empty
+
+@ignore
+Scenario: Request parameter patientNHSNumber system is empty
+	# Send the parameter but leave the system empty
+
+@ignore
+Scenario: Request parameter recordSection values is empty
+	# Send the parameter but leave the value empty
+
+@ignore
+Scenario: Request parameter recordSectoin system is empty
+	# Send the parameter but leave the system empty
