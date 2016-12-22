@@ -526,3 +526,7 @@ Scenario: patient does not contain disallowed fields
 # Organization Resource Validation Scenarios
 
 # Device Resource Validation
+
+@ignore
+Scenario: check all dateTime format variations are allowed
+	// https://www.hl7.org/fhir/datatypes.html#dateTime
