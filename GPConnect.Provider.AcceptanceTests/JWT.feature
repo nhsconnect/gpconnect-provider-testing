@@ -1,6 +1,11 @@
 ﻿@jwt
 Feature: JWT
 
+Background:
+	Given I have the following patient records
+		| Id                      | NHSNumber  |
+		| patient1                | 9000000033 |
+
 Scenario: JWT expiry time greater than 300 seconds
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction

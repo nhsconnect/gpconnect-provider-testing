@@ -46,7 +46,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         // Provider Settings
         public static string ProviderASID => Get<string>("providerASID");
 
-        public static T Get<T>(string key)
+        private static T Get<T>(string key)
         {
             var appSetting = ConfigurationManager.AppSettings[key];
             if (string.IsNullOrWhiteSpace(appSetting)) throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");

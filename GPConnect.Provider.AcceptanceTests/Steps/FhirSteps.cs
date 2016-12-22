@@ -90,7 +90,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAmRequestingTheRecordForConfigPatientOfSystem(string patient, string system)
         {
             Given($@"I set the JWT requested scope to ""{JwtConst.Scope.kPatientRead}""");
-            And($@"I set the JWT requested record patient NHS number to ""{AppSettingsHelper.Get<string>(patient)}""");
+            And($@"I set the JWT requested record patient NHS number to ""{FhirContext.FhirPatients[patient]}""");
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, FhirHelper.GetIdentifier(system, FhirContext.FhirPatients[patient]));
         }
 

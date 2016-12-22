@@ -1,4 +1,5 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Constants;
+using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Extensions;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
@@ -12,15 +13,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     [Binding]
     public class JwtSteps : TechTalk.SpecFlow.Steps
     {
+        private readonly FhirContext FhirContext;
+
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
         // JWT Helper
         public JwtHelper Jwt { get; }
 
-        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper)
+        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper, FhirContext fhirContext)
         {
             Log.WriteLine("JwtSteps() Constructor");
+            FhirContext = fhirContext;
             // Helpers
             Headers = headerHelper;
             Jwt = jwtHelper;
@@ -286,7 +290,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the JWT requested record NHS number to config patient ""(.*)""")]
         public void ISetTheJWTRequestedRecordNHSnumberToConfigPatient(string patient)
         {
-            Jwt.RequestedPatientNHSNumber = AppSettingsHelper.Get<string>(patient);
+            Jwt.RequestedPatientNHSNumber = FhirContext.FhirPatients[patient];
             Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
         }
     }
