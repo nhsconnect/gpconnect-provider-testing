@@ -3,11 +3,12 @@ using GPConnect.Provider.AcceptanceTests.Logger;
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
-    public class HttpHelper
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class HttpParameterHelper
     {
         private readonly Dictionary<string, string> _parameters;
 
-        private HttpHelper()
+        private HttpParameterHelper()
         {
             Log.WriteLine("HttpHelper() Constructor");
             _parameters = new Dictionary<string, string>();
@@ -19,9 +20,9 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             Log.WriteLine("Added Key='{0}' Value='{1}'", key, value);
         }
         
-        public Dictionary<string, string> GetParameters()
+        public Dictionary<string, string> GetRequestParameters()
         {
-            Log.WriteLine("GetParameter Count='{0}'", _parameters.Count);
+            Log.WriteLine("GetRequestParameters Count='{0}'", _parameters.Count);
             return _parameters;
         }
 

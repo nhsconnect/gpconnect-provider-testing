@@ -157,7 +157,7 @@
       <DependentUpon>SpineSecurityProxy.feature</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HttpHeaderHelper.cs" />
-    <Compile Include="Helpers\HttpHelper.cs" />
+    <Compile Include="Helpers\HttpParameterHelper.cs" />
     <Compile Include="Helpers\JwtHelper.cs" />
     <Compile Include="Tables\CareRecordSection.cs" />
   </ItemGroup>

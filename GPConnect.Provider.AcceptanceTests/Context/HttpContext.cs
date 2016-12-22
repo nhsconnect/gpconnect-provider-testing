@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Xml;
 using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
@@ -12,9 +14,9 @@ namespace GPConnect.Provider.AcceptanceTests.Context
     public interface IHttpContext
     {
         // Headers Helper
-        HttpHeaderHelper Headers { get; }
+        HttpHeaderHelper RequestHeaders { get; }
         // Http Helper
-        HttpHelper Http { get; }
+        HttpParameterHelper RequestParameters { get; }
         // JWT Helper
         JwtHelper Jwt { get; }
         // Security Context
@@ -59,10 +61,10 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public readonly ScenarioContext ScenarioContext;
 
         // Headers Helper
-        public HttpHeaderHelper Headers { get; }
+        public HttpHeaderHelper RequestHeaders { get; }
 
         // Http Helper
-        public HttpHelper Http { get; }
+        public HttpParameterHelper RequestParameters { get; }
 
         // JWT Helper
         public JwtHelper Jwt { get; }
@@ -70,13 +72,13 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         // Security Context
         public SecurityContext SecurityContext { get; }
 
-        public HttpContext(ScenarioContext scenarioContext, HttpHeaderHelper headerHelper, JwtHelper jwtHelper, SecurityContext securityContext, HttpHelper httpHelper)
+        public HttpContext(ScenarioContext scenarioContext, HttpHeaderHelper requestHeaderHelper, JwtHelper jwtHelper, SecurityContext securityContext, HttpParameterHelper requestParametersHelper)
         {
             ScenarioContext = scenarioContext;
-            Headers = headerHelper;
+            RequestHeaders = requestHeaderHelper;
             Jwt = jwtHelper;
             SecurityContext = securityContext;
-            Http = httpHelper;
+            RequestParameters = requestParametersHelper;
         }
 
         private static class Context
@@ -94,11 +96,14 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public const string kSpineProxyUrl = "spineProxyUrl";
             public const string kSpineProxyPort = "spineProxyPort";
             // Request
+            public const string kRequestHeaders = "requestHeaders";
             public const string kRequestUrl = "requestUrl";
+            public const string kRequestParameters = "requestParameters";
             public const string kRequestMethod = "requestMethod";
             public const string kRequestContentType = "requestContentType";
             public const string kRequestBody = "requestBody";
             // Raw Response
+            public const string kResponseHeaders = "responseHeaders";
             public const string kResponseContentType = "responseContentType";
             public const string kResponseStatusCode = "responseStatusCode";
             public const string kResponseBody = "responseBody";
@@ -368,6 +373,41 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             ProviderASID = AppSettingsHelper.ProviderASID;
             // Consumer
             ConsumerASID = AppSettingsHelper.ConsumerASID;
+        }
+
+        public void SaveToDisk(string filename)
+        {
+            var requestHeaders = new XElement(Context.kRequestHeaders);
+            foreach (var entry in RequestHeaders.GetRequestHeaders())
+            {
+                requestHeaders.Add(new XElement("requestHeader", new XAttribute("name", entry.Key), new XAttribute("value", entry.Value)));
+            }
+            var requestParameters = new XElement(Context.kRequestParameters);
+            foreach (var entry in RequestParameters.GetRequestParameters())
+            {
+                requestParameters.Add(new XElement("requestParameter", new XAttribute("name", entry.Key), new XAttribute("value", entry.Value)));
+            }
+            var doc = new XDocument(
+                new XElement("httpContext",
+                    new XAttribute(Context.kUseWebProxy, UseWebProxy),
+                    new XAttribute(Context.kWebProxyUrl, WebProxyAddress),
+                    new XAttribute(Context.kUseSpineProxy, UseSpineProxy),
+                    new XAttribute(Context.kSpineProxyUrl, SpineProxyAddress),
+                    new XAttribute("providerUrl", ProviderAddress),
+                    new XElement("request",
+                        new XAttribute("endpointUrl", EndpointAddress),
+                        requestHeaders,
+                        new XElement(Context.kRequestUrl, RequestUrl),
+                        requestParameters,
+                        new XElement(Context.kRequestMethod, RequestMethod),
+                        new XElement(Context.kRequestContentType, RequestContentType),
+                        new XElement(Context.kRequestBody, System.Security.SecurityElement.Escape(RequestBody))),
+                    new XElement("response",
+                        new XElement(Context.kResponseContentType, ResponseContentType),
+                        new XElement(Context.kResponseStatusCode, (int)ResponseStatusCode),
+                        new XElement(Context.kResponseBody, System.Security.SecurityElement.Escape(ResponseBody)))
+                ));
+            doc.Save(filename);
         }
     }
 }

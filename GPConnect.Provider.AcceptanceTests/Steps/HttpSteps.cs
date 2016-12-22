@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
@@ -44,13 +45,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [BeforeScenario(Order = 3)]
         public void ClearHeaders()
         {
-            HttpContext.Headers.Clear();
+            HttpContext.RequestHeaders.Clear();
         }
 
         [BeforeScenario(Order = 3)]
         public void ClearParameters()
         {
-            HttpContext.Http.ClearParameters();
+            HttpContext.RequestParameters.ClearParameters();
         }
 
         // Security Validation Steps
@@ -161,57 +162,57 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am using ""(.*)"" to communicate with the server")]
         public void GivenIAmUsingToCommunicateWithTheServer(string requestContentType)
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kAccept, requestContentType);
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, requestContentType);
             HttpContext.RequestContentType = requestContentType;
         }
 
         [Given(@"I set ""(.*)"" request header to ""(.*)""")]
         public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
         {
-            HttpContext.Headers.ReplaceHeader(headerKey, headerValue);
+            HttpContext.RequestHeaders.ReplaceHeader(headerKey, headerValue);
         }
 
         [Given(@"I am accredited system ""(.*)""")]
         public void GivenIAmAccreditedSystem(string fromASID)
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kSspFrom, fromASID);
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspFrom, fromASID);
         }
 
         [Given(@"I am performing the ""(.*)"" interaction")]
         public void GivenIAmPerformingTheInteraction(string interactionId)
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kSspInteractionId, interactionId);
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, interactionId);
         }
 
         [Given(@"I am connecting to accredited system ""(.*)""")]
         public void GivenIConnectingToAccreditedSystem(string toASID)
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kSspTo, toASID);
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTo, toASID);
         }
 
         [Given(@"I am generating a random message trace identifier")]
         public void GivenIAmGeneratingARandomMessageTraceIdentifier()
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kSspTraceId, Guid.NewGuid().ToString(""));
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTraceId, Guid.NewGuid().ToString(""));
         }
 
         [Given(@"I am generating an organization JWT header")]
         public void GivenIAmGeneratingAnOrganizationAuthorizationHeader()
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, HttpContext.Jwt.GetBearerToken());
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, HttpContext.Jwt.GetBearerToken());
         }
 
         [Given(@"I am generating a patient JWT header with nhs number ""(.*)""")]
         public void GivenIAmGeneratingAPatientAuthorizationHeader(string nhsNumber)
         {
             HttpContext.Jwt.RequestedPatientNHSNumber = nhsNumber;
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, HttpContext.Jwt.GetBearerToken());
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, HttpContext.Jwt.GetBearerToken());
         }
 
         [Given(@"I do not send header ""(.*)""")]
         public void GivenIDoNotSendHeader(string headerKey)
         {
-            HttpContext.Headers.RemoveHeader(headerKey);
+            HttpContext.RequestHeaders.RemoveHeader(headerKey);
         }
 
         // Http Request Steps
@@ -239,13 +240,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the Accept header to ""(.*)""")]
         public void GivenISetTheAcceptHeaderTo(string acceptContentType)
         {
-            HttpContext.Headers.ReplaceHeader(HttpConst.Headers.kAccept, acceptContentType);
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, acceptContentType);
         }
 
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
         public void GivenIAddTheParameterWithTheValue(string parameterName, string parameterValue)
         {
-            HttpContext.Http.AddParameter(parameterName, parameterValue);
+            HttpContext.RequestParameters.AddParameter(parameterName, parameterValue);
         }
 
         [When(@"I make a GET request to ""(.*)""")]
@@ -322,17 +323,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // Set the Content-Type header
             restRequest.AddParameter(HttpContext.RequestContentType, body, ParameterType.RequestBody);
-            HttpContext.Headers.AddHeader(HttpConst.Headers.kContentType, HttpContext.RequestContentType);
+            HttpContext.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, HttpContext.RequestContentType);
 
             // Add The Headers
-            foreach (var header in HttpContext.Headers.GetRequestHeaders())
+            foreach (var header in HttpContext.RequestHeaders.GetRequestHeaders())
             {
                 Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
                 restRequest.AddHeader(header.Key, header.Value);
             }
 
             // Add Parameters
-            foreach (var parameter in HttpContext.Http.GetParameters())
+            foreach (var parameter in HttpContext.RequestParameters.GetRequestParameters())
             {
                 Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
                 restRequest.AddParameter(parameter.Key, parameter.Value);
@@ -352,7 +353,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // TODO Parse The XML or JSON For Easier Processing
 
-            LogResponseToDisk();
+            LogToDisk();
         }
 
         [When(@"I send a gpc.getcarerecord operation request with invalid resource type payload")]
@@ -399,13 +400,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         // Logger
 
-        private void LogResponseToDisk()
+        private void LogToDisk()
         {
             var traceDirectory = GlobalContext.TraceDirectory;
             if (!Directory.Exists(traceDirectory)) return;
             var scenarioDirectory = Path.Combine(traceDirectory, HttpContext.ScenarioContext.ScenarioInfo.Title);
             Directory.CreateDirectory(scenarioDirectory);
             Log.WriteLine(scenarioDirectory);
+            HttpContext.SaveToDisk(Path.Combine(scenarioDirectory,"HttpContext.xml"));
         }
     }
 }

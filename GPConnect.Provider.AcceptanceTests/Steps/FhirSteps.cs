@@ -140,7 +140,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IRequestTheFHIROperation(string operation)
         {
             var preferredFormat = ResourceFormat.Json;
-            if (!HttpContext.Headers.GetHeaderValue(HttpConst.Headers.kAccept).Equals(FhirConst.ContentTypes.kJsonFhir))
+            if (!HttpContext.RequestHeaders.GetHeaderValue(HttpConst.Headers.kAccept).Equals(FhirConst.ContentTypes.kJsonFhir))
             {
                 preferredFormat = ResourceFormat.Xml;
             }
@@ -160,7 +160,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     args.RawRequest.Proxy = new WebProxy(new Uri(HttpContext.WebProxyAddress, UriKind.Absolute));
                 }
                 // Add The Request Headers Apart From The Accept Header
-                foreach (var header in HttpContext.Headers.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.kAccept))
+                foreach (var header in HttpContext.RequestHeaders.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.kAccept))
                 {
                     args.RawRequest.Headers.Add(header.Key, header.Value);
                     Log.WriteLine("Added Header Key='{0}' Value='{1}'", header.Key, header.Value);
