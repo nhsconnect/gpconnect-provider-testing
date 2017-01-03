@@ -20,5 +20,10 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         {
             public const string kInvalidResourceType = "InvalidResourceType";
         }
+
+        internal static class IdentifierSystems
+        {
+            public const string kNHSNumber = "http://fhir.nhs.net/Id/nhs-number";
+        }
     }
 }

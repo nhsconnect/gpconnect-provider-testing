@@ -477,10 +477,30 @@ Scenario Outline: if composition contains custodian referenece
 		#| REF  |
 		| SUM  |
 
-@ignore
-Scenario: patient contains a valid identifiers
-	# Internal Id in resource
-	# NHS Number exists with correct system and valid NHS number (http://fhir.nhs.net/Id/nhs-number)
+Scenario Outline: patient contains a valid identifiers
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
+		And response bundle entry "Patient" should contain element "resource.id"
+		And response bundle entry "Patient" should contain a valid NHS number identifier
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 @ignore
 Scenario: if patient contains name elements

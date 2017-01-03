@@ -308,6 +308,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Pass(); // If element is not present pass and ignore other steps
             }
         }
-        
+
+        [Then(@"response bundle entry ""([^""]*)"" should contain a valid NHS number identifier")]
+        public void ThenResponseBundleEntryShouldContainAValidNHSNumberIdentifier(string entryResourceType)
+        {
+            var passed = false;
+            var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
+            foreach (var identifier in resourceEntry.SelectToken("resource.identifier")) {
+                if (string.Equals(FhirConst.IdentifierSystems.kNHSNumber, identifier["system"].Value<string>()) && FhirHelper.isValidNHSNumber(identifier["value"].Value<string>()))
+                {
+                    passed = true;
+                    break;
+                }
+            }
+            passed.ShouldBeTrue();
+        }
+
     }
 }

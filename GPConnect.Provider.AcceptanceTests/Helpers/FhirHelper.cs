@@ -4,6 +4,7 @@ using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using Newtonsoft.Json;
 using System;
+using System.Text.RegularExpressions;
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
@@ -125,6 +126,61 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static Period GetTimePeriod(string startDate, string endDate) {
             return new Period(new FhirDateTime(startDate), new FhirDateTime(endDate));
+        }
+
+        public static bool isValidNHSNumber(string NHSNumber) {
+
+            NHSNumber = NHSNumber.Trim();
+            
+            if (NHSNumber.Length != 10 || !Regex.Match(NHSNumber, "(\\d+)").Success)
+            {
+                return false;
+            }
+            else {
+                
+                string checkDigit = NHSNumber.Substring(NHSNumber.Length - 1, 1);
+                int checkNumber = Convert.ToInt16(checkDigit);
+
+                int[] multiplers;
+                multiplers = new int[9];
+                multiplers[0] = 10;
+                multiplers[1] = 9;
+                multiplers[2] = 8;
+                multiplers[3] = 7;
+                multiplers[4] = 6;
+                multiplers[5] = 5;
+                multiplers[6] = 4;
+                multiplers[7] = 3;
+                multiplers[8] = 2;
+
+
+                int currentNumber = 0;
+                int currentSum = 0;
+
+                for (int i = 0; i < 9; i++)
+                {
+                    currentNumber = Convert.ToInt16(NHSNumber.Substring(i, 1));
+                    currentSum = currentSum + (currentNumber * multiplers[i]);
+                }
+
+                int remainder = currentSum % 11;
+                int total = 11 - remainder;
+
+                if (total.Equals(11))
+                {
+                    total = 0;
+                }
+                
+                if (total.Equals(checkNumber))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
         }
     }
 }
