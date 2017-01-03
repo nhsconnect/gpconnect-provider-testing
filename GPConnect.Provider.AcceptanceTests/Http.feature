@@ -1,6 +1,14 @@
 ﻿@http
 Feature: Http
 
+Background:
+	Given I have the following patient records
+		| Id                      | NHSNumber  |
+		| patient1                | 9000000033 |
+		| patient2                | 9000000009 |
+		| patientNotInSystem      | 9999999999 |
+		| patientNoSharingConsent | 9000000041 |
+
 Scenario: Http Perform a successful GET request
 	Given I am using server "fhirtest.uhn.ca" on port "80"
 	And I am not using TLS Connection
