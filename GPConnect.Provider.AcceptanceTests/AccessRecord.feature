@@ -413,19 +413,19 @@ Scenario Outline: composition contains subject referencing a patient resource in
 		And response bundle entry "Composition" should contain element "resource.subject.reference"
 		And response bundle entry "Composition" should contain element "resource.subject.reference" and that element should reference a resource in the bundle
 	Examples:
-	| Code | Title | Display |
-	| ADM  | Administrative Items | Administrative Items |
-	| ALL  | Allergies and Sensitivities | Allergies and Sensitivities |
-	| CLI  | Clinical Items | Clinical Items |
-	| ENC  | Encounters | Encounters |
-	| IMM  | Immunisations | Immunisations |
-	#| INV  | Investigations | Investigations |
-	| MED  | Medications | Medications |
-	| OBS  | Observations | Observations |
-	#| PAT  | Patient Details | Patient Details |
-	| PRB  | Problems | Problems |
-	#| REF  | Referrals | Referrals |
-	| SUM  | Summary | Summary |
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 Scenario Outline: if composition contains author, the device reference can be found in the bundle
 	Given I am using the default server
@@ -438,25 +438,21 @@ Scenario Outline: if composition contains author, the device reference can be fo
 		And if response bundle entry "Composition" contains element "resource.author[0].reference"
 		And response bundle entry "Composition" should contain element "resource.author[0].reference" and that element should reference a resource in the bundle
 	Examples:
-	| Code | Title | Display |
-	| ADM  | Administrative Items | Administrative Items |
-	| ALL  | Allergies and Sensitivities | Allergies and Sensitivities |
-	| CLI  | Clinical Items | Clinical Items |
-	| ENC  | Encounters | Encounters |
-	| IMM  | Immunisations | Immunisations |
-	#| INV  | Investigations | Investigations |
-	| MED  | Medications | Medications |
-	| OBS  | Observations | Observations |
-	#| PAT  | Patient Details | Patient Details |
-	| PRB  | Problems | Problems |
-	#| REF  | Referrals | Referrals |
-	| SUM  | Summary | Summary |
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
-@ignore
 Scenario Outline: if composition contains custodian referenece
-	# Contains Reference
-	# Contains Display
-	# Referenced organization is in bundle
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "patient1"
@@ -467,19 +463,19 @@ Scenario Outline: if composition contains custodian referenece
 		And if response bundle entry "Composition" contains element "resource.custodian.reference"
 		And response bundle entry "Composition" should contain element "resource.custodian.reference" and that element should reference a resource in the bundle
 	Examples:
-	| Code | Title | Display |
-	| ADM  | Administrative Items | Administrative Items |
-	| ALL  | Allergies and Sensitivities | Allergies and Sensitivities |
-	| CLI  | Clinical Items | Clinical Items |
-	| ENC  | Encounters | Encounters |
-	| IMM  | Immunisations | Immunisations |
-	#| INV  | Investigations | Investigations |
-	| MED  | Medications | Medications |
-	| OBS  | Observations | Observations |
-	#| PAT  | Patient Details | Patient Details |
-	| PRB  | Problems | Problems |
-	#| REF  | Referrals | Referrals |
-	| SUM  | Summary | Summary |
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 @ignore
 Scenario: patient contains a valid identifiers
