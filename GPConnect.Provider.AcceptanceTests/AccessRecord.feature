@@ -25,12 +25,12 @@ Scenario Outline: Retrieve the care record sections for a patient
 	| CLI |
 	| ENC |
 	| IMM |
-	| INV |
+	#| INV |
 	| MED |
 	| OBS |
-	| PAT |
+	#| PAT |
 	| PRB |
-	| REF |
+	#| REF |
 	| SUM |
 
 Scenario: Empty request
@@ -187,9 +187,9 @@ Scenario Outline: Time period specified for a care record section that can be fi
 	| ADM |
 	| CLI |
 	| ENC |
-	| INV |
-	| PAT |
-	| REF |
+	#| INV |
+	#| PAT |
+	#| REF |
 	| SUM |
 
 Scenario Outline: Time period specified for a care record section that must not be filtered
@@ -322,12 +322,12 @@ Scenario Outline: response should be bundle containing all mandatory elements
 	| CLI |
 	| ENC |
 	| IMM |
-	| INV |
+	#| INV |
 	| MED |
 	| OBS |
-	| PAT |
+	#| PAT |
 	| PRB |
-	| REF |
+	#| REF |
 	| SUM |
 	
 Scenario Outline: response bundle should contain composition as the first entry
@@ -346,12 +346,12 @@ Scenario Outline: response bundle should contain composition as the first entry
 	| CLI |
 	| ENC |
 	| IMM |
-	| INV |
+	#| INV |
 	| MED |
 	| OBS |
-	| PAT |
+	#| PAT |
 	| PRB |
-	| REF |
+	#| REF |
 	| SUM |
 
 @ignore
@@ -393,12 +393,12 @@ Scenario Outline: composition contains generic mandatory fields
 	| CLI  | Clinical Items | Clinical Items |
 	| ENC  | Encounters | Encounters |
 	| IMM  | Immunisations | Immunisations |
-	| INV  | Investigations | Investigations |
+	#| INV  | Investigations | Investigations |
 	| MED  | Medications | Medications |
 	| OBS  | Observations | Observations |
-	| PAT  | Patient Details | Patient Details |
+	#| PAT  | Patient Details | Patient Details |
 	| PRB  | Problems | Problems |
-	| REF  | Referrals | Referrals |
+	#| REF  | Referrals | Referrals |
 	| SUM  | Summary | Summary |
 
 
@@ -419,12 +419,12 @@ Scenario Outline: composition contains subject referencing a patient resource in
 	| CLI  | Clinical Items | Clinical Items |
 	| ENC  | Encounters | Encounters |
 	| IMM  | Immunisations | Immunisations |
-	| INV  | Investigations | Investigations |
+	#| INV  | Investigations | Investigations |
 	| MED  | Medications | Medications |
 	| OBS  | Observations | Observations |
-	| PAT  | Patient Details | Patient Details |
+	#| PAT  | Patient Details | Patient Details |
 	| PRB  | Problems | Problems |
-	| REF  | Referrals | Referrals |
+	#| REF  | Referrals | Referrals |
 	| SUM  | Summary | Summary |
 
 Scenario Outline: if composition contains author, the device reference can be found in the bundle
@@ -444,19 +444,42 @@ Scenario Outline: if composition contains author, the device reference can be fo
 	| CLI  | Clinical Items | Clinical Items |
 	| ENC  | Encounters | Encounters |
 	| IMM  | Immunisations | Immunisations |
-	| INV  | Investigations | Investigations |
+	#| INV  | Investigations | Investigations |
 	| MED  | Medications | Medications |
 	| OBS  | Observations | Observations |
-	| PAT  | Patient Details | Patient Details |
+	#| PAT  | Patient Details | Patient Details |
 	| PRB  | Problems | Problems |
-	| REF  | Referrals | Referrals |
+	#| REF  | Referrals | Referrals |
 	| SUM  | Summary | Summary |
 
 @ignore
-Scenario: if composition contains custodian referenece
+Scenario Outline: if composition contains custodian referenece
 	# Contains Reference
 	# Contains Display
 	# Referenced organization is in bundle
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
+		And if response bundle entry "Composition" contains element "resource.custodian.reference"
+		And response bundle entry "Composition" should contain element "resource.custodian.reference" and that element should reference a resource in the bundle
+	Examples:
+	| Code | Title | Display |
+	| ADM  | Administrative Items | Administrative Items |
+	| ALL  | Allergies and Sensitivities | Allergies and Sensitivities |
+	| CLI  | Clinical Items | Clinical Items |
+	| ENC  | Encounters | Encounters |
+	| IMM  | Immunisations | Immunisations |
+	#| INV  | Investigations | Investigations |
+	| MED  | Medications | Medications |
+	| OBS  | Observations | Observations |
+	#| PAT  | Patient Details | Patient Details |
+	| PRB  | Problems | Problems |
+	#| REF  | Referrals | Referrals |
+	| SUM  | Summary | Summary |
 
 @ignore
 Scenario: patient contains a valid identifiers

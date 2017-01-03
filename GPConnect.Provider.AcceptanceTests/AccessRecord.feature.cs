@@ -98,12 +98,9 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestCaseAttribute("CLI", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ENC", new string[0])]
         [NUnit.Framework.TestCaseAttribute("IMM", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("INV", new string[0])]
         [NUnit.Framework.TestCaseAttribute("MED", new string[0])]
         [NUnit.Framework.TestCaseAttribute("OBS", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PAT", new string[0])]
         [NUnit.Framework.TestCaseAttribute("PRB", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", new string[0])]
         public virtual void RetrieveTheCareRecordSectionsForAPatient(string code, string[] exampleTags)
         {
@@ -561,9 +558,6 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("ADM", new string[0])]
         [NUnit.Framework.TestCaseAttribute("CLI", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ENC", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("INV", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PAT", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", new string[0])]
         public virtual void TimePeriodSpecifiedForACareRecordSectionThatCanBeFiltered(string code, string[] exampleTags)
         {
@@ -923,12 +917,9 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("CLI", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ENC", new string[0])]
         [NUnit.Framework.TestCaseAttribute("IMM", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("INV", new string[0])]
         [NUnit.Framework.TestCaseAttribute("MED", new string[0])]
         [NUnit.Framework.TestCaseAttribute("OBS", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PAT", new string[0])]
         [NUnit.Framework.TestCaseAttribute("PRB", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", new string[0])]
         public virtual void ResponseShouldBeBundleContainingAllMandatoryElements(string code, string[] exampleTags)
         {
@@ -968,12 +959,9 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("CLI", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ENC", new string[0])]
         [NUnit.Framework.TestCaseAttribute("IMM", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("INV", new string[0])]
         [NUnit.Framework.TestCaseAttribute("MED", new string[0])]
         [NUnit.Framework.TestCaseAttribute("OBS", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PAT", new string[0])]
         [NUnit.Framework.TestCaseAttribute("PRB", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", new string[0])]
         public virtual void ResponseBundleShouldContainCompositionAsTheFirstEntry(string code, string[] exampleTags)
         {
@@ -1042,12 +1030,9 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("CLI", "Clinical Items", "Clinical Items", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ENC", "Encounters", "Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("IMM", "Immunisations", "Immunisations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("INV", "Investigations", "Investigations", new string[0])]
         [NUnit.Framework.TestCaseAttribute("MED", "Medications", "Medications", new string[0])]
         [NUnit.Framework.TestCaseAttribute("OBS", "Observations", "Observations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PAT", "Patient Details", "Patient Details", new string[0])]
         [NUnit.Framework.TestCaseAttribute("PRB", "Problems", "Problems", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "Referrals", "Referrals", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", "Summary", "Summary", new string[0])]
         public virtual void CompositionContainsGenericMandatoryFields(string code, string title, string display, string[] exampleTags)
         {
@@ -1137,12 +1122,9 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("CLI", "Clinical Items", "Clinical Items", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ENC", "Encounters", "Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("IMM", "Immunisations", "Immunisations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("INV", "Investigations", "Investigations", new string[0])]
         [NUnit.Framework.TestCaseAttribute("MED", "Medications", "Medications", new string[0])]
         [NUnit.Framework.TestCaseAttribute("OBS", "Observations", "Observations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PAT", "Patient Details", "Patient Details", new string[0])]
         [NUnit.Framework.TestCaseAttribute("PRB", "Problems", "Problems", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "Referrals", "Referrals", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", "Summary", "Summary", new string[0])]
         public virtual void CompositionContainsSubjectReferencingAPatientResourceInTheBundle(string code, string title, string display, string[] exampleTags)
         {
@@ -1184,12 +1166,9 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("CLI", "Clinical Items", "Clinical Items", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ENC", "Encounters", "Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("IMM", "Immunisations", "Immunisations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("INV", "Investigations", "Investigations", new string[0])]
         [NUnit.Framework.TestCaseAttribute("MED", "Medications", "Medications", new string[0])]
         [NUnit.Framework.TestCaseAttribute("OBS", "Observations", "Observations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PAT", "Patient Details", "Patient Details", new string[0])]
         [NUnit.Framework.TestCaseAttribute("PRB", "Problems", "Problems", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "Referrals", "Referrals", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", "Summary", "Summary", new string[0])]
         public virtual void IfCompositionContainsAuthorTheDeviceReferenceCanBeFoundInTheBundle(string code, string title, string display, string[] exampleTags)
         {
@@ -1227,14 +1206,50 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("if composition contains custodian referenece")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void IfCompositionContainsCustodianReferenece()
+        [NUnit.Framework.TestCaseAttribute("ADM", "Administrative Items", "Administrative Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "Allergies and Sensitivities", "Allergies and Sensitivities", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "Clinical Items", "Clinical Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "Encounters", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("IMM", "Immunisations", "Immunisations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "Medications", "Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OBS", "Observations", "Observations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "Problems", "Problems", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Summary", "Summary", new string[0])]
+        public virtual void IfCompositionContainsCustodianReferenece(string code, string title, string display, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if composition contains custodian referenece", new string[] {
-                        "ignore"});
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if composition contains custodian referenece", @__tags);
 #line 456
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
+#line 460
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 461
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 462
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
+                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 463
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 464
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 465
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 466
+  testRunner.And("the JSON value \"resourceType\" should be \"Bundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 467
+  testRunner.And("if response bundle entry \"Composition\" contains element \"resource.custodian.refer" +
+                    "ence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 468
+  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.custodian.re" +
+                    "ference\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1246,7 +1261,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("patient contains a valid identifiers", new string[] {
                         "ignore"});
-#line 462
+#line 485
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1261,7 +1276,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains name elements", new string[] {
                         "ignore"});
-#line 467
+#line 490
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1276,7 +1291,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains telecom information", new string[] {
                         "ignore"});
-#line 473
+#line 496
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1291,7 +1306,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains gender", new string[] {
                         "ignore"});
-#line 479
+#line 502
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1306,7 +1321,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains address", new string[] {
                         "ignore"});
-#line 483
+#line 506
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1321,7 +1336,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains maritalStatus", new string[] {
                         "ignore"});
-#line 488
+#line 511
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1336,7 +1351,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains contect", new string[] {
                         "ignore"});
-#line 494
+#line 517
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1351,7 +1366,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contins communicaiton", new string[] {
                         "ignore"});
-#line 501
+#line 524
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1366,7 +1381,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains practitioner as care provider", new string[] {
                         "ignore"});
-#line 507
+#line 530
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1381,7 +1396,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains managingOrganizaiton", new string[] {
                         "ignore"});
-#line 513
+#line 536
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1396,7 +1411,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("patient does not contain disallowed fields", new string[] {
                         "ignore"});
-#line 519
+#line 542
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1411,7 +1426,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("check all dateTime format variations are allowed", new string[] {
                         "ignore"});
-#line 531
+#line 554
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1426,7 +1441,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request patientNHSNumber parameter names", new string[] {
                         "ignore"});
-#line 535
+#line 558
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1441,7 +1456,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request patientNHSNumber parameter case", new string[] {
                         "ignore"});
-#line 539
+#line 562
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1456,7 +1471,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request recordSection parameter names", new string[] {
                         "ignore"});
-#line 543
+#line 566
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1471,7 +1486,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request recordSection parameter case", new string[] {
                         "ignore"});
-#line 547
+#line 570
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1486,7 +1501,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request timePeriod parameter names", new string[] {
                         "ignore"});
-#line 551
+#line 574
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1501,7 +1516,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request timePeriod parameter case", new string[] {
                         "ignore"});
-#line 555
+#line 578
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1516,7 +1531,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter patientNHSNumber values is empty", new string[] {
                         "ignore"});
-#line 559
+#line 582
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1531,7 +1546,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter patientNHSNumber system is empty", new string[] {
                         "ignore"});
-#line 563
+#line 586
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1546,7 +1561,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSection values is empty", new string[] {
                         "ignore"});
-#line 567
+#line 590
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1561,7 +1576,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSectoin system is empty", new string[] {
                         "ignore"});
-#line 571
+#line 594
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
