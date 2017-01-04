@@ -13,6 +13,7 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using Hl7.Fhir.Serialization;
 using NUnit.Framework;
+using Newtonsoft.Json;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
@@ -324,5 +325,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             passed.ShouldBeTrue();
         }
 
+        [Then(@"response bundle entry ""([^""]*)"" should be a valid Patient resource")]
+        public void ThenResponseBundleEntryShouldBeAValidPatientResource(string entryResourceType)
+        {
+            var fhirResource = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')].resource");
+            FhirJsonParser fhirJsonParser = new FhirJsonParser();
+            var patientResource = fhirJsonParser.Parse<Patient>(JsonConvert.SerializeObject(fhirResource));
+            patientResource.ResourceType.ShouldBe(ResourceType.Patient);
+        }
     }
 }

@@ -477,6 +477,30 @@ Scenario Outline: if composition contains custodian referenece
 		#| REF  |
 		| SUM  |
 
+Scenario Outline: patient is a valid fhir resource
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
+		And response bundle entry "Patient" should be a valid Patient resource
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
+
 Scenario Outline: patient contains a valid identifiers
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -502,11 +526,31 @@ Scenario Outline: patient contains a valid identifiers
 		#| REF  |
 		| SUM  |
 
-@ignore
-Scenario: if patient contains name elements
-	# Family
-	# Given
-	# text?
+Scenario Outline: if patient contains name elements
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Bundle"
+		And if response bundle entry "Patient" contains element "resource.name"
+		And response bundle entry "Patient" should contain element "resource.name[0].family"
+		And response bundle entry "Patient" should contain element "resource.name[0].given"
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 @ignore
 Scenario: if patient contains telecom information
