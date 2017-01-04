@@ -2,12 +2,10 @@
 using System.IO;
 using System.Linq;
 using BoDi;
-using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Importers;
 using GPConnect.Provider.AcceptanceTests.Logger;
-using Hl7.Fhir.Model;
 using Hl7.Fhir.Specification.Source;
 using NUnit.Framework;
 using TechTalk.SpecFlow;

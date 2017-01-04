@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GPConnect.Provider.AcceptanceTests.Context;
+﻿using GPConnect.Provider.AcceptanceTests.Context;
 using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;

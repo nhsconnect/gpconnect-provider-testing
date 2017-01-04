@@ -231,7 +231,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheJSONArrayShouldContain(string key, string value)
         {
             Log.WriteLine("Array " + HttpContext.ResponseJSON[key] + "should contain " + value);
-            var passed = HttpContext.ResponseJSON[key].Any(entry => string.Equals(entry.Value<string>(), value));
+            var passed = HttpContext.ResponseJSON[key].Any(entry => entry.Value<string>().Equals(value));
             passed.ShouldBeTrue();
         }
 
@@ -239,7 +239,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheJSONArrayShouldContain(string key, string value1, string value2)
         {
             Log.WriteLine("Array " + HttpContext.ResponseJSON[key] + "should contain " + value1 + " or " + value2);
-            var passed = HttpContext.ResponseJSON[key].Any(entry => string.Equals(entry.Value<string>(), value1) || string.Equals(entry.Value<string>(), value2));
+            var passed = HttpContext.ResponseJSON[key].Any(entry => entry.Value<string>().Equals(value1) || entry.Value<string>().Equals(value2));
             passed.ShouldBeTrue();
         }
 
@@ -272,7 +272,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenResponseBundleEntryShouldContainElementWithValue(string entryResourceType, string jsonPath, string elementValue)
         {
             var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
-            string.Equals(resourceEntry.SelectToken(jsonPath).Value<string>(), elementValue).ShouldBeTrue();
+            resourceEntry.SelectToken(jsonPath).Value<string>().ShouldBe(elementValue);
         }
         
         [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)"" and that element should reference a resource in the bundle")]
@@ -290,7 +290,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             foreach (var rest in HttpContext.ResponseJSON.SelectToken("rest")) {
                 foreach (var operation in rest.SelectToken("operation"))
                 {
-                    if (string.Equals(operationName, operation["name"].Value<string>()) && operation.SelectToken("definition.reference") != null) {
+                    if (operationName.Equals(operation["name"].Value<string>()) && operation.SelectToken("definition.reference") != null) {
                         passed = true;
                         break;
                     }
@@ -316,7 +316,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var passed = false;
             var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
             foreach (var identifier in resourceEntry.SelectToken("resource.identifier")) {
-                if (string.Equals(FhirConst.IdentifierSystems.kNHSNumber, identifier["system"].Value<string>()) && FhirHelper.isValidNHSNumber(identifier["value"].Value<string>()))
+                if (FhirConst.IdentifierSystems.kNHSNumber.Equals(identifier["system"].Value<string>()) && FhirHelper.isValidNHSNumber(identifier["value"].Value<string>()))
                 {
                     passed = true;
                     break;
