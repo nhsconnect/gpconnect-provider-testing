@@ -17,7 +17,7 @@ Scenario Outline: Retrieve the care record sections for a patient
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 	Examples:
 	| Code |
 	| ADM |
@@ -181,7 +181,7 @@ Scenario Outline: Time period specified for a care record section that can be fi
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 	Examples:
 	| Code |
 	| ADM |
@@ -228,7 +228,7 @@ Scenario: Request patient summary with parameters in oposite order to other test
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 
 Scenario: Request care record where request resource type is something other than Parameters
 	Given I am using the default server
@@ -281,7 +281,7 @@ Scenario: Time period with only start date parameter
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 
 Scenario: Time period with only end date parameter
 	Given I am using the default server
@@ -292,7 +292,7 @@ Scenario: Time period with only end date parameter
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 
 Scenario: Time period format start and end date only contain year and month
 	Given I am using the default server
@@ -303,7 +303,7 @@ Scenario: Time period format start and end date only contain year and month
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 
 Scenario Outline: response should be bundle containing all mandatory elements
 	Given I am using the default server
@@ -312,7 +312,7 @@ Scenario Outline: response should be bundle containing all mandatory elements
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 		And the JSON response bundle should contain the "Composition" resource
 		And the JSON response bundle should contain the "Patient" resource
 	Examples:
@@ -337,7 +337,7 @@ Scenario Outline: response bundle should contain composition as the first entry
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 		And the JSON response bundle should contain the composition resource as the first entry
 	Examples:
 	| Code |
@@ -367,7 +367,7 @@ Scenario Outline: composition contains generic mandatory fields
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 		And response bundle entry "Composition" should contain element "resource.date"
 		And response bundle entry "Composition" should contain element "resource.title" with value "Patient Care Record"
 		And response bundle entry "Composition" should contain element "resource.status" with value "final"
@@ -409,7 +409,7 @@ Scenario Outline: composition contains subject referencing a patient resource in
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 		And response bundle entry "Composition" should contain element "resource.subject.reference"
 		And response bundle entry "Composition" should contain element "resource.subject.reference" and that element should reference a resource in the bundle
 	Examples:
@@ -434,7 +434,7 @@ Scenario Outline: if composition contains author, the device reference can be fo
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 		And if response bundle entry "Composition" contains element "resource.author[0].reference"
 		And response bundle entry "Composition" should contain element "resource.author[0].reference" and that element should reference a resource in the bundle
 	Examples:
@@ -459,7 +459,7 @@ Scenario Outline: if composition contains custodian referenece
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 		And if response bundle entry "Composition" contains element "resource.custodian.reference"
 		And response bundle entry "Composition" should contain element "resource.custodian.reference" and that element should reference a resource in the bundle
 	Examples:
@@ -484,7 +484,7 @@ Scenario Outline: patient is a valid fhir resource
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 		And response bundle entry "Patient" should be a valid Patient resource
 	Examples:
 		| Code |
@@ -508,7 +508,7 @@ Scenario Outline: patient contains a valid identifiers
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 		And response bundle entry "Patient" should contain element "resource.id"
 		And response bundle entry "Patient" should contain a valid NHS number identifier
 	Examples:
@@ -533,7 +533,7 @@ Scenario Outline: if patient contains name elements
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
+		And the JSON response should be a Bundle resource
 		And if response bundle entry "Patient" contains element "resource.name"
 		And response bundle entry "Patient" should contain element "resource.name[0].family"
 		And response bundle entry "Patient" should contain element "resource.name[0].given"
