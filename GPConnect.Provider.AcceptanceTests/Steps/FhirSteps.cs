@@ -196,7 +196,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // Grab The Response Body
             HttpContext.ResponseBody = fhirClient.LastBodyAsText;
-            
+            FhirContext.FhirResponseResource = fhirClient.LastBodyAsResource;
+
             // TODO Parse The XML or JSON For Easier Processing
         }
 
@@ -250,18 +251,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseJSON.SelectToken(jsonPath).ShouldNotBeNull();
         }
 
-        [Then(@"the JSON response bundle should contain the ""(.*)"" resource")]
-        public void ThenTheJSONResponseBundleShouldContainTheResource(string resourceType)
-        {
-            HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{resourceType}')]").ShouldNotBeNull();
-        }
-
-        [Then(@"the JSON response bundle should contain the composition resource as the first entry")]
-        public void ThenTheJSONResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
-        {
-            HttpContext.ResponseJSON.SelectToken("$.entry[0].resource.resourceType").Value<string>().ShouldBe(ResourceType.Composition.ToString());
-        }
-
         [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)""")]
         public void ThenResponseBundleEntryShouldContainElement(string entryResourceType, string jsonPath) {
             var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
@@ -310,28 +299,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"response bundle entry ""([^""]*)"" should contain a valid NHS number identifier")]
-        public void ThenResponseBundleEntryShouldContainAValidNHSNumberIdentifier(string entryResourceType)
-        {
-            var passed = false;
-            var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
-            foreach (var identifier in resourceEntry.SelectToken("resource.identifier")) {
-                if (FhirConst.IdentifierSystems.kNHSNumber.Equals(identifier["system"].Value<string>()) && FhirHelper.isValidNHSNumber(identifier["value"].Value<string>()))
-                {
-                    passed = true;
-                    break;
-                }
-            }
-            passed.ShouldBeTrue();
-        }
-
-        [Then(@"response bundle entry ""([^""]*)"" should be a valid Patient resource")]
-        public void ThenResponseBundleEntryShouldBeAValidPatientResource(string entryResourceType)
-        {
-            var fhirResource = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')].resource");
-            FhirJsonParser fhirJsonParser = new FhirJsonParser();
-            var patientResource = fhirJsonParser.Parse<Patient>(JsonConvert.SerializeObject(fhirResource));
-            patientResource.ResourceType.ShouldBe(ResourceType.Patient);
-        }
     }
 }

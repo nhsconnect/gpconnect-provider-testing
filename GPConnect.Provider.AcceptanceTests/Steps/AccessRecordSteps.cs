@@ -1,7 +1,10 @@
-﻿using GPConnect.Provider.AcceptanceTests.Context;
+﻿using GPConnect.Provider.AcceptanceTests.Constants;
+using GPConnect.Provider.AcceptanceTests.Context;
+using GPConnect.Provider.AcceptanceTests.Helpers;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Shouldly;
 using System;
@@ -46,6 +49,65 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheJSONResponseShouldBeAOperationOutcomeResource()
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
+        }
+
+        [Then(@"the JSON response bundle should contain a single Patient resource")]
+        public void ThenTheJSONResponseBundleShouldContainASinglePatientResource()
+        {
+            int count = 0;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient)) count++;
+            }
+            count.ShouldBe(1);
+        }
+
+        [Then(@"the JSON response bundle should contain a single Composition resource")]
+        public void ThenTheJSONResponseBundleShouldContainASingleCompositionResource()
+        {
+            int count = 0;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition)) count++;
+            }
+            count.ShouldBe(1);
+        }
+
+        [Then(@"the JSON response bundle should contain the composition resource as the first entry")]
+        public void ThenTheJSONResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
+        {
+            ((Bundle)FhirContext.FhirResponseResource).Entry[0].Resource.ResourceType.ShouldBe(ResourceType.Composition);
+        }
+
+        [Then(@"response bundle Patient entry should be a valid Patient resource")]
+        public void ThenResponseBundlePatientEntryShouldBeAValidPatientResource()
+        {
+            var fhirResource = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == 'Patient')].resource");
+            FhirJsonParser fhirJsonParser = new FhirJsonParser();
+            var patientResource = fhirJsonParser.Parse<Patient>(JsonConvert.SerializeObject(fhirResource));
+            patientResource.ResourceType.ShouldBe(ResourceType.Patient);
+        }
+
+        [Then(@"response bundle Patient entry should contain a valid NHS number identifier")]
+        public void ThenResponseBundlePatientEntryShouldContainAValidNHSNumberIdentifier()
+        {
+            var passed = false;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    foreach (var identifier in patient.Identifier)
+                    {
+                        if (FhirConst.IdentifierSystems.kNHSNumber.Equals(identifier.System) && FhirHelper.isValidNHSNumber(identifier.Value))
+                        {
+                            passed = true;
+                            break;
+                        }
+                    }
+                    passed.ShouldBeTrue();
+                }
+            }
         }
 
         [Then(@"response bundle Patient resource should contain a valid gender")]

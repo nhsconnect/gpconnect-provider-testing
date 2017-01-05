@@ -313,8 +313,8 @@ Scenario Outline: response should be bundle containing all mandatory elements
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And the JSON response bundle should contain the "Composition" resource
-		And the JSON response bundle should contain the "Patient" resource
+		And the JSON response bundle should contain a single Composition resource
+		And the JSON response bundle should contain a single Patient resource
 	Examples:
 	| Code |
 	| ADM |
@@ -485,7 +485,7 @@ Scenario Outline: patient is a valid fhir resource
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And response bundle entry "Patient" should be a valid Patient resource
+		And response bundle Patient entry should be a valid Patient resource
 	Examples:
 		| Code |
 		| ADM  |
@@ -510,7 +510,7 @@ Scenario Outline: patient contains a valid identifiers
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And response bundle entry "Patient" should contain element "resource.id"
-		And response bundle entry "Patient" should contain a valid NHS number identifier
+		And response bundle Patient entry should contain a valid NHS number identifier
 	Examples:
 		| Code |
 		| ADM  |

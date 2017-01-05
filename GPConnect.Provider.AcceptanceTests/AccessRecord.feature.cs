@@ -945,9 +945,9 @@ this.FeatureBackground();
 #line 315
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 316
-  testRunner.And("the JSON response bundle should contain the \"Composition\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the JSON response bundle should contain a single Composition resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 317
-  testRunner.And("the JSON response bundle should contain the \"Patient\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the JSON response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1282,7 +1282,7 @@ this.FeatureBackground();
 #line 487
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 488
-  testRunner.And("response bundle entry \"Patient\" should be a valid Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("response bundle Patient entry should be a valid Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1324,7 +1324,7 @@ this.FeatureBackground();
 #line 512
   testRunner.And("response bundle entry \"Patient\" should contain element \"resource.id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 513
-  testRunner.And("response bundle entry \"Patient\" should contain a valid NHS number identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("response bundle Patient entry should contain a valid NHS number identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
