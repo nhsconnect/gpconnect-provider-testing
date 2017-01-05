@@ -2,9 +2,11 @@
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using Shouldly;
 using System;
 using TechTalk.SpecFlow;
+using static Hl7.Fhir.Model.Bundle;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -38,6 +40,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheJSONResponseShouldBeABundleResource()
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Bundle);
+        }
+
+        [Then(@"the JSON response should be a OperationOutcome resource")]
+        public void ThenTheJSONResponseShouldBeAOperationOutcomeResource()
+        {
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
+        }
+
+        [Then(@"response bundle Patient resource should contain a valid gender")]
+        public void ThenResponseBundlePatientResourceShouldContainAValidGender()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry) {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient)){
+                    Patient patient = (Patient)entry.Resource;
+                    patient.Gender.ShouldNotBeNull();
+                }
+            }
         }
     }
 }
