@@ -553,10 +553,35 @@ Scenario Outline: if patient contains name elements
 		| SUM  |
 
 @ignore
-Scenario: if patient contains telecom information
+Scenario Outline: if patient contains telecom information
 	# system
 	# value
 	#use
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if response bundle entry "Patient" contains element "resource.telecom"
+		And response bundle entry "Patient" should contain element "resource.telecom[0].system"
+		And response bundle entry "Patient" should contain element "resource.telecom[0].value"
+		And response bundle entry "Patient" should contain element "resource.telecom[0].use"
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 @ignore
 Scenario: if patient contains gender

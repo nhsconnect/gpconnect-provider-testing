@@ -37,10 +37,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the JSON response should be a Bundle resource")]
         public void ThenTheJSONResponseShouldBeABundleResource()
         {
-            FhirJsonParser fhirJsonParser = new FhirJsonParser();
-            var fhirBundle = fhirJsonParser.Parse<Bundle>(JsonConvert.SerializeObject(HttpContext.ResponseJSON));
-            fhirBundle.ResourceType.ShouldBe(ResourceType.Bundle);
-            HttpContext.ResponseFhirBundle = fhirBundle; // Store the bundle for use by other validation
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Bundle);
         }
     }
 }

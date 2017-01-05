@@ -6,7 +6,6 @@ using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
-using Hl7.Fhir.Model;
 // ReSharper disable ClassNeverInstantiated.Global
 
 namespace GPConnect.Provider.AcceptanceTests.Context
@@ -46,7 +45,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         // Parsed Response
         JObject ResponseJSON { get; set; }
         XDocument ResponseXML { get; set; }
-        Bundle ResponseFhirBundle { get; set; }
         // Consumer
         string ConsumerASID { get; set; }
         // Provider
@@ -112,7 +110,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             // Parsed Response
             public const string kResponseJSON = "responseJSON";
             public const string kResponseXML = "responseXML";
-            public const string kResponseFhirBundle = "responseFhirBundle";
             // Consumer
             public const string kConsumerASID = "consumerASID";
             // Producer
@@ -289,13 +286,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 ScenarioContext.Set(value, Context.kResponseXML);
             }
         }
-
-        public Bundle ResponseFhirBundle
-        {
-            get { return ScenarioContext.Get<Bundle>(Context.kResponseFhirBundle); }
-            set { ScenarioContext.Set(value, Context.kResponseFhirBundle); }
-        }
-
+        
         // Consumer
         public string ConsumerASID
         {
