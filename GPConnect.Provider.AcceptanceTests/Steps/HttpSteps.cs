@@ -12,6 +12,7 @@ using RestSharp;
 using Shouldly;
 using TechTalk.SpecFlow;
 using Hl7.Fhir.Serialization;
+using Hl7.Fhir.Model;
 
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable InconsistentNaming
@@ -349,7 +350,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseStatusCode = restResponse.StatusCode;
             HttpContext.ResponseContentType = restResponse.ContentType;
             HttpContext.ResponseBody = restResponse.Content;
-
+            
             // TODO Parse The XML or JSON For Easier Processing
 
             LogToDisk();
@@ -388,6 +389,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.kJson);
             HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
+            FhirJsonParser fhirJsonParser = new FhirJsonParser();
+            FhirContext.FhirResponseResource = fhirJsonParser.Parse<Resource>(HttpContext.ResponseBody);
         }
 
         [Then(@"the response body should be XML")]
@@ -395,6 +398,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.kXml);
             HttpContext.ResponseXML = XDocument.Parse(HttpContext.ResponseBody);
+            FhirXmlParser fhirXmlParser = new FhirXmlParser();
+            FhirContext.FhirResponseResource = fhirXmlParser.Parse<Resource>(HttpContext.ResponseBody);
         }
 
         // Logger

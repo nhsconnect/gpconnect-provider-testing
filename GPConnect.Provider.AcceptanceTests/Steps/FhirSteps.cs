@@ -210,6 +210,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("Response ContentType={0}", HttpContext.ResponseContentType);
             // TODO Move JSON Parsing Out Of Here
             HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
+            FhirJsonParser fhirJsonParser = new FhirJsonParser();
+            FhirContext.FhirResponseResource = fhirJsonParser.Parse<Resource>(HttpContext.ResponseBody);
         }
 
         [Then(@"the response body should be FHIR XML")]
@@ -219,6 +221,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("Response ContentType={0}", HttpContext.ResponseContentType);
             // TODO Move XML Parsing Out Of Here
             HttpContext.ResponseXML = XDocument.Parse(HttpContext.ResponseBody);
+            FhirXmlParser fhirXmlParser = new FhirXmlParser();
+            FhirContext.FhirResponseResource = fhirXmlParser.Parse<Resource>(HttpContext.ResponseBody);
         }
 
         [Then(@"the JSON value ""(.*)"" should be ""(.*)""")]
