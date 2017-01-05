@@ -110,13 +110,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"response bundle Patient resource should contain a valid gender")]
-        public void ThenResponseBundlePatientResourceShouldContainAValidGender()
+        [Then(@"response bundle Patient resource should contain valid telecom information")]
+        public void ThenResponseBundlePatientResourceShouldContainValidTelecomInfromation()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry) {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Patient)){
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
                     Patient patient = (Patient)entry.Resource;
-                    patient.Gender.ShouldNotBeNull();
+                    foreach (var telecom in patient.Telecom)
+                    {
+                        telecom.System.ShouldNotBeNull();
+                        telecom.Value.ShouldNotBeNull();
+                    }
                 }
             }
         }

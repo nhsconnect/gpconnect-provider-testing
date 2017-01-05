@@ -371,14 +371,6 @@ Scenario Outline: composition contains generic mandatory fields
 		And response bundle entry "Composition" should contain element "resource.date"
 		And response bundle entry "Composition" should contain element "resource.title" with value "Patient Care Record"
 		And response bundle entry "Composition" should contain element "resource.status" with value "final"
-		And response bundle entry "Composition" should contain element "resource.type.coding[0].system" with value "http://snomed.info/sct"
-		And response bundle entry "Composition" should contain element "resource.type.coding[0].code" with value "425173008"
-		And response bundle entry "Composition" should contain element "resource.type.coding[0].display" with value "record extract (record artifact)"
-		And response bundle entry "Composition" should contain element "resource.type.text" with value "record extract (record artifact)"
-		And response bundle entry "Composition" should contain element "resource.class.coding[0].system" with value "http://snomed.info/sct"
-		And response bundle entry "Composition" should contain element "resource.class.coding[0].code" with value "700232004"
-		And response bundle entry "Composition" should contain element "resource.class.coding[0].display" with value "general medical service (qualifier value)"
-		And response bundle entry "Composition" should contain element "resource.class.text" with value "general medical service (qualifier value)"
 		And response bundle entry "Composition" should contain element "resource.section[0].title" with value "<Title>"
 		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].system" with value "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1"
 		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].code" with value "<Code>"
@@ -400,6 +392,111 @@ Scenario Outline: composition contains generic mandatory fields
 	| PRB  | Problems | Problems |
 	#| REF  | Referrals | Referrals |
 	| SUM  | Summary | Summary |
+
+
+Scenario Outline: if composition contains type coding
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if response bundle entry "Composition" contains element "resource.type.coding"
+		And response bundle entry "Composition" should contain element "resource.type.coding[0].system" with value "http://snomed.info/sct"
+		And response bundle entry "Composition" should contain element "resource.type.coding[0].code" with value "425173008"
+		And response bundle entry "Composition" should contain element "resource.type.coding[0].display" with value "record extract (record artifact)"
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
+
+Scenario Outline: if composition contains type text
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if response bundle entry "Composition" contains element "resource.type.text"
+		And response bundle entry "Composition" should contain element "resource.type.text" with value "record extract (record artifact)"
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
+
+Scenario Outline: if composition contains class coding
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if response bundle entry "Composition" contains element "resource.class.coding"
+		And response bundle entry "Composition" should contain element "resource.class.coding[0].system" with value "http://snomed.info/sct"
+		And response bundle entry "Composition" should contain element "resource.class.coding[0].code" with value "700232004"
+		And response bundle entry "Composition" should contain element "resource.class.coding[0].display" with value "general medical service (qualifier value)"
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
+
+Scenario Outline: if composition contains class text
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if response bundle entry "Composition" contains element "resource.class.text"
+		And response bundle entry "Composition" should contain element "resource.class.text" with value "general medical service (qualifier value)"
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 
 Scenario Outline: composition contains subject referencing a patient resource in the bundle
@@ -477,6 +574,8 @@ Scenario Outline: if composition contains custodian referenece
 		#| REF  |
 		| SUM  |
 
+@ignore
+# There is no need to check that the patient resource is valid specifically as this is done by the parse of the response when we check there is a patient response
 Scenario Outline: patient is a valid fhir resource
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -526,6 +625,9 @@ Scenario Outline: patient contains a valid identifiers
 		#| REF  |
 		| SUM  |
 
+@ignore
+# There is no change from the standard fhir resource requirments so checking the name use is a valid value if it exists is covered by the parse of the response which is performed for check the bundle compares patient resource test scenario
+# There is no mandatory name fields in the spec
 Scenario Outline: if patient contains name elements
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -561,9 +663,7 @@ Scenario Outline: if patient contains telecom information
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And if response bundle entry "Patient" contains element "resource.telecom"
-		And response bundle entry "Patient" should contain element "resource.telecom[0].system"
-		And response bundle entry "Patient" should contain element "resource.telecom[0].value"
-		And response bundle entry "Patient" should contain element "resource.telecom[0].use"
+		And response bundle Patient resource should contain valid telecom information
 	Examples:
 		| Code |
 		| ADM  |
@@ -579,6 +679,8 @@ Scenario Outline: if patient contains telecom information
 		#| REF  |
 		| SUM  |
 
+@ignore
+# There is no change from the standard fhir resource requirments so checking the gender is a valid value if it exists is covered by the parse of the response which is performed for check the bundle compares patient resource test scenario
 Scenario Outline: if patient contains gender
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -605,9 +707,31 @@ Scenario Outline: if patient contains gender
 		| SUM  |
 
 @ignore
-Scenario: if patient contains address
-	# Use
-	# Type
+# There is no change from the standard fhir resource requirments so checking the address is a valid value if it exists is covered by the parse of the response which is performed for check the bundle compares patient resource test scenario
+Scenario Outline: if patient contains address
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if response bundle entry "Patient" contains element "resource.address"
+		And response bundle Patient resource should contain valid address
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 @ignore
 Scenario: if patient contains maritalStatus
