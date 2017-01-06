@@ -79,6 +79,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("Relationship ValueSet Not Found.");
             Log.WriteLine("{0} Relationship Loaded.", relationship.CodeSystem.Concept.Count);
             GlobalContext.FhirRelationshipValueSet = relationship;
+
+            var humanLanguage = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/human-language-1");
+            if (humanLanguage == null)
+                Assert.Fail("HumanLanguage ValueSet Not Found.");
+            Log.WriteLine("{0} HumanLanguage Loaded.", humanLanguage.CodeSystem.Concept.Count);
+            GlobalContext.FhirHumanLanguageValueSet = humanLanguage;
         }
 
         [BeforeScenario(Order = 0)]
@@ -93,6 +99,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("{0} Genders Loaded From FHIR ValueSet File.", GlobalContext.FhirGenderValueSet.CodeSystem.Concept.Count);
             Log.WriteLine("{0} MaritalStatus Loaded From FHIR ValueSet File.", GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept.Count);
             Log.WriteLine("{0} Relationship Loaded From FHIR ValueSet File.", GlobalContext.FhirRelationshipValueSet.CodeSystem.Concept.Count);
+            Log.WriteLine("{0} HumanLanguage Loaded From FHIR ValueSet File.", GlobalContext.FhirHumanLanguageValueSet.CodeSystem.Concept.Count);
         }
 
         [BeforeScenario(Order = 1)]

@@ -294,5 +294,45 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+
+        [Then(@"if composition contains the patient resource communicaiotn the mandatory fields should matching the specification")]
+        public void ThenIfCompositionContainsThePatientResourceCommunicationTheMandatoryFieldsShouldMatchingTheSpecification()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    if (patient.Communication == null)
+                    {
+                        Assert.Pass();
+                    }
+                    else
+                    {
+                        foreach (Patient.CommunicationComponent communicaiton in patient.Communication)
+                        {
+                            var codingCount = 0;
+                            foreach (Coding coding in communicaiton.Language.Coding) {
+                                codingCount++;
+                                coding.System.ShouldBe(GlobalContext.FhirHumanLanguageValueSet.CodeSystem.System);
+                                // Loop through valid codes to find if the one in the resource is valid
+                                var pass = false;
+                                foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in GlobalContext.FhirHumanLanguageValueSet.CodeSystem.Concept)
+                                {
+                                    if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
+                                    {
+                                        pass = true;
+                                        break;
+                                    }
+                                }
+                                pass.ShouldBeTrue();
+                            }
+                            codingCount.ShouldBeLessThanOrEqualTo(1);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

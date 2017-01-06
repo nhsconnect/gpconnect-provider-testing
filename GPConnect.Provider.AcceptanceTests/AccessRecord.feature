@@ -635,11 +635,32 @@ Scenario Outline: if patient contains contact
 		#| REF  |
 		| SUM  |
 
-@ignore
-Scenario: if patient contins communicaiton
+Scenario Outline: if patient contins communicaiton
 	# System
 	# Code
 	# display
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if composition contains the patient resource communicaiotn the mandatory fields should matching the specification
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 @ignore
 Scenario: if patient contains practitioner as care provider
