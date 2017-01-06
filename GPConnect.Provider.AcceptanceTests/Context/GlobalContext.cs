@@ -16,6 +16,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public const string kODSData = "odsData";
             public const string kFhirGenderValueSet = "fhirGenderValueSet";
             public const string kFhirMaritalStatusValueSet = "fhirMaritalStatusValueSet";
+            public const string kFhirRelationshipValueSet = "fhirRelationshipValueSet";
         }
 
         public static string TraceDirectory
@@ -50,6 +51,12 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         {
             get { return GlobalContextHelper.GetValue<ValueSet>(Context.kFhirMaritalStatusValueSet); }
             set { GlobalContextHelper.SaveValue(Context.kFhirMaritalStatusValueSet, value); }
+        }
+        
+        public static ValueSet FhirRelationshipValueSet
+        {
+            get { return GlobalContextHelper.GetValue<ValueSet>(Context.kFhirRelationshipValueSet); }
+            set { GlobalContextHelper.SaveValue(Context.kFhirRelationshipValueSet, value); }
         }
     }
 }

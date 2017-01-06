@@ -73,6 +73,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("MaritalStatus ValueSet Not Found.");
             Log.WriteLine("{0} MaritalStatus Loaded.", maritalStatus.CodeSystem.Concept.Count);
             GlobalContext.FhirMaritalStatusValueSet = maritalStatus;
+
+            var relationship = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/cda-person-relationship-type-1");
+            if (relationship == null)
+                Assert.Fail("Relationship ValueSet Not Found.");
+            Log.WriteLine("{0} Relationship Loaded.", relationship.CodeSystem.Concept.Count);
+            GlobalContext.FhirRelationshipValueSet = relationship;
         }
 
         [BeforeScenario(Order = 0)]
@@ -85,7 +91,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("{0} Patients Loaded From PDS CSV File.", GlobalContext.PDSData.ToList().Count);
             Log.WriteLine("{0} Organisations Loaded From ODS CSV File.", GlobalContext.ODSData.ToList().Count);
             Log.WriteLine("{0} Genders Loaded From FHIR ValueSet File.", GlobalContext.FhirGenderValueSet.CodeSystem.Concept.Count);
-            Log.WriteLine("{0} MaritalStatus Loaded From FHIR ValueSet File.", GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept.Count); 
+            Log.WriteLine("{0} MaritalStatus Loaded From FHIR ValueSet File.", GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept.Count);
+            Log.WriteLine("{0} Relationship Loaded From FHIR ValueSet File.", GlobalContext.FhirRelationshipValueSet.CodeSystem.Concept.Count);
         }
 
         [BeforeScenario(Order = 1)]

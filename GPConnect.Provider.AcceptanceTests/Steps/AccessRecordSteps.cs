@@ -220,9 +220,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         {
                             codingCount++;
                             coding.System.ShouldBe(GlobalContext.FhirMaritalStatusValueSet.CodeSystem.System);
+
+                            // Loop through valid codes to find if the one in the resource is valid
                             var pass = false;
-                            foreach (ValueSet.ConceptDefinitionComponent concept in GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept) {
-                                if (concept.Code.Equals(coding.Code) && concept.Display.Equals(coding.Display)) {
+                            foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept) {
+                                if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display)) {
                                     pass = true;
                                     break;
                                 }
@@ -230,6 +232,63 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             pass.ShouldBeTrue();
                         }
                         codingCount.ShouldBeLessThanOrEqualTo(1);
+                    }
+                }
+            }
+        }
+
+        [Then(@"if composition contains the patient resource contact the mandatory fields should matching the specification")]
+        public void ThenIfCompositionContainsThePatientResourceContactTheMandatoryFieldsShouldMatchingTheSpecification()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    foreach (Patient.ContactComponent contact in patient.Contact) {
+                        // Contact Relationship Checks
+                        foreach (CodeableConcept relationship in contact.Relationship) {
+                            var codingCount = 0;
+                            foreach (Coding coding in relationship.Coding)
+                            {
+                                codingCount++;
+                                coding.System.ShouldBe(GlobalContext.FhirRelationshipValueSet.CodeSystem.System);
+
+                                // Loop through valid codes to find if the one in the resource is valid
+                                var pass = false;
+                                foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept)
+                                {
+                                    if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
+                                    {
+                                        pass = true;
+                                        break;
+                                    }
+                                }
+                                pass.ShouldBeTrue();
+                            }
+                            codingCount.ShouldBeLessThanOrEqualTo(1);
+                        }
+
+                        // Contact Name Checks
+                        // Contact Telecom Checks
+                        // Contact Address Checks
+                        // Contact Gender Checks
+                        // No mandatory fields and value sets are standard so will be validated by parse of response to fhir resource
+
+                        // Contact Organization Checks
+                        if (contact.Organization != null && contact.Organization.Reference != null)
+                        {
+                            var referenceExistsInBundle = false;
+                            foreach (EntryComponent entryForOrganization in ((Bundle)FhirContext.FhirResponseResource).Entry)
+                            {
+                                if (entry.Resource.ResourceType.Equals(ResourceType.Organization) && entry.FullUrl.Equals(contact.Organization.Reference))
+                                {
+                                    referenceExistsInBundle = true;
+                                    break;
+                                }
+                            }
+                            referenceExistsInBundle.ShouldBeTrue();
+                        }
                     }
                 }
             }
