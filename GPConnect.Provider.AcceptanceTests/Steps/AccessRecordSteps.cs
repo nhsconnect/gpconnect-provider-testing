@@ -126,5 +126,80 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+
+        [Then(@"if composition contains the resource type element the fields should match the fixed values of the specification")]
+        public void ThenIfCompositionContainsTheResourceTypeElementTheFieldsShouldMatchTheFixedValuesOfTheSpecification()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+
+                    if (composition.Type == null)
+                    {
+                        Assert.Pass();
+                    }
+                    else
+                    {
+                        if (composition.Type.Coding != null)
+                        {
+                            int codingCount = 0;
+                            foreach (Coding coding in composition.Type.Coding)
+                            {
+                                codingCount++;
+                                coding.System.ShouldBe("http://snomed.info/sct");
+                                coding.Code.ShouldBe("425173008");
+                                coding.Display.ShouldBe("record extract (record artifact)");
+                            }
+                            codingCount.ShouldBeLessThanOrEqualTo(1);
+                        }
+
+                        if (composition.Type.Text != null)
+                        {
+                            composition.Type.Text.ShouldBe("record extract (record artifact)");
+                        }
+                    }
+                }
+            }
+        }
+
+        [Then(@"if composition contains the resource class element the fields should match the fixed values of the specification")]
+        public void ThenIfCompositionContainsTheResourceClassElementTheFieldsShouldMatchTheFixedValuesOfTheSpecification()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    
+                    if (composition.Class == null)
+                    {
+                        Assert.Pass();
+                    }
+                    else
+                    {
+                        if (composition.Class.Coding != null)
+                        {
+                            int codingCount = 0;
+                            foreach (Coding coding in composition.Class.Coding)
+                            {
+                                codingCount++;
+                                coding.System.ShouldBe("http://snomed.info/sct");
+                                coding.Code.ShouldBe("700232004");
+                                coding.Display.ShouldBe("general medical service (qualifier value)");
+                            }
+                            codingCount.ShouldBeLessThanOrEqualTo(1);
+                        }
+
+                        if (composition.Class.Text != null)
+                        {
+                            composition.Class.Text.ShouldBe("general medical service (qualifier value)");
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
