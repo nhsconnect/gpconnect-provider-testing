@@ -587,11 +587,29 @@ Scenario: if patient contains address
 # There is no need to check that the patient address value sets are valid as this is done by the parse of the response within scenario above.
 # The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
 
-@ignore
-Scenario: if patient contains maritalStatus
-	# System (http://hl7.org/fhir/ValueSet/marital-status)
-	# Code is valid from valueset
-	# Display from value set
+Scenario Outline: if patient contains maritalStatus
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if composition contains the patient resource maritalStatus fields matching the specification
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 @ignore
 Scenario: if patient contains contect

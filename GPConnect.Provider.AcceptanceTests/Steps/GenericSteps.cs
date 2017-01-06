@@ -67,6 +67,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("Gender ValueSet Not Found.");
             Log.WriteLine("{0} Genders Loaded.", gender.CodeSystem.Concept.Count);
             GlobalContext.FhirGenderValueSet = gender;
+
+            var maritalStatus = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/marital-status-1");
+            if (maritalStatus == null)
+                Assert.Fail("MaritalStatus ValueSet Not Found.");
+            Log.WriteLine("{0} MaritalStatus Loaded.", maritalStatus.CodeSystem.Concept.Count);
+            GlobalContext.FhirMaritalStatusValueSet = maritalStatus;
         }
 
         [BeforeScenario(Order = 0)]
@@ -79,6 +85,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("{0} Patients Loaded From PDS CSV File.", GlobalContext.PDSData.ToList().Count);
             Log.WriteLine("{0} Organisations Loaded From ODS CSV File.", GlobalContext.ODSData.ToList().Count);
             Log.WriteLine("{0} Genders Loaded From FHIR ValueSet File.", GlobalContext.FhirGenderValueSet.CodeSystem.Concept.Count);
+            Log.WriteLine("{0} MaritalStatus Loaded From FHIR ValueSet File.", GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept.Count); 
         }
 
         [BeforeScenario(Order = 1)]

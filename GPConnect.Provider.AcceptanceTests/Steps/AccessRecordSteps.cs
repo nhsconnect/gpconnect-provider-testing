@@ -201,5 +201,39 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"if composition contains the patient resource maritalStatus fields matching the specification")]
+        public void ThenIfCompositionContainsThePatientResourceMaritalStatusFieldsMatchingTheSpecification()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    if (patient.MaritalStatus == null || patient.MaritalStatus.Coding == null)
+                    {
+                        Assert.Pass();
+                    }
+                    else
+                    {
+                        int codingCount = 0;
+                        foreach (Coding coding in patient.MaritalStatus.Coding)
+                        {
+                            codingCount++;
+                            coding.System.ShouldBe(GlobalContext.FhirMaritalStatusValueSet.CodeSystem.System);
+                            var pass = false;
+                            foreach (ValueSet.ConceptDefinitionComponent concept in GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept) {
+                                if (concept.Code.Equals(coding.Code) && concept.Display.Equals(coding.Display)) {
+                                    pass = true;
+                                    break;
+                                }
+                            }
+                            pass.ShouldBeTrue();
+                        }
+                        codingCount.ShouldBeLessThanOrEqualTo(1);
+                    }
+                }
+            }
+        }
+
     }
 }
