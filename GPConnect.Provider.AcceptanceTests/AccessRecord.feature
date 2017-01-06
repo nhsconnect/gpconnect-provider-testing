@@ -729,3 +729,21 @@ Scenario: Request parameter recordSection values is empty
 @ignore
 Scenario: Request parameter recordSectoin system is empty
 	# Send the parameter but leave the system empty
+
+@ignore
+Scenario: Request records for patients with genders which do not match the valueset so must addear to gender mapping
+	# Check that the gender returned matches the expected mapping
+
+@ignore
+@Manual
+Scenario: Check that all the genders supported by provider are in the GP Connect value set, if not check mapping is covered in documentation and system maps correctly
+	# Run tests with patients with non value set genders if possible and check mapping in response is acceptable
+
+@ignore
+Scenario: Request records for patients contact with relationship which do not match the valueset so must addear to relationship mapping
+	# Check that the relationship returned matches the expected mapping
+
+@ignore
+@Manual
+Scenario: Check that all the relationship supported for contacts by the provider are in the GP Connect value set, if not check mapping is covered in documentation and system maps correctly
+	# Run tests with patients with non value set relationships for contacts and check mapping in response is acceptable

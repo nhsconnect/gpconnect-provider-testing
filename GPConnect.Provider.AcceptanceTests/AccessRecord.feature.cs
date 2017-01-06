@@ -1781,6 +1781,80 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Request records for patients with genders which do not match the valueset so must" +
+            " addear to gender mapping")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void RequestRecordsForPatientsWithGendersWhichDoNotMatchTheValuesetSoMustAddearToGenderMapping()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request records for patients with genders which do not match the valueset so must" +
+                    " addear to gender mapping", new string[] {
+                        "ignore"});
+#line 734
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check that all the genders supported by provider are in the GP Connect value set," +
+            " if not check mapping is covered in documentation and system maps correctly")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
+        public virtual void CheckThatAllTheGendersSupportedByProviderAreInTheGPConnectValueSetIfNotCheckMappingIsCoveredInDocumentationAndSystemMapsCorrectly()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check that all the genders supported by provider are in the GP Connect value set," +
+                    " if not check mapping is covered in documentation and system maps correctly", new string[] {
+                        "ignore",
+                        "Manual"});
+#line 739
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Request records for patients contact with relationship which do not match the val" +
+            "ueset so must addear to relationship mapping")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void RequestRecordsForPatientsContactWithRelationshipWhichDoNotMatchTheValuesetSoMustAddearToRelationshipMapping()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request records for patients contact with relationship which do not match the val" +
+                    "ueset so must addear to relationship mapping", new string[] {
+                        "ignore"});
+#line 743
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check that all the relationship supported for contacts by the provider are in the" +
+            " GP Connect value set, if not check mapping is covered in documentation and syst" +
+            "em maps correctly")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
+        public virtual void CheckThatAllTheRelationshipSupportedForContactsByTheProviderAreInTheGPConnectValueSetIfNotCheckMappingIsCoveredInDocumentationAndSystemMapsCorrectly()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check that all the relationship supported for contacts by the provider are in the" +
+                    " GP Connect value set, if not check mapping is covered in documentation and syst" +
+                    "em maps correctly", new string[] {
+                        "ignore",
+                        "Manual"});
+#line 748
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
