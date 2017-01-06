@@ -575,31 +575,10 @@ Scenario Outline: if composition contains custodian referenece
 		| SUM  |
 
 @ignore
-# There is no need to check that the patient resource is valid specifically as this is done by the parse of the response when we check there is a patient response
-Scenario Outline: patient is a valid fhir resource
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient1"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And response bundle Patient entry should be a valid Patient resource
-	Examples:
-		| Code |
-		| ADM  |
-		| ALL  |
-		| CLI  |
-		| ENC  |
-		| IMM  |
-		#| INV  |
-		| MED  |
-		| OBS  |
-		#| PAT  |
-		| PRB  |
-		#| REF  |
-		| SUM  |
-
+Scenario: patient is a valid fhir resource
+# There is no need to check that the patient resource and included value sets are correct if included as this is done by the parse of the response within scenario above.
+# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
+	
 Scenario Outline: patient contains a valid identifiers
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -626,33 +605,9 @@ Scenario Outline: patient contains a valid identifiers
 		| SUM  |
 
 @ignore
-# There is no change from the standard fhir resource requirments so checking the name use is a valid value if it exists is covered by the parse of the response which is performed for check the bundle compares patient resource test scenario
-# There is no mandatory name fields in the spec
 Scenario Outline: if patient contains name elements
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient1"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And if response bundle entry "Patient" contains element "resource.name"
-		And response bundle entry "Patient" should contain element "resource.name[0].family"
-		And response bundle entry "Patient" should contain element "resource.name[0].given"
-	Examples:
-		| Code |
-		| ADM  |
-		| ALL  |
-		| CLI  |
-		| ENC  |
-		| IMM  |
-		#| INV  |
-		| MED  |
-		| OBS  |
-		#| PAT  |
-		| PRB  |
-		#| REF  |
-		| SUM  |
+# There is no need to check that the patient resource name element value sets are correct if included as this is done by the parse of the response within scenario above.
+# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
 
 Scenario Outline: if patient contains telecom information
 	Given I am using the default server
@@ -680,58 +635,14 @@ Scenario Outline: if patient contains telecom information
 		| SUM  |
 
 @ignore
-# There is no change from the standard fhir resource requirments so checking the gender is a valid value if it exists is covered by the parse of the response which is performed for check the bundle compares patient resource test scenario
 Scenario Outline: if patient contains gender
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient1"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And if response bundle entry "Patient" contains element "resource.gender"
-		And response bundle Patient resource should contain a valid gender
-	Examples:
-		| Code |
-		| ADM  |
-		| ALL  |
-		| CLI  |
-		| ENC  |
-		| IMM  |
-		#| INV  |
-		| MED  |
-		| OBS  |
-		#| PAT  |
-		| PRB  |
-		#| REF  |
-		| SUM  |
+# There is no need to check that the patient gender value set is valid as this is done by the parse of the response within scenario above.
+# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
 
 @ignore
-# There is no change from the standard fhir resource requirments so checking the address is a valid value if it exists is covered by the parse of the response which is performed for check the bundle compares patient resource test scenario
 Scenario Outline: if patient contains address
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient1"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And if response bundle entry "Patient" contains element "resource.address"
-		And response bundle Patient resource should contain valid address
-	Examples:
-		| Code |
-		| ADM  |
-		| ALL  |
-		| CLI  |
-		| ENC  |
-		| IMM  |
-		#| INV  |
-		| MED  |
-		| OBS  |
-		#| PAT  |
-		| PRB  |
-		#| REF  |
-		| SUM  |
+# There is no need to check that the patient address value sets are valid as this is done by the parse of the response within scenario above.
+# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
 
 @ignore
 Scenario: if patient contains maritalStatus
