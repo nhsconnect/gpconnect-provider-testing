@@ -219,17 +219,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         foreach (Coding coding in patient.MaritalStatus.Coding)
                         {
                             codingCount++;
-                            coding.System.ShouldBe(GlobalContext.FhirMaritalStatusValueSet.CodeSystem.System);
-
-                            // Loop through valid codes to find if the one in the resource is valid
-                            var pass = false;
-                            foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept) {
-                                if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display)) {
-                                    pass = true;
-                                    break;
-                                }
-                            }
-                            pass.ShouldBeTrue();
+                            valueSetContainsCodeAndDisplay(GlobalContext.FhirMaritalStatusValueSet, coding).ShouldBeTrue();
                         }
                         codingCount.ShouldBeLessThanOrEqualTo(1);
                     }
@@ -252,19 +242,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             foreach (Coding coding in relationship.Coding)
                             {
                                 codingCount++;
-                                coding.System.ShouldBe(GlobalContext.FhirRelationshipValueSet.CodeSystem.System);
-
-                                // Loop through valid codes to find if the one in the resource is valid
-                                var pass = false;
-                                foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept)
-                                {
-                                    if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
-                                    {
-                                        pass = true;
-                                        break;
-                                    }
-                                }
-                                pass.ShouldBeTrue();
+                                valueSetContainsCodeAndDisplay(GlobalContext.FhirMaritalStatusValueSet, coding).ShouldBeTrue();
                             }
                             codingCount.ShouldBeLessThanOrEqualTo(1);
                         }
@@ -314,24 +292,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             var codingCount = 0;
                             foreach (Coding coding in communicaiton.Language.Coding) {
                                 codingCount++;
-                                coding.System.ShouldBe(GlobalContext.FhirHumanLanguageValueSet.CodeSystem.System);
-                                // Loop through valid codes to find if the one in the resource is valid
-                                var pass = false;
-                                foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in GlobalContext.FhirHumanLanguageValueSet.CodeSystem.Concept)
-                                {
-                                    if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
-                                    {
-                                        pass = true;
-                                        break;
-                                    }
-                                }
-                                pass.ShouldBeTrue();
+                                valueSetContainsCodeAndDisplay(GlobalContext.FhirHumanLanguageValueSet, coding).ShouldBeTrue();
                             }
                             codingCount.ShouldBeLessThanOrEqualTo(1);
                         }
                     }
                 }
             }
+        }
+
+        public bool valueSetContainsCodeAndDisplay(ValueSet valueset, Coding coding)
+        {
+            coding.System.ShouldBe(valueset.CodeSystem.System);
+            // Loop through valid codes to find if the one in the resource is valid
+            foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in valueset.CodeSystem.Concept)
+            {
+                if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }

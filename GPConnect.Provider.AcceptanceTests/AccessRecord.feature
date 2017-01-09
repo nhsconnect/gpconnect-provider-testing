@@ -636,9 +636,6 @@ Scenario Outline: if patient contains contact
 		| SUM  |
 
 Scenario Outline: if patient contins communicaiton
-	# System
-	# Code
-	# display
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "patient1"
