@@ -1695,13 +1695,108 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("practitioner resource test agains specification")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void PractitionerResourceTestAgainsSpecification()
+        [NUnit.Framework.DescriptionAttribute("practitioner resource contains mandatory fields and does not include dissallowed " +
+            "fields")]
+        [NUnit.Framework.TestCaseAttribute("ADM", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("IMM", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OBS", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", new string[0])]
+        public virtual void PractitionerResourceContainsMandatoryFieldsAndDoesNotIncludeDissallowedFields(string code, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("practitioner resource test agains specification", new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("practitioner resource contains mandatory fields and does not include dissallowed " +
+                    "fields", exampleTags);
+#line 734
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
 #line 735
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 736
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 737
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
+                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 738
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 739
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 740
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 741
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 742
+  testRunner.And("if the response bundle contains a \"Practitioner\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 743
+  testRunner.And("practitioner resources should contain a single name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 744
+  testRunner.And("practitioner resources should not contain the disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("practitioner resource contains mandatory fields within optional elements")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.TestCaseAttribute("ADM", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("IMM", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OBS", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", new string[0])]
+        public virtual void PractitionerResourceContainsMandatoryFieldsWithinOptionalElements(string code, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("practitioner resource contains mandatory fields within optional elements", @__tags);
+#line 761
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 765
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 766
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 767
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
+                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 768
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 769
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 770
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 771
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 772
+  testRunner.And("if the response bundle contains a \"Practitioner\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("if practitioner resource contains a managing organization it must reference an or" +
+            "ganization within the response bundle")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void IfPractitionerResourceContainsAManagingOrganizationItMustReferenceAnOrganizationWithinTheResponseBundle()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if practitioner resource contains a managing organization it must reference an or" +
+                    "ganization within the response bundle", new string[] {
+                        "ignore"});
+#line 789
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1716,7 +1811,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("organization resource test agains specification", new string[] {
                         "ignore"});
-#line 745
+#line 793
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1731,7 +1826,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Device resource test agains specification", new string[] {
                         "ignore"});
-#line 753
+#line 801
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1746,7 +1841,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("check all dateTime format variations are allowed", new string[] {
                         "ignore"});
-#line 768
+#line 816
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1761,7 +1856,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request patientNHSNumber parameter names", new string[] {
                         "ignore"});
-#line 772
+#line 820
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1776,7 +1871,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request patientNHSNumber parameter case", new string[] {
                         "ignore"});
-#line 776
+#line 824
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1791,7 +1886,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request recordSection parameter names", new string[] {
                         "ignore"});
-#line 780
+#line 828
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1806,7 +1901,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request recordSection parameter case", new string[] {
                         "ignore"});
-#line 784
+#line 832
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1821,7 +1916,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request timePeriod parameter names", new string[] {
                         "ignore"});
-#line 788
+#line 836
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1836,7 +1931,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request timePeriod parameter case", new string[] {
                         "ignore"});
-#line 792
+#line 840
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1851,7 +1946,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter patientNHSNumber values is empty", new string[] {
                         "ignore"});
-#line 796
+#line 844
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1866,7 +1961,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter patientNHSNumber system is empty", new string[] {
                         "ignore"});
-#line 800
+#line 848
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1881,7 +1976,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSection values is empty", new string[] {
                         "ignore"});
-#line 804
+#line 852
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1896,7 +1991,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSectoin system is empty", new string[] {
                         "ignore"});
-#line 808
+#line 856
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1913,7 +2008,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request records for patients with genders which do not match the valueset so must" +
                     " addear to gender mapping", new string[] {
                         "ignore"});
-#line 812
+#line 860
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1932,7 +2027,7 @@ this.FeatureBackground();
                     " if not check mapping is covered in documentation and system maps correctly", new string[] {
                         "ignore",
                         "Manual"});
-#line 817
+#line 865
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1949,7 +2044,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request records for patients contact with relationship which do not match the val" +
                     "ueset so must addear to relationship mapping", new string[] {
                         "ignore"});
-#line 821
+#line 869
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1970,7 +2065,7 @@ this.FeatureBackground();
                     "em maps correctly", new string[] {
                         "ignore",
                         "Manual"});
-#line 826
+#line 874
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

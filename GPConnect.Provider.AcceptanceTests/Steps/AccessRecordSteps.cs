@@ -335,6 +335,52 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"if the response bundle contains a ""([^""]*)"" resource")]
+        public void ThenIfTheResponseBundleContainsAResource(string resourceType)
+        {
+            var resourceFound = false;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.ToString().Equals(resourceType))
+                {
+                    resourceFound = true;
+                    break;
+                }
+            }
+            if(resourceFound == false)
+            {
+                // If no resource is found then the test scenario passes
+                Assert.Pass();
+            }
+        }
+        
+        [Then(@"practitioner resources should contain a single name element")]
+        public void ThenPractitionerResourcesShouldContainASingleNameElement()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    practitioner.Name.ShouldNotBeNull();
+                }
+            }
+        }
+
+        [Then(@"practitioner resources should not contain the disallowed elements")]
+        public void ThenPractitionerResourcesShouldNotContainTheDisallowedElements()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    (practitioner.Photo == null || practitioner.Photo.Count == 0).ShouldBeTrue(); // C# API creates an empty list if no element is present
+                    (practitioner.Qualification == null || practitioner.Qualification.Count == 0).ShouldBeTrue();
+                }
+            }
+        }
+
         public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList) {
             var codingCount = 0;
             foreach (Coding coding in codingList)
