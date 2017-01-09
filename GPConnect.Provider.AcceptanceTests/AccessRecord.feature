@@ -707,11 +707,29 @@ Scenario Outline: if patient contains managingOrganizaiton
 		#| REF  |
 		| SUM  |
 
-@ignore
-Scenario: patient does not contain disallowed fields
-	# photo
-	# animal
-	# link
+Scenario Outline: patient does not contain disallowed fields
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And patient resource should not contain the fhir fields photo animal or link
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 # Practitioner Resource Validation Scenarios
 

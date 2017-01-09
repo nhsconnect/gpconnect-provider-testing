@@ -4,10 +4,8 @@ using GPConnect.Provider.AcceptanceTests.Helpers;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Shouldly;
-using System;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
@@ -318,6 +316,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         responseBundleContainsReferenceOfType(patient.ManagingOrganization.Reference, ResourceType.Organization);
                     }
+                }
+            }
+        }
+
+        [Then(@"patient resource should not contain the fhir fields photo animal or link")]
+        public void ThenPatientResourceShouldNotContainTheFhirFieldsPhotoAnimalOrLink()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    (patient.Photo == null || patient.Photo.Count == 0).ShouldBeTrue(); // C# API creates an empty list if no element is present
+                    patient.Animal.ShouldBeNull();
+                    (patient.Link == null || patient.Link.Count == 0).ShouldBeTrue();
                 }
             }
         }
