@@ -757,11 +757,7 @@ Scenario Outline: practitioner resource contains mandatory fields and does not i
 		#| REF  |
 		| SUM  |
 
-@ignore
 Scenario Outline: practitioner resource contains mandatory fields within optional elements
-	# if the praactitioner has an identifier it is either a sds-user-id or a role-profile-id and there is always a system and value
-	# if practitionerRole has role element which contains a coding then the system, code and display must exist
-	# If the practitioner has a communicaiton elemenets containing a coding then there must be a system, code and display element. There must only be one coding per communication element.
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "patient1"
@@ -770,6 +766,9 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And if the response bundle contains a "Practitioner" resource
+		And practitioner resources must only contain one user id and one profile id
+		And if practitionerRole has role element which contains a coding then the system, code and display must exist
+		And If the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
 	Examples:
 		| Code |
 		| ADM  |
@@ -785,9 +784,30 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 		#| REF  |
 		| SUM  |
 
-@ignore
-Scenario: if practitioner resource contains a managing organization it must reference an organization within the response bundle
-	# if practitionerRole exists and if it contains a managingOrganization the managing organization must haave a reference within response bundle
+Scenario Outline: if practitioner resource contains a managing organization it must reference an organization within the response bundle
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if the response bundle contains a "Practitioner" resource
+		And if practitioner contains a managingOrganization the reference relates to an Organization within the response bundle
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 @ignore
 Scenario: organization resource test agains specification

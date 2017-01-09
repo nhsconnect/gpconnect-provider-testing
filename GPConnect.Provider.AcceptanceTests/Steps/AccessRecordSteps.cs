@@ -381,6 +381,100 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"practitioner resources must only contain one user id and one profile id")]
+        public void ThenPractitionerResourcesMustOnlyContainOneUserIdAndOneProfileId()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+
+                    var sdsUserIdCount = 0;
+                    var sdsRoleProfileIdCount = 0;
+
+                    foreach (Identifier identifier in practitioner.Identifier) {
+                        if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id")) {
+                            sdsUserIdCount++;
+                            identifier.Value.ShouldNotBeNull();
+                        } else if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id"))
+                        {
+                            sdsRoleProfileIdCount++;
+                            identifier.Value.ShouldNotBeNull();
+                        }
+                    }
+                    sdsUserIdCount.ShouldBeLessThanOrEqualTo(1);
+                    sdsRoleProfileIdCount.ShouldBeLessThanOrEqualTo(1);
+                }
+            }
+        }
+
+        
+        [Then(@"if practitionerRole has role element which contains a coding then the system, code and display must exist")]
+        public void ThenIfPractitionerRoleHasRoleElementWhichContainsACodingThenTheSystemCodeAndDisplayMustExist()
+            {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole) {
+                        if (practitionerRole.Role != null && practitionerRole.Role.Coding != null) {
+                            var codingCount = 0;
+                            foreach (Coding coding in practitionerRole.Role.Coding) {
+                                codingCount++;
+                                coding.System.ShouldNotBeNull();
+                                coding.Code.ShouldNotBeNull();
+                                coding.Display.ShouldNotBeNull();
+                            }
+                            codingCount.ShouldBeLessThanOrEqualTo(1);
+                        }
+                    }
+                }
+            }
+        }
+
+        [Then(@"If the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element")]
+        public void ThenIfThePractitionerHasCommunicationElementsContainingACodingThenThereMustBeASystemCodeAndDisplayElement()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    //If the practitioner has a communicaiton elemenets containing a coding then there must be a system, code and display element. There must only be one coding per communication element.
+                    foreach (CodeableConcept codeableConcept in practitioner.Communication) {
+                        var codingCount = 0;
+                        foreach (Coding coding in codeableConcept.Coding) {
+                            codingCount++;
+                            coding.System.ShouldNotBeNull();
+                            coding.Code.ShouldNotBeNull();
+                            coding.Display.ShouldNotBeNull();
+                        }
+                        codingCount.ShouldBeLessThanOrEqualTo(1);
+                    }
+                }
+            }
+        }
+
+        [Then(@"if practitioner contains a managingOrganization the reference relates to an Organization within the response bundle")]
+        public void ThenPractitionerContainsAManagingOrganizationTheReferenceRelatesToAnOrganizationWithinTheResponseBundle()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
+                    {
+                        if (practitionerRole.ManagingOrganization != null) {
+                            responseBundleContainsReferenceOfType(practitionerRole.ManagingOrganization.Reference, ResourceType.Organization);
+                        }
+                    }
+                }
+            }
+        }
+
         public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList) {
             var codingCount = 0;
             foreach (Coding coding in codingList)
