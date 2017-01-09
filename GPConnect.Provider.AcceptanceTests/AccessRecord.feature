@@ -751,7 +751,18 @@ Scenario: organization resource test agains specification
 
 @ignore
 Scenario: Device resource test agains specification
-
+	# The following fields must not be included
+		# status
+		# manufacturerDate
+		# expiry
+		# udi
+		# lotNumber
+		# patient
+		# contact
+		# url
+	# There must only be one identifier element and it must have a value
+	# Device type must have the fixed values from the specfication
+	# There can only be one note element
 
 @ignore
 Scenario: check all dateTime format variations are allowed
