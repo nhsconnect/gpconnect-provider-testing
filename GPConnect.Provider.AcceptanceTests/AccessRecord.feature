@@ -643,7 +643,7 @@ Scenario Outline: if patient contins communicaiton
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And if composition contains the patient resource communicaiotn the mandatory fields should matching the specification
+		And if composition contains the patient resource communication the mandatory fields should matching the specification
 	Examples:
 		| Code |
 		| ADM  |
@@ -659,17 +659,53 @@ Scenario Outline: if patient contins communicaiton
 		#| REF  |
 		| SUM  |
 
-@ignore
-Scenario: if patient contains practitioner as care provider
-	# Practitioner Resource
-	# Reference practitioner in bundle
-	# Contains Display
+Scenario Outline: if patient contains practitioner as care provider
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if Patient careProvider is included in the response the reference should reference a Practitioner within the bundle
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
-@ignore
-Scenario: if patient contains managingOrganizaiton
-	# Organization Resource
-	# Reference organization in bundle
-	# Contains Display
+Scenario Outline: if patient contains managingOrganizaiton
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if Patient managingOrganization is included in the response the reference should reference an Organization within the bundle
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
 @ignore
 Scenario: patient does not contain disallowed fields

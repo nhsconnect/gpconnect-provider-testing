@@ -262,7 +262,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
-        [Then(@"if composition contains the patient resource communicaiotn the mandatory fields should matching the specification")]
+        [Then(@"if composition contains the patient resource communication the mandatory fields should matching the specification")]
         public void ThenIfCompositionContainsThePatientResourceCommunicationTheMandatoryFieldsShouldMatchingTheSpecification()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -280,6 +280,43 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         {
                             shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, communicaiton.Language.Coding);
                         }
+                    }
+                }
+            }
+        }
+
+        [Then(@"if Patient careProvider is included in the response the reference should reference a Practitioner within the bundle")]
+        public void ThenIfPatientCareProviderIsIncludedInTheResponseTheReferenceShouldReferenceAPractitionerWithinTheBundle()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    if (patient.CareProvider != null) { 
+                        var count = 0;
+                        foreach (ResourceReference careProvider in patient.CareProvider)
+                        {
+                            count++;
+                            responseBundleContainsReferenceOfType(careProvider.Reference, ResourceType.Practitioner);
+                        }
+                        count.ShouldBeLessThanOrEqualTo(1);
+                    }
+                }
+            }
+        }
+
+        [Then(@"if Patient managingOrganization is included in the response the reference should reference an Organization within the bundle")]
+        public void ThenIfPatientManagingOrganizationIsIncludedInTheResponseTheReferenceShouldReferenceAnOrganizationWithinTheBundle()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    if(patient.ManagingOrganization != null)
+                    {
+                        responseBundleContainsReferenceOfType(patient.ManagingOrganization.Reference, ResourceType.Organization);
                     }
                 }
             }
@@ -304,6 +341,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
                 {
+                    pass = true;
+                }
+            }
+            pass.ShouldBeTrue();
+        }
+
+        public void responseBundleContainsReferenceOfType(string reference, ResourceType resourceType) {
+            var pass = false;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (reference.Equals(entry.FullUrl) && entry.Resource.ResourceType == resourceType){
                     pass = true;
                 }
             }
