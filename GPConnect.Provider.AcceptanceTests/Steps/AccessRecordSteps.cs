@@ -408,7 +408,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-
         
         [Then(@"if practitionerRole has role element which contains a coding then the system, code and display must exist")]
         public void ThenIfPractitionerRoleHasRoleElementWhichContainsACodingThenTheSystemCodeAndDisplayMustExist()
@@ -470,6 +469,72 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         if (practitionerRole.ManagingOrganization != null) {
                             responseBundleContainsReferenceOfType(practitionerRole.ManagingOrganization.Reference, ResourceType.Organization);
                         }
+                    }
+                }
+            }
+        }
+
+        [Then(@"Organization resources identifiers must comply with specification identifier restricitions")]
+        public void ThenOrganizationResourceIdentifiersMustComplyWithSpecificationIdentifierRestrictions()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    Organization organization  = (Organization)entry.Resource;
+
+                    var odsOrganizationCodeCount = 0;
+
+                    foreach (Identifier identifier in organization.Identifier)
+                    {
+                        if (identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code"))
+                        {
+                            odsOrganizationCodeCount++;
+                            identifier.Value.ShouldNotBeNull();
+                        }
+                        else if (identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code"))
+                        {
+                            identifier.Value.ShouldNotBeNull();
+                        }
+                    }
+                    odsOrganizationCodeCount.ShouldBeLessThanOrEqualTo(1);
+                }
+            }
+        }
+
+        [Then(@"if Organization includes type coding the elements are mandatory")]
+        public void ThenIfOrganizationIncludesTypeCodingTheElementsAreMandatory()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    Organization organization = (Organization)entry.Resource;
+                    if (organization.Type != null && organization.Type.Coding != null) {
+                        var codingCount = 0;
+                        foreach (Coding coding in organization.Type.Coding) {
+                            codingCount++;
+                            coding.System.ShouldNotBeNull();
+                            coding.Code.ShouldNotBeNull();
+                            coding.Display.ShouldNotBeNull();
+                        }
+                        codingCount.ShouldBeLessThanOrEqualTo(1);
+                    }
+                }
+            }
+        }
+
+        [Then(@"if Organization includes partOf it should referene a resource in the response bundle")]
+        public void ThenIfOrganizationIncludesPartOfItShouldReferenceAResourceInTheResponseBundle()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    Organization organization = (Organization)entry.Resource;
+                    if (organization.PartOf != null && organization.PartOf.Reference != null)
+                    {
+                        responseBundleContainsReferenceOfType(organization.PartOf.Reference, ResourceType.Organization);
                     }
                 }
             }

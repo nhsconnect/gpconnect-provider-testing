@@ -809,13 +809,81 @@ Scenario Outline: if practitioner resource contains a managing organization it m
 		#| REF  |
 		| SUM  |
 
-@ignore
-Scenario: organization resource test agains specification
-	# There should only be one ods-organization-code identifier element if included
-	# There should only be one ods-site-code identifier element if included
-	# If organization type includes a coding, there should only be one instance and that should include a system, code and display.
-	# if partOf is included it should reference an Organization reference within the bundle
-	# if an addresss is included there should only be one address
+Scenario Outline: organization resource identifiers
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if the response bundle contains a "Organization" resource
+		And Organization resources identifiers must comply with specification identifier restricitions
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
+
+Scenario Outline: organization resource element cardinality
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if the response bundle contains a "Organization" resource
+		And if Organization includes type coding the elements are mandatory
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
+
+Scenario Outline: organization resource internal reference
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if the response bundle contains a "Organization" resource
+		And if Organization includes partOf it should referene a resource in the response bundle
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
+
 
 @ignore
 Scenario: Device resource test agains specification
