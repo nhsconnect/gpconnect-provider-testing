@@ -731,9 +731,8 @@ Scenario Outline: patient does not contain disallowed fields
 		#| REF  |
 		| SUM  |
 
-# Practitioner Resource Validation Scenarios
 @ignore
-Scenario: practitioner name is mandatory
+Scenario: practitioner resource test agains specification
 	# Check that an included practitioner has a name element and only one
 	# No Photo element
 	# No Qualification Element
@@ -742,9 +741,14 @@ Scenario: practitioner name is mandatory
 	# if practitionerRole has role element which contains a coding then the system, code and display must exist
 	# If the practitioner has a communicaiton elemenets containing a coding then there must be a system, code and display element. There must only be one coding per communication element.
 
-# Organization Resource Validation Scenarios
+@ignore
+Scenario: organization resource test agains specification
+	# There should only be one ods-organization-code identifier element if included
+	# There should only be one ods-site-code identifier element if included
 
-# Device Resource Validation
+@ignore
+Scenario: Device resource test agains specification
+
 
 @ignore
 Scenario: check all dateTime format variations are allowed
