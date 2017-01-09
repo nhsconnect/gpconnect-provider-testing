@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Shouldly;
 using System;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
 
@@ -215,13 +216,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
                     else
                     {
-                        int codingCount = 0;
-                        foreach (Coding coding in patient.MaritalStatus.Coding)
-                        {
-                            codingCount++;
-                            valueSetContainsCodeAndDisplay(GlobalContext.FhirMaritalStatusValueSet, coding).ShouldBeTrue();
-                        }
-                        codingCount.ShouldBeLessThanOrEqualTo(1);
+                        shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirMaritalStatusValueSet, patient.MaritalStatus.Coding);
                     }
                 }
             }
@@ -238,13 +233,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Patient.ContactComponent contact in patient.Contact) {
                         // Contact Relationship Checks
                         foreach (CodeableConcept relationship in contact.Relationship) {
-                            var codingCount = 0;
-                            foreach (Coding coding in relationship.Coding)
-                            {
-                                codingCount++;
-                                valueSetContainsCodeAndDisplay(GlobalContext.FhirMaritalStatusValueSet, coding).ShouldBeTrue();
-                            }
-                            codingCount.ShouldBeLessThanOrEqualTo(1);
+                            shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
                         }
 
                         // Contact Name Checks
@@ -289,30 +278,36 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         foreach (Patient.CommunicationComponent communicaiton in patient.Communication)
                         {
-                            var codingCount = 0;
-                            foreach (Coding coding in communicaiton.Language.Coding) {
-                                codingCount++;
-                                valueSetContainsCodeAndDisplay(GlobalContext.FhirHumanLanguageValueSet, coding).ShouldBeTrue();
-                            }
-                            codingCount.ShouldBeLessThanOrEqualTo(1);
+                            shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, communicaiton.Language.Coding);
                         }
                     }
                 }
             }
         }
 
-        public bool valueSetContainsCodeAndDisplay(ValueSet valueset, Coding coding)
+        public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList) {
+            var codingCount = 0;
+            foreach (Coding coding in codingList)
+            {
+                codingCount++;
+                valueSetContainsCodeAndDisplay(valueSet, coding);
+            }
+            codingCount.ShouldBeLessThanOrEqualTo(1);
+        }
+
+        public void valueSetContainsCodeAndDisplay(ValueSet valueset, Coding coding)
         {
             coding.System.ShouldBe(valueset.CodeSystem.System);
             // Loop through valid codes to find if the one in the resource is valid
+            var pass = false;
             foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in valueset.CodeSystem.Concept)
             {
                 if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
                 {
-                    return true;
+                    pass = true;
                 }
             }
-            return false;
+            pass.ShouldBeTrue();
         }
 
     }
