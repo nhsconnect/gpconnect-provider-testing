@@ -732,6 +732,15 @@ Scenario Outline: patient does not contain disallowed fields
 		| SUM  |
 
 # Practitioner Resource Validation Scenarios
+@ignore
+Scenario: practitioner name is mandatory
+	# Check that an included practitioner has a name element and only one
+	# No Photo element
+	# No Qualification Element
+	# if the praactitioner has an identifier it is either a sds-user-id or a role-profile-id and there is always a system and value
+	# if practitionerRole exists and if it contains a managingOrganization the managing organization must haave a reference within response bundle
+	# if practitionerRole has role element which contains a coding then the system, code and display must exist
+	# If the practitioner has a communicaiton elemenets containing a coding then there must be a system, code and display element. There must only be one coding per communication element.
 
 # Organization Resource Validation Scenarios
 
