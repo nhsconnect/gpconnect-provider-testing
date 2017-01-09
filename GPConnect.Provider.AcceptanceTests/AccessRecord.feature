@@ -745,6 +745,9 @@ Scenario: practitioner resource test agains specification
 Scenario: organization resource test agains specification
 	# There should only be one ods-organization-code identifier element if included
 	# There should only be one ods-site-code identifier element if included
+	# If organization type includes a coding, there should only be one instance and that should include a system, code and display.
+	# if partOf is included it should reference an Organization reference within the bundle
+	# if an addresss is included there should only be one address
 
 @ignore
 Scenario: Device resource test agains specification
