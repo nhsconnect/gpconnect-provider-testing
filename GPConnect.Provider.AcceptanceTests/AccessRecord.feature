@@ -884,21 +884,56 @@ Scenario Outline: organization resource internal reference
 		#| REF  |
 		| SUM  |
 
+Scenario Outline: device resource element cardinality conformance
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if the response bundle contains a "Device" resource
+		And the Device resource should conform to cardinality set out in specificaiton
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
 
-@ignore
-Scenario: Device resource test agains specification
-	# The following fields must not be included
-		# status
-		# manufacturerDate
-		# expiry
-		# udi
-		# lotNumber
-		# patient
-		# contact
-		# url
-	# There must only be one identifier element and it must have a value
-	# Device type must have the fixed values from the specfication
-	# There can only be one note element
+Scenario Outline: device resource type element values match specification
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if the response bundle contains a "Device" resource
+		And the Device resource type should match the fixed values from the specfication
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		#| REF  |
+		| SUM  |
+
 
 @ignore
 Scenario: check all dateTime format variations are allowed

@@ -540,6 +540,56 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the Device resource should conform to cardinality set out in specificaiton")]
+        public void ThenTheDeviceResourceShouldConformToCardinalitySetOutInSpecification()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Device))
+                {
+                    Device device = (Device)entry.Resource;
+
+                    device.Status.ShouldBeNull();
+                    device.ManufactureDate.ShouldBeNull();
+                    device.Expiry.ShouldBeNull();
+                    device.Udi.ShouldBeNull();
+                    device.LotNumber.ShouldBeNull();
+                    device.Patient.ShouldBeNull();
+                    (device.Contact == null || device.Contact.Count == 0).ShouldBeTrue();
+                    device.Url.ShouldBeNull();
+
+                    var identifierCount = 0;
+                    foreach (Identifier identifier in device.Identifier) {
+                        identifierCount++;
+                        identifier.Value.ShouldNotBeNull();
+                    }
+                    identifierCount.ShouldBeLessThanOrEqualTo(1);
+
+                    device.Note.Count.ShouldBeLessThanOrEqualTo(1);
+                }
+            }
+        }
+
+        [Then(@"the Device resource type should match the fixed values from the specfication")]
+        public void ThenTheDeviceResourceTypeShouldMatchTheFixedValuesFromTheSpecification()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Device))
+                {
+                    Device device = (Device)entry.Resource;
+                    var codingCount = 0;
+                    foreach (Coding coding in device.Type.Coding) {
+                        codingCount++;
+                        coding.System.ShouldBe("http://snomed.info/sct");
+                        coding.Code.ShouldBe("462240000");
+                        coding.Display.ShouldBe("Patient health record information system (physical object)");
+                    }
+                    codingCount.ShouldBeLessThanOrEqualTo(1);
+                }
+            }
+        }
+
         public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList) {
             var codingCount = 0;
             foreach (Coding coding in codingList)
