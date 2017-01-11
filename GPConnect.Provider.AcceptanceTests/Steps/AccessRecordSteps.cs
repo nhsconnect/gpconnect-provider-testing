@@ -52,6 +52,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ((Identifier)parameter.Value).Value = "";
         }
 
+        [Given(@"I set the parameter patientNHSNumber with an empty system")]
+        public void GivenISetThePatientNHSNumberParameterWithAnEmptySystem()
+        {
+            var parameter = FhirContext.FhirRequestParameters.GetSingle("patientNHSNumber");
+            ((Identifier)parameter.Value).System = "";
+        }
+
         [Then(@"the JSON response should be a Bundle resource")]
         public void ThenTheJSONResponseShouldBeABundleResource()
         {

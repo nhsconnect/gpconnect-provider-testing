@@ -992,9 +992,15 @@ Scenario: Request parameter patientNHSNumber values is empty
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
-@ignore
 Scenario: Request parameter patientNHSNumber system is empty
-	# Send the parameter but leave the system empty
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "SUM" care record section for config patient "patient1"
+		And I set the parameter patientNHSNumber with an empty system
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: Request parameter recordSection values is empty
 	Given I am using the default server
