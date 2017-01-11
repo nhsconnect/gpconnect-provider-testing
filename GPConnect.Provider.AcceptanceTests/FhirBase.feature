@@ -4,7 +4,7 @@ Feature: Fhir Base
 Background:
 	Given I have the following patient records
 		| Id                      | NHSNumber  |
-		| patient1                | 9000000033 |
+		| patient1                | 9476719931 |
 
 Scenario: Fhir Get MetaData
 	Given I am using the default server

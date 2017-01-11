@@ -4,10 +4,10 @@ Feature: JWT
 Background:
 	Given I have the following patient records
 		| Id                      | NHSNumber  |
-		| patient1                | 9000000033 |
-		| patient2                | 9000000009 |
+		| patient1                | 9476719931 |
+		| patient2                | 9476719974 |
 		| patientNotInSystem      | 9999999999 |
-		| patientNoSharingConsent | 9000000041 |
+		| patientNoSharingConsent | 9476719958 |
 
 Scenario: JWT expiry time greater than 300 seconds
 	Given I am using the default server

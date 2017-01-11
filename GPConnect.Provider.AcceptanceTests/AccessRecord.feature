@@ -4,10 +4,10 @@ Feature: AccessRecord
 Background:
 	Given I have the following patient records
 		| Id                      | NHSNumber  |
-		| patient1                | 9000000033 |
-		| patient2                | 9000000009 |
+		| patient1                | 9476719931 |
+		| patient2                | 9476719974 |
 		| patientNotInSystem      | 9999999999 |
-		| patientNoSharingConsent | 9000000041 |
+		| patientNoSharingConsent | 9476719958 |
 
 Scenario Outline: Retrieve the care record sections for a patient
 	Given I am using the default server
@@ -936,8 +936,28 @@ Scenario Outline: device resource type element values match specification
 
 
 @ignore
-Scenario: check all dateTime format variations are allowed
-	// https://www.hl7.org/fhir/datatypes.html#dateTime
+Scenario Outline: check all dateTime format variations are allowed
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		And I set a time period parameter start date to "<StartDateTime>" and end date to "<EndDateTime>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the response HTML should contain "<TableRowsInHTML>" rows of data in the HTML tables
+		And the response HTML meets the Regex requirements
+		# The HTML rows are simple for the individual sections but for summary there is complexity of multiple tables. We might want to use a comma seperated list for each table number of rows
+		# The Regex is so we can test for specific dates appearing in the response, it will depend on if the date has to be a specific format
+	Examples:
+		| Code | Patient | StartDateTime | EndDateTime | TableRowsInHTML | RegexToCheck |
+		| ADM  |         |               |             |                 |              |
+		| CLI  |         |               |             |                 |              |
+		| ENC  |         |               |             |                 |              |
+		| SUM  |         |               |             |                 |              |
+	#	| INV ||||||
+	#	| PAT ||||||
+	#	| REF ||||||
 
 @ignore
 Scenario: invalid request patientNHSNumber parameter names

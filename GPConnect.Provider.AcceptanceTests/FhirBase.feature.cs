@@ -76,7 +76,7 @@ namespace GPConnect.Provider.AcceptanceTests
                         "NHSNumber"});
             table1.AddRow(new string[] {
                         "patient1",
-                        "9000000033"});
+                        "9476719931"});
 #line 5
  testRunner.Given("I have the following patient records", ((string)(null)), table1, "Given ");
 #line hidden

@@ -74,16 +74,16 @@ namespace GPConnect.Provider.AcceptanceTests
                         "NHSNumber"});
             table1.AddRow(new string[] {
                         "patient1",
-                        "9000000033"});
+                        "9476719931"});
             table1.AddRow(new string[] {
                         "patient2",
-                        "9000000009"});
+                        "9476719974"});
             table1.AddRow(new string[] {
                         "patientNotInSystem",
                         "9999999999"});
             table1.AddRow(new string[] {
                         "patientNoSharingConsent",
-                        "9000000041"});
+                        "9476719958"});
 #line 5
  testRunner.Given("I have the following patient records", ((string)(null)), table1, "Given ");
 #line hidden
