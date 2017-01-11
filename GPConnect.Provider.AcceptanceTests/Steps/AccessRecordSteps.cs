@@ -6,6 +6,7 @@ using Hl7.Fhir.Serialization;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Shouldly;
+using System;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
@@ -36,6 +37,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAmRequestingTheRecordForConfigPatient(string patient)
         {
             Given($@"I am requesting the record for patient with NHS Number ""{FhirContext.FhirPatients[patient]}""");
+        }
+
+        [Given(@"I replace the parameter name ""([^""]*)"" with ""([^""]*)""")]
+        public void GivenIReplaceTheParameterNameWith(string parameterName, string newParameterName)
+        {
+            FhirContext.FhirRequestParameters.GetSingle(parameterName).Name = newParameterName;
+        }
+
+        [Given(@"I set the parameter patientNHSNumber with an empty value")]
+        public void GivenISetThePatientNHSNumberParameterWithAnEmptyValue()
+        {
+            var parameter = FhirContext.FhirRequestParameters.GetSingle("patientNHSNumber");
+            ((Identifier)parameter.Value).Value = "";
         }
 
         [Then(@"the JSON response should be a Bundle resource")]

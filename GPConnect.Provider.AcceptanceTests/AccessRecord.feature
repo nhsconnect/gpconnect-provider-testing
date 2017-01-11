@@ -959,45 +959,59 @@ Scenario Outline: check all dateTime format variations are allowed
 	#	| PAT ||||||
 	#	| REF ||||||
 
-@ignore
-Scenario: invalid request patientNHSNumber parameter names
-	# Create Scenario with variation on parameter name
+Scenario Outline: invalid request parameter names and case
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "SUM" care record section for config patient "patient1"
+		And I set a valid time period start and end date
+		And I replace the parameter name "<ParamName>" with "<NewParamName>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "<ExpectedResponseCode>"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
+	Examples: 
+	| ParamName        | NewParamName      | ExpectedResponseCode |
+	| patientNHSNumber | patientsNHSNumber | 422                  |
+	| patientNHSNumber | patientnhsnumber  | 422                  |
+	| patientNHSNumber | PATIENTNHSNUMBER  | 422                  |
+	| recordSection    | recordSections    | 422                  |
+	| recordSection    | RecordSection     | 422                  |
+	| recordSection    | RECORDSECTION     | 422                  |
+	| timePeriod       | time              | 422                  |
+	| timePeriod       | TimePeriod        | 422                  |
+	| timePeriod       | TIMEPERIOD        | 422                  |
 
-@ignore
-Scenario: invalid request patientNHSNumber parameter case
-	# Create Scenario with variation on parameter case
 
-@ignore
-Scenario: invalid request recordSection parameter names
-	# Create Scenario with variation on parameter name
-
-@ignore
-Scenario: invalid request recordSection parameter case
-	# Create Scenario with variation on parameter case
-
-@ignore
-Scenario: invalid request timePeriod parameter names
-	# Create Scenario with variation on parameter name
-
-@ignore
-Scenario: invalid request timePeriod parameter case
-	# Create Scenario with variation on parameter case
-
-@ignore
 Scenario: Request parameter patientNHSNumber values is empty
-	# Send the parameter but leave the value empty
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "SUM" care record section for config patient "patient1"
+		And I set the parameter patientNHSNumber with an empty value
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 @ignore
 Scenario: Request parameter patientNHSNumber system is empty
 	# Send the parameter but leave the system empty
 
-@ignore
 Scenario: Request parameter recordSection values is empty
-	# Send the parameter but leave the value empty
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 @ignore
-Scenario: Request parameter recordSectoin system is empty
+Scenario: Request parameter recordSection system is empty
 	# Send the parameter but leave the system empty
+
+@ignore
+Scenario: Requested section code incorrect parameter case
+# ie 'all' rather than 'ALL', 'sUm' rather than 'SUM', etc
 
 @ignore
 Scenario: Request records for patients with genders which do not match the valueset so must addear to gender mapping
