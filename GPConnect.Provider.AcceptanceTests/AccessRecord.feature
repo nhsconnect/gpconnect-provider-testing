@@ -1095,3 +1095,10 @@ Scenario: Request records for patients contact with relationship which do not ma
 @Manual
 Scenario: Check that all the relationship supported for contacts by the provider are in the GP Connect value set, if not check mapping is covered in documentation and system maps correctly
 	# Run tests with patients with non value set relationships for contacts and check mapping in response is acceptable
+
+@ignore
+Scenario: Identifier order in response resources
+# The identifiers within the response resources have to appear in the correct order as per the specfication.
+
+@ignore
+Scenario: Patient with inactive nhs number in system should not return that NHS Number

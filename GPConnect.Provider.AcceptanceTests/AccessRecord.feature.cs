@@ -2391,6 +2391,36 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Identifier order in response resources")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void IdentifierOrderInResponseResources()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Identifier order in response resources", new string[] {
+                        "ignore"});
+#line 1100
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Patient with inactive nhs number in system should not return that NHS Number")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void PatientWithInactiveNhsNumberInSystemShouldNotReturnThatNHSNumber()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient with inactive nhs number in system should not return that NHS Number", new string[] {
+                        "ignore"});
+#line 1104
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
