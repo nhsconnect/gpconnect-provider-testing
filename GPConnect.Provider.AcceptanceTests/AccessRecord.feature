@@ -945,24 +945,30 @@ Scenario Outline: check all dateTime format variations are allowed
 		And the JSON response should be a Bundle resource
 		And the HTML in the response matches the Regex check "<RegexToCheck>"
 	Examples:
-		| Code | Patient  | StartDateTime | EndDateTime | RegexToCheck |
-		| ADM  | patient1 | 2014          | 2016        | (.)*         |
-		| ADM  | patient1 | 2014-02       | 2016        | (.)*         |
-		| ADM  | patient1 | 2014-10-05    | 2016-08     | (.)*         |
-		| ADM  | patient1 | 2014-05       | 2016-09-14  | (.)*         |
-		| CLI  | patient1 | 2013          | 2017        | (.)*         |
-		| CLI  | patient1 | 2014-02       | 2016        | (.)*         |
-		| CLI  | patient1 | 2014-02-03    | 2016-01-24  | (.)*         |
-		| CLI  | patient1 | 2014          | 2016-06-01  | (.)*         |
-		| ENC  | patient1 | 2015          | 2017-01     | (.)*         |
-		| ENC  | patient1 | 2015-05       | 2017-01-27  | (.)*         |
-		| ENC  | patient1 | 2014-10-05    | 2016        | (.)*         |
-		| ENC  | patient1 | 2014-10-05    | 2016-08     | (.)*         |
-		| ENC  | patient1 | 2014-10-05    | 2016-09-01  | (.)*         |
-		| SUM  | patient1 | 2012          | 2017        | (.)*         |
-		| SUM  | patient1 | 2014-05       | 2016-12-18  | (.)*         |
-		| SUM  | patient1 | 2014-05-03    | 2016-12     | (.)*         |
-		| SUM  | patient1 | 2014-03-21    | 2016-12-14  | (.)*         |
+		| Code | Patient  | StartDateTime             | EndDateTime               | RegexToCheck |
+		| ADM  | patient1 | 2014                      | 2016                      | (.)*         |
+		| ADM  | patient1 | 2014-02                   | 2016                      | (.)*         |
+		| ADM  | patient1 | 2014-10-05                | 2016-08                   | (.)*         |
+		| ADM  | patient1 | 2014-05                   | 2016-09-14                | (.)*         |
+		| ADM  | patient1 | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       | (.)*         |
+		| ADM  | patient1 | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 | (.)*         |
+		| CLI  | patient1 | 2013                      | 2017                      | (.)*         |
+		| CLI  | patient1 | 2014-02                   | 2016                      | (.)*         |
+		| CLI  | patient1 | 2014-02-03                | 2016-01-24                | (.)*         |
+		| CLI  | patient1 | 2014                      | 2016-06-01                | (.)*         |
+		| CLI  | patient1 | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       | (.)*         |
+		| CLI  | patient1 | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 | (.)*         |
+		| ENC  | patient1 | 2015                      | 2017-01                   | (.)*         |
+		| ENC  | patient1 | 2015-05                   | 2017-01-27                | (.)*         |
+		| ENC  | patient1 | 2014-10-05                | 2016                      | (.)*         |
+		| ENC  | patient1 | 2014-10-05                | 2016-08                   | (.)*         |
+		| ENC  | patient1 | 2014-10-05                | 2016-09-01                | (.)*         |
+		| ENC  | patient1 | 2014-04-03T22:03:25+00:00 | 2016-03-13T17:13:12+00:00 | (.)*         |
+		| SUM  | patient1 | 2012                      | 2017                      | (.)*         |
+		| SUM  | patient1 | 2014-05                   | 2016-12-18                | (.)*         |
+		| SUM  | patient1 | 2014-05-03                | 2016-12                   | (.)*         |
+		| SUM  | patient1 | 2014-03-21                | 2016-12-14                | (.)*         |
+		| SUM  | patient1 | 2014-12-22T22:22:22+00:00 | 2016-06-06T06:08:06+00:00 | (.)*         |
 	#	| INV ||||||
 	#	| PAT ||||||
 	#	| REF ||||||
