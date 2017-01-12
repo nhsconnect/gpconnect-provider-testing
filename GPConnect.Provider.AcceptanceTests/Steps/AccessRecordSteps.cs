@@ -618,6 +618,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the HTML in the response matches the Regex check ""([^""]*)""")]
+        public void ThenTheHTMLInTheResponseMatchesTheRegexCheck(string regexPattern)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    var sectionCount = 0;
+                    foreach (Composition.SectionComponent section in composition.Section) {
+                        sectionCount++;
+                        var HTML = section.Text.Div;
+                        HTML.ShouldMatch(regexPattern);
+                    }
+                    sectionCount.ShouldBe(1);
+                }
+            }
+        }
+
         public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList) {
             var codingCount = 0;
             foreach (Coding coding in codingList)

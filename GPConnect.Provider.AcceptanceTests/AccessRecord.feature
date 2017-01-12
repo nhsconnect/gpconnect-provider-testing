@@ -934,8 +934,6 @@ Scenario Outline: device resource type element values match specification
 		#| REF  |
 		| SUM  |
 
-
-@ignore
 Scenario Outline: check all dateTime format variations are allowed
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -945,20 +943,30 @@ Scenario Outline: check all dateTime format variations are allowed
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And the response HTML should contain "<TableRowsInHTML>" rows of data in the HTML tables
-		And the response HTML meets the Regex requirements
-		# The HTML rows are simple for the individual sections but for summary there is complexity of multiple tables. We might want to use a comma seperated list for each table number of rows
-		# The Regex is so we can test for specific dates appearing in the response, it will depend on if the date has to be a specific format
+		And the HTML in the response matches the Regex check "<RegexToCheck>"
 	Examples:
-		| Code | Patient | StartDateTime | EndDateTime | TableRowsInHTML | RegexToCheck |
-		| ADM  |         |               |             |                 |              |
-		| CLI  |         |               |             |                 |              |
-		| ENC  |         |               |             |                 |              |
-		| SUM  |         |               |             |                 |              |
+		| Code | Patient  | StartDateTime | EndDateTime | RegexToCheck |
+		| ADM  | patient1 | 2014          | 2016        | (.)*         |
+		| ADM  | patient1 | 2014-02       | 2016        | (.)*         |
+		| ADM  | patient1 | 2014-10-05    | 2016-08     | (.)*         |
+		| ADM  | patient1 | 2014-05       | 2016-09-14  | (.)*         |
+		| CLI  | patient1 | 2013          | 2017        | (.)*         |
+		| CLI  | patient1 | 2014-02       | 2016        | (.)*         |
+		| CLI  | patient1 | 2014-02-03    | 2016-01-24  | (.)*         |
+		| CLI  | patient1 | 2014          | 2016-06-01  | (.)*         |
+		| ENC  | patient1 | 2015          | 2017-01     | (.)*         |
+		| ENC  | patient1 | 2015-05       | 2017-01-27  | (.)*         |
+		| ENC  | patient1 | 2014-10-05    | 2016        | (.)*         |
+		| ENC  | patient1 | 2014-10-05    | 2016-08     | (.)*         |
+		| ENC  | patient1 | 2014-10-05    | 2016-09-01  | (.)*         |
+		| SUM  | patient1 | 2012          | 2017        | (.)*         |
+		| SUM  | patient1 | 2014-05       | 2016-12-18  | (.)*         |
+		| SUM  | patient1 | 2014-05-03    | 2016-12     | (.)*         |
+		| SUM  | patient1 | 2014-03-21    | 2016-12-14  | (.)*         |
 	#	| INV ||||||
 	#	| PAT ||||||
 	#	| REF ||||||
-
+	
 Scenario Outline: invalid request parameter names and case
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
