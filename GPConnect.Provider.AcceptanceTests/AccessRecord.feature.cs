@@ -2224,30 +2224,84 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Request parameter recordSection system is empty")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         public virtual void RequestParameterRecordSectionSystemIsEmpty()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSection system is empty", new string[] {
-                        "ignore"});
-#line 1015
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSection system is empty", ((string[])(null)));
+#line 1014
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
+#line 1015
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1016
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1017
+  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
+                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1018
+  testRunner.And("I set the parameter recordSection with an empty system", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1019
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1020
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1021
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1022
+  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Requested section code incorrect parameter case")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void RequestedSectionCodeIncorrectParameterCase()
+        [NUnit.Framework.TestCaseAttribute("adm", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Adm", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("aDm", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("all", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("All", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("AlL", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("cli", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Cli", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("enc", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Enc", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENc", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("imm", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Imm", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("iMM", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("med", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Med", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("mEd", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("obs", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Obs", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("prb", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Prb", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("sum", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Sum", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("sUm", new string[0])]
+        public virtual void RequestedSectionCodeIncorrectParameterCase(string code, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Requested section code incorrect parameter case", new string[] {
-                        "ignore"});
-#line 1019
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Requested section code incorrect parameter case", exampleTags);
+#line 1024
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
+#line 1025
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1026
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1027
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
+                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1028
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1029
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1030
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1031
+  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2261,7 +2315,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request records for patients with genders which do not match the valueset so must" +
                     " addear to gender mapping", new string[] {
                         "ignore"});
-#line 1023
+#line 1066
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2280,7 +2334,7 @@ this.FeatureBackground();
                     " if not check mapping is covered in documentation and system maps correctly", new string[] {
                         "ignore",
                         "Manual"});
-#line 1028
+#line 1071
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2297,7 +2351,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request records for patients contact with relationship which do not match the val" +
                     "ueset so must addear to relationship mapping", new string[] {
                         "ignore"});
-#line 1032
+#line 1075
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2318,7 +2372,7 @@ this.FeatureBackground();
                     "em maps correctly", new string[] {
                         "ignore",
                         "Manual"});
-#line 1037
+#line 1080
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

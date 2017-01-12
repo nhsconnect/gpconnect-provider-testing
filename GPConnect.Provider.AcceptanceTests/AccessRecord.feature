@@ -1011,13 +1011,56 @@ Scenario: Request parameter recordSection values is empty
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
-@ignore
 Scenario: Request parameter recordSection system is empty
-	# Send the parameter but leave the system empty
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "SUM" care record section for config patient "patient1"
+		And I set the parameter recordSection with an empty system
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
-@ignore
-Scenario: Requested section code incorrect parameter case
-# ie 'all' rather than 'ALL', 'sUm' rather than 'SUM', etc
+Scenario Outline: Requested section code incorrect parameter case
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
+	Examples:
+	| Code |
+	| adm |
+	| Adm |
+	| aDm |
+	| all |
+	| All |
+	| AlL |
+	| cli |
+	| Cli |
+	| enc |
+	| Enc |
+	| ENc |
+	| imm |
+	| Imm |
+	| iMM |
+	#| inv |
+	#| Inv |
+	| med |
+	| Med |
+	| mEd |
+	| obs |
+	| Obs |
+	#| pat |
+	#| Pat |
+	| prb |
+	| Prb |
+	#| ref |
+	#| Ref |
+	| sum |
+	| Sum |
+	| sUm |
 
 @ignore
 Scenario: Request records for patients with genders which do not match the valueset so must addear to gender mapping
