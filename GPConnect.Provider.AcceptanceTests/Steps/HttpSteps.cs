@@ -416,6 +416,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var traceDirectory = GlobalContext.TraceDirectory;
             if (!Directory.Exists(traceDirectory)) return;
             var scenarioDirectory = Path.Combine(traceDirectory, HttpContext.ScenarioContext.ScenarioInfo.Title);
+            int fileIndex = 1;
+            while (Directory.Exists(scenarioDirectory + "-" + fileIndex)) fileIndex++;
+            scenarioDirectory = scenarioDirectory + "-" + fileIndex;
             Directory.CreateDirectory(scenarioDirectory);
             Log.WriteLine(scenarioDirectory);
             HttpContext.SaveToDisk(Path.Combine(scenarioDirectory,"HttpContext.xml"));
