@@ -63,14 +63,14 @@ Scenario: JWT requesting device is not valid FHIR device resource
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	And I set an invalid JWT requesting device resource
 	When I make a GET request to "/metadata"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 
 Scenario: JWT requesting organization is not valid FHIR organization resource
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	And I set an invalid JWT requesting organization resource
 	When I make a GET request to "/metadata"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 
 Scenario: JWT requesting organization identifier does not contain an ODS code
 	Given I am using the default server
@@ -91,7 +91,7 @@ Scenario: JWT requesting practitioner is not valid FHIR practitioner resource
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	And I set an invalid JWT requesting practitioner resource
 	When I make a GET request to "/metadata"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 
 Scenario: JWT requesting practitioner identifier does not contain an SDS Id
 	Given I am using the default server

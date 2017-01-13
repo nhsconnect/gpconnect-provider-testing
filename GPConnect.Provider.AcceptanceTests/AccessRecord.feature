@@ -55,7 +55,7 @@ Scenario: Invalid record section requested
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "ZZZ" care record section for config patient "patient1"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
