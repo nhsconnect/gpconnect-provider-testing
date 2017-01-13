@@ -340,7 +340,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
 
             // Execute The Request
-            var restResponse = restClient.Execute(restRequest);
+            IRestResponse restResponse = null;
+            try
+            {
+                restResponse = restClient.Execute(restRequest);
+            }
+            catch (Exception e) {
+                Log.WriteLine(e.StackTrace);
+            }
 
             // TODO Save The Error Message And Exception Details
             Log.WriteLine("Error Message = " + restResponse.ErrorMessage);

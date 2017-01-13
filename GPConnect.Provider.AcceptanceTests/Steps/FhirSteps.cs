@@ -13,7 +13,7 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using Hl7.Fhir.Serialization;
 using NUnit.Framework;
-using Newtonsoft.Json;
+using System.IO;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
@@ -188,17 +188,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Make The Request And Save The Returned Resource
             try
             {
+                // Set HttpContext variables for Logging purposes
+                HttpContext.RequestUrl = "/Patient/" + operation;
+                HttpContext.RequestMethod = "POST";
+                HttpContext.RequestBody = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
+
                 FhirContext.FhirResponseResource = fhirClient.TypeOperation<Patient>(operation, FhirContext.FhirRequestParameters);
             }
             catch (Exception e) {
                 Log.WriteLine(e.StackTrace);
             }
-
+            
             // Grab The Response Body
             HttpContext.ResponseBody = fhirClient.LastBodyAsText;
             FhirContext.FhirResponseResource = fhirClient.LastBodyAsResource;
 
             // TODO Parse The XML or JSON For Easier Processing
+
+            LogToDisk();
         }
 
         // Response Validation Steps
@@ -301,6 +308,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Log.WriteLine("No Reference in response bundle so skipping rest of test but giving Pass to scenario.");
                 Assert.Pass(); // If element is not present pass and ignore other steps
             }
+        }
+
+        private void LogToDisk()
+        {
+            var traceDirectory = GlobalContext.TraceDirectory;
+            if (!Directory.Exists(traceDirectory)) return;
+            var scenarioDirectory = Path.Combine(traceDirectory, HttpContext.ScenarioContext.ScenarioInfo.Title);
+            Directory.CreateDirectory(scenarioDirectory);
+            Log.WriteLine(scenarioDirectory);
+            HttpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
         }
 
     }
