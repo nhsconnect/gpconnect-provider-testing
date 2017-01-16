@@ -1091,3 +1091,8 @@ Scenario: Identifier order in response resources
 
 @ignore
 Scenario: Patient with inactive nhs number in system should not return that NHS Number
+
+@ignore
+Scenario: A patient is requested which is not on Spine but is on provider system
+	# 404 PATIENT_NOT_FOUND
+
