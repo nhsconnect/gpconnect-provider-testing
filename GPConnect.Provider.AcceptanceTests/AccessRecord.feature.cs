@@ -150,8 +150,6 @@ this.FeatureBackground();
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 41
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -161,25 +159,23 @@ this.FeatureBackground();
         public virtual void NoRecordSectionRequested()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No record section requested", ((string[])(null)));
-#line 44
+#line 43
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 45
+#line 44
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 46
+#line 45
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
+#line 46
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 47
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 49
+#line 48
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 50
+#line 49
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -189,26 +185,27 @@ this.FeatureBackground();
         public virtual void InvalidRecordSectionRequested()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid record section requested", ((string[])(null)));
-#line 53
+#line 51
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 54
+#line 52
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 55
+#line 53
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 54
   testRunner.And("I author a request for the \"ZZZ\" care record section for config patient \"patient1" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 55
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 58
+#line 56
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 59
+#line 57
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 58
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "PARAMETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -218,29 +215,27 @@ this.FeatureBackground();
         public virtual void MultipleRecordSectionsRequested()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple record sections requested", ((string[])(null)));
-#line 62
+#line 60
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 63
+#line 61
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 64
+#line 62
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
+#line 63
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
+#line 64
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 67
+#line 65
   testRunner.And("I am requesting the \"ALL\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
+#line 66
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 69
+#line 67
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 70
+#line 68
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -250,29 +245,27 @@ this.FeatureBackground();
         public virtual void MultipleDuplicationRecordSectionsInRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple duplication record sections in request", ((string[])(null)));
-#line 73
+#line 70
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 74
+#line 71
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 75
+#line 72
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 73
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
+#line 74
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
+#line 75
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
+#line 76
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 80
+#line 77
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 81
+#line 78
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -282,28 +275,26 @@ this.FeatureBackground();
         public virtual void RecordSectionWithInvalidSystemForCodableConcept()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Record section with invalid system for codable concept", ((string[])(null)));
-#line 84
+#line 80
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 85
+#line 81
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 86
+#line 82
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 83
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 84
   testRunner.And("I am requesting the \"SUM\" care record section with system \"http://GPConnectTest.n" +
                     "hs.net/ValueSet/record-section\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
+#line 85
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 90
+#line 86
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 91
+#line 87
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -313,27 +304,25 @@ this.FeatureBackground();
         public virtual void RequestRecordSectionsWithStringTypeRatherThanCodableConcept()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request record sections with String type rather than CodableConcept", ((string[])(null)));
-#line 94
+#line 89
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 95
+#line 90
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 96
+#line 91
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 92
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 93
   testRunner.And("I am requesting the \"SUM\" care record section with a string parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 94
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 100
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 101
+#line 95
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 96
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -343,27 +332,25 @@ this.FeatureBackground();
         public virtual void NoPatientNHSNumberSupplied()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No patient NHS number supplied", ((string[])(null)));
-#line 104
+#line 98
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 105
+#line 99
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 106
+#line 100
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 101
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
+#line 102
   testRunner.And("I set the JWT header for getcarerecord with config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
+#line 103
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 110
+#line 104
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 111
+#line 105
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -373,27 +360,28 @@ this.FeatureBackground();
         public virtual void InvalidNHSNumberSupplied()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid NHS number supplied", ((string[])(null)));
-#line 114
+#line 107
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 115
+#line 108
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 116
+#line 109
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 110
   testRunner.And("I am requesting the record for patient with NHS Number \"1234567891\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
+#line 111
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
+#line 112
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 120
+#line 113
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 121
+#line 114
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 115
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "NHS_NUMBER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -403,28 +391,29 @@ this.FeatureBackground();
         public virtual void InvalidIdentifierSystemForPatientNHSNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid identifier system for patient NHS number", ((string[])(null)));
-#line 124
+#line 117
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 125
+#line 118
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 126
+#line 119
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 120
   testRunner.And("I am requesting the record for config patient \"patient1\" of system \"http://GPConn" +
                     "ectTest.nhs.net/Id/identifierSystem\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 121
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
+#line 122
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 130
+#line 123
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 131
+#line 124
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 125
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "IDENTIFIER_SYSTEM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -434,29 +423,27 @@ this.FeatureBackground();
         public virtual void MultipleDifferentNHSNumberParametersInRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple different NHS number parameters in request", ((string[])(null)));
-#line 134
+#line 127
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 135
+#line 128
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 136
+#line 129
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 137
+#line 130
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
+#line 131
   testRunner.And("I am requesting the record for config patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 139
+#line 132
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
+#line 133
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 141
+#line 134
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 142
+#line 135
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -466,29 +453,27 @@ this.FeatureBackground();
         public virtual void DuplicateNHSNumberParametersInRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Duplicate NHS number parameters in request", ((string[])(null)));
-#line 145
+#line 137
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 146
+#line 138
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 147
+#line 139
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 140
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 141
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 142
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 143
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 152
+#line 144
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 153
+#line 145
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -498,6 +483,36 @@ this.FeatureBackground();
         public virtual void NoPatientFoundWithNHSNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No patient found with NHS number", ((string[])(null)));
+#line 147
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 148
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 149
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 150
+  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patientN" +
+                    "otInSystem\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 151
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 152
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 153
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 154
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"PATIENT_" +
+                    "NOT_FOUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Request care record section with patientNHSNumber using String type value")]
+        public virtual void RequestCareRecordSectionWithPatientNHSNumberUsingStringTypeValue()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request care record section with patientNHSNumber using String type value", ((string[])(null)));
 #line 156
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -508,47 +523,16 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 159
-  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patientN" +
-                    "otInSystem\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
- testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 161
- testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 162
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 163
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Request care record section with patientNHSNumber using String type value")]
-        public virtual void RequestCareRecordSectionWithPatientNHSNumberUsingStringTypeValue()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request care record section with patientNHSNumber using String type value", ((string[])(null)));
-#line 165
-this.ScenarioSetup(scenarioInfo);
-#line 4
-this.FeatureBackground();
-#line 166
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 167
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
-                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 168
   testRunner.And("I am requesting the record for config patient \"patient1\" using a fhir string para" +
                     "meter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
+#line 160
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 170
+#line 161
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 171
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 172
+#line 162
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 163
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -562,28 +546,28 @@ this.FeatureBackground();
         public virtual void TimePeriodSpecifiedForACareRecordSectionThatCanBeFiltered(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Time period specified for a care record section that can be filtered", exampleTags);
-#line 175
+#line 165
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 176
+#line 166
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 177
+#line 167
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
+#line 168
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
+#line 169
   testRunner.And(string.Format("I am requesting the \"{0}\" care record section", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
+#line 170
   testRunner.And("I set a valid time period start and end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
+#line 171
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 182
+#line 172
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 183
+#line 173
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
+#line 174
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -599,29 +583,27 @@ this.FeatureBackground();
         public virtual void TimePeriodSpecifiedForACareRecordSectionThatMustNotBeFiltered(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Time period specified for a care record section that must not be filtered", exampleTags);
-#line 195
+#line 185
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 196
+#line 186
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 197
+#line 187
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
+#line 188
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
+#line 189
   testRunner.And(string.Format("I am requesting the \"{0}\" care record section", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
+#line 190
   testRunner.And("I set a valid time period start and end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
+#line 191
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 202
+#line 192
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 203
+#line 193
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -631,26 +613,27 @@ this.FeatureBackground();
         public virtual void AccessBlockedToCareRecordAsNoPatientConsent()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Access blocked to care record as no patient consent", ((string[])(null)));
-#line 213
+#line 202
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 214
+#line 203
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 215
+#line 204
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
+#line 205
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patientN" +
                     "oSharingConsent\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
+#line 206
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 218
+#line 207
  testRunner.Then("the response status code should be \"403\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 219
+#line 208
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 220
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 209
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"NO_PATIE" +
+                    "NT_CONSENT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -660,28 +643,28 @@ this.FeatureBackground();
         public virtual void RequestPatientSummaryWithParametersInOpositeOrderToOtherTests()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request patient summary with parameters in oposite order to other tests", ((string[])(null)));
-#line 222
+#line 211
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 223
+#line 212
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 224
+#line 213
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
+#line 214
   testRunner.And("I set a valid time period start and end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
+#line 215
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
+#line 216
   testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 228
+#line 217
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 229
+#line 218
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 230
+#line 219
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 231
+#line 220
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -694,26 +677,27 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request care record where request resource type is something other than Parameter" +
                     "s", ((string[])(null)));
-#line 233
+#line 222
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 234
+#line 223
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 235
+#line 224
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 236
+#line 225
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 237
+#line 226
  testRunner.When("I send a gpc.getcarerecord operation request with invalid resource type payload", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 238
+#line 227
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 239
+#line 228
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 240
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 229
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "RESOURCE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -723,6 +707,39 @@ this.FeatureBackground();
         public virtual void InvalidStartDateParameter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid start date parameter", ((string[])(null)));
+#line 231
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 232
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 233
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 234
+  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 235
+  testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 236
+  testRunner.And("I set a time period parameter start date to \"abcd\" and end date to \"2016\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 237
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 238
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 239
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 240
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "PARAMETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Invalid end date parameter")]
+        public virtual void InvalidEndDateParameter()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid end date parameter", ((string[])(null)));
 #line 242
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -737,7 +754,7 @@ this.FeatureBackground();
 #line 246
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 247
-  testRunner.And("I set a time period parameter start date to \"abcd\" and end date to \"2016\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a time period parameter start date to \"2014\" and end date to \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 248
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 249
@@ -745,16 +762,17 @@ this.FeatureBackground();
 #line 250
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 251
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "PARAMETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Invalid end date parameter")]
-        public virtual void InvalidEndDateParameter()
+        [NUnit.Framework.DescriptionAttribute("Time period where start date parameter is after end date parameter")]
+        public virtual void TimePeriodWhereStartDateParameterIsAfterEndDateParameter()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid end date parameter", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Time period where start date parameter is after end date parameter", ((string[])(null)));
 #line 253
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -769,7 +787,7 @@ this.FeatureBackground();
 #line 257
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258
-  testRunner.And("I set a time period parameter start date to \"2014\" and end date to \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a time period parameter start date to \"2016\" and end date to \"2014\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 259
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 260
@@ -777,16 +795,17 @@ this.FeatureBackground();
 #line 261
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 262
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "PARAMETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Time period where start date parameter is after end date parameter")]
-        public virtual void TimePeriodWhereStartDateParameterIsAfterEndDateParameter()
+        [NUnit.Framework.DescriptionAttribute("Time period with only start date parameter")]
+        public virtual void TimePeriodWithOnlyStartDateParameter()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Time period where start date parameter is after end date parameter", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Time period with only start date parameter", ((string[])(null)));
 #line 264
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -801,24 +820,24 @@ this.FeatureBackground();
 #line 268
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 269
-  testRunner.And("I set a time period parameter start date to \"2016\" and end date to \"2014\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a time period parameter with start date \"2012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 270
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 271
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 272
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 273
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Time period with only start date parameter")]
-        public virtual void TimePeriodWithOnlyStartDateParameter()
+        [NUnit.Framework.DescriptionAttribute("Time period with only end date parameter")]
+        public virtual void TimePeriodWithOnlyEndDateParameter()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Time period with only start date parameter", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Time period with only end date parameter", ((string[])(null)));
 #line 275
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -833,7 +852,7 @@ this.FeatureBackground();
 #line 279
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 280
-  testRunner.And("I set a time period parameter with start date \"2012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a time period parameter with end date \"2016\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 281
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 282
@@ -847,10 +866,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Time period with only end date parameter")]
-        public virtual void TimePeriodWithOnlyEndDateParameter()
+        [NUnit.Framework.DescriptionAttribute("Time period format start and end date only contain year and month")]
+        public virtual void TimePeriodFormatStartAndEndDateOnlyContainYearAndMonth()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Time period with only end date parameter", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Time period format start and end date only contain year and month", ((string[])(null)));
 #line 286
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -865,7 +884,7 @@ this.FeatureBackground();
 #line 290
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 291
-  testRunner.And("I set a time period parameter with end date \"2016\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a time period parameter start date to \"2015-02\" and end date to \"2016-07\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 292
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 293
@@ -873,38 +892,6 @@ this.FeatureBackground();
 #line 294
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 295
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Time period format start and end date only contain year and month")]
-        public virtual void TimePeriodFormatStartAndEndDateOnlyContainYearAndMonth()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Time period format start and end date only contain year and month", ((string[])(null)));
-#line 297
-this.ScenarioSetup(scenarioInfo);
-#line 4
-this.FeatureBackground();
-#line 298
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 299
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
-                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 300
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 301
-  testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 302
-  testRunner.And("I set a time period parameter start date to \"2015-02\" and end date to \"2016-07\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 303
- testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 304
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 305
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 306
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -924,29 +911,29 @@ this.FeatureBackground();
         public virtual void ResponseShouldBeBundleContainingAllMandatoryElements(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("response should be bundle containing all mandatory elements", exampleTags);
-#line 308
+#line 297
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 309
+#line 298
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 310
+#line 299
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 311
+#line 300
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 312
+#line 301
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 313
+#line 302
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 314
+#line 303
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 315
+#line 304
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 316
+#line 305
   testRunner.And("the JSON response bundle should contain a single Composition resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 317
+#line 306
   testRunner.And("the JSON response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -966,27 +953,27 @@ this.FeatureBackground();
         public virtual void ResponseBundleShouldContainCompositionAsTheFirstEntry(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("response bundle should contain composition as the first entry", exampleTags);
-#line 333
+#line 322
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 334
+#line 323
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 335
+#line 324
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 336
+#line 325
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 337
+#line 326
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 338
+#line 327
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 339
+#line 328
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 340
+#line 329
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 341
+#line 330
   testRunner.And("the JSON response bundle should contain the composition resource as the first ent" +
                     "ry", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1000,7 +987,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("request contain the structure definition in the meta fields for the operation", new string[] {
                         "ignore"});
-#line 358
+#line 347
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1015,7 +1002,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("response contains the structure definitions in the meta fields for all resources", new string[] {
                         "ignore"});
-#line 361
+#line 350
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1037,54 +1024,54 @@ this.FeatureBackground();
         public virtual void CompositionContainsGenericMandatoryFields(string code, string title, string display, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("composition contains generic mandatory fields", exampleTags);
-#line 363
+#line 352
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 364
+#line 353
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 365
+#line 354
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 366
+#line 355
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 367
+#line 356
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 368
+#line 357
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 369
+#line 358
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 370
+#line 359
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 371
+#line 360
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 372
+#line 361
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.title\" with " +
                     "value \"Patient Care Record\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 373
+#line 362
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.status\" with" +
                     " value \"final\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 374
+#line 363
   testRunner.And(string.Format("response bundle entry \"Composition\" should contain element \"resource.section[0].t" +
                         "itle\" with value \"{0}\"", title), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 375
+#line 364
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
                     "ode.coding[0].system\" with value \"http://fhir.nhs.net/ValueSet/gpconnect-record-" +
                     "section-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 376
+#line 365
   testRunner.And(string.Format("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
                         "ode.coding[0].code\" with value \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 377
+#line 366
   testRunner.And(string.Format("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
                         "ode.coding[0].display\" with value \"{0}\"", display), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 378
+#line 367
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
                     "ode.text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 379
+#line 368
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].t" +
                     "ext.status\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 380
+#line 369
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].t" +
                     "ext.div\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1105,27 +1092,27 @@ this.FeatureBackground();
         public virtual void IfCompositionContainsTypeMandatoryFieldFixedValuesShouldBeCorrect(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if composition contains type mandatory field fixed values should be correct", exampleTags);
-#line 397
+#line 386
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 398
+#line 387
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 399
+#line 388
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 400
+#line 389
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 401
+#line 390
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 402
+#line 391
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 403
+#line 392
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 404
+#line 393
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 405
+#line 394
   testRunner.And("if composition contains the resource type element the fields should match the fix" +
                     "ed values of the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1146,27 +1133,27 @@ this.FeatureBackground();
         public virtual void IfCompositionContainsClassCoding(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if composition contains class coding", exampleTags);
-#line 421
+#line 410
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 422
+#line 411
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 423
+#line 412
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 424
+#line 413
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 425
+#line 414
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 426
+#line 415
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 427
+#line 416
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 428
+#line 417
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 429
+#line 418
   testRunner.And("if composition contains the resource class element the fields should match the fi" +
                     "xed values of the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1187,30 +1174,30 @@ this.FeatureBackground();
         public virtual void CompositionContainsSubjectReferencingAPatientResourceInTheBundle(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("composition contains subject referencing a patient resource in the bundle", exampleTags);
-#line 445
+#line 434
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 446
+#line 435
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 447
+#line 436
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 448
+#line 437
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 449
+#line 438
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 450
+#line 439
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 451
+#line 440
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 452
+#line 441
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 453
+#line 442
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.subject.refe" +
                     "rence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 454
+#line 443
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.subject.refe" +
                     "rence\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1231,30 +1218,30 @@ this.FeatureBackground();
         public virtual void IfCompositionContainsAuthorTheDeviceReferenceCanBeFoundInTheBundle(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if composition contains author, the device reference can be found in the bundle", exampleTags);
-#line 470
+#line 459
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 471
+#line 460
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 472
+#line 461
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 473
+#line 462
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 474
+#line 463
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 475
+#line 464
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 476
+#line 465
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 477
+#line 466
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 478
+#line 467
   testRunner.And("if response bundle entry \"Composition\" contains element \"resource.author[0].refer" +
                     "ence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 479
+#line 468
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.author[0].re" +
                     "ference\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1275,30 +1262,30 @@ this.FeatureBackground();
         public virtual void IfCompositionContainsCustodianReferenece(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if composition contains custodian referenece", exampleTags);
-#line 495
+#line 484
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 496
+#line 485
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 497
+#line 486
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 498
+#line 487
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 499
+#line 488
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 500
+#line 489
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 501
+#line 490
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 502
+#line 491
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 503
+#line 492
   testRunner.And("if response bundle entry \"Composition\" contains element \"resource.custodian.refer" +
                     "ence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 504
+#line 493
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.custodian.re" +
                     "ference\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1312,7 +1299,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("patient is a valid fhir resource", new string[] {
                         "ignore"});
-#line 521
+#line 510
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1334,29 +1321,29 @@ this.FeatureBackground();
         public virtual void PatientContainsAValidIdentifiers(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("patient contains a valid identifiers", exampleTags);
-#line 525
+#line 514
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 526
+#line 515
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 527
+#line 516
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 528
+#line 517
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 529
+#line 518
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 530
+#line 519
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 531
+#line 520
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 532
+#line 521
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 533
+#line 522
   testRunner.And("response bundle entry \"Patient\" should contain element \"resource.id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 534
+#line 523
   testRunner.And("response bundle Patient entry should contain a valid NHS number identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1369,7 +1356,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains name elements", new string[] {
                         "ignore"});
-#line 551
+#line 540
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1391,29 +1378,29 @@ this.FeatureBackground();
         public virtual void IfPatientContainsTelecomInformation(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains telecom information", exampleTags);
-#line 555
+#line 544
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 556
+#line 545
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 557
+#line 546
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 558
+#line 547
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 559
+#line 548
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 560
+#line 549
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 561
+#line 550
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 562
+#line 551
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 563
+#line 552
   testRunner.And("if response bundle entry \"Patient\" contains element \"resource.telecom\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 564
+#line 553
   testRunner.And("response bundle Patient resource should contain valid telecom information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1426,7 +1413,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains gender", new string[] {
                         "ignore"});
-#line 581
+#line 570
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1441,7 +1428,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains address", new string[] {
                         "ignore"});
-#line 586
+#line 575
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1463,27 +1450,27 @@ this.FeatureBackground();
         public virtual void IfPatientContainsMaritalStatus(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains maritalStatus", exampleTags);
-#line 590
+#line 579
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 591
+#line 580
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 592
+#line 581
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 593
+#line 582
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 594
+#line 583
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 595
+#line 584
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 596
+#line 585
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 597
+#line 586
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 598
+#line 587
   testRunner.And("if composition contains the patient resource maritalStatus fields matching the sp" +
                     "ecification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1504,27 +1491,27 @@ this.FeatureBackground();
         public virtual void IfPatientContainsContact(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains contact", exampleTags);
-#line 614
+#line 603
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 615
+#line 604
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 616
+#line 605
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 617
+#line 606
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 618
+#line 607
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 619
+#line 608
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 620
+#line 609
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 621
+#line 610
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 622
+#line 611
   testRunner.And("if composition contains the patient resource contact the mandatory fields should " +
                     "matching the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1545,27 +1532,27 @@ this.FeatureBackground();
         public virtual void IfPatientContinsCommunicaiton(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contins communicaiton", exampleTags);
-#line 638
+#line 627
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 639
+#line 628
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 640
+#line 629
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 641
+#line 630
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 642
+#line 631
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 643
+#line 632
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 644
+#line 633
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 645
+#line 634
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 646
+#line 635
   testRunner.And("if composition contains the patient resource communication the mandatory fields s" +
                     "hould matching the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1586,27 +1573,27 @@ this.FeatureBackground();
         public virtual void IfPatientContainsPractitionerAsCareProvider(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains practitioner as care provider", exampleTags);
-#line 662
+#line 651
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 663
+#line 652
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 664
+#line 653
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 665
+#line 654
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 666
+#line 655
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 667
+#line 656
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 668
+#line 657
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 669
+#line 658
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 670
+#line 659
   testRunner.And("if Patient careProvider is included in the response the reference should referenc" +
                     "e a Practitioner within the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1627,27 +1614,27 @@ this.FeatureBackground();
         public virtual void IfPatientContainsManagingOrganizaiton(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if patient contains managingOrganizaiton", exampleTags);
-#line 686
+#line 675
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 687
+#line 676
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 688
+#line 677
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 689
+#line 678
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 690
+#line 679
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 691
+#line 680
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 692
+#line 681
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 693
+#line 682
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 694
+#line 683
   testRunner.And("if Patient managingOrganization is included in the response the reference should " +
                     "reference an Organization within the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1668,27 +1655,27 @@ this.FeatureBackground();
         public virtual void PatientDoesNotContainDisallowedFields(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("patient does not contain disallowed fields", exampleTags);
-#line 710
+#line 699
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 711
+#line 700
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 712
+#line 701
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 713
+#line 702
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 714
+#line 703
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 715
+#line 704
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 716
+#line 705
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 717
+#line 706
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 718
+#line 707
   testRunner.And("patient resource should not contain the fhir fields photo animal or link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1710,31 +1697,31 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("practitioner resource contains mandatory fields and does not include dissallowed " +
                     "fields", exampleTags);
-#line 734
+#line 723
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 735
+#line 724
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 736
+#line 725
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 737
+#line 726
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 738
+#line 727
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 739
+#line 728
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 740
+#line 729
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 741
+#line 730
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 742
+#line 731
   testRunner.And("if the response bundle contains a \"Practitioner\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 743
+#line 732
   testRunner.And("practitioner resources should contain a single name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 744
+#line 733
   testRunner.And("practitioner resources should not contain the disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1754,34 +1741,34 @@ this.FeatureBackground();
         public virtual void PractitionerResourceContainsMandatoryFieldsWithinOptionalElements(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("practitioner resource contains mandatory fields within optional elements", exampleTags);
-#line 760
+#line 749
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 761
+#line 750
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 762
+#line 751
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 763
+#line 752
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 764
+#line 753
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 765
+#line 754
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 766
+#line 755
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 767
+#line 756
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 768
+#line 757
   testRunner.And("if the response bundle contains a \"Practitioner\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 769
+#line 758
   testRunner.And("practitioner resources must only contain one user id and one profile id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 770
+#line 759
   testRunner.And("if practitionerRole has role element which contains a coding then the system, cod" +
                     "e and display must exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 771
+#line 760
   testRunner.And("If the practitioner has communicaiton elemenets containing a coding then there mu" +
                     "st be a system, code and display element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1804,29 +1791,29 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if practitioner resource contains a managing organization it must reference an or" +
                     "ganization within the response bundle", exampleTags);
-#line 787
+#line 776
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 788
+#line 777
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 789
+#line 778
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 790
+#line 779
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 791
+#line 780
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 792
+#line 781
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 793
+#line 782
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 794
+#line 783
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 795
+#line 784
   testRunner.And("if the response bundle contains a \"Practitioner\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 796
+#line 785
   testRunner.And("if practitioner contains a managingOrganization the reference relates to an Organ" +
                     "ization within the response bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1847,29 +1834,29 @@ this.FeatureBackground();
         public virtual void OrganizationResourceIdentifiers(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("organization resource identifiers", exampleTags);
-#line 812
+#line 801
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 813
+#line 802
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 814
+#line 803
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 815
+#line 804
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 816
+#line 805
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 817
+#line 806
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 818
+#line 807
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 819
+#line 808
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 820
+#line 809
   testRunner.And("if the response bundle contains a \"Organization\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 821
+#line 810
   testRunner.And("Organization resources identifiers must comply with specification identifier rest" +
                     "ricitions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1890,29 +1877,29 @@ this.FeatureBackground();
         public virtual void OrganizationResourceElementCardinality(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("organization resource element cardinality", exampleTags);
-#line 837
+#line 826
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 838
+#line 827
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 839
+#line 828
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 840
+#line 829
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 841
+#line 830
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 842
+#line 831
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 843
+#line 832
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 844
+#line 833
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 845
+#line 834
   testRunner.And("if the response bundle contains a \"Organization\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 846
+#line 835
   testRunner.And("if Organization includes type coding the elements are mandatory", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1932,29 +1919,29 @@ this.FeatureBackground();
         public virtual void OrganizationResourceInternalReference(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("organization resource internal reference", exampleTags);
-#line 862
+#line 851
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 863
+#line 852
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 864
+#line 853
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 865
+#line 854
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 866
+#line 855
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 867
+#line 856
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 868
+#line 857
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 869
+#line 858
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 870
+#line 859
   testRunner.And("if the response bundle contains a \"Organization\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 871
+#line 860
   testRunner.And("if Organization includes partOf it should referene a resource in the response bun" +
                     "dle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1975,29 +1962,29 @@ this.FeatureBackground();
         public virtual void DeviceResourceElementCardinalityConformance(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("device resource element cardinality conformance", exampleTags);
-#line 887
+#line 876
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 888
+#line 877
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 889
+#line 878
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 890
+#line 879
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 891
+#line 880
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 892
+#line 881
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 893
+#line 882
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 894
+#line 883
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 895
+#line 884
   testRunner.And("if the response bundle contains a \"Device\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 896
+#line 885
   testRunner.And("the Device resource should conform to cardinality set out in specificaiton", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2017,29 +2004,29 @@ this.FeatureBackground();
         public virtual void DeviceResourceTypeElementValuesMatchSpecification(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("device resource type element values match specification", exampleTags);
-#line 912
+#line 901
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 913
+#line 902
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 914
+#line 903
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 915
+#line 904
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 916
+#line 905
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 917
+#line 906
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 918
+#line 907
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 919
+#line 908
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 920
+#line 909
   testRunner.And("if the response bundle contains a \"Device\" resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 921
+#line 910
   testRunner.And("the Device resource type should match the fixed values from the specfication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2075,28 +2062,28 @@ this.FeatureBackground();
         public virtual void CheckAllDateTimeFormatVariationsAreAllowed(string code, string patient, string startDateTime, string endDateTime, string regexToCheck, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("check all dateTime format variations are allowed", exampleTags);
-#line 937
+#line 926
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 938
+#line 927
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 939
+#line 928
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 940
+#line 929
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 941
+#line 930
   testRunner.And(string.Format("I set a time period parameter start date to \"{0}\" and end date to \"{1}\"", startDateTime, endDateTime), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 942
+#line 931
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 943
+#line 932
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 944
+#line 933
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 945
+#line 934
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 946
+#line 935
   testRunner.And(string.Format("the HTML in the response matches the Regex check \"{0}\"", regexToCheck), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2116,29 +2103,29 @@ this.FeatureBackground();
         public virtual void InvalidRequestParameterNamesAndCase(string paramName, string newParamName, string expectedResponseCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request parameter names and case", exampleTags);
-#line 978
+#line 967
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 979
+#line 968
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 980
+#line 969
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 981
+#line 970
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 982
+#line 971
   testRunner.And("I set a valid time period start and end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 983
+#line 972
   testRunner.And(string.Format("I replace the parameter name \"{0}\" with \"{1}\"", paramName, newParamName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 984
+#line 973
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 985
+#line 974
  testRunner.Then(string.Format("the response status code should be \"{0}\"", expectedResponseCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 986
+#line 975
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 987
+#line 976
   testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2149,28 +2136,29 @@ this.FeatureBackground();
         public virtual void RequestParameterPatientNHSNumberValuesIsEmpty()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter patientNHSNumber values is empty", ((string[])(null)));
-#line 1001
+#line 990
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 1002
+#line 991
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1003
+#line 992
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1004
+#line 993
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1005
+#line 994
   testRunner.And("I set the parameter patientNHSNumber with an empty value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1006
+#line 995
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1007
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1008
+#line 996
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 997
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1009
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 998
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "NHS_NUMBER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2180,28 +2168,29 @@ this.FeatureBackground();
         public virtual void RequestParameterPatientNHSNumberSystemIsEmpty()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter patientNHSNumber system is empty", ((string[])(null)));
-#line 1011
+#line 1000
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 1012
+#line 1001
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1013
+#line 1002
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1014
+#line 1003
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1015
+#line 1004
   testRunner.And("I set the parameter patientNHSNumber with an empty system", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1016
+#line 1005
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1017
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1018
+#line 1006
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1007
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1019
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1008
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "IDENTIFIER_SYSTEM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2211,25 +2200,26 @@ this.FeatureBackground();
         public virtual void RequestParameterRecordSectionValuesIsEmpty()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSection values is empty", ((string[])(null)));
-#line 1021
+#line 1010
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 1022
+#line 1011
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1023
+#line 1012
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1024
+#line 1013
   testRunner.And("I author a request for the \"\" care record section for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1025
+#line 1014
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1026
+#line 1015
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1027
+#line 1016
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1028
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1017
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "PARAMETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2239,28 +2229,29 @@ this.FeatureBackground();
         public virtual void RequestParameterRecordSectionSystemIsEmpty()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSection system is empty", ((string[])(null)));
-#line 1030
+#line 1019
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 1031
+#line 1020
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1032
+#line 1021
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1033
+#line 1022
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1034
+#line 1023
   testRunner.And("I set the parameter recordSection with an empty system", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1035
+#line 1024
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1036
+#line 1025
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1037
+#line 1026
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1038
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1027
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "PARAMETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2294,26 +2285,27 @@ this.FeatureBackground();
         public virtual void RequestedSectionCodeIncorrectParameterCase(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Requested section code incorrect parameter case", exampleTags);
-#line 1040
+#line 1029
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 1041
+#line 1030
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1042
+#line 1031
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1043
+#line 1032
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1044
+#line 1033
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1045
+#line 1034
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1046
+#line 1035
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1047
-  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1036
+  testRunner.And("the JSON response should be a OperationOutcome resource with error code \"INVALID_" +
+                    "PARAMETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2327,7 +2319,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request records for patients with genders which do not match the valueset so must" +
                     " addear to gender mapping", new string[] {
                         "ignore"});
-#line 1082
+#line 1071
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2346,7 +2338,7 @@ this.FeatureBackground();
                     " if not check mapping is covered in documentation and system maps correctly", new string[] {
                         "ignore",
                         "Manual"});
-#line 1087
+#line 1076
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2363,7 +2355,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request records for patients contact with relationship which do not match the val" +
                     "ueset so must addear to relationship mapping", new string[] {
                         "ignore"});
-#line 1091
+#line 1080
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2384,7 +2376,7 @@ this.FeatureBackground();
                     "em maps correctly", new string[] {
                         "ignore",
                         "Manual"});
-#line 1096
+#line 1085
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2399,7 +2391,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Identifier order in response resources", new string[] {
                         "ignore"});
-#line 1100
+#line 1089
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2414,7 +2406,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient with inactive nhs number in system should not return that NHS Number", new string[] {
                         "ignore"});
-#line 1104
+#line 1093
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

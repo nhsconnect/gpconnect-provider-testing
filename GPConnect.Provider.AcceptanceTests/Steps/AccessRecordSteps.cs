@@ -78,6 +78,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
         }
 
+        [Then(@"the JSON response should be a OperationOutcome resource with error code ""([^""]*)""")]
+        public void ThenTheJSONResponseShouldBeAOperationOutcomeResourceWithErrorCode(string errorCode)
+        {
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
+            var containsErrorCode = false;
+            OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
+            foreach(OperationOutcome.IssueComponent issue in operationOutcome.Issue){
+                foreach (Coding coding in issue.Details.Coding) {
+                    if (coding.Code.Equals(errorCode)) {
+                        containsErrorCode = true;
+                    }
+                }
+            }
+            containsErrorCode.ShouldBeTrue();
+        }
+
         [Then(@"the JSON response bundle should contain a single Patient resource")]
         public void ThenTheJSONResponseBundleShouldContainASinglePatientResource()
         {
