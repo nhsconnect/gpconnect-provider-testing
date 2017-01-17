@@ -147,18 +147,18 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("section headers present")]
-        [NUnit.Framework.TestCaseAttribute("ADM", "Administrative Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ALL", "Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reaction" +
+        [NUnit.Framework.TestCaseAttribute("patient1", "ADM", "Administrative Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "ALL", "Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reaction" +
             "s", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "Clinical Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "Encounters", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("IMM", "Immunisations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MED", "Current Medication Issues,Current Repeat Medications,Past Medications", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("OBS", "Observations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PRB", "Active Problems and Issues,Inactive Problems and Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
+        [NUnit.Framework.TestCaseAttribute("patient1", "CLI", "Clinical Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "ENC", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "IMM", "Immunisations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "MED", "Current Medication Issues,Current Repeat Medications,Past Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "OBS", "Observations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "PRB", "Active Problems and Issues,Inactive Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
             "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
-        public virtual void SectionHeadersPresent(string code, string headers, string[] exampleTags)
+        public virtual void SectionHeadersPresent(string patient, string code, string headers, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("section headers present", exampleTags);
 #line 44
@@ -171,8 +171,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 47
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 49
@@ -194,7 +193,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("content table headers present", new string[] {
                         "ignore"});
-#line 69
+#line 72
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -209,7 +208,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("filtered sections should contain date range section banner", new string[] {
                         "ignore"});
-#line 72
+#line 75
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -226,7 +225,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System does not support section html response where appropriate", new string[] {
                         "ignore",
                         "Manual"});
-#line 75
+#line 78
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
