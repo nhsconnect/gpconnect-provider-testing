@@ -4,6 +4,7 @@ using Hl7.Fhir.Model;
 using Shouldly;
 using System;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
 
@@ -19,6 +20,50 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             FhirContext = fhirContext;
             HttpContext = httpContext;
+        }
+
+        [Then(@"the html should be valid xhtml")]
+        public void ThenTheHtmlShouldBeValidXHTML()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var xhtml = section.Text.Div;
+                        XDocument doc = null;
+                        try
+                        { 
+                            doc = XDocument.Parse(xhtml);
+                            doc.ShouldNotBeNull();
+                        }
+                        catch (Exception e) {
+                            Log.WriteLine("Failed to parse div to xhtml");
+                            Log.WriteLine(e.StackTrace);
+                            doc.ShouldNotBeNull();
+                        }
+                    }
+                }
+            }
+        }
+
+        [Then(@"the html should not contain ""([^""]*)"" tags")]
+        public void ThenTheHtmlShouldNotContaintags(string tagName)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        Regex regex = new Regex("<" + tagName);
+                        regex.Matches(section.Text.Div).Count.ShouldBe(0);
+                    }
+                }
+            }
         }
 
         [Then(@"the html should not contain any attributes")]

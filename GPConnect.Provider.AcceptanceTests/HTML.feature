@@ -17,15 +17,14 @@ Scenario Outline: HTML does not contain disallowed elements
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-#		And the html should be valid xhtml
-#		And the html should not contain "head" tags
-#		And the html should not contain "body" tags
-#		And the html should not contain "script" tags
-#		And the html should not contain "style" tags
-#		And the html should not contain "iframe" tags
-#		And the html should not contain "form" tags
-#		And the html should not contain "a" tags
-#		And the html should not contain "style" attributes
+		And the html should be valid xhtml
+		And the html should not contain "head" tags
+		And the html should not contain "body" tags
+		And the html should not contain "script" tags
+		And the html should not contain "style" tags
+		And the html should not contain "iframe" tags
+		And the html should not contain "form" tags
+		And the html should not contain "a" tags
 #		And the html should not contain formatting elements
 #		And the html should not contain event attributes
 		And the html should not contain any attributes
