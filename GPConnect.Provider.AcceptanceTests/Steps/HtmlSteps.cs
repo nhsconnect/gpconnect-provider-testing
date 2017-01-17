@@ -101,5 +101,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the html should not contain headers in coma seperated list ""([^""]*)""")]
+        public void ThenTheHTMLShouldNotContainHeadersInComaSeperatedList(string listOfHeaders)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var html = section.Text.Div;
+                        var headers = listOfHeaders.Split(',');
+                        foreach (string header in headers) {
+                            html.ShouldContain("<h2>"+header+"</h2>");
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
