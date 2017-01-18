@@ -181,7 +181,7 @@ this.FeatureBackground();
 #line 51
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
-  testRunner.And(string.Format("the html should not contain headers in coma seperated list \"{0}\"", headers), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the html should contain headers in coma seperated list \"{0}\"", headers), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -189,14 +189,57 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("content table headers present")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void ContentTableHeadersPresent()
+        [NUnit.Framework.TestCaseAttribute("patient1", "ADM", "Date,Entry,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "ALL", "Start Date,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "ALL", "Start Date,End Date,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "CLI", "Date,Entry,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "ENC", "Date,Title,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "IMM", "Date,Vaccination,Part,Contents,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "MED", "Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "MED", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
+            "ls", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "MED", "Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issued," +
+            "Details", "3", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "OBS", "Date,Entry,Value,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "PRB", "Start Date,Entry,Significance,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "PRB", "Start Date,End Date,Entry,Significance,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Start Date,Entry,Significance,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
+            "ls", "3", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Start Date,Details", "4", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Date,Title,Details", "5", new string[0])]
+        public virtual void ContentTableHeadersPresent(string patient, string code, string headers, string pageSectionIndex, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("content table headers present", new string[] {
-                        "ignore"});
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("content table headers present", @__tags);
 #line 72
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
+#line 73
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 74
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 75
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 76
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 77
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 78
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 79
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 80
+  testRunner.And(string.Format("the html should contain table headers in coma seperated list order \"{0}\" for the " +
+                        "\"{1}\"", headers, pageSectionIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -208,7 +251,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("filtered sections should contain date range section banner", new string[] {
                         "ignore"});
-#line 75
+#line 105
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -225,7 +268,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System does not support section html response where appropriate", new string[] {
                         "ignore",
                         "Manual"});
-#line 78
+#line 108
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

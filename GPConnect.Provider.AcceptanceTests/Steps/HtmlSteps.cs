@@ -1,6 +1,7 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
+using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Text.RegularExpressions;
@@ -101,7 +102,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the html should not contain headers in coma seperated list ""([^""]*)""")]
+        [Then(@"the html should contain headers in coma seperated list ""([^""]*)""")]
         public void ThenTheHTMLShouldNotContainHeadersInComaSeperatedList(string listOfHeaders)
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -115,6 +116,48 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         var headers = listOfHeaders.Split(',');
                         foreach (string header in headers) {
                             html.ShouldContain("<h2>"+header+"</h2>");
+                        }
+                    }
+                }
+            }
+        }
+
+        [Then(@"the html should contain table headers in coma seperated list order ""([^""]*)"" for the ""([^""]*)""")]
+        public void ThenTheHTMLShouldNotContainTableHeadersInComaSeperatedListOrder(string listOfTableHeadersInOrder, int pageSectionIndex)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var html = section.Text.Div;
+                        var headerList = listOfTableHeadersInOrder.Split(',');
+
+                        Regex regexHeaderSection = new Regex("<thead[\\w\\W]*?thead>");
+                        MatchCollection tableHeaderSectionMatches = regexHeaderSection.Matches(html);
+
+                        if (tableHeaderSectionMatches.Count < pageSectionIndex) {
+                            Log.WriteLine("Section which contains the table does not exist.");
+                            Assert.Fail();
+                        } else {
+
+                            // Checked if the context contains not supported text
+
+                            // Check table headers
+                            Regex regexHeaders = new Regex("<h2>([^<]*</h2>)");
+                            MatchCollection matchesForTableHeadersInHTML = regexHeaders.Matches(html);
+
+                            Console.WriteLine("Number of <h2> headers in html = " + matchesForTableHeadersInHTML.Count);
+                            Console.WriteLine("Number of <h2> headers expected = " + headerList.Length);
+
+                            headerList.Length.ShouldBe(matchesForTableHeadersInHTML.Count);
+
+                            for (int index = 0; index < headerList.Length; index++)
+                            {
+
+                            }
                         }
                     }
                 }
