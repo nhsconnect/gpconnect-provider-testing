@@ -146,7 +146,7 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("section headers present")]
+        [NUnit.Framework.DescriptionAttribute("html section headers present")]
         [NUnit.Framework.TestCaseAttribute("patient1", "ADM", "Administrative Items", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "ALL", "Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reaction" +
             "s", new string[0])]
@@ -158,9 +158,9 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("patient1", "PRB", "Active Problems and Issues,Inactive Problems and Issues", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
             "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
-        public virtual void SectionHeadersPresent(string patient, string code, string headers, string[] exampleTags)
+        public virtual void HtmlSectionHeadersPresent(string patient, string code, string headers, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("section headers present", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("html section headers present", exampleTags);
 #line 44
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -187,8 +187,7 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("content table headers present")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.DescriptionAttribute("html table headers present and in order that is expected")]
         [NUnit.Framework.TestCaseAttribute("patient1", "ADM", "Date,Entry,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "ALL", "Start Date,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "ALL", "Start Date,End Date,Details", "2", new string[0])]
@@ -209,35 +208,29 @@ this.FeatureBackground();
             "ls", "3", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Start Date,Details", "4", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Date,Title,Details", "5", new string[0])]
-        public virtual void ContentTableHeadersPresent(string patient, string code, string headers, string pageSectionIndex, string[] exampleTags)
+        public virtual void HtmlTableHeadersPresentAndInOrderThatIsExpected(string patient, string code, string headers, string pageSectionIndex, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("content table headers present", @__tags);
-#line 72
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("html table headers present and in order that is expected", exampleTags);
+#line 70
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 73
+#line 71
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 74
+#line 72
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 73
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 74
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 77
+#line 75
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 78
+#line 76
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
+#line 77
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
+#line 78
   testRunner.And(string.Format("the html should contain table headers in coma seperated list order \"{0}\" for the " +
                         "\"{1}\"", headers, pageSectionIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -251,7 +244,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("filtered sections should contain date range section banner", new string[] {
                         "ignore"});
-#line 105
+#line 103
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -268,7 +261,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System does not support section html response where appropriate", new string[] {
                         "ignore",
                         "Manual"});
-#line 108
+#line 106
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

@@ -134,29 +134,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         var html = section.Text.Div;
                         var headerList = listOfTableHeadersInOrder.Split(',');
-
                         Regex regexHeaderSection = new Regex("<thead[\\w\\W]*?thead>");
                         MatchCollection tableHeaderSectionMatches = regexHeaderSection.Matches(html);
-
                         if (tableHeaderSectionMatches.Count < pageSectionIndex) {
-                            Log.WriteLine("Section which contains the table does not exist.");
+                            Log.WriteLine("The html table that is expected does not exist in the response.");
                             Assert.Fail();
                         } else {
-
-                            // Checked if the context contains not supported text
-
-                            // Check table headers
-                            Regex regexHeaders = new Regex("<h2>([^<]*</h2>)");
-                            MatchCollection matchesForTableHeadersInHTML = regexHeaders.Matches(html);
-
-                            Console.WriteLine("Number of <h2> headers in html = " + matchesForTableHeadersInHTML.Count);
-                            Console.WriteLine("Number of <h2> headers expected = " + headerList.Length);
-
-                            headerList.Length.ShouldBe(matchesForTableHeadersInHTML.Count);
-
-                            for (int index = 0; index < headerList.Length; index++)
+                            string tableHeaderSectionHTML = tableHeaderSectionMatches[pageSectionIndex - 1].Value;
+                            Log.WriteLine("HeaderSection = " + tableHeaderSectionHTML);
+                            Regex regexHeaders = new Regex("<th>[^<]*</th>");
+                            MatchCollection matchesForTableHeadersInHTML = regexHeaders.Matches(tableHeaderSectionHTML);
+                            Log.WriteLine("Number of <th> headers in html {0}, expected {1}", matchesForTableHeadersInHTML.Count, headerList.Length);
+                            if (headerList.Length != matchesForTableHeadersInHTML.Count)
                             {
-
+                                Log.WriteLine("The number of table headers in HTML section does not match the required number of headers.");
+                                Assert.Fail();
+                            }
+                            else
+                            {
+                                for (int index = 0; index < headerList.Length; index++)
+                                {
+                                    Console.WriteLine("Expected Header = {0} and was {1}", "<th>"+headerList[index]+"</th>", matchesForTableHeadersInHTML[index].Value);
+                                    ("<th>"+headerList[index]+"</th>").ShouldBe(matchesForTableHeadersInHTML[index].Value);
+                                }
                             }
                         }
                     }
