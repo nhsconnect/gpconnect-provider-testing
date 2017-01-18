@@ -228,6 +228,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISetAJWTWithoutRequestedRecordClaim()
         {
             Jwt.RequestedPatientNHSNumber = null;
+            Jwt.RequestedOrganizationODSCode = null;
             Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
         }
 
