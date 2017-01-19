@@ -99,6 +99,7 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestCaseAttribute("MED", new string[0])]
         [NUnit.Framework.TestCaseAttribute("OBS", new string[0])]
         [NUnit.Framework.TestCaseAttribute("PRB", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", new string[0])]
         public virtual void HTMLDoesNotContainDisallowedElements(string code, string[] exampleTags)
         {
@@ -156,6 +157,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("patient1", "MED", "Current Medication Issues,Current Repeat Medications,Past Medications", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "OBS", "Observations", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "PRB", "Active Problems and Issues,Inactive Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "REF", "Referrals", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
             "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
         public virtual void HtmlSectionHeadersPresent(string patient, string code, string headers, string[] exampleTags)
@@ -202,6 +204,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("patient1", "OBS", "Date,Entry,Value,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "PRB", "Start Date,Entry,Significance,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "PRB", "Start Date,End Date,Entry,Significance,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient1", "REF", "Date,From,To,Priority,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Start Date,Entry,Significance,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details", "2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
@@ -240,14 +243,43 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("filtered sections should contain date range section banner")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void FilteredSectionsShouldContainDateRangeSectionBanner()
+        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05-03", "2016-09-14", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02-03", "2016-01-24", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2014-10-05", "2016-09-01", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-03-21", "2016-12-14", new string[0])]
+        public virtual void FilteredSectionsShouldContainDateRangeSectionBanner(string code, string patient, string startDateTime, string endDateTime, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("filtered sections should contain date range section banner", new string[] {
-                        "ignore"});
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("filtered sections should contain date range section banner", @__tags);
 #line 103
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
+#line 104
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 105
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+  testRunner.And(string.Format("I set a time period parameter start date to \"{0}\" and end date to \"{1}\"", startDateTime, endDateTime), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 108
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 109
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 110
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 111
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 112
+  testRunner.And("the response html should contain the applied date range text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -261,7 +293,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System does not support section html response where appropriate", new string[] {
                         "ignore",
                         "Manual"});
-#line 106
+#line 124
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

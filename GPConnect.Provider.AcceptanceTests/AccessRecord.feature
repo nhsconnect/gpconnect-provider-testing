@@ -30,7 +30,7 @@ Scenario Outline: Retrieve the care record sections for a patient
 	| OBS |
 	#| PAT |
 	| PRB |
-	#| REF |
+	| REF |
 	| SUM |
 
 Scenario: Empty request
@@ -179,7 +179,7 @@ Scenario Outline: Time period specified for a care record section that can be fi
 	| ENC |
 	#| INV |
 	#| PAT |
-	#| REF |
+	| REF |
 	| SUM |
 
 Scenario Outline: Time period specified for a care record section that must not be filtered
@@ -316,7 +316,7 @@ Scenario Outline: response should be bundle containing all mandatory elements
 	| OBS |
 	#| PAT |
 	| PRB |
-	#| REF |
+	| REF |
 	| SUM |
 	
 Scenario Outline: response bundle should contain composition as the first entry
@@ -340,7 +340,7 @@ Scenario Outline: response bundle should contain composition as the first entry
 	| OBS |
 	#| PAT |
 	| PRB |
-	#| REF |
+	| REF |
 	| SUM |
 
 @ignore
@@ -379,7 +379,7 @@ Scenario Outline: composition contains generic mandatory fields
 	| OBS  | Observations | Observations |
 	#| PAT  | Patient Details | Patient Details |
 	| PRB  | Problems | Problems |
-	#| REF  | Referrals | Referrals |
+	| REF  | Referrals | Referrals |
 	| SUM  | Summary | Summary |
 
 
@@ -404,7 +404,7 @@ Scenario Outline: if composition contains type mandatory field fixed values shou
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: if composition contains class coding
@@ -428,7 +428,7 @@ Scenario Outline: if composition contains class coding
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: composition contains subject referencing a patient resource in the bundle
@@ -453,7 +453,7 @@ Scenario Outline: composition contains subject referencing a patient resource in
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: if composition contains author, the device reference can be found in the bundle
@@ -478,7 +478,7 @@ Scenario Outline: if composition contains author, the device reference can be fo
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: if composition contains custodian referenece
@@ -503,7 +503,7 @@ Scenario Outline: if composition contains custodian referenece
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 @ignore
@@ -533,7 +533,7 @@ Scenario Outline: patient contains a valid identifiers
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 @ignore
@@ -563,7 +563,7 @@ Scenario Outline: if patient contains telecom information
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 @ignore
@@ -597,7 +597,7 @@ Scenario Outline: if patient contains maritalStatus
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: if patient contains contact
@@ -621,7 +621,7 @@ Scenario Outline: if patient contains contact
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: if patient contins communicaiton
@@ -645,7 +645,7 @@ Scenario Outline: if patient contins communicaiton
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: if patient contains practitioner as care provider
@@ -669,7 +669,7 @@ Scenario Outline: if patient contains practitioner as care provider
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: if patient contains managingOrganizaiton
@@ -693,7 +693,7 @@ Scenario Outline: if patient contains managingOrganizaiton
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: patient does not contain disallowed fields
@@ -717,7 +717,7 @@ Scenario Outline: patient does not contain disallowed fields
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: practitioner resource contains mandatory fields and does not include dissallowed fields
@@ -743,7 +743,7 @@ Scenario Outline: practitioner resource contains mandatory fields and does not i
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: practitioner resource contains mandatory fields within optional elements
@@ -770,7 +770,7 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: if practitioner resource contains a managing organization it must reference an organization within the response bundle
@@ -795,7 +795,7 @@ Scenario Outline: if practitioner resource contains a managing organization it m
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: organization resource identifiers
@@ -820,7 +820,7 @@ Scenario Outline: organization resource identifiers
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: organization resource element cardinality
@@ -845,7 +845,7 @@ Scenario Outline: organization resource element cardinality
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: organization resource internal reference
@@ -870,7 +870,7 @@ Scenario Outline: organization resource internal reference
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: device resource element cardinality conformance
@@ -895,7 +895,7 @@ Scenario Outline: device resource element cardinality conformance
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: device resource type element values match specification
@@ -920,7 +920,7 @@ Scenario Outline: device resource type element values match specification
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: check all dateTime format variations are allowed
@@ -960,9 +960,14 @@ Scenario Outline: check all dateTime format variations are allowed
 		| SUM  | patient1 | 2014-03-21                | 2016-12-14                | (.)*         |
 		| SUM  | patient1 | 2015-02-28T09:20:14       | 2017-01-01T03:05:08       | (.)*         |
 		| SUM  | patient1 | 2014-12-22T22:22:22+00:00 | 2016-06-06T06:08:06+00:00 | (.)*         |
+		| REF  | patient1 | 2013                      | 2017                      | (.)*         |
+		| REF  | patient1 | 2014-02                   | 2016                      | (.)*         |
+		| REF  | patient1 | 2014-02-03                | 2016-01-24                | (.)*         |
+		| REF  | patient1 | 2014                      | 2016-06-01                | (.)*         |
+		| REF  | patient1 | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       | (.)*         |
+		| REF  | patient1 | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 | (.)*         |
 	#	| INV ||||||
 	#	| PAT ||||||
-	#	| REF ||||||
 	
 Scenario Outline: invalid request parameter names and case
 	Given I am using the default server
@@ -1061,8 +1066,8 @@ Scenario Outline: Requested section code incorrect parameter case
 	#| Pat |
 	| prb |
 	| Prb |
-	#| ref |
-	#| Ref |
+	| ref |
+	| Ref |
 	| sum |
 	| Sum |
 	| sUm |

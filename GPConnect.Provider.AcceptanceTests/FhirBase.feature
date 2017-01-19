@@ -219,3 +219,7 @@ Scenario: Fhir content type test where _format parameter is an unsupported media
 		And I add the parameter "_format" with the value "text/xml"
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate unsupported media type error
+
+@ignore
+Scenario: maximum field size in fhir resource
+

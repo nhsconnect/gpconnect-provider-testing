@@ -38,7 +38,7 @@ Scenario Outline: HTML does not contain disallowed elements
 		| OBS  |
 		#| PAT  |
 		| PRB  |
-		#| REF  |
+		| REF  |
 		| SUM  |
 
 Scenario Outline: html section headers present
@@ -62,7 +62,7 @@ Scenario Outline: html section headers present
 		| patient1 | OBS  | Observations |
 		#| patient1 | PAT |  |
 		| patient1 | PRB  | Active Problems and Issues,Inactive Problems and Issues |
-		#| patient1 | REF | Referrals |
+		| patient1 | REF  | Referrals |
 		| patient1 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
 	
 	# NEED TO EXPAND TEST TO PATIENT WITH NO RETURNED DETAILS AND PATIENT WITH SOME SECTIONS AND ONLY CURRENT OR PAST MEDICATIONS, ONLY HISTORICAL ALLERGIES ETC
@@ -78,21 +78,21 @@ Scenario Outline: html table headers present and in order that is expected
 		And the html should contain table headers in coma seperated list order "<Headers>" for the "<PageSectionIndex>"
 	Examples:
 		| Patient  | Code     | Headers                                                                                  | PageSectionIndex |
-		| patient1 | ADM      | Date,Entry,Details                                                                       | 1				|
-		| patient1 | ALL      | Start Date,Details                                                                       | 1				|
-		| patient1 | ALL      | Start Date,End Date,Details                                                              | 2				|
-		| patient1 | CLI      | Date,Entry,Details                                                                       | 1				|
-		| patient1 | ENC      | Date,Title,Details                                                                       | 1				|
-		| patient1 | IMM      | Date,Vaccination,Part,Contents,Details                                                   | 1				|
-#        | patient1 | INV |            |
-		| patient1 | MED      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                 | 1				|
-		| patient1 | MED      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 2				|
-		| patient1 | MED      | Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issued,Details | 3				|
-		| patient1 | OBS      | Date,Entry,Value,Details                                                                 | 1				|
-#        | patient1 | PAT |            |
-		| patient1 | PRB      | Start Date,Entry,Significance,Details                                                    | 1				|
-		| patient1 | PRB      | Start Date,End Date,Entry,Significance,Details                                           | 2				|
-#        | patient1 | REF |            |
+		| patient1 | ADM      | Date,Entry,Details                                                                       | 1                |
+		| patient1 | ALL      | Start Date,Details                                                                       | 1                |
+		| patient1 | ALL      | Start Date,End Date,Details                                                              | 2                |
+		| patient1 | CLI      | Date,Entry,Details                                                                       | 1                |
+		| patient1 | ENC      | Date,Title,Details                                                                       | 1                |
+		| patient1 | IMM      | Date,Vaccination,Part,Contents,Details                                                   | 1                |
+#        | patient1 | INV                                                                                      |                  |
+		| patient1 | MED      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                 | 1                |
+		| patient1 | MED      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 2                |
+		| patient1 | MED      | Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issued,Details | 3                |
+		| patient1 | OBS      | Date,Entry,Value,Details                                                                 | 1                |
+#        | patient1 | PAT                                                                                      |                  |
+		| patient1 | PRB      | Start Date,Entry,Significance,Details                                                    | 1                |
+		| patient1 | PRB      | Start Date,End Date,Entry,Significance,Details                                           | 2                |
+		| patient1 | REF      | Date,From,To,Priority,Details                                                            | 1                |
 		| patient1 | SUM      | Start Date,Entry,Significance,Details                                                    | 1				|
 		| patient1 | SUM      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                 | 2				|
 		| patient1 | SUM      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 3				|
@@ -100,7 +100,25 @@ Scenario Outline: html table headers present and in order that is expected
 		| patient1 | SUM      | Date,Title,Details                                                                       | 5				|
 
 @ignore
-Scenario: filtered sections should contain date range section banner
+Scenario Outline: filtered sections should contain date range section banner
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		And I set a time period parameter start date to "<StartDateTime>" and end date to "<EndDateTime>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the response html should contain the applied date range text
+	Examples:
+		| Code | Patient  | StartDateTime             | EndDateTime               |
+		| ADM  | patient1 | 2014-05-03                | 2016-09-14                |
+		| CLI  | patient1 | 2014-02-03                | 2016-01-24                |
+		| ENC  | patient1 | 2014-10-05                | 2016-09-01                |
+		| SUM  | patient1 | 2014-03-21                | 2016-12-14                |
+		| REF  | patient1 | 2014-03-21                | 2016-12-14                |
+	#	| INV ||||||
+	#	| PAT ||||||
 
 @ignore @Manual
 Scenario: System does not support section html response where appropriate
