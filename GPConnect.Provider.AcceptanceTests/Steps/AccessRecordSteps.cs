@@ -76,6 +76,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheJSONResponseShouldBeAOperationOutcomeResource()
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
+            OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
+            foreach (string profile in operationOutcome.Meta.Profile) {
+                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
+            }
         }
 
         [Then(@"the JSON response should be a OperationOutcome resource with error code ""([^""]*)""")]
@@ -84,7 +88,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
             var containsErrorCode = false;
             OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
-            foreach(OperationOutcome.IssueComponent issue in operationOutcome.Issue){
+            foreach (string profile in operationOutcome.Meta.Profile)
+            {
+                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
+            }
+            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue){
                 foreach (Coding coding in issue.Details.Coding) {
                     if (coding.Code.Equals(errorCode)) {
                         containsErrorCode = true;
@@ -114,6 +122,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition)) count++;
             }
             count.ShouldBe(1);
+        }
+
+        [Then(@"the JSON response bundle should be type document")]
+        public void ThenTheJSONResponseBundleShouldBeTypeDocument()
+        {
+            ((Bundle)FhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Document);
         }
 
         [Then(@"the JSON response bundle should contain the composition resource as the first entry")]

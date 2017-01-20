@@ -327,6 +327,7 @@ Scenario Outline: response bundle should contain composition as the first entry
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type document
 		And the JSON response bundle should contain the composition resource as the first entry
 	Examples:
 	| Code |
@@ -345,6 +346,10 @@ Scenario Outline: response bundle should contain composition as the first entry
 
 @ignore
 Scenario: request contain the structure definition in the meta fields for the operation
+	# Composition Meta data (profile)
+	# Meta data in Patient (profile & version)
+	# If Organization present Meta data (profile & verison)
+	# If Practitioner present Meta data (profile & verison)
 
 @ignore
 Scenario: response contains the structure definitions in the meta fields for all resources
