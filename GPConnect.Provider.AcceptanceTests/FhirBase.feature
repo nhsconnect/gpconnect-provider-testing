@@ -4,7 +4,7 @@ Feature: Fhir Base
 Background:
 	Given I have the following patient records
 		| Id                      | NHSNumber  |
-		| patient1                | 9476719931 |
+		| patient1                | 9990049416 |
 
 Scenario: Fhir Get MetaData
 	Given I am using the default server
@@ -223,3 +223,5 @@ Scenario: Fhir content type test where _format parameter is an unsupported media
 @ignore
 Scenario: maximum field size in fhir resource
 
+@ignore
+Scenario: XML order test

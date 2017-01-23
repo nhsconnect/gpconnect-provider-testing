@@ -76,10 +76,10 @@ namespace GPConnect.Provider.AcceptanceTests
                         "NHSNumber"});
             table1.AddRow(new string[] {
                         "patient1",
-                        "9476719931"});
+                        "9990049416"});
             table1.AddRow(new string[] {
                         "patient2",
-                        "9476719974"});
+                        "9990049424"});
             table1.AddRow(new string[] {
                         "patientNotInSystem",
                         "9999999999"});

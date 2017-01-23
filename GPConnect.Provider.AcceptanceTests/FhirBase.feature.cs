@@ -76,7 +76,7 @@ namespace GPConnect.Provider.AcceptanceTests
                         "NHSNumber"});
             table1.AddRow(new string[] {
                         "patient1",
-                        "9476719931"});
+                        "9990049416"});
 #line 5
  testRunner.Given("I have the following patient records", ((string)(null)), table1, "Given ");
 #line hidden
@@ -770,6 +770,21 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("maximum field size in fhir resource", new string[] {
                         "ignore"});
 #line 224
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("XML order test")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void XMLOrderTest()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("XML order test", new string[] {
+                        "ignore"});
+#line 227
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

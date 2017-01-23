@@ -1,6 +1,8 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
+using GPConnect.Provider.AcceptanceTests.Data;
 using GPConnect.Provider.AcceptanceTests.Helpers;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using Newtonsoft.Json;
@@ -30,7 +32,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             FhirContext.FhirPatients.Clear();
             foreach (var row in table.Rows)
-                FhirContext.FhirPatients.Add(row["Id"], row["NHSNumber"]);
+            {
+                if (AppSettingsHelper.MapNativeNHSNoToProviderNHSNo)
+                {
+                    string mappedNHSNumber = row["NHSNumber"];
+                    // Map the native NHS Number to provider equivalent from CSV file
+                    foreach (NHSNoMap nhsNoMap in GlobalContext.NHSNoMapData)
+                    {
+                        if (String.Equals(nhsNoMap.NativeNHSNumber, row["NHSNumber"])) {
+                            mappedNHSNumber = nhsNoMap.ProviderNHSNumber;
+                            Log.WriteLine("Mapped test NHS number {0} to NHS Number {1}", row["NHSNumber"], nhsNoMap.ProviderNHSNumber);
+                            break;
+                        }
+                    }
+                    FhirContext.FhirPatients.Add(row["Id"], mappedNHSNumber);
+                }
+                else
+                {
+                    FhirContext.FhirPatients.Add(row["Id"], row["NHSNumber"]);
+                }
+            }
         }
 
         [Given(@"I am requesting the record for config patient ""([^""]*)""")]

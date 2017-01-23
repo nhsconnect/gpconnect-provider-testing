@@ -4,8 +4,8 @@ Feature: Http
 Background:
 	Given I have the following patient records
 		| Id                      | NHSNumber  |
-		| patient1                | 9476719931 |
-		| patient2                | 9476719974 |
+		| patient1                | 9990049416 |
+		| patient2                | 9990049424 |
 		| patientNotInSystem      | 9999999999 |
 		| patientNoSharingConsent | 9476719958 |
 

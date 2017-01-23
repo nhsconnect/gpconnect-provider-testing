@@ -56,6 +56,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             GlobalContext.ODSData = ODSImporter.LoadCsv(odsCSV);
         }
 
+        [BeforeTestRun(Order = 1)]
+        public static void LoadNHSNoMapData()
+        {
+            if (Directory.Exists(AppSettingsHelper.DataDirectory) == false)
+                Assert.Fail("Data Directory Not Found.");
+            var nhsNoMapCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"NHSNoMap.csv");
+            Log.WriteLine("NHSNoMap CSV = '{0}'", nhsNoMapCSV);
+            GlobalContext.NHSNoMapData = NHSNoMapImporter.LoadCsv(nhsNoMapCSV);
+        }
+
         [BeforeTestRun(Order = 2)]
         public static void LoadFhirDefinitions()
         {

@@ -15,6 +15,9 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         // FHIR Settings
         public static string FhirDirectory => Get<string>("fhirDirectory");
 
+        // Data Settings
+        public static bool MapNativeNHSNoToProviderNHSNo => Get<bool>("mapNativeNHSNoToProviderNHSNo");
+
         // Security Settings
         public static bool UseTLS => Get<bool>("useTLS");
 
