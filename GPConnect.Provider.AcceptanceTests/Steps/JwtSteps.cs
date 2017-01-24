@@ -182,8 +182,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
         }
 
-        [Given(@"I set a JWT without iis claim")]
-        public void ISetAJWTWithoutIISClaim()
+        [Given(@"I set a JWT without iss claim")]
+        public void ISetAJWTWithoutIssClaim()
         {
             Jwt.RequestingSystemUrl = null;
             Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());

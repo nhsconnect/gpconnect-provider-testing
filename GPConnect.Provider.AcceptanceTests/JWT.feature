@@ -135,6 +135,14 @@ Scenario: JWT requesting practitioner practitionerRole does not contain a SDS Jo
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 
+Scenario: JWT missing iss claim
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set a JWT without iss claim
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+
+
 Scenario: JWT missing sub claim
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
