@@ -121,6 +121,31 @@ Scenario Outline: filtered sections should contain date range section banner
 	#	| PAT ||||||
 
 @ignore
+Scenario Outline: sections should contain the all data items section banner
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the response html should contain the all data items text
+	Examples:
+		| Code | Patient  |
+		| ADM  | patient1 |
+		| CLI  | patient1 |
+		| ENC  | patient1 |
+		| SUM  | patient1 |
+		| REF  | patient1 |
+		| ALL  | patient1 |
+		| IMM  | patient1 |
+		| MED  | patient1 |
+		| OBS  | patient1 |
+		| PRB  | patient1 |
+	#	| INV ||||||
+	#	| PAT ||||||
+	
+@ignore
 Scenario Outline: filtered sections should return no data available html banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -131,6 +156,7 @@ Scenario Outline: filtered sections should return no data available html banner
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And the response html should contain the applied date range text
+		And the response html should contain the no data available html banner
 	Examples:
 		| Code | Patient  | StartDateTime             | EndDateTime               |
 		| ADM  | patient1 | 2014-05-03                | 2016-09-14                |
@@ -138,6 +164,32 @@ Scenario Outline: filtered sections should return no data available html banner
 		| ENC  | patient1 | 2014-10-05                | 2016-09-01                |
 		| SUM  | patient1 | 2014-03-21                | 2016-12-14                |
 		| REF  | patient1 | 2014-03-21                | 2016-12-14                |
+	#	| INV ||||||
+	#	| PAT ||||||
+
+@ignore
+Scenario Outline: sections should return no data available html banner
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the response html should contain the all data items text
+		And the response html should contain the no data available html banner
+	Examples:
+		| Code | Patient  |
+		| ADM  | patient1 |
+		| CLI  | patient1 |
+		| ENC  | patient1 |
+		| SUM  | patient1 |
+		| REF  | patient1 |
+		| ALL  | patient1 |
+		| IMM  | patient1 |
+		| MED  | patient1 |
+		| OBS  | patient1 |
+		| PRB  | patient1 |
 	#	| INV ||||||
 	#	| PAT ||||||
 
