@@ -98,8 +98,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
             OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
-            foreach (string profile in operationOutcome.Meta.Profile) {
-                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
+            if (operationOutcome.Meta != null)
+            {
+                foreach (string profile in operationOutcome.Meta.Profile)
+                {
+                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
+                }
+            }
+            else {
+                operationOutcome.Meta.ShouldNotBeNull();
             }
         }
 
@@ -109,15 +116,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
             var containsErrorCode = false;
             OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
-            foreach (string profile in operationOutcome.Meta.Profile)
+            if(operationOutcome.Meta != null) {
+                foreach (string profile in operationOutcome.Meta.Profile)
+                {
+                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
+                }
+            }
+            else
             {
-                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
+                operationOutcome.Meta.ShouldNotBeNull();
             }
             foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue){
-                foreach (Coding coding in issue.Details.Coding) {
-                    if (coding.Code.Equals(errorCode)) {
-                        containsErrorCode = true;
+                if (issue.Details != null)
+                {
+                    foreach (Coding coding in issue.Details.Coding)
+                    {
+                        if (coding.Code.Equals(errorCode))
+                        {
+                            containsErrorCode = true;
+                        }
                     }
+                }
+                else {
+                    issue.Details.ShouldNotBeNull();
                 }
             }
             containsErrorCode.ShouldBeTrue();
