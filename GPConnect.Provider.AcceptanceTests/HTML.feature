@@ -163,15 +163,19 @@ Scenario Outline: filtered sections should return no data available html banner
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And the response html should contain the applied date range text
-		And the response html should contain the no data available html banner
+		And the response html should contain the applied date range text "<TextStartDate>" to "<TextEndDate>"
+		And the response html should contain the no data available html banner in section "<Section>"
 	Examples:
-		| Code | Patient  | StartDateTime             | EndDateTime               |
-		| ADM  | patient1 | 2014-05-03                | 2016-09-14                |
-		| CLI  | patient1 | 2014-02-03                | 2016-01-24                |
-		| ENC  | patient1 | 2014-10-05                | 2016-09-01                |
-		| SUM  | patient1 | 2014-03-21                | 2016-12-14                |
-		| REF  | patient1 | 2014-03-21                | 2016-12-14                |
+		| Code | Patient  | StartDateTime | EndDateTime | TextStartDate | TextEndDate | Section                                 |
+		| ADM  | patient1 | 2014-05-03    | 2016-09-14  | 03-May-2014   | 14-Sep-2016 | Administrative Items                    |
+		| CLI  | patient1 | 2014-02-03    | 2016-01-24  | 04-Feb-2014   | 24-Jan-2016 | Clinical Items                          |
+		| ENC  | patient1 | 1982-10-05    | 2016-09-01  | 05-Oct-1982   | 01-Sep-2016 | Encounters                              |
+		| SUM  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Active Problems and Issues              |
+		| SUM  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Current Medication Issues               |
+		| SUM  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Current Repeat Medications              |
+		| SUM  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Current Allergies and Adverse Reactions |
+		| SUM  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Encounters                              |
+		| REF  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Referrals                               |
 	#	| INV ||||||
 	#	| PAT ||||||
 
@@ -187,17 +191,25 @@ Scenario Outline: sections should return no data available html banner
 		And the response html should contain the all data items text
 		And the response html should contain the no data available html banner
 	Examples:
-		| Code | Patient  |
-		| ADM  | patient1 |
-		| CLI  | patient1 |
-		| ENC  | patient1 |
-		| SUM  | patient1 |
-		| REF  | patient1 |
-		| ALL  | patient1 |
-		| IMM  | patient1 |
-		| MED  | patient1 |
-		| OBS  | patient1 |
-		| PRB  | patient1 |
+		| Code | Patient  | Section                                    |
+		| ADM  | patient1 | Administrative Items                       |
+		| CLI  | patient1 | Clinical Items                             |
+		| ENC  | patient1 | Encounters                                 |
+		| SUM  | patient1 | Active Problems and Issues                 |
+		| SUM  | patient1 | Current Medication Issues                  |
+		| SUM  | patient1 | Current Repeat Medications                 |
+		| SUM  | patient1 | Current Allergies and Adverse Reactions    |
+		| SUM  | patient1 | Encounters                                 |
+		| REF  | patient1 | Referrals                                  |
+		| ALL  | patient1 | Current Allergies and Adverse Reactions    |
+		| ALL  | patient1 | Historical Allergies and Adverse Reactions |
+		| IMM  | patient1 | Immunisations                              |
+		| MED  | patient1 | Current Medication Issues                  |
+		| MED  | patient1 | Current Repeat Medications                 |
+		| MED  | patient1 | Past Medications                           |
+		| OBS  | patient1 | Observations                               |
+		| PRB  | patient1 | Active Problems and Issues                 |
+		| PRB  | patient1 | Inactive Problems and Issues               |
 	#	| INV ||||||
 	#	| PAT ||||||
 

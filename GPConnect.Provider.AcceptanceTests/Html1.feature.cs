@@ -330,12 +330,16 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("filtered sections should return no data available html banner")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05-03", "2016-09-14", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02-03", "2016-01-24", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2014-10-05", "2016-09-01", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-03-21", "2016-12-14", new string[0])]
-        public virtual void FilteredSectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string startDateTime, string endDateTime, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05-03", "2016-09-14", "03-May-2014", "14-Sep-2016", "Administrative Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02-03", "2016-01-24", "04-Feb-2014", "24-Jan-2016", "Clinical Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "1982-10-05", "2016-09-01", "05-Oct-1982", "01-Sep-2016", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Active Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Current Medication Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Current Repeat Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Current Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Referrals", new string[0])]
+        public virtual void FilteredSectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string startDateTime, string endDateTime, string textStartDate, string textEndDate, string section, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -366,9 +370,10 @@ this.FeatureBackground();
 #line 165
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 166
-  testRunner.And("the response html should contain the applied date range text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the response html should contain the applied date range text \"{0}\" to \"{1}\"", textStartDate, textEndDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 167
-  testRunner.And("the response html should contain the no data available html banner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the response html should contain the no data available html banner in section \"{0" +
+                        "}\"", section), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -376,17 +381,25 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("sections should return no data available html banner")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ALL", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("IMM", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MED", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("OBS", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PRB", "patient1", new string[0])]
-        public virtual void SectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "Administrative Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "Clinical Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Active Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Medication Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Repeat Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "Referrals", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "patient1", "Current Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "patient1", "Historical Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("IMM", "patient1", "Immunisations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "patient1", "Current Medication Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "patient1", "Current Repeat Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "patient1", "Past Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OBS", "patient1", "Observations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "patient1", "Active Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "patient1", "Inactive Problems and Issues", new string[0])]
+        public virtual void SectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string section, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -395,28 +408,28 @@ this.FeatureBackground();
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("sections should return no data available html banner", @__tags);
-#line 179
+#line 183
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 180
+#line 184
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 181
+#line 185
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
- testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 184
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 185
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 186
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 187
-  testRunner.And("the response html should contain the all data items text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 188
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 189
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 190
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 191
+  testRunner.And("the response html should contain the all data items text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 192
   testRunner.And("the response html should contain the no data available html banner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -431,7 +444,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System does not support section html response where appropriate", new string[] {
                         "ignore",
                         "Manual"});
-#line 205
+#line 217
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
