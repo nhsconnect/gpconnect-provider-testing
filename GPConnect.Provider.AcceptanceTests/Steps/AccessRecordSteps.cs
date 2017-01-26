@@ -709,6 +709,71 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the composition resource in the bundle should contain meta data profile")]
+        public void ThenTheCompositionResourceInTheBundleShouldContainMetaDataProfile()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    composition.Meta.ShouldNotBeNull();
+                    foreach (string profile in composition.Meta.Profile) {
+                        profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
+                    }
+                }
+            }
+        }
+
+        [Then(@"the patient resource in the bundle should contain meta data profile and version id")]
+        public void ThenThePatientResourceInTheBundleShouldContainMetaDataProfileAndVersionId()
+        {
+            checkForValidMetaDataInResource(ResourceType.Patient, "http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
+        }
+
+        [Then(@"if the response bundle contains an organization resource it should contain meta data profile and version id")]
+        public void ThenIfTheResponseBundleContainsAnOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
+        {
+            checkForValidMetaDataInResource(ResourceType.Organization, "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
+        }
+
+        [Then(@"if the response bundle contains a practitioner resource it should contain meta data profile and version id")]
+        public void ThenIfTheResponseBundleContainsAPractitionerResourceItShouldContainMetaDataProfileAndVersionId()
+        {
+            checkForValidMetaDataInResource(ResourceType.Practitioner, "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
+        }
+
+        [Then(@"if the response bundle contains a device resource it should contain meta data profile and version id")]
+        public void ThenIfTheResponseBundleContainsADeviceResourceItShouldContainMetaDataProfileAndVersionId()
+        {
+            checkForValidMetaDataInResource(ResourceType.Device, "http://fhir.nhs.net/StructureDefinition/gpconnect-device-1");
+        }
+
+        [Then(@"if the response bundle contains a location resource it should contain meta data profile and version id")]
+        public void ThenIfTheResponseBundleContainsALocationResourceItShouldContainMetaDataProfileAndVersionId()
+        {
+            checkForValidMetaDataInResource(ResourceType.Location, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
+        }
+
+        public void checkForValidMetaDataInResource(ResourceType resourceType, string profileId) {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(resourceType))
+                {
+                    var resource = entry.Resource;
+                    resource.Meta.ShouldNotBeNull();
+                    int metaProfileCount = 0;
+                    foreach (string profile in resource.Meta.Profile)
+                    {
+                        metaProfileCount++;
+                        profile.ShouldBe(profileId);
+                    }
+                    metaProfileCount.ShouldBe(1);
+                    resource.Meta.VersionId.ShouldNotBeNull();
+                }
+            }
+        }
+
         public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList) {
             var codingCount = 0;
             foreach (Coding coding in codingList)

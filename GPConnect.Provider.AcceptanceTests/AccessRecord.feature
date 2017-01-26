@@ -344,15 +344,34 @@ Scenario Outline: response bundle should contain composition as the first entry
 	| REF |
 	| SUM |
 
-@ignore
-Scenario: request contain the structure definition in the meta fields for the operation
-	# Composition Meta data (profile)
-	# Meta data in Patient (profile & version)
-	# If Organization present Meta data (profile & verison)
-	# If Practitioner present Meta data (profile & verison)
-
-@ignore
-Scenario: response contains the structure definitions in the meta fields for all resources
+Scenario Outline: request contain the structure definition in the meta fields
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient1"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the composition resource in the bundle should contain meta data profile
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains a device resource it should contain meta data profile and version id
+		And if the response bundle contains a location resource it should contain meta data profile and version id
+	Examples:
+	| Code |
+	| ADM |
+	| ALL |
+	| CLI |
+	| ENC |
+	| IMM |
+	#| INV |
+	| MED |
+	| OBS |
+	#| PAT |
+	| PRB |
+	| REF |
+	| SUM |
 
 Scenario Outline: composition contains generic mandatory fields
 	Given I am using the default server
