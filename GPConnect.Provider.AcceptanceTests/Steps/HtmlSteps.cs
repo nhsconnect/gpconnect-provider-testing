@@ -164,5 +164,39 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the response html should contain the applied date range text ""([^""]*)"" to ""([^""]*)""")]
+        public void ThenTheResponseHTMLShouldContainTheAppliedDateRangeTest(string fromDate, string toDate)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var html = section.Text.Div;
+                        string expectedTimePeriodBanner = "<p>For the period '"+ fromDate + "' to '" + toDate + "'</p>";
+                        html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
+                    }
+                }
+            }
+        }
+
+        [Then(@"the response html should contain the all data items text")]
+        public void ThenTheResponseHTMLShouldContainTheAllDataItemsText()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var html = section.Text.Div;
+                        html.ShouldContain("<p>All Data Items</p>");
+                    }
+                }
+            }
+        }
     }
 }

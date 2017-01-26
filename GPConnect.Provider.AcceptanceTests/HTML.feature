@@ -99,7 +99,6 @@ Scenario Outline: html table headers present and in order that is expected
 		| patient1 | SUM      | Start Date,Details                                                                       | 4				|
 		| patient1 | SUM      | Date,Title,Details                                                                       | 5				|
 
-@ignore
 Scenario Outline: filtered sections should contain date range section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -109,18 +108,27 @@ Scenario Outline: filtered sections should contain date range section banner
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And the response html should contain the applied date range text
+		And the response html should contain the applied date range text "<TextStartDate>" to "<TextEndDate>"
 	Examples:
-		| Code | Patient  | StartDateTime             | EndDateTime               |
-		| ADM  | patient1 | 2014-05-03                | 2016-09-14                |
-		| CLI  | patient1 | 2014-02-03                | 2016-01-24                |
-		| ENC  | patient1 | 2014-10-05                | 2016-09-01                |
-		| SUM  | patient1 | 2014-03-21                | 2016-12-14                |
-		| REF  | patient1 | 2014-03-21                | 2016-12-14                |
+		| Code | Patient  | StartDateTime | EndDateTime | TextStartDate | TextEndDate |
+		| ADM  | patient1 | 2014-05-03    | 2016-09-14  | 03-May-2014   | 14-Sep-2016 |
+		| CLI  | patient1 | 2014-02-03    | 2016-01-24  | 04-Feb-2014   | 24-Jan-2016 |
+		| ENC  | patient1 | 1982-10-05    | 2016-09-01  | 05-Oct-1982   | 01-Sep-2016 |
+		| SUM  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
+		| REF  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
+		| ADM  | patient1 | 2014-05       | 2016-09     | 01-May-2014   | 01-Sep-2016 |
+		| CLI  | patient1 | 2014-02       | 2016-01     | 01-Feb-2014   | 01-Jan-2016 |
+		| ENC  | patient1 | 2014-10       | 2016-09     | 01-Oct-2014   | 01-Sep-2016 |
+		| SUM  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 01-Dec-2016 |
+		| REF  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 01-Dec-2016 |
+		| ADM  | patient1 | 1992          | 2016        | 01-Jan-1992   | 01-Jan-2016 |
+		| CLI  | patient1 | 2014          | 2017        | 01-Jan-2014   | 01-Jan-2017 |
+		| ENC  | patient1 | 2012          | 2014        | 01-Jan-2012   | 01-Jan-2014 |
+		| SUM  | patient1 | 2015          | 2015        | 01-Jan-2015   | 01-Jan-2015 |
+		| REF  | patient1 | 2016          | 2016        | 01-Jan-2016   | 01-Jan-2016 |
 	#	| INV ||||||
 	#	| PAT ||||||
 
-@ignore
 Scenario Outline: sections should contain the all data items section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction

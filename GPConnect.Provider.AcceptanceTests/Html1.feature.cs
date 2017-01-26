@@ -242,51 +242,53 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("filtered sections should contain date range section banner")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05-03", "2016-09-14", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02-03", "2016-01-24", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2014-10-05", "2016-09-01", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-03-21", "2016-12-14", new string[0])]
-        public virtual void FilteredSectionsShouldContainDateRangeSectionBanner(string code, string patient, string startDateTime, string endDateTime, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05-03", "2016-09-14", "03-May-2014", "14-Sep-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02-03", "2016-01-24", "04-Feb-2014", "24-Jan-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "1982-10-05", "2016-09-01", "05-Oct-1982", "01-Sep-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05", "2016-09", "01-May-2014", "01-Sep-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02", "2016-01", "01-Feb-2014", "01-Jan-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2014-10", "2016-09", "01-Oct-2014", "01-Sep-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03", "2016-12", "01-Mar-2014", "01-Dec-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-03", "2016-12", "01-Mar-2014", "01-Dec-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "1992", "2016", "01-Jan-1992", "01-Jan-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014", "2017", "01-Jan-2014", "01-Jan-2017", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2012", "2014", "01-Jan-2012", "01-Jan-2014", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2015", "2015", "01-Jan-2015", "01-Jan-2015", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2016", "2016", "01-Jan-2016", "01-Jan-2016", new string[0])]
+        public virtual void FilteredSectionsShouldContainDateRangeSectionBanner(string code, string patient, string startDateTime, string endDateTime, string textStartDate, string textEndDate, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("filtered sections should contain date range section banner", @__tags);
-#line 103
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("filtered sections should contain date range section banner", exampleTags);
+#line 102
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 104
+#line 103
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 105
+#line 104
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 105
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 106
   testRunner.And(string.Format("I set a time period parameter start date to \"{0}\" and end date to \"{1}\"", startDateTime, endDateTime), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
+#line 107
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 109
+#line 108
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 110
+#line 109
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 110
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
-  testRunner.And("the response html should contain the applied date range text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 111
+  testRunner.And(string.Format("the response html should contain the applied date range text \"{0}\" to \"{1}\"", textStartDate, textEndDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("sections should contain the all data items section banner")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         [NUnit.Framework.TestCaseAttribute("ADM", "patient1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("CLI", "patient1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ENC", "patient1", new string[0])]
@@ -299,33 +301,27 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("PRB", "patient1", new string[0])]
         public virtual void SectionsShouldContainTheAllDataItemsSectionBanner(string code, string patient, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("sections should contain the all data items section banner", @__tags);
-#line 124
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("sections should contain the all data items section banner", exampleTags);
+#line 132
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 125
+#line 133
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 126
+#line 134
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 135
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 136
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 129
+#line 137
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 130
+#line 138
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 131
+#line 139
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
+#line 140
   testRunner.And("the response html should contain the all data items text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -348,30 +344,30 @@ this.FeatureBackground();
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("filtered sections should return no data available html banner", @__tags);
-#line 149
+#line 157
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 150
+#line 158
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 151
+#line 159
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
+#line 160
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
+#line 161
   testRunner.And(string.Format("I set a time period parameter start date to \"{0}\" and end date to \"{1}\"", startDateTime, endDateTime), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
+#line 162
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 155
+#line 163
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 156
+#line 164
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 157
+#line 165
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 158
+#line 166
   testRunner.And("the response html should contain the applied date range text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 159
+#line 167
   testRunner.And("the response html should contain the no data available html banner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -399,28 +395,28 @@ this.FeatureBackground();
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("sections should return no data available html banner", @__tags);
-#line 171
+#line 179
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 172
+#line 180
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 173
+#line 181
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
+#line 182
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
+#line 183
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 176
+#line 184
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 177
+#line 185
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
+#line 186
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
+#line 187
   testRunner.And("the response html should contain the all data items text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
+#line 188
   testRunner.And("the response html should contain the no data available html banner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -435,7 +431,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System does not support section html response where appropriate", new string[] {
                         "ignore",
                         "Manual"});
-#line 197
+#line 205
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
