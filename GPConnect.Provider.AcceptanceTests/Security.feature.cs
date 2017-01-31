@@ -174,6 +174,84 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Connect with Invalid Secure Cipher")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void ConnectWithInvalidSecureCipher()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Invalid Secure Cipher", new string[] {
+                        "ignore"});
+#line 40
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Connect with Invalid Broken Cipher")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void ConnectWithInvalidBrokenCipher()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Invalid Broken Cipher", new string[] {
+                        "ignore"});
+#line 43
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Connect with Cipher AESGCM+EECDH")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void ConnectWithCipherAESGCMEECDH()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Cipher AESGCM+EECDH", new string[] {
+                        "ignore"});
+#line 46
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Connect with Cipher AESGCM+EDH")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void ConnectWithCipherAESGCMEDH()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Cipher AESGCM+EDH", new string[] {
+                        "ignore"});
+#line 49
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Connect with Cipher AES256+EECDH")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void ConnectWithCipherAES256EECDH()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Cipher AES256+EECDH", new string[] {
+                        "ignore"});
+#line 52
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Connect with Cipher AES256+EDH")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void ConnectWithCipherAES256EDH()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Cipher AES256+EDH", new string[] {
+                        "ignore"});
+#line 55
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

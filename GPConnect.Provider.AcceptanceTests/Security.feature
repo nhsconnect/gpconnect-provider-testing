@@ -36,3 +36,20 @@ Scenario: Security Expired client certificate sent
 	When I make a GET request to "/metadata"
 	Then the response status code should be "495"
 
+@ignore
+Scenario: Connect with Invalid Secure Cipher
+
+@ignore
+Scenario: Connect with Invalid Broken Cipher
+
+@ignore
+Scenario: Connect with Cipher AESGCM+EECDH
+
+@ignore
+Scenario: Connect with Cipher AESGCM+EDH
+
+@ignore
+Scenario: Connect with Cipher AES256+EECDH
+
+@ignore
+Scenario: Connect with Cipher AES256+EDH
