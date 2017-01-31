@@ -75,10 +75,10 @@ namespace GPConnect.Provider.AcceptanceTests
                         "Id",
                         "NHSNumber"});
             table1.AddRow(new string[] {
-                        "patient1",
+                        "PWTP2",
                         "9990049416"});
             table1.AddRow(new string[] {
-                        "patient2",
+                        "PWTP3",
                         "9990049424"});
             table1.AddRow(new string[] {
                         "patientNotInSystem",
@@ -116,7 +116,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
   testRunner.And(string.Format("I am requesting the \"{0}\" care record section", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
@@ -170,7 +170,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 47
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 48
@@ -196,8 +196,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 54
-  testRunner.And("I author a request for the \"ZZZ\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I author a request for the \"ZZZ\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 56
@@ -226,7 +225,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
@@ -256,7 +255,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
@@ -286,7 +285,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 84
   testRunner.And("I am requesting the \"SUM\" care record section with system \"http://GPConnectTest.n" +
                     "hs.net/ValueSet/record-section\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -315,7 +314,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 93
   testRunner.And("I am requesting the \"SUM\" care record section with a string parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 94
@@ -345,7 +344,7 @@ this.FeatureBackground();
 #line 101
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 102
-  testRunner.And("I set the JWT header for getcarerecord with config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT header for getcarerecord with config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 104
@@ -402,8 +401,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 120
-  testRunner.And("I am requesting the record for config patient \"patient1\" of system \"http://GPConn" +
-                    "ectTest.nhs.net/Id/identifierSystem\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\" of system \"http://GPConnect" +
+                    "Test.nhs.net/Id/identifierSystem\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 121
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 122
@@ -434,9 +433,9 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 131
-  testRunner.And("I am requesting the record for config patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 132
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 133
@@ -464,9 +463,9 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 141
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 142
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 143
@@ -524,8 +523,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 159
-  testRunner.And("I am requesting the record for config patient \"patient1\" using a fhir string para" +
-                    "meter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\" using a fhir string paramet" +
+                    "er", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 160
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 161
@@ -558,7 +557,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 168
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 169
   testRunner.And(string.Format("I am requesting the \"{0}\" care record section", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 170
@@ -595,7 +594,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 188
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
   testRunner.And(string.Format("I am requesting the \"{0}\" care record section", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 190
@@ -659,7 +658,7 @@ this.FeatureBackground();
 #line 215
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 216
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 217
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 218
@@ -689,8 +688,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 225
-  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 226
  testRunner.When("I send a gpc.getcarerecord operation request with invalid resource type payload", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 227
@@ -719,7 +717,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 234
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 235
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 236
@@ -752,7 +750,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 245
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 246
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 247
@@ -785,7 +783,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 256
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 257
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258
@@ -818,7 +816,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 267
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 268
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 269
@@ -850,7 +848,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 278
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 279
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 280
@@ -882,7 +880,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 289
-  testRunner.And("I am requesting the record for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 290
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 291
@@ -924,8 +922,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 300
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 301
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 302
@@ -967,8 +964,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 325
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 326
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 327
@@ -1011,8 +1007,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 350
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 351
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 352
@@ -1067,8 +1062,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 379
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 380
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 381
@@ -1136,8 +1130,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 413
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 414
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 415
@@ -1178,8 +1171,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 437
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 438
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 439
@@ -1220,8 +1212,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 461
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 462
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 463
@@ -1265,8 +1256,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 486
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 487
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 488
@@ -1310,8 +1300,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 511
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 512
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 513
@@ -1370,8 +1359,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 541
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 542
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 543
@@ -1428,8 +1416,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 571
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 572
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 573
@@ -1501,8 +1488,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 606
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 607
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 608
@@ -1543,8 +1529,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 630
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 631
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 632
@@ -1585,8 +1570,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 654
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 655
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 656
@@ -1627,8 +1611,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 678
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 679
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 680
@@ -1669,8 +1652,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 702
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 703
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 704
@@ -1711,8 +1693,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 726
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 727
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 728
@@ -1754,8 +1735,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 750
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 751
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 752
@@ -1799,8 +1779,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 776
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 777
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 778
@@ -1850,8 +1829,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 803
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 804
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 805
@@ -1894,8 +1872,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 828
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 829
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 830
@@ -1938,8 +1915,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 853
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 854
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 855
@@ -1981,8 +1957,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 878
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 879
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 880
@@ -2025,8 +2000,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 903
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 904
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 905
@@ -2068,8 +2042,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 928
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 929
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 930
@@ -2088,37 +2061,37 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("check all dateTime format variations are allowed")]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014", "2016", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-02", "2016", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-10-05", "2016-08", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05", "2016-09-14", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05-01T11:08:32", "2016-12-08T09:22:16", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2015-10-23T11:08:32+00:00", "2016-12-08T23:59:59+00:00", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2013", "2017", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02", "2016", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02-03", "2016-01-24", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014", "2016-06-01", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2015-11-28T22:53:01", "2017-01-08T14:02:43", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2015-03-14T03:14:11+00:00", "2016-08-03T18:32:43+00:00", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2015", "2017-01", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2015-05", "2017-01-27", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2014-10-05", "2016", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2014-10-05", "2016-08", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2014-10-05", "2016-09-01", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2015-11-28T18:22:01", "2017-01-04T01:01:22", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2014-04-03T22:03:25+00:00", "2016-03-13T17:13:12+00:00", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2012", "2017", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-05", "2016-12-18", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-05-03", "2016-12", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2015-02-28T09:20:14", "2017-01-01T03:05:08", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-12-22T22:22:22+00:00", "2016-06-06T06:08:06+00:00", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2013", "2017", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-02", "2016", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-02-03", "2016-01-24", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014", "2016-06-01", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2015-11-28T22:53:01", "2017-01-08T14:02:43", "(.)*", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2015-03-14T03:14:11+00:00", "2016-08-03T18:32:43+00:00", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "2014", "2016", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "2014-02", "2016", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "2014-10-05", "2016-08", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "2014-05", "2016-09-14", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "2014-05-01T11:08:32", "2016-12-08T09:22:16", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "2015-10-23T11:08:32+00:00", "2016-12-08T23:59:59+00:00", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "2013", "2017", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "2014-02", "2016", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "2014-02-03", "2016-01-24", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "2014", "2016-06-01", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "2015-11-28T22:53:01", "2017-01-08T14:02:43", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "2015-03-14T03:14:11+00:00", "2016-08-03T18:32:43+00:00", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "2015", "2017-01", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "2015-05", "2017-01-27", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "2014-10-05", "2016", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "2014-10-05", "2016-08", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "2014-10-05", "2016-09-01", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "2015-11-28T18:22:01", "2017-01-04T01:01:22", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "2014-04-03T22:03:25+00:00", "2016-03-13T17:13:12+00:00", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2012", "2017", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-05", "2016-12-18", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-05-03", "2016-12", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-03-21", "2016-12-14", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2015-02-28T09:20:14", "2017-01-01T03:05:08", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-12-22T22:22:22+00:00", "2016-06-06T06:08:06+00:00", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "2013", "2017", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "2014-02", "2016", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "2014-02-03", "2016-01-24", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "2014", "2016-06-01", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "2015-11-28T22:53:01", "2017-01-08T14:02:43", "(.)*", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "2015-03-14T03:14:11+00:00", "2016-08-03T18:32:43+00:00", "(.)*", new string[0])]
         public virtual void CheckAllDateTimeFormatVariationsAreAllowed(string code, string patient, string startDateTime, string endDateTime, string regexToCheck, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("check all dateTime format variations are allowed", exampleTags);
@@ -2173,8 +2146,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 999
-  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1000
   testRunner.And("I set a valid time period start and end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1001
@@ -2206,8 +2178,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1022
-  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1023
   testRunner.And("I set the parameter patientNHSNumber with an empty value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1024
@@ -2238,8 +2209,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1032
-  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1033
   testRunner.And("I set the parameter patientNHSNumber with an empty system", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1034
@@ -2270,7 +2240,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1042
-  testRunner.And("I author a request for the \"\" care record section for config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I author a request for the \"\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1043
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1044
@@ -2299,8 +2269,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1051
-  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1052
   testRunner.And("I set the parameter recordSection with an empty system", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1053
@@ -2357,8 +2326,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1061
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1062
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1063

@@ -73,10 +73,10 @@ namespace GPConnect.Provider.AcceptanceTests
                         "Id",
                         "NHSNumber"});
             table1.AddRow(new string[] {
-                        "patient1",
+                        "PWTP2",
                         "9990049416"});
             table1.AddRow(new string[] {
-                        "patient2",
+                        "PWTP3",
                         "9990049424"});
             table1.AddRow(new string[] {
                         "patientNotInSystem",
@@ -289,8 +289,7 @@ this.FeatureBackground();
  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
- testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I author a request for the \"SUM\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
  testRunner.When("I request the FHIR \"gpc.getCareRecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 70

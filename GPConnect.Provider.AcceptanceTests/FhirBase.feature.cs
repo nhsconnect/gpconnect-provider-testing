@@ -75,7 +75,7 @@ namespace GPConnect.Provider.AcceptanceTests
                         "Id",
                         "NHSNumber"});
             table1.AddRow(new string[] {
-                        "patient1",
+                        "PWTP2",
                         "9990049416"});
 #line 5
  testRunner.Given("I have the following patient records", ((string)(null)), table1, "Given ");
@@ -289,8 +289,7 @@ this.FeatureBackground();
 #line 72
   testRunner.And("I am using \"application/json+fhir\" to communicate with the server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
-  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 75
@@ -318,8 +317,7 @@ this.FeatureBackground();
 #line 81
   testRunner.And("I am using \"application/xml+fhir\" to communicate with the server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
-  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 84

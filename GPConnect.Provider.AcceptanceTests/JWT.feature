@@ -4,8 +4,8 @@ Feature: JWT
 Background:
 	Given I have the following patient records
 		| Id                      | NHSNumber  |
-		| patient1                | 9990049416 |
-		| patient2                | 9990049424 |
+		| PWTP2                   | 9990049416 |
+		| PWTP3                   | 9990049424 |
 		| patientNotInSystem      | 9999999999 |
 		| patientNoSharingConsent | 9476719958 |
 
@@ -237,15 +237,15 @@ Scenario: JWT requesting practitioner invalid resourceType
 Scenario: JWT requested record patient does not match getCareRecord Payload patient
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-	And I author a request for the "SUM" care record section for config patient "patient1"
-	And I set the JWT requested record NHS number to config patient "patient2"
+	And I author a request for the "SUM" care record section for config patient "PWTP2"
+	And I set the JWT requested record NHS number to config patient "PWTP3"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 
 Scenario: JWT requested scope for getCareRecord does not match type of request
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-	And I author a request for the "SUM" care record section for config patient "patient1"
+	And I author a request for the "SUM" care record section for config patient "PWTP2"
 	And I set the JWT requested scope to "organization/*.write"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -253,7 +253,7 @@ Scenario: JWT requested scope for getCareRecord does not match type of request
 Scenario: JWT requested scope is invalid type
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-	And I author a request for the "ENC" care record section for config patient "patient1"
+	And I author a request for the "ENC" care record section for config patient "PWTP2"
 	And I set the JWT requested scope to "encounter/*.read"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"

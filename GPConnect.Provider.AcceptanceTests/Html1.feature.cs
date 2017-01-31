@@ -73,10 +73,10 @@ namespace GPConnect.Provider.AcceptanceTests
                         "Id",
                         "NHSNumber"});
             table1.AddRow(new string[] {
-                        "patient1",
+                        "PWTP2",
                         "9990049416"});
             table1.AddRow(new string[] {
-                        "patient2",
+                        "PWTP3",
                         "9990049424"});
             table1.AddRow(new string[] {
                         "patientNotInSystem",
@@ -114,8 +114,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"PWTP2\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 17
@@ -148,17 +147,17 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("html section headers present")]
-        [NUnit.Framework.TestCaseAttribute("patient1", "ADM", "Administrative Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "ALL", "Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reaction" +
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "ADM", "Administrative Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "ALL", "Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reaction" +
             "s", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "CLI", "Clinical Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "ENC", "Encounters", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "IMM", "Immunisations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "MED", "Current Medication Issues,Current Repeat Medications,Past Medications", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "OBS", "Observations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "PRB", "Active Problems and Issues,Inactive Problems and Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "REF", "Referrals", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "CLI", "Clinical Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "ENC", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "IMM", "Immunisations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "MED", "Current Medication Issues,Current Repeat Medications,Past Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "OBS", "Observations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "PRB", "Active Problems and Issues,Inactive Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "REF", "Referrals", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
             "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
         public virtual void HtmlSectionHeadersPresent(string patient, string code, string headers, string[] exampleTags)
         {
@@ -190,27 +189,27 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("html table headers present and in order that is expected")]
-        [NUnit.Framework.TestCaseAttribute("patient1", "ADM", "Date,Entry,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "ALL", "Start Date,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "ALL", "Start Date,End Date,Details", "2", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "CLI", "Date,Entry,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "ENC", "Date,Title,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "IMM", "Date,Vaccination,Part,Contents,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "MED", "Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "MED", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "ADM", "Date,Entry,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "ALL", "Start Date,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "ALL", "Start Date,End Date,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "CLI", "Date,Entry,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "ENC", "Date,Title,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "IMM", "Date,Vaccination,Part,Contents,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "MED", "Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "MED", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
             "ls", "2", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "MED", "Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issued," +
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "MED", "Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issued," +
             "Details", "3", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "OBS", "Date,Entry,Value,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "PRB", "Start Date,Entry,Significance,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "PRB", "Start Date,End Date,Entry,Significance,Details", "2", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "REF", "Date,From,To,Priority,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Start Date,Entry,Significance,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details", "2", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "OBS", "Date,Entry,Value,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "PRB", "Start Date,Entry,Significance,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "PRB", "Start Date,End Date,Entry,Significance,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "REF", "Date,From,To,Priority,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "SUM", "Start Date,Entry,Significance,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "SUM", "Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "SUM", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
             "ls", "3", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Start Date,Details", "4", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Date,Title,Details", "5", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "SUM", "Start Date,Details", "4", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PWTP2", "SUM", "Date,Title,Details", "5", new string[0])]
         public virtual void HtmlTableHeadersPresentAndInOrderThatIsExpected(string patient, string code, string headers, string pageSectionIndex, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("html table headers present and in order that is expected", exampleTags);
@@ -242,21 +241,21 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("filtered sections should contain date range section banner")]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05-03", "2016-09-14", "03-May-2014", "14-Sep-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02-03", "2016-01-24", "04-Feb-2014", "24-Jan-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "1982-10-05", "2016-09-01", "05-Oct-1982", "01-Sep-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05", "2016-09", "01-May-2014", "01-Sep-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02", "2016-01", "01-Feb-2014", "01-Jan-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2014-10", "2016-09", "01-Oct-2014", "01-Sep-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03", "2016-12", "01-Mar-2014", "01-Dec-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-03", "2016-12", "01-Mar-2014", "01-Dec-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "1992", "2016", "01-Jan-1992", "01-Jan-2016", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014", "2017", "01-Jan-2014", "01-Jan-2017", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "2012", "2014", "01-Jan-2012", "01-Jan-2014", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2015", "2015", "01-Jan-2015", "01-Jan-2015", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2016", "2016", "01-Jan-2016", "01-Jan-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "2014-05-03", "2016-09-14", "03-May-2014", "14-Sep-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "2014-02-03", "2016-01-24", "04-Feb-2014", "24-Jan-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "1982-10-05", "2016-09-01", "05-Oct-1982", "01-Sep-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "2014-05", "2016-09", "01-May-2014", "01-Sep-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "2014-02", "2016-01", "01-Feb-2014", "01-Jan-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "2014-10", "2016-09", "01-Oct-2014", "01-Sep-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-03", "2016-12", "01-Mar-2014", "01-Dec-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "2014-03", "2016-12", "01-Mar-2014", "01-Dec-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "1992", "2016", "01-Jan-1992", "01-Jan-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "2014", "2017", "01-Jan-2014", "01-Jan-2017", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "2012", "2014", "01-Jan-2012", "01-Jan-2014", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2015", "2015", "01-Jan-2015", "01-Jan-2015", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "2016", "2016", "01-Jan-2016", "01-Jan-2016", new string[0])]
         public virtual void FilteredSectionsShouldContainDateRangeSectionBanner(string code, string patient, string startDateTime, string endDateTime, string textStartDate, string textEndDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("filtered sections should contain date range section banner", exampleTags);
@@ -289,16 +288,16 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("sections should contain the all data items section banner")]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ALL", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("IMM", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MED", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("OBS", "patient1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PRB", "patient1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "PWTP2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("IMM", "PWTP2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "PWTP2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OBS", "PWTP2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "PWTP2", new string[0])]
         public virtual void SectionsShouldContainTheAllDataItemsSectionBanner(string code, string patient, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("sections should contain the all data items section banner", exampleTags);
@@ -330,15 +329,15 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("filtered sections should return no data available html banner")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "2014-05-03", "2016-09-14", "03-May-2014", "14-Sep-2016", "Administrative Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "2014-02-03", "2016-01-24", "04-Feb-2014", "24-Jan-2016", "Clinical Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "1982-10-05", "2016-09-01", "05-Oct-1982", "01-Sep-2016", "Encounters", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Active Problems and Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Current Medication Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Current Repeat Medications", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Current Allergies and Adverse Reactions", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Encounters", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Referrals", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "2014-05-03", "2016-09-14", "03-May-2014", "14-Sep-2016", "Administrative Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "2014-02-03", "2016-01-24", "04-Feb-2014", "24-Jan-2016", "Clinical Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "1982-10-05", "2016-09-01", "05-Oct-1982", "01-Sep-2016", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Active Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Current Medication Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Current Repeat Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Current Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "2014-03-21", "2016-12-14", "21-Mar-2014", "14-Dec-2016", "Referrals", new string[0])]
         public virtual void FilteredSectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string startDateTime, string endDateTime, string textStartDate, string textEndDate, string section, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -381,24 +380,24 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("sections should return no data available html banner")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "Administrative Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "Clinical Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "Encounters", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Active Problems and Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Medication Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Repeat Medications", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Allergies and Adverse Reactions", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Encounters", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "Referrals", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ALL", "patient1", "Current Allergies and Adverse Reactions", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ALL", "patient1", "Historical Allergies and Adverse Reactions", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("IMM", "patient1", "Immunisations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MED", "patient1", "Current Medication Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MED", "patient1", "Current Repeat Medications", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MED", "patient1", "Past Medications", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("OBS", "patient1", "Observations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PRB", "patient1", "Active Problems and Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PRB", "patient1", "Inactive Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ADM", "PWTP2", "Administrative Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "PWTP2", "Clinical Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "PWTP2", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "Active Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "Current Medication Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "Current Repeat Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "Current Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "PWTP2", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "PWTP2", "Referrals", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "PWTP2", "Current Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "PWTP2", "Historical Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("IMM", "PWTP2", "Immunisations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "PWTP2", "Current Medication Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "PWTP2", "Current Repeat Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "PWTP2", "Past Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OBS", "PWTP2", "Observations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "PWTP2", "Active Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "PWTP2", "Inactive Problems and Issues", new string[0])]
         public virtual void SectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string section, string[] exampleTags)
         {
             string[] @__tags = new string[] {

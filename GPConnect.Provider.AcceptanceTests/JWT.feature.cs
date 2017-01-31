@@ -73,10 +73,10 @@ namespace GPConnect.Provider.AcceptanceTests
                         "Id",
                         "NHSNumber"});
             table1.AddRow(new string[] {
-                        "patient1",
+                        "PWTP2",
                         "9990049416"});
             table1.AddRow(new string[] {
-                        "patient2",
+                        "PWTP3",
                         "9990049424"});
             table1.AddRow(new string[] {
                         "patientNotInSystem",
@@ -875,10 +875,9 @@ this.FeatureBackground();
  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 240
- testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I author a request for the \"SUM\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 241
- testRunner.And("I set the JWT requested record NHS number to config patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I set the JWT requested record NHS number to config patient \"PWTP3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 242
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 243
@@ -902,8 +901,7 @@ this.FeatureBackground();
  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 248
- testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I author a request for the \"SUM\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 249
  testRunner.And("I set the JWT requested scope to \"organization/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 250
@@ -929,8 +927,7 @@ this.FeatureBackground();
  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 256
- testRunner.And("I author a request for the \"ENC\" care record section for config patient \"patient1" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I author a request for the \"ENC\" care record section for config patient \"PWTP2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 257
  testRunner.And("I set the JWT requested scope to \"encounter/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258

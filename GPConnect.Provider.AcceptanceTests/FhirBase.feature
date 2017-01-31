@@ -3,8 +3,8 @@ Feature: Fhir Base
 
 Background:
 	Given I have the following patient records
-		| Id                      | NHSNumber  |
-		| patient1                | 9990049416 |
+		| Id       | NHSNumber  |
+		| PWTP2    | 9990049416 |
 
 Scenario: Fhir Get MetaData
 	Given I am using the default server
@@ -70,7 +70,7 @@ Scenario: Fhir content type test where Accept header is JSON and request payload
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am using "application/json+fhir" to communicate with the server
-		And I author a request for the "SUM" care record section for config patient "patient1"
+		And I author a request for the "SUM" care record section for config patient "PWTP2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -79,7 +79,7 @@ Scenario: Fhir content type test where Accept header is XML and request payload 
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am using "application/xml+fhir" to communicate with the server
-		And I author a request for the "SUM" care record section for config patient "patient1"
+		And I author a request for the "SUM" care record section for config patient "PWTP2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR XML

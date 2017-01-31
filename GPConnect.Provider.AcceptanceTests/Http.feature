@@ -4,8 +4,8 @@ Feature: Http
 Background:
 	Given I have the following patient records
 		| Id                      | NHSNumber  |
-		| patient1                | 9990049416 |
-		| patient2                | 9990049424 |
+		| PWTP2                   | 9990049416 |
+		| PWTP3                   | 9990049424 |
 		| patientNotInSystem      | 9999999999 |
 		| patientNoSharingConsent | 9476719958 |
 
@@ -65,6 +65,6 @@ Scenario: Http incorrect case on url fhir resource
 Scenario: Http operation incorrect case
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-	And I author a request for the "SUM" care record section for config patient "patient1"
+	And I author a request for the "SUM" care record section for config patient "PWTP2"
 	When I request the FHIR "gpc.getCareRecord" Patient Type operation
 	Then the response status code should indicate failure
