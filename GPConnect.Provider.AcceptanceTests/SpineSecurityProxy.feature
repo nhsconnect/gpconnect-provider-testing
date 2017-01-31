@@ -47,3 +47,10 @@ Scenario: Mismatched interactionId and endpoint in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 	And the response body should be FHIR JSON
+
+Scenario: invalid interactionId in request
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.invalidoperation" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate failure
+	And the response body should be FHIR JSON

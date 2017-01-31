@@ -225,3 +225,9 @@ Scenario: maximum field size in fhir resource
 
 @ignore
 Scenario: XML order test
+
+@ignore
+Scenario: endpoint should support compression of data
+
+@ignore
+Scenario: endpoint should support chunking of data

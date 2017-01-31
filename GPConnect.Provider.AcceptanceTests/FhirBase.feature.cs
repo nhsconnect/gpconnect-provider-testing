@@ -789,6 +789,36 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("endpoint should support compression of data")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void EndpointShouldSupportCompressionOfData()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support compression of data", new string[] {
+                        "ignore"});
+#line 230
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("endpoint should support chunking of data")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void EndpointShouldSupportChunkingOfData()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support chunking of data", new string[] {
+                        "ignore"});
+#line 233
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
