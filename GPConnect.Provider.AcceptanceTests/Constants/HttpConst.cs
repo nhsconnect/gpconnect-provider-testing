@@ -18,6 +18,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kSspInteractionId = "Ssp-InteractionId";
             public const string kSspTraceId = "Ssp-TraceID";
             public const string kContentType = "Content-Type";
+            public const string kAcceptEncoding = "Accept-Encoding";
+            public const string kContentEncoding = "Content-Encoding";
         }
     }
 }

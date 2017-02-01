@@ -1097,6 +1097,7 @@ Scenario Outline: Requested section code incorrect parameter case
 	| sUm |
 
 @ignore
+@Manual
 Scenario: Request records for patients with genders which do not match the valueset so must addear to gender mapping
 	# Check that the gender returned matches the expected mapping
 
@@ -1106,6 +1107,7 @@ Scenario: Check that all the genders supported by provider are in the GP Connect
 	# Run tests with patients with non value set genders if possible and check mapping in response is acceptable
 
 @ignore
+@Manual
 Scenario: Request records for patients contact with relationship which do not match the valueset so must addear to relationship mapping
 	# Check that the relationship returned matches the expected mapping
 
@@ -1122,6 +1124,7 @@ Scenario: Identifier order in response resources
 Scenario: Patient with inactive nhs number in system should not return that NHS Number
 
 @ignore
+@Manual
 Scenario: A patient is requested which is not on Spine but is on provider system
 	# 404 PATIENT_NOT_FOUND
 

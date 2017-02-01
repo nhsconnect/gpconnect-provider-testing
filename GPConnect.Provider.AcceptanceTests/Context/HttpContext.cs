@@ -4,6 +4,8 @@ using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
+using System;
+using System.Collections.Generic;
 // ReSharper disable ClassNeverInstantiated.Global
 
 namespace GPConnect.Provider.AcceptanceTests.Context
@@ -267,6 +269,28 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 ScenarioContext.Set(value, Context.kResponseBody);
             }
         }
+        
+        public Dictionary<string, string> ResponseHeaders
+        {
+            get
+            {
+                try
+                {
+                    var responseHeaders = ScenarioContext.Get<Dictionary<string, string>>(Context.kResponseHeaders);
+                    if (responseHeaders == null)
+                    {
+                        // If a dictionary does not exist create it and return
+                        ScenarioContext.Set(new Dictionary<string, string>(), Context.kResponseHeaders);
+                        responseHeaders = ScenarioContext.Get<Dictionary<string, string>>(Context.kResponseHeaders);
+                    }
+                    return responseHeaders;
+                }
+                catch (Exception e) {
+                    ScenarioContext.Set(new Dictionary<string, string>(), Context.kResponseHeaders);
+                    return ScenarioContext.Get<Dictionary<string, string>>(Context.kResponseHeaders);
+                }
+            }
+        }
 
         // Parsed Response
         public JObject ResponseJSON
@@ -385,6 +409,12 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             {
                 requestParameters.Add(new XElement("requestParameter", new XAttribute("name", entry.Key), new XAttribute("value", entry.Value)));
             }
+            var responseHeaders = new XElement(Context.kResponseHeaders);
+            foreach (var entry in ResponseHeaders)
+            {
+                responseHeaders.Add(new XElement("responseHeader", new XAttribute("name", entry.Key), new XAttribute("value", entry.Value)));
+            }
+
             var doc = new XDocument(
                 new XElement("httpContext",
                     new XAttribute(Context.kUseWebProxy, UseWebProxy),
@@ -403,6 +433,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                     new XElement("response",
                         new XElement(Context.kResponseContentType, ResponseContentType),
                         new XElement(Context.kResponseStatusCode, (int)ResponseStatusCode),
+                        responseHeaders,
                         new XElement(Context.kResponseBody, System.Security.SecurityElement.Escape(ResponseBody)))
                 ));
             doc.Save(filename);

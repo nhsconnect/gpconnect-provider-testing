@@ -443,7 +443,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System does not support section html response where appropriate", new string[] {
                         "ignore",
                         "Manual"});
-#line 217
+#line 218
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

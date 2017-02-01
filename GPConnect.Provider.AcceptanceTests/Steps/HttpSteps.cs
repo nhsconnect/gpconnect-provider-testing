@@ -215,6 +215,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestHeaders.RemoveHeader(headerKey);
         }
 
+        [Given(@"I ask for the contents to be gzip encoded")]
+        public void GivenIAskForTheContentsToBeGZipEncoded()
+        {
+            HttpContext.RequestHeaders.AddHeader(HttpConst.Headers.kAcceptEncoding, "gzip");
+        }
+
         // Http Request Steps
 
         [Given(@"I set a JSON request body ""(.*)""")]
@@ -357,6 +363,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseStatusCode = restResponse.StatusCode;
             HttpContext.ResponseContentType = restResponse.ContentType;
             HttpContext.ResponseBody = restResponse.Content;
+
+            foreach(var parameter in restResponse.Headers)
+            {
+                HttpContext.ResponseHeaders.Add(parameter.Name, (string)parameter.Value);
+            }
             
             // TODO Parse The XML or JSON For Easier Processing
 
@@ -407,6 +418,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseXML = XDocument.Parse(HttpContext.ResponseBody);
             FhirXmlParser fhirXmlParser = new FhirXmlParser();
             FhirContext.FhirResponseResource = fhirXmlParser.Parse<Resource>(HttpContext.ResponseBody);
+        }
+
+        [Then(@"the response should be gzip encoded")]
+        public void ThenTheResponseShouldBeGZipEncoded()
+        {
+            bool gZipHeaderFound = false;
+            foreach (var header in HttpContext.ResponseHeaders) {
+                if (header.Key.Equals(HttpConst.Headers.kContentEncoding, StringComparison.CurrentCultureIgnoreCase) && header.Value.Equals("gzip", StringComparison.CurrentCultureIgnoreCase)) {
+                    gZipHeaderFound = true;
+                }
+            }
+            gZipHeaderFound.ShouldBeTrue();
         }
 
         // Logger

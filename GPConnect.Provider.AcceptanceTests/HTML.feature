@@ -213,5 +213,6 @@ Scenario Outline: sections should return no data available html banner
 	#	| INV ||||||
 	#	| PAT ||||||
 
-@ignore @Manual
+@ignore
+@Manual
 Scenario: System does not support section html response where appropriate

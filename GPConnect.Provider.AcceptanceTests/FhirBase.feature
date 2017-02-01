@@ -222,12 +222,30 @@ Scenario: Fhir content type test where _format parameter is an unsupported media
 
 @ignore
 Scenario: maximum field size in fhir resource
+	# String fields must not contain more than 1mb or data, this will require a test patient with data greater than 1mb a field that maps to a string field in the fhir resource.
 
 @ignore
 Scenario: XML order test
 
-@ignore
-Scenario: endpoint should support compression of data
+Scenario: endpoint should support gzip compression for metadata endpoint
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I ask for the contents to be gzip encoded
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response should be gzip encoded
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Conformance"
+
+Scenario: endpoint should support gzip compression for getCareRecord operation
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I ask for the contents to be gzip encoded
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response should be gzip encoded
+		And the response body should be FHIR JSON
+		
 
 @ignore
 Scenario: endpoint should support chunking of data

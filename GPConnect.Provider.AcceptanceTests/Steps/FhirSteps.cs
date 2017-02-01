@@ -183,6 +183,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Log.WriteLine("Response StatusCode={0}", client.LastResponse.StatusCode);
                 HttpContext.ResponseContentType = client.LastResponse.ContentType;
                 Log.WriteLine("Response ContentType={0}", client.LastResponse.ContentType);
+
+                foreach (string headerKey in client.LastResponse.Headers.Keys)
+                {
+                    HttpContext.ResponseHeaders.Add(headerKey, client.LastResponse.Headers.Get(headerKey));
+                }
             };
 
             // Make The Request And Save The Returned Resource

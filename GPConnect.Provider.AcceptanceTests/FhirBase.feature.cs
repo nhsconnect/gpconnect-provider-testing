@@ -782,7 +782,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("XML order test", new string[] {
                         "ignore"});
-#line 227
+#line 228
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -791,16 +791,59 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("endpoint should support compression of data")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void EndpointShouldSupportCompressionOfData()
+        [NUnit.Framework.DescriptionAttribute("endpoint should support gzip compression for metadata endpoint")]
+        public virtual void EndpointShouldSupportGzipCompressionForMetadataEndpoint()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support compression of data", new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support gzip compression for metadata endpoint", ((string[])(null)));
 #line 230
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
+#line 231
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 232
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
+                    "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 233
+  testRunner.And("I ask for the contents to be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 234
+ testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 235
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 236
+  testRunner.And("the response should be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 237
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 238
+  testRunner.And("the JSON value \"resourceType\" should be \"Conformance\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("endpoint should support gzip compression for getCareRecord operation")]
+        public virtual void EndpointShouldSupportGzipCompressionForGetCareRecordOperation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support gzip compression for getCareRecord operation", ((string[])(null)));
+#line 240
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 241
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 242
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
+                    "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 243
+  testRunner.And("I ask for the contents to be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 244
+ testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 245
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 246
+  testRunner.And("the response should be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 247
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -812,7 +855,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support chunking of data", new string[] {
                         "ignore"});
-#line 233
+#line 251
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

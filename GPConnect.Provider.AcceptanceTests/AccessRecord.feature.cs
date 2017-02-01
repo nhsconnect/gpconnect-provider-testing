@@ -2344,12 +2344,14 @@ this.FeatureBackground();
         [NUnit.Framework.DescriptionAttribute("Request records for patients with genders which do not match the valueset so must" +
             " addear to gender mapping")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
         public virtual void RequestRecordsForPatientsWithGendersWhichDoNotMatchTheValuesetSoMustAddearToGenderMapping()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request records for patients with genders which do not match the valueset so must" +
                     " addear to gender mapping", new string[] {
-                        "ignore"});
-#line 1100
+                        "ignore",
+                        "Manual"});
+#line 1101
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2368,7 +2370,7 @@ this.FeatureBackground();
                     " if not check mapping is covered in documentation and system maps correctly", new string[] {
                         "ignore",
                         "Manual"});
-#line 1105
+#line 1106
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2380,12 +2382,14 @@ this.FeatureBackground();
         [NUnit.Framework.DescriptionAttribute("Request records for patients contact with relationship which do not match the val" +
             "ueset so must addear to relationship mapping")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
         public virtual void RequestRecordsForPatientsContactWithRelationshipWhichDoNotMatchTheValuesetSoMustAddearToRelationshipMapping()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request records for patients contact with relationship which do not match the val" +
                     "ueset so must addear to relationship mapping", new string[] {
-                        "ignore"});
-#line 1109
+                        "ignore",
+                        "Manual"});
+#line 1111
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2406,7 +2410,7 @@ this.FeatureBackground();
                     "em maps correctly", new string[] {
                         "ignore",
                         "Manual"});
-#line 1114
+#line 1116
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2421,7 +2425,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Identifier order in response resources", new string[] {
                         "ignore"});
-#line 1118
+#line 1120
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2436,7 +2440,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient with inactive nhs number in system should not return that NHS Number", new string[] {
                         "ignore"});
-#line 1122
+#line 1124
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2447,11 +2451,13 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("A patient is requested which is not on Spine but is on provider system")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
         public virtual void APatientIsRequestedWhichIsNotOnSpineButIsOnProviderSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A patient is requested which is not on Spine but is on provider system", new string[] {
-                        "ignore"});
-#line 1125
+                        "ignore",
+                        "Manual"});
+#line 1128
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

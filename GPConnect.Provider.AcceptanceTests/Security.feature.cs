@@ -195,7 +195,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Invalid Broken Cipher", new string[] {
                         "ignore"});
-#line 43
+#line 44
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -208,7 +208,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Cipher AESGCM+EECDH", new string[] {
                         "ignore"});
-#line 46
+#line 48
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -221,7 +221,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Cipher AESGCM+EDH", new string[] {
                         "ignore"});
-#line 49
+#line 51
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -234,7 +234,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Cipher AES256+EECDH", new string[] {
                         "ignore"});
-#line 52
+#line 54
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -247,7 +247,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect with Cipher AES256+EDH", new string[] {
                         "ignore"});
-#line 55
+#line 57
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
