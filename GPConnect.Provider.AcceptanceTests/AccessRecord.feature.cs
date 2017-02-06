@@ -2436,11 +2436,13 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Patient with inactive nhs number in system should not return that NHS Number")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
         public virtual void PatientWithInactiveNhsNumberInSystemShouldNotReturnThatNHSNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient with inactive nhs number in system should not return that NHS Number", new string[] {
-                        "ignore"});
-#line 1124
+                        "ignore",
+                        "Manual"});
+#line 1125
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2457,7 +2459,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A patient is requested which is not on Spine but is on provider system", new string[] {
                         "ignore",
                         "Manual"});
-#line 1128
+#line 1129
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2469,12 +2471,14 @@ this.FeatureBackground();
         [NUnit.Framework.DescriptionAttribute("Patients flag as sensitive should return any information within the HTML which ma" +
             "y allow for identification of contact information or address")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
         public virtual void PatientsFlagAsSensitiveShouldReturnAnyInformationWithinTheHTMLWhichMayAllowForIdentificationOfContactInformationOrAddress()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patients flag as sensitive should return any information within the HTML which ma" +
                     "y allow for identification of contact information or address", new string[] {
-                        "ignore"});
-#line 1132
+                        "ignore",
+                        "Manual"});
+#line 1134
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -2491,7 +2495,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient whos records are currently in transit", new string[] {
                         "ignore",
                         "Manual"});
-#line 1136
+#line 1138
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

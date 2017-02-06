@@ -255,3 +255,7 @@ Scenario: endpoint should support gzip compression for getCareRecord operation
 
 @ignore
 Scenario: endpoint should support chunking of data
+
+@ignore
+@Manual
+Scenario: case sensitive valuesets mapped correctly to resource valuesets

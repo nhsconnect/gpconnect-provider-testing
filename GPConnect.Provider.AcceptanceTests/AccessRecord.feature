@@ -1121,6 +1121,7 @@ Scenario: Identifier order in response resources
 # The identifiers within the response resources have to appear in the correct order as per the specfication.
 
 @ignore
+@Manual
 Scenario: Patient with inactive nhs number in system should not return that NHS Number
 
 @ignore
@@ -1129,6 +1130,7 @@ Scenario: A patient is requested which is not on Spine but is on provider system
 	# 404 PATIENT_NOT_FOUND
 
 @ignore
+@Manual
 Scenario: Patients flag as sensitive should return any information within the HTML which may allow for identification of contact information or address
 
 @ignore

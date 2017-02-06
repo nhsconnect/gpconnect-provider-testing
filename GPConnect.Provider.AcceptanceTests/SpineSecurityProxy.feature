@@ -57,4 +57,3 @@ Scenario: invalid interactionId in request
 
 @ignore
 Scenario: Send to endpoint with incorrect To asid for the provider endpoint
-
