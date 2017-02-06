@@ -961,6 +961,23 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Patients flag as sensitive should return a minimal patient resource which does no" +
+            "t contain sensitive fields")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void PatientsFlagAsSensitiveShouldReturnAMinimalPatientResourceWhichDoesNotContainSensitiveFields()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patients flag as sensitive should return a minimal patient resource which does no" +
+                    "t contain sensitive fields", new string[] {
+                        "ignore"});
+#line 269
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

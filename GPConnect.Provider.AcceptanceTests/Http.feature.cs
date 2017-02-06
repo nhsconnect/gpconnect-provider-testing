@@ -297,6 +297,21 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Allow and audit additional http headers")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void AllowAndAuditAdditionalHttpHeaders()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Allow and audit additional http headers", new string[] {
+                        "ignore"});
+#line 73
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

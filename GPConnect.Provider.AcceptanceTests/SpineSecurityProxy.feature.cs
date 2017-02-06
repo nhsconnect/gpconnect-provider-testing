@@ -228,6 +228,19 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Send to endpoint with incorrect To asid for the provider endpoint")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void SendToEndpointWithIncorrectToAsidForTheProviderEndpoint()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send to endpoint with incorrect To asid for the provider endpoint", new string[] {
+                        "ignore"});
+#line 59
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

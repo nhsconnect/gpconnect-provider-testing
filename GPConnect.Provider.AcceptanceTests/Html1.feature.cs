@@ -450,6 +450,38 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check html for non html formatting")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void CheckHtmlForNonHtmlFormatting()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check html for non html formatting", new string[] {
+                        "ignore"});
+#line 221
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check dates are in decending order within the results tables")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
+        public virtual void CheckDatesAreInDecendingOrderWithinTheResultsTables()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check dates are in decending order within the results tables", new string[] {
+                        "ignore",
+                        "Manual"});
+#line 228
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

@@ -1128,3 +1128,10 @@ Scenario: Patient with inactive nhs number in system should not return that NHS 
 Scenario: A patient is requested which is not on Spine but is on provider system
 	# 404 PATIENT_NOT_FOUND
 
+@ignore
+Scenario: Patients flag as sensitive should return any information within the HTML which may allow for identification of contact information or address
+
+@ignore
+@Manual
+Scenario: Patient whos records are currently in transit
+

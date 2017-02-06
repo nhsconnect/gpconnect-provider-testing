@@ -2464,6 +2464,40 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Patients flag as sensitive should return any information within the HTML which ma" +
+            "y allow for identification of contact information or address")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void PatientsFlagAsSensitiveShouldReturnAnyInformationWithinTheHTMLWhichMayAllowForIdentificationOfContactInformationOrAddress()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patients flag as sensitive should return any information within the HTML which ma" +
+                    "y allow for identification of contact information or address", new string[] {
+                        "ignore"});
+#line 1132
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Patient whos records are currently in transit")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
+        public virtual void PatientWhosRecordsAreCurrentlyInTransit()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient whos records are currently in transit", new string[] {
+                        "ignore",
+                        "Manual"});
+#line 1136
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

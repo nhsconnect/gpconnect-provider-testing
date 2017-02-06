@@ -68,3 +68,7 @@ Scenario: Http operation incorrect case
 	And I author a request for the "SUM" care record section for config patient "PWTP2"
 	When I request the FHIR "gpc.getCareRecord" Patient Type operation
 	Then the response status code should indicate failure
+
+@ignore
+Scenario: Allow and audit additional http headers
+

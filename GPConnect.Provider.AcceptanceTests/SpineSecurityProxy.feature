@@ -54,3 +54,7 @@ Scenario: invalid interactionId in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 	And the response body should be FHIR JSON
+
+@ignore
+Scenario: Send to endpoint with incorrect To asid for the provider endpoint
+

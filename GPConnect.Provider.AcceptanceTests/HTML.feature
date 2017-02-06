@@ -216,3 +216,14 @@ Scenario Outline: sections should return no data available html banner
 @ignore
 @Manual
 Scenario: System does not support section html response where appropriate
+
+@ignore
+Scenario: Check html for non html formatting
+	# new lines
+	# tabs
+	# coded characters
+
+@ignore
+@Manual
+Scenario: Check dates are in decending order within the results tables
+

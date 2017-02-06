@@ -227,6 +227,12 @@ Scenario: maximum field size in fhir resource
 @ignore
 Scenario: XML order test
 
+@ignore
+Scenario: XML case sensitivity test
+
+@ignore
+Scenario: XML div unicode characters
+
 Scenario: endpoint should support gzip compression for metadata endpoint
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction

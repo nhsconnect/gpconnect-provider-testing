@@ -264,3 +264,7 @@ Scenario: JWT requested scope for metaData request does not match organization r
 	And I set the JWT requested scope to "patient/*.read"
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
+
+@ignore
+Scenario: Patients flag as sensitive should return a minimal patient resource which does not contain sensitive fields
+
