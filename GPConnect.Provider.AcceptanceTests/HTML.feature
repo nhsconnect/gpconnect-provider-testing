@@ -213,15 +213,35 @@ Scenario Outline: sections should return no data available html banner
 	#	| INV ||||||
 	#	| PAT ||||||
 
+Scenario Outline: Check html for non html formatting
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the html should not contain "\n"
+		And the html should not contain "\r"
+		And the html should not contain "\t"
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		| REF  |
+		| SUM  |
+
 @ignore
 @Manual
 Scenario: System does not support section html response where appropriate
-
-@ignore
-Scenario: Check html for non html formatting
-	# new lines
-	# tabs
-	# coded characters
 
 @ignore
 @Manual

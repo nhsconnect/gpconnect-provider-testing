@@ -255,6 +255,7 @@ Scenario: endpoint should support gzip compression for getCareRecord operation
 
 @ignore
 Scenario: endpoint should support chunking of data
+	# Does the response Transfer-Encoding header exist and contains the value chunked
 
 @ignore
 @Manual

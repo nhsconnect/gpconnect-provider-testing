@@ -69,6 +69,13 @@ Scenario: Http operation incorrect case
 	When I request the FHIR "gpc.getCareRecord" Patient Type operation
 	Then the response status code should indicate failure
 
-@ignore
 Scenario: Allow and audit additional http headers
-
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the "SUM" care record section
+		And I set "AdditionalHeader" request header to "NotStandardHeader"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
