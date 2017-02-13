@@ -3,16 +3,28 @@ Feature: AccessRecord
 
 Background:
 	Given I have the following patient records
-		| Id                      | NHSNumber  |
-		| PWTP2                   | 9990049416 |
-		| PWTP3                   | 9990049424 |
-		| patientNotInSystem      | 9999999999 |
-		| patientNoSharingConsent | 9476719958 |
+		| Id                 | NHSNumber  |
+		| patientNotInSystem | 9999999999 |
+		| patient1           | 9000000001 |
+		| patient2           | 9000000002 |
+		| patient3           | 9000000003 |
+		| patient4           | 9000000004 |
+		| patient5           | 9000000005 |
+		| patient6           | 9000000006 |
+		| patient7           | 9000000007 |
+		| patient8           | 9000000008 |
+		| patient9           | 9000000009 |
+		| patient10          | 9000000010 |
+		| patient11          | 9000000011 |
+		| patient12          | 9000000012 |
+		| patient13          | 9000000013 |
+		| patient14          | 9000000014 |
+		| patient15          | 9000000015 |
 
 Scenario Outline: Retrieve the care record sections for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "<Code>" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
@@ -43,7 +55,7 @@ Scenario: Empty request
 Scenario: No record section requested
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -51,7 +63,7 @@ Scenario: No record section requested
 Scenario: Invalid record section requested
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "ZZZ" care record section for config patient "PWTP2"
+		And I author a request for the "ZZZ" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -60,7 +72,7 @@ Scenario: Invalid record section requested
 Scenario: Multiple record sections requested
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 		And I am requesting the "ALL" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -70,7 +82,7 @@ Scenario: Multiple record sections requested
 Scenario: Multiple duplication record sections in request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 		And I am requesting the "SUM" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -80,7 +92,7 @@ Scenario: Multiple duplication record sections in request
 Scenario: Record section with invalid system for codable concept
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section with system "http://GPConnectTest.nhs.net/ValueSet/record-section"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -89,7 +101,7 @@ Scenario: Record section with invalid system for codable concept
 Scenario: Request record sections with String type rather than CodableConcept
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section with a string parameter
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -99,7 +111,7 @@ Scenario: No patient NHS number supplied
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am requesting the "SUM" care record section
-		And I set the JWT header for getcarerecord with config patient "PWTP2"
+		And I set the JWT header for getcarerecord with config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -117,7 +129,7 @@ Scenario: Invalid NHS number supplied
 Scenario: Invalid identifier system for patient NHS number
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2" of system "http://GPConnectTest.nhs.net/Id/identifierSystem"
+		And I am requesting the record for config patient "patient2" of system "http://GPConnectTest.nhs.net/Id/identifierSystem"
 		And I am requesting the "SUM" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -127,8 +139,8 @@ Scenario: Invalid identifier system for patient NHS number
 Scenario: Multiple different NHS number parameters in request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
-		And I am requesting the record for config patient "PWTP3"
+		And I am requesting the record for config patient "patient2"
+		And I am requesting the record for config patient "patient3"
 		And I am requesting the "SUM" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -137,8 +149,8 @@ Scenario: Multiple different NHS number parameters in request
 Scenario: Duplicate NHS number parameters in request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -156,7 +168,7 @@ Scenario: No patient found with NHS number
 Scenario: Request care record section with patientNHSNumber using String type value
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2" using a fhir string parameter
+		And I am requesting the record for config patient "patient2" using a fhir string parameter
 		And I am requesting the "SUM" care record section
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -165,7 +177,7 @@ Scenario: Request care record section with patientNHSNumber using String type va
 Scenario Outline: Time period specified for a care record section that can be filtered
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "<Code>" care record section
 		And I set a valid time period start and end date
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -185,7 +197,7 @@ Scenario Outline: Time period specified for a care record section that can be fi
 Scenario Outline: Time period specified for a care record section that must not be filtered
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "<Code>" care record section
 		And I set a valid time period start and end date
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -202,7 +214,7 @@ Scenario Outline: Time period specified for a care record section that must not 
 Scenario: Access blocked to care record as no patient consent
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "patientNoSharingConsent"
+		And I author a request for the "SUM" care record section for config patient "patient15"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "403"
 		And the response body should be FHIR JSON
@@ -213,7 +225,7 @@ Scenario: Request patient summary with parameters in oposite order to other test
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I set a valid time period start and end date
 		And I am requesting the "SUM" care record section
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -222,7 +234,7 @@ Scenario: Request patient summary with parameters in oposite order to other test
 Scenario: Request care record where request resource type is something other than Parameters
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "PWTP2"
+		And I author a request for the "SUM" care record section for config patient "patient2"
 	When I send a gpc.getcarerecord operation request with invalid resource type payload
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -231,7 +243,7 @@ Scenario: Request care record where request resource type is something other tha
 Scenario: Invalid start date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 		And I set a time period parameter start date to "abcd" and end date to "2016"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -242,7 +254,7 @@ Scenario: Invalid start date parameter
 Scenario: Invalid end date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 		And I set a time period parameter start date to "2014" and end date to "abcd"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -253,7 +265,7 @@ Scenario: Invalid end date parameter
 Scenario: Time period where start date parameter is after end date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 		And I set a time period parameter start date to "2016" and end date to "2014"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -264,7 +276,7 @@ Scenario: Time period where start date parameter is after end date parameter
 Scenario: Time period with only start date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 		And I set a time period parameter with start date "2012"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -275,7 +287,7 @@ Scenario: Time period with only start date parameter
 Scenario: Time period with only end date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 		And I set a time period parameter with end date "2016"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -286,7 +298,7 @@ Scenario: Time period with only end date parameter
 Scenario: Time period format start and end date only contain year and month
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "PWTP2"
+		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 		And I set a time period parameter start date to "2015-02" and end date to "2016-07"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -297,7 +309,7 @@ Scenario: Time period format start and end date only contain year and month
 Scenario Outline: response should be bundle containing all mandatory elements
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -322,7 +334,7 @@ Scenario Outline: response should be bundle containing all mandatory elements
 Scenario Outline: response bundle should contain composition as the first entry
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -347,7 +359,7 @@ Scenario Outline: response bundle should contain composition as the first entry
 Scenario Outline: request contain the structure definition in the meta fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -376,7 +388,7 @@ Scenario Outline: request contain the structure definition in the meta fields
 Scenario Outline: composition contains generic mandatory fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -410,7 +422,7 @@ Scenario Outline: composition contains generic mandatory fields
 Scenario Outline: if composition contains type mandatory field fixed values should be correct
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -434,7 +446,7 @@ Scenario Outline: if composition contains type mandatory field fixed values shou
 Scenario Outline: if composition contains class coding
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -458,7 +470,7 @@ Scenario Outline: if composition contains class coding
 Scenario Outline: composition contains subject referencing a patient resource in the bundle
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -483,7 +495,7 @@ Scenario Outline: composition contains subject referencing a patient resource in
 Scenario Outline: if composition contains author, the device reference can be found in the bundle
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -508,7 +520,7 @@ Scenario Outline: if composition contains author, the device reference can be fo
 Scenario Outline: if composition contains custodian referenece
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -538,7 +550,7 @@ Scenario: patient is a valid fhir resource
 Scenario Outline: patient contains a valid identifiers
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -568,7 +580,7 @@ Scenario: if patient contains name elements
 Scenario Outline: if patient contains telecom information
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -603,7 +615,7 @@ Scenario: if patient contains address
 Scenario Outline: if patient contains maritalStatus
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -627,7 +639,7 @@ Scenario Outline: if patient contains maritalStatus
 Scenario Outline: if patient contains contact
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -651,7 +663,7 @@ Scenario Outline: if patient contains contact
 Scenario Outline: if patient contins communicaiton
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -675,7 +687,7 @@ Scenario Outline: if patient contins communicaiton
 Scenario Outline: if patient contains practitioner as care provider
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -699,7 +711,7 @@ Scenario Outline: if patient contains practitioner as care provider
 Scenario Outline: if patient contains managingOrganizaiton
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -723,7 +735,7 @@ Scenario Outline: if patient contains managingOrganizaiton
 Scenario Outline: patient does not contain disallowed fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -747,7 +759,7 @@ Scenario Outline: patient does not contain disallowed fields
 Scenario Outline: practitioner resource contains mandatory fields and does not include dissallowed fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -773,7 +785,7 @@ Scenario Outline: practitioner resource contains mandatory fields and does not i
 Scenario Outline: practitioner resource contains mandatory fields within optional elements
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -800,7 +812,7 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 Scenario Outline: if practitioner resource contains a managing organization it must reference an organization within the response bundle
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -825,7 +837,7 @@ Scenario Outline: if practitioner resource contains a managing organization it m
 Scenario Outline: organization resource identifiers
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -850,7 +862,7 @@ Scenario Outline: organization resource identifiers
 Scenario Outline: organization resource element cardinality
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -875,7 +887,7 @@ Scenario Outline: organization resource element cardinality
 Scenario Outline: organization resource internal reference
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -900,7 +912,7 @@ Scenario Outline: organization resource internal reference
 Scenario Outline: device resource element cardinality conformance
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -925,7 +937,7 @@ Scenario Outline: device resource element cardinality conformance
 Scenario Outline: device resource type element values match specification
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -959,44 +971,44 @@ Scenario Outline: check all dateTime format variations are allowed
 		And the HTML in the response matches the Regex check "<RegexToCheck>"
 	Examples:
 		| Code | Patient  | StartDateTime             | EndDateTime               | RegexToCheck |
-		| ADM  | PWTP2 | 2014                      | 2016                      | (.)*         |
-		| ADM  | PWTP2 | 2014-02                   | 2016                      | (.)*         |
-		| ADM  | PWTP2 | 2014-10-05                | 2016-08                   | (.)*         |
-		| ADM  | PWTP2 | 2014-05                   | 2016-09-14                | (.)*         |
-		| ADM  | PWTP2 | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       | (.)*         |
-		| ADM  | PWTP2 | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 | (.)*         |
-		| CLI  | PWTP2 | 2013                      | 2017                      | (.)*         |
-		| CLI  | PWTP2 | 2014-02                   | 2016                      | (.)*         |
-		| CLI  | PWTP2 | 2014-02-03                | 2016-01-24                | (.)*         |
-		| CLI  | PWTP2 | 2014                      | 2016-06-01                | (.)*         |
-		| CLI  | PWTP2 | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       | (.)*         |
-		| CLI  | PWTP2 | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 | (.)*         |
-		| ENC  | PWTP2 | 2015                      | 2017-01                   | (.)*         |
-		| ENC  | PWTP2 | 2015-05                   | 2017-01-27                | (.)*         |
-		| ENC  | PWTP2 | 2014-10-05                | 2016                      | (.)*         |
-		| ENC  | PWTP2 | 2014-10-05                | 2016-08                   | (.)*         |
-		| ENC  | PWTP2 | 2014-10-05                | 2016-09-01                | (.)*         |
-		| ENC  | PWTP2 | 2015-11-28T18:22:01       | 2017-01-04T01:01:22       | (.)*         |
-		| ENC  | PWTP2 | 2014-04-03T22:03:25+00:00 | 2016-03-13T17:13:12+00:00 | (.)*         |
-		| SUM  | PWTP2 | 2012                      | 2017                      | (.)*         |
-		| SUM  | PWTP2 | 2014-05                   | 2016-12-18                | (.)*         |
-		| SUM  | PWTP2 | 2014-05-03                | 2016-12                   | (.)*         |
-		| SUM  | PWTP2 | 2014-03-21                | 2016-12-14                | (.)*         |
-		| SUM  | PWTP2 | 2015-02-28T09:20:14       | 2017-01-01T03:05:08       | (.)*         |
-		| SUM  | PWTP2 | 2014-12-22T22:22:22+00:00 | 2016-06-06T06:08:06+00:00 | (.)*         |
-		| REF  | PWTP2 | 2013                      | 2017                      | (.)*         |
-		| REF  | PWTP2 | 2014-02                   | 2016                      | (.)*         |
-		| REF  | PWTP2 | 2014-02-03                | 2016-01-24                | (.)*         |
-		| REF  | PWTP2 | 2014                      | 2016-06-01                | (.)*         |
-		| REF  | PWTP2 | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       | (.)*         |
-		| REF  | PWTP2 | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 | (.)*         |
+		| ADM  | patient2 | 2014                      | 2016                      | (.)*         |
+		| ADM  | patient2 | 2014-02                   | 2016                      | (.)*         |
+		| ADM  | patient2 | 2014-10-05                | 2016-08                   | (.)*         |
+		| ADM  | patient2 | 2014-05                   | 2016-09-14                | (.)*         |
+		| ADM  | patient2 | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       | (.)*         |
+		| ADM  | patient2 | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 | (.)*         |
+		| CLI  | patient2 | 2013                      | 2017                      | (.)*         |
+		| CLI  | patient2 | 2014-02                   | 2016                      | (.)*         |
+		| CLI  | patient2 | 2014-02-03                | 2016-01-24                | (.)*         |
+		| CLI  | patient2 | 2014                      | 2016-06-01                | (.)*         |
+		| CLI  | patient2 | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       | (.)*         |
+		| CLI  | patient2 | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 | (.)*         |
+		| ENC  | patient2 | 2015                      | 2017-01                   | (.)*         |
+		| ENC  | patient2 | 2015-05                   | 2017-01-27                | (.)*         |
+		| ENC  | patient2 | 2014-10-05                | 2016                      | (.)*         |
+		| ENC  | patient2 | 2014-10-05                | 2016-08                   | (.)*         |
+		| ENC  | patient2 | 2014-10-05                | 2016-09-01                | (.)*         |
+		| ENC  | patient2 | 2015-11-28T18:22:01       | 2017-01-04T01:01:22       | (.)*         |
+		| ENC  | patient2 | 2014-04-03T22:03:25+00:00 | 2016-03-13T17:13:12+00:00 | (.)*         |
+		| SUM  | patient2 | 2012                      | 2017                      | (.)*         |
+		| SUM  | patient2 | 2014-05                   | 2016-12-18                | (.)*         |
+		| SUM  | patient2 | 2014-05-03                | 2016-12                   | (.)*         |
+		| SUM  | patient2 | 2014-03-21                | 2016-12-14                | (.)*         |
+		| SUM  | patient2 | 2015-02-28T09:20:14       | 2017-01-01T03:05:08       | (.)*         |
+		| SUM  | patient2 | 2014-12-22T22:22:22+00:00 | 2016-06-06T06:08:06+00:00 | (.)*         |
+		| REF  | patient2 | 2013                      | 2017                      | (.)*         |
+		| REF  | patient2 | 2014-02                   | 2016                      | (.)*         |
+		| REF  | patient2 | 2014-02-03                | 2016-01-24                | (.)*         |
+		| REF  | patient2 | 2014                      | 2016-06-01                | (.)*         |
+		| REF  | patient2 | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       | (.)*         |
+		| REF  | patient2 | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 | (.)*         |
 	#	| INV ||||||
 	#	| PAT ||||||
 	
 Scenario Outline: invalid request parameter names and case
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "PWTP2"
+		And I author a request for the "SUM" care record section for config patient "patient2"
 		And I set a valid time period start and end date
 		And I replace the parameter name "<ParamName>" with "<NewParamName>"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
@@ -1019,7 +1031,7 @@ Scenario Outline: invalid request parameter names and case
 Scenario: Request parameter patientNHSNumber values is empty
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "PWTP2"
+		And I author a request for the "SUM" care record section for config patient "patient2"
 		And I set the parameter patientNHSNumber with an empty value
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -1029,7 +1041,7 @@ Scenario: Request parameter patientNHSNumber values is empty
 Scenario: Request parameter patientNHSNumber system is empty
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "PWTP2"
+		And I author a request for the "SUM" care record section for config patient "patient2"
 		And I set the parameter patientNHSNumber with an empty system
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -1039,7 +1051,7 @@ Scenario: Request parameter patientNHSNumber system is empty
 Scenario: Request parameter recordSection values is empty
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "" care record section for config patient "PWTP2"
+		And I author a request for the "" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -1048,7 +1060,7 @@ Scenario: Request parameter recordSection values is empty
 Scenario: Request parameter recordSection system is empty
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "PWTP2"
+		And I author a request for the "SUM" care record section for config patient "patient2"
 		And I set the parameter recordSection with an empty system
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "422"
@@ -1058,7 +1070,7 @@ Scenario: Request parameter recordSection system is empty
 Scenario Outline: Requested section code incorrect parameter case
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "PWTP2"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -1124,14 +1136,31 @@ Scenario: Identifier order in response resources
 @Manual
 Scenario: Patient with inactive nhs number in system should not return that NHS Number
 
-@ignore
-@Manual
-Scenario: A patient is requested which is not on Spine but is on provider system
-	# 404 PATIENT_NOT_FOUND
+Scenario Outline: A patient is requested which is not on Spine but is on provider system
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient14"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "404"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+	Examples:
+	| Code |
+	| ADM |
+	| ALL |
+	| CLI |
+	| ENC |
+	| IMM |
+	#| INV |
+	| MED |
+	| OBS |
+	#| PAT |
+	| PRB |
+	| REF |
+	| SUM |
 
 @ignore
-@Manual
-Scenario: Patients flag as sensitive should return any information within the HTML which may allow for identification of contact information or address
+Scenario: Patients flag as sensitive should return a minimal patient resource which does not contain sensitive fields
 
 @ignore
 @Manual

@@ -3,11 +3,23 @@ Feature: JWT
 
 Background:
 	Given I have the following patient records
-		| Id                      | NHSNumber  |
-		| PWTP2                   | 9990049416 |
-		| PWTP3                   | 9990049424 |
-		| patientNotInSystem      | 9999999999 |
-		| patientNoSharingConsent | 9476719958 |
+		| Id                 | NHSNumber  |
+		| patientNotInSystem | 9999999999 |
+		| patient1           | 9000000001 |
+		| patient2           | 9000000002 |
+		| patient3           | 9000000003 |
+		| patient4           | 9000000004 |
+		| patient5           | 9000000005 |
+		| patient6           | 9000000006 |
+		| patient7           | 9000000007 |
+		| patient8           | 9000000008 |
+		| patient9           | 9000000009 |
+		| patient10          | 9000000010 |
+		| patient11          | 9000000011 |
+		| patient12          | 9000000012 |
+		| patient13          | 9000000013 |
+		| patient14          | 9000000014 |
+		| patient15          | 9000000015 |
 
 Scenario: JWT expiry time greater than 300 seconds
 	Given I am using the default server
@@ -237,15 +249,15 @@ Scenario: JWT requesting practitioner invalid resourceType
 Scenario: JWT requested record patient does not match getCareRecord Payload patient
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-	And I author a request for the "SUM" care record section for config patient "PWTP2"
-	And I set the JWT requested record NHS number to config patient "PWTP3"
+	And I author a request for the "SUM" care record section for config patient "patient2"
+	And I set the JWT requested record NHS number to config patient "patient3"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 
 Scenario: JWT requested scope for getCareRecord does not match type of request
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-	And I author a request for the "SUM" care record section for config patient "PWTP2"
+	And I author a request for the "SUM" care record section for config patient "patient2"
 	And I set the JWT requested scope to "organization/*.write"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -253,7 +265,7 @@ Scenario: JWT requested scope for getCareRecord does not match type of request
 Scenario: JWT requested scope is invalid type
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-	And I author a request for the "ENC" care record section for config patient "PWTP2"
+	And I author a request for the "ENC" care record section for config patient "patient2"
 	And I set the JWT requested scope to "encounter/*.read"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
@@ -264,7 +276,3 @@ Scenario: JWT requested scope for metaData request does not match organization r
 	And I set the JWT requested scope to "patient/*.read"
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
-
-@ignore
-Scenario: Patients flag as sensitive should return a minimal patient resource which does not contain sensitive fields
-
