@@ -21,6 +21,26 @@ Background:
 		| patient14          | 9000000014 |
 		| patient15          | 9000000015 |
 
+@ignore
+Scenario: patient is a valid fhir resource
+# There is no need to check that the patient resource and included value sets are correct if included as this is done by the parse of the response within scenario above.
+# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
+
+@ignore
+Scenario: if patient contains name elements
+# There is no need to check that the patient resource name element value sets are correct if included as this is done by the parse of the response within scenario above.
+# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
+
+@ignore
+Scenario: if patient contains gender
+# There is no need to check that the patient gender value set is valid as this is done by the parse of the response within scenario above.
+# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
+
+@ignore
+Scenario: if patient contains address
+# There is no need to check that the patient address value sets are valid as this is done by the parse of the response within scenario above.
+# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
+
 Scenario Outline: Retrieve the care record sections for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -211,25 +231,54 @@ Scenario Outline: Time period specified for a care record section that must not 
 	| OBS |
 	| PRB |
 	
-Scenario: Access blocked to care record as no patient consent
+Scenario Outline: Access blocked to care record as no patient consent
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "patient15"
+		And I author a request for the "<Code>" care record section for config patient "patient15"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "403"
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource with error code "NO_PATIENT_CONSENT"
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		| REF  |
+		| SUM  |
 
-Scenario: Request patient summary with parameters in oposite order to other tests
+Scenario Outline: Request patient summary with parameters in oposite order to other tests
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I set a valid time period start and end date
-		And I am requesting the "SUM" care record section
+		And I am requesting the "<Code>" care record section
 		And I am requesting the record for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		| REF  |
+		| SUM  |
+
 
 Scenario: Request care record where request resource type is something other than Parameters
 	Given I am using the default server
@@ -290,17 +339,6 @@ Scenario: Time period with only end date parameter
 		And I am requesting the record for config patient "patient2"
 		And I am requesting the "SUM" care record section
 		And I set a time period parameter with end date "2016"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-
-Scenario: Time period format start and end date only contain year and month
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section
-		And I set a time period parameter start date to "2015-02" and end date to "2016-07"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -404,19 +442,19 @@ Scenario Outline: composition contains generic mandatory fields
 		And response bundle entry "Composition" should contain element "resource.section[0].text.status"
 		And response bundle entry "Composition" should contain element "resource.section[0].text.div"
 	Examples:
-	| Code | Title | Display |
-	| ADM  | Administrative Items | Administrative Items |
+	| Code | Title                       | Display                     |
+	| ADM  | Administrative Items        | Administrative Items        |
 	| ALL  | Allergies and Sensitivities | Allergies and Sensitivities |
-	| CLI  | Clinical Items | Clinical Items |
-	| ENC  | Encounters | Encounters |
-	| IMM  | Immunisations | Immunisations |
-	#| INV  | Investigations | Investigations |
-	| MED  | Medications | Medications |
-	| OBS  | Observations | Observations |
-	#| PAT  | Patient Details | Patient Details |
-	| PRB  | Problems | Problems |
-	| REF  | Referrals | Referrals |
-	| SUM  | Summary | Summary |
+	| CLI  | Clinical Items              | Clinical Items              |
+	| ENC  | Encounters                  | Encounters                  |
+	| IMM  | Immunisations               | Immunisations               |
+#   | INV  | Investigations              | Investigations              |
+	| MED  | Medications                 | Medications                 |
+	| OBS  | Observations                | Observations                |
+#   | PAT  | Patient Details             | Patient Details			   |
+	| PRB  | Problems                    | Problems                    |
+	| REF  | Referrals                   | Referrals                   |
+	| SUM  | Summary                     | Summary                     |
 
 
 Scenario Outline: if composition contains type mandatory field fixed values should be correct
@@ -541,11 +579,6 @@ Scenario Outline: if composition contains custodian referenece
 		| PRB  |
 		| REF  |
 		| SUM  |
-
-@ignore
-Scenario: patient is a valid fhir resource
-# There is no need to check that the patient resource and included value sets are correct if included as this is done by the parse of the response within scenario above.
-# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
 	
 Scenario Outline: patient contains a valid identifiers
 	Given I am using the default server
@@ -572,11 +605,6 @@ Scenario Outline: patient contains a valid identifiers
 		| REF  |
 		| SUM  |
 
-@ignore
-Scenario: if patient contains name elements
-# There is no need to check that the patient resource name element value sets are correct if included as this is done by the parse of the response within scenario above.
-# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
-
 Scenario Outline: if patient contains telecom information
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -601,16 +629,6 @@ Scenario Outline: if patient contains telecom information
 		| PRB  |
 		| REF  |
 		| SUM  |
-
-@ignore
-Scenario: if patient contains gender
-# There is no need to check that the patient gender value set is valid as this is done by the parse of the response within scenario above.
-# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
-
-@ignore
-Scenario: if patient contains address
-# There is no need to check that the patient address value sets are valid as this is done by the parse of the response within scenario above.
-# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
 
 Scenario Outline: if patient contains maritalStatus
 	Given I am using the default server
@@ -1108,34 +1126,6 @@ Scenario Outline: Requested section code incorrect parameter case
 	| Sum |
 	| sUm |
 
-@ignore
-@Manual
-Scenario: Request records for patients with genders which do not match the valueset so must addear to gender mapping
-	# Check that the gender returned matches the expected mapping
-
-@ignore
-@Manual
-Scenario: Check that all the genders supported by provider are in the GP Connect value set, if not check mapping is covered in documentation and system maps correctly
-	# Run tests with patients with non value set genders if possible and check mapping in response is acceptable
-
-@ignore
-@Manual
-Scenario: Request records for patients contact with relationship which do not match the valueset so must addear to relationship mapping
-	# Check that the relationship returned matches the expected mapping
-
-@ignore
-@Manual
-Scenario: Check that all the relationship supported for contacts by the provider are in the GP Connect value set, if not check mapping is covered in documentation and system maps correctly
-	# Run tests with patients with non value set relationships for contacts and check mapping in response is acceptable
-
-@ignore
-Scenario: Identifier order in response resources
-# The identifiers within the response resources have to appear in the correct order as per the specfication.
-
-@ignore
-@Manual
-Scenario: Patient with inactive nhs number in system should not return that NHS Number
-
 Scenario Outline: A patient is requested which is not on Spine but is on provider system
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -1160,9 +1150,36 @@ Scenario Outline: A patient is requested which is not on Spine but is on provide
 	| SUM |
 
 @ignore
+Scenario: Identifier order in response resources
+# The identifiers within the response resources have to appear in the correct order as per the specfication.
+
+@ignore
 Scenario: Patients flag as sensitive should return a minimal patient resource which does not contain sensitive fields
 
 @ignore
 @Manual
-Scenario: Patient whos records are currently in transit
+Scenario: Patient with inactive nhs number in system should not return that NHS Number
 
+@ignore
+@Manual
+Scenario: Request records for patients with genders which do not match the valueset so must addear to gender mapping
+	# Check that the gender returned matches the expected mapping
+
+@ignore
+@Manual
+Scenario: Check that all the genders supported by provider are in the GP Connect value set, if not check mapping is covered in documentation and system maps correctly
+	# Run tests with patients with non value set genders if possible and check mapping in response is acceptable
+
+@ignore
+@Manual
+Scenario: Request records for patients contact with relationship which do not match the valueset so must addear to relationship mapping
+	# Check that the relationship returned matches the expected mapping
+
+@ignore
+@Manual
+Scenario: Check that all the relationship supported for contacts by the provider are in the GP Connect value set, if not check mapping is covered in documentation and system maps correctly
+	# Run tests with patients with non value set relationships for contacts and check mapping in response is acceptable
+
+@ignore
+@Manual
+Scenario: Patient whos records are currently in transit
