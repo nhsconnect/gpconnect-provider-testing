@@ -426,7 +426,7 @@ Scenario Outline: request contain the structure definition in the meta fields
 Scenario Outline: composition contains generic mandatory fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -442,20 +442,31 @@ Scenario Outline: composition contains generic mandatory fields
 		And response bundle entry "Composition" should contain element "resource.section[0].text.status"
 		And response bundle entry "Composition" should contain element "resource.section[0].text.div"
 	Examples:
-	| Code | Title                       | Display                     |
-	| ADM  | Administrative Items        | Administrative Items        |
-	| ALL  | Allergies and Sensitivities | Allergies and Sensitivities |
-	| CLI  | Clinical Items              | Clinical Items              |
-	| ENC  | Encounters                  | Encounters                  |
-	| IMM  | Immunisations               | Immunisations               |
-#   | INV  | Investigations              | Investigations              |
-	| MED  | Medications                 | Medications                 |
-	| OBS  | Observations                | Observations                |
-#   | PAT  | Patient Details             | Patient Details			   |
-	| PRB  | Problems                    | Problems                    |
-	| REF  | Referrals                   | Referrals                   |
-	| SUM  | Summary                     | Summary                     |
-
+	| Patient  | Code     | Title                       | Display                     |
+	| patient1 | ADM      | Administrative Items        | Administrative Items        |
+	| patient2 | ADM      | Administrative Items        | Administrative Items        |
+	| patient1 | ALL      | Allergies and Sensitivities | Allergies and Sensitivities |
+	| patient2 | ALL      | Allergies and Sensitivities | Allergies and Sensitivities |
+	| patient1 | CLI      | Clinical Items              | Clinical Items              |
+	| patient2 | CLI      | Clinical Items              | Clinical Items              |
+	| patient1 | ENC      | Encounters                  | Encounters                  |
+	| patient2 | ENC      | Encounters                  | Encounters                  |
+	| patient1 | IMM      | Immunisations               | Immunisations               |
+	| patient2 | IMM      | Immunisations               | Immunisations               |
+#        | patient1 | INV                         | Investigations              | Investigations |
+#        | patient2 | INV                         | Investigations              | Investigations |
+	| patient1 | MED      | Medications                 | Medications                 |
+	| patient2 | MED      | Medications                 | Medications                 |
+	| patient1 | OBS      | Observations                | Observations                |
+	| patient2 | OBS      | Observations                | Observations                |
+#        | patient1 | PAT                         | Patient Details             | Patient Details |
+#        | patient2 | PAT                         | Patient Details             | Patient Details |
+	| patient1 | PRB      | Problems                    | Problems                    |
+	| patient2 | PRB      | Problems                    | Problems                    |
+	| patient1 | REF      | Referrals                   | Referrals                   |
+	| patient2 | REF      | Referrals                   | Referrals                   |
+	| patient1 | SUM      | Summary                     | Summary                     |
+	| patient2 | SUM      | Summary                     | Summary                     |
 
 Scenario Outline: if composition contains type mandatory field fixed values should be correct
 	Given I am using the default server
@@ -1154,6 +1165,7 @@ Scenario: Identifier order in response resources
 # The identifiers within the response resources have to appear in the correct order as per the specfication.
 
 @ignore
+@Manual
 Scenario: Patients flag as sensitive should return a minimal patient resource which does not contain sensitive fields
 
 @ignore
