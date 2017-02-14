@@ -64,20 +64,46 @@ Scenario Outline: html section headers present
 		And the html should contain headers in coma seperated list "<Headers>"
 	Examples:
 		| Patient | Code | Headers |
+		| patient1 | ADM  | Administrative Items |
 		| patient2 | ADM  | Administrative Items |
+		| patient1 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
 		| patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
+		| patient3 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
+		| patient4 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
+		| patient1 | CLI  | Clinical Items |
 		| patient2 | CLI  | Clinical Items |
+		| patient1 | ENC  | Encounters |
 		| patient2 | ENC  | Encounters |
+		| patient1 | IMM  | Immunisations |
 		| patient2 | IMM  | Immunisations |
+		#| patient1 | INV | Investigations |
 		#| patient2 | INV | Investigations |
+		| patient1 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
 		| patient2 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
+		| patient3 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
+		| patient4 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
+		| patient5 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
+		| patient6 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
+		| patient7 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
+		| patient8 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
+		| patient1 | OBS  | Observations |
 		| patient2 | OBS  | Observations |
+		#| patient1 | PAT |  |
 		#| patient2 | PAT |  |
+		| patient1 | PRB  | Active Problems and Issues,Inactive Problems and Issues |
 		| patient2 | PRB  | Active Problems and Issues,Inactive Problems and Issues |
+		| patient3 | PRB  | Active Problems and Issues,Inactive Problems and Issues |
+		| patient4 | PRB  | Active Problems and Issues,Inactive Problems and Issues |
+		| patient1 | REF  | Referrals |
 		| patient2 | REF  | Referrals |
+		| patient1 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
 		| patient2 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-	
-	# NEED TO EXPAND TEST TO PATIENT WITH NO RETURNED DETAILS AND PATIENT WITH SOME SECTIONS AND ONLY CURRENT OR PAST MEDICATIONS, ONLY HISTORICAL ALLERGIES ETC
+		| patient3 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
+		| patient4 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
+		| patient5 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
+		| patient6 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
+		| patient7 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
+		| patient8 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
 
 Scenario Outline: html table headers present and in order that is expected
 	Given I am using the default server
@@ -123,20 +149,35 @@ Scenario Outline: filtered sections should contain date range section banner
 		And the response html should contain the applied date range text "<TextStartDate>" to "<TextEndDate>"
 	Examples:
 		| Code | Patient  | StartDateTime | EndDateTime | TextStartDate | TextEndDate |
+		| ADM  | patient1 | 2014-05-03    | 2016-09-14  | 03-May-2014   | 14-Sep-2016 |
 		| ADM  | patient2 | 2014-05-03    | 2016-09-14  | 03-May-2014   | 14-Sep-2016 |
+		| CLI  | patient1 | 2014-02-03    | 2016-01-24  | 04-Feb-2014   | 24-Jan-2016 |
 		| CLI  | patient2 | 2014-02-03    | 2016-01-24  | 04-Feb-2014   | 24-Jan-2016 |
+		| ENC  | patient1 | 1982-10-05    | 2016-09-01  | 05-Oct-1982   | 01-Sep-2016 |
 		| ENC  | patient2 | 1982-10-05    | 2016-09-01  | 05-Oct-1982   | 01-Sep-2016 |
+		| SUM  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
 		| SUM  | patient2 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
+		| REF  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
 		| REF  | patient2 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
+		| ADM  | patient1 | 2014-05       | 2016-09     | 01-May-2014   | 01-Sep-2016 |
 		| ADM  | patient2 | 2014-05       | 2016-09     | 01-May-2014   | 01-Sep-2016 |
+		| CLI  | patient1 | 2014-02       | 2016-01     | 01-Feb-2014   | 01-Jan-2016 |
 		| CLI  | patient2 | 2014-02       | 2016-01     | 01-Feb-2014   | 01-Jan-2016 |
+		| ENC  | patient1 | 2014-10       | 2016-09     | 01-Oct-2014   | 01-Sep-2016 |
 		| ENC  | patient2 | 2014-10       | 2016-09     | 01-Oct-2014   | 01-Sep-2016 |
+		| SUM  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 01-Dec-2016 |
 		| SUM  | patient2 | 2014-03       | 2016-12     | 01-Mar-2014   | 01-Dec-2016 |
+		| REF  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 01-Dec-2016 |
 		| REF  | patient2 | 2014-03       | 2016-12     | 01-Mar-2014   | 01-Dec-2016 |
+		| ADM  | patient1 | 1992          | 2016        | 01-Jan-1992   | 01-Jan-2016 |
 		| ADM  | patient2 | 1992          | 2016        | 01-Jan-1992   | 01-Jan-2016 |
+		| CLI  | patient1 | 2014          | 2017        | 01-Jan-2014   | 01-Jan-2017 |
 		| CLI  | patient2 | 2014          | 2017        | 01-Jan-2014   | 01-Jan-2017 |
+		| ENC  | patient1 | 2012          | 2014        | 01-Jan-2012   | 01-Jan-2014 |
 		| ENC  | patient2 | 2012          | 2014        | 01-Jan-2012   | 01-Jan-2014 |
+		| SUM  | patient1 | 2015          | 2015        | 01-Jan-2015   | 01-Jan-2015 |
 		| SUM  | patient2 | 2015          | 2015        | 01-Jan-2015   | 01-Jan-2015 |
+		| REF  | patient1 | 2016          | 2016        | 01-Jan-2016   | 01-Jan-2016 |
 		| REF  | patient2 | 2016          | 2016        | 01-Jan-2016   | 01-Jan-2016 |
 	#	| INV ||||||
 	#	| PAT ||||||
@@ -152,20 +193,29 @@ Scenario Outline: sections should contain the all data items section banner
 		And the response html should contain the all data items text
 	Examples:
 		| Code | Patient  |
+		| ADM  | patient1 |
 		| ADM  | patient2 |
+		| CLI  | patient1 |
 		| CLI  | patient2 |
+		| ENC  | patient1 |
 		| ENC  | patient2 |
+		| SUM  | patient1 |
 		| SUM  | patient2 |
+		| REF  | patient1 |
 		| REF  | patient2 |
+		| ALL  | patient1 |
 		| ALL  | patient2 |
+		| IMM  | patient1 |
 		| IMM  | patient2 |
+		| MED  | patient1 |
 		| MED  | patient2 |
+		| OBS  | patient1 |
 		| OBS  | patient2 |
+		| PRB  | patient1 |
 		| PRB  | patient2 |
 	#	| INV ||||||
 	#	| PAT ||||||
 	
-@ignore
 Scenario Outline: filtered sections should return no data available html banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -179,19 +229,18 @@ Scenario Outline: filtered sections should return no data available html banner
 		And the response html should contain the no data available html banner in section "<Section>"
 	Examples:
 		| Code | Patient  | StartDateTime | EndDateTime | TextStartDate | TextEndDate | Section                                 |
-		| ADM  | patient2 | 2014-05-03    | 2016-09-14  | 03-May-2014   | 14-Sep-2016 | Administrative Items                    |
-		| CLI  | patient2 | 2014-02-03    | 2016-01-24  | 04-Feb-2014   | 24-Jan-2016 | Clinical Items                          |
-		| ENC  | patient2 | 1982-10-05    | 2016-09-01  | 05-Oct-1982   | 01-Sep-2016 | Encounters                              |
-		| SUM  | patient2 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Active Problems and Issues              |
-		| SUM  | patient2 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Current Medication Issues               |
-		| SUM  | patient2 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Current Repeat Medications              |
-		| SUM  | patient2 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Current Allergies and Adverse Reactions |
-		| SUM  | patient2 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Encounters                              |
-		| REF  | patient2 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 | Referrals                               |
+		| ADM  | patient2 | 2014-05-03    | 2015-06-14  | 03-May-2014   | 14-Jun-2015 | Administrative Items                    |
+		| CLI  | patient2 | 2014-02-03    | 2015-01-24  | 04-Feb-2014   | 24-Jan-2015 | Clinical Items                          |
+		| ENC  | patient2 | 1982-10-05    | 2015-05-01  | 05-Oct-1982   | 01-May-2015 | Encounters                              |
+		| SUM  | patient2 | 2014-03-21    | 2015-04-14  | 21-Mar-2014   | 14-Apr-2015 | Active Problems and Issues              |
+		| SUM  | patient2 | 2014-03-21    | 2015-03-14  | 21-Mar-2014   | 14-Mar-2015 | Current Medication Issues               |
+		| SUM  | patient2 | 2014-03-21    | 2015-02-14  | 21-Mar-2014   | 14-Feb-2015 | Current Repeat Medications              |
+		| SUM  | patient2 | 2014-03-21    | 2015-01-14  | 21-Mar-2014   | 14-Jan-2015 | Current Allergies and Adverse Reactions |
+		| SUM  | patient2 | 2014-03-21    | 2015-02-14  | 21-Mar-2014   | 14-Feb-2015 | Encounters                              |
+		| REF  | patient2 | 2014-03-21    | 2015-03-14  | 21-Mar-2014   | 14-Mar-2015 | Referrals                               |
 	#	| INV ||||||
 	#	| PAT ||||||
 
-@ignore
 Scenario Outline: sections should return no data available html banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -201,27 +250,27 @@ Scenario Outline: sections should return no data available html banner
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And the response html should contain the all data items text
-		And the response html should contain the no data available html banner
+		And the response html should contain the no data available html banner in section "<Section>"
 	Examples:
 		| Code | Patient  | Section                                    |
-		| ADM  | patient2 | Administrative Items                       |
-		| CLI  | patient2 | Clinical Items                             |
-		| ENC  | patient2 | Encounters                                 |
-		| SUM  | patient2 | Active Problems and Issues                 |
-		| SUM  | patient2 | Current Medication Issues                  |
-		| SUM  | patient2 | Current Repeat Medications                 |
-		| SUM  | patient2 | Current Allergies and Adverse Reactions    |
-		| SUM  | patient2 | Encounters                                 |
-		| REF  | patient2 | Referrals                                  |
-		| ALL  | patient2 | Current Allergies and Adverse Reactions    |
-		| ALL  | patient2 | Historical Allergies and Adverse Reactions |
-		| IMM  | patient2 | Immunisations                              |
-		| MED  | patient2 | Current Medication Issues                  |
-		| MED  | patient2 | Current Repeat Medications                 |
-		| MED  | patient2 | Past Medications                           |
-		| OBS  | patient2 | Observations                               |
-		| PRB  | patient2 | Active Problems and Issues                 |
-		| PRB  | patient2 | Inactive Problems and Issues               |
+		| ADM  | patient1 | Administrative Items                       |
+		| CLI  | patient1 | Clinical Items                             |
+		| ENC  | patient1 | Encounters                                 |
+		| SUM  | patient1 | Active Problems and Issues                 |
+		| SUM  | patient1 | Current Medication Issues                  |
+		| SUM  | patient1 | Current Repeat Medications                 |
+		| SUM  | patient1 | Current Allergies and Adverse Reactions    |
+		| SUM  | patient1 | Encounters                                 |
+		| REF  | patient1 | Referrals                                  |
+		| ALL  | patient1 | Current Allergies and Adverse Reactions    |
+		| ALL  | patient1 | Historical Allergies and Adverse Reactions |
+		| IMM  | patient1 | Immunisations                              |
+		| MED  | patient1 | Current Medication Issues                  |
+		| MED  | patient1 | Current Repeat Medications                 |
+		| MED  | patient1 | Past Medications                           |
+		| OBS  | patient1 | Observations                               |
+		| PRB  | patient1 | Active Problems and Issues                 |
+		| PRB  | patient1 | Inactive Problems and Issues               |
 	#	| INV ||||||
 	#	| PAT ||||||
 

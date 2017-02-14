@@ -215,5 +215,34 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+
+        [Then(@"the response html should contain the no data available html banner in section ""([^""]*)""")]
+        public void ThenTheResponseHTMLShouldContainTheNoDataAvailableHTMLBannerInSection(string sectionHeading)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    var sectionFound = false;
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var html = section.Text.Div;
+                        Regex regexForSections = new Regex("<h2([\\w\\W]*?)((</div)|(/table))");
+                        MatchCollection sectionHeadingMatches = regexForSections.Matches(html);
+
+                        // Find relavant section
+                        foreach (Match sectionInHTML in sectionHeadingMatches) {
+                            if (sectionInHTML.Value.Contains(sectionHeading)) {
+                                sectionFound = true;
+                                sectionInHTML.Value.ShouldContain("<p>No '"+sectionHeading+"' data is recorded for this patient.</p>");
+                            }
+                        }
+                    }
+                    sectionFound.ShouldBeTrue();
+                }
+            }
+        }
+
     }
 }
