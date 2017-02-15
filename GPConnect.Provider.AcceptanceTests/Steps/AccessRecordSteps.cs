@@ -543,14 +543,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Practitioner practitioner = (Practitioner)entry.Resource;
                     //If the practitioner has a communicaiton elemenets containing a coding then there must be a system, code and display element. There must only be one coding per communication element.
                     foreach (CodeableConcept codeableConcept in practitioner.Communication) {
-                        var codingCount = 0;
-                        foreach (Coding coding in codeableConcept.Coding) {
-                            codingCount++;
-                            coding.System.ShouldNotBeNull();
-                            coding.Code.ShouldNotBeNull();
-                            coding.Display.ShouldNotBeNull();
-                        }
-                        codingCount.ShouldBeLessThanOrEqualTo(1);
+                        shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
                     }
                 }
             }
