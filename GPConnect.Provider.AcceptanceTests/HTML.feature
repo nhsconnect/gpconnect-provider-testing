@@ -21,7 +21,7 @@ Background:
 		| patient14          | 9000000014 |
 		| patient15          | 9000000015 |
 
-Scenario Outline: HTML does not contain disallowed elements
+Scenario Outline: HTML should not contain disallowed elements
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "patient2"

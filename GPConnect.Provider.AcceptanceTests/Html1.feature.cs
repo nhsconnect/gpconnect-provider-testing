@@ -126,7 +126,7 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("HTML does not contain disallowed elements")]
+        [NUnit.Framework.DescriptionAttribute("HTML should not contain disallowed elements")]
         [NUnit.Framework.TestCaseAttribute("ADM", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ALL", new string[0])]
         [NUnit.Framework.TestCaseAttribute("CLI", new string[0])]
@@ -137,9 +137,9 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestCaseAttribute("PRB", new string[0])]
         [NUnit.Framework.TestCaseAttribute("REF", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", new string[0])]
-        public virtual void HTMLDoesNotContainDisallowedElements(string code, string[] exampleTags)
+        public virtual void HTMLShouldNotContainDisallowedElements(string code, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("HTML does not contain disallowed elements", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("HTML should not contain disallowed elements", exampleTags);
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line 4
