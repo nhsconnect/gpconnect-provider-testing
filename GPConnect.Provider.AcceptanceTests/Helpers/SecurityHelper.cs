@@ -51,14 +51,14 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             Log.WriteLine("Setup The Server Certificate Callback To Validate The Server Certificate.");
         }
 
-        public static void ForceServerCertificateToValidate()
+        public static void DoNotValidateServerCertificate()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.MaxServicePointIdleTime = 0;
             Log.WriteLine("Force The Server Certificate Callback To Always Be True.");
         }
 
-        public static void DoNotValidateServerCertificate()
+        public static void ForceServerCertificateToValidate()
         {
             ServicePointManager.ServerCertificateValidationCallback = null;
             ServicePointManager.MaxServicePointIdleTime = 0;

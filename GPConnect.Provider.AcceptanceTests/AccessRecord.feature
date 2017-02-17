@@ -267,15 +267,10 @@ Scenario Outline: Request patient summary with parameters in oposite order to ot
 	Examples:
 		| Code |
 		| ADM  |
-		| ALL  |
 		| CLI  |
 		| ENC  |
-		| IMM  |
 		#| INV  |
-		| MED  |
-		| OBS  |
 		#| PAT  |
-		| PRB  |
 		| REF  |
 		| SUM  |
 

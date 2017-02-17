@@ -155,6 +155,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 Log.WriteLine("*** OnBeforeRequest ***");
                 var client = (FhirClient)sender;
+                
                 // Setup The Web Proxy
                 if (HttpContext.UseWebProxy)
                 {

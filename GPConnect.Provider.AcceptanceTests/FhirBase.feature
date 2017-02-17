@@ -270,6 +270,15 @@ Scenario: endpoint should support gzip compression for getCareRecord operation
 @ignore
 Scenario: endpoint should support chunking of data
 	# Does the response Transfer-Encoding header exist and contains the value chunked
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "Sum" care record section for config patient "patient2"
+		And I send the request chunked
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And response should be chunked
 
 @ignore
 @Manual
