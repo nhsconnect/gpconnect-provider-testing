@@ -137,6 +137,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kTimePeriod, FhirHelper.GetTimePeriod(null, endDate));
         }
 
+        [When(@"I request the FHIR ""([^""]*)"" Patient Type operation using XML")]
+        public void IRequestTheFHIROperationUsingXML(string operation)
+        {
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, FhirConst.ContentTypes.kXmlFhir);
+            IRequestTheFHIROperation(operation);
+        }
+
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
         public void IRequestTheFHIROperation(string operation)
         {
