@@ -283,19 +283,20 @@ Scenario: endpoint should support gzip compression for metadata endpoint
 
 Scenario: endpoint should support gzip compression for getCareRecord operation
 	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I ask for the contents to be gzip encoded
-	When I make a GET request to "/metadata"
+		And I author a request for the "SUM" care record section for config patient "patient2"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response should be gzip encoded
 		And the response body should be FHIR JSON
 		
-
+@ignore
 Scenario: endpoint should support chunking of data
 	# Does the response Transfer-Encoding header exist and contains the value chunked
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "Sum" care record section for config patient "patient2"
+		And I author a request for the "SUM" care record section for config patient "patient2"
 		#And I send the request chunked
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
