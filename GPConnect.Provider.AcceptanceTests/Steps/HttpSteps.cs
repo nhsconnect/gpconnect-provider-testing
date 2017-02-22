@@ -381,6 +381,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             RestRequest(Method.POST, "/Patient/$gpc.getcarerecord", parameterPayload);
         }
 
+        [When(@"I send a gpc.getcarerecord operation request WITH payload")]
+        public void ISendAGpcGetcarerecordOperationRequestWithPayload()
+        {
+            RestRequest(Method.POST, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
+        }
+
         // Response Validation Steps
 
         [Then(@"the response status code should indicate success")]
