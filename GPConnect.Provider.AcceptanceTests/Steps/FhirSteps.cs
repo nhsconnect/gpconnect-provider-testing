@@ -152,7 +152,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 preferredFormat = ResourceFormat.Xml;
             }
-            var fhirClient = new FhirClient(HttpContext.ProviderAddress)
+            
+            var fhirClient = new FhirClient(HttpContext.EndpointAddress)
             {
                 PreferredFormat = preferredFormat
             };
