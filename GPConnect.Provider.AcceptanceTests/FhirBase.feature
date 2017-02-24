@@ -271,6 +271,7 @@ Scenario: XML case sensitivity test
 @ignore
 Scenario: XML div unicode characters
 
+@ignore
 Scenario: endpoint should support gzip compression for metadata endpoint
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -281,6 +282,7 @@ Scenario: endpoint should support gzip compression for metadata endpoint
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "Conformance"
 
+@ignore
 Scenario: endpoint should support gzip compression for getCareRecord operation
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
