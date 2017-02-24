@@ -212,7 +212,6 @@ Scenario Outline: Time period specified for a care record section that can be fi
 	#| INV |
 	#| PAT |
 	| REF |
-	| SUM |
 
 Scenario Outline: Time period specified for a care record section that must not be filtered
 	Given I am using the default server
@@ -230,6 +229,7 @@ Scenario Outline: Time period specified for a care record section that must not 
 	| MED |
 	| OBS |
 	| PRB |
+	| SUM |
 	
 Scenario Outline: Access blocked to care record as no patient consent
 	Given I am using the default server
@@ -272,7 +272,6 @@ Scenario Outline: Request patient summary with parameters in oposite order to ot
 		#| INV  |
 		#| PAT  |
 		| REF  |
-		| SUM  |
 
 
 Scenario: Request care record where request resource type is something other than Parameters
@@ -1026,7 +1025,7 @@ Scenario Outline: check all dateTime format variations are allowed
 Scenario Outline: invalid request parameter names and case
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "patient2"
+		And I author a request for the "ENC" care record section for config patient "patient2"
 		And I set a valid time period start and end date
 		And I replace the parameter name "<ParamName>" with "<NewParamName>"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
