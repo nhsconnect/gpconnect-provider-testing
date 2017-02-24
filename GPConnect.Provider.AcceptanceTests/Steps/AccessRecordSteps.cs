@@ -522,7 +522,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             var codingCount = 0;
                             foreach (Coding coding in practitionerRole.Role.Coding) {
                                 codingCount++;
-                                coding.System.ShouldNotBeNull();
+                                coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
                                 coding.Code.ShouldNotBeNull();
                                 coding.Display.ShouldNotBeNull();
                             }
