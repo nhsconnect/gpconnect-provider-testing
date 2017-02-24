@@ -286,7 +286,7 @@ Scenario: endpoint should support gzip compression for getCareRecord operation
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I ask for the contents to be gzip encoded
 		And I author a request for the "SUM" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	When I send a gpc.getcarerecord operation request WITH payload
 	Then the response status code should indicate success
 		And the response should be gzip encoded
 		And the response body should be FHIR JSON

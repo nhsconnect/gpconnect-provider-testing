@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Constants;
@@ -374,6 +375,91 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             LogToDisk();
         }
 
+        private void HttpRequest(HttpMethod method, string relativeUrl, string body = null)
+        {
+            // Save The Request Details
+            HttpContext.RequestMethod = method.ToString();
+            HttpContext.RequestUrl = relativeUrl;
+            HttpContext.RequestBody = body;
+
+            WebRequestHandler handler = new WebRequestHandler();
+
+            handler.AutomaticDecompression = DecompressionMethods.GZip;
+
+            // Setup The Client Certificate
+            if (HttpContext.SecurityContext.SendClientCert)
+            {
+                var clientCert = HttpContext.SecurityContext.ClientCert;                
+                handler.ClientCertificates.Add(clientCert);
+
+            }
+            // Setup The Web Proxy
+            if (HttpContext.UseWebProxy)
+            {
+                handler.Proxy = new WebProxy(new Uri(HttpContext.WebProxyAddress, UriKind.Absolute));
+            }
+
+            /*
+            // Add Parameters
+            foreach (var parameter in HttpContext.RequestParameters.GetRequestParameters())
+            {
+                Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
+                .AddParameter(parameter.Key, parameter.Value);
+            }
+            */
+
+            // Requires specific parameters
+            var sspAddress = HttpContext.UseSpineProxy ? HttpContext.SpineProxyAddress + "/" : string.Empty;
+            string baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + ":" + HttpContext.FhirServerPort;
+            string path = HttpContext.FhirServerFhirBase + relativeUrl;
+
+            // Build The Request
+            var httpClient = new HttpClient(handler);
+            httpClient.BaseAddress = new Uri(baseUrl);
+            
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, path);
+            requestMessage.Content = new StringContent(body, System.Text.Encoding.UTF8, HttpContext.RequestContentType);
+
+            // Add The Headers
+            HttpContext.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, HttpContext.RequestContentType);
+            foreach (var header in HttpContext.RequestHeaders.GetRequestHeaders())
+            {
+                try
+                {
+                    Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
+                    requestMessage.Headers.Add(header.Key, header.Value);
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLine("Could not add header: " + header.Key);
+                }
+            }
+
+            var result = httpClient.SendAsync(requestMessage).Result;
+
+            // Save The Response Details
+            HttpContext.ResponseStatusCode = result.StatusCode;
+            HttpContext.ResponseContentType = result.Content.Headers.ContentType.MediaType;
+            using (StreamReader reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
+            {
+                HttpContext.ResponseBody = reader.ReadToEnd();
+            }
+
+            // Add headers
+            foreach (var headerKey in result.Headers)
+            {
+                foreach (var headerKeyValues in headerKey.Value)
+                    HttpContext.ResponseHeaders.Add(headerKey.Key, headerKeyValues);
+            }
+            foreach (var header in result.Content.Headers) {
+                foreach (var headerValues in header.Value)
+                    HttpContext.ResponseHeaders.Add(header.Key, headerValues);
+            }
+
+            
+            LogToDisk();
+        }
+
         [When(@"I send a gpc.getcarerecord operation request with invalid resource type payload")]
         public void ISendAGpcGetcarerecordOperationRequestWithInvalidResourceTypePayload()
         {
@@ -384,7 +470,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I send a gpc.getcarerecord operation request WITH payload")]
         public void ISendAGpcGetcarerecordOperationRequestWithPayload()
         {
-            RestRequest(Method.POST, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
+            HttpRequest(HttpMethod.Post, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
         }
 
         // Response Validation Steps
