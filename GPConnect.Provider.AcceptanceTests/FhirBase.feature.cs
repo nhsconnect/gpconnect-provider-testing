@@ -805,21 +805,6 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("maximum field size in fhir resource")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void MaximumFieldSizeInFhirResource()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("maximum field size in fhir resource", new string[] {
-                        "ignore"});
-#line 238
-this.ScenarioSetup(scenarioInfo);
-#line 4
-this.FeatureBackground();
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Request and response in XML")]
         [NUnit.Framework.TestCaseAttribute("ADM", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ALL", new string[0])]
@@ -834,72 +819,27 @@ this.FeatureBackground();
         public virtual void RequestAndResponseInXML(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request and response in XML", exampleTags);
-#line 241
+#line 237
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 242
+#line 238
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 243
+#line 239
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 244
+#line 240
   testRunner.And("I am requesting the record for config patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 245
+#line 241
   testRunner.And(string.Format("I am requesting the \"{0}\" care record section", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 246
+#line 242
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation using XML", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 247
+#line 243
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 248
+#line 244
   testRunner.And("the response body should be FHIR XML", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
+#line 245
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("XML order test")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void XMLOrderTest()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("XML order test", new string[] {
-                        "ignore"});
-#line 266
-this.ScenarioSetup(scenarioInfo);
-#line 4
-this.FeatureBackground();
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("XML case sensitivity test")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void XMLCaseSensitivityTest()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("XML case sensitivity test", new string[] {
-                        "ignore"});
-#line 269
-this.ScenarioSetup(scenarioInfo);
-#line 4
-this.FeatureBackground();
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("XML div unicode characters")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void XMLDivUnicodeCharacters()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("XML div unicode characters", new string[] {
-                        "ignore"});
-#line 272
-this.ScenarioSetup(scenarioInfo);
-#line 4
-this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
@@ -909,22 +849,22 @@ this.FeatureBackground();
         public virtual void EndpointShouldSupportGzipCompressionForMetadataEndpoint()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support gzip compression for metadata endpoint", ((string[])(null)));
-#line 274
+#line 261
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 275
+#line 262
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 276
+#line 263
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 277
+#line 264
   testRunner.And("I ask for the contents to be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 278
+#line 265
  testRunner.When("I send a metadata request but not decompressed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 279
+#line 266
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 280
+#line 267
   testRunner.And("the response should be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -937,24 +877,24 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support gzip compression for metadata endpoint and contain the co" +
                     "rrect payload", ((string[])(null)));
-#line 282
+#line 269
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 283
+#line 270
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 284
+#line 271
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 285
+#line 272
   testRunner.And("I ask for the contents to be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 286
+#line 273
  testRunner.When("I send a metadata request and decompressed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 287
+#line 274
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 288
+#line 275
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 289
+#line 276
   testRunner.And("the JSON value \"resourceType\" should be \"Conformance\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -965,25 +905,25 @@ this.FeatureBackground();
         public virtual void EndpointShouldSupportGzipCompressionForGetCareRecordOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support gzip compression for getCareRecord operation", ((string[])(null)));
-#line 291
+#line 278
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 292
+#line 279
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 293
+#line 280
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 294
+#line 281
   testRunner.And("I ask for the contents to be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 295
+#line 282
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient2" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 296
+#line 283
  testRunner.When("I send a gpc.getcarerecord operation request WITH payload but not decompressed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 297
+#line 284
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 298
+#line 285
   testRunner.And("the response should be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -996,27 +936,27 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support gzip compression for getCareRecord operation and contain " +
                     "correct payload", ((string[])(null)));
-#line 300
+#line 287
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 301
+#line 288
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 302
+#line 289
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 303
+#line 290
   testRunner.And("I ask for the contents to be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 304
+#line 291
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient2" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 305
+#line 292
  testRunner.When("I send a gpc.getcarerecord operation request WITH payload", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 306
+#line 293
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 307
+#line 294
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 308
+#line 295
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1024,31 +964,48 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("endpoint should support chunking of data")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         public virtual void EndpointShouldSupportChunkingOfData()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support chunking of data", new string[] {
-                        "ignore"});
-#line 311
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support chunking of data", ((string[])(null)));
+#line 297
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 313
+#line 298
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 314
+#line 299
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 315
+#line 300
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient2" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 317
+#line 301
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 318
+#line 302
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 319
+#line 303
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 320
+#line 304
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 305
+  testRunner.And("response should be chunked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("maximum field size in fhir resource")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
+        public virtual void MaximumFieldSizeInFhirResource()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("maximum field size in fhir resource", new string[] {
+                        "ignore",
+                        "Manual"});
+#line 309
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1062,7 +1019,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("case sensitive valuesets mapped correctly to resource valuesets", new string[] {
                         "ignore",
                         "Manual"});
-#line 325
+#line 314
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

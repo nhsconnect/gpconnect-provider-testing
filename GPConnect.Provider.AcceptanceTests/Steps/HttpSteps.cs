@@ -556,6 +556,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             gZipHeaderFound.ShouldBeTrue();
         }
 
+        [Then(@"response should be chunked")]
+        public void ThenReesponseShouldBeChunked()
+        {
+            bool chunkedHeaderFound = false;
+            foreach (var header in HttpContext.ResponseHeaders)
+            {
+                if (header.Key.Equals(HttpConst.Headers.kTransferEncoding, StringComparison.CurrentCultureIgnoreCase) && header.Value.Equals("chunked", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    chunkedHeaderFound = true;
+                }
+            }
+            chunkedHeaderFound.ShouldBeTrue();
+        }
+
         // Logger
 
         private void LogToDisk()
