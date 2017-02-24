@@ -375,7 +375,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             LogToDisk();
         }
 
-        private void HttpRequest(HttpMethod method, string relativeUrl, string body = null)
+        private void HttpRequest(HttpMethod method, string relativeUrl, string body = null, bool decompressGzip = false)
         {
             // Save The Request Details
             HttpContext.RequestMethod = method.ToString();
@@ -384,7 +384,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             WebRequestHandler handler = new WebRequestHandler();
 
-            handler.AutomaticDecompression = DecompressionMethods.GZip;
+            if (decompressGzip)
+            {
+                handler.AutomaticDecompression = DecompressionMethods.GZip;
+            }
 
             // Setup The Client Certificate
             if (HttpContext.SecurityContext.SendClientCert)
@@ -417,8 +420,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var httpClient = new HttpClient(handler);
             httpClient.BaseAddress = new Uri(baseUrl);
             
-            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, path);
-            requestMessage.Content = new StringContent(body, System.Text.Encoding.UTF8, HttpContext.RequestContentType);
+            HttpRequestMessage requestMessage = new HttpRequestMessage(method, path);
+            if (body != null)
+            {
+                requestMessage.Content = new StringContent(body, System.Text.Encoding.UTF8, HttpContext.RequestContentType);
+            }
 
             // Add The Headers
             HttpContext.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, HttpContext.RequestContentType);
@@ -449,15 +455,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             foreach (var headerKey in result.Headers)
             {
                 foreach (var headerKeyValues in headerKey.Value)
+                {
                     HttpContext.ResponseHeaders.Add(headerKey.Key, headerKeyValues);
+                    Log.WriteLine("Header - " + headerKey.Key + " : " + headerKeyValues);
+                }
             }
             foreach (var header in result.Content.Headers) {
                 foreach (var headerValues in header.Value)
+                {
                     HttpContext.ResponseHeaders.Add(header.Key, headerValues);
+                    Log.WriteLine("Header - " + header.Key + " : " + headerValues);
+                }
             }
 
-            
-            LogToDisk();
+            if (decompressGzip)
+            {
+                LogToDisk();
+            }
         }
 
         [When(@"I send a gpc.getcarerecord operation request with invalid resource type payload")]
@@ -470,7 +484,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I send a gpc.getcarerecord operation request WITH payload")]
         public void ISendAGpcGetcarerecordOperationRequestWithPayload()
         {
-            HttpRequest(HttpMethod.Post, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
+            HttpRequest(HttpMethod.Post, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), true);
+        }
+
+        [When(@"I send a gpc.getcarerecord operation request WITH payload but not decompressed")]
+        public void ISendAGpcGetcarerecordOperationRequestWithPayloadButNotDecompressed()
+        {
+            HttpRequest(HttpMethod.Post, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), false);
+        }
+
+        [When(@"I send a metadata request but not decompressed")]
+        public void ISendAMetadataRequestButNotDecompressed()
+        {
+            HttpRequest(HttpMethod.Get, "/metadata", null, false);
+        }
+
+        [When(@"I send a metadata request and decompressed")]
+        public void ISendAMetadataRequestAndDecompressed()
+        {
+            HttpRequest(HttpMethod.Get, "/metadata", null, true);
         }
 
         // Response Validation Steps

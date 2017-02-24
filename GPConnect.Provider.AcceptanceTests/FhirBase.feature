@@ -271,27 +271,41 @@ Scenario: XML case sensitivity test
 @ignore
 Scenario: XML div unicode characters
 
-@ignore
 Scenario: endpoint should support gzip compression for metadata endpoint
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 		And I ask for the contents to be gzip encoded
-	When I make a GET request to "/metadata"
+	When I send a metadata request but not decompressed
 	Then the response status code should indicate success
 		And the response should be gzip encoded
+
+Scenario: endpoint should support gzip compression for metadata endpoint and contain the correct payload
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I ask for the contents to be gzip encoded
+	When I send a metadata request and decompressed
+	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON value "resourceType" should be "Conformance"
 
-@ignore
 Scenario: endpoint should support gzip compression for getCareRecord operation
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I ask for the contents to be gzip encoded
+		And I author a request for the "SUM" care record section for config patient "patient2"
+	When I send a gpc.getcarerecord operation request WITH payload but not decompressed
+	Then the response status code should indicate success
+		And the response should be gzip encoded
+
+Scenario: endpoint should support gzip compression for getCareRecord operation and contain correct payload
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I ask for the contents to be gzip encoded
 		And I author a request for the "SUM" care record section for config patient "patient2"
 	When I send a gpc.getcarerecord operation request WITH payload
 	Then the response status code should indicate success
-		And the response should be gzip encoded
 		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
 		
 @ignore
 Scenario: endpoint should support chunking of data
