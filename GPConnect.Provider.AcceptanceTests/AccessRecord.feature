@@ -288,7 +288,7 @@ Scenario: Invalid start date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section
+		And I am requesting the "ENC" care record section
 		And I set a time period parameter start date to "abcd" and end date to "2016"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "422"
@@ -299,7 +299,7 @@ Scenario: Invalid end date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section
+		And I am requesting the "ENC" care record section
 		And I set a time period parameter start date to "2014" and end date to "abcd"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "422"
@@ -310,7 +310,7 @@ Scenario: Time period where start date parameter is after end date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section
+		And I am requesting the "ENC" care record section
 		And I set a time period parameter start date to "2016" and end date to "2014"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "422"
@@ -321,7 +321,7 @@ Scenario: Time period with only start date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section
+		And I am requesting the "ENC" care record section
 		And I set a time period parameter with start date "2012"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
@@ -332,7 +332,7 @@ Scenario: Time period with only end date parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section
+		And I am requesting the "ENC" care record section
 		And I set a time period parameter with end date "2016"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
@@ -1014,12 +1014,6 @@ Scenario Outline: check all dateTime format variations are allowed
 		| ENC  | patient2 | 2014-10-05                | 2016-09-01                | (.)*         |
 		| ENC  | patient2 | 2015-11-28T18:22:01       | 2017-01-04T01:01:22       | (.)*         |
 		| ENC  | patient2 | 2014-04-03T22:03:25+00:00 | 2016-03-13T17:13:12+00:00 | (.)*         |
-		| SUM  | patient2 | 2012                      | 2017                      | (.)*         |
-		| SUM  | patient2 | 2014-05                   | 2016-12-18                | (.)*         |
-		| SUM  | patient2 | 2014-05-03                | 2016-12                   | (.)*         |
-		| SUM  | patient2 | 2014-03-21                | 2016-12-14                | (.)*         |
-		| SUM  | patient2 | 2015-02-28T09:20:14       | 2017-01-01T03:05:08       | (.)*         |
-		| SUM  | patient2 | 2014-12-22T22:22:22+00:00 | 2016-06-06T06:08:06+00:00 | (.)*         |
 		| REF  | patient2 | 2013                      | 2017                      | (.)*         |
 		| REF  | patient2 | 2014-02                   | 2016                      | (.)*         |
 		| REF  | patient2 | 2014-02-03                | 2016-01-24                | (.)*         |
