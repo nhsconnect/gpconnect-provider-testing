@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
+using Hl7.Fhir.Serialization;
 using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Context
 {
     public interface IFhirContext
     {
-        Dictionary<string,string> FhirPatients { get; set; }
+        Dictionary<string, string> FhirPatients { get; set; }
         Parameters FhirRequestParameters { get; set; }
         Resource FhirResponseResource { get; set; }
     }
@@ -30,9 +32,9 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             FhirPatients = new Dictionary<string, string>();
         }
 
-        public Dictionary<string,string> FhirPatients
+        public Dictionary<string, string> FhirPatients
         {
-            get { return _scenarioContext.Get<Dictionary<string,string>>(Context.kFhirPatients); }
+            get { return _scenarioContext.Get<Dictionary<string, string>>(Context.kFhirPatients); }
             set { _scenarioContext.Set(value, Context.kFhirPatients); }
         }
 
@@ -58,6 +60,21 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 Log.WriteLine("{0}={1}", Context.kFhirResponseResource, value);
                 _scenarioContext.Set(value, Context.kFhirResponseResource);
             }
+        }
+
+        public void SaveToDisk(string filename)
+        {
+            var doc = new XDocument(
+                new XElement("fhirContext",
+                    new XElement("request",
+                        new XElement(Context.kFhirRequestParameters, FhirSerializer.SerializeResourceToJson(FhirRequestParameters))
+                    ),
+                    new XElement("response",
+                        new XElement(Context.kFhirResponseResource, FhirSerializer.SerializeResourceToJson(FhirResponseResource))
+                    )
+                )
+            );
+            doc.Save(filename);
         }
     }
 }

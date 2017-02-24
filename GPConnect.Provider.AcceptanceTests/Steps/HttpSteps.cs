@@ -296,6 +296,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private void RestRequest(Method method, string relativeUrl, string body = null)
         {
+            var timer = new System.Diagnostics.Stopwatch();
+
             Log.WriteLine("{0} relative URL = {1}", method, relativeUrl);
 
             // Save The Request Details
@@ -350,11 +352,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             IRestResponse restResponse = null;
             try
             {
+                // Start The Performance Timer Running
+                timer.Start();
+
+                // Perform The Rest Request
                 restResponse = restClient.Execute(restRequest);
             }
             catch (Exception e) {
                 Log.WriteLine(e.StackTrace);
             }
+            finally
+            {
+                // Always Stop The Performance Timer Running
+                timer.Stop();
+            }
+
+            // Save The Time Taken To Perform The Request
+            HttpContext.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
 
             // TODO Save The Error Message And Exception Details
             Log.WriteLine("Error Message = " + restResponse.ErrorMessage);
@@ -377,6 +391,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private void HttpRequest(HttpMethod method, string relativeUrl, string body = null, bool decompressGzip = false)
         {
+            var timer = new System.Diagnostics.Stopwatch();
+
             // Save The Request Details
             HttpContext.RequestMethod = method.ToString();
             HttpContext.RequestUrl = relativeUrl;
@@ -441,7 +457,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
 
-            var result = httpClient.SendAsync(requestMessage).Result;
+            // Start The Performance Timer Running
+            timer.Start();
+
+            // Perform The Http Request
+            var result = httpClient.SendAsync(requestMessage).ConfigureAwait(false).GetAwaiter().GetResult();
+                        
+            // Always Stop The Performance Timer Running
+            timer.Stop();
+
+            // Save The Time Taken To Perform The Request
+            HttpContext.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
 
             // Save The Response Details
             HttpContext.ResponseStatusCode = result.StatusCode;

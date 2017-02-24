@@ -147,6 +147,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
         public void IRequestTheFHIROperation(string operation)
         {
+            var timer = new System.Diagnostics.Stopwatch();
+            
             var preferredFormat = ResourceFormat.Json;
             if (!HttpContext.RequestHeaders.GetHeaderValue(HttpConst.Headers.kAccept).Equals(FhirConst.ContentTypes.kJsonFhir))
             {
@@ -207,11 +209,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 HttpContext.RequestMethod = "POST";
                 HttpContext.RequestBody = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
 
+                // Start The Performance Timer Running
+                timer.Start();
+
+                // Perform The FHIR Request
                 FhirContext.FhirResponseResource = fhirClient.TypeOperation<Patient>(operation, FhirContext.FhirRequestParameters);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Log.WriteLine(e.StackTrace);
             }
+            finally
+            {
+                // Always Stop The Performance Timer Running
+                timer.Stop();
+            }
+
+            // Save The Time Taken To Perform The Request
+            HttpContext.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
             
             // Grab The Response Body
             HttpContext.ResponseBody = fhirClient.LastBodyAsText;
@@ -335,6 +350,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Directory.CreateDirectory(scenarioDirectory);
             Log.WriteLine(scenarioDirectory);
             HttpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
+            FhirContext.SaveToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
         }
 
     }

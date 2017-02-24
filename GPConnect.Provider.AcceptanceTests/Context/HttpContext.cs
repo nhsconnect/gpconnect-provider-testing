@@ -42,6 +42,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         string ResponseContentType { get; set; }
         HttpStatusCode ResponseStatusCode { get; set; }
         string ResponseBody { get; set; }
+        long ResponseTimeInMilliseconds { get; set; }
         // Parsed Response
         JObject ResponseJSON { get; set; }
         XDocument ResponseXML { get; set; }
@@ -107,6 +108,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public const string kResponseContentType = "responseContentType";
             public const string kResponseStatusCode = "responseStatusCode";
             public const string kResponseBody = "responseBody";
+            public const string kResponseTimeInMilliseconds = "responseTimeInMilliseconds";
+            public const string kResponseTimeAcceptable = "responseTimeAcceptable";
             // Parsed Response
             public const string kResponseJSON = "responseJSON";
             public const string kResponseXML = "responseXML";
@@ -269,7 +272,29 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 ScenarioContext.Set(value, Context.kResponseBody);
             }
         }
-        
+
+        public long ResponseTimeInMilliseconds
+        {
+            get { return ScenarioContext.Get<long>(Context.kResponseTimeInMilliseconds); }
+            set
+            {
+                Log.WriteLine("{0}={1}", Context.kResponseTimeInMilliseconds, value);
+                ScenarioContext.Set(value, Context.kResponseTimeInMilliseconds);
+                // Is The Response Time Acceptable Based On The 'P' Limit
+                ResponseTimeAcceptable = value <= 1000;
+            }
+        }
+
+        private bool ResponseTimeAcceptable
+        {
+            get { return ScenarioContext.Get<bool>(Context.kResponseTimeAcceptable); }
+            set
+            {
+                Log.WriteLine("{0}={1}", Context.kResponseTimeAcceptable, value);
+                ScenarioContext.Set(value, Context.kResponseTimeAcceptable);
+            }
+        }
+
         public Dictionary<string, string> ResponseHeaders
         {
             get
@@ -433,6 +458,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                     new XElement("response",
                         new XElement(Context.kResponseContentType, ResponseContentType),
                         new XElement(Context.kResponseStatusCode, (int)ResponseStatusCode),
+                        new XElement(Context.kResponseTimeInMilliseconds, ResponseTimeInMilliseconds),
+                        new XElement(Context.kResponseTimeAcceptable, ResponseTimeAcceptable),
                         responseHeaders,
                         new XElement(Context.kResponseBody, System.Security.SecurityElement.Escape(ResponseBody)))
                 ));
