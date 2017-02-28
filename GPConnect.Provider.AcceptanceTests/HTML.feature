@@ -151,8 +151,8 @@ Scenario Outline: filtered sections should contain date range section banner
 		| Code | Patient  | StartDateTime | EndDateTime | TextStartDate | TextEndDate |
 		| ADM  | patient1 | 2014-05-03    | 2016-09-14  | 03-May-2014   | 14-Sep-2016 |
 		| ADM  | patient2 | 2014-05-03    | 2016-09-14  | 03-May-2014   | 14-Sep-2016 |
-		| CLI  | patient1 | 2014-02-03    | 2016-01-24  | 04-Feb-2014   | 24-Jan-2016 |
-		| CLI  | patient2 | 2014-02-03    | 2016-01-24  | 04-Feb-2014   | 24-Jan-2016 |
+		| CLI  | patient1 | 2014-02-03    | 2016-01-24  | 03-Feb-2014   | 24-Jan-2016 |
+		| CLI  | patient2 | 2014-02-03    | 2016-01-24  | 03-Feb-2014   | 24-Jan-2016 |
 		| ENC  | patient1 | 1982-10-05    | 2016-09-01  | 05-Oct-1982   | 01-Sep-2016 |
 		| ENC  | patient2 | 1982-10-05    | 2016-09-01  | 05-Oct-1982   | 01-Sep-2016 |
 		| REF  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
