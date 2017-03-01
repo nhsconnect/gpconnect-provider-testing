@@ -439,8 +439,8 @@ Scenario Outline: composition contains generic mandatory fields
 	| Patient  | Code     | Title                       | Display                     |
 	| patient1 | ADM      | Administrative Items        | Administrative Items        |
 	| patient2 | ADM      | Administrative Items        | Administrative Items        |
-	| patient1 | ALL      | Allergies and Sensitivities | Allergies and Sensitivities |
-	| patient2 | ALL      | Allergies and Sensitivities | Allergies and Sensitivities |
+	| patient1 | ALL      | Allergies and Adverse Reactions | Allergies and Adverse Reactions |
+	| patient2 | ALL      | Allergies and Adverse Reactions | Allergies and Adverse Reactions |
 	| patient1 | CLI      | Clinical Items              | Clinical Items              |
 	| patient2 | CLI      | Clinical Items              | Clinical Items              |
 	| patient1 | ENC      | Encounters                  | Encounters                  |
