@@ -271,7 +271,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
             "ls", "2", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issued," +
+        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issues," +
             "Details", "3", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "OBS", "Date,Entry,Value,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "Start Date,Entry,Significance,Details", "1", new string[0])]

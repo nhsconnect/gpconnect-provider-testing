@@ -155,7 +155,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                 for (int index = 0; index < headerList.Length; index++)
                                 {
                                     Console.WriteLine("Expected Header = {0} and was {1}", "<th>"+headerList[index]+"</th>", matchesForTableHeadersInHTML[index].Value);
-                                    ("<th>"+headerList[index]+"</th>").ShouldBe(matchesForTableHeadersInHTML[index].Value);
+                                    (matchesForTableHeadersInHTML[index].Value).ShouldBe("<th>" + headerList[index] + "</th>");
                                 }
                             }
                         }

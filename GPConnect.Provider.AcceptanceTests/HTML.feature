@@ -125,7 +125,7 @@ Scenario Outline: html table headers present and in order that is expected
 #        | patient2 | INV                                                                                      |                  |
 		| patient2 | MED      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                 | 1                |
 		| patient2 | MED      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 2                |
-		| patient2 | MED      | Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issued,Details | 3                |
+		| patient2 | MED      | Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issues,Details | 3                |
 		| patient2 | OBS      | Date,Entry,Value,Details                                                                 | 1                |
 #        | patient2 | PAT                                                                                      |                  |
 		| patient2 | PRB      | Start Date,Entry,Significance,Details                                                    | 1                |
