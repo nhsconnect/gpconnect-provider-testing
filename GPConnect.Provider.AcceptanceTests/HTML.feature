@@ -157,22 +157,22 @@ Scenario Outline: filtered sections should contain date range section banner
 		| ENC  | patient2 | 1982-10-05    | 2016-09-01  | 05-Oct-1982   | 01-Sep-2016 |
 		| REF  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
 		| REF  | patient2 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
-		| ADM  | patient1 | 2014-05       | 2016-09     | 01-May-2014   | 01-Sep-2016 |
-		| ADM  | patient2 | 2014-05       | 2016-09     | 01-May-2014   | 01-Sep-2016 |
-		| CLI  | patient1 | 2014-02       | 2016-01     | 01-Feb-2014   | 01-Jan-2016 |
-		| CLI  | patient2 | 2014-02       | 2016-01     | 01-Feb-2014   | 01-Jan-2016 |
-		| ENC  | patient1 | 2014-10       | 2016-09     | 01-Oct-2014   | 01-Sep-2016 |
-		| ENC  | patient2 | 2014-10       | 2016-09     | 01-Oct-2014   | 01-Sep-2016 |
-		| REF  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 01-Dec-2016 |
-		| REF  | patient2 | 2014-03       | 2016-12     | 01-Mar-2014   | 01-Dec-2016 |
-		| ADM  | patient1 | 1992          | 2016        | 01-Jan-1992   | 01-Jan-2016 |
-		| ADM  | patient2 | 1992          | 2016        | 01-Jan-1992   | 01-Jan-2016 |
-		| CLI  | patient1 | 2014          | 2017        | 01-Jan-2014   | 01-Jan-2017 |
-		| CLI  | patient2 | 2014          | 2017        | 01-Jan-2014   | 01-Jan-2017 |
-		| ENC  | patient1 | 2012          | 2014        | 01-Jan-2012   | 01-Jan-2014 |
-		| ENC  | patient2 | 2012          | 2014        | 01-Jan-2012   | 01-Jan-2014 |
-		| REF  | patient1 | 2016          | 2016        | 01-Jan-2016   | 01-Jan-2016 |
-		| REF  | patient2 | 2016          | 2016        | 01-Jan-2016   | 01-Jan-2016 |
+		| ADM  | patient1 | 2014-05       | 2016-09     | 01-May-2014   | 30-Sep-2016 |
+		| ADM  | patient2 | 2014-05       | 2016-09     | 01-May-2014   | 30-Sep-2016 |
+		| CLI  | patient1 | 2014-02       | 2016-01     | 01-Feb-2014   | 31-Jan-2016 |
+		| CLI  | patient2 | 2014-02       | 2016-01     | 01-Feb-2014   | 31-Jan-2016 |
+		| ENC  | patient1 | 2014-10       | 2016-09     | 01-Oct-2014   | 30-Sep-2016 |
+		| ENC  | patient2 | 2014-10       | 2016-09     | 01-Oct-2014   | 30-Sep-2016 |
+		| REF  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 31-Dec-2016 |
+		| REF  | patient2 | 2014-03       | 2016-12     | 01-Mar-2014   | 31-Dec-2016 |
+		| ADM  | patient1 | 1992          | 2016        | 01-Jan-1992   | 31-Dec-2016 |
+		| ADM  | patient2 | 1992          | 2016        | 01-Jan-1992   | 31-Dec-2016 |
+		| CLI  | patient1 | 2014          | 2017        | 01-Jan-2014   | 31-Dec-2017 |
+		| CLI  | patient2 | 2014          | 2017        | 01-Jan-2014   | 31-Dec-2017 |
+		| ENC  | patient1 | 2012          | 2014        | 01-Jan-2012   | 31-Dec-2014 |
+		| ENC  | patient2 | 2012          | 2014        | 01-Jan-2012   | 31-Dec-2014 |
+		| REF  | patient1 | 2016          | 2016        | 01-Jan-2016   | 31-Dec-2016 |
+		| REF  | patient2 | 2016          | 2016        | 01-Jan-2016   | 31-Dec-2016 |
 	#	| INV ||||||
 	#	| PAT ||||||
 
