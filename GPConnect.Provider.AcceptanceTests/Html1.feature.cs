@@ -421,7 +421,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("filtered sections should return no data available html banner")]
         [NUnit.Framework.TestCaseAttribute("ADM", "patient2", "2014-05-03", "2015-06-14", "03-May-2014", "14-Jun-2015", "Administrative Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient2", "2014-02-03", "2015-01-24", "04-Feb-2014", "24-Jan-2015", "Clinical Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "patient2", "2014-02-03", "2015-01-24", "03-Feb-2014", "24-Jan-2015", "Clinical Items", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ENC", "patient2", "1982-10-05", "2015-05-01", "05-Oct-1982", "01-May-2015", "Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("REF", "patient2", "2014-03-21", "2015-03-14", "21-Mar-2014", "14-Mar-2015", "Referrals", new string[0])]
         public virtual void FilteredSectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string startDateTime, string endDateTime, string textStartDate, string textEndDate, string section, string[] exampleTags)
