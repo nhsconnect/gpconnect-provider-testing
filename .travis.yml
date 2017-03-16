@@ -1,0 +1,7 @@
+language: csharp
+solution: GPConnect.Provider.AcceptanceTests.sln
+install:
+  - nuget restore GPConnect.Provider.AcceptanceTests.sln
+script:
+  - xbuild /p:Configuration=Release GPConnect.Provider.AcceptanceTests.sln
+  - mono ./packages/NUnit.Console.*/tools/nunit-console.exe ./GPConnect.Provider.AcceptanceTests/bin/Release/GPConnect.Provider.AcceptanceTests.dll
