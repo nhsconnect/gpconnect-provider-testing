@@ -173,6 +173,12 @@ Scenario Outline: filtered sections should contain date range section banner
 		| ENC  | patient2 | 2012          | 2014        | 01-Jan-2012   | 31-Dec-2014 |
 		| REF  | patient1 | 2016          | 2016        | 01-Jan-2016   | 31-Dec-2016 |
 		| REF  | patient2 | 2016          | 2016        | 01-Jan-2016   | 31-Dec-2016 |
+		| MED  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 31-Dec-2016 |
+		| MED  | patient2 | 2014-02-03    | 2016-01-24  | 03-Feb-2014   | 24-Jan-2016 |
+		| OBS  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 31-Dec-2016 |
+		| OBS  | patient2 | 2014-02-03    | 2016-01-24  | 03-Feb-2014   | 24-Jan-2016 |
+		| PRB  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 31-Dec-2016 |
+		| PRB  | patient2 | 2014-02-03    | 2016-01-24  | 03-Feb-2014   | 24-Jan-2016 |
 	#	| INV ||||||
 	#	| PAT ||||||
 

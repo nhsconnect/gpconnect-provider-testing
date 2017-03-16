@@ -209,6 +209,9 @@ Scenario Outline: Time period specified for a care record section that can be fi
 	| ADM |
 	| CLI |
 	| ENC |
+	| MED |
+	| OBS |
+	| PRB |
 	#| INV |
 	#| PAT |
 	| REF |
@@ -226,9 +229,6 @@ Scenario Outline: Time period specified for a care record section that must not 
 	| Code |
 	| ALL |
 	| IMM |
-	| MED |
-	| OBS |
-	| PRB |
 	| SUM |
 	
 Scenario Outline: Access blocked to care record as no patient consent
@@ -1019,6 +1019,24 @@ Scenario Outline: check all dateTime format variations are allowed
 		| REF  | patient2 | 2014                      | 2016-06-01                | (.)*         |
 		| REF  | patient2 | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       | (.)*         |
 		| REF  | patient2 | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 | (.)*         |
+		| MED  | patient2 | 2014                      | 2016                      | (.)*         |
+		| MED  | patient2 | 2014-02                   | 2016                      | (.)*         |
+		| MED  | patient2 | 2014-10-05                | 2016-08                   | (.)*         |
+		| MED  | patient2 | 2014-05                   | 2016-09-14                | (.)*         |
+		| MED  | patient2 | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       | (.)*         |
+		| MED  | patient2 | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 | (.)*         |
+		| OBS  | patient2 | 2014                      | 2016                      | (.)*         |
+		| OBS  | patient2 | 2014-02                   | 2016                      | (.)*         |
+		| OBS  | patient2 | 2014-10-05                | 2016-08                   | (.)*         |
+		| OBS  | patient2 | 2014-05                   | 2016-09-14                | (.)*         |
+		| OBS  | patient2 | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       | (.)*         |
+		| OBS  | patient2 | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 | (.)*         |
+		| PRB  | patient2 | 2014                      | 2016                      | (.)*         |
+		| PRB  | patient2 | 2014-02                   | 2016                      | (.)*         |
+		| PRB  | patient2 | 2014-10-05                | 2016-08                   | (.)*         |
+		| PRB  | patient2 | 2014-05                   | 2016-09-14                | (.)*         |
+		| PRB  | patient2 | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       | (.)*         |
+		| PRB  | patient2 | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 | (.)*         |
 	#	| INV ||||||
 	#	| PAT ||||||
 	
