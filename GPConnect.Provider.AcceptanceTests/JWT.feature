@@ -249,7 +249,7 @@ Scenario: JWT requested record patient does not match getCareRecord Payload pati
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 	And I author a request for the "SUM" care record section for config patient "patient2"
-	And I set the JWT requested record NHS number to config patient "patient3"
+	And I set the JWT requested record NHS number to config patient "patient15"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 

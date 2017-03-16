@@ -914,7 +914,7 @@ this.FeatureBackground();
  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient2" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 252
- testRunner.And("I set the JWT requested record NHS number to config patient \"patient3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I set the JWT requested record NHS number to config patient \"patient15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 253
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 254

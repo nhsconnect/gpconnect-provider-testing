@@ -222,16 +222,11 @@ Scenario Outline: filtered sections should return no data available html banner
 		And the response html should contain the applied date range text "<TextStartDate>" to "<TextEndDate>"
 		And the response html should contain the no data available html banner in section "<Section>"
 	Examples:
-		| Code | Patient  | StartDateTime | EndDateTime | TextStartDate | TextEndDate | Section                                 |
-		| ADM  | patient2 | 2014-05-03    | 2015-06-14  | 03-May-2014   | 14-Jun-2015 | Administrative Items                    |
-		| CLI  | patient2 | 2014-02-03    | 2015-01-24  | 04-Feb-2014   | 24-Jan-2015 | Clinical Items                          |
-		| ENC  | patient2 | 1982-10-05    | 2015-05-01  | 05-Oct-1982   | 01-May-2015 | Encounters                              |
-		| SUM  | patient2 | 2014-03-21    | 2015-04-14  | 21-Mar-2014   | 14-Apr-2015 | Active Problems and Issues              |
-		| SUM  | patient2 | 2014-03-21    | 2015-03-14  | 21-Mar-2014   | 14-Mar-2015 | Current Medication Issues               |
-		| SUM  | patient2 | 2014-03-21    | 2015-02-14  | 21-Mar-2014   | 14-Feb-2015 | Current Repeat Medications              |
-		| SUM  | patient2 | 2014-03-21    | 2015-01-14  | 21-Mar-2014   | 14-Jan-2015 | Current Allergies and Adverse Reactions |
-		| SUM  | patient2 | 2014-03-21    | 2015-02-14  | 21-Mar-2014   | 14-Feb-2015 | Encounters                              |
-		| REF  | patient2 | 2014-03-21    | 2015-03-14  | 21-Mar-2014   | 14-Mar-2015 | Referrals                               |
+		| Code | Patient  | StartDateTime | EndDateTime | TextStartDate | TextEndDate | Section              |
+		| ADM  | patient2 | 2014-05-03    | 2015-06-14  | 03-May-2014   | 14-Jun-2015 | Administrative Items |
+		| CLI  | patient2 | 2014-02-03    | 2015-01-24  | 04-Feb-2014   | 24-Jan-2015 | Clinical Items       |
+		| ENC  | patient2 | 1982-10-05    | 2015-05-01  | 05-Oct-1982   | 01-May-2015 | Encounters           |
+		| REF  | patient2 | 2014-03-21    | 2015-03-14  | 21-Mar-2014   | 14-Mar-2015 | Referrals            |
 	#	| INV ||||||
 	#	| PAT ||||||
 

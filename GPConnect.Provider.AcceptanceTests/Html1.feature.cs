@@ -423,11 +423,6 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("ADM", "patient2", "2014-05-03", "2015-06-14", "03-May-2014", "14-Jun-2015", "Administrative Items", new string[0])]
         [NUnit.Framework.TestCaseAttribute("CLI", "patient2", "2014-02-03", "2015-01-24", "04-Feb-2014", "24-Jan-2015", "Clinical Items", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ENC", "patient2", "1982-10-05", "2015-05-01", "05-Oct-1982", "01-May-2015", "Encounters", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient2", "2014-03-21", "2015-04-14", "21-Mar-2014", "14-Apr-2015", "Active Problems and Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient2", "2014-03-21", "2015-03-14", "21-Mar-2014", "14-Mar-2015", "Current Medication Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient2", "2014-03-21", "2015-02-14", "21-Mar-2014", "14-Feb-2015", "Current Repeat Medications", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient2", "2014-03-21", "2015-01-14", "21-Mar-2014", "14-Jan-2015", "Current Allergies and Adverse Reactions", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient2", "2014-03-21", "2015-02-14", "21-Mar-2014", "14-Feb-2015", "Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("REF", "patient2", "2014-03-21", "2015-03-14", "21-Mar-2014", "14-Mar-2015", "Referrals", new string[0])]
         public virtual void FilteredSectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string startDateTime, string endDateTime, string textStartDate, string textEndDate, string section, string[] exampleTags)
         {
@@ -485,28 +480,28 @@ this.FeatureBackground();
         public virtual void SectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string section, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("sections should return no data available html banner", exampleTags);
-#line 238
+#line 233
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 239
+#line 234
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 240
+#line 235
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 241
+#line 236
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 242
+#line 237
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 243
+#line 238
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 244
+#line 239
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 245
+#line 240
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 246
+#line 241
   testRunner.And("the response html should contain the all data items text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 247
+#line 242
   testRunner.And(string.Format("the response html should contain the no data available html banner in section \"{0" +
                         "}\"", section), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -528,31 +523,31 @@ this.FeatureBackground();
         public virtual void CheckHtmlForNonHtmlFormatting(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check html for non html formatting", exampleTags);
-#line 271
+#line 266
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 272
+#line 267
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 273
+#line 268
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 274
+#line 269
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient2" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 275
+#line 270
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 276
+#line 271
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 277
+#line 272
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 278
+#line 273
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 279
+#line 274
   testRunner.And("the html should not contain \"\\n\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 280
+#line 275
   testRunner.And("the html should not contain \"\\r\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 281
+#line 276
   testRunner.And("the html should not contain \"\\t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -569,7 +564,7 @@ this.FeatureBackground();
                     "y allow for identification of contact information or address", new string[] {
                         "ignore",
                         "Manual"});
-#line 299
+#line 294
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -586,7 +581,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check dates are in decending order within the results tables", new string[] {
                         "ignore",
                         "Manual"});
-#line 303
+#line 298
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -603,7 +598,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System does not support section html response where appropriate", new string[] {
                         "ignore",
                         "Manual"});
-#line 307
+#line 302
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
