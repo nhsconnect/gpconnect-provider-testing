@@ -228,14 +228,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        Regex regexForSections = new Regex("<h2([\\w\\W]*?)((</div)|(/table))");
-                        MatchCollection sectionHeadingMatches = regexForSections.Matches(html);
+                        string[] sections = html.Split(new[] { "<h2>" }, StringSplitOptions.None);
 
                         // Find relavant section
-                        foreach (Match sectionInHTML in sectionHeadingMatches) {
-                            if (sectionInHTML.Value.Contains(sectionHeading)) {
+                        foreach (string sectionHtml in sections)
+                        {
+                            if (sectionHtml.Contains(sectionHeading))
+                            {
                                 sectionFound = true;
-                                sectionInHTML.Value.ShouldContain("<p>No '"+sectionHeading+"' data is recorded for this patient.</p>");
+                                sectionHtml.ShouldContain("<p>No '" + sectionHeading + "' data is recorded for this patient.</p>");
                             }
                         }
                     }
