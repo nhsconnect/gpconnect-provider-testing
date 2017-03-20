@@ -86,78 +86,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"I am connecting to accredited system ""{HttpContext.ProviderASID}""");
             And(@"I am generating an organization JWT header");
         }
-
-        [Given(@"I am using server ""([^\s]*)""")]
-        public void GivenIAmUsingServer(string serverUrl)
-        {
-            HttpContext.FhirServerUrl = serverUrl;
-        }
-
-        [Given(@"I am using server ""([^\s]*)"" on port ""([^\s]*)""")]
-        public void GivenIAmUsingServerOnPort(string serverUrl, string serverPort)
-        {
-            HttpContext.FhirServerUrl = serverUrl;
-            HttpContext.FhirServerPort = serverPort;
-        }
-
+        
         [Given(@"I am connecting to server on port ""([^\s]*)""")]
         public void GivenIAmConnectingToServerOnPort(string serverPort)
         {
             HttpContext.FhirServerPort = serverPort;
         }
-
-        [Given(@"I set base URL to ""([^\s]*)""")]
-        public void GivenISetBaseURLTo(string baseUrl)
-        {
-            HttpContext.FhirServerFhirBase = baseUrl;
-        }
-
-        // Web Proxy Configuration Steps
-
-        [Given(@"I am not using the web proxy server")]
-        public void GivenIAmNotUsingTheWebProxyServer()
-        {
-            HttpContext.UseWebProxy = false;
-        }
-
-        [Given(@"I am using the web proxy server ""([^\s]*)""")]
-        public void GivenIAmUsingTheWebProxyServer(string webServerUrl)
-        {
-            HttpContext.UseWebProxy = true;
-            HttpContext.WebProxyUrl = webServerUrl;
-        }
-
-        [Given(@"I am using the web proxy server ""([^\s]*)"" on port ""([^\s]*)""")]
-        public void GivenIAmUsingTheWebProxyServerOnPort(string proxyServerUrl, string proxyServerPort)
-        {
-            HttpContext.UseSpineProxy = true;
-            HttpContext.SpineProxyUrl = proxyServerUrl;
-            HttpContext.SpineProxyPort = proxyServerPort;
-        }
-
-        // Spine Proxy Configuration Steps
-
-        [Given(@"I am not using the spine proxy server")]
-        public void GivenIAmNotUsingTheSpineProxyServer()
-        {
-            HttpContext.UseSpineProxy = false;
-        }
-
-        [Given(@"I am using the spine proxy server ""([^\s]*)""")]
-        public void GivenIAmUsingTheSpineProxyServer(string proxyServerUrl)
-        {
-            HttpContext.UseSpineProxy = true;
-            HttpContext.SpineProxyUrl = proxyServerUrl;
-        }
-
-        [Given(@"I am using the spine proxy server ""([^\s]*)"" on port ""([^\s]*)""")]
-        public void GivenIAmUsingTheSpineProxyServerOnPort(string proxyServerUrl, string proxyServerPort)
-        {
-            HttpContext.UseSpineProxy = true;
-            HttpContext.SpineProxyUrl = proxyServerUrl;
-            HttpContext.SpineProxyPort = proxyServerPort;
-        }
-
+        
         // Http Header Configuration Steps
 
         [Given(@"I am using ""(.*)"" to communicate with the server")]
@@ -202,14 +137,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, HttpContext.Jwt.GetBearerToken());
         }
-
-        [Given(@"I am generating a patient JWT header with nhs number ""(.*)""")]
-        public void GivenIAmGeneratingAPatientAuthorizationHeader(string nhsNumber)
-        {
-            HttpContext.Jwt.RequestedPatientNHSNumber = nhsNumber;
-            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, HttpContext.Jwt.GetBearerToken());
-        }
-
+        
         [Given(@"I do not send header ""(.*)""")]
         public void GivenIDoNotSendHeader(string headerKey)
         {
@@ -223,21 +151,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         // Http Request Steps
-
-        [Given(@"I set a JSON request body ""(.*)""")]
-        public void GivenISetAJSONRequestBody(string body)
-        {
-            HttpContext.RequestContentType = FhirConst.ContentTypes.kJsonFhir;
-            HttpContext.RequestBody = body;
-        }
-
-        [Given(@"I set an XML request body ""(.*)""")]
-        public void GivenISetAnXMLRequestBody(string body)
-        {
-            HttpContext.RequestContentType = FhirConst.ContentTypes.kXmlFhir;
-            HttpContext.RequestBody = body;
-        }
-
+        
         [Given(@"I set the request content type to ""(.*)""")]
         public void GivenISetTheRequestTypeTo(string requestContentType)
         {

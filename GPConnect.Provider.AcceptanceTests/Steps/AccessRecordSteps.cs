@@ -33,24 +33,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirPatients.Clear();
             foreach (var row in table.Rows)
             {
-                if (AppSettingsHelper.MapNativeNHSNoToProviderNHSNo)
+                string mappedNHSNumber = row["NHSNumber"];
+                // Map the native NHS Number to provider equivalent from CSV file
+                foreach (NHSNoMap nhsNoMap in GlobalContext.NHSNoMapData)
                 {
-                    string mappedNHSNumber = row["NHSNumber"];
-                    // Map the native NHS Number to provider equivalent from CSV file
-                    foreach (NHSNoMap nhsNoMap in GlobalContext.NHSNoMapData)
-                    {
-                        if (String.Equals(nhsNoMap.NativeNHSNumber, row["NHSNumber"])) {
-                            mappedNHSNumber = nhsNoMap.ProviderNHSNumber;
-                            Log.WriteLine("Mapped test NHS number {0} to NHS Number {1}", row["NHSNumber"], nhsNoMap.ProviderNHSNumber);
-                            break;
-                        }
+                    if (String.Equals(nhsNoMap.NativeNHSNumber, row["NHSNumber"])) {
+                        mappedNHSNumber = nhsNoMap.ProviderNHSNumber;
+                        Log.WriteLine("Mapped test NHS number {0} to NHS Number {1}", row["NHSNumber"], nhsNoMap.ProviderNHSNumber);
+                        break;
                     }
-                    FhirContext.FhirPatients.Add(row["Id"], mappedNHSNumber);
                 }
-                else
-                {
-                    FhirContext.FhirPatients.Add(row["Id"], row["NHSNumber"]);
-                }
+                FhirContext.FhirPatients.Add(row["Id"], mappedNHSNumber);
             }
         }
 
