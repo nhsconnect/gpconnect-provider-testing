@@ -229,21 +229,21 @@ Scenario: JWT requesting device invalid resourceType
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	And I change the JWT requesting device resource type to InvalidResourceType
 	When I make a GET request to "/metadata"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 
 Scenario: JWT requesting organization invalid resourceType
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	And I change the JWT requesting organization resource type to InvalidResourceType
 	When I make a GET request to "/metadata"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 
 Scenario: JWT requesting practitioner invalid resourceType
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 	And I change the JWT requesting practitioner resource type to InvalidResourceType
 	When I make a GET request to "/metadata"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 
 Scenario: JWT requested record patient does not match getCareRecord Payload patient
 	Given I am using the default server
