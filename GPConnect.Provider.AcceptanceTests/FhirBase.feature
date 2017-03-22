@@ -202,6 +202,8 @@ Scenario: FHIR content type test where Invalid content type application/xml is s
 		And I set the request content type to "application/xml"
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate unsupported media type error
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: FHIR content type test where Invalid content type application/json is sent
 	Given I am using the default server
@@ -209,6 +211,8 @@ Scenario: FHIR content type test where Invalid content type application/json is 
 		And I set the request content type to "applicaiton/json"
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate unsupported media type error
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: FHIR content type test where Invalid content type sent text/xml
 	Given I am using the default server
@@ -216,6 +220,8 @@ Scenario: FHIR content type test where Invalid content type sent text/xml
 		And I set the request content type to "text/xml"
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate unsupported media type error
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: Fhir content type test where Accept header is unsupported media type and request payload is JSON
 	Given I am using the default server
@@ -244,19 +250,19 @@ Scenario Outline: Request and response in XML
 		And the response body should be FHIR XML
 		And the JSON response should be a Bundle resource
 	Examples:
-	| Code |
-	| ADM |
-	| ALL |
-	| CLI |
-	| ENC |
-	| IMM |
-	#| INV |
-	| MED |
-	| OBS |
-	#| PAT |
-	| PRB |
-	| REF |
-	| SUM |
+		| Code |
+		| ADM |
+		| ALL |
+		| CLI |
+		| ENC |
+		| IMM |
+		#| INV |
+		| MED |
+		| OBS |
+		#| PAT |
+		| PRB |
+		| REF |
+		| SUM |
 
 Scenario: endpoint should support gzip compression for metadata endpoint
 	Given I am using the default server

@@ -85,8 +85,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"I set the JWT requested record patient NHS number to ""{FhirContext.FhirPatients[patient]}""");
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, new FhirString(FhirContext.FhirPatients[patient]));
         }
-
-
+        
         [Given(@"I am requesting the record for config patient ""([^""]*)"" of system ""([^""]*)""")]
         public void GivenIAmRequestingTheRecordForConfigPatientOfSystem(string patient, string system)
         {
