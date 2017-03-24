@@ -63,7 +63,7 @@ Scenario Outline: html section headers present
 		And the JSON response should be a Bundle resource
 		And the html should contain headers in coma seperated list "<Headers>"
 	Examples:
-		| Patient | Code | Headers |
+		| Patient  | Code | Headers |
 		| patient1 | ADM  | Administrative Items |
 		| patient2 | ADM  | Administrative Items |
 		| patient1 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
@@ -122,12 +122,12 @@ Scenario Outline: html table headers present and in order that is expected
 		| patient2 | CLI      | Date,Entry,Details                                                                       | 1                |
 		| patient2 | ENC      | Date,Title,Details                                                                       | 1                |
 		| patient2 | IMM      | Date,Vaccination,Part,Contents,Details                                                   | 1                |
-#        | patient2 | INV                                                                                      |                  |
+#        | patient2 | INV      |                                                                                          |                  |
 		| patient2 | MED      | Start Date,Medication Item,Type,Scheduled End,Days Duration,Details                      | 1                |
 		| patient2 | MED      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 2                |
 		| patient2 | MED      | Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issues,Details | 3                |
 		| patient2 | OBS      | Date,Entry,Value,Details                                                                 | 1                |
-#        | patient2 | PAT                                                                                      |                  |
+#        | patient2 | PAT      |                                                                                          |                  |
 		| patient2 | PRB      | Start Date,Entry,Significance,Details                                                    | 1                |
 		| patient2 | PRB      | Start Date,End Date,Entry,Significance,Details                                           | 2                |
 		| patient2 | REF      | Date,From,To,Priority,Details                                                            | 1                |

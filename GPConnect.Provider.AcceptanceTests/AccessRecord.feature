@@ -51,19 +51,19 @@ Scenario Outline: Retrieve the care record sections for a patient
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 	Examples:
-	| Code |
-	| ADM |
-	| ALL |
-	| CLI |
-	| ENC |
-	| IMM |
-	#| INV |
-	| MED |
-	| OBS |
-	#| PAT |
-	| PRB |
-	| REF |
-	| SUM |
+		| Code |
+		| ADM |
+		| ALL |
+		| CLI |
+		| ENC |
+		| IMM |
+		#| INV |
+		| MED |
+		| OBS |
+		#| PAT |
+		| PRB |
+		| REF |
+		| SUM |
 
 Scenario: Empty request
 	Given I am using the default server
@@ -71,6 +71,7 @@ Scenario: Empty request
 	When I make a POST request to "/Patient/$gpc.getcarerecord"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: No record section requested
 	Given I am using the default server
@@ -79,6 +80,7 @@ Scenario: No record section requested
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: Invalid record section requested
 	Given I am using the default server
@@ -98,6 +100,7 @@ Scenario: Multiple record sections requested
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: Multiple duplication record sections in request
 	Given I am using the default server
@@ -108,6 +111,7 @@ Scenario: Multiple duplication record sections in request
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: Record section with invalid system for codable concept
 	Given I am using the default server
@@ -117,6 +121,7 @@ Scenario: Record section with invalid system for codable concept
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: Request record sections with String type rather than CodableConcept
 	Given I am using the default server
@@ -126,6 +131,7 @@ Scenario: Request record sections with String type rather than CodableConcept
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: No patient NHS number supplied
 	Given I am using the default server
@@ -135,6 +141,7 @@ Scenario: No patient NHS number supplied
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: Invalid NHS number supplied
 	Given I am using the default server
@@ -165,6 +172,7 @@ Scenario: Multiple different NHS number parameters in request
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: Duplicate NHS number parameters in request
 	Given I am using the default server
@@ -175,6 +183,7 @@ Scenario: Duplicate NHS number parameters in request
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: No patient found with NHS number
 	Given I am using the default server
@@ -193,6 +202,7 @@ Scenario: Request care record section with patientNHSNumber using String type va
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 
 Scenario Outline: Time period specified for a care record section that can be filtered
 	Given I am using the default server
@@ -205,16 +215,16 @@ Scenario Outline: Time period specified for a care record section that can be fi
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 	Examples:
-	| Code |
-	| ADM |
-	| CLI |
-	| ENC |
-	| MED |
-	| OBS |
-	| PRB |
-	#| INV |
-	#| PAT |
-	| REF |
+		| Code |
+		| ADM |
+		| CLI |
+		| ENC |
+		| MED |
+		| OBS |
+		| PRB |
+		#| INV |
+		#| PAT |
+		| REF |
 
 Scenario Outline: Time period specified for a care record section that must not be filtered
 	Given I am using the default server
@@ -225,12 +235,13 @@ Scenario Outline: Time period specified for a care record section that must not 
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
 	Examples:
-	| Code |
-	| ALL |
-	| IMM |
-	| SUM |
-	
+		| Code |
+		| ALL |
+		| IMM |
+		| SUM |
+
 Scenario Outline: Access blocked to care record as no patient consent
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -272,7 +283,6 @@ Scenario Outline: Request patient summary with parameters in oposite order to ot
 		#| INV  |
 		#| PAT  |
 		| REF  |
-
 
 Scenario: Request care record where request resource type is something other than Parameters
 	Given I am using the default server
@@ -349,20 +359,20 @@ Scenario Outline: response should be bundle containing all mandatory elements
 		And the JSON response bundle should contain a single Composition resource
 		And the JSON response bundle should contain a single Patient resource
 	Examples:
-	| Code |
-	| ADM |
-	| ALL |
-	| CLI |
-	| ENC |
-	| IMM |
-	#| INV |
-	| MED |
-	| OBS |
-	#| PAT |
-	| PRB |
-	| REF |
-	| SUM |
-	
+		| Code |
+		| ADM |
+		| ALL |
+		| CLI |
+		| ENC |
+		| IMM |
+		#| INV |
+		| MED |
+		| OBS |
+		#| PAT |
+		| PRB |
+		| REF |
+		| SUM |
+
 Scenario Outline: response bundle should contain composition as the first entry
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -374,19 +384,19 @@ Scenario Outline: response bundle should contain composition as the first entry
 		And the JSON response bundle should be type document
 		And the JSON response bundle should contain the composition resource as the first entry
 	Examples:
-	| Code |
-	| ADM |
-	| ALL |
-	| CLI |
-	| ENC |
-	| IMM |
-	#| INV |
-	| MED |
-	| OBS |
-	#| PAT |
-	| PRB |
-	| REF |
-	| SUM |
+		| Code |
+		| ADM |
+		| ALL |
+		| CLI |
+		| ENC |
+		| IMM |
+		#| INV |
+		| MED |
+		| OBS |
+		#| PAT |
+		| PRB |
+		| REF |
+		| SUM |
 
 Scenario Outline: request contain the structure definition in the meta fields
 	Given I am using the default server
@@ -403,19 +413,19 @@ Scenario Outline: request contain the structure definition in the meta fields
 		And if the response bundle contains a device resource it should contain meta data profile and version id
 		And if the response bundle contains a location resource it should contain meta data profile and version id
 	Examples:
-	| Code |
-	| ADM |
-	| ALL |
-	| CLI |
-	| ENC |
-	| IMM |
-	#| INV |
-	| MED |
-	| OBS |
-	#| PAT |
-	| PRB |
-	| REF |
-	| SUM |
+		| Code |
+		| ADM |
+		| ALL |
+		| CLI |
+		| ENC |
+		| IMM |
+		#| INV |
+		| MED |
+		| OBS |
+		#| PAT |
+		| PRB |
+		| REF |
+		| SUM |
 
 Scenario Outline: composition contains generic mandatory fields
 	Given I am using the default server
@@ -436,31 +446,31 @@ Scenario Outline: composition contains generic mandatory fields
 		And response bundle entry "Composition" should contain element "resource.section[0].text.status"
 		And response bundle entry "Composition" should contain element "resource.section[0].text.div"
 	Examples:
-	| Patient  | Code     | Title                       | Display                     |
-	| patient1 | ADM      | Administrative Items        | Administrative Items        |
-	| patient2 | ADM      | Administrative Items        | Administrative Items        |
-	| patient1 | ALL      | Allergies and Adverse Reactions | Allergies and Adverse Reactions |
-	| patient2 | ALL      | Allergies and Adverse Reactions | Allergies and Adverse Reactions |
-	| patient1 | CLI      | Clinical Items              | Clinical Items              |
-	| patient2 | CLI      | Clinical Items              | Clinical Items              |
-	| patient1 | ENC      | Encounters                  | Encounters                  |
-	| patient2 | ENC      | Encounters                  | Encounters                  |
-	| patient1 | IMM      | Immunisations               | Immunisations               |
-	| patient2 | IMM      | Immunisations               | Immunisations               |
-#        | patient1 | INV                         | Investigations              | Investigations |
-#        | patient2 | INV                         | Investigations              | Investigations |
-	| patient1 | MED      | Medications                 | Medications                 |
-	| patient2 | MED      | Medications                 | Medications                 |
-	| patient1 | OBS      | Observations                | Observations                |
-	| patient2 | OBS      | Observations                | Observations                |
-#        | patient1 | PAT                         | Patient Details             | Patient Details |
-#        | patient2 | PAT                         | Patient Details             | Patient Details |
-	| patient1 | PRB      | Problems                    | Problems                    |
-	| patient2 | PRB      | Problems                    | Problems                    |
-	| patient1 | REF      | Referrals                   | Referrals                   |
-	| patient2 | REF      | Referrals                   | Referrals                   |
-	| patient1 | SUM      | Summary                     | Summary                     |
-	| patient2 | SUM      | Summary                     | Summary                     |
+		| Patient  | Code     | Title                           | Display                         |
+		| patient1 | ADM      | Administrative Items            | Administrative Items            |
+		| patient2 | ADM      | Administrative Items            | Administrative Items            |
+		| patient1 | ALL      | Allergies and Adverse Reactions | Allergies and Adverse Reactions |
+		| patient2 | ALL      | Allergies and Adverse Reactions | Allergies and Adverse Reactions |
+		| patient1 | CLI      | Clinical Items                  | Clinical Items                  |
+		| patient2 | CLI      | Clinical Items                  | Clinical Items                  |
+		| patient1 | ENC      | Encounters                      | Encounters                      |
+		| patient2 | ENC      | Encounters                      | Encounters                      |
+		| patient1 | IMM      | Immunisations                   | Immunisations                   |
+		| patient2 | IMM      | Immunisations                   | Immunisations                   |
+	#    | patient1 | INV      | Investigations                  | Investigations                  |
+	#    | patient2 | INV      | Investigations                  | Investigations                  |
+		| patient1 | MED      | Medications                     | Medications                     |
+		| patient2 | MED      | Medications                     | Medications                     |
+		| patient1 | OBS      | Observations                    | Observations                    |
+		| patient2 | OBS      | Observations                    | Observations                    |
+	#    | patient1 | PAT      | Patient Details                 | Patient Details                 |
+	#    | patient2 | PAT      | Patient Details                 | Patient Details                 |
+		| patient1 | PRB      | Problems                        | Problems                        |
+		| patient2 | PRB      | Problems                        | Problems                        |
+		| patient1 | REF      | Referrals                       | Referrals                       |
+		| patient2 | REF      | Referrals                       | Referrals                       |
+		| patient1 | SUM      | Summary                         | Summary                         |
+		| patient2 | SUM      | Summary                         | Summary                         |
 
 Scenario Outline: if composition contains type mandatory field fixed values should be correct
 	Given I am using the default server
@@ -584,7 +594,7 @@ Scenario Outline: if composition contains custodian referenece
 		| PRB  |
 		| REF  |
 		| SUM  |
-	
+
 Scenario Outline: patient contains a valid identifiers
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -985,61 +995,61 @@ Scenario Outline: device resource type element values match specification
 Scenario Outline: check all dateTime format variations are allowed
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		And I author a request for the "<Code>" care record section for config patient "patient2"
 		And I set a time period parameter start date to "<StartDateTime>" and end date to "<EndDateTime>"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And the HTML in the response matches the Regex check "<RegexToCheck>"
+		And the HTML in the response matches the Regex check "(.)*"
 	Examples:
-		| Code | Patient  | StartDateTime             | EndDateTime               | RegexToCheck |
-		| ADM  | patient2 | 2014                      | 2016                      | (.)*         |
-		| ADM  | patient2 | 2014-02                   | 2016                      | (.)*         |
-		| ADM  | patient2 | 2014-10-05                | 2016-08                   | (.)*         |
-		| ADM  | patient2 | 2014-05                   | 2016-09-14                | (.)*         |
-		| ADM  | patient2 | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       | (.)*         |
-		| ADM  | patient2 | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 | (.)*         |
-		| CLI  | patient2 | 2013                      | 2017                      | (.)*         |
-		| CLI  | patient2 | 2014-02                   | 2016                      | (.)*         |
-		| CLI  | patient2 | 2014-02-03                | 2016-01-24                | (.)*         |
-		| CLI  | patient2 | 2014                      | 2016-06-01                | (.)*         |
-		| CLI  | patient2 | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       | (.)*         |
-		| CLI  | patient2 | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 | (.)*         |
-		| ENC  | patient2 | 2015                      | 2017-01                   | (.)*         |
-		| ENC  | patient2 | 2015-05                   | 2017-01-27                | (.)*         |
-		| ENC  | patient2 | 2014-10-05                | 2016                      | (.)*         |
-		| ENC  | patient2 | 2014-10-05                | 2016-08                   | (.)*         |
-		| ENC  | patient2 | 2014-10-05                | 2016-09-01                | (.)*         |
-		| ENC  | patient2 | 2015-11-28T18:22:01       | 2017-01-04T01:01:22       | (.)*         |
-		| ENC  | patient2 | 2014-04-03T22:03:25+00:00 | 2016-03-13T17:13:12+00:00 | (.)*         |
-		| REF  | patient2 | 2013                      | 2017                      | (.)*         |
-		| REF  | patient2 | 2014-02                   | 2016                      | (.)*         |
-		| REF  | patient2 | 2014-02-03                | 2016-01-24                | (.)*         |
-		| REF  | patient2 | 2014                      | 2016-06-01                | (.)*         |
-		| REF  | patient2 | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       | (.)*         |
-		| REF  | patient2 | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 | (.)*         |
-		| MED  | patient2 | 2014                      | 2016                      | (.)*         |
-		| MED  | patient2 | 2014-02                   | 2016                      | (.)*         |
-		| MED  | patient2 | 2014-10-05                | 2016-08                   | (.)*         |
-		| MED  | patient2 | 2014-05                   | 2016-09-14                | (.)*         |
-		| MED  | patient2 | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       | (.)*         |
-		| MED  | patient2 | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 | (.)*         |
-		| OBS  | patient2 | 2014                      | 2016                      | (.)*         |
-		| OBS  | patient2 | 2014-02                   | 2016                      | (.)*         |
-		| OBS  | patient2 | 2014-10-05                | 2016-08                   | (.)*         |
-		| OBS  | patient2 | 2014-05                   | 2016-09-14                | (.)*         |
-		| OBS  | patient2 | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       | (.)*         |
-		| OBS  | patient2 | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 | (.)*         |
-		| PRB  | patient2 | 2014                      | 2016                      | (.)*         |
-		| PRB  | patient2 | 2014-02                   | 2016                      | (.)*         |
-		| PRB  | patient2 | 2014-10-05                | 2016-08                   | (.)*         |
-		| PRB  | patient2 | 2014-05                   | 2016-09-14                | (.)*         |
-		| PRB  | patient2 | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       | (.)*         |
-		| PRB  | patient2 | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 | (.)*         |
-	#	| INV ||||||
-	#	| PAT ||||||
-	
+		| Code | StartDateTime             | EndDateTime               |
+		| ADM  | 2014                      | 2016                      |
+		| ADM  | 2014-02                   | 2016                      |
+		| ADM  | 2014-10-05                | 2016-08                   |
+		| ADM  | 2014-05                   | 2016-09-14                |
+		| ADM  | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       |
+		| ADM  | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 |
+		| CLI  | 2013                      | 2017                      |
+		| CLI  | 2014-02                   | 2016                      |
+		| CLI  | 2014-02-03                | 2016-01-24                |
+		| CLI  | 2014                      | 2016-06-01                |
+		| CLI  | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       |
+		| CLI  | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 |
+		| ENC  | 2015                      | 2017-01                   |
+		| ENC  | 2015-05                   | 2017-01-27                |
+		| ENC  | 2014-10-05                | 2016                      |
+		| ENC  | 2014-10-05                | 2016-08                   |
+		| ENC  | 2014-10-05                | 2016-09-01                |
+		| ENC  | 2015-11-28T18:22:01       | 2017-01-04T01:01:22       |
+		| ENC  | 2014-04-03T22:03:25+00:00 | 2016-03-13T17:13:12+00:00 |
+		| REF  | 2013                      | 2017                      |
+		| REF  | 2014-02                   | 2016                      |
+		| REF  | 2014-02-03                | 2016-01-24                |
+		| REF  | 2014                      | 2016-06-01                |
+		| REF  | 2015-11-28T22:53:01       | 2017-01-08T14:02:43       |
+		| REF  | 2015-03-14T03:14:11+00:00 | 2016-08-03T18:32:43+00:00 |
+		| MED  | 2014                      | 2016                      |
+		| MED  | 2014-02                   | 2016                      |
+		| MED  | 2014-10-05                | 2016-08                   |
+		| MED  | 2014-05                   | 2016-09-14                |
+		| MED  | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       |
+		| MED  | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 |
+		| OBS  | 2014                      | 2016                      |
+		| OBS  | 2014-02                   | 2016                      |
+		| OBS  | 2014-10-05                | 2016-08                   |
+		| OBS  | 2014-05                   | 2016-09-14                |
+		| OBS  | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       |
+		| OBS  | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 |
+		| PRB  | 2014                      | 2016                      |
+		| PRB  | 2014-02                   | 2016                      |
+		| PRB  | 2014-10-05                | 2016-08                   |
+		| PRB  | 2014-05                   | 2016-09-14                |
+		| PRB  | 2014-05-01T11:08:32       | 2016-12-08T09:22:16       |
+		| PRB  | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 |
+#		 | INV  |                           |                           |
+#		 | PAT  |                           |                           |
+
 Scenario Outline: invalid request parameter names and case
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -1047,21 +1057,20 @@ Scenario Outline: invalid request parameter names and case
 		And I set a valid time period start and end date
 		And I replace the parameter name "<ParamName>" with "<NewParamName>"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "<ExpectedResponseCode>"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
-	Examples: 
-	| ParamName        | NewParamName      | ExpectedResponseCode |
-	| patientNHSNumber | patientsNHSNumber | 422                  |
-	| patientNHSNumber | patientnhsnumber  | 422                  |
-	| patientNHSNumber | PATIENTNHSNUMBER  | 422                  |
-	| recordSection    | recordSections    | 422                  |
-	| recordSection    | RecordSection     | 422                  |
-	| recordSection    | RECORDSECTION     | 422                  |
-	| timePeriod       | time              | 422                  |
-	| timePeriod       | TimePeriod        | 422                  |
-	| timePeriod       | TIMEPERIOD        | 422                  |
-
+	Examples:
+		| ParamName        | NewParamName      |
+		| patientNHSNumber | patientsNHSNumber |
+		| patientNHSNumber | patientnhsnumber  |
+		| patientNHSNumber | PATIENTNHSNUMBER  |
+		| recordSection    | recordSections    |
+		| recordSection    | RecordSection     |
+		| recordSection    | RECORDSECTION     |
+		| timePeriod       | time              |
+		| timePeriod       | TimePeriod        |
+		| timePeriod       | TIMEPERIOD        |
 
 Scenario: Request parameter patientNHSNumber values is empty
 	Given I am using the default server
@@ -1111,37 +1120,37 @@ Scenario Outline: Requested section code incorrect parameter case
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
-	| Code |
-	| adm |
-	| Adm |
-	| aDm |
-	| all |
-	| All |
-	| AlL |
-	| cli |
-	| Cli |
-	| enc |
-	| Enc |
-	| ENc |
-	| imm |
-	| Imm |
-	| iMM |
-	#| inv |
-	#| Inv |
-	| med |
-	| Med |
-	| mEd |
-	| obs |
-	| Obs |
-	#| pat |
-	#| Pat |
-	| prb |
-	| Prb |
-	| ref |
-	| Ref |
-	| sum |
-	| Sum |
-	| sUm |
+		| Code |
+		| adm |
+		| Adm |
+		| aDm |
+		| all |
+		| All |
+		| AlL |
+		| cli |
+		| Cli |
+		| enc |
+		| Enc |
+		| ENc |
+		| imm |
+		| Imm |
+		| iMM |
+		#| inv |
+		#| Inv |
+		| med |
+		| Med |
+		| mEd |
+		| obs |
+		| Obs |
+		#| pat |
+		#| Pat |
+		| prb |
+		| Prb |
+		| ref |
+		| Ref |
+		| sum |
+		| Sum |
+		| sUm |
 
 Scenario Outline: A patient is requested which is not on Spine but is on provider system
 	Given I am using the default server
@@ -1152,19 +1161,19 @@ Scenario Outline: A patient is requested which is not on Spine but is on provide
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 	Examples:
-	| Code |
-	| ADM |
-	| ALL |
-	| CLI |
-	| ENC |
-	| IMM |
-	#| INV |
-	| MED |
-	| OBS |
-	#| PAT |
-	| PRB |
-	| REF |
-	| SUM |
+		| Code |
+		| ADM |
+		| ALL |
+		| CLI |
+		| ENC |
+		| IMM |
+		#| INV |
+		| MED |
+		| OBS |
+		#| PAT |
+		| PRB |
+		| REF |
+		| SUM |
 
 @ignore
 Scenario: Identifier order in response resources

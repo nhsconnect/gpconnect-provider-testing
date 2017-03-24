@@ -107,9 +107,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheJSONResponseShouldBeAOperationOutcomeResourceWithErrorCode(string errorCode)
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
-            var containsErrorCode = false;
+            List<string> errorCodes = new List<string>();
             OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
-            if(operationOutcome.Meta != null) {
+
+            if (operationOutcome.Meta != null) {
                 foreach (string profile in operationOutcome.Meta.Profile)
                 {
                     profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
@@ -119,22 +120,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 operationOutcome.Meta.ShouldNotBeNull();
             }
-            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue){
+            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue)
+            {
                 if (issue.Details != null)
                 {
                     foreach (Coding coding in issue.Details.Coding)
                     {
-                        if (coding.Code.Equals(errorCode))
-                        {
-                            containsErrorCode = true;
-                        }
+                        errorCodes.Add(coding.Code);
                     }
                 }
                 else {
                     issue.Details.ShouldNotBeNull();
                 }
             }
-            containsErrorCode.ShouldBeTrue();
+
+            errorCodes.ShouldContain(errorCode);
         }
 
         [Then(@"the JSON response bundle should contain a single Patient resource")]
@@ -351,8 +351,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-
-
+        
         [Then(@"if composition contains the patient resource communication the mandatory fields should matching the specification")]
         public void ThenIfCompositionContainsThePatientResourceCommunicationTheMandatoryFieldsShouldMatchingTheSpecification()
         {

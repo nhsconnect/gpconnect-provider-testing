@@ -127,10 +127,10 @@
     <Compile Include="Helpers\GlobalContextHelper.cs" />
     <Compile Include="Helpers\IGlobalContextHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
-    <Compile Include="Html1.feature.cs">
-      <DependentUpon>Html.feature</DependentUpon>
+    <Compile Include="Html.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Html.feature</DependentUpon>
     </Compile>
     <Compile Include="Http.feature.cs">
       <AutoGen>True</AutoGen>
@@ -150,6 +150,12 @@
     </Compile>
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Logger\TestListener.cs" />
+    <Compile Include="Patient.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Patient.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Steps\PatientSteps.cs" />
     <Compile Include="Steps\HtmlSteps.cs" />
     <Compile Include="Steps\AccessRecordSteps.cs" />
     <Compile Include="Steps\JwtSteps.cs" />
@@ -192,9 +198,13 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Foundation.feature.cs</LastGenOutput>
     </None>
+    <None Include="Patient.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Patient.feature.cs</LastGenOutput>
+    </None>
     <None Include="Html.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Html1.feature.cs</LastGenOutput>
+      <LastGenOutput>Html.feature.cs</LastGenOutput>
     </None>
     <None Include="Http.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

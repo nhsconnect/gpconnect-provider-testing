@@ -152,8 +152,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 multiplers[6] = 4;
                 multiplers[7] = 3;
                 multiplers[8] = 2;
-
-
+                
                 int currentNumber = 0;
                 int currentSum = 0;
 

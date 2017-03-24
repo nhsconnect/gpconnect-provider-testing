@@ -85,8 +85,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"I set the JWT requested record patient NHS number to ""{FhirContext.FhirPatients[patient]}""");
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, new FhirString(FhirContext.FhirPatients[patient]));
         }
-
-
+        
         [Given(@"I am requesting the record for config patient ""([^""]*)"" of system ""([^""]*)""")]
         public void GivenIAmRequestingTheRecordForConfigPatientOfSystem(string patient, string system)
         {
@@ -336,6 +335,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (resourceEntry.SelectToken(jsonPath) == null) {
                 Log.WriteLine("No Reference in response bundle so skipping rest of test but giving Pass to scenario.");
                 Assert.Pass(); // If element is not present pass and ignore other steps
+            }
+        }
+        
+        [Then(@"all search response entities in bundle should contain a logical identifier")]
+        public void AllSearchResponseEntitiesShouldContainALogicalIdentifier()
+        {
+            var listOfEntrys = ((Bundle)FhirContext.FhirResponseResource).Entry;
+            foreach (var entry in listOfEntrys) {
+                entry.Resource.Id.ShouldNotBeNull();
             }
         }
 
