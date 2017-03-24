@@ -337,6 +337,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Pass(); // If element is not present pass and ignore other steps
             }
         }
+        
+        [Then(@"all search response entities in bundle should contain a logical identifier")]
+        public void AllSearchResponseEntitiesShouldContainALogicalIdentifier()
+        {
+            var listOfEntrys = ((Bundle)FhirContext.FhirResponseResource).Entry;
+            foreach (var entry in listOfEntrys) {
+                entry.Resource.Id.ShouldNotBeNull();
+            }
+        }
 
         private void LogToDisk()
         {
