@@ -234,31 +234,29 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("When a patient is not found on the provider system an empty bundle should be retu" +
             "rned")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         public virtual void WhenAPatientIsNotFoundOnTheProviderSystemAnEmptyBundleShouldBeReturned()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("When a patient is not found on the provider system an empty bundle should be retu" +
-                    "rned", new string[] {
-                        "ignore"});
-#line 54
+                    "rned", ((string[])(null)));
+#line 53
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 55
+#line 54
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
+#line 55
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient\" i" +
                     "nteraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 56
  testRunner.When("I search for Patient \"patientNotInSystem\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 58
+#line 57
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 59
+#line 58
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 59
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
-  testRunner.And("the JSON response Bundle should not contain any entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 60
+  testRunner.And("response bundle should contain \"0\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -270,7 +268,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The provider system should accept the search parameter URL encoded", new string[] {
                         "ignore"});
-#line 64
+#line 63
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -285,7 +283,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The provider system should accept the search parameter without URL encoding", new string[] {
                         "ignore"});
-#line 68
+#line 67
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

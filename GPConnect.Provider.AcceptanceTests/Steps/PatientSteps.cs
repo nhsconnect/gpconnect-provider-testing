@@ -43,7 +43,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I search for Patient ""([^""]*)""")]
         public void ISearchForPatient(string patient)
         {
-            ISearchForPatientWithSystem(patient, "http://fhir.nhs.net/Id/nhs-number");
+            ISearchForPatientWithSystem(patient, FhirConst.IdentifierSystems.kNHSNumber);
         }
 
         [When(@"I search for Patient ""([^""]*)"" with system ""([^""]*)""")]

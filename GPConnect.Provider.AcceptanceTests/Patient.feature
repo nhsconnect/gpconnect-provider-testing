@@ -50,7 +50,6 @@ Scenario: Provider should return an error when a blank system is supplied in the
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@ignore
 Scenario: When a patient is not found on the provider system an empty bundle should be returned
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
@@ -58,7 +57,7 @@ Scenario: When a patient is not found on the provider system an empty bundle sho
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And the JSON response Bundle should not contain any entries
+		And response bundle should contain "0" entries
 
 @ignore
 Scenario: The provider system should accept the search parameter URL encoded
