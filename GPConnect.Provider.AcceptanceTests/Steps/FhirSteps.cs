@@ -410,6 +410,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the JSON response Bundle should not contain any entries")]
+        public void ThenTheJSONResponseBundleShouldNotContainAnyEntries()
+        {
+            var resourceBundle = (Bundle)FhirContext.FhirResponseResource;
+            resourceBundle.Entry.Count.ShouldBe(0);
+        }
+
         private void LogToDisk()
         {
             var traceDirectory = GlobalContext.TraceDirectory;

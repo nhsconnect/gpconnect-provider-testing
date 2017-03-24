@@ -40,17 +40,31 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         
         // Patient Steps
 
-        [When(@"I search for a Patient ""([^""]*)""")]
-        public void ISearchForAPatientWithIdentifier(string patient)
+        [When(@"I search for Patient ""([^""]*)""")]
+        public void ISearchForPatient(string patient)
         {
-            ISearchForAPatientWithIdentifier(FhirContext.FhirPatients[patient], "http://fhir.nhs.net/Id/nhs-number");
+            ISearchForPatientWithSystem(patient, "http://fhir.nhs.net/Id/nhs-number");
         }
 
-        [When(@"I search for a Patient with identifier ""([^""]*)"" and system ""([^""]*)""")]
-        public void ISearchForAPatientWithIdentifier(string identifierValue, string identifierSystem)
+        [When(@"I search for Patient ""([^""]*)"" with system ""([^""]*)""")]
+        public void ISearchForPatientWithSystem(string patient, string identifierSystem)
+        {
+            var parameterString = "identifier=" + identifierSystem + "|" + FhirContext.FhirPatients[patient];
+            ISearchForAPatientWithParameterString(patient, parameterString);
+        }
+
+        [When(@"I search for Patient ""([^""]*)"" without system in identifier parameter")]
+        public void ISearchForPatientWithoutSystemInIdentifierParameter(string patient)
+        {
+            var parameterString = "identifier=" + FhirContext.FhirPatients[patient];
+            ISearchForAPatientWithParameterString(patient, parameterString);
+        }
+
+        [When(@"I search for a Patient ""([^""]*)"" with parameter string ""([^""]*)""")]
+        public void ISearchForAPatientWithParameterString(string patient, string parameterString)
         {
             Given($@"I set the JWT requested scope to ""{JwtConst.Scope.kPatientRead}""");
-            And($@"I set the JWT requested record patient NHS number to ""{identifierValue}""");
+            And($@"I set the JWT requested record patient NHS number to ""{FhirContext.FhirPatients[patient]}""");
 
             var timer = new System.Diagnostics.Stopwatch();
 
@@ -110,7 +124,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             try
             {
                 // Set HttpContext variables for Logging purposes
-                HttpContext.RequestUrl = "/Patient?identifier="+ identifierSystem + "|" + identifierValue;
+                HttpContext.RequestUrl = "/Patient?" + parameterString;
                 HttpContext.RequestMethod = "GET";
                 HttpContext.RequestBody = "";
 
@@ -118,7 +132,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 timer.Start();
 
                 // Perform The FHIR Request
-                var query = new string[] { "identifier=" + identifierSystem + "|" + identifierValue };
+                var query = new string[] { parameterString };
 
                 FhirContext.FhirResponseResource = fhirClient.Search("Patient", query);
             }
