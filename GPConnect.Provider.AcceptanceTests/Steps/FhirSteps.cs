@@ -143,9 +143,111 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             IRequestTheFHIROperation(operation);
         }
 
+        [When(@"I request the FHIR Practitioner Type Operation")]
+        public void getPractitionerConnection()
+        {
+            var timer = new System.Diagnostics.Stopwatch();
+
+            var preferredFormat = ResourceFormat.Json;
+            if (!HttpContext.RequestHeaders.GetHeaderValue(HttpConst.Headers.kAccept).Equals(FhirConst.ContentTypes.kJsonFhir))
+            {
+                preferredFormat = ResourceFormat.Xml;
+            }
+
+            var fhirClient = new FhirClient(HttpContext.EndpointAddress)
+            {
+                PreferredFormat = preferredFormat
+            };
+
+            // On Before Request
+            fhirClient.OnBeforeRequest += (sender, args) =>
+            {
+                Log.WriteLine("*** OnBeforeRequest ***");
+                var client = (FhirClient)sender;
+
+                // Setup The Web Proxy
+                if (HttpContext.UseWebProxy)
+                {
+                    args.RawRequest.Proxy = new WebProxy(new Uri(HttpContext.WebProxyAddress, UriKind.Absolute));
+                }
+                // Add The Request Headers Apart From The Accept Header
+                foreach (var header in HttpContext.RequestHeaders.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.kAccept))
+                {
+                    args.RawRequest.Headers.Add(header.Key, header.Value);
+                    Log.WriteLine("Added Header Key='{0}' Value='{1}'", header.Key, header.Value);
+                }
+                // Add The Client Certificate
+                if (SecurityContext.SendClientCert)
+                {
+                    args.RawRequest.ClientCertificates.Add(SecurityContext.ClientCert);
+                    Log.WriteLine("Added ClientCertificate Thumbprint='{0}'", SecurityContext.ClientCertThumbPrint);
+                }
+            };
+
+            // On After Request
+            fhirClient.OnAfterResponse += (sender, args) =>
+            {
+                Log.WriteLine("*** OnAfterResponse ***");
+                var client = (FhirClient)sender;
+                HttpContext.ResponseStatusCode = client.LastResponse.StatusCode;
+                Log.WriteLine("Response StatusCode={0}", client.LastResponse.StatusCode);
+                HttpContext.ResponseContentType = client.LastResponse.ContentType;
+                Log.WriteLine("Response ContentType={0}", client.LastResponse.ContentType);
+
+                foreach (string headerKey in client.LastResponse.Headers.Keys)
+                {
+                    HttpContext.ResponseHeaders.Add(headerKey, client.LastResponse.Headers.Get(headerKey));
+                }
+            };
+
+            // Make The Request And Save The Returned Resource
+            try
+            {
+                // Set HttpContext variables for Logging purposes
+                HttpContext.RequestUrl = "/Practitioner/";
+                HttpContext.RequestMethod = "POST";
+                HttpContext.RequestBody = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
+                Log.WriteLine("HERE");
+                // Start The Performance Timer Running
+                timer.Start();
+                Log.WriteLine("HERE1");
+                // Perform The FHIR Request
+                SearchParams param = new SearchParams();
+            //    param.Add("system", "http ://fhir.nhs.net/Id/sds-user-id");
+                param.Add("userid", "G13579135");
+                FhirContext.FhirResponseResource = fhirClient.Search<Practitioner>(param);
+            }
+            catch (Exception e)
+            {
+                Log.WriteLine("HERE3");
+                Log.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                // Always Stop The Performance Timer Running
+                timer.Stop();
+            }
+
+            // Save The Time Taken To Perform The Request
+            HttpContext.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
+
+            // Grab The Response Body
+            HttpContext.ResponseBody = fhirClient.LastBodyAsText;
+            FhirContext.FhirResponseResource = fhirClient.LastBodyAsResource;
+
+            // TODO Parse The XML or JSON For Easier Processing
+
+            LogToDisk();
+        
+    }
+
+
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
         public void IRequestTheFHIROperation(string operation)
         {
+            Log.WriteLine("HELLO");
+            Log.WriteLine(operation);
+            Log.WriteLine("BYE");
             var timer = new System.Diagnostics.Stopwatch();
             
             var preferredFormat = ResourceFormat.Json;

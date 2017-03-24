@@ -109,7 +109,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
             List<string> errorCodes = new List<string>();
             OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
             if (operationOutcome.Meta != null) {
                 foreach (string profile in operationOutcome.Meta.Profile)
                 {
@@ -120,17 +123,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 operationOutcome.Meta.ShouldNotBeNull();
             }
-            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue) {
+<<<<<<< Updated upstream
+            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue)
             {
+=======
+            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue) {
+>>>>>>> Stashed changes
                 if (issue.Details != null)
                 {
                     foreach (Coding coding in issue.Details.Coding)
                     {
                         errorCodes.Add(coding.Code);
-                        if (coding.Code.Equals(errorCode))
-                        {
-                            containsErrorCode = true;
-                        }
                     }
                 }
                 else {

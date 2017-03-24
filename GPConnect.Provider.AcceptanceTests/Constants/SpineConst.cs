@@ -7,6 +7,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         {
             public const string kFhirRestReadMetadata = "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata";
             public const string kFhirOperationGetCareRecord = "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord";
+            public const string kFhirPractitioner = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";
         }        
     }
 }

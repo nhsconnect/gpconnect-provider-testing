@@ -98,6 +98,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Audit.feature</DependentUpon>
     </Compile>
+    <Compile Include="Constants\PractitionerConst.cs" />
     <Compile Include="Constants\SpineConst.cs" />
     <Compile Include="Constants\FhirConst.cs" />
     <Compile Include="Constants\HttpConst.cs" />
@@ -127,10 +128,10 @@
     <Compile Include="Helpers\GlobalContextHelper.cs" />
     <Compile Include="Helpers\IGlobalContextHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
-    <Compile Include="Html.feature.cs">
+    <Compile Include="Html1.feature.cs">
+      <DependentUpon>Html.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Html.feature</DependentUpon>
     </Compile>
     <Compile Include="Http.feature.cs">
       <AutoGen>True</AutoGen>
@@ -150,12 +151,12 @@
     </Compile>
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Logger\TestListener.cs" />
-    <Compile Include="Patient.feature.cs">
+    <Compile Include="Practitioner.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Patient.feature</DependentUpon>
+      <DependentUpon>Practitioner.feature</DependentUpon>
     </Compile>
-    <Compile Include="Steps\PatientSteps.cs" />
+    <Compile Include="Steps\PractitionerSteps.cs" />
     <Compile Include="Steps\HtmlSteps.cs" />
     <Compile Include="Steps\AccessRecordSteps.cs" />
     <Compile Include="Steps\JwtSteps.cs" />
@@ -198,13 +199,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Foundation.feature.cs</LastGenOutput>
     </None>
-    <None Include="Patient.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Patient.feature.cs</LastGenOutput>
-    </None>
     <None Include="Html.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Html.feature.cs</LastGenOutput>
+      <LastGenOutput>Html1.feature.cs</LastGenOutput>
     </None>
     <None Include="Http.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -214,6 +211,10 @@
     <None Include="JWT.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>JWT.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Practitioner.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Practitioner.feature.cs</LastGenOutput>
     </None>
     <None Include="Security.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
