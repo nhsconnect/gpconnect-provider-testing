@@ -464,15 +464,15 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Organization search failure due to no Ssp-To header")]
+        [NUnit.Framework.DescriptionAttribute("Organization search failure due to missing header")]
         [NUnit.Framework.TestCaseAttribute("Ssp-TraceID", new string[0])]
         [NUnit.Framework.TestCaseAttribute("Ssp-From", new string[0])]
         [NUnit.Framework.TestCaseAttribute("Ssp-To", new string[0])]
         [NUnit.Framework.TestCaseAttribute("Ssp-InteractionId", new string[0])]
         [NUnit.Framework.TestCaseAttribute("Authorization", new string[0])]
-        public virtual void OrganizationSearchFailureDueToNoSsp_ToHeader(string header, string[] exampleTags)
+        public virtual void OrganizationSearchFailureDueToMissingHeader(string header, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search failure due to no Ssp-To header", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search failure due to missing header", exampleTags);
 #line 151
 this.ScenarioSetup(scenarioInfo);
 #line 152

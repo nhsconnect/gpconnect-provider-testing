@@ -148,7 +148,7 @@ Scenario Outline: Organization search failure due to invalid interactionId
 		| InvalidInteractionId                                              |
 		|                                                                   |
 
-Scenario Outline: Organization search failure due to no Ssp-To header
+Scenario Outline: Organization search failure due to missing header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
 		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/ods-organization-code\|GPC001"
