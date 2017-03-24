@@ -150,6 +150,11 @@
     </Compile>
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Logger\TestListener.cs" />
+    <Compile Include="OrganizationSearch.feature.cs">
+      <DependentUpon>OrganizationSearch.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Patient.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -197,6 +202,10 @@
     <None Include="Foundation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Foundation.feature.cs</LastGenOutput>
+    </None>
+    <None Include="OrganizationSearch.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OrganizationSearch.feature.cs</LastGenOutput>
     </None>
     <None Include="Patient.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
