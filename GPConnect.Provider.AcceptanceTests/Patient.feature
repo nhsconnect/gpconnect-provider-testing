@@ -9,6 +9,11 @@ Background:
 		| patient2           | 9000000002 |
 		| patient16          | 9000000016 |
 
+@ignore
+Scenario: The provider system should accept the search parameter URL encoded
+	# The API being used in the test suite encodes the parameter string by default so no additional test needs to be performed.
+	# The FHIR and HTTP standards require the request to be URL encoded so it is mandated that clents encode their requests.
+
 Scenario: Returned patients should contain a logical identifier
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
@@ -18,7 +23,7 @@ Scenario: Returned patients should contain a logical identifier
 		And the JSON response should be a Bundle resource
 		And all search response entities in bundle should contain a logical identifier
 
-Scenario: Provider should return a paitent resource when a valid request is sent
+Scenario: Provider should return a patient resource when a valid request is sent
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
 	When I search for Patient "patient1"
@@ -59,11 +64,35 @@ Scenario: When a patient is not found on the provider system an empty bundle sho
 		And the JSON response should be a Bundle resource
 		And response bundle should contain "0" entries
 
-@ignore
-Scenario: The provider system should accept the search parameter URL encoded
-	#patient1
+Scenario: Patient search should fail if no identifier parameter is include
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+	When I make a GET request to "/Patient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-@ignore
-Scenario: The provider system should accept the search parameter without URL encoding
-	#patient1
+Scenario: The identifier parameter should be rejected if the case is incorrect
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+	When I search for Patient "patient2" with parameter name "IdentIfier" and system "http://fhir.nhs.net/Id/nhs-number"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+Scenario: The response should be an error if parameter is not identifier
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+	When I search for Patient "patient2" with parameter name "nhsNumberParam" and system "http://fhir.nhs.net/Id/nhs-number"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: The response should be an error if no value is sent in the identifier parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/nhs-number|"
+	When I make a GET request to "/Patient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource with error code "BAD_REQUEST"
