@@ -2,16 +2,7 @@
 Feature: OrganizationSearch
 
 Background:
-	Given I have the following ods codes
-		| Id         | Code   |
-		| unknownORG | INVOC1 |
-		| ORG1       | GPC001 |
-		| ORG2       | R1A14  |
-		| ORG3       | R1A17  |
-		| unknownSIT | INVSC1 |
-		| SIT1       | Z26556 |
-		| SIT2       | Z33432 |
-		| SIT3		 | Z33433 |
+	Given I have the test ods codes
 
 Scenario Outline: Organization search success
 	Given I am using the default server
@@ -22,18 +13,20 @@ Scenario Outline: Organization search success
 		And the response body should be FHIR JSON
 		And response bundle should contain "<ExpectedSize>" entries
 	Examples:
-		| System                                       | Value  | ExpectedSize |
-		| http://fhir.nhs.net/Id/ods-organization-code | INVOC1 | 0            |
-		| http://fhir.nhs.net/Id/ods-organization-code | GPC001 | 1            |
-		| http://fhir.nhs.net/Id/ods-organization-code | R1A14  | 2            |
-		| http://fhir.nhs.net/Id/ods-site-code         | INVSC1 | 0            |
-		| http://fhir.nhs.net/Id/ods-site-code         | Z26556 | 1            |
-		| http://fhir.nhs.net/Id/ods-site-code         | Z33433 | 2            |
+		| System                                       | Value      | ExpectedSize |
+		| http://fhir.nhs.net/Id/ods-organization-code | unknownORG | 0            |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG1       | 1            |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG2       | 2            |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG3       | 1            |
+		| http://fhir.nhs.net/Id/ods-site-code         | unknownSIT | 0            |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT1       | 1            |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT2       | 1            |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT3       | 2            |
 		
 Scenario: Organization search by organization code success single result contains correct fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "GPC001"
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -43,13 +36,13 @@ Scenario: Organization search by organization code success single result contain
 		And response bundle entry "Organization" should contain element "fullUrl"
 		And response bundle entry "Organization" should contain element "resource.meta.versionId"
 		And response bundle entry "Organization" should contain element "resource.meta.profile[0]" with value "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1"
-		And response bundle entry "Organization" should contain element "resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-organization-code')].value" with value "GPC001"
-		And response bundle entry "Organization" should contain element "resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-site-code')].value" with value "Z26556"
+		And response should contain ods-organization-codes "ORG1"
+		And response should contain ods-site-codes "SIT1"
 		
 Scenario: Organization search by organization code success multiple results contains correct fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "R1A14"
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -59,13 +52,13 @@ Scenario: Organization search by organization code success multiple results cont
 		And response bundle "Organization" entries should contain element "fullUrl"
 		And response bundle "Organization" entries should contain element "resource.meta.versionId"
 		And response bundle "Organization" entries should contain element "resource.meta.profile[0]" with value "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1"
-		And response bundle "Organization" entries should contain element "resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-organization-code')].value" with value "R1A14"
-		And response bundle "Organization" entries should contain element "resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-site-code')].value" with values "Z33432|Z33433"
+		And response should contain ods-organization-codes "ORG2"
+		And response should contain ods-site-codes "SIT2|SIT3"
 
 Scenario: Organization search by site code success single result contains correct fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "Z26556"
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -75,13 +68,13 @@ Scenario: Organization search by site code success single result contains correc
 		And response bundle entry "Organization" should contain element "fullUrl"
 		And response bundle entry "Organization" should contain element "resource.meta.versionId"
 		And response bundle entry "Organization" should contain element "resource.meta.profile[0]" with value "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1"
-		And response bundle entry "Organization" should contain element "resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-site-code')].value" with value "Z26556"
-		And response bundle entry "Organization" should contain element "resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-organization-code')].value" with value "GPC001"
+		And response should contain ods-organization-codes "ORG1"
+		And response should contain ods-site-codes "SIT1"
 		
 Scenario: Organization search by site code success multiple results contains correct fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "Z33433"
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT3"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -91,8 +84,8 @@ Scenario: Organization search by site code success multiple results contains cor
 		And response bundle "Organization" entries should contain element "fullUrl"
 		And response bundle "Organization" entries should contain element "resource.meta.versionId"
 		And response bundle "Organization" entries should contain element "resource.meta.profile[0]" with value "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1"
-		And response bundle "Organization" entries should contain element "resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-site-code')].value" with value "Z33433"
-		And response bundle "Organization" entries should contain element "resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-organization-code')].value" with values "R1A14|R1A17"
+		And response should contain ods-organization-codes "ORG2|ORG3"
+		And response should contain ods-site-codes "SIT3"
 
 Scenario Outline: Organization search failure due to invalid identifier
 	Given I am using the default server
@@ -121,8 +114,8 @@ Scenario: Organization search failure due to no identifier parameter
 Scenario: Organization search failure due to multiple identifier parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "GPC001"
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "GPC001"
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -149,7 +142,7 @@ Scenario: Organization search failure due to invalid identifier parameter case
 Scenario Outline: Organization search failure due to invalid interactionId
 	Given I am using the default server
 		And I am performing the "<InteractionId>" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "GPC001"
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -163,7 +156,7 @@ Scenario Outline: Organization search failure due to invalid interactionId
 Scenario Outline: Organization search failure due to missing header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "GPC001"
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
 		And I do not send header "<Header>"
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"

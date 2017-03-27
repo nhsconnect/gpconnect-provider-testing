@@ -358,7 +358,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             string[] elements = elementValues.Split(new char[] { '|' });
 
-            mylist.Count().ShouldBe(elements.Count(), "Wrong number of values found for element: " + jsonPath);
+            mylist.Distinct().Count().ShouldBe(elements.Count(), "Wrong number of values found for element: " + jsonPath);
 
             foreach (var value in elements)
             {

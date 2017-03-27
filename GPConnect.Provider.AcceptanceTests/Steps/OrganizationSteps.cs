@@ -25,30 +25,52 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext = fhirContext;
         }
 
-        [Given(@"I have the following ods codes")]
-        public void GivenIHaveTheFollowingODSCodes(Table table)
+        [Given(@"I have the test ods codes")]
+        public void GivenIHaveTheTestODSCodes()
         {
             FhirContext.FhirOrganizations.Clear();
-            foreach (var row in table.Rows)
+
+            foreach (ODSCodeMap odsMap in GlobalContext.ODSCodeMapData)
             {
-                string odsCode = row["Code"];
-                // Map the native ODS code to provider equivalent from CSV file
-                foreach (ODSCodeMap odsMap in GlobalContext.ODSCodeMapData)
-                {
-                    if (String.Equals(odsMap.NativeODSCode, odsCode))
-                    {
-                        Log.WriteLine("Mapped test ODS code {0} to {1}", odsCode, odsMap.ProviderODSCode);
-                        FhirContext.FhirOrganizations.Add(row["Id"], odsMap.ProviderODSCode);
-                        break;
-                    }
-                }
+                Log.WriteLine("Mapped test ODS code {0} to {1}", odsMap.NativeODSCode, odsMap.ProviderODSCode);
+                FhirContext.FhirOrganizations.Add(odsMap.NativeODSCode, odsMap.ProviderODSCode);
             }
         }
-        
+
         [Given(@"I add the identifier parameter with system ""(.*)"" and value ""(.*)""")]
         public void GivenIAddTheIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
         {
-            Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + valueParameter}""");
+            Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + FhirContext.FhirOrganizations[valueParameter]}""");
+        }
+        
+        [Then(@"response should contain ods-organization-codes ""([^""]*)""")]
+        public void ThenResponseShouldContainODSOrganizationCodesWithValues(string elementValues)
+        {
+            List<string> referenceValueList = new List<string>();
+
+            foreach (var element in elementValues.Split(new char[] { '|' }))
+            {
+                referenceValueList.Add(FhirContext.FhirOrganizations[element]);
+            }
+
+            string referenceValues = String.Join("|", referenceValueList);
+            
+            Then($@"response bundle ""Organization"" entries should contain element ""resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-organization-code')].value"" with values ""{referenceValues}""");
+        }
+
+        [Then(@"response should contain ods-site-codes ""([^""]*)""")]
+        public void ThenResponseShouldContainODSSiteCodesWithValues(string elementValues)
+        {
+            List<string> referenceValueList = new List<string>();
+
+            foreach (var element in elementValues.Split(new char[] { '|' }))
+            {
+                referenceValueList.Add(FhirContext.FhirOrganizations[element]);
+            }
+
+            string referenceValues = String.Join("|", referenceValueList);
+
+            Then($@"response bundle ""Organization"" entries should contain element ""resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-site-code')].value"" with values ""{referenceValues}""");
         }
     }
 }
