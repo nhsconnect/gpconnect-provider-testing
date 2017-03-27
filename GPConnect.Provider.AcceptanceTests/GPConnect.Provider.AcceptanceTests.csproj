@@ -107,7 +107,7 @@
     <Compile Include="Context\FhirContext.cs" />
     <Compile Include="Context\HttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
-    <Compile Include="Data\ODS.cs" />
+    <Compile Include="Data\ODSCodeMap.cs" />
     <Compile Include="Data\NHSNoMap.cs" />
     <Compile Include="Data\PDS.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
@@ -137,11 +137,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Http.feature</DependentUpon>
     </Compile>
-    <Compile Include="Importers\ODSImporter.cs" />
+    <Compile Include="Importers\ODSCodeMapImporter.cs" />
     <Compile Include="Importers\NHSNoMapImporter.cs" />
     <Compile Include="Importers\PDSImporter.cs" />
-    <Compile Include="Importers\ODSMap.cs" />
-    <Compile Include="Importers\NHSNoMapMap.cs" />
+    <Compile Include="Importers\ODSCodeMapConverter.cs" />
+    <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
     <Compile Include="JWT.feature.cs">
       <DependentUpon>JWT.feature</DependentUpon>
@@ -160,6 +160,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Patient.feature</DependentUpon>
     </Compile>
+    <Compile Include="Steps\OrganizationSteps.cs" />
     <Compile Include="Steps\PatientSteps.cs" />
     <Compile Include="Steps\HtmlSteps.cs" />
     <Compile Include="Steps\AccessRecordSteps.cs" />

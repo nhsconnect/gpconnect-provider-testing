@@ -13,7 +13,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         {
             public const string kTraceDirectory = "traceDirectory";
             public const string kPDSData = "pdsData";
-            public const string kODSData = "odsData";
+            public const string kODSCodeMapData = "odsCodeMapData";
             public const string kNHSNoMapData = "NHSNoMapData";
             public const string kFhirGenderValueSet = "fhirGenderValueSet";
             public const string kFhirMaritalStatusValueSet = "fhirMaritalStatusValueSet";
@@ -35,10 +35,10 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             set { GlobalContextHelper.SaveValue(Context.kPDSData, value); }
         }
 
-        public static List<ODS> ODSData
+        public static List<ODSCodeMap> ODSCodeMapData
         {
-            get { return GlobalContextHelper.GetValue<List<ODS>>(Context.kODSData); }
-            set { GlobalContextHelper.SaveValue(Context.kODSData, value); }
+            get { return GlobalContextHelper.GetValue<List<ODSCodeMap>>(Context.kODSCodeMapData); }
+            set { GlobalContextHelper.SaveValue(Context.kODSCodeMapData, value); }
         }
 
         public static List<NHSNoMap> NHSNoMapData
