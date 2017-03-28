@@ -6,7 +6,7 @@ Please see the [GP Connect Provider Testing Wiki](https://github.com/nhsconnect/
 ## Setup
 The tests use a specific set of patients (numbered 1-15 e.g. patient1, patient2...) when making calls to endpoints. In order for these tests to pass, the data held on the target server must match the expected conditions defined in the patients file:
 ```
-{projectRoot}\Data\Test Suite Required Patients.xlsx
+{projectRoot}\Data\Test Suite Prerequisites.xlsx
 ```
 
 Each of these numbered patients will have a corresponding NHS number on the target server. The following file should be used to map the patient number to their equivalent NHS number:

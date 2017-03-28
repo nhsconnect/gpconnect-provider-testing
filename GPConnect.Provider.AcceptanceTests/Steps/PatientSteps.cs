@@ -1,19 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Xml.Linq;
-using GPConnect.Provider.AcceptanceTests.Constants;
+﻿using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Rest;
-using Newtonsoft.Json.Linq;
-using Shouldly;
 using TechTalk.SpecFlow;
-using Hl7.Fhir.Serialization;
-using NUnit.Framework;
-using System.IO;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
@@ -40,119 +28,38 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         
         // Patient Steps
 
-        [When(@"I search for a Patient ""([^""]*)""")]
-        public void ISearchForAPatientWithIdentifier(string patient)
+        [When(@"I search for Patient ""([^""]*)""")]
+        public void ISearchForPatient(string patient)
         {
-            ISearchForAPatientWithIdentifier(FhirContext.FhirPatients[patient], "http://fhir.nhs.net/Id/nhs-number");
+            ISearchForPatientWithSystem(patient, FhirConst.IdentifierSystems.kNHSNumber);
         }
 
-        [When(@"I search for a Patient with identifier ""([^""]*)"" and system ""([^""]*)""")]
-        public void ISearchForAPatientWithIdentifier(string identifierValue, string identifierSystem)
+        [When(@"I search for Patient ""([^""]*)"" with system ""([^""]*)""")]
+        public void ISearchForPatientWithSystem(string patient, string identifierSystem)
         {
-            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.kPatientRead}""");
-            And($@"I set the JWT requested record patient NHS number to ""{identifierValue}""");
-
-            var timer = new System.Diagnostics.Stopwatch();
-
-            var preferredFormat = ResourceFormat.Json;
-            if (!HttpContext.RequestHeaders.GetHeaderValue(HttpConst.Headers.kAccept).Equals(FhirConst.ContentTypes.kJsonFhir))
-            {
-                preferredFormat = ResourceFormat.Xml;
-            }
-
-            var fhirClient = new FhirClient(HttpContext.EndpointAddress)
-            {
-                PreferredFormat = preferredFormat
-            };
-
-            // On Before Request
-            fhirClient.OnBeforeRequest += (sender, args) =>
-            {
-                Log.WriteLine("*** OnBeforeRequest ***");
-                var client = (FhirClient)sender;
-
-                // Setup The Web Proxy
-                if (HttpContext.UseWebProxy)
-                {
-                    args.RawRequest.Proxy = new WebProxy(new Uri(HttpContext.WebProxyAddress, UriKind.Absolute));
-                }
-                // Add The Request Headers Apart From The Accept Header
-                foreach (var header in HttpContext.RequestHeaders.GetRequestHeaders().Where(header => header.Key != HttpConst.Headers.kAccept))
-                {
-                    args.RawRequest.Headers.Add(header.Key, header.Value);
-                    Log.WriteLine("Added Header Key='{0}' Value='{1}'", header.Key, header.Value);
-                }
-                // Add The Client Certificate
-                if (SecurityContext.SendClientCert)
-                {
-                    args.RawRequest.ClientCertificates.Add(SecurityContext.ClientCert);
-                    Log.WriteLine("Added ClientCertificate Thumbprint='{0}'", SecurityContext.ClientCertThumbPrint);
-                }
-            };
-
-            // On After Request
-            fhirClient.OnAfterResponse += (sender, args) =>
-            {
-                Log.WriteLine("*** OnAfterResponse ***");
-                var client = (FhirClient)sender;
-                HttpContext.ResponseStatusCode = client.LastResponse.StatusCode;
-                Log.WriteLine("Response StatusCode={0}", client.LastResponse.StatusCode);
-                HttpContext.ResponseContentType = client.LastResponse.ContentType;
-                Log.WriteLine("Response ContentType={0}", client.LastResponse.ContentType);
-
-                foreach (string headerKey in client.LastResponse.Headers.Keys)
-                {
-                    HttpContext.ResponseHeaders.Add(headerKey, client.LastResponse.Headers.Get(headerKey));
-                }
-            };
-
-            // Make The Request And Save The Returned Resource
-            try
-            {
-                // Set HttpContext variables for Logging purposes
-                HttpContext.RequestUrl = "/Patient?identifier="+ identifierSystem + "|" + identifierValue;
-                HttpContext.RequestMethod = "GET";
-                HttpContext.RequestBody = "";
-
-                // Start The Performance Timer Running
-                timer.Start();
-
-                // Perform The FHIR Request
-                var query = new string[] { "identifier=" + identifierSystem + "|" + identifierValue };
-
-                FhirContext.FhirResponseResource = fhirClient.Search("Patient", query);
-            }
-            catch (Exception e)
-            {
-                Log.WriteLine(e.StackTrace);
-            }
-            finally
-            {
-                // Always Stop The Performance Timer Running
-                timer.Stop();
-            }
-
-            // Save The Time Taken To Perform The Request
-            HttpContext.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
-
-            // Grab The Response Body
-            HttpContext.ResponseBody = fhirClient.LastBodyAsText;
-            FhirContext.FhirResponseResource = fhirClient.LastBodyAsResource;
-            LogToDisk();
+            var parameterString = identifierSystem + "|" + FhirContext.FhirPatients[patient];
+            ISearchForAPatientWithParameterString(patient, "identifier", parameterString);
         }
 
-        private void LogToDisk()
+        [When(@"I search for Patient ""([^""]*)"" without system in identifier parameter")]
+        public void ISearchForPatientWithoutSystemInIdentifierParameter(string patient)
         {
-            var traceDirectory = GlobalContext.TraceDirectory;
-            if (!Directory.Exists(traceDirectory)) return;
-            var scenarioDirectory = Path.Combine(traceDirectory, HttpContext.ScenarioContext.ScenarioInfo.Title);
-            int fileIndex = 1;
-            while (Directory.Exists(scenarioDirectory + "-" + fileIndex)) fileIndex++;
-            scenarioDirectory = scenarioDirectory + "-" + fileIndex;
-            Directory.CreateDirectory(scenarioDirectory);
-            Log.WriteLine(scenarioDirectory);
-            HttpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
-            FhirContext.SaveToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
+            ISearchForAPatientWithParameterString(patient, "identifier", FhirContext.FhirPatients[patient]);
         }
+
+        [When(@"I search for Patient ""([^""]*)"" with parameter name ""([^""]*)"" and system ""([^""]*)""")]
+        public void ISearchForPatientWithParameterNameAndSystem(string patient, string parameterName, string parameterSystem)
+        {
+            var parameterString = parameterSystem + "|" + FhirContext.FhirPatients[patient];
+            ISearchForAPatientWithParameterString(patient, parameterName, parameterString);
+        }
+
+        [When(@"I search for a Patient ""([^""]*)"" with parameter string ""([^""]*)""")]
+        public void ISearchForAPatientWithParameterString(string patient, string parameterName, string parameterString)
+        {
+            Given($@"I add the parameter ""{parameterName}"" with the value ""{parameterString}""");
+            When($@"I make a GET request to ""/Patient""");
+        }
+        
     }
 }

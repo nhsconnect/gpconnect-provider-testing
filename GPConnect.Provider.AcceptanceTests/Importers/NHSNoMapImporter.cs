@@ -12,7 +12,7 @@ namespace GPConnect.Provider.AcceptanceTests.Importers
         {
             using (var csv = new CsvReader(new StreamReader(filename)))
             {
-                csv.Configuration.RegisterClassMap<NHSNoMapMap>();
+                csv.Configuration.RegisterClassMap<NHSNoMapConverter>();
                 return csv.GetRecords<NHSNoMap>().ToList();
             }
         }

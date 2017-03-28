@@ -98,7 +98,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Audit.feature</DependentUpon>
     </Compile>
-    <Compile Include="Constants\PractitionerConst.cs" />
     <Compile Include="Constants\SpineConst.cs" />
     <Compile Include="Constants\FhirConst.cs" />
     <Compile Include="Constants\HttpConst.cs" />
@@ -108,7 +107,7 @@
     <Compile Include="Context\FhirContext.cs" />
     <Compile Include="Context\HttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
-    <Compile Include="Data\ODS.cs" />
+    <Compile Include="Data\ODSCodeMap.cs" />
     <Compile Include="Data\NHSNoMap.cs" />
     <Compile Include="Data\PDS.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
@@ -128,21 +127,21 @@
     <Compile Include="Helpers\GlobalContextHelper.cs" />
     <Compile Include="Helpers\IGlobalContextHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
-    <Compile Include="Html1.feature.cs">
-      <DependentUpon>Html.feature</DependentUpon>
+    <Compile Include="Html.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Html.feature</DependentUpon>
     </Compile>
     <Compile Include="Http.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Http.feature</DependentUpon>
     </Compile>
-    <Compile Include="Importers\ODSImporter.cs" />
+    <Compile Include="Importers\ODSCodeMapImporter.cs" />
     <Compile Include="Importers\NHSNoMapImporter.cs" />
     <Compile Include="Importers\PDSImporter.cs" />
-    <Compile Include="Importers\ODSMap.cs" />
-    <Compile Include="Importers\NHSNoMapMap.cs" />
+    <Compile Include="Importers\ODSCodeMapConverter.cs" />
+    <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
     <Compile Include="JWT.feature.cs">
       <DependentUpon>JWT.feature</DependentUpon>
@@ -151,12 +150,18 @@
     </Compile>
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Logger\TestListener.cs" />
-    <Compile Include="Practitioner.feature.cs">
+    <Compile Include="OrganizationSearch.feature.cs">
+      <DependentUpon>OrganizationSearch.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Practitioner.feature</DependentUpon>
     </Compile>
-    <Compile Include="Steps\PractitionerSteps.cs" />
+    <Compile Include="Patient.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Patient.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Steps\OrganizationSteps.cs" />
+    <Compile Include="Steps\PatientSteps.cs" />
     <Compile Include="Steps\HtmlSteps.cs" />
     <Compile Include="Steps\AccessRecordSteps.cs" />
     <Compile Include="Steps\JwtSteps.cs" />
@@ -199,9 +204,17 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Foundation.feature.cs</LastGenOutput>
     </None>
+    <None Include="OrganizationSearch.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OrganizationSearch.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Patient.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Patient.feature.cs</LastGenOutput>
+    </None>
     <None Include="Html.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Html1.feature.cs</LastGenOutput>
+      <LastGenOutput>Html.feature.cs</LastGenOutput>
     </None>
     <None Include="Http.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -211,10 +224,6 @@
     <None Include="JWT.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>JWT.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Practitioner.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Practitioner.feature.cs</LastGenOutput>
     </None>
     <None Include="Security.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
