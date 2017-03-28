@@ -111,16 +111,6 @@ Scenario: Organization search failure due to no identifier parameter
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
-Scenario: Organization search failure due to multiple identifier parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
-	When I make a GET request to "/Organization"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
-
 Scenario: Organization search failure due to invalid identifier parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
@@ -152,7 +142,7 @@ Scenario Outline: Organization search failure due to invalid interactionId
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
 		| InvalidInteractionId                                              |
 		|                                                                   |
-
+		
 Scenario Outline: Organization search failure due to missing header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
@@ -169,3 +159,46 @@ Scenario Outline: Organization search failure due to missing header
 		| Ssp-To            |
 		| Ssp-InteractionId |
 		| Authorization     |
+		
+Scenario Outline: Organization search accept header
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I set the Accept header to "<Header>"
+	When I make a GET request to "/Organization"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+	Examples:
+		| Header                | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
+
+Scenario Outline: Organization search _format parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I do not send header "Accept"
+		And I add the parameter "_format" with the value "<Parameter>"
+	When I make a GET request to "/Organization"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+	Examples:
+		| Parameter             | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
+
+Scenario Outline: Organization search accept header and _format parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
+		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I set the Accept header to "<Header>"
+		And I add the parameter "_format" with the value "<Parameter>"
+	When I make a GET request to "/Organization"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+	Examples:
+		| Header                | Parameter             | BodyFormat |
+		| application/json+fhir | application/json+fhir | JSON       |
+		| application/json+fhir | application/xml+fhir  | XML        |
+		| application/xml+fhir  | application/json+fhir | JSON       |
+		| application/xml+fhir  | application/xml+fhir  | XML        |
