@@ -96,3 +96,15 @@ Scenario: The response should be an error if no value is sent in the identifier 
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+@ignore
+Scenario: The patient search endpoint should accept the format parameter after the identifier parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the Accept header to "application/xml+fhir"
+		And I add the parameter "_format" with the value "application/json+fhir"
+	When I search for Patient "patient2" with parameter name "nhsNumberParam" and system "http://fhir.nhs.net/Id/nhs-number"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And response bundle should contain "0" entries
