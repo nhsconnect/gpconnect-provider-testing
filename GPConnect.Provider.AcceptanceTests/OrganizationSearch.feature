@@ -86,22 +86,30 @@ Scenario: Organization search by site code success multiple results contains cor
 		And response bundle "Organization" entries should contain element "resource.meta.profile[0]" with value "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1"
 		And response should contain ods-organization-codes "ORG2|ORG3"
 		And response should contain ods-site-codes "SIT3"
-
+		
 Scenario Outline: Organization search failure due to invalid identifier
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
 		And I add the parameter "identifier" with the value "<Identifier>"
 	When I make a GET request to "/Organization"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
 		| Identifier                             |
 		| GPC001                                 |
 		| http://fhir.nhs.net/Id/ods-site-code   |
 		| http://fhir.nhs.net/Id/ods-site-code\| |
 		| \|GPC001                               |
-		| badSystem\|GPC001                      |
+
+Scenario: Organization search failure due to invalid system
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
+		And I add the parameter "identifier" with the value "badSystem|GPC001"
+	When I make a GET request to "/Organization"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Organization search failure due to no identifier parameter
 	Given I am using the default server

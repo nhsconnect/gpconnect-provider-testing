@@ -35,7 +35,7 @@ Scenario: Provider should return an error when an invalid system is supplied in 
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
 	When I search for Patient "patient1" with system "http://test.net/types/internalIdentifier"
-	Then the response status code should be "422"
+	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
@@ -93,9 +93,9 @@ Scenario: The response should be an error if no value is sent in the identifier 
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
 		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/nhs-number|"
 	When I make a GET request to "/Patient"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 @ignore
 Scenario: The patient search endpoint should accept the format parameter after the identifier parameter
