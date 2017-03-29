@@ -33,18 +33,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Helpers
             Headers = headerHelper;
             Jwt = jwtHelper;
+        }
 
 
+        [Given(@"I add the practitioner identifier parameter with system ""(.*)"" and value ""(.*)""")]
+        public void GivenIAddThePractitionerIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
+        {
+            Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + valueParameter}""");
+        }
+
+        [Given(@"I add the practitioner identifier with custom ""(.*)""  parameter with system ""(.*)"" and value ""(.*)""")]
+        public void GivenIAddThePractitionerWithIncorrectIdentifierParameterWithTheSystemAndValue(string identifier,string systemParameter, string valueParameter)
+        {
+            Given($@"I add the parameter ""{identifier}"" with the value ""{systemParameter + '|' + valueParameter}""");
         }
 
 
         [Then(@"the interactionId ""(.*)"" should be valid")]
         public void ValidInteractionId(String interactionId)
         {
-            Log.WriteLine("hello");
-            Log.WriteLine(interactionId);
-            Log.WriteLine("hello");
-
             var id = SpineConst.InteractionIds.kFhirPractitioner;
             if (interactionId == id)
             {
@@ -57,14 +64,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
-
         [Then(@"the interactionId ""(.*)"" should be Invalid")]
         public void InValidInteractionId(String interactionId)
         {
-            Log.WriteLine("hello");
-            Log.WriteLine(interactionId);
-            Log.WriteLine("hello");
-
             var id = SpineConst.InteractionIds.kFhirPractitioner;
             if (interactionId != id)
             {
@@ -76,5 +78,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
     }
-    
+
 }

@@ -143,6 +143,11 @@
     <Compile Include="Importers\ODSCodeMapConverter.cs" />
     <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
+    <Compile Include="Practitioner.feature.cs">
+      <DependentUpon>Practitioner.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="JWT.feature.cs">
       <DependentUpon>JWT.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -166,6 +171,7 @@
     <Compile Include="Steps\AccessRecordSteps.cs" />
     <Compile Include="Steps\JwtSteps.cs" />
     <Compile Include="Steps\ManualSteps.cs" />
+    <Compile Include="Steps\PractitionerSteps.cs" />
     <Compile Include="Steps\SecuritySteps.cs" />
     <Compile Include="Steps\GenericSteps.cs" />
     <Compile Include="Steps\FhirSteps.cs" />
@@ -203,6 +209,10 @@
     <None Include="Foundation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Foundation.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Practitioner.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Practitioner.feature.cs</LastGenOutput>
     </None>
     <None Include="OrganizationSearch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

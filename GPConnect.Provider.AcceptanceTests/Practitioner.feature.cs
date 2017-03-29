@@ -32,8 +32,7 @@ namespace GPConnect.Provider.AcceptanceTests
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Practitioner", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
-                    "f two numbers", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Practitioner", null, ProgrammingLanguage.CSharp, new string[] {
                         "Practitioner"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -67,146 +66,129 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestValidPractitioner")]
-        public virtual void PractitionerRequestValidPractitioner()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search valid practitioner")]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-user-id", "G11111116", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-user-id", "G22345655", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-user-id", "G13579135", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-role-profile-id", "PT1234", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-role-profile-id", "PT1122", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-role-profile-id", "PT1236", new string[0])]
+        public virtual void PractitionerSearchValidPractitioner(string system, string value, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestValidPractitioner", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search valid practitioner", exampleTags);
+#line 4
+this.ScenarioSetup(scenarioInfo);
+#line 5
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 6
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
+                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 7
-this.ScenarioSetup(scenarioInfo);
+  testRunner.And(string.Format("I add the practitioner identifier parameter with system \"{0}\" and value \"{1}\"", system, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 8
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 10
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 13
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
   testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestInValidPractitioner")]
-        public virtual void PractitionerRequestInValidPractitioner()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search invalid practitioner")]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-user-id", "G99999999", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-role-profile-id", "PT9999", new string[0])]
+        public virtual void PractitionerSearchInvalidPractitioner(string system, string value, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestInValidPractitioner", ((string[])(null)));
-#line 18
-this.ScenarioSetup(scenarioInfo);
-#line 19
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 20
- testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
- testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G9999999\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search invalid practitioner", exampleTags);
 #line 22
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 23
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 24
- testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
- testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
- testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWithCorrectSystem")]
-        public virtual void PractitionerRequestWithCorrectSystem()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWithCorrectSystem", ((string[])(null)));
-#line 29
 this.ScenarioSetup(scenarioInfo);
-#line 30
+#line 23
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 31
+#line 24
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
                     "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
-   testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 34
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 35
+#line 25
+  testRunner.And(string.Format("I add the practitioner identifier parameter with system \"{0}\" and value \"{1}\"", system, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 28
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 29
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 30
   testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWithInCorrectSystem")]
-        public virtual void PractitionerRequestWithInCorrectSystem()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search with variation of system id and value")]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-user-id9", "G11111116", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-role-profile-id9", "PT1122", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("", "G11111116", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("null", "G11111116", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-user-id", "null", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-user-id", "", new string[0])]
+        public virtual void PractitionerSearchWithVariationOfSystemIdAndValue(string system, string value, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWithInCorrectSystem", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search with variation of system id and value", exampleTags);
+#line 36
+this.ScenarioSetup(scenarioInfo);
+#line 37
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 38
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
+                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 39
+  testRunner.And(string.Format("I add the practitioner identifier parameter with system \"{0}\" and value \"{1}\"", system, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
-this.ScenarioSetup(scenarioInfo);
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 41
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 42
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/incorrect" +
-                    "-id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 45
-  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 46
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWithBlankSystem")]
-        public virtual void PractitionerRequestWithBlankSystem()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search without the identifier parameter")]
+        public virtual void PractitionerSearchWithoutTheIdentifierParameter()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWithBlankSystem", ((string[])(null)));
-#line 49
-this.ScenarioSetup(scenarioInfo);
-#line 50
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 51
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search without the identifier parameter", ((string[])(null)));
 #line 52
-  testRunner.And("I add the parameter \"identifier\" with the value \"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 53
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 54
-  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
+                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 56
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWithoutASystem")]
-        public virtual void PractitionerRequestWithoutASystem()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search where identifier contains the incorrect case or spelling")]
+        [NUnit.Framework.TestCaseAttribute("idenddstifier", "http://fhir.nhs.net/Id/sds-user-id", "G11111116", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Idenddstifier", "http://fhir.nhs.net/Id/sds-user-id", "G11111116", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Identifier", "http://fhir.nhs.net/Id/sds-role-profile-id", "PT1234", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("idenddstifier", "http://fhir.nhs.net/Id/sds-role-profile-id", "PT1234", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Idenddstifier", "http://fhir.nhs.net/Id/sds-role-profile-id", "PT1234", new string[0])]
+        public virtual void PractitionerSearchWhereIdentifierContainsTheIncorrectCaseOrSpelling(string identifier, string system, string value, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWithoutASystem", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search where identifier contains the incorrect case or spelling", exampleTags);
 #line 58
 this.ScenarioSetup(scenarioInfo);
 #line 59
@@ -215,11 +197,12 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
                     "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
-   testRunner.And("I add the parameter \"identifier\" with the value \"G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add the practitioner identifier with custom \"{0}\"  parameter with system \"{1}\" " +
+                        "and value \"{2}\"", identifier, system, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 63
-  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 64
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -227,30 +210,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWithoutTheIdentifierParameter")]
-        public virtual void PractitionerRequestWithoutTheIdentifierParameter()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search where format added after identifier")]
+        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "XML", new string[0])]
+        public virtual void PractitionerSearchWhereFormatAddedAfterIdentifier(string parameter, string bodyFormat, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWithoutTheIdentifierParameter", ((string[])(null)));
-#line 66
-this.ScenarioSetup(scenarioInfo);
-#line 67
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 68
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 70
-  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWhereTheIdentifierIsCorrect")]
-        public virtual void PractitionerRequestWhereTheIdentifierIsCorrect()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWhereTheIdentifierIsCorrect", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search where format added after identifier", exampleTags);
 #line 73
 this.ScenarioSetup(scenarioInfo);
 #line 74
@@ -259,140 +224,115 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
                     "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 76
-   testRunner.And("I add the parameter \"identifier\" with the value \"G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 78
-  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 79
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 80
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 81
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 82
+  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWhereTheIdentifierContainsTheIncorrectCase")]
-        public virtual void PractitionerRequestWhereTheIdentifierContainsTheIncorrectCase()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search where format added before identifier")]
+        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "XML", new string[0])]
+        public virtual void PractitionerSearchWhereFormatAddedBeforeIdentifier(string parameter, string bodyFormat, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWhereTheIdentifierContainsTheIncorrectCase", ((string[])(null)));
-#line 83
-this.ScenarioSetup(scenarioInfo);
-#line 84
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 85
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
-   testRunner.And("I add the parameter \"Identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search where format added before identifier", exampleTags);
 #line 88
-  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 89
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWhereTheIdentifierIsSpeltIncorrectly")]
-        public virtual void PractitionerRequestWhereTheIdentifierIsSpeltIncorrectly()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWhereTheIdentifierIsSpeltIncorrectly", ((string[])(null)));
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 90
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
+                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 91
+  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
-this.ScenarioSetup(scenarioInfo);
+  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 93
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 94
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 95
-  testRunner.And("I add the parameter \"idenddstifier\" with the value \"http://fhir.nhs.net/Id/sds-us" +
-                    "er-id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 96
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 97
-  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 98
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWhereThereIsaNullValueElement")]
-        public virtual void PractitionerRequestWhereThereIsaNullValueElement()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search accept header")]
+        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "XML", new string[0])]
+        public virtual void PractitionerSearchAcceptHeader(string header, string bodyFormat, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWhereThereIsaNullValueElement", ((string[])(null)));
-#line 100
-this.ScenarioSetup(scenarioInfo);
-#line 101
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 102
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search accept header", exampleTags);
 #line 103
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"| null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 104
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 105
-  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
+                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 106
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWhereThereIsNoValueElement")]
-        public virtual void PractitionerRequestWhereThereIsNoValueElement()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWhereThereIsNoValueElement", ((string[])(null)));
+  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
-this.ScenarioSetup(scenarioInfo);
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 109
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 110
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 113
-  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 114
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWhereFormatAddedAfterIdentifier")]
-        public virtual void PractitionerRequestWhereFormatAddedAfterIdentifier()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search accept header and _format parameter")]
+        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "application/json+fhir", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "application/xml+fhir", "XML", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "application/json+fhir", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "application/xml+fhir", "XML", new string[0])]
+        public virtual void PractitionerSearchAcceptHeaderAnd_FormatParameter(string header, string parameter, string bodyFormat, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWhereFormatAddedAfterIdentifier", ((string[])(null)));
-#line 117
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search accept header and _format parameter", exampleTags);
+#line 116
 this.ScenarioSetup(scenarioInfo);
-#line 118
+#line 117
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 119
+#line 118
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
                     "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
+#line 119
   testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 120
+  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 121
-  testRunner.And("I add the parameter \"_format\" with the value \"application/json+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 122
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 123
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 124
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 125
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
@@ -402,253 +342,223 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWhereFormatAddedABeforeIdentifier")]
-        public virtual void PractitionerRequestWhereFormatAddedABeforeIdentifier()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search failure due to missing header")]
+        [NUnit.Framework.TestCaseAttribute("Ssp-TraceID", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Ssp-From", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Ssp-To", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Ssp-InteractionId", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Authorization", new string[0])]
+        public virtual void PractitionerSearchFailureDueToMissingHeader(string header, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWhereFormatAddedABeforeIdentifier", ((string[])(null)));
-#line 129
-this.ScenarioSetup(scenarioInfo);
-#line 130
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 131
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
-  testRunner.And("I add the parameter \"_format\" with the value \"application/json+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search failure due to missing header", exampleTags);
 #line 134
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 135
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 136
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
+                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 137
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 138
-  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractionerRequestUsingAcceptHeaderForJson")]
-        public virtual void PractionerRequestUsingAcceptHeaderForJson()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractionerRequestUsingAcceptHeaderForJson", ((string[])(null)));
+  testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 139
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 140
-this.ScenarioSetup(scenarioInfo);
+ testRunner.Then("the response status code should be \"500\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 141
-testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 142
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
-  testRunner.And("I set the Accept header to \"application/json+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 144
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 145
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 146
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 147
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
-  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractionerRequestUsingAcceptHeaderForXML")]
-        public virtual void PractionerRequestUsingAcceptHeaderForXML()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search failure due to invalid interactionId")]
+        [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("InvalidInteractionId", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("", new string[0])]
+        public virtual void PractitionerSearchFailureDueToInvalidInteractionId(string interactionId, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractionerRequestUsingAcceptHeaderForXML", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search failure due to invalid interactionId", exampleTags);
+#line 151
+this.ScenarioSetup(scenarioInfo);
 #line 152
-this.ScenarioSetup(scenarioInfo);
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 153
-testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 154
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 155
-  testRunner.And("I set the Accept header to \"application/xml+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 156
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 157
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 158
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 159
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 161
-  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractionerRequestUsingAcceptHeaderForText/xml")]
-        public virtual void PractionerRequestUsingAcceptHeaderForTextXml()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search multiple practitioners contains metadata and populated fields" +
+            "")]
+        public virtual void PractitionerSearchMultiplePractitionersContainsMetadataAndPopulatedFields()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractionerRequestUsingAcceptHeaderForText/xml", ((string[])(null)));
-#line 163
-this.ScenarioSetup(scenarioInfo);
-#line 164
-testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search multiple practitioners contains metadata and populated fields" +
+                    "", ((string[])(null)));
 #line 165
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 166
-  testRunner.And("I set the Accept header to \"text/xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 167
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
+                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 168
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 169
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 170
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 172
-  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWhereFormatIsAddedToGetTheXML")]
-        public virtual void PractitionerRequestWhereFormatIsAddedToGetTheXML()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWhereFormatIsAddedToGetTheXML", ((string[])(null)));
-#line 174
-this.ScenarioSetup(scenarioInfo);
-#line 175
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 176
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
-  testRunner.And("I add the parameter \"_format\" with the value \"application/xml+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
   testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 180
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 181
-  testRunner.And("the response body should be FHIR XML", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 169
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 170
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 171
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 172
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
+#line 173
+  testRunner.And("if the response bundle contains a practitioner resource it should contain meta da" +
+                    "ta profile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 174
   testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWhereAcceptAndFormatHeaderIsSentToRequestXML")]
-        public virtual void PractitionerRequestWhereAcceptAndFormatHeaderIsSentToRequestXML()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search returns back user with name element")]
+        public virtual void PractitionerSearchReturnsBackUserWithNameElement()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWhereAcceptAndFormatHeaderIsSentToRequestXML", ((string[])(null)));
-#line 185
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search returns back user with name element", ((string[])(null)));
+#line 176
 this.ScenarioSetup(scenarioInfo);
-#line 186
+#line 177
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 187
+#line 178
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
                     "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 179
+  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 180
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 181
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 182
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 183
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 184
+  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 185
+ testRunner.Then("practitioner resources should contain a single name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Practitioner search returns user with only one family name")]
+        public virtual void PractitionerSearchReturnsUserWithOnlyOneFamilyName()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search returns user with only one family name", ((string[])(null)));
+#line 187
+this.ScenarioSetup(scenarioInfo);
 #line 188
-  testRunner.And("I add the parameter \"_format\" with the value \"application/xml+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 189
-  testRunner.And("I set the Accept header to \"application/xml+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
+                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 190
   testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 191
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 192
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 193
-  testRunner.And("the response body should be FHIR XML", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 194
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("practitioner should only have one family name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 195
-  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestWhereAcceptAndFormatHeaderIsSentToRequestJSON")]
-        public virtual void PractitionerRequestWhereAcceptAndFormatHeaderIsSentToRequestJSON()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestWhereAcceptAndFormatHeaderIsSentToRequestJSON", ((string[])(null)));
-#line 197
-this.ScenarioSetup(scenarioInfo);
-#line 198
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 199
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
-  testRunner.And("I add the parameter \"_format\" with the value \"application/json+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
-  testRunner.And("I set the Accept header to \"application/json+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 203
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 204
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 205
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 206
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 207
+#line 196
   testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestSendingCodeTest")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void PractitionerRequestSendingCodeTest()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search returns practitioner role element with valid parameters")]
+        public virtual void PractitionerSearchReturnsPractitionerRoleElementWithValidParameters()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestSendingCodeTest", new string[] {
-                        "Ignore"});
-#line 210
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search returns practitioner role element with valid parameters", ((string[])(null)));
+#line 198
 this.ScenarioSetup(scenarioInfo);
-#line 211
+#line 199
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 212
+#line 200
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
                     "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 213
-  testRunner.And("I add the parameter \"_format\" with the value \"application/json+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
-  testRunner.And("I set the Accept header to \"application/json+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 215
+#line 201
   testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 217
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 218
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 202
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 203
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 204
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 205
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 206
+  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 207
+ testRunner.Given("There is a practitionerRoleElement", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 208
+ testRunner.Then("if practitionerRole has role element which contains a coding then the system, cod" +
+                    "e and display must exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 209
+ testRunner.Then("if practitionerRole has managingOrganization element then reference must exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Practitioner search should not contain qualification or photo information")]
+        public virtual void PractitionerSearchShouldNotContainQualificationOrPhotoInformation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search should not contain qualification or photo information", ((string[])(null)));
+#line 211
+this.ScenarioSetup(scenarioInfo);
+#line 212
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 213
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
+                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 214
+  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 215
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 216
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 217
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 218
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 219
   testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -656,10 +566,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestSendWithOrganizationOdsCode")]
-        public virtual void PractitionerRequestSendWithOrganizationOdsCode()
+        [NUnit.Framework.DescriptionAttribute("Practitioner search contains communication element")]
+        public virtual void PractitionerSearchContainsCommunicationElement()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestSendWithOrganizationOdsCode", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search contains communication element", ((string[])(null)));
 #line 221
 this.ScenarioSetup(scenarioInfo);
 #line 222
@@ -668,487 +578,23 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
                     "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 224
-  testRunner.And("I add the parameter \"_format\" with the value \"application/json+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
+                    "id|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 225
-  testRunner.And("I set the Accept header to \"application/json+fhir\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make a GET request to \"/Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 226
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 227
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 228
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 229
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 230
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("There is a communication element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 231
-  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("SSP From header not included in Practitioner request")]
-        public virtual void SSPFromHeaderNotIncludedInPractitionerRequest()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SSP From header not included in Practitioner request", ((string[])(null)));
-#line 233
-this.ScenarioSetup(scenarioInfo);
-#line 234
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 235
- testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 236
- testRunner.And("I do not send header \"Ssp-From\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 237
- testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 238
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 239
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 240
- testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("SSP To header not included in Practitioner request")]
-        public virtual void SSPToHeaderNotIncludedInPractitionerRequest()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SSP To header not included in Practitioner request", ((string[])(null)));
-#line 242
-this.ScenarioSetup(scenarioInfo);
-#line 243
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 244
- testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 245
- testRunner.And("I do not send header \"Ssp-To\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 246
- testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 247
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 248
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 249
- testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("SSP Trace Id header not included in Practitioner request")]
-        public virtual void SSPTraceIdHeaderNotIncludedInPractitionerRequest()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SSP Trace Id header not included in Practitioner request", ((string[])(null)));
-#line 251
-this.ScenarioSetup(scenarioInfo);
-#line 252
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 253
- testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 254
- testRunner.And("I do not send header \"Ssp-TraceID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 255
- testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 256
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 257
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 258
- testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("SSP InteractionId not included in Practitioner request")]
-        public virtual void SSPInteractionIdNotIncludedInPractitionerRequest()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SSP InteractionId not included in Practitioner request", ((string[])(null)));
-#line 260
-this.ScenarioSetup(scenarioInfo);
-#line 261
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 262
- testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 263
- testRunner.And("I do not send header \"Ssp-InteractionId\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 264
- testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 265
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 266
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 267
- testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestSendValidInteractionId")]
-        public virtual void PractitionerRequestSendValidInteractionId()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestSendValidInteractionId", ((string[])(null)));
-#line 269
-this.ScenarioSetup(scenarioInfo);
-#line 270
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 271
- testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 272
- testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 273
- testRunner.Then("the interactionId \"urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" +
-                    "\" should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 274
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 275
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 276
- testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 277
- testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 278
- testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestSendValidInteractionIdToIncorrectEndPoint")]
-        public virtual void PractitionerRequestSendValidInteractionIdToIncorrectEndPoint()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestSendValidInteractionIdToIncorrectEndPoint", ((string[])(null)));
-#line 280
-this.ScenarioSetup(scenarioInfo);
-#line 281
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 282
- testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient\" i" +
-                    "nteraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 283
- testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 284
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 285
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 286
- testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 287
- testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerRequestSendInValidInteractionId")]
-        public virtual void PractitionerRequestSendInValidInteractionId()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerRequestSendInValidInteractionId", ((string[])(null)));
-#line 289
-this.ScenarioSetup(scenarioInfo);
-#line 290
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 291
- testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 292
- testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 293
- testRunner.Then("the interactionId \"urn:nhs:nasmes:servsices:gpconnects:fhir:rest:search:prassctit" +
-                    "ioner\" should be Invalid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 294
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 295
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 296
- testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 297
- testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 298
- testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerResponseMultiplePractitionersContainsMetaDataAndPopulatedFields")]
-        public virtual void PractitionerResponseMultiplePractitionersContainsMetaDataAndPopulatedFields()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerResponseMultiplePractitionersContainsMetaDataAndPopulatedFields", ((string[])(null)));
-#line 300
-this.ScenarioSetup(scenarioInfo);
-#line 301
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 302
- testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 303
- testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 304
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 305
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 306
- testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 307
- testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 308
- testRunner.And("if the response bundle contains a practitioner resource it should contain meta da" +
-                    "ta profile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 309
- testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerResponseSinglePractitionerContainsMetaDataAndPopulatedFields")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        [NUnit.Framework.CategoryAttribute("FIGURE")]
-        [NUnit.Framework.CategoryAttribute("OUT")]
-        [NUnit.Framework.CategoryAttribute("HOW")]
-        [NUnit.Framework.CategoryAttribute("TO")]
-        [NUnit.Framework.CategoryAttribute("READ")]
-        [NUnit.Framework.CategoryAttribute("ID")]
-        public virtual void PractitionerResponseSinglePractitionerContainsMetaDataAndPopulatedFields()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerResponseSinglePractitionerContainsMetaDataAndPopulatedFields", new string[] {
-                        "ignore",
-                        "FIGURE",
-                        "OUT",
-                        "HOW",
-                        "TO",
-                        "READ",
-                        "ID"});
-#line 312
-this.ScenarioSetup(scenarioInfo);
-#line 313
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 314
- testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" +
-                    "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 315
- testRunner.When("I make a GET request to \"/Practitioner/1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 316
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 317
- testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 318
- testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 319
- testRunner.And("if the response bundle contains a practitioner resource it should contain meta da" +
-                    "ta profile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 320
- testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerResponseContainsSDSUserIdentifier")]
-        public virtual void PractitionerResponseContainsSDSUserIdentifier()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerResponseContainsSDSUserIdentifier", ((string[])(null)));
-#line 323
-this.ScenarioSetup(scenarioInfo);
-#line 324
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 325
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 326
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 327
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 328
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 329
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 330
- testRunner.Then("practitioner contains SDS identifier \"http://fhir.nhs.net/Id/sds-user-id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 331
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 332
-  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerResponseSendsBackUserIdWithSystemAndValue")]
-        public virtual void PractitionerResponseSendsBackUserIdWithSystemAndValue()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerResponseSendsBackUserIdWithSystemAndValue", ((string[])(null)));
-#line 335
-this.ScenarioSetup(scenarioInfo);
-#line 336
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 337
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 338
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 339
- testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 340
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 341
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 342
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 343
-  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 344
-  testRunner.Then("practitioner resources must only contain one user id and one profile id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerResponseSendsBackUserWithNameElement")]
-        public virtual void PractitionerResponseSendsBackUserWithNameElement()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerResponseSendsBackUserWithNameElement", ((string[])(null)));
-#line 346
-this.ScenarioSetup(scenarioInfo);
-#line 347
-  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 348
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 349
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 350
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 351
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 352
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 353
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 354
-  testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 355
-  testRunner.Then("practitioner resources should contain a single name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerResponseSendsBackUserWithValidFamilyName")]
-        public virtual void PractitionerResponseSendsBackUserWithValidFamilyName()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerResponseSendsBackUserWithValidFamilyName", ((string[])(null)));
-#line 358
-this.ScenarioSetup(scenarioInfo);
-#line 359
-  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 360
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 361
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 362
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 363
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 364
-   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 365
-  testRunner.Then("practitioner family name should equal \"Parsons\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 366
-   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 367
-   testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerResponseSendsBackUserWithOnlyOneFamilyName")]
-        public virtual void PractitionerResponseSendsBackUserWithOnlyOneFamilyName()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerResponseSendsBackUserWithOnlyOneFamilyName", ((string[])(null)));
-#line 371
-this.ScenarioSetup(scenarioInfo);
-#line 372
-testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 373
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 374
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 375
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 376
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 377
-   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 378
-  testRunner.Then("practitioner should only have one family name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 379
-   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 380
-   testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("PractitionerResponseReturnsPractitionerRoleElementWithValidParameters")]
-        public virtual void PractitionerResponseReturnsPractitionerRoleElementWithValidParameters()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PractitionerResponseReturnsPractitionerRoleElementWithValidParameters", ((string[])(null)));
-#line 383
-this.ScenarioSetup(scenarioInfo);
-#line 384
-testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 385
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:practition" +
-                    "er\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 386
-  testRunner.And("I add the parameter \"identifier\" with the value \"http://fhir.nhs.net/Id/sds-user-" +
-                    "id\"|G11111116\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 387
-  testRunner.When("I make a GET request to \"/Practitioner?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 388
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 389
-   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 390
-   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 391
-   testRunner.And("the JSON response bundle should be type searchset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 392
-   testRunner.Given("There is a practitionerRoleElement", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 393
-   testRunner.Then("if practitionerRole has role element which contains a coding then the system, cod" +
-                    "e and display must exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 394
-   testRunner.Then("if practitionerRole has managingOrganization element then reference must exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("If the practitioner has communicaiton elemenets containing a coding then there mu" +
+                    "st be a system, code and display element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

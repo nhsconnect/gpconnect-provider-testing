@@ -110,7 +110,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             List<string> errorCodes = new List<string>();
             OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
 
-            if (operationOutcome.Meta != null) {
+            if (operationOutcome.Meta != null)
+            {
                 foreach (string profile in operationOutcome.Meta.Profile)
                 {
                     profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
@@ -120,25 +121,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 operationOutcome.Meta.ShouldNotBeNull();
             }
-            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue) {
+            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue)
             {
-                if (issue.Details != null)
                 {
-                    foreach (Coding coding in issue.Details.Coding)
+                    if (issue.Details != null)
                     {
-                        errorCodes.Add(coding.Code);
-                        if (coding.Code.Equals(errorCode))
+                        foreach (Coding coding in issue.Details.Coding)
                         {
-                            containsErrorCode = true;
+                            errorCodes.Add(coding.Code);
+                            if (coding.Code.Equals(errorCode))
+                            {
+                               // containsErrorCode = true;
+                            }
                         }
                     }
+                    else
+                    {
+                        issue.Details.ShouldNotBeNull();
+                    }
                 }
-                else {
-                    issue.Details.ShouldNotBeNull();
-                }
-            }
 
-            errorCodes.ShouldContain(errorCode);
+                errorCodes.ShouldContain(errorCode);
+            }
         }
 
         [Then(@"the JSON response bundle should contain a single Patient resource")]
@@ -492,6 +496,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+        [Given(@"There is a communication element")]
+        public void ThenPractitionerResourcesShouldContainCommunicationElement()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    if (practitioner.Communication == null)
+
+                    {
+                        Assert.Fail();
+                    }
+                    else
+                    {
+                        Assert.Pass();
+                    }
+
+
+
+                }
+            }
+        }
 
         [Then(@"practitioner family name should equal ""(.*)")]
         public void FamilyNameShouldEqualVariable(String familyName)
@@ -647,7 +674,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             var codingCount = 0;
                             foreach (Coding coding in practitionerRole.Role.Coding) {
                                 codingCount++;
-                                coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
+                                coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/human-language-11");
                                 coding.Code.ShouldNotBeNull();
                                 coding.Display.ShouldNotBeNull();
                             }

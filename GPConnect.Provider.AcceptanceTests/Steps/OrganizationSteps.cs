@@ -37,12 +37,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Given(@"I add the identifier parameter with system ""(.*)"" and value ""(.*)""")]
+
+        [Given(@"I add the organization identifier parameter with system ""(.*)"" and value ""(.*)""")]
         public void GivenIAddTheIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
         {
             Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + FhirContext.FhirOrganizations[valueParameter]}""");
         }
-        
+
         [Then(@"response should contain ods-organization-codes ""([^""]*)""")]
         public void ThenResponseShouldContainODSOrganizationCodesWithValues(string elementValues)
         {

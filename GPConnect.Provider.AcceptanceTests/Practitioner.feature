@@ -1,395 +1,231 @@
 ﻿@Practitioner
 Feature: Practitioner
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
 
-Scenario: PractitionerRequestValidPractitioner
+Scenario Outline: Practitioner search valid practitioner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
+		And I add the practitioner identifier parameter with system "<System>" and value "<Value>"
+	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
+	Examples:
+		| System                             | Value     | 
+		| http://fhir.nhs.net/Id/sds-user-id | G11111116 |
+		| http://fhir.nhs.net/Id/sds-user-id | G22345655 |
+		| http://fhir.nhs.net/Id/sds-user-id | G13579135 |
+		| http://fhir.nhs.net/Id/sds-role-profile-id | PT1234|
+		| http://fhir.nhs.net/Id/sds-role-profile-id | PT1122|
+		| http://fhir.nhs.net/Id/sds-role-profile-id  | PT1236|
 
-
-Scenario: PractitionerRequestInValidPractitioner
+Scenario Outline: Practitioner search invalid practitioner
 	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-	And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G9999999"
-	When I make a GET request to "/Practitioner?"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the practitioner identifier parameter with system "<System>" and value "<Value>"
+	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
-	And the response body should be FHIR JSON
-	And the JSON response should be a Bundle resource
-	And the JSON response bundle should be type searchset
-
-
-Scenario: PractitionerRequestWithCorrectSystem
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-			And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
+	Examples:
+		| System                             | Value     | 
+		| http://fhir.nhs.net/Id/sds-user-id | G99999999 |
+		| http://fhir.nhs.net/Id/sds-role-profile-id  | PT9999|
 
-
-Scenario:  PractitionerRequestWithInCorrectSystem 
+Scenario Outline: Practitioner search with variation of system id and value
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/incorrect-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-		Then the response status code should be "422"
+		And I add the practitioner identifier parameter with system "<System>" and value "<Value>"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
+	Examples:
+		| System                                      | Value     |
+		| http://fhir.nhs.net/Id/sds-user-id9         | G11111116 |
+		| http://fhir.nhs.net/Id/sds-role-profile-id9 | PT1122    |
+		|                                             | G11111116 |
+		| null                                        | G11111116 |
+		| http://fhir.nhs.net/Id/sds-user-id		  | null      |
+		| http://fhir.nhs.net/Id/sds-user-id		  |			  |
 
-
-Scenario:  PractitionerRequestWithBlankSystem 
+Scenario: Practitioner search without the identifier parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "|G11111116"
-	When I make a GET request to "/Practitioner?"
-		Then the response status code should be "422"
-		And the response body should be FHIR JSON
-
-
-Scenario:  PractitionerRequestWithoutASystem 
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-			And I add the parameter "identifier" with the value "G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should be "422"
-		And the response body should be FHIR JSON
-
-Scenario: PractitionerRequestWithoutTheIdentifierParameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-	When I make a GET request to "/Practitioner?"
-		Then the response status code should be "400"
-
-
-Scenario:  PractitionerRequestWhereTheIdentifierIsCorrect
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-			And I add the parameter "identifier" with the value "G11111116"
-	When I make a GET request to "/Practitioner?"
-		Then the response status code should be "422"
-		And the response body should be FHIR JSON
-	
-
-
-Scenario:  PractitionerRequestWhereTheIdentifierContainsTheIncorrectCase
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-			And I add the parameter "Identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-		Then the response status code should be "400"
-		And the response body should be FHIR JSON
-
-
-Scenario:  PractitionerRequestWhereTheIdentifierIsSpeltIncorrectly
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "idenddstifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-		Then the response status code should be "400"
-		And the response body should be FHIR JSON
-
-Scenario:  PractitionerRequestWhereThereIsaNullValueElement
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"| null"
-	When I make a GET request to "/Practitioner?"
-		Then the response status code should be "422"
-		And the response body should be FHIR JSON
-
-Scenario:  PractitionerRequestWhereThereIsNoValueElement
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"
-	When I make a GET request to "/Practitioner?"
-		Then the response status code should be "422"
-		And the response body should be FHIR JSON
-
-
-Scenario:  PractitionerRequestWhereFormatAddedAfterIdentifier 
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		And I add the parameter "_format" with the value "application/json+fhir"
-	When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-		
-
-Scenario:  PractitionerRequestWhereFormatAddedABeforeIdentifier
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "_format" with the value "application/json+fhir"
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-
-Scenario: PractionerRequestUsingAcceptHeaderForJson
-Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I set the Accept header to "application/json+fhir"
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-
-
-Scenario: PractionerRequestUsingAcceptHeaderForXML
-Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I set the Accept header to "application/xml+fhir"
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-
-Scenario: PractionerRequestUsingAcceptHeaderForText/xml
-Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I set the Accept header to "text/xml"
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-
-Scenario:  PractitionerRequestWhereFormatIsAddedToGetTheXML
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "_format" with the value "application/xml+fhir"
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-		And the response body should be FHIR XML
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-
-Scenario:  PractitionerRequestWhereAcceptAndFormatHeaderIsSentToRequestXML
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "_format" with the value "application/xml+fhir"
-		And I set the Accept header to "application/xml+fhir"
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-		And the response body should be FHIR XML
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-
-Scenario:  PractitionerRequestWhereAcceptAndFormatHeaderIsSentToRequestJSON
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "_format" with the value "application/json+fhir"
-		And I set the Accept header to "application/json+fhir"
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-@Ignore
-#NEED TO ENCODE HERE, LOOK HOW TO DO IT 
-Scenario:  PractitionerRequestSendingCodeTest
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "_format" with the value "application/json+fhir"
-		And I set the Accept header to "application/json+fhir"
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response bundle should be type searchset
-
-Scenario:  PractitionerRequestSendWithOrganizationOdsCode
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "_format" with the value "application/json+fhir"
-		And I set the Accept header to "application/json+fhir"
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-
-Scenario: SSP From header not included in Practitioner request
-	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-	And I do not send header "Ssp-From"
-	And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-	Then the response status code should indicate failure
-	And the response body should be FHIR JSON
-
-Scenario: SSP To header not included in Practitioner request
-	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-	And I do not send header "Ssp-To"
-	And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-	Then the response status code should indicate failure
-	And the response body should be FHIR JSON
-
-Scenario: SSP Trace Id header not included in Practitioner request
-	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-	And I do not send header "Ssp-TraceID"
-	And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-	Then the response status code should indicate failure
-	And the response body should be FHIR JSON
-
-Scenario: SSP InteractionId not included in Practitioner request
-	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-	And I do not send header "Ssp-InteractionId"
-	And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-	Then the response status code should indicate failure
-	And the response body should be FHIR JSON
-
-Scenario: PractitionerRequestSendValidInteractionId
-	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-	And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	Then the interactionId "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" should be valid
-	When I make a GET request to "/Practitioner?"
-	Then the response status code should indicate success
-	And the response body should be FHIR JSON
-	And the JSON response should be a Bundle resource
-	And the JSON response bundle should be type searchset
-
-Scenario: PractitionerRequestSendValidInteractionIdToIncorrectEndPoint
-	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-	And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
+	When I make a GET request to "/Practitioner"
 	Then the response status code should be "400"
-	And the response body should be FHIR JSON
-	And the JSON response should be a OperationOutcome resource
 
-Scenario: PractitionerRequestSendInValidInteractionId
-	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-	And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	Then the interactionId "urn:nhs:nasmes:servsices:gpconnects:fhir:rest:search:prassctitioner" should be Invalid
-	When I make a GET request to "/Practitioner?"
-	Then the response status code should indicate success
-	And the response body should be FHIR JSON
-	And the JSON response should be a Bundle resource
-	And the JSON response bundle should be type searchset
-	
-Scenario: PractitionerResponseMultiplePractitionersContainsMetaDataAndPopulatedFields
-	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-	And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-	Then the response status code should indicate success
-	And the response body should be FHIR JSON
-	And the JSON response should be a Bundle resource
-	And if the response bundle contains a practitioner resource it should contain meta data profile and version id
-	And the JSON response bundle should be type searchset
-
-@ignore FIGURE OUT HOW TO READ ID
-Scenario: PractitionerResponseSinglePractitionerContainsMetaDataAndPopulatedFields
-	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I make a GET request to "/Practitioner/1"
-	Then the response status code should indicate success
-	And the response body should be FHIR JSON
-	And the JSON response should be a Bundle resource
-	And if the response bundle contains a practitioner resource it should contain meta data profile and version id
-	And the JSON response bundle should be type searchset
-
-
-Scenario: PractitionerResponseContainsSDSUserIdentifier
+Scenario Outline:  Practitioner search where identifier contains the incorrect case or spelling
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-	Then the response status code should indicate success
+		And I add the practitioner identifier with custom "<Identifier>"  parameter with system "<System>" and value "<Value>"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-	Then practitioner contains SDS identifier "http://fhir.nhs.net/Id/sds-user-id"
+	Examples:
+		| Identifier | System | Value |
+		|idenddstifier| http://fhir.nhs.net/Id/sds-user-id | G11111116 |
+		|Idenddstifier| http://fhir.nhs.net/Id/sds-user-id | G11111116 |
+		|Identifier| http://fhir.nhs.net/Id/sds-role-profile-id | PT1234|
+		|idenddstifier| http://fhir.nhs.net/Id/sds-role-profile-id | PT1234|
+		|Idenddstifier| http://fhir.nhs.net/Id/sds-role-profile-id | PT1234|
+
+Scenario Outline:  Practitioner search where format added after identifier 
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+		And I add the parameter "_format" with the value "<Parameter>"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
-
-
-Scenario: PractitionerResponseSendsBackUserIdWithSystemAndValue
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-	When I make a GET request to "/Practitioner?"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-		Then practitioner resources must only contain one user id and one profile id
-
-Scenario: PractitionerResponseSendsBackUserWithNameElement
-		Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-		Then practitioner resources should contain a single name element
-
-
-Scenario: PractitionerResponseSendsBackUserWithValidFamilyName
-		Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-			And the response body should be FHIR JSON
-		Then practitioner family name should equal "Parsons"
-			And the JSON response should be a Bundle resource
-			And the JSON response bundle should be type searchset
+	Examples:
+		| Parameter             | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 		
-
-
-Scenario: PractitionerResponseSendsBackUserWithOnlyOneFamilyName
-Given I am using the default server
+Scenario Outline:  Practitioner search where format added before identifier 
+	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-			And the response body should be FHIR JSON
-		Then practitioner should only have one family name
-			And the JSON response should be a Bundle resource
-			And the JSON response bundle should be type searchset
+		And I add the parameter "_format" with the value "<Parameter>"
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
+	Examples:
+		| Parameter             | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
-
-Scenario: PractitionerResponseReturnsPractitionerRoleElementWithValidParameters
-Given I am using the default server
+Scenario Outline: Practitioner search accept header
+	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id"|G11111116"
-		When I make a GET request to "/Practitioner?"
-		Then the response status code should indicate success
-			And the response body should be FHIR JSON
-			And the JSON response should be a Bundle resource
-			And the JSON response bundle should be type searchset
-			Given There is a practitionerRoleElement
-			Then if practitionerRole has role element which contains a coding then the system, code and display must exist
-			Then if practitionerRole has managingOrganization element then reference must exist
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+		And I set the Accept header to "<Header>"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+	Examples:
+		| Header                | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
+Scenario Outline: Practitioner search accept header and _format parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+		And I set the Accept header to "<Header>"
+		And I add the parameter "_format" with the value "<Parameter>"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
+	Examples:
+		| Header                | Parameter             | BodyFormat |
+		| application/json+fhir | application/json+fhir | JSON       |
+		| application/json+fhir | application/xml+fhir  | XML        |
+		| application/xml+fhir  | application/json+fhir | JSON       |
+		| application/xml+fhir  | application/xml+fhir  | XML        |
+
+Scenario Outline: Practitioner search failure due to missing header
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+		And I do not send header "<Header>"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should be "500"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
+	Examples:
+		| Header            |
+		| Ssp-TraceID       |
+		| Ssp-From          |
+		| Ssp-To            |
+		| Ssp-InteractionId |
+		| Authorization     |
+
+Scenario Outline: Practitioner search failure due to invalid interactionId
+	Given I am using the default server
+		And I am performing the "<InteractionId>" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+    When I make a GET request to "/Practitioner"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
+	Examples:
+		| InteractionId                                                     |
+		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		| InvalidInteractionId                                              |
+		|                                                                   |
+
+Scenario: Practitioner search multiple practitioners contains metadata and populated fields
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And the JSON response bundle should be type searchset
+
+Scenario: Practitioner search returns back user with name element
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
+	Then practitioner resources should contain a single name element
+
+Scenario: Practitioner search returns user with only one family name
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+	Then practitioner should only have one family name
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
+
+Scenario: Practitioner search returns practitioner role element with valid parameters
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
+	Given There is a practitionerRoleElement
+	Then if practitionerRole has role element which contains a coding then the system, code and display must exist
+	Then if practitionerRole has managingOrganization element then reference must exist
+
+Scenario: Practitioner search should not contain qualification or photo information
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
+
+Scenario: Practitioner search contains communication element
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
+	Given There is a communication element
+	Then If the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element

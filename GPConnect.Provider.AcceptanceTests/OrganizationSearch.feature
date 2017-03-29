@@ -7,7 +7,7 @@ Background:
 Scenario Outline: Organization search success
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "<System>" and value "<Value>"
+		And I add the organization identifier parameter with system "<System>" and value "<Value>"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -26,7 +26,7 @@ Scenario Outline: Organization search success
 Scenario: Organization search by organization code success single result contains correct fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -42,7 +42,7 @@ Scenario: Organization search by organization code success single result contain
 Scenario: Organization search by organization code success multiple results contains correct fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -58,7 +58,7 @@ Scenario: Organization search by organization code success multiple results cont
 Scenario: Organization search by site code success single result contains correct fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -74,7 +74,7 @@ Scenario: Organization search by site code success single result contains correc
 Scenario: Organization search by site code success multiple results contains correct fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT3"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT3"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -132,7 +132,7 @@ Scenario: Organization search failure due to invalid identifier parameter case
 Scenario Outline: Organization search failure due to invalid interactionId
 	Given I am using the default server
 		And I am performing the "<InteractionId>" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -146,7 +146,7 @@ Scenario Outline: Organization search failure due to invalid interactionId
 Scenario Outline: Organization search failure due to missing header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
 		And I do not send header "<Header>"
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
@@ -163,7 +163,7 @@ Scenario Outline: Organization search failure due to missing header
 Scenario Outline: Organization search accept header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
 		And I set the Accept header to "<Header>"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
@@ -176,7 +176,7 @@ Scenario Outline: Organization search accept header
 Scenario Outline: Organization search _format parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
 		And I do not send header "Accept"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make a GET request to "/Organization"
@@ -190,7 +190,7 @@ Scenario Outline: Organization search _format parameter
 Scenario Outline: Organization search accept header and _format parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make a GET request to "/Organization"
