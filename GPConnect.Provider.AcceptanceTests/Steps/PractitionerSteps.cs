@@ -3,13 +3,16 @@ using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Extensions;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
+using Hl7.Fhir.Model;
 using NUnit.Framework;
 using System;
+using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
+using static Hl7.Fhir.Model.Bundle;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -43,7 +46,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I add the practitioner identifier with custom ""(.*)""  parameter with system ""(.*)"" and value ""(.*)""")]
-        public void GivenIAddThePractitionerWithIncorrectIdentifierParameterWithTheSystemAndValue(string identifier,string systemParameter, string valueParameter)
+        public void GivenIAddThePractitionerWithIncorrectIdentifierParameterWithTheSystemAndValue(string identifier, string systemParameter, string valueParameter)
         {
             Given($@"I add the parameter ""{identifier}"" with the value ""{systemParameter + '|' + valueParameter}""");
         }
@@ -53,14 +56,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ValidInteractionId(String interactionId)
         {
             var id = SpineConst.InteractionIds.kFhirPractitioner;
-            if (interactionId == id)
-            {
-                Assert.Pass();
-            }
-            else
-            {
-                Assert.Fail();
-            }
+            interactionId.ShouldBeSameAs(id);
         }
 
 
@@ -68,13 +64,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void InValidInteractionId(String interactionId)
         {
             var id = SpineConst.InteractionIds.kFhirPractitioner;
-            if (interactionId != id)
+            interactionId.ShouldNotBeSameAs(id);
+        }
+
+        [Then(@"there is a practitionerRoleElement")]
+        public void ThenPractitionerResourcesShouldContainPractitionerRoleElement()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
-                Assert.Pass();
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    practitioner.PractitionerRole.ShouldNotBeNull("PractitionerRole should not be null");
+                 }
             }
-            else
+        }
+
+        [Then(@"there is a communication element")]
+        public void ThenPractitionerResourcesShouldContainCommunicationElement()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
-                Assert.Fail();
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    practitioner.Communication.ShouldNotBeNull("Communication should not be null");
+                }
             }
         }
     }

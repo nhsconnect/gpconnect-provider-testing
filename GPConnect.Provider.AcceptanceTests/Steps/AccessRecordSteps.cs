@@ -473,52 +473,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Given(@"There is a practitionerRoleElement")]
-        public void ThenPractitionerResourcesShouldContainPractitionerRoleElement()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    if (practitioner.PractitionerRole == null)
-
-                    {
-                        Assert.Fail();
-                    }
-                    else
-                    {
-                        Assert.Pass();
-                    }
-
-                 
-
-                }
-            }
-        }
-        [Given(@"There is a communication element")]
-        public void ThenPractitionerResourcesShouldContainCommunicationElement()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    if (practitioner.Communication == null)
-
-                    {
-                        Assert.Fail();
-                    }
-                    else
-                    {
-                        Assert.Pass();
-                    }
-
-
-
-                }
-            }
-        }
+      
 
         [Then(@"practitioner family name should equal ""(.*)")]
         public void FamilyNameShouldEqualVariable(String familyName)
