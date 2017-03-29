@@ -119,23 +119,19 @@ Scenario: Organization search failure due to no identifier parameter
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
-Scenario: Organization search failure due to invalid identifier parameter
+Scenario Outline: Organization search failure due to invalid identifier parameter case
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the parameter "identifierrrrrrrrrrrr" with the value "http://fhir.nhs.net/Id/ods-organization-code\|GPC001"
+		And I add the parameter "<Identifier>" with the value "http://fhir.nhs.net/Id/ods-organization-code\|GPC001"
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
-
-Scenario: Organization search failure due to invalid identifier parameter case
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the parameter "Identifier" with the value "http://fhir.nhs.net/Id/ods-organization-code\|GPC001"
-	When I make a GET request to "/Organization"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		Examples:
+		| Identifier |
+		|idenddstifier| 
+		|Idenddstifier| 
+		|Identifier| 
 
 Scenario Outline: Organization search failure due to invalid interactionId
 	Given I am using the default server
