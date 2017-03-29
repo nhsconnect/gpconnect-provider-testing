@@ -724,7 +724,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"if Organization includes partOf it should referene a resource in the response bundle")]
+        [Then(@"if Organization includes partOf it should reference a resource in the response bundle")]
         public void ThenIfOrganizationIncludesPartOfItShouldReferenceAResourceInTheResponseBundle()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)

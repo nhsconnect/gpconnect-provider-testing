@@ -477,13 +477,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the conformance profile should contain the ""([^""]*)"" operation")]
-        public void ThenTheConformanceProfileShouldContainTheOperation(string operationName) {
+        public void ThenTheConformanceProfileShouldContainTheOperation(string operationName)
+        {
             Log.WriteLine("Conformance profile should contain operation = {0}", operationName);
             var passed = false;
-            foreach (var rest in HttpContext.ResponseJSON.SelectToken("rest")) {
+            foreach (var rest in HttpContext.ResponseJSON.SelectToken("rest"))
+            {
                 foreach (var operation in rest.SelectToken("operation"))
                 {
-                    if (operationName.Equals(operation["name"].Value<string>()) && operation.SelectToken("definition.reference") != null) {
+                    if (operationName.Equals(operation["name"].Value<string>()) && operation.SelectToken("definition.reference") != null)
+                    {
                         passed = true;
                         break;
                     }
@@ -491,6 +494,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (passed) { break; }
             }
             passed.ShouldBeTrue();
+        }
+
+        [Then(@"the conformance profile should contain the ""([^""]*)"" resource with a ""([^""]*)"" interaction")]
+        public void ThenTheConformanceProfileShouldContainTheResourceWithInteraction(string resourceName, string interaction)
+        {
+            Log.WriteLine("Conformance profile should contain resource = {0} with interaction = {1}", resourceName, interaction);
+
+            foreach (var rest in HttpContext.ResponseJSON.SelectToken("rest"))
+            {
+                foreach (var resource in rest.SelectToken("resource"))
+                {
+                    if (resourceName.Equals(resource["type"].Value<string>()) && null != resource.SelectToken("interaction[?(@.code == '" + interaction + "')]"))
+                    {
+                        Assert.Pass();
+                    }
+                }
+            }
+
+            Assert.Fail("No interaction " + interaction + " for " + resourceName + " resource found.");
         }
 
         [Then(@"if response bundle entry ""([^""]*)"" contains element ""([^""]*)""")]
