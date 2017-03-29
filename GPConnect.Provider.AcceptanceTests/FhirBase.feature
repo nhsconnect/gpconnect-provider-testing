@@ -61,6 +61,14 @@ Scenario: Conformance profile supports the gpc.getcarerecord operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the conformance profile should contain the "gpc.getcarerecord" operation
+		
+Scenario: Conformance profile supports the Organization operation
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the conformance profile should contain the "Organization" resource with a "search-type" interaction
 
 Scenario: FHIR request content type XML but no accept header or _format sent with request
 	Given I am using the default server

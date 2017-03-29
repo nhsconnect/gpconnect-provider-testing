@@ -570,7 +570,7 @@ Scenario Outline: if composition contains author, the device reference can be fo
 		| REF  |
 		| SUM  |
 
-Scenario Outline: if composition contains custodian referenece
+Scenario Outline: if composition contains custodian reference
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "patient2"
@@ -926,7 +926,7 @@ Scenario Outline: organization resource internal reference
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And if the response bundle contains a "Organization" resource
-		And if Organization includes partOf it should referene a resource in the response bundle
+		And if Organization includes partOf it should reference a resource in the response bundle
 	Examples:
 		| Code |
 		| ADM  |
