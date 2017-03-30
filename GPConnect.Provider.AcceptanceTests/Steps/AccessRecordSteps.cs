@@ -98,8 +98,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
                 }
             }
-            else {
+            else
+            {
                 operationOutcome.Meta.ShouldNotBeNull();
+            }
+
+            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue)
+            {
+                {
+                    if (issue.Details != null)
+                    {
+                        foreach (Coding coding in issue.Details.Coding)
+                        {
+                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
+                            coding.Code.ShouldNotBeNull();
+                            coding.Display.ShouldNotBeNull();
+                        }
+                    }
+                    else
+                    {
+                        issue.Details.ShouldNotBeNull();
+                    }
+                }
             }
         }
 
@@ -110,7 +130,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             List<string> errorCodes = new List<string>();
             OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
 
-            if (operationOutcome.Meta != null) {
+            if (operationOutcome.Meta != null)
+            {
                 foreach (string profile in operationOutcome.Meta.Profile)
                 {
                     profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
@@ -122,19 +143,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue)
             {
-                if (issue.Details != null)
                 {
-                    foreach (Coding coding in issue.Details.Coding)
+                    if (issue.Details != null)
                     {
-                        errorCodes.Add(coding.Code);
+                        foreach (Coding coding in issue.Details.Coding)
+                        {
+                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
+                            errorCodes.Add(coding.Code);
+                            coding.Display.ShouldNotBeNull();
+                        }
+                    }
+                    else
+                    {
+                        issue.Details.ShouldNotBeNull();
                     }
                 }
-                else {
-                    issue.Details.ShouldNotBeNull();
-                }
-            }
 
-            errorCodes.ShouldContain(errorCode);
+                errorCodes.ShouldContain(errorCode);
+            }
         }
 
         [Then(@"the JSON response bundle should contain a single Patient resource")]
