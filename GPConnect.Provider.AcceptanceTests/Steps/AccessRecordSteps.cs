@@ -98,8 +98,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
                 }
             }
-            else {
+            else
+            {
                 operationOutcome.Meta.ShouldNotBeNull();
+            }
+
+            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue)
+            {
+                {
+                    if (issue.Details != null)
+                    {
+                        foreach (Coding coding in issue.Details.Coding)
+                        {
+                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
+                            coding.Code.ShouldNotBeNull();
+                            coding.Display.ShouldNotBeNull();
+                        }
+                    }
+                    else
+                    {
+                        issue.Details.ShouldNotBeNull();
+                    }
+                }
             }
         }
 
@@ -128,11 +148,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         foreach (Coding coding in issue.Details.Coding)
                         {
+                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
                             errorCodes.Add(coding.Code);
-                            if (coding.Code.Equals(errorCode))
-                            {
-                               // containsErrorCode = true;
-                            }
+                            coding.Display.ShouldNotBeNull();
                         }
                     }
                     else
