@@ -127,11 +127,11 @@ Scenario Outline: Organization search failure due to invalid identifier paramete
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
-		Examples:
-		| Identifier |
-		|idenddstifier| 
-		|Idenddstifier| 
-		|Identifier| 
+	Examples:
+		| Identifier    |
+		| idenddstifier | 
+		| Idenddstifier | 
+		| Identifier    | 
 
 Scenario Outline: Organization search failure due to invalid interactionId
 	Given I am using the default server
@@ -206,3 +206,11 @@ Scenario Outline: Organization search accept header and _format parameter
 		| application/json+fhir | application/xml+fhir  | XML        |
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
+
+Scenario: Conformance profile supports the Organization search operation
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the conformance profile should contain the "Organization" resource with a "search-type" interaction
