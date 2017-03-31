@@ -1,4 +1,4 @@
-﻿@security
+﻿@Organization
 Feature: OrganizationSearch
 
 Background:
