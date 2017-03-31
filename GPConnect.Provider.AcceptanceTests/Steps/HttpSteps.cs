@@ -340,17 +340,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 .AddParameter(parameter.Key, parameter.Value);
             }
             */
-
-            // Requires specific parameters
+            
             var sspAddress = HttpContext.UseSpineProxy ? HttpContext.SpineProxyAddress + "/" : string.Empty;
-            string baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + ":" + HttpContext.FhirServerPort;
-            string path = HttpContext.FhirServerFhirBase + relativeUrl;
+            string baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + ":" + HttpContext.FhirServerPort + HttpContext.FhirServerFhirBase;
+            // Move the forward slash or the HttpClient will remove everything after the port number
+            if (baseUrl[baseUrl.Length-1] != '/')
+            {
+                baseUrl = baseUrl + "/";
+            }
+            if (relativeUrl[0] == '/') {
+                relativeUrl = relativeUrl.Substring(1);
+            }
 
             // Build The Request
             var httpClient = new HttpClient(handler);
             httpClient.BaseAddress = new Uri(baseUrl);
             
-            HttpRequestMessage requestMessage = new HttpRequestMessage(method, path);
+            HttpRequestMessage requestMessage = new HttpRequestMessage(method, relativeUrl);
             if (body != null)
             {
                 requestMessage.Content = new StringContent(body, System.Text.Encoding.UTF8, HttpContext.RequestContentType);
