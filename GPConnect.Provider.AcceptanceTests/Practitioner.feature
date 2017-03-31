@@ -16,10 +16,10 @@ Scenario Outline: Practitioner search success
 		| http://fhir.nhs.net/Id/sds-user-id         | G11111116 | 1            |
 		| http://fhir.nhs.net/Id/sds-user-id         | G22345655 | 1            |
 		| http://fhir.nhs.net/Id/sds-user-id         | G13579135 | 1            |
+		| http://fhir.nhs.net/Id/sds-user-id         | G99999999 | 0            |
 		| http://fhir.nhs.net/Id/sds-role-profile-id | PT1234    | 1            |
 		| http://fhir.nhs.net/Id/sds-role-profile-id | PT1122    | 1            |
 		| http://fhir.nhs.net/Id/sds-role-profile-id | PT1236    | 1            |
-		| http://fhir.nhs.net/Id/sds-user-id         | G99999999 | 0            |
 		| http://fhir.nhs.net/Id/sds-role-profile-id | PT9999    | 0            |
 
 
@@ -36,8 +36,8 @@ Scenario Outline: Practitioner search with variation of system id and value
 		| http://fhir.nhs.net/Id/sds-role-profile-id9 | PT1122    |
 		|                                             | G11111116 |
 		| null                                        | G11111116 |
-		| http://fhir.nhs.net/Id/sds-user-id		  | null      |
-		| http://fhir.nhs.net/Id/sds-user-id		  |			  |
+		| http://fhir.nhs.net/Id/sds-user-id          | null      |
+		| http://fhir.nhs.net/Id/sds-user-id          |           |
 
 Scenario: Practitioner search without the identifier parameter
 	Given I am using the default server
@@ -45,22 +45,22 @@ Scenario: Practitioner search without the identifier parameter
 	When I make a GET request to "/Practitioner"
 	Then the response status code should be "400"
 
-Scenario Outline:  Practitioner search where identifier contains the incorrect case or spelling
+Scenario Outline: Practitioner search where identifier contains the incorrect case or spelling
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the practitioner identifier with custom "<Identifier>"  parameter with system "<System>" and value "<Value>"
+		And I add the practitioner identifier with custom "<Identifier>" parameter with system "<System>" and value "<Value>"
 	When I make a GET request to "/Practitioner"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 	Examples:
-		| Identifier | System | Value |
-		|idenddstifier| http://fhir.nhs.net/Id/sds-user-id | G11111116 |
-		|Idenddstifier| http://fhir.nhs.net/Id/sds-user-id | G11111116 |
-		|Identifier| http://fhir.nhs.net/Id/sds-role-profile-id | PT1234|
-		|idenddstifier| http://fhir.nhs.net/Id/sds-role-profile-id | PT1234|
-		|Idenddstifier| http://fhir.nhs.net/Id/sds-role-profile-id | PT1234|
+		| Identifier    | System                                     | Value     |
+		| idenddstifier | http://fhir.nhs.net/Id/sds-user-id         | G11111116 |
+		| Idenddstifier | http://fhir.nhs.net/Id/sds-user-id         | G11111116 |
+		| Identifier    | http://fhir.nhs.net/Id/sds-role-profile-id | PT1234    |
+		| idenddstifier | http://fhir.nhs.net/Id/sds-role-profile-id | PT1234    |
+		| Idenddstifier | http://fhir.nhs.net/Id/sds-role-profile-id | PT1234    |
 		
-Scenario Outline:  Practitioner search where format added before identifier 
+Scenario Outline: Practitioner search parameter order test 
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
 		And I add the parameter "<Header1>" with the value "<Parameter1>"
@@ -71,11 +71,11 @@ Scenario Outline:  Practitioner search where format added before identifier
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
 	Examples:
-		| Header1    | Header2    | Parameter1            | Parameter2									  | BodyFormat|
-		| _format    | identifier | application/json+fhir | http://fhir.nhs.net/Id/sds-user-id\|G11111116  | JSON      |
-		| _format    | identifier | application/xml+fhir  | http://fhir.nhs.net/Id/sds-user-id\|G11111116  | XML       |
-		| identifier | _format    | http://fhir.nhs.net/Id/sds-user-id\|G11111116 | application/json+fhir  | JSON      |
-		| identifier | _format    | http://fhir.nhs.net/Id/sds-user-id\|G11111116  | application/xml+fhir  | XML       | 
+		| Header1    | Header2    | Parameter1                                     | Parameter2                                    | BodyFormat |
+		| _format    | identifier | application/json+fhir                          | http://fhir.nhs.net/Id/sds-user-id\|G11111116 | JSON       |
+		| _format    | identifier | application/xml+fhir                           | http://fhir.nhs.net/Id/sds-user-id\|G11111116 | XML        |
+		| identifier | _format    | http://fhir.nhs.net/Id/sds-user-id\|G11111116  | application/json+fhir                         | JSON       |
+		| identifier | _format    | http://fhir.nhs.net/Id/sds-user-id\|G11111116  | application/xml+fhir                          | XML        | 
 
 Scenario Outline: Practitioner search accept header and _format parameter
 	Given I am using the default server
@@ -116,7 +116,7 @@ Scenario Outline: Practitioner search failure due to invalid interactionId
 	Given I am using the default server
 		And I am performing the "<InteractionId>" interaction
 		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/sds-user-id|G11111116"
-    When I make a GET request to "/Practitioner"
+	When I make a GET request to "/Practitioner"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
@@ -146,7 +146,7 @@ Scenario: Practitioner search returns back user with name element
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
-	Then practitioner resources should contain a single name element
+		And practitioner resources should contain a single name element
 
 Scenario: Practitioner search returns user with only one family name
 	Given I am using the default server
@@ -155,7 +155,7 @@ Scenario: Practitioner search returns user with only one family name
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-	Then practitioner should only have one family name
+		And practitioner should only have one family name
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
 
@@ -168,9 +168,9 @@ Scenario: Practitioner search returns practitioner role element with valid param
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
-	Then there is a practitionerRoleElement
-	Then if practitionerRole has role element which contains a coding then the system, code and display must exist
-	Then if practitionerRole has managingOrganization element then reference must exist
+		And there is a practitionerRoleElement
+		And if practitionerRole has role element which contains a coding then the system, code and display must exist
+		And if practitionerRole has managingOrganization element then reference must exist
 
 Scenario: Practitioner search should not contain qualification or photo information
 	Given I am using the default server
@@ -191,5 +191,13 @@ Scenario: Practitioner search contains communication element
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
-	Then there is a communication element
-	Then If the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
+		And there is a communication element
+		And If the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
+
+Scenario: Conformance profile supports the Practitioner search operation
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the conformance profile should contain the "Practitioner" resource with a "search-type" interaction
