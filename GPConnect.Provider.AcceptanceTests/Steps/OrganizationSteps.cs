@@ -36,8 +36,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 FhirContext.FhirOrganizations.Add(odsMap.NativeODSCode, odsMap.ProviderODSCode);
             }
         }
-
-
+        
         [Given(@"I add the organization identifier parameter with system ""(.*)"" and value ""(.*)""")]
         public void GivenIAddTheIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
         {

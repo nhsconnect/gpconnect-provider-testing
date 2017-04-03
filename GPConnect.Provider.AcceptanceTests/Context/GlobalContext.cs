@@ -15,6 +15,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public const string kPDSData = "pdsData";
             public const string kODSCodeMapData = "odsCodeMapData";
             public const string kNHSNoMapData = "NHSNoMapData";
+            public const string kPractitionerCodeMapData = "practitionerCodeMapData";
             public const string kFhirGenderValueSet = "fhirGenderValueSet";
             public const string kFhirMaritalStatusValueSet = "fhirMaritalStatusValueSet";
             public const string kFhirRelationshipValueSet = "fhirRelationshipValueSet";
@@ -47,6 +48,12 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             set { GlobalContextHelper.SaveValue(Context.kNHSNoMapData, value); }
         }
 
+        public static List<PractitionerCodeMap> PractitionerMapData
+        {
+            get { return GlobalContextHelper.GetValue<List<PractitionerCodeMap>>(Context.kPractitionerCodeMapData); }
+            set { GlobalContextHelper.SaveValue(Context.kPractitionerCodeMapData, value); }
+        }
+        
         // FHIR
 
         public static ValueSet FhirGenderValueSet
