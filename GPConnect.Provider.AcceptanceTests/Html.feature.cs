@@ -450,7 +450,8 @@ this.FeatureBackground();
 #line 226
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 227
-  testRunner.And("the response html for \"Encounters\" section should contain a table with \"3\" rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response html for \"Last 3 Encounters\" section should contain a table with \"3\"" +
+                    " rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -535,7 +536,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Medication Issues", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Repeat Medications", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Allergies and Adverse Reactions", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Last 3 Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("REF", "patient1", "Referrals", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ALL", "patient1", "Current Allergies and Adverse Reactions", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ALL", "patient1", "Historical Allergies and Adverse Reactions", new string[0])]

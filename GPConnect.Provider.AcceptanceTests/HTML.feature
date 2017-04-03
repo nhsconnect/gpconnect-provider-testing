@@ -224,7 +224,7 @@ Scenario: Summary should contain a max of 3 encounters
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And the response html for "Encounters" section should contain a table with "3" rows
+		And the response html for "Last 3 Encounters" section should contain a table with "3" rows
 	
 Scenario: Encounters section should contain all encounters
 	Given I am using the default server
@@ -275,7 +275,7 @@ Scenario Outline: sections should return no data available html banner
 		| SUM  | patient1 | Current Medication Issues                  |
 		| SUM  | patient1 | Current Repeat Medications                 |
 		| SUM  | patient1 | Current Allergies and Adverse Reactions    |
-		| SUM  | patient1 | Encounters                                 |
+		| SUM  | patient1 | Last 3 Encounters                          |
 		| REF  | patient1 | Referrals                                  |
 		| ALL  | patient1 | Current Allergies and Adverse Reactions    |
 		| ALL  | patient1 | Historical Allergies and Adverse Reactions |
