@@ -238,10 +238,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // TODO Parse The XML or JSON For Easier Processing
 
             LogToDisk();
+        }
         
-    }
-
-
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
         public void IRequestTheFHIROperation(string operation)
         {
@@ -345,7 +343,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.kJsonFhir);
             Log.WriteLine("Response ContentType={0}", HttpContext.ResponseContentType);
-            // TODO Move JSON Parsing Out Of Here
             HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
             FhirJsonParser fhirJsonParser = new FhirJsonParser();
             FhirContext.FhirResponseResource = fhirJsonParser.Parse<Resource>(HttpContext.ResponseBody);

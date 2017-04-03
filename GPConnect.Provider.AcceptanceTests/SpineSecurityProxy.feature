@@ -28,7 +28,7 @@ Scenario: SSP TraceID header not included in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: SSP From header not included in request
 	Given I am using the default server
@@ -37,7 +37,7 @@ Scenario: SSP From header not included in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: SSP To header not included in request
 	Given I am using the default server
@@ -46,7 +46,7 @@ Scenario: SSP To header not included in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: SSP InteractionId header not included in request
 	Given I am using the default server
@@ -55,7 +55,7 @@ Scenario: SSP InteractionId header not included in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: Authorization header not included in request
 	Given I am using the default server
@@ -64,7 +64,7 @@ Scenario: Authorization header not included in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: Mismatched interactionId and endpoint in request
 	Given I am using the default server
@@ -72,7 +72,7 @@ Scenario: Mismatched interactionId and endpoint in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: invalid interactionId in request
 	Given I am using the default server
@@ -80,7 +80,7 @@ Scenario: invalid interactionId in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: Send to endpoint with incorrect To asid for the provider endpoint
 	Given I am using the default server
@@ -91,4 +91,4 @@ Scenario: Send to endpoint with incorrect To asid for the provider endpoint
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

@@ -28,7 +28,7 @@ Scenario: JWT expiry time greater than 300 seconds
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT expiry time less than 300 seconds
 	Given I am using the default server
@@ -37,7 +37,7 @@ Scenario: JWT expiry time less than 300 seconds
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT not base64 encoded
 	Given I am using the default server
@@ -46,7 +46,7 @@ Scenario: JWT not base64 encoded
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT expiry time before creation time
 	Given I am using the default server
@@ -55,7 +55,7 @@ Scenario: JWT expiry time before creation time
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT creation time in the future
 	Given I am using the default server
@@ -64,7 +64,7 @@ Scenario: JWT creation time in the future
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT reason for request is not directcare
 	Given I am using the default server
@@ -73,7 +73,7 @@ Scenario: JWT reason for request is not directcare
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT authorization server token incorrect
 	Given I am using the default server
@@ -82,7 +82,7 @@ Scenario: JWT authorization server token incorrect
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting device is not valid FHIR device resource
 	Given I am using the default server
@@ -91,7 +91,7 @@ Scenario: JWT requesting device is not valid FHIR device resource
 	When I make a GET request to "/metadata"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting organization is not valid FHIR organization resource
 	Given I am using the default server
@@ -100,7 +100,7 @@ Scenario: JWT requesting organization is not valid FHIR organization resource
 	When I make a GET request to "/metadata"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting organization identifier does not contain an ODS code
 	Given I am using the default server
@@ -109,7 +109,7 @@ Scenario: JWT requesting organization identifier does not contain an ODS code
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting organization does not contain and identifier
 	Given I am using the default server
@@ -118,7 +118,7 @@ Scenario: JWT requesting organization does not contain and identifier
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting practitioner is not valid FHIR practitioner resource
 	Given I am using the default server
@@ -127,7 +127,7 @@ Scenario: JWT requesting practitioner is not valid FHIR practitioner resource
 	When I make a GET request to "/metadata"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting practitioner identifier does not contain an SDS Id
 	Given I am using the default server
@@ -136,7 +136,7 @@ Scenario: JWT requesting practitioner identifier does not contain an SDS Id
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting practitioner does not contain identifier
 	Given I am using the default server
@@ -145,7 +145,7 @@ Scenario: JWT requesting practitioner does not contain identifier
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT User Id does not match requesting practitioner id
 	Given I am using the default server
@@ -154,7 +154,7 @@ Scenario: JWT User Id does not match requesting practitioner id
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting practitioner name does not contain a family or given name
 	Given I am using the default server
@@ -163,7 +163,7 @@ Scenario: JWT requesting practitioner name does not contain a family or given na
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting practitioner does not contain a practitionerRole
 	Given I am using the default server
@@ -172,7 +172,7 @@ Scenario: JWT requesting practitioner does not contain a practitionerRole
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting practitioner practitionerRole does not contain a SDS Job Role name
 	Given I am using the default server
@@ -181,7 +181,7 @@ Scenario: JWT requesting practitioner practitionerRole does not contain a SDS Jo
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing iss claim
 	Given I am using the default server
@@ -190,7 +190,7 @@ Scenario: JWT missing iss claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing sub claim
 	Given I am using the default server
@@ -199,7 +199,7 @@ Scenario: JWT missing sub claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing aud claim
 	Given I am using the default server
@@ -208,7 +208,7 @@ Scenario: JWT missing aud claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing exp claim
 	Given I am using the default server
@@ -217,7 +217,7 @@ Scenario: JWT missing exp claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing iat claim
 	Given I am using the default server
@@ -226,7 +226,7 @@ Scenario: JWT missing iat claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing reason for request claim
 	Given I am using the default server
@@ -235,7 +235,7 @@ Scenario: JWT missing reason for request claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing requested record claim
 	Given I am using the default server
@@ -244,7 +244,7 @@ Scenario: JWT missing requested record claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing requested scope claim
 	Given I am using the default server
@@ -253,7 +253,7 @@ Scenario: JWT missing requested scope claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing requesting device claim
 	Given I am using the default server
@@ -262,7 +262,7 @@ Scenario: JWT missing requesting device claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing requesting organization claim
 	Given I am using the default server
@@ -271,7 +271,7 @@ Scenario: JWT missing requesting organization claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT missing requesting practitioner claim
 	Given I am using the default server
@@ -280,7 +280,7 @@ Scenario: JWT missing requesting practitioner claim
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting device invalid resourceType
 	Given I am using the default server
@@ -289,7 +289,7 @@ Scenario: JWT requesting device invalid resourceType
 	When I make a GET request to "/metadata"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting organization invalid resourceType
 	Given I am using the default server
@@ -298,7 +298,7 @@ Scenario: JWT requesting organization invalid resourceType
 	When I make a GET request to "/metadata"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requesting practitioner invalid resourceType
 	Given I am using the default server
@@ -307,7 +307,7 @@ Scenario: JWT requesting practitioner invalid resourceType
 	When I make a GET request to "/metadata"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requested record patient does not match getCareRecord Payload patient
 	Given I am using the default server
@@ -317,7 +317,7 @@ Scenario: JWT requested record patient does not match getCareRecord Payload pati
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requested scope for getCareRecord does not match type of request
 	Given I am using the default server
@@ -327,7 +327,7 @@ Scenario: JWT requested scope for getCareRecord does not match type of request
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requested scope is invalid type
 	Given I am using the default server
@@ -337,7 +337,7 @@ Scenario: JWT requested scope is invalid type
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: JWT requested scope for metaData request does not match organization read
 	Given I am using the default server
@@ -346,4 +346,4 @@ Scenario: JWT requested scope for metaData request does not match organization r
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource

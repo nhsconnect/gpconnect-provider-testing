@@ -21,7 +21,7 @@ Scenario: Returned patients should contain a logical identifier
 	When I search for Patient "patient2"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
+		And the response should be a Bundle resource of type "searchset"
 		And all search response entities in bundle should contain a logical identifier
 
 Scenario: Provider should return a patient resource when a valid request is sent
@@ -31,7 +31,7 @@ Scenario: Provider should return a patient resource when a valid request is sent
 	When I search for Patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
+		And the response should be a Bundle resource of type "searchset"
 
 Scenario: Provider should return an error when an invalid system is supplied in the identifier parameter
 	Given I am using the default server
@@ -40,7 +40,7 @@ Scenario: Provider should return an error when an invalid system is supplied in 
 	When I search for Patient "patient1" with system "http://test.net/types/internalIdentifier"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Provider should return an error when no system is supplied in the identifier parameter
 	Given I am using the default server
@@ -49,7 +49,7 @@ Scenario: Provider should return an error when no system is supplied in the iden
 	When I search for Patient "patient1" without system in identifier parameter
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Provider should return an error when a blank system is supplied in the identifier parameter
 	Given I am using the default server
@@ -58,7 +58,7 @@ Scenario: Provider should return an error when a blank system is supplied in the
 	When I search for Patient "patient1" with system ""
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: When a patient is not found on the provider system an empty bundle should be returned
 	Given I am using the default server
@@ -67,7 +67,7 @@ Scenario: When a patient is not found on the provider system an empty bundle sho
 	When I search for Patient "patientNotInSystem"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
+		And the response should be a Bundle resource
 		And response bundle should contain "0" entries
 
 Scenario: Patient search should fail if no identifier parameter is include
@@ -77,7 +77,7 @@ Scenario: Patient search should fail if no identifier parameter is include
 	When I make a GET request to "/Patient"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: The identifier parameter should be rejected if the case is incorrect
 	Given I am using the default server
@@ -86,7 +86,7 @@ Scenario: The identifier parameter should be rejected if the case is incorrect
 	When I search for Patient "patient2" with parameter name "IdentIfier" and system "http://fhir.nhs.net/Id/nhs-number"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: The response should be an error if parameter is not identifier
 	Given I am using the default server
@@ -95,7 +95,7 @@ Scenario: The response should be an error if parameter is not identifier
 	When I search for Patient "patient2" with parameter name "nhsNumberParam" and system "http://fhir.nhs.net/Id/nhs-number"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: The response should be an error if no value is sent in the identifier parameter
 	Given I am using the default server
@@ -105,7 +105,7 @@ Scenario: The response should be an error if no value is sent in the identifier 
 	When I make a GET request to "/Patient"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario Outline: The patient search endpoint should accept the format parameter after the identifier parameter
 	Given I am using the default server
@@ -117,7 +117,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 	When I make a GET request to "/Patient"
 	Then the response status code should indicate success
 		And the response body should be FHIR <ResultFormat>
-		And the JSON response should be a Bundle resource
+		And the response should be a Bundle resource of type "searchset"
 		And response bundle should contain "1" entries
 	Examples: 
 	| AcceptHeader          | FormatParam           | Patient  | ResultFormat |
@@ -136,7 +136,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 	When I make a GET request to "/Patient"
 	Then the response status code should indicate success
 		And the response body should be FHIR <ResultFormat>
-		And the JSON response should be a Bundle resource
+		And the response should be a Bundle resource of type "searchset"
 		And response bundle should contain "1" entries
 	Examples: 
 	| AcceptHeader          | FormatParam           | Patient  | ResultFormat |
@@ -144,4 +144,3 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 	| application/json+fhir | application/xml+fhir  | patient2 | XML          |
 	| application/json+fhir | application/json+fhir | patient2 | JSON         |
 	| application/xml+fhir  | application/json+fhir | patient2 | JSON         |
-

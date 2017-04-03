@@ -22,7 +22,7 @@ Scenario: Security no client certificate sent
 	When I make a GET request to "/metadata"
 	Then the response status code should be "496"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: Security invalid client certificate sent
 	Given I am using the default server
@@ -31,7 +31,7 @@ Scenario: Security invalid client certificate sent
 	When I make a GET request to "/metadata"
 	Then the response status code should be "495"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: Security Expired client certificate sent
 	Given I am using the default server
@@ -40,7 +40,7 @@ Scenario: Security Expired client certificate sent
 	When I make a GET request to "/metadata"
 	Then the response status code should be "495"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 @ignore
 Scenario: Connect with Invalid Secure Cipher

@@ -80,14 +80,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ((CodeableConcept)parameter.Value).Coding[0].System = "";
         }
 
-        [Then(@"the JSON response should be a Bundle resource")]
-        public void ThenTheJSONResponseShouldBeABundleResource()
+        [Then(@"the response should be a Bundle resource of type ""([^""]*)""")]
+        public void ThenTheResponseShouldBeABundleResourceOfType(string resourceType)
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Bundle);
+
+            if ("document".Equals(resourceType))
+            {
+                ((Bundle)FhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Document);
+            }
+            else if ("searchset".Equals(resourceType))
+            {
+                ((Bundle)FhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Searchset);
+            } else
+            {
+                Assert.Fail("Invalid resourceType: " + resourceType);
+            }
         }
 
-        [Then(@"the JSON response should be a OperationOutcome resource")]
-        public void ThenTheJSONResponseShouldBeAOperationOutcomeResource()
+        [Then(@"the response should be a OperationOutcome resource")]
+        public void ThenTheResponseShouldBeAOperationOutcomeResource()
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
             OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
@@ -123,8 +135,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the JSON response should be a OperationOutcome resource with error code ""([^""]*)""")]
-        public void ThenTheJSONResponseShouldBeAOperationOutcomeResourceWithErrorCode(string errorCode)
+        [Then(@"the response should be a OperationOutcome resource with error code ""([^""]*)""")]
+        public void ThenTheResponseShouldBeAOperationOutcomeResourceWithErrorCode(string errorCode)
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
             List<string> errorCodes = new List<string>();
@@ -141,6 +153,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 operationOutcome.Meta.ShouldNotBeNull();
             }
+
             foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue)
             {
                 {
@@ -163,8 +176,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the JSON response bundle should contain a single Patient resource")]
-        public void ThenTheJSONResponseBundleShouldContainASinglePatientResource()
+        [Then(@"the response bundle should contain a single Patient resource")]
+        public void ThenTheResponseBundleShouldContainASinglePatientResource()
         {
             int count = 0;
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -174,8 +187,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             count.ShouldBe(1);
         }
 
-        [Then(@"the JSON response bundle should contain a single Composition resource")]
-        public void ThenTheJSONResponseBundleShouldContainASingleCompositionResource()
+        [Then(@"the response bundle should contain a single Composition resource")]
+        public void ThenTheResponseBundleShouldContainASingleCompositionResource()
         {
             int count = 0;
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -185,20 +198,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             count.ShouldBe(1);
         }
 
-        [Then(@"the JSON response bundle should be type document")]
-        public void ThenTheJSONResponseBundleShouldBeTypeDocument()
-        {
-            ((Bundle)FhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Document);
-        }
-        [Then(@"the JSON response bundle should be type searchset")]
-        public void ThenTheJSONResponseBundleShouldBeTypeSearchSet()
-        {
-            ((Bundle)FhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Searchset);
-        }
-
-
-        [Then(@"the JSON response bundle should contain the composition resource as the first entry")]
-        public void ThenTheJSONResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
+        [Then(@"the response bundle should contain the composition resource as the first entry")]
+        public void ThenTheResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
         {
             ((Bundle)FhirContext.FhirResponseResource).Entry[0].Resource.ResourceType.ShouldBe(ResourceType.Composition);
         }
@@ -490,9 +491,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-
-      
-
+        
         [Then(@"practitioner family name should equal ""(.*)")]
         public void FamilyNameShouldEqualVariable(String familyName)
         {
@@ -512,8 +511,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-
-
+        
         [Then(@"practitioner should only have one family name")]
         public void PractitionerShouldNotHaveMoreThenOneFamilyName()
         {
@@ -523,18 +521,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Practitioner practitioner = (Practitioner)entry.Resource;
                     var familyNameCount = 0;
-
-
+                    
                     foreach (String name in practitioner.Name.Family)
                     {
                       familyNameCount++;
                     }
 
                     familyNameCount.ShouldBeLessThanOrEqualTo(1);
-                
-
-
-
                 }
 
             }
@@ -582,9 +575,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-
-
-
+        
         [Then(@"practitioner contains SDS identifier ""(.*)")]
         public void PractitionIdentifierEqualToPassedResource(String id)
         {
@@ -658,7 +649,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"If the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element")]
+        [Then(@"if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element")]
         public void ThenIfThePractitionerHasCommunicationElementsContainingACodingThenThereMustBeASystemCodeAndDisplayElement()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -927,6 +918,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             pass.ShouldBeTrue();
         }
-
     }
 }

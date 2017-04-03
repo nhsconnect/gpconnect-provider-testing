@@ -12,12 +12,11 @@ Scenario Outline: Practitioner search success
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And response bundle should contain "<ExpectedSize>" entries
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| System                                     | Value         | ExpectedSize |
-		| http://fhir.nhs.net/Id/sds-user-id         | practitioner1 | 1            |
-		| http://fhir.nhs.net/Id/sds-user-id         | practitioner2 | 0            |
+		| System                             | Value         | ExpectedSize |
+		| http://fhir.nhs.net/Id/sds-user-id | practitioner1 | 1            |
+		| http://fhir.nhs.net/Id/sds-user-id | practitioner2 | 0            |
 
 
 Scenario Outline: Practitioner search with variation of system id and value
@@ -28,13 +27,13 @@ Scenario Outline: Practitioner search with variation of system id and value
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 	Examples:
-		| System                                      | Value         |
-		| http://fhir.nhs.net/Id/sds-user-id9         | practitioner1 |
-		| http://fhir.nhs.net/Id/sds-role-profile-id  | practitioner1 |
-		|                                             | practitioner1 |
-		| null                                        | practitioner1 |
-		| http://fhir.nhs.net/Id/sds-user-id          | null          |
-		| http://fhir.nhs.net/Id/sds-user-id          |               |
+		| System                                     | Value         |
+		| http://fhir.nhs.net/Id/sds-user-id9        | practitioner1 |
+		| http://fhir.nhs.net/Id/sds-role-profile-id | practitioner1 |
+		|                                            | practitioner1 |
+		| null                                       | practitioner1 |
+		| http://fhir.nhs.net/Id/sds-user-id         | null          |
+		| http://fhir.nhs.net/Id/sds-user-id         |               |
 
 Scenario: Practitioner search without the identifier parameter
 	Given I am using the default server
@@ -63,8 +62,7 @@ Scenario Outline: Practitioner search parameter order test
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+		And the response should be a Bundle resource of type "searchset"
 	Examples:
 		| Header1    | Header2    | Parameter1                                         | Parameter2                                        | BodyFormat |
 		| _format    | identifier | application/json+fhir                              | http://fhir.nhs.net/Id/sds-user-id\|practitioner1 | JSON       |
@@ -80,8 +78,7 @@ Scenario Outline: Practitioner search accept header
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+		And the response should be a Bundle resource of type "searchset"
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -96,8 +93,7 @@ Scenario Outline: Practitioner search accept header and _format parameter
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+		And the response should be a Bundle resource of type "searchset"
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -113,7 +109,7 @@ Scenario Outline: Practitioner search failure due to missing header
 	When I make a GET request to "/Practitioner"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 	Examples:
 		| Header            |
 		| Ssp-TraceID       |
@@ -129,7 +125,7 @@ Scenario Outline: Practitioner search failure due to invalid interactionId
 	When I make a GET request to "/Practitioner"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 	Examples:
 		| InteractionId                                                     |
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
@@ -143,8 +139,7 @@ Scenario: Practitioner search multiple practitioners contains metadata and popul
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+		And the response should be a Bundle resource of type "searchset"
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 
 Scenario: Practitioner search returns back user with name element
@@ -154,8 +149,7 @@ Scenario: Practitioner search returns back user with name element
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+		And the response should be a Bundle resource of type "searchset"
 		And practitioner resources should contain a single name element
 
 Scenario: Practitioner search returns user with only one family name
@@ -165,8 +159,7 @@ Scenario: Practitioner search returns user with only one family name
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+		And the response should be a Bundle resource of type "searchset"
 		And practitioner should only have one family name
 
 Scenario: Practitioner search returns practitioner role element with valid parameters
@@ -176,8 +169,7 @@ Scenario: Practitioner search returns practitioner role element with valid param
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+		And the response should be a Bundle resource of type "searchset"
 		And if practitionerRole has role element which contains a coding then the system, code and display must exist
 		And if practitionerRole has managingOrganization element then reference must exist
 
@@ -188,8 +180,7 @@ Scenario: Practitioner search should not contain qualification or photo informat
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+		And the response should be a Bundle resource of type "searchset"
 
 Scenario: Practitioner search contains communication element
 	Given I am using the default server
@@ -198,9 +189,8 @@ Scenario: Practitioner search contains communication element
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
-		And If the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
+		And the response should be a Bundle resource of type "searchset"
+		And if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
 
 Scenario: Conformance profile supports the Practitioner search operation
 	Given I am using the default server
