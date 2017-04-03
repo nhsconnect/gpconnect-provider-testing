@@ -11,6 +11,8 @@ Scenario Outline: Organization search success
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
 		And response bundle should contain "<ExpectedSize>" entries
 	Examples:
 		| System                                       | Value      | ExpectedSize |
@@ -30,8 +32,8 @@ Scenario: Organization search by organization code success single result contain
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
-		And the JSON value "type" should be "searchset"
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
 		And response bundle should contain "1" entries
 		And response bundle entry "Organization" should contain element "fullUrl"
 		And response bundle entry "Organization" should contain element "resource.meta.versionId"
@@ -46,8 +48,8 @@ Scenario: Organization search by organization code success multiple results cont
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
-		And the JSON value "type" should be "searchset"
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
 		And response bundle should contain "2" entries
 		And response bundle "Organization" entries should contain element "fullUrl"
 		And response bundle "Organization" entries should contain element "resource.meta.versionId"
@@ -62,8 +64,8 @@ Scenario: Organization search by site code success single result contains correc
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
-		And the JSON value "type" should be "searchset"
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
 		And response bundle should contain "1" entries
 		And response bundle entry "Organization" should contain element "fullUrl"
 		And response bundle entry "Organization" should contain element "resource.meta.versionId"
@@ -78,8 +80,8 @@ Scenario: Organization search by site code success multiple results contains cor
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
-		And the JSON value "type" should be "searchset"
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
 		And response bundle should contain "2" entries
 		And response bundle "Organization" entries should contain element "fullUrl"
 		And response bundle "Organization" entries should contain element "resource.meta.versionId"

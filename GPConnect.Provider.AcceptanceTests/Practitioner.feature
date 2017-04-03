@@ -71,6 +71,21 @@ Scenario Outline: Practitioner search parameter order test
 		| _format    | identifier | application/xml+fhir                               | http://fhir.nhs.net/Id/sds-user-id\|practitioner1 | XML        |
 		| identifier | _format    | http://fhir.nhs.net/Id/sds-user-id\|practitioner1  | application/json+fhir                             | JSON       |
 		| identifier | _format    | http://fhir.nhs.net/Id/sds-user-id\|practitioner1  | application/xml+fhir                              | XML        |
+		
+Scenario Outline: Practitioner search accept header
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the practitioner identifier parameter with system "http://fhir.nhs.net/Id/sds-user-id" and value "practitioner1"
+		And I set the Accept header to "<Header>"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the JSON response should be a Bundle resource
+		And the JSON response bundle should be type searchset
+	Examples:
+		| Header                | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
 Scenario Outline: Practitioner search accept header and _format parameter
 	Given I am using the default server
@@ -150,9 +165,9 @@ Scenario: Practitioner search returns user with only one family name
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And practitioner should only have one family name
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
+		And practitioner should only have one family name
 
 Scenario: Practitioner search returns practitioner role element with valid parameters
 	Given I am using the default server
@@ -163,7 +178,6 @@ Scenario: Practitioner search returns practitioner role element with valid param
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
-		And there is a practitionerRoleElement
 		And if practitionerRole has role element which contains a coding then the system, code and display must exist
 		And if practitionerRole has managingOrganization element then reference must exist
 
@@ -186,7 +200,6 @@ Scenario: Practitioner search contains communication element
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And the JSON response bundle should be type searchset
-		And there is a communication element
 		And If the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
 
 Scenario: Conformance profile supports the Practitioner search operation
