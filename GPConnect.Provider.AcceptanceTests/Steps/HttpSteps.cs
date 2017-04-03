@@ -170,6 +170,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestParameters.AddParameter(parameterName, parameterValue);
         }
 
+        [Given(@"I add the parameter ""([^""]*)"" with system ""([^""]*)"" for patient ""([^""]*)""")]
+        public void GivenIAddTheParameterWithSystemForPatient (string parameterName, string parameterSystem, string patient)
+        {
+            HttpContext.RequestParameters.AddParameter(parameterName, parameterSystem + "|" + FhirContext.FhirPatients[patient]);
+        }
+
         [When(@"I make a GET request to ""(.*)""")]
         public void WhenIMakeAGETRequestTo(string relativeUrl)
         {
