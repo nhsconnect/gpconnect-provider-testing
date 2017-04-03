@@ -67,7 +67,7 @@ Scenario: When a patient is not found on the provider system an empty bundle sho
 	When I search for Patient "patientNotInSystem"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the response should be a Bundle resource
+		And the response should be a Bundle resource of type "searchset"
 		And response bundle should contain "0" entries
 
 Scenario: Patient search should fail if no identifier parameter is include
@@ -144,3 +144,34 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 	| application/json+fhir | application/xml+fhir  | patient2 | XML          |
 	| application/json+fhir | application/json+fhir | patient2 | JSON         |
 	| application/xml+fhir  | application/json+fhir | patient2 | JSON         |
+
+Scenario Outline: Patient search failure due to invalid interactionId
+	Given I am using the default server
+		And I am performing the "<InteractionId>" interaction
+		And I set the JWT requested record NHS number to config patient "patient2"
+	When I search for Patient "patient2"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
+	Examples:
+		| InteractionId                                                     |
+		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		| InvalidInteractionId                                              |
+		|                                                                   |
+		
+Scenario Outline: Patient search failure due to missing header
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient2"
+		And I do not send header "<Header>"
+	When I search for Patient "patient2"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
+	Examples:
+		| Header            |
+		| Ssp-TraceID       |
+		| Ssp-From          |
+		| Ssp-To            |
+		| Ssp-InteractionId |
+		| Authorization     |
