@@ -94,5 +94,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+
+        [Then(@"the practitioner resource should not contain the fhir fields photo or qualification")]
+        public void ThenThePractitionerResourceShouldNotContainFhirFieldsPhotoOrQualification()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+
+                    if (null != practitioner.Photo && practitioner.Photo.Count > 0)
+                    {
+                        Assert.Fail("Practitioner should not contain a Photo");
+                    }
+
+                    if (null != practitioner.Qualification && practitioner.Qualification.Count > 0)
+                    {
+                        Assert.Fail("Practitioner should not contain a Qualification");
+                    }
+                }
+            }
+        }
     }
 }
