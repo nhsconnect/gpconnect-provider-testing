@@ -120,42 +120,40 @@ Scenario: The response should be an error if no value is sent in the identifier 
 Scenario Outline: The patient search endpoint should accept the format parameter after the identifier parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested record NHS number to config patient "patient2"
 		And I set the JWT requested scope to "patient/*.read"
 		And I set the Accept header to "<AcceptHeader>"
-		And I add the parameter "identifier" with system "http://fhir.nhs.net/Id/nhs-number" for patient "<Patient>"
+		And I add the parameter "identifier" with system "http://fhir.nhs.net/Id/nhs-number" for patient "patient2"
 		And I add the parameter "_format" with the value "<FormatParam>"
 	When I make a GET request to "/Patient"
 	Then the response status code should indicate success
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
-		And response bundle should contain "1" entries
 	Examples: 
-	| AcceptHeader          | FormatParam           | Patient  | ResultFormat |
-	| application/xml+fhir  | application/xml+fhir  | patient2 | XML          |
-	| application/json+fhir | application/xml+fhir  | patient2 | XML          |
-	| application/json+fhir | application/json+fhir | patient2 | JSON         |
-	| application/xml+fhir  | application/json+fhir | patient2 | JSON         |
+	| AcceptHeader          | FormatParam           | ResultFormat |
+	| application/xml+fhir  | application/xml+fhir  | XML          |
+	| application/json+fhir | application/xml+fhir  | XML          |
+	| application/json+fhir | application/json+fhir | JSON         |
+	| application/xml+fhir  | application/json+fhir | JSON         |
 	
 Scenario Outline: The patient search endpoint should accept the format parameter before the identifier parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested record NHS number to config patient "patient2"
 		And I set the JWT requested scope to "patient/*.read"
 		And I set the Accept header to "<AcceptHeader>"
 		And I add the parameter "_format" with the value "<FormatParam>"
-		And I add the parameter "identifier" with system "http://fhir.nhs.net/Id/nhs-number" for patient "<Patient>"
+		And I add the parameter "identifier" with system "http://fhir.nhs.net/Id/nhs-number" for patient "patient2"
 	When I make a GET request to "/Patient"
 	Then the response status code should indicate success
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
-		And response bundle should contain "1" entries
 	Examples: 
-	| AcceptHeader          | FormatParam           | Patient  | ResultFormat |
-	| application/xml+fhir  | application/xml+fhir  | patient2 | XML          |
-	| application/json+fhir | application/xml+fhir  | patient2 | XML          |
-	| application/json+fhir | application/json+fhir | patient2 | JSON         |
-	| application/xml+fhir  | application/json+fhir | patient2 | JSON         |
+	| AcceptHeader          | FormatParam           | ResultFormat |
+	| application/xml+fhir  | application/xml+fhir  | XML          |
+	| application/json+fhir | application/xml+fhir  | XML          |
+	| application/json+fhir | application/json+fhir | JSON         |
+	| application/xml+fhir  | application/json+fhir | JSON         |
 
 Scenario Outline: Patient search failure due to invalid interactionId
 	Given I am using the default server
@@ -188,19 +186,3 @@ Scenario Outline: Patient search failure due to missing header
 		| Ssp-To            |
 		| Ssp-InteractionId |
 		| Authorization     |
-
-Scenario Outline: Patient search with invalid identifier value
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for a Patient with patameter name "identifier" and parameter string "http://fhir.nhs.net/Id/nhs-number|<IdentifierValue>"
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
-	Examples:
-		| IdentifierValue |
-		| 1234567891      |
-		| abcdefghij      |
-		|                 |
-
