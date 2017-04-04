@@ -17,9 +17,8 @@ Scenario Outline: Practitioner search success
 		| System                             | Value         | ExpectedSize |
 		| http://fhir.nhs.net/Id/sds-user-id | practitioner1 | 1            |
 		| http://fhir.nhs.net/Id/sds-user-id | practitioner2 | 0            |
-
-
-Scenario Outline: Practitioner search with variation of system id and value
+		
+Scenario Outline: Practitioner search with failure due to invalid identifier
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
 		And I add the parameter "identifier" with the value "<System>|<Value>"
@@ -28,12 +27,21 @@ Scenario Outline: Practitioner search with variation of system id and value
 		And the response body should be FHIR JSON
 	Examples:
 		| System                                     | Value         |
+		| http://fhir.nhs.net/Id/sds-user-id         |               |
+		|                                            | practitioner1 |
+
+Scenario Outline: Practitioner search failure due to invalid system id in identifier
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
+		And I add the parameter "identifier" with the value "<System>|<Value>"
+	When I make a GET request to "/Practitioner"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+	Examples:
+		| System                                     | Value         |
 		| http://fhir.nhs.net/Id/sds-user-id9        | practitioner1 |
 		| http://fhir.nhs.net/Id/sds-role-profile-id | practitioner1 |
-		|                                            | practitioner1 |
 		| null                                       | practitioner1 |
-		| http://fhir.nhs.net/Id/sds-user-id         | null          |
-		| http://fhir.nhs.net/Id/sds-user-id         |               |
 
 Scenario: Practitioner search without the identifier parameter
 	Given I am using the default server
