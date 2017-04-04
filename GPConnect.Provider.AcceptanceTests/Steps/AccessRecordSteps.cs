@@ -575,30 +575,36 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-        
-        [Then(@"practitioner contains SDS identifier ""(.*)")]
-        public void PractitionIdentifierEqualToPassedResource(String id)
+
+        [Then(@"all practitioners contain an id")]
+        public void AllPractitionersContainAnId()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
                 {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    ((Practitioner)entry.Resource).Id.ShouldNotBeNullOrEmpty();
+                }
+            }
+        }
 
-                    foreach (Identifier identifier in practitioner.Identifier)
+        [Then(@"all practitioners contain SDS identifier for practitioner ""([^""]*)""")]
+        public void AllPractitionersContainSDSIdentifierForPractitioner(string practitionerId)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    foreach (Identifier identifier in ((Practitioner)entry.Resource).Identifier)
                     {
-                                      
-                        if (identifier.System.Equals(id))
+                        if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id"))
                         {
-                                                       Assert.Pass();
-                        }
-                        else if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id"))
-                        {
-
+                            identifier.Value.ShouldBe(FhirContext.FhirPractitioners[practitionerId]);
                             Assert.Pass();
                         }
+
+                        Assert.Fail("No identifier with system http://fhir.nhs.net/Id/sds-user-id found");
                     }
-                    Assert.Fail();
                 }
             }
         }
@@ -613,12 +619,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Practitioner practitioner = (Practitioner)entry.Resource;
                     foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
                     {
-
                         if (practitionerRole.ManagingOrganization != null)
                         {
-                           
                             practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull();
-
                         }
                     }
                 }

@@ -13,6 +13,8 @@ Scenario Outline: Practitioner search success
 		And the response body should be FHIR JSON
 		And response bundle should contain "<ExpectedSize>" entries
 		And the response should be a Bundle resource of type "searchset"
+		And all practitioners contain an id
+		And all practitioners contain SDS identifier for practitioner "<Value>"
 	Examples:
 		| Value         | ExpectedSize |
 		| practitioner1 | 1            |
@@ -189,7 +191,7 @@ Scenario: Practitioner search should not contain photo or qualification informat
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-        And the practitioner resource should not contain the fhir fields photo or qualification
+        And the practitioner resource should not contain unwanted fields
 
 Scenario: Practitioner search contains communication element
 	Given I am using the default server

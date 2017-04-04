@@ -61,25 +61,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var id = SpineConst.InteractionIds.kFhirPractitioner;
             interactionId.ShouldBeSameAs(id);
         }
-        
+
         [Then(@"the interactionId ""(.*)"" should be Invalid")]
         public void InValidInteractionId(String interactionId)
         {
             var id = SpineConst.InteractionIds.kFhirPractitioner;
             interactionId.ShouldNotBeSameAs(id);
-        }
-
-        [Then(@"there is a practitionerRoleElement")]
-        public void ThenPractitionerResourcesShouldContainPractitionerRoleElement()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    practitioner.PractitionerRole.ShouldNotBeNull("PractitionerRole should not be null");
-                 }
-            }
         }
 
         [Then(@"there is a communication element")]
@@ -95,7 +82,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the practitioner resource should not contain the fhir fields photo or qualification")]
+        [Then(@"the practitioner resource should not contain unwanted fields")]
         public void ThenThePractitionerResourceShouldNotContainFhirFieldsPhotoOrQualification()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -112,6 +99,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     if (null != practitioner.Qualification && practitioner.Qualification.Count > 0)
                     {
                         Assert.Fail("Practitioner should not contain a Qualification");
+                    }
+
+                    if (null != practitioner.BirthDate)
+                    {
+                        Assert.Fail("Practitioner should not contain a BirthDate");
+                    }
+
+                    if (null != practitioner.BirthDateElement)
+                    {
+                        Assert.Fail("Practitioner should not contain a BirthDateElement");
+                    }
+
+                    foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
+                    {
+                        if (null != practitionerRole.HealthcareService && practitionerRole.HealthcareService.Count > 0)
+                        {
+                            Assert.Fail("Practitioner role should not contain a HealthcareService");
+                        }
+
+                        if (null != practitionerRole.Location && practitionerRole.Location.Count > 0)
+                        {
+                            Assert.Fail("Practitioner role should not contain a Location");
+                        }
                     }
                 }
             }
