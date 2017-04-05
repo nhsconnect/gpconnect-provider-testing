@@ -21,13 +21,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     {
 
         private readonly FhirContext FhirContext;
-        private JwtHelper jwtHelper;
 
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
-
-        // JWT Helper
-        public JwtHelper Jwt { get; }
 
         public PractitionerSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext)
         {
@@ -35,7 +31,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext = fhirContext;
             // Helpers
             Headers = headerHelper;
-            Jwt = jwtHelper;
+           
         }
 
 

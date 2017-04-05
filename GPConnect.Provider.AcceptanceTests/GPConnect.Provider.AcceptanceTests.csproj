@@ -170,6 +170,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Appointments.feature</DependentUpon>
     </Compile>
+    <Compile Include="Steps\AppointmentsSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />
     <Compile Include="Steps\PatientSteps.cs" />
     <Compile Include="Steps\HtmlSteps.cs" />
