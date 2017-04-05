@@ -34,7 +34,7 @@ Scenario Outline: Appointment retrieve failure due to missing header
 	When I make a GET request to "/Patient/1/Appointment"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 	Examples:
 		| Header            |
 		| Ssp-TraceID       |
@@ -49,7 +49,7 @@ Scenario Outline: Appointment retrieve interaction Id incorrect fail
     When I make a GET request to "/Patient/<id>/Appointment"
     Then the response status code should be "400"
         And the response body should be FHIR JSON
-        And the JSON response should be a OperationOutcome resource
+        And the response should be a OperationOutcome resource
     Examples:
         | interactionId |
         | urn:nhs:names:services:gpconnect:fhir:rest:search:organization |
@@ -65,8 +65,8 @@ Scenario Outline: Appointment retrieve accept header and _format parameter
     When I make a GET request to "/Patient/1/Appointment"
     Then the response status code should indicate success
         And the response body should be FHIR <BodyFormat>
-        And the JSON response should be a Bundle resource
-        And the JSON response bundle should be type searchset
+        And the response should be a Bundle resource of type "JSON"
+        And the response should be a Bundle resource of type "searchset"
     Examples:
         | Header                | Parameter             | BodyFormat |
         | application/json+fhir | application/json+fhir | JSON       |
@@ -80,8 +80,8 @@ Scenario Outline: Appointment retrieve bundle resource with empty appointment re
 	When I make a GET request to "/Patient/<id>/Appointment"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+	   And the response should be a Bundle resource of type "JSON"
+        And the response should be a Bundle resource of type "searchset"
 		And there are zero appointment resources
 	 Examples:
         | id|  
@@ -95,9 +95,8 @@ Scenario Outline: Appointment retrieve bundle resource with multiple appointment
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I make a GET request to "/Patient/<id>/Appointment"
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type searchset
+		And the response should be a Bundle resource of type "JSON"
+        And the response should be a Bundle resource of type "searchset"
 		And there are multiple appointment resources
 	Then the appointment resources must contain a status element
 		And status should have a valid value
