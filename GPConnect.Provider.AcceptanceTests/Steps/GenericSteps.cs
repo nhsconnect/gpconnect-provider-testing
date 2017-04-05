@@ -39,8 +39,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [BeforeTestRun(Order = 1)]
         public static void LoadPDSData()
         {
-            if (Directory.Exists(AppSettingsHelper.DataDirectory) == false)
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
                 Assert.Fail("Data Directory Not Found.");
+            }
+
             var pdsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"PDS.csv");
             Log.WriteLine("PDS CSV = '{0}'", pdsCSV);
             GlobalContext.PDSData = PDSImporter.LoadCsv(pdsCSV);
@@ -49,8 +52,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [BeforeTestRun(Order = 1)]
         public static void LoadODSData()
         {
-            if (Directory.Exists(AppSettingsHelper.DataDirectory) == false)
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
                 Assert.Fail("Data Directory Not Found.");
+            }
+
             var odsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"ODSCodeMap.csv");
             Log.WriteLine("ODS CSV = '{0}'", odsCSV);
             GlobalContext.ODSCodeMapData = ODSCodeMapImporter.LoadCsv(odsCSV);
@@ -59,18 +65,37 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [BeforeTestRun(Order = 1)]
         public static void LoadNHSNoMapData()
         {
-            if (Directory.Exists(AppSettingsHelper.DataDirectory) == false)
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
                 Assert.Fail("Data Directory Not Found.");
+            }
+
             var nhsNoMapCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"NHSNoMap.csv");
             Log.WriteLine("NHSNoMap CSV = '{0}'", nhsNoMapCSV);
             GlobalContext.NHSNoMapData = NHSNoMapImporter.LoadCsv(nhsNoMapCSV);
         }
 
+        [BeforeTestRun(Order = 1)]
+        public static void LoadPractitionerCodeMapData()
+        {
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
+                Assert.Fail("Data Directory Not Found.");
+            }
+
+            var practitionerCodeMapCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"PractitionerCodeMap.csv");
+            Log.WriteLine("practitionerCodeMap CSV = '{0}'", practitionerCodeMapCSV);
+            GlobalContext.PractitionerMapData = PractitionerCodeMapImporter.LoadCsv(practitionerCodeMapCSV);
+        }
+
         [BeforeTestRun(Order = 2)]
         public static void LoadFhirDefinitions()
         {
-            if (Directory.Exists(AppSettingsHelper.FhirDirectory) == false)
-                Assert.Fail("FHIR Directory Not Found.");
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
+                Assert.Fail("Data Directory Not Found.");
+            }
+
             var resolver = new ArtifactResolver(new FileDirectoryArtifactSource(AppSettingsHelper.FhirDirectory, true));
             var gender = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/administrative-gender-1");
             if (gender == null)

@@ -62,14 +62,6 @@ Scenario: Conformance profile supports the gpc.getcarerecord operation
 		And the response body should be FHIR JSON
 		And the conformance profile should contain the "gpc.getcarerecord" operation
 		
-Scenario: Conformance profile supports the Organization operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the conformance profile should contain the "Organization" resource with a "search-type" interaction
-
 Scenario: FHIR request content type XML but no accept header or _format sent with request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -211,7 +203,7 @@ Scenario: FHIR content type test where Invalid content type application/xml is s
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate unsupported media type error
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: FHIR content type test where Invalid content type application/json is sent
 	Given I am using the default server
@@ -220,7 +212,7 @@ Scenario: FHIR content type test where Invalid content type application/json is 
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate unsupported media type error
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: FHIR content type test where Invalid content type sent text/xml
 	Given I am using the default server
@@ -229,7 +221,7 @@ Scenario: FHIR content type test where Invalid content type sent text/xml
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate unsupported media type error
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario: Fhir content type test where Accept header is unsupported media type and request payload is JSON
 	Given I am using the default server
@@ -256,7 +248,7 @@ Scenario Outline: Request and response in XML
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation using XML
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
-		And the JSON response should be a Bundle resource
+		And the response should be a Bundle resource of type "document"
 	Examples:
 		| Code |
 		| ADM |
@@ -306,7 +298,7 @@ Scenario: endpoint should support gzip compression for getCareRecord operation a
 	When I send a gpc.getcarerecord operation request WITH payload
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
+		And the response should be a Bundle resource of type "document"
 		
 Scenario: endpoint should support chunking of data
 	Given I am using the default server
@@ -315,7 +307,7 @@ Scenario: endpoint should support chunking of data
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON response should be a Bundle resource
+		And the response should be a Bundle resource of type "document"
 		And response should be chunked
 
 @ignore

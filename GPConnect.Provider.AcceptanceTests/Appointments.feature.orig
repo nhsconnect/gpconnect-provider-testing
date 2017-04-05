@@ -34,8 +34,9 @@ Scenario Outline: Appointment retrieve failure due to missing header
 	When I make a GET request to "/Patient/1/Appointment"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 	Examples:
+<<<<<<< HEAD
 		| Header            |
 		| Ssp-TraceID       |
 		| Ssp-From          |
@@ -114,3 +115,11 @@ Scenario Outline: Appointment retrieve bundle resource with multiple appointment
 
 
             
+=======
+		| Header            | id |
+		| Ssp-TraceID       | 1  |
+		| Ssp-From          | 1  |
+		| Ssp-To            | 1  |
+		| Ssp-InteractionId | 1  |
+		| Authorization     | 1  |
+>>>>>>> 8c9d6d027a7ac129661c1217b295e6777c53bc4c

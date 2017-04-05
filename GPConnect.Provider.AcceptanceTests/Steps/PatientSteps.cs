@@ -38,24 +38,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISearchForPatientWithSystem(string patient, string identifierSystem)
         {
             var parameterString = identifierSystem + "|" + FhirContext.FhirPatients[patient];
-            ISearchForAPatientWithParameterString(patient, "identifier", parameterString);
+            ISearchForAPatientWithParameterNameAndParameterString("identifier", parameterString);
         }
 
         [When(@"I search for Patient ""([^""]*)"" without system in identifier parameter")]
         public void ISearchForPatientWithoutSystemInIdentifierParameter(string patient)
         {
-            ISearchForAPatientWithParameterString(patient, "identifier", FhirContext.FhirPatients[patient]);
+            ISearchForAPatientWithParameterNameAndParameterString("identifier", FhirContext.FhirPatients[patient]);
         }
 
         [When(@"I search for Patient ""([^""]*)"" with parameter name ""([^""]*)"" and system ""([^""]*)""")]
         public void ISearchForPatientWithParameterNameAndSystem(string patient, string parameterName, string parameterSystem)
         {
             var parameterString = parameterSystem + "|" + FhirContext.FhirPatients[patient];
-            ISearchForAPatientWithParameterString(patient, parameterName, parameterString);
+            ISearchForAPatientWithParameterNameAndParameterString(parameterName, parameterString);
         }
 
-        [When(@"I search for a Patient ""([^""]*)"" with parameter string ""([^""]*)""")]
-        public void ISearchForAPatientWithParameterString(string patient, string parameterName, string parameterString)
+        [When(@"I search for a Patient with patameter name ""([^""]*)"" and parameter string ""([^""]*)""")]
+        public void ISearchForAPatientWithParameterNameAndParameterString(string parameterName, string parameterString)
         {
             Given($@"I add the parameter ""{parameterName}"" with the value ""{parameterString}""");
             When($@"I make a GET request to ""/Patient""");

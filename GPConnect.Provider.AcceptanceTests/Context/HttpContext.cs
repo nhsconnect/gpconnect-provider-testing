@@ -310,7 +310,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                     }
                     return responseHeaders;
                 }
-                catch (Exception e) {
+                catch (Exception) {
                     ScenarioContext.Set(new Dictionary<string, string>(), Context.kResponseHeaders);
                     return ScenarioContext.Get<Dictionary<string, string>>(Context.kResponseHeaders);
                 }

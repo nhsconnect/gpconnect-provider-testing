@@ -159,7 +159,7 @@ this.FeatureBackground();
 #line 30
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
   testRunner.And("the html should be valid xhtml", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
@@ -217,21 +217,21 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("patient1", "REF", "Referrals", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "REF", "Referrals", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient3", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient4", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient5", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient6", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient7", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient8", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
         public virtual void HtmlSectionHeadersPresent(string patient, string code, string headers, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("html section headers present", exampleTags);
@@ -253,7 +253,7 @@ this.FeatureBackground();
 #line 62
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
   testRunner.And(string.Format("the html should contain headers in coma seperated list \"{0}\"", headers), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -262,28 +262,28 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("html table headers present and in order that is expected")]
-        [NUnit.Framework.TestCaseAttribute("patient2", "ADM", "Date,Entry,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "Start Date,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "Start Date,End Date,Details", "2", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "CLI", "Date,Entry,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "ENC", "Date,Title,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "IMM", "Date,Vaccination,Part,Contents,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Start Date,Medication Item,Type,Scheduled End,Days Duration,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
+        [NUnit.Framework.TestCaseAttribute("ADM", "Date,Entry,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "Start Date,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "Start Date,End Date,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "Date,Entry,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "Date,Title,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("IMM", "Date,Vaccination,Part,Contents,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "Start Date,Medication Item,Type,Scheduled End,Days Duration,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
             "ls", "2", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issues," +
+        [NUnit.Framework.TestCaseAttribute("MED", "Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issues," +
             "Details", "3", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "OBS", "Date,Entry,Value,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "Start Date,Entry,Significance,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "Start Date,End Date,Entry,Significance,Details", "2", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "REF", "Date,From,To,Priority,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Start Date,Entry,Significance,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Start Date,Medication Item,Type,Scheduled End,Days Duration,Details", "2", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
+        [NUnit.Framework.TestCaseAttribute("OBS", "Date,Entry,Value,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "Start Date,Entry,Significance,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "Start Date,End Date,Entry,Significance,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "Date,From,To,Priority,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Start Date,Entry,Significance,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Start Date,Medication Item,Type,Scheduled End,Days Duration,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
             "ls", "3", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Start Date,Details", "4", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Date,Title,Details", "5", new string[0])]
-        public virtual void HtmlTableHeadersPresentAndInOrderThatIsExpected(string patient, string code, string headers, string pageSectionIndex, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("SUM", "Start Date,Details", "4", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Date,Title,Details", "5", new string[0])]
+        public virtual void HtmlTableHeadersPresentAndInOrderThatIsExpected(string code, string headers, string pageSectionIndex, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("html table headers present and in order that is expected", exampleTags);
 #line 108
@@ -296,7 +296,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 111
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient2" +
+                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 112
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 113
@@ -304,7 +305,7 @@ this.FeatureBackground();
 #line 114
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 115
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 116
   testRunner.And(string.Format("the html should contain table headers in coma seperated list order \"{0}\" for the " +
                         "\"{1}\"", headers, pageSectionIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -367,7 +368,7 @@ this.FeatureBackground();
 #line 147
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 149
   testRunner.And(string.Format("the response html should contain the applied date range text \"{0}\" to \"{1}\"", textStartDate, textEndDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -417,9 +418,73 @@ this.FeatureBackground();
 #line 191
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 192
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 193
   testRunner.And("the response html should contain the all data items text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Summary should contain a max of 3 encounters")]
+        public virtual void SummaryShouldContainAMaxOf3Encounters()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Summary should contain a max of 3 encounters", ((string[])(null)));
+#line 219
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 220
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 221
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 222
+  testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient2" +
+                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 223
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 224
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 225
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 226
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 227
+  testRunner.And("the response html for \"Last 3 Encounters\" section should contain a table with \"3\"" +
+                    " rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Encounters section should contain all encounters")]
+        public virtual void EncountersSectionShouldContainAllEncounters()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Encounters section should contain all encounters", ((string[])(null)));
+#line 229
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 230
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 231
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 232
+  testRunner.And("I author a request for the \"ENC\" care record section for config patient \"patient2" +
+                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 233
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 234
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 235
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 236
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 237
+  testRunner.And("the response html for \"Encounters\" section should contain a table with at least \"" +
+                    "4\" rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -433,59 +498,6 @@ this.FeatureBackground();
         public virtual void FilteredSectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string startDateTime, string endDateTime, string textStartDate, string textEndDate, string section, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("filtered sections should return no data available html banner", exampleTags);
-#line 219
-this.ScenarioSetup(scenarioInfo);
-#line 4
-this.FeatureBackground();
-#line 220
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 221
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
-                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 222
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 223
-  testRunner.And(string.Format("I set a time period parameter start date to \"{0}\" and end date to \"{1}\"", startDateTime, endDateTime), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
- testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 225
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 226
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 228
-  testRunner.And(string.Format("the response html should contain the applied date range text \"{0}\" to \"{1}\"", textStartDate, textEndDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 229
-  testRunner.And(string.Format("the response html should contain the no data available html banner in section \"{0" +
-                        "}\"", section), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("sections should return no data available html banner")]
-        [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "Administrative Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "Clinical Items", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "Encounters", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Active Problems and Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Medication Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Repeat Medications", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Allergies and Adverse Reactions", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Encounters", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("REF", "patient1", "Referrals", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ALL", "patient1", "Current Allergies and Adverse Reactions", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("ALL", "patient1", "Historical Allergies and Adverse Reactions", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("IMM", "patient1", "Immunisations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MED", "patient1", "Current Medication Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MED", "patient1", "Current Repeat Medications", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MED", "patient1", "Past Medications", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("OBS", "patient1", "Observations", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PRB", "patient1", "Active Problems and Issues", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("PRB", "patient1", "Inactive Problems and Issues", new string[0])]
-        public virtual void SectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string section, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("sections should return no data available html banner", exampleTags);
 #line 239
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -498,16 +510,70 @@ this.FeatureBackground();
 #line 242
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 243
- testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I set a time period parameter start date to \"{0}\" and end date to \"{1}\"", startDateTime, endDateTime), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 244
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 245
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 246
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 247
-  testRunner.And("the response html should contain the all data items text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 248
+  testRunner.And(string.Format("the response html should contain the applied date range text \"{0}\" to \"{1}\"", textStartDate, textEndDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 249
+  testRunner.And(string.Format("the response html should contain the no data available html banner in section \"{0" +
+                        "}\"", section), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("sections should return no data available html banner")]
+        [NUnit.Framework.TestCaseAttribute("ADM", "Administrative Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("CLI", "Clinical Items", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ENC", "Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Active Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Current Medication Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Current Repeat Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Current Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "Last 3 Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("REF", "Referrals", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "Current Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("ALL", "Historical Allergies and Adverse Reactions", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("IMM", "Immunisations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "Current Medication Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "Current Repeat Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MED", "Past Medications", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OBS", "Observations", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "Active Problems and Issues", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PRB", "Inactive Problems and Issues", new string[0])]
+        public virtual void SectionsShouldReturnNoDataAvailableHtmlBanner(string code, string section, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("sections should return no data available html banner", exampleTags);
+#line 259
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 260
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 261
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 262
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient1" +
+                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 263
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 264
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 265
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 266
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 267
+  testRunner.And("the response html should contain the all data items text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 268
   testRunner.And(string.Format("the response html should contain the no data available html banner in section \"{0" +
                         "}\"", section), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -529,31 +595,31 @@ this.FeatureBackground();
         public virtual void CheckHtmlForNonHtmlFormatting(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check html for non html formatting", exampleTags);
-#line 272
+#line 292
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 273
+#line 293
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 274
+#line 294
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 275
+#line 295
   testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient2" +
                         "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 276
+#line 296
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 277
+#line 297
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 278
+#line 298
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 279
-  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 280
+#line 299
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 300
   testRunner.And("the html should not contain \"\\n\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 281
+#line 301
   testRunner.And("the html should not contain \"\\r\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 282
+#line 302
   testRunner.And("the html should not contain \"\\t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -570,7 +636,7 @@ this.FeatureBackground();
                     "y allow for identification of contact information or address", new string[] {
                         "ignore",
                         "Manual"});
-#line 300
+#line 320
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -587,7 +653,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check dates are in decending order within the results tables", new string[] {
                         "ignore",
                         "Manual"});
-#line 304
+#line 324
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -604,7 +670,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System does not support section html response where appropriate", new string[] {
                         "ignore",
                         "Manual"});
-#line 308
+#line 328
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

@@ -36,11 +36,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         var xhtml = section.Text.Div;
                         XDocument doc = null;
                         try
-                        { 
+                        {
                             doc = XDocument.Parse(xhtml);
                             doc.ShouldNotBeNull();
                         }
-                        catch (Exception e) {
+                        catch (Exception e)
+                        {
                             Log.WriteLine("Failed to parse div to xhtml");
                             Log.WriteLine(e.StackTrace);
                             doc.ShouldNotBeNull();
@@ -90,7 +91,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             Log.WriteLine("xmlns Regex Match = " + match.Value);
                         }
 
-                        foreach (Match match in matches) {
+                        foreach (Match match in matches)
+                        {
                             Log.WriteLine("Attribute Regex Match = " + match.Value);
                         }
 
@@ -114,8 +116,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         var html = section.Text.Div;
                         var headers = listOfHeaders.Split(',');
-                        foreach (string header in headers) {
-                            html.ShouldContain("<h2>"+header+"</h2>");
+                        foreach (string header in headers)
+                        {
+                            html.ShouldContain("<h2>" + header + "</h2>");
                         }
                     }
                 }
@@ -136,10 +139,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         var headerList = listOfTableHeadersInOrder.Split(',');
                         Regex regexHeaderSection = new Regex("<thead[\\w\\W]*?thead>");
                         MatchCollection tableHeaderSectionMatches = regexHeaderSection.Matches(html);
-                        if (tableHeaderSectionMatches.Count < pageSectionIndex) {
+                        if (tableHeaderSectionMatches.Count < pageSectionIndex)
+                        {
                             Log.WriteLine("The html table that is expected does not exist in the response.");
                             Assert.Fail();
-                        } else {
+                        }
+                        else
+                        {
                             string tableHeaderSectionHTML = tableHeaderSectionMatches[pageSectionIndex - 1].Value;
                             Log.WriteLine("HeaderSection = " + tableHeaderSectionHTML);
                             Regex regexHeaders = new Regex("<th>[^<]*</th>");
@@ -154,7 +160,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             {
                                 for (int index = 0; index < headerList.Length; index++)
                                 {
-                                    Console.WriteLine("Expected Header = {0} and was {1}", "<th>"+headerList[index]+"</th>", matchesForTableHeadersInHTML[index].Value);
+                                    Console.WriteLine("Expected Header = {0} and was {1}", "<th>" + headerList[index] + "</th>", matchesForTableHeadersInHTML[index].Value);
                                     (matchesForTableHeadersInHTML[index].Value).ShouldBe("<th>" + headerList[index] + "</th>");
                                 }
                             }
@@ -175,11 +181,45 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        string expectedTimePeriodBanner = "<p>For the period '"+ fromDate + "' to '" + toDate + "'</p>";
+                        string expectedTimePeriodBanner = "<p>For the period '" + fromDate + "' to '" + toDate + "'</p>";
                         html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
                     }
                 }
             }
+        }
+
+        [Then(@"the response html for ""([^""]*)"" section should contain a table with ""([^""]*)"" rows")]
+        public void ThenTheResponseHTMLShouldContainATableWithXRows(string sectionName, int expectedRowQuantity)
+        {
+            GetSectionTableRows(sectionName).ShouldBe(expectedRowQuantity);
+        }
+
+        [Then(@"the response html for ""([^""]*)"" section should contain a table with at least ""([^""]*)"" rows")]
+        public void ThenTheResponseHTMLShouldContainATableWithAtLeastXRows(string sectionName, int rowQuantity)
+        {
+            GetSectionTableRows(sectionName).ShouldBeGreaterThanOrEqualTo(rowQuantity);
+        }
+
+        private int GetSectionTableRows(string sectionName)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        string html = section.Text.Div
+                            .Split(new string[] { "<h2>" + sectionName + "</h2>" }, StringSplitOptions.None)[1]
+                            .Split(new string[] { "<tbody>" }, StringSplitOptions.None)[1]
+                            .Split(new string[] { "</tbody>" }, StringSplitOptions.None)[0];
+
+                        return Regex.Matches(html, "<tr>").Count;
+                    }
+                }
+            }
+
+            return -1;
         }
 
         [Then(@"the response html should contain the all data items text")]
@@ -244,6 +284,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-
     }
 }

@@ -42,7 +42,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.LoadAppConfig();
         }
-        
+
         [BeforeScenario(Order = 3)]
         public void ClearHeaders()
         {
@@ -77,7 +77,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAmUsingTheDefaultServer()
         {
             // Load The Default Settings From The App.config File
-            HttpContext.LoadAppConfig();            
+            HttpContext.LoadAppConfig();
 
             Given(@"I configure server certificate and ssl");
             And($@"I am using ""{FhirConst.ContentTypes.kJsonFhir}"" to communicate with the server");
@@ -86,13 +86,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"I am connecting to accredited system ""{HttpContext.ProviderASID}""");
             And(@"I am generating an organization JWT header");
         }
-        
+
         [Given(@"I am connecting to server on port ""([^\s]*)""")]
         public void GivenIAmConnectingToServerOnPort(string serverPort)
         {
             HttpContext.FhirServerPort = serverPort;
         }
-        
+
         // Http Header Configuration Steps
 
         [Given(@"I am using ""(.*)"" to communicate with the server")]
@@ -137,7 +137,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, HttpContext.Jwt.GetBearerToken());
         }
-        
+
         [Given(@"I do not send header ""(.*)""")]
         public void GivenIDoNotSendHeader(string headerKey)
         {
@@ -151,7 +151,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         // Http Request Steps
-        
+
         [Given(@"I set the request content type to ""(.*)""")]
         public void GivenISetTheRequestTypeTo(string requestContentType)
         {
@@ -168,6 +168,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAddTheParameterWithTheValue(string parameterName, string parameterValue)
         {
             HttpContext.RequestParameters.AddParameter(parameterName, parameterValue);
+        }
+
+        [Given(@"I add the parameter ""([^""]*)"" with system ""([^""]*)"" for patient ""([^""]*)""")]
+        public void GivenIAddTheParameterWithSystemForPatient(string parameterName, string parameterSystem, string patient)
+        {
+            HttpContext.RequestParameters.AddParameter(parameterName, parameterSystem + "|" + FhirContext.FhirPatients[patient]);
         }
 
         [When(@"I make a GET request to ""(.*)""")]
@@ -222,7 +228,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Build The Rest Request
             var restClient = new RestClient(HttpContext.EndpointAddress);
             var restRequest = new RestRequest(relativeUrl, method);
-            
+
             // Setup The Web Proxy
             if (HttpContext.UseWebProxy)
             {
@@ -272,7 +278,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 // Perform The Rest Request
                 restResponse = restClient.Execute(restRequest);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Log.WriteLine(e.StackTrace);
             }
             finally
@@ -293,11 +300,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseContentType = restResponse.ContentType;
             HttpContext.ResponseBody = restResponse.Content;
 
-            foreach(var parameter in restResponse.Headers)
+            foreach (var parameter in restResponse.Headers)
             {
                 HttpContext.ResponseHeaders.Add(parameter.Name, (string)parameter.Value);
             }
-            
+
             // TODO Parse The XML or JSON For Easier Processing
 
             LogToDisk();
@@ -322,7 +329,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Setup The Client Certificate
             if (HttpContext.SecurityContext.SendClientCert)
             {
-                var clientCert = HttpContext.SecurityContext.ClientCert;                
+                var clientCert = HttpContext.SecurityContext.ClientCert;
                 handler.ClientCertificates.Add(clientCert);
 
             }
@@ -340,22 +347,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 .AddParameter(parameter.Key, parameter.Value);
             }
             */
-            
+
             var sspAddress = HttpContext.UseSpineProxy ? HttpContext.SpineProxyAddress + "/" : string.Empty;
             string baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + ":" + HttpContext.FhirServerPort + HttpContext.FhirServerFhirBase;
             // Move the forward slash or the HttpClient will remove everything after the port number
-            if (baseUrl[baseUrl.Length-1] != '/')
+            if (baseUrl[baseUrl.Length - 1] != '/')
             {
                 baseUrl = baseUrl + "/";
             }
-            if (relativeUrl[0] == '/') {
+            if (relativeUrl[0] == '/')
+            {
                 relativeUrl = relativeUrl.Substring(1);
             }
 
             // Build The Request
             var httpClient = new HttpClient(handler);
             httpClient.BaseAddress = new Uri(baseUrl);
-            
+
             HttpRequestMessage requestMessage = new HttpRequestMessage(method, relativeUrl);
             if (body != null)
             {
@@ -382,7 +390,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // Perform The Http Request
             var result = httpClient.SendAsync(requestMessage).ConfigureAwait(false).GetAwaiter().GetResult();
-                        
+
             // Always Stop The Performance Timer Running
             timer.Stop();
 
@@ -406,7 +414,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Log.WriteLine("Header - " + headerKey.Key + " : " + headerKeyValues);
                 }
             }
-            foreach (var header in result.Content.Headers) {
+            foreach (var header in result.Content.Headers)
+            {
                 foreach (var headerValues in header.Value)
                 {
                     HttpContext.ResponseHeaders.Add(header.Key, headerValues);
@@ -494,8 +503,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheResponseShouldBeGZipEncoded()
         {
             bool gZipHeaderFound = false;
-            foreach (var header in HttpContext.ResponseHeaders) {
-                if (header.Key.Equals(HttpConst.Headers.kContentEncoding, StringComparison.CurrentCultureIgnoreCase) && header.Value.Equals("gzip", StringComparison.CurrentCultureIgnoreCase)) {
+            foreach (var header in HttpContext.ResponseHeaders)
+            {
+                if (header.Key.Equals(HttpConst.Headers.kContentEncoding, StringComparison.CurrentCultureIgnoreCase) && header.Value.Equals("gzip", StringComparison.CurrentCultureIgnoreCase))
+                {
                     gZipHeaderFound = true;
                 }
             }
@@ -528,7 +539,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             scenarioDirectory = scenarioDirectory + "-" + fileIndex;
             Directory.CreateDirectory(scenarioDirectory);
             Log.WriteLine(scenarioDirectory);
-            HttpContext.SaveToDisk(Path.Combine(scenarioDirectory,"HttpContext.xml"));
+            HttpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
         }
     }
 }

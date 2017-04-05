@@ -11,6 +11,7 @@ Scenario Outline: Organization search success
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
 		And response bundle should contain "<ExpectedSize>" entries
 	Examples:
 		| System                                       | Value      | ExpectedSize |
@@ -30,8 +31,7 @@ Scenario: Organization search by organization code success single result contain
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
-		And the JSON value "type" should be "searchset"
+		And the response should be a Bundle resource of type "searchset"
 		And response bundle should contain "1" entries
 		And response bundle entry "Organization" should contain element "fullUrl"
 		And response bundle entry "Organization" should contain element "resource.meta.versionId"
@@ -46,8 +46,7 @@ Scenario: Organization search by organization code success multiple results cont
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
-		And the JSON value "type" should be "searchset"
+		And the response should be a Bundle resource of type "searchset"
 		And response bundle should contain "2" entries
 		And response bundle "Organization" entries should contain element "fullUrl"
 		And response bundle "Organization" entries should contain element "resource.meta.versionId"
@@ -62,8 +61,7 @@ Scenario: Organization search by site code success single result contains correc
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
-		And the JSON value "type" should be "searchset"
+		And the response should be a Bundle resource of type "searchset"
 		And response bundle should contain "1" entries
 		And response bundle entry "Organization" should contain element "fullUrl"
 		And response bundle entry "Organization" should contain element "resource.meta.versionId"
@@ -78,8 +76,7 @@ Scenario: Organization search by site code success multiple results contains cor
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the JSON value "resourceType" should be "Bundle"
-		And the JSON value "type" should be "searchset"
+		And the response should be a Bundle resource of type "searchset"
 		And response bundle should contain "2" entries
 		And response bundle "Organization" entries should contain element "fullUrl"
 		And response bundle "Organization" entries should contain element "resource.meta.versionId"
@@ -94,7 +91,7 @@ Scenario Outline: Organization search failure due to invalid identifier
 	When I make a GET request to "/Organization"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
 		| Identifier                             |
 		| GPC001                                 |
@@ -109,7 +106,7 @@ Scenario: Organization search failure due to invalid system
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Organization search failure due to no identifier parameter
 	Given I am using the default server
@@ -117,7 +114,7 @@ Scenario: Organization search failure due to no identifier parameter
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 
 Scenario Outline: Organization search failure due to invalid identifier parameter case
 	Given I am using the default server
@@ -126,12 +123,12 @@ Scenario Outline: Organization search failure due to invalid identifier paramete
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
-		Examples:
-		| Identifier |
-		|idenddstifier| 
-		|Idenddstifier| 
-		|Identifier| 
+		And the response should be a OperationOutcome resource
+	Examples:
+		| Identifier    |
+		| idenddstifier | 
+		| Idenddstifier | 
+		| Identifier    | 
 
 Scenario Outline: Organization search failure due to invalid interactionId
 	Given I am using the default server
@@ -140,7 +137,7 @@ Scenario Outline: Organization search failure due to invalid interactionId
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 	Examples:
 		| InteractionId                                                     |
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
@@ -155,7 +152,7 @@ Scenario Outline: Organization search failure due to missing header
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource
 	Examples:
 		| Header            |
 		| Ssp-TraceID       |
@@ -206,3 +203,11 @@ Scenario Outline: Organization search accept header and _format parameter
 		| application/json+fhir | application/xml+fhir  | XML        |
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
+
+Scenario: Conformance profile supports the Organization search operation
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the conformance profile should contain the "Organization" resource with a "search-type" interaction
