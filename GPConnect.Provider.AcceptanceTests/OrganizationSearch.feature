@@ -3,7 +3,7 @@ Feature: OrganizationSearch
 
 Background:
 	Given I have the test ods codes
-
+	
 Scenario Outline: Organization search success
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
@@ -25,6 +25,17 @@ Scenario Outline: Organization search success
 		| http://fhir.nhs.net/Id/ods-site-code         | SIT1       | 1       | 1               | 1                |
 		| http://fhir.nhs.net/Id/ods-site-code         | SIT2       | 1       | 1               | 1                |
 		| http://fhir.nhs.net/Id/ods-site-code         | SIT3       | 2       | 2               | 2                |
+		
+Scenario: Organization search failure with parameter cruft
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
+		And I add the parameter "ohyeah" with the value "woohoo"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
+		And I add the parameter "ticktock" with the value "boom"
+	When I make a GET request to "/Organization"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		
 Scenario: Organization search by organization code success single result contains correct fields
 	Given I am using the default server
