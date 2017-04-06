@@ -513,7 +513,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             gZipHeaderFound.ShouldBeTrue();
         }
 
-        [Then(@"response should be chunked")]
+        [Then(@"the response should be chunked")]
         public void ThenReesponseShouldBeChunked()
         {
             bool chunkedHeaderFound = false;

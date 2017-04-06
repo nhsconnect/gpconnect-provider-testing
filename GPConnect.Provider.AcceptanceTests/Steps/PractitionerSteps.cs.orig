@@ -29,7 +29,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             FhirContext = fhirContext;
             Headers = headerHelper;
+<<<<<<< HEAD
            
+=======
+>>>>>>> eba8eca14a430b02467978f557d172194882d1b4
         }
 
         [Given(@"I have the test practitioner codes")]

@@ -308,7 +308,7 @@ Scenario: endpoint should support chunking of data
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And response should be chunked
+		And the response should be chunked
 
 @ignore
 @Manual

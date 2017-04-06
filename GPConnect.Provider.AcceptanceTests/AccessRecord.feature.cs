@@ -1184,35 +1184,35 @@ this.FeatureBackground();
 #line 436
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 437
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 438
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.title\" with " +
-                    "value \"Patient Care Record\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.title\" w" +
+                    "ith value \"Patient Care Record\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 439
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.status\" with" +
-                    " value \"final\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.status\" " +
+                    "with value \"final\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 440
-  testRunner.And(string.Format("response bundle entry \"Composition\" should contain element \"resource.section[0].t" +
-                        "itle\" with value \"{0}\"", title), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the response bundle entry \"Composition\" should contain element \"resource.section[" +
+                        "0].title\" with value \"{0}\"", title), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 441
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
-                    "ode.coding[0].system\" with value \"http://fhir.nhs.net/ValueSet/gpconnect-record-" +
-                    "section-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.section[" +
+                    "0].code.coding[0].system\" with value \"http://fhir.nhs.net/ValueSet/gpconnect-rec" +
+                    "ord-section-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 442
-  testRunner.And(string.Format("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
-                        "ode.coding[0].code\" with value \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the response bundle entry \"Composition\" should contain element \"resource.section[" +
+                        "0].code.coding[0].code\" with value \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 443
-  testRunner.And(string.Format("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
-                        "ode.coding[0].display\" with value \"{0}\"", display), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the response bundle entry \"Composition\" should contain element \"resource.section[" +
+                        "0].code.coding[0].display\" with value \"{0}\"", display), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 444
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
-                    "ode.text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.section[" +
+                    "0].code.text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 445
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].t" +
-                    "ext.status\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.section[" +
+                    "0].text.status\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 446
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].t" +
-                    "ext.div\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.section[" +
+                    "0].text.div\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1337,11 +1337,11 @@ this.FeatureBackground();
 #line 529
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 530
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.subject.refe" +
-                    "rence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.subject." +
+                    "reference\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 531
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.subject.refe" +
-                    "rence\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.subject." +
+                    "reference\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1385,8 +1385,8 @@ this.FeatureBackground();
   testRunner.And("if response bundle entry \"Composition\" contains element \"resource.author[0].refer" +
                     "ence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 556
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.author[0].re" +
-                    "ference\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.author[0" +
+                    "].reference\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1430,8 +1430,8 @@ this.FeatureBackground();
   testRunner.And("if response bundle entry \"Composition\" contains element \"resource.custodian.refer" +
                     "ence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 581
-  testRunner.And("response bundle entry \"Composition\" should contain element \"resource.custodian.re" +
-                    "ference\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Composition\" should contain element \"resource.custodia" +
+                    "n.reference\" and that element should reference a resource in the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1472,9 +1472,9 @@ this.FeatureBackground();
 #line 604
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 605
-  testRunner.And("response bundle entry \"Patient\" should contain element \"resource.id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle entry \"Patient\" should contain element \"resource.id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 606
-  testRunner.And("response bundle Patient entry should contain a valid NHS number identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle Patient entry should contain a valid NHS number identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1517,7 +1517,7 @@ this.FeatureBackground();
 #line 630
   testRunner.And("if response bundle entry \"Patient\" contains element \"resource.telecom\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 631
-  testRunner.And("response bundle Patient resource should contain valid telecom information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response bundle Patient resource should contain valid telecom information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -434,16 +434,16 @@ Scenario Outline: composition contains generic mandatory fields
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And response bundle entry "Composition" should contain element "resource.date"
-		And response bundle entry "Composition" should contain element "resource.title" with value "Patient Care Record"
-		And response bundle entry "Composition" should contain element "resource.status" with value "final"
-		And response bundle entry "Composition" should contain element "resource.section[0].title" with value "<Title>"
-		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].system" with value "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1"
-		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].code" with value "<Code>"
-		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].display" with value "<Display>"
-		And response bundle entry "Composition" should contain element "resource.section[0].code.text"
-		And response bundle entry "Composition" should contain element "resource.section[0].text.status"
-		And response bundle entry "Composition" should contain element "resource.section[0].text.div"
+		And the response bundle entry "Composition" should contain element "resource.date"
+		And the response bundle entry "Composition" should contain element "resource.title" with value "Patient Care Record"
+		And the response bundle entry "Composition" should contain element "resource.status" with value "final"
+		And the response bundle entry "Composition" should contain element "resource.section[0].title" with value "<Title>"
+		And the response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].system" with value "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1"
+		And the response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].code" with value "<Code>"
+		And the response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].display" with value "<Display>"
+		And the response bundle entry "Composition" should contain element "resource.section[0].code.text"
+		And the response bundle entry "Composition" should contain element "resource.section[0].text.status"
+		And the response bundle entry "Composition" should contain element "resource.section[0].text.div"
 	Examples:
 		| Patient  | Code     | Title                           | Display                         |
 		| patient1 | ADM      | Administrative Items            | Administrative Items            |
@@ -527,8 +527,8 @@ Scenario Outline: composition contains subject referencing a patient resource in
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And response bundle entry "Composition" should contain element "resource.subject.reference"
-		And response bundle entry "Composition" should contain element "resource.subject.reference" and that element should reference a resource in the bundle
+		And the response bundle entry "Composition" should contain element "resource.subject.reference"
+		And the response bundle entry "Composition" should contain element "resource.subject.reference" and that element should reference a resource in the bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -553,7 +553,7 @@ Scenario Outline: if composition contains author, the device reference can be fo
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And if response bundle entry "Composition" contains element "resource.author[0].reference"
-		And response bundle entry "Composition" should contain element "resource.author[0].reference" and that element should reference a resource in the bundle
+		And the response bundle entry "Composition" should contain element "resource.author[0].reference" and that element should reference a resource in the bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -578,7 +578,7 @@ Scenario Outline: if composition contains custodian reference
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And if response bundle entry "Composition" contains element "resource.custodian.reference"
-		And response bundle entry "Composition" should contain element "resource.custodian.reference" and that element should reference a resource in the bundle
+		And the response bundle entry "Composition" should contain element "resource.custodian.reference" and that element should reference a resource in the bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -602,8 +602,8 @@ Scenario Outline: patient contains a valid identifiers
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And response bundle entry "Patient" should contain element "resource.id"
-		And response bundle Patient entry should contain a valid NHS number identifier
+		And the response bundle entry "Patient" should contain element "resource.id"
+		And the response bundle Patient entry should contain a valid NHS number identifier
 	Examples:
 		| Code |
 		| ADM  |
@@ -628,7 +628,7 @@ Scenario Outline: if patient contains telecom information
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And if response bundle entry "Patient" contains element "resource.telecom"
-		And response bundle Patient resource should contain valid telecom information
+		And the response bundle Patient resource should contain valid telecom information
 	Examples:
 		| Code |
 		| ADM  |

@@ -14,13 +14,13 @@ using TechTalk.SpecFlow;
 using Hl7.Fhir.Serialization;
 using NUnit.Framework;
 using System.IO;
+using static Hl7.Fhir.Model.Bundle;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-
     [Binding]
     public class FhirSteps : TechTalk.SpecFlow.Steps
     {
@@ -389,28 +389,65 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseJSON.SelectToken(jsonPath).ShouldNotBeNull();
         }
 
-        [Then(@"response bundle should contain ""([^""]*)"" entries")]
-        public void ThenResponseBundleEntryShouldNotBeEmpty(int expectedSize)
+        [Then(@"the response bundle Organization entries should not contain multiple ""([^""]*)"" system identifiers")]
+        public void ThenResponseBundleOrganizationEntriesShouldNotContainMultipleSystemIdentifiers(string system)
         {
-            if (0 == expectedSize)
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
-                HttpContext.ResponseJSON["entry"].ShouldBeNull();
-            }
-            else
-            {
-                HttpContext.ResponseJSON["entry"].Count().ShouldBe(expectedSize);
-
+                bool alreadyFound = false;
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    Organization organization = (Organization)entry.Resource;
+                    foreach (var identifier in organization.Identifier)
+                    {
+                        if (system.Equals(identifier.System))
+                        {
+                            alreadyFound.ShouldBeFalse("Multiple ods-organization-codes found");
+                            alreadyFound = true;
+                        }
+                    }
+                }
             }
         }
 
-        [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)""")]
+        [Then(@"the response bundle Organization entries should contain ""([^""]*)"" ""([^""]*)"" system identifiers")]
+        public void ThenResponseBundleOrganizationEntriesShouldNotContainMultipleSystemIdentifiers(int quantity, string system)
+        {
+            int count = 0;
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    Organization organization = (Organization)entry.Resource;
+                    foreach (var identifier in organization.Identifier)
+                    {
+                        if (system.Equals(identifier.System))
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+
+            count.ShouldBe(quantity, "Wanted " + quantity + " " + system + " but found " + count);
+        }
+
+        [Then(@"the response bundle should contain ""([^""]*)"" entries")]
+        public void ThenResponseBundleEntryShouldNotBeEmpty(int expectedSize)
+        {
+            Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
+            bundle.Entry.Count.ShouldBe(expectedSize);
+        }
+
+        [Then(@"the response bundle entry ""([^""]*)"" should contain element ""([^""]*)""")]
         public void ThenResponseBundleEntryShouldContainElement(string entryResourceType, string jsonPath)
         {
             var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
             resourceEntry.SelectToken(jsonPath).ShouldNotBeNull();
         }
 
-        [Then(@"response bundle ""([^""]*)"" entries should contain element ""([^""]*)""")]
+        [Then(@"the response bundle ""([^""]*)"" entries should contain element ""([^""]*)""")]
         public void ThenResponseBundleEntriesShouldContainElement(string entryResourceType, string jsonPath)
         {
             var resourceEntries = HttpContext.ResponseJSON.SelectTokens($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
@@ -421,14 +458,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)"" with value ""([^""]*)""")]
+        [Then(@"the response bundle entry ""([^""]*)"" should contain element ""([^""]*)"" with value ""([^""]*)""")]
         public void ThenResponseBundleEntryShouldContainElementWithValue(string entryResourceType, string jsonPath, string elementValue)
         {
             var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
             resourceEntry.SelectToken(jsonPath).Value<string>().ShouldBe(elementValue);
         }
 
-        [Then(@"response bundle ""([^""]*)"" entries should contain element ""([^""]*)"" with value ""([^""]*)""")]
+        [Then(@"the response bundle ""([^""]*)"" entries should contain element ""([^""]*)"" with value ""([^""]*)""")]
         public void ThenResponseBundleEntriesShouldContainElementWithValue(string entryResourceType, string jsonPath, string elementValue)
         {
             var resourceEntries = HttpContext.ResponseJSON.SelectTokens($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
@@ -441,7 +478,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"response bundle ""([^""]*)"" entries should contain element ""([^""]*)"" with values ""([^""]*)""")]
+        [Then(@"the response bundle ""([^""]*)"" entries should contain element ""([^""]*)"" with values ""([^""]*)""")]
         public void ThenResponseBundleEntriesShouldContainElementsWithValues(string entryResourceType, string jsonPath, string elementValues)
         {
             var resourceEntries = HttpContext.ResponseJSON.SelectTokens($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
@@ -452,7 +489,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             foreach (var resourceEntry in resourceEntries)
             {
-                mylist.Add(resourceEntry.SelectToken(jsonPath).Value<string>());
+                foreach (var jtoken in resourceEntry.SelectTokens(jsonPath))
+                {
+                    mylist.Add(jtoken.Value<string>());
+                }
             }
 
             string[] elements = elementValues.Split(new char[] { '|' });
@@ -465,7 +505,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"response bundle entry ""([^""]*)"" should contain element ""([^""]*)"" and that element should reference a resource in the bundle")]
+        [Then(@"the response bundle entry ""([^""]*)"" should contain element ""([^""]*)"" and that element should reference a resource in the bundle")]
         public void ThenResponseBundleEntryShouldContainElementAndThatElementShouldReferenceAResourceInTheBundle(string entryResourceType, string jsonPath)
         {
             var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
@@ -544,6 +584,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
             FhirContext.SaveToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
         }
-
     }
 }

@@ -204,7 +204,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ((Bundle)FhirContext.FhirResponseResource).Entry[0].Resource.ResourceType.ShouldBe(ResourceType.Composition);
         }
 
-        [Then(@"response bundle Patient entry should be a valid Patient resource")]
+        [Then(@"the response bundle Patient entry should be a valid Patient resource")]
         public void ThenResponseBundlePatientEntryShouldBeAValidPatientResource()
         {
             var fhirResource = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == 'Patient')].resource");
@@ -213,7 +213,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             patientResource.ResourceType.ShouldBe(ResourceType.Patient);
         }
 
-        [Then(@"response bundle Patient entry should contain a valid NHS number identifier")]
+        [Then(@"the response bundle Patient entry should contain a valid NHS number identifier")]
         public void ThenResponseBundlePatientEntryShouldContainAValidNHSNumberIdentifier()
         {
             var passed = false;
@@ -235,7 +235,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"response bundle Patient resource should contain valid telecom information")]
+        [Then(@"the response bundle Patient resource should contain valid telecom information")]
         public void ThenResponseBundlePatientResourceShouldContainValidTelecomInfromation()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -453,9 +453,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
                     Patient patient = (Patient)entry.Resource;
-                    (patient.Photo == null || patient.Photo.Count == 0).ShouldBeTrue(); // C# API creates an empty list if no element is present
-                    patient.Animal.ShouldBeNull();
-                    (patient.Link == null || patient.Link.Count == 0).ShouldBeTrue();
+                    (patient.Photo == null || patient.Photo.Count == 0).ShouldBeTrue("There should be no photo element in Patient Resource"); // C# API creates an empty list if no element is present
+                    patient.Animal.ShouldBeNull("There should be no Animal element in Patient Resource");
+                    (patient.Link == null || patient.Link.Count == 0).ShouldBeTrue("There should be no link element in Patient Resource");
                 }
             }
         }

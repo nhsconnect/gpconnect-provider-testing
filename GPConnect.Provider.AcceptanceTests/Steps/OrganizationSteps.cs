@@ -43,23 +43,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + FhirContext.FhirOrganizations[valueParameter]}""");
         }
 
-        [Then(@"response should contain ods-organization-codes ""([^""]*)""")]
-        public void ThenResponseShouldContainODSOrganizationCodesWithValues(string elementValues)
-        {
-            List<string> referenceValueList = new List<string>();
-
-            foreach (var element in elementValues.Split(new char[] { '|' }))
-            {
-                referenceValueList.Add(FhirContext.FhirOrganizations[element]);
-            }
-
-            string referenceValues = String.Join("|", referenceValueList);
-            
-            Then($@"response bundle ""Organization"" entries should contain element ""resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-organization-code')].value"" with values ""{referenceValues}""");
-        }
-
-        [Then(@"response should contain ods-site-codes ""([^""]*)""")]
-        public void ThenResponseShouldContainODSSiteCodesWithValues(string elementValues)
+        [Then(@"the response should contain ods-([^""]*)-codes ""([^""]*)""")]
+        public void ThenResponseShouldContainODSOrganizationCodesWithValues(string system, string elementValues)
         {
             List<string> referenceValueList = new List<string>();
 
@@ -70,7 +55,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             string referenceValues = String.Join("|", referenceValueList);
 
-            Then($@"response bundle ""Organization"" entries should contain element ""resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-site-code')].value"" with values ""{referenceValues}""");
+            Then($@"the response bundle ""Organization"" entries should contain element ""resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-{system}-code')].value"" with values ""{referenceValues}""");
         }
     }
 }
