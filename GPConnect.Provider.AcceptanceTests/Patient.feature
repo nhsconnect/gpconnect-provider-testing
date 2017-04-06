@@ -1,4 +1,4 @@
-﻿@http
+﻿@patient
 Feature: Patient
 
 Background:
@@ -14,6 +14,11 @@ Background:
 Scenario: The provider system should accept the search parameter URL encoded
 	# The API being used in the test suite encodes the parameter string by default so no additional test needs to be performed.
 	# The FHIR and HTTP standards require the request to be URL encoded so it is mandated that clents encode their requests.
+
+@ignore
+Scenario: The response resources must be valid FHIR JSON or XML
+	# This validation is done impliciitly by the parsing of the response XML or JSON into the FHIR resource used in most of the
+	# test scenarios so no specific test needs to be implemented.
 
 Scenario: Returned patients should contain a logical identifier
 	Given I am using the default server
@@ -255,7 +260,7 @@ Scenario Outline: Patient resource should not contain disallowed fields in resou
 	| patient2 |
 	| patient3 |
 
-Scenario Outline: Check that if a care provider exists in the Patient resource it is valid
+Scenario Outline: Check that if a care provider exists in the Patient resource it is valid and there is only one
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
 		And I set the JWT requested record NHS number to config patient "<Patient>"
@@ -270,3 +275,20 @@ Scenario Outline: Check that if a care provider exists in the Patient resource i
 	| patient1 |
 	| patient2 |
 	| patient3 |
+
+Scenario Outline: Check that if a managingOrganization exists in the Patient resource that it is a valid reference
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "<Patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And if Patient resource contains a managing organization the reference must be valid
+	Examples: 
+	| Patient  |
+	| patient1 |
+	| patient2 |
+	| patient3 |
+

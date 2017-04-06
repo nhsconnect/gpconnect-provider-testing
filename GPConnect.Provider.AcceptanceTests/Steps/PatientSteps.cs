@@ -89,9 +89,31 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
                     Patient patient = (Patient)entry.Resource;
-                    patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one care provider elements included in Patient Resource.");
-                    foreach (var careProvider in patient.CareProvider) {
-                        careProvider.Reference.ShouldNotBeNull();
+                    if (patient.CareProvider != null) {
+                        patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one care provider elements included in Patient Resource.");
+                        foreach (var careProvider in patient.CareProvider)
+                        {
+                            if (careProvider.Reference != null)
+                            {
+                                careProvider.Reference.ShouldStartWith("Practitioner/");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        [Then(@"if Patient resource contains a managing organization the reference must be valid")]
+        public void ThenIfPatientResourceContainsAManagingOrganizationTheReferenceMustBeValid()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    if (patient.ManagingOrganization != null && patient.ManagingOrganization.Reference != null)
+                    {
+                        patient.ManagingOrganization.Reference.ShouldStartWith("Organization/");
                     }
                 }
             }
