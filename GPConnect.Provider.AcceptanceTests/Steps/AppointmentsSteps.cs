@@ -363,15 +363,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     if (x < 0 || x > 31) { Assert.Fail(); }
                     if (y < 0 || y > 31) { Assert.Fail(); }
-
-                    
-                    Log.WriteLine(dayDays);
-                    Log.WriteLine(endDays);
-
-                   // Assert.Pass();
-
-
-
                 }
             }
         }
@@ -379,7 +370,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"if the bundle contains a appointment resource the start and end date months are within range")]
         public void appointmentMonthsAreWithinRange()
         {
-              Log.WriteLine("in here");
+       
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
@@ -399,22 +390,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     if (x < 0 || x > 12) { Assert.Fail(); }
                     if (y < 0 || y > 12) { Assert.Fail(); }
-
-
-                    Log.WriteLine(dayDays);
-                    Log.WriteLine(endDays);
-
-                   // Assert.Pass();
-
-
-
                 }
             }
         }
         [Then(@"if the bundle contains a appointment resource the start and end date years are within range")]
         public void appointmentYearsAreWithinRange()
         {
-            Log.WriteLine("IMDWEUHDUIHUI");
+          
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
@@ -435,20 +417,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     if (x < 2016 || x > 2018) { Assert.Fail(); }
                     if (y < 2016 || y > 2018) { Assert.Fail(); }
 
-
-                    Log.WriteLine(dayDays);
-                    Log.WriteLine(endDays);
-
-                   // Assert.Pass();
-
-
-
                 }
             }
         }
-
-
-
 
         [Then(@"if the the start date must be before the end date")]
         public void startDateBeforeEndDate()
