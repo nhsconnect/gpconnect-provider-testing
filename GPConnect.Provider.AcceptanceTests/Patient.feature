@@ -191,6 +191,22 @@ Scenario Outline: Patient search failure due to missing header
 		| Ssp-InteractionId |
 		| Authorization     |
 
+Scenario Outline: Patient search with invalid identifier value
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient2"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for a Patient with patameter name "identifier" and parameter string "http://fhir.nhs.net/Id/nhs-number|<IdentifierValue>"
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
+	Examples:
+		| IdentifierValue |
+		| 1234567891      |
+		| 999999999       |
+		| abcdefghij      |
+		|                 |
+
 Scenario: Patient resource should contain meta data elements
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
