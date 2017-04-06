@@ -23,6 +23,7 @@ Scenario: Returned patients should contain a logical identifier
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
 		And all search response entities in bundle should contain a logical identifier
 
 Scenario: Provider should return a patient resource when a valid request is sent
@@ -34,6 +35,7 @@ Scenario: Provider should return a patient resource when a valid request is sent
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
 
 Scenario: Provider should return an error when an invalid system is supplied in the identifier parameter
 	Given I am using the default server
@@ -129,6 +131,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 	Then the response status code should indicate success
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
 	Examples: 
 	| AcceptHeader          | FormatParam           | ResultFormat |
 	| application/xml+fhir  | application/xml+fhir  | XML          |
@@ -148,6 +151,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 	Then the response status code should indicate success
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
 	Examples: 
 	| AcceptHeader          | FormatParam           | ResultFormat |
 	| application/xml+fhir  | application/xml+fhir  | XML          |
@@ -186,3 +190,15 @@ Scenario Outline: Patient search failure due to missing header
 		| Ssp-To            |
 		| Ssp-InteractionId |
 		| Authorization     |
+
+Scenario: Patient resource should contain meta data elements
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "patient1"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And the patient resource in the bundle should contain meta data profile and version id
