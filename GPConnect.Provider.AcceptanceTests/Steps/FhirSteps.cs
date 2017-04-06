@@ -410,6 +410,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the response bundle Organization entries should contain ""([^""]*)"" ""([^""]*)"" system identifiers")]
+        public void ThenResponseBundleOrganizationEntriesShouldNotContainMultipleSystemIdentifiers(int quantity, string system)
+        {
+            int count = 0;
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    Organization organization = (Organization)entry.Resource;
+                    foreach (var identifier in organization.Identifier)
+                    {
+                        if (system.Equals(identifier.System))
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+
+            count.ShouldBe(quantity, "Wanted " + quantity + " " + system + " but found " + count);
+        }
+
         [Then(@"the response bundle should contain ""([^""]*)"" entries")]
         public void ThenResponseBundleEntryShouldNotBeEmpty(int expectedSize)
         {
@@ -466,7 +489,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             foreach (var resourceEntry in resourceEntries)
             {
-                mylist.Add(resourceEntry.SelectToken(jsonPath).Value<string>());
+                foreach (var jtoken in resourceEntry.SelectTokens(jsonPath))
+                {
+                    mylist.Add(jtoken.Value<string>());
+                }
             }
 
             string[] elements = elementValues.Split(new char[] { '|' });
