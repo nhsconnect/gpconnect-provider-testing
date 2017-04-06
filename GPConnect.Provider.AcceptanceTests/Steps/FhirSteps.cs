@@ -413,14 +413,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response bundle should contain ""([^""]*)"" entries")]
         public void ThenResponseBundleEntryShouldNotBeEmpty(int expectedSize)
         {
-            if (0 == expectedSize)
-            {
-                HttpContext.ResponseJSON["entry"].ShouldBeNull();
-            }
-            else
-            {
-                HttpContext.ResponseJSON["entry"].Count().ShouldBe(expectedSize);
-            }
+            Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
+            bundle.Entry.Count.ShouldBe(expectedSize);
         }
 
         [Then(@"the response bundle entry ""([^""]*)"" should contain element ""([^""]*)""")]
