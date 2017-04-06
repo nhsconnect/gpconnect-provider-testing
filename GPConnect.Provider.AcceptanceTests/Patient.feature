@@ -7,6 +7,7 @@ Background:
 		| patientNotInSystem | 9999999999 |
 		| patient1           | 9000000001 |
 		| patient2           | 9000000002 |
+		| patient3           | 9000000003 |
 		| patient16          | 9000000016 |
 
 @ignore
@@ -224,9 +225,10 @@ Scenario Outline: Patient resource should contain NHS number identifier
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
 		And I set the JWT requested record NHS number to config patient "<Patient>"
 		And I set the JWT requested scope to "patient/*.read"
+		And I set the Accept header to "application/xml+fhir"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+		And the response body should be FHIR XML
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the response bundle Patient entries should contain a single NHS Number identifier for patient "<Patient>"
@@ -236,3 +238,35 @@ Scenario Outline: Patient resource should contain NHS number identifier
 	| patient2 |
 	| patient3 |
 
+Scenario Outline: Patient resource should not contain disallowed fields in resource
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "<Patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And patient resource should not contain the fhir fields photo animal or link
+	Examples: 
+	| Patient  |
+	| patient1 |
+	| patient2 |
+	| patient3 |
+
+Scenario Outline: Check that if a care provider exists in the Patient resource it is valid
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "<Patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And if Patient resource contains careProvider the reference must be valid
+	Examples: 
+	| Patient  |
+	| patient1 |
+	| patient2 |
+	| patient3 |

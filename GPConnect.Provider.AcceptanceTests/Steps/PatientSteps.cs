@@ -4,6 +4,7 @@ using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using Shouldly;
 using TechTalk.SpecFlow;
+using static Hl7.Fhir.Model.Bundle;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
@@ -77,6 +78,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
                 }
                 nhsNumberIdentifierCount.ShouldBe(1, "There was more or less than 1 NHS Number identifier.");
+            }
+        }
+
+        [Then(@"if Patient resource contains careProvider the reference must be valid")]
+        public void ThenIfPatientResourceContainsCareProviderTheReferenceMustBeValid()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one care provider elements included in Patient Resource.");
+                    foreach (var careProvider in patient.CareProvider) {
+                        careProvider.Reference.ShouldNotBeNull();
+                    }
+                }
             }
         }
     }

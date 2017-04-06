@@ -453,9 +453,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
                     Patient patient = (Patient)entry.Resource;
-                    (patient.Photo == null || patient.Photo.Count == 0).ShouldBeTrue(); // C# API creates an empty list if no element is present
-                    patient.Animal.ShouldBeNull();
-                    (patient.Link == null || patient.Link.Count == 0).ShouldBeTrue();
+                    (patient.Photo == null || patient.Photo.Count == 0).ShouldBeTrue("There should be no photo element in Patient Resource"); // C# API creates an empty list if no element is present
+                    patient.Animal.ShouldBeNull("There should be no Animal element in Patient Resource");
+                    (patient.Link == null || patient.Link.Count == 0).ShouldBeTrue("There should be no link element in Patient Resource");
                 }
             }
         }
