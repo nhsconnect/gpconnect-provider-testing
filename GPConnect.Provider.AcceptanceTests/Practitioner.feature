@@ -11,7 +11,7 @@ Scenario Outline: Practitioner search success
 	When I make a GET request to "/Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And response bundle should contain "<ExpectedSize>" entries
+		And the response bundle should contain "<ExpectedSize>" entries
 		And the response should be a Bundle resource of type "searchset"
 		And all practitioners contain an id
 		And all practitioners contain SDS identifier for practitioner "<Value>"

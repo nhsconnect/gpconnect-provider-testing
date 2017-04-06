@@ -74,7 +74,7 @@ Scenario: When a patient is not found on the provider system an empty bundle sho
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And response bundle should contain "0" entries
+		And the response bundle should contain "0" entries
 
 Scenario: Patient search should fail if no identifier parameter is include
 	Given I am using the default server

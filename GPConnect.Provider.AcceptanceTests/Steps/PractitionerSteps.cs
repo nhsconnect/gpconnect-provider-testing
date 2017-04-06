@@ -21,7 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class PractitionerSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext FhirContext;
-        private JwtHelper jwtHelper;
 
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
@@ -32,9 +31,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public PractitionerSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext)
         {
             FhirContext = fhirContext;
-            // Helpers
             Headers = headerHelper;
-            Jwt = jwtHelper;
         }
 
         [Given(@"I have the test practitioner codes")]

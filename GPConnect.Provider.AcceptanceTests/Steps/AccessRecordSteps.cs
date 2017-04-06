@@ -204,7 +204,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ((Bundle)FhirContext.FhirResponseResource).Entry[0].Resource.ResourceType.ShouldBe(ResourceType.Composition);
         }
 
-        [Then(@"response bundle Patient entry should be a valid Patient resource")]
+        [Then(@"the response bundle Patient entry should be a valid Patient resource")]
         public void ThenResponseBundlePatientEntryShouldBeAValidPatientResource()
         {
             var fhirResource = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == 'Patient')].resource");
@@ -213,7 +213,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             patientResource.ResourceType.ShouldBe(ResourceType.Patient);
         }
 
-        [Then(@"response bundle Patient entry should contain a valid NHS number identifier")]
+        [Then(@"the response bundle Patient entry should contain a valid NHS number identifier")]
         public void ThenResponseBundlePatientEntryShouldContainAValidNHSNumberIdentifier()
         {
             var passed = false;
@@ -235,7 +235,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"response bundle Patient resource should contain valid telecom information")]
+        [Then(@"the response bundle Patient resource should contain valid telecom information")]
         public void ThenResponseBundlePatientResourceShouldContainValidTelecomInfromation()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
