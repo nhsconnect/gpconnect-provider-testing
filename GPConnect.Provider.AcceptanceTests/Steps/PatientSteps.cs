@@ -1,6 +1,8 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Logger;
+using Hl7.Fhir.Model;
+using Shouldly;
 using TechTalk.SpecFlow;
 
 // ReSharper disable UnusedMember.Global
@@ -61,5 +63,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             When($@"I make a GET request to ""/Patient""");
         }
         
+        [Then(@"the response bundle Patient entries should contain a single NHS Number identifier for patient ""([^""]*)""")]
+        public void ThenTheResponseBundlePatientEntriesShouldContainASingleNHSNumberIdentifierForPatient(string patient)
+        {
+            Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
+            foreach (var entry in bundle.Entry) {
+                var patientResource = (Patient)entry.Resource;
+                int nhsNumberIdentifierCount = 0;
+                foreach (var identifier in patientResource.Identifier) {
+                    if (identifier.System == FhirConst.IdentifierSystems.kNHSNumber) {
+                        nhsNumberIdentifierCount++;
+                        identifier.Value.ShouldBe(FhirContext.FhirPatients[patient],"NHS Number does not match expected NHS Number.");
+                    }
+                }
+                nhsNumberIdentifierCount.ShouldBe(1, "There was more or less than 1 NHS Number identifier.");
+            }
+        }
     }
 }

@@ -656,6 +656,44 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Patient resource should contain NHS number identifier")]
+        [NUnit.Framework.TestCaseAttribute("patient1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient3", new string[0])]
+        public virtual void PatientResourceShouldContainNHSNumberIdentifier(string patient, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient resource should contain NHS number identifier", exampleTags);
+#line 222
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 223
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 224
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient\" i" +
+                    "nteraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 225
+  testRunner.And(string.Format("I set the JWT requested record NHS number to config patient \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 226
+  testRunner.And("I set the JWT requested scope to \"patient/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 227
+ testRunner.When(string.Format("I search for Patient \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 228
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 229
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 230
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 231
+  testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 232
+  testRunner.And(string.Format("the response bundle Patient entries should contain a single NHS Number identifier" +
+                        " for patient \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

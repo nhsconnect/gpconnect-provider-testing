@@ -218,3 +218,21 @@ Scenario: Patient resource should contain meta data elements
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the patient resource in the bundle should contain meta data profile and version id
+
+Scenario Outline: Patient resource should contain NHS number identifier
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "<Patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And the response bundle Patient entries should contain a single NHS Number identifier for patient "<Patient>"
+	Examples: 
+	| Patient  |
+	| patient1 |
+	| patient2 |
+	| patient3 |
+
