@@ -130,10 +130,6 @@ Scenario: Appointment retrieve bundle resource must contain status and participa
         And the response should be a Bundle resource of type "searchset"
 	Then the bundle appointment resource should contain contain a single status element
 		And the appointment status element should be valid
-	Then the bundle response should contain a participant element
-	
-		
-		
 
 Scenario: Appointment retrieve bundle of coding type SNOMED resource must contain coding with valid system and code and display
 	Given I am using the default server

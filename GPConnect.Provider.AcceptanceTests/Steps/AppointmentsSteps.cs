@@ -312,21 +312,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             }
         }
-
-        [Then(@"if the bundle contains a appointment resource the dtart and end date are in the correct format")]
-        public void appointmentContainsStartAndEndDateWithCorrectFormat()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    DateTimeOffset? start = appointment.Start;
-                    DateTimeOffset? end = appointment.End;
-
-                }
-            }          
-       }
         
         [Then(@"the appointment shall contain a slot or multiple slots")]
         public void appointmentMustContainSlot()
@@ -360,10 +345,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     int x = Int32.Parse(dayDays);
                     int y = Int32.Parse(endDays);
-
+                    //Checks Upper and lower limits, doesnt account for month
                     if (x < 0 || x > 31) { Assert.Fail(); }
                     if (y < 0 || y > 31) { Assert.Fail(); }
-
+                    //Checks the range is not out of bounds
                     if (y - x > days) { Assert.Fail(); }
                 
                 }
@@ -393,7 +378,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     if (x < 0 || x > 12) { Assert.Fail(); }
                     if (y < 0 || y > 12) { Assert.Fail(); }
-
+                    //Checks the range is not out of bounds
                     if (y - x > months) { Assert.Fail(); }
                 }
             }
@@ -421,7 +406,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     if (x < 2016 || x > 2018) { Assert.Fail(); }
                     if (y < 2016 || y > 2018) { Assert.Fail(); }
-
+                    //Checks the range is not out of bounds
                     if (y - x > years) { Assert.Fail(); }
 
                 }

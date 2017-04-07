@@ -168,10 +168,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Patient.feature</DependentUpon>
     </Compile>
-    <Compile Include="Appointments.feature.cs">
+    <Compile Include="AppointmentRetrieve.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Appointments.feature</DependentUpon>
+      <DependentUpon>AppointmentRetrieve.feature</DependentUpon>
     </Compile>
     <Compile Include="Steps\AppointmentsSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />
@@ -248,9 +248,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Security.feature.cs</LastGenOutput>
     </None>
-    <None Include="Appointments.feature">
+    <None Include="AppointmentRetrieve.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Appointments.feature.cs</LastGenOutput>
+      <LastGenOutput>AppointmentRetrieve.feature.cs</LastGenOutput>
     </None>
     <None Include="SpineSecurityProxy.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
