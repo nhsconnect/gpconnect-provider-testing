@@ -341,8 +341,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"if the bundle contains a appointment resource the start and end date days are within range")]
-        public void appointmentDaysAreWithinRange()
+        [Then(@"if the bundle contains a appointment resource the start and end date days are within range ""(.*)"" days")]
+        public void appointmentDaysAreWithinRange(int days)
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
@@ -363,12 +363,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     if (x < 0 || x > 31) { Assert.Fail(); }
                     if (y < 0 || y > 31) { Assert.Fail(); }
+
+                    if (y - x > days) { Assert.Fail(); }
+                
                 }
             }
         }
 
-        [Then(@"if the bundle contains a appointment resource the start and end date months are within range")]
-        public void appointmentMonthsAreWithinRange()
+        [Then(@"if the bundle contains a appointment resource the start and end date months are within range ""(.*)"" months")]
+        public void appointmentMonthsAreWithinRange(int months)
         {
        
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -390,11 +393,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     if (x < 0 || x > 12) { Assert.Fail(); }
                     if (y < 0 || y > 12) { Assert.Fail(); }
+
+                    if (y - x > months) { Assert.Fail(); }
                 }
             }
         }
-        [Then(@"if the bundle contains a appointment resource the start and end date years are within range")]
-        public void appointmentYearsAreWithinRange()
+        [Then(@"if the bundle contains a appointment resource the start and end date years are within range ""(.*)"" years")]
+        public void appointmentYearsAreWithinRange(int years)
         {
           
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -416,6 +421,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     if (x < 2016 || x > 2018) { Assert.Fail(); }
                     if (y < 2016 || y > 2018) { Assert.Fail(); }
+
+                    if (y - x > years) { Assert.Fail(); }
 
                 }
             }

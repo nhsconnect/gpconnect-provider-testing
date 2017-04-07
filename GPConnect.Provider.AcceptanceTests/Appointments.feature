@@ -127,10 +127,13 @@ Scenario: Appointment retrieve bundle resource must contain status and participa
 	When I make a GET request to "/Patient/2/Appointment"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
+        And the response should be a Bundle resource of type "searchset"
 	Then the bundle appointment resource should contain contain a single status element
 		And the appointment status element should be valid
 	Then the bundle response should contain a participant element
-		And response bundle entry "Appointment" should contain element "resource.status"
+	
+		
+		
 
 Scenario: Appointment retrieve bundle of coding type SNOMED resource must contain coding with valid system and code and display
 	Given I am using the default server
@@ -164,16 +167,24 @@ Scenario: Appointment retrieve bundle contains appointment with identifer with c
 		And the response body should be FHIR JSON
 		And if the appointment resource contains an identifier it contains a valid system and value
 
-Scenario: Appointment retrieve bundle contains appointment with valid start and end date format
+
+@Ignore Checks the ranges are sensible but can probably be removed as an appointment is lokely no longer then an hour
+Scenario Outline: Appointment retrieve bundle contains appointment with valid start and end date format
 Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I make a GET request to "/Patient/2/Appointment"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And if the bundle contains a appointment resource the start and end date days are within range
-		And if the bundle contains a appointment resource the start and end date months are within range
-		And if the bundle contains a appointment resource the start and end date years are within range
+		And if the bundle contains a appointment resource the start and end date days are within range "<days>" days
+		And if the bundle contains a appointment resource the start and end date months are within range "<months>" months
+		And if the bundle contains a appointment resource the start and end date years are within range "<years>" years
 		And if the the start date must be before the end date
+		 Examples:
+        | days | months | years |
+        | 1    | 1      | 1     |
+        | 0    | 0      | 0     |
+        | 4    | 12     | 3     |
+        | 9    | 1      | 4     |
 		
 	
 Scenario: Appointment retrieve bundle contains appointment with slot 
