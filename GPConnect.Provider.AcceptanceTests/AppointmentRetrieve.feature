@@ -65,7 +65,6 @@ Scenario Outline: Appointment retrieve accept header and _format parameter
     When I make a GET request to "/Patient/1/Appointment"
     Then the response status code should indicate success
         And the response body should be FHIR <BodyFormat>
-        And the response should be a Bundle resource of type "JSON"
         And the response should be a Bundle resource of type "searchset"
     Examples:
         | Header                | Parameter             | BodyFormat |
