@@ -14,6 +14,7 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.Model;
+using System.Collections.Generic;
 
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable InconsistentNaming
@@ -214,7 +215,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         // Rest Request Helper
 
-        private void RestRequest(Method method, string relativeUrl, string body = null)
+        private void RestRequest(Method method, string relativeUrl, string body = null, Dictionary<string, string> extraParameters = null)
         {
             var timer = new System.Diagnostics.Stopwatch();
 
@@ -260,12 +261,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
                 restRequest.AddHeader(header.Key, header.Value);
             }
-
+            
             // Add Parameters
             foreach (var parameter in HttpContext.RequestParameters.GetRequestParameters())
             {
                 Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
                 restRequest.AddParameter(parameter.Key, parameter.Value);
+            }
+
+            // Add The Extra Parameters
+            if (null != extraParameters)
+            {
+                foreach (var parameter in extraParameters)
+                {
+                    Log.WriteLine("Extra Parameter - {0} -> {1}", parameter.Key, parameter.Value);
+                    restRequest.AddParameter(parameter.Key, parameter.Value);
+                }
             }
 
             // Execute The Request
@@ -331,23 +342,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 var clientCert = HttpContext.SecurityContext.ClientCert;
                 handler.ClientCertificates.Add(clientCert);
-
             }
+
             // Setup The Web Proxy
             if (HttpContext.UseWebProxy)
             {
                 handler.Proxy = new WebProxy(new Uri(HttpContext.WebProxyAddress, UriKind.Absolute));
             }
-
-            /*
-            // Add Parameters
-            foreach (var parameter in HttpContext.RequestParameters.GetRequestParameters())
-            {
-                Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
-                .AddParameter(parameter.Key, parameter.Value);
-            }
-            */
-
+            
             var sspAddress = HttpContext.UseSpineProxy ? HttpContext.SpineProxyAddress + "/" : string.Empty;
             string baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + ":" + HttpContext.FhirServerPort + HttpContext.FhirServerFhirBase;
             // Move the forward slash or the HttpClient will remove everything after the port number
@@ -384,7 +386,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Log.WriteLine("Could not add header: " + header.Key + e);
                 }
             }
-
+            
             // Start The Performance Timer Running
             timer.Start();
 
@@ -446,6 +448,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISendAGpcGetcarerecordOperationRequestWithPayloadButNotDecompressed()
         {
             HttpRequest(HttpMethod.Post, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), false);
+        }
+
+        [When(@"I send a /Organization request with multiple identifier parameters")]
+        public void ISendAOrganizationRequestWithMultipleIdentifierParameters()
+        {
+            RestRequest(Method.GET, "/Organization", null, new Dictionary<string, string> {{ "identifier", "http://fhir.nhs.net/Id/ods-organization-code|ORG2" }});
         }
 
         [When(@"I send a metadata request but not decompressed")]
