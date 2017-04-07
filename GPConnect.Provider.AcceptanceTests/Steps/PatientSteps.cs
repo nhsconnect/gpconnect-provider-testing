@@ -118,5 +118,40 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+
+        [Then(@"if patient resource contains telecom element the system and value must be populated")]
+        public void ThenIfPatientResourceContainsTelecomElementTheSystemAndValueMustBePopulated ()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    if (patient.Telecom != null)
+                    {
+                        foreach (ContactPoint contactPoint in patient.Telecom) {
+                            contactPoint.System.ShouldNotBeNull("The contactPoint system should be populated");
+                            contactPoint.Value.ShouldNotBeNull("The contactPoint value should be populated");
+                        }
+                    }
+                }
+            }
+        }
+
+        [Then(@"if patient resource contains deceased element it should be dateTime and not boolean")]
+        public void ThenIfPatientResourceContainsDeceasedElementItShouldBeDateTimeAndNotBoolean()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    if (patient.Deceased != null)
+                    {
+                        patient.Deceased.GetType().ShouldBe(typeof(FhirDateTime));
+                    }
+                }
+            }
+        }
     }
 }
