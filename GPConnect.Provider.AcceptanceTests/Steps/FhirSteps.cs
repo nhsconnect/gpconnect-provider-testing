@@ -513,12 +513,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the response bundle entry ""([^""]*)"" should contain element ""([^""]*)"" and that element should reference a resource in the bundle")]
+        [Then(@"the response bundle entry ""([^""]*)"" should optionally contain element ""([^""]*)"" and that element should reference a resource in the bundle")]
         public void ThenResponseBundleEntryShouldContainElementAndThatElementShouldReferenceAResourceInTheBundle(string entryResourceType, string jsonPath)
         {
             var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
-            var internalReference = resourceEntry.SelectToken(jsonPath).Value<string>();
-            HttpContext.ResponseJSON.SelectToken("$.entry[?(@.fullUrl == '" + internalReference + "')]").ShouldNotBeNull();
+
+            if (resourceEntry.SelectToken(jsonPath) != null)
+            {
+                var internalReference = resourceEntry.SelectToken(jsonPath).Value<string>();
+                HttpContext.ResponseJSON.SelectToken("$.entry[?(@.fullUrl == '" + internalReference + "')]").ShouldNotBeNull();
+            }
         }
 
         [Then(@"the conformance profile should contain the ""([^""]*)"" operation")]
@@ -552,22 +556,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     if (resourceName.Equals(resource["type"].Value<string>()) && null != resource.SelectToken("interaction[?(@.code == '" + interaction + "')]"))
                     {
-                        Assert.Pass();
+                        return;
                     }
                 }
             }
 
             Assert.Fail("No interaction " + interaction + " for " + resourceName + " resource found.");
-        }
-
-        [Then(@"if response bundle entry ""([^""]*)"" contains element ""([^""]*)""")]
-        public void ThenIfResponseBundleEntryContainsElement(string entryResourceType, string jsonPath)
-        {
-            var resourceEntry = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == '{entryResourceType}')]");
-            if (resourceEntry.SelectToken(jsonPath) == null) {
-                Log.WriteLine("No Reference in response bundle so skipping rest of test but giving Pass to scenario.");
-                Assert.Pass(); // If element is not present pass and ignore other steps
-            }
         }
         
         [Then(@"all search response entities in bundle should contain a logical identifier")]

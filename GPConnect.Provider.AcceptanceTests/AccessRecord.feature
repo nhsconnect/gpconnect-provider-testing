@@ -527,8 +527,7 @@ Scenario Outline: composition contains subject referencing a patient resource in
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And the response bundle entry "Composition" should contain element "resource.subject.reference"
-		And the response bundle entry "Composition" should contain element "resource.subject.reference" and that element should reference a resource in the bundle
+		And the response bundle entry "Composition" should optionally contain element "resource.subject.reference" and that element should reference a resource in the bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -552,8 +551,7 @@ Scenario Outline: if composition contains author, the device reference can be fo
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if response bundle entry "Composition" contains element "resource.author[0].reference"
-		And the response bundle entry "Composition" should contain element "resource.author[0].reference" and that element should reference a resource in the bundle
+		And the response bundle entry "Composition" should optionally contain element "resource.author[0].reference" and that element should reference a resource in the bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -577,8 +575,7 @@ Scenario Outline: if composition contains custodian reference
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if response bundle entry "Composition" contains element "resource.custodian.reference"
-		And the response bundle entry "Composition" should contain element "resource.custodian.reference" and that element should reference a resource in the bundle
+		And the response bundle entry "Composition" should optionally contain element "resource.custodian.reference" and that element should reference a resource in the bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -627,8 +624,7 @@ Scenario Outline: if patient contains telecom information
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if response bundle entry "Patient" contains element "resource.telecom"
-		And the response bundle Patient resource should contain valid telecom information
+		And the response bundle Patient resource should optionally contain valid telecom information
 	Examples:
 		| Code |
 		| ADM  |

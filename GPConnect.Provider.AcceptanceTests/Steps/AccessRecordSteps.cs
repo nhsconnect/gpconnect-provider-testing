@@ -238,7 +238,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the response bundle Patient resource should contain valid telecom information")]
+        [Then(@"the response bundle Patient resource should optionally contain valid telecom information")]
         public void ThenResponseBundlePatientResourceShouldContainValidTelecomInfromation()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -266,7 +266,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     if (composition.Type == null)
                     {
-                        Assert.Pass();
+                        return;
                     }
                     else
                     {
@@ -303,7 +303,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     if (composition.Class == null)
                     {
-                        Assert.Pass();
+                        return;
                     }
                     else
                     {
@@ -339,7 +339,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Patient patient = (Patient)entry.Resource;
                     if (patient.MaritalStatus == null || patient.MaritalStatus.Coding == null)
                     {
-                        Assert.Pass();
+                        return;
                     }
                     else
                     {
@@ -400,7 +400,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Patient patient = (Patient)entry.Resource;
                     if (patient.Communication == null)
                     {
-                        Assert.Pass();
+                        return;
                     }
                     else
                     {
@@ -481,7 +481,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (resourceFound == false)
             {
                 // If no resource is found then the test scenario passes
-                Assert.Pass();
+                return;
             }
         }
 
@@ -509,11 +509,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     String name = practitioner.Name.Family.ToString();
                     if (name != familyName)
                     {
-                        Assert.Fail();
-                    }
-                    else
-                    {
-                        Assert.Pass();
+                        Assert.Fail("Family name doesn't match");
                     }
                 }
             }
