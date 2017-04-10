@@ -40,6 +40,14 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             return _requestHeaders;
         }
 
+        public void SetRequestHeaders(Dictionary<string, string> headers)
+        {
+            _requestHeaders.Clear();
+            foreach (var header in headers) {
+                _requestHeaders.Add(header.Key, header.Value);
+            }
+        }
+
         public string GetHeaderValue(string key)
         {
             string value;

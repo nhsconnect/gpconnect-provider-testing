@@ -65,7 +65,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public HttpHeaderHelper RequestHeaders { get; }
 
         // Http Helper
-        public HttpParameterHelper RequestParameters { get; }
+        public HttpParameterHelper RequestParameters { get; set; }
 
         // JWT Helper
         public JwtHelper Jwt { get; }
@@ -315,6 +315,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                     return ScenarioContext.Get<Dictionary<string, string>>(Context.kResponseHeaders);
                 }
             }
+            set { ScenarioContext.Set(value, Context.kResponseHeaders); }
         }
 
         // Parsed Response

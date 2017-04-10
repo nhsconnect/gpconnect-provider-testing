@@ -19,15 +19,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly SecurityContext SecurityContext;
         private readonly HttpContext HttpContext;
+        private readonly HttpSteps HttpSteps;
         
         // Constructor
 
-        public PatientSteps(SecurityContext securityContext, HttpContext httpContext, FhirContext fhirContext)
+        public PatientSteps(SecurityContext securityContext, HttpContext httpContext, FhirContext fhirContext, HttpSteps httpSteps)
         {
             Log.WriteLine("PatientSteps() Constructor");
             SecurityContext = securityContext;
             HttpContext = httpContext;            
             FhirContext = fhirContext;
+            HttpSteps = httpSteps;
         }
         
         // Patient Steps
@@ -97,6 +99,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             if (careProvider.Reference != null)
                             {
                                 careProvider.Reference.ShouldStartWith("Practitioner/");
+                                var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", careProvider.Reference);
+                                returnedResource.GetType().ShouldBe(typeof(Practitioner));
                             }
                         }
                     }
@@ -115,6 +119,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     if (patient.ManagingOrganization != null && patient.ManagingOrganization.Reference != null)
                     {
                         patient.ManagingOrganization.Reference.ShouldStartWith("Organization/");
+                        var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", patient.ManagingOrganization.Reference);
+                        returnedResource.GetType().ShouldBe(typeof(Organization));
                     }
                 }
             }
@@ -197,6 +203,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         if (contact.Organization != null && contact.Organization.Reference != null)
                         {
                             contact.Organization.Reference.ShouldStartWith("Organization/");
+                            var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", contact.Organization.Reference);
+                            returnedResource.GetType().ShouldBe(typeof(Organization));
                         }
                     }
                 }
@@ -216,6 +224,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         foreach (var careProvider in patient.CareProvider)
                         {
                             careProvider.Reference.ShouldStartWith("Practitioner/");
+                            var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", careProvider.Reference);
+                            returnedResource.GetType().ShouldBe(typeof(Practitioner));
                         }
                     }
                 }
@@ -232,7 +242,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Patient patient = (Patient)entry.Resource;
                     if (patient.ManagingOrganization != null)
                     {
-                        patient.ManagingOrganization.Reference.ShouldStartWith("Organization/");                        
+                        patient.ManagingOrganization.Reference.ShouldStartWith("Organization/");
+                        var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", patient.ManagingOrganization.Reference);
+                        returnedResource.GetType().ShouldBe(typeof(Organization));
                     }
                 }
             }
