@@ -9,7 +9,6 @@ Scenario Outline: Read appointment valid request
 	When I make a GET request to "/Appointment/<id>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		
 	Examples:
 		| id     |
 		| 1		 |
@@ -86,8 +85,6 @@ Scenario Outline: Read appointment valid request shall include id and structure 
 		| id  |
 		| 1	  |
 
-
-
 Scenario Outline: Read appointment valid request contains necessary elements with valid values
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
@@ -103,4 +100,36 @@ Scenario Outline: Read appointment valid request contains necessary elements wit
 		| id     |
 		| 1		 |
 
+Scenario Outline: Read appointment valid request contains valid identifier
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I make a GET request to "/Appointment/<id>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the appointment response resource contains an identifier with a valid system and value
+	Examples:
+		| id     |
+		| 1		 |
+
+Scenario Outline: Read appointment request contains valid type with system and code
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I make a GET request to "/Appointment/<id>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the appointment response contains a type with a valid system code and display
+	Examples:
+		| id     |
+		| 1		 |
+
+Scenario Outline: Read appointment request contains a valid priority
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I make a GET request to "/Appointment/<id>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And if the appointment resource contains a priority the value is valid
+	Examples:
+		| id     |
+		| 1		 |
 

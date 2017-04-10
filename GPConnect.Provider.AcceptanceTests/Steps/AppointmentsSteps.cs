@@ -516,7 +516,61 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
-        
+
+        [Then(@"the appointment response resource contains an identifier with a valid system and value")]
+        public void ThenTheAppointmentResourceShouldContainAnIdentifier()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Identifier.ShouldNotBeNull();
+            String id = appointment.Id.ToString();
+            foreach (Identifier identifier in appointment.Identifier)
+            {
+                identifier.System.ShouldNotBeNull();
+                identifier.System.ShouldBe("http://fhir.nhs.net/Id/gpconnect-appointment-identifier");
+                identifier.Value.ShouldNotBeNull();
+                identifier.Value.ShouldBe(id);
+
+            }
+        }
+
+        [Then(@"the appointment response contains a type with a valid system code and display")]
+        public void ThenTheAppointmentResourceContainsAType()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Type.ShouldNotBeNull();
+            foreach (Coding coding in appointment.Type.Coding)
+            {
+                coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/c80-practice-codes");
+                coding.Code.ShouldNotBeNull();
+            }
+          
+        }
+
+        [Then(@"the appointment type should contain a valid system code and display")]
+        public void ThenTheAppointmentResourceContainsTypeWithValidSystemCodeAndType()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Identifier.ShouldNotBeNull();
+            String id = appointment.Id.ToString();
+            foreach (Identifier identifier in appointment.Identifier)
+            {
+                identifier.System.ShouldNotBeNull();
+                identifier.System.ShouldBe("http://fhir.nhs.net/Id/gpconnect-appointment-identifier");
+                identifier.Value.ShouldNotBeNull();
+                identifier.Value.ShouldBe(id);
+
+            }
+        }
+
+        [Then(@"if the appointment resource contains a priority the value is valid")]
+        public void ThenTheAppointmentResourceContainsPriorityAndTheValueIsValid()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            if (appointment.Priority < 0 || appointment.Priority > 9)
+            {
+                Assert.Fail();
+            }
+        }
     }
 }
 

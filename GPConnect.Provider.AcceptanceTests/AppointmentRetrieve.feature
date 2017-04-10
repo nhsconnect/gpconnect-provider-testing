@@ -201,14 +201,4 @@ Scenario: Appointment retrieve bundle contains appointment with slot
 		And the response body should be FHIR JSON
 		And the appointment shall contain a slot or multiple slots
 
-		
-		
-		
-
-	
-
-
-
-
-
-            
+     
