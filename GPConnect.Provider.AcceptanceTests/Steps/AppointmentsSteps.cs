@@ -438,10 +438,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
           
             appointment.Meta.ShouldNotBeNull();
+            int metaProfileCount = 0;
             foreach (string profile in appointment.Meta.Profile)
             {
+                metaProfileCount++;
                 profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-appointment-1");
             }
+            metaProfileCount.ShouldBe(1);
+            appointment.Meta.VersionId.ShouldNotBeNull();
 
         }
 
