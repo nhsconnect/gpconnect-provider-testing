@@ -74,14 +74,32 @@ Scenario Outline: Read appointment accept header and _format parameter
         |  1  | application/xml+fhir  | application/xml+fhir  | XML        |   
 
 
-Scenario Outline: Read appointment valid request shall include structure definition profile
+Scenario Outline: Read appointment valid request shall include id and structure definition profile
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 	When I make a GET request to "/Appointment/<id>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the appointment reosurce should contain meta data profile and version id
+		And the appointment response resource contains an id
+		And the appointment response resource should contain meta data profile and version id
 	Examples:
 		| id     |
 		| 1		 |
+
+
+
+Scenario Outline: Read appointment valid request contains necessary elements with valid values
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I make a GET request to "/Appointment/<id>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the appointment response resource contains an start date
+		And the appointment response resource contains an end date
+		And the appointment response resource contains a slot reference
+		And the appointment response resource contains a participant which contains a status
+	Examples:
+		| id     |
+		| 1		 |
+
 

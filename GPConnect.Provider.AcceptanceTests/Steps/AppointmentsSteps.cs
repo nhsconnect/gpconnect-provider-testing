@@ -432,8 +432,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the appointment reosurce should contain meta data profile and version id")]
-        public void ThenTheCompositionResourceInTheBundleShouldContainMetaDataProfile()
+        [Then(@"the appointment response resource contains an id")]
+        public void ThenTheAppointmentResourceShouldContainAnId()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Id.ShouldNotBeNull();
+            int idCount = 0;
+            foreach (char id in appointment.Id)
+            {
+                idCount++;
+            }
+            idCount.ShouldBe(1);
+        }
+
+
+
+        [Then(@"the appointment response resource should contain meta data profile and version id")]
+        public void ThenTheAppointmentResourceShouldContainMetaDataProfile()
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
           
@@ -446,9 +461,40 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             metaProfileCount.ShouldBe(1);
             appointment.Meta.VersionId.ShouldNotBeNull();
-
         }
 
+        [Then(@"the appointment response resource contains an start date")]
+        public void ThenTheAppointmentResourceShouldContainAStartDate()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Start.ShouldNotBeNull();
+        }
+
+
+        [Then(@"the appointment response resource contains an end date")]
+        public void ThenTheAppointmentResourceShouldContainAEndDate()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.End.ShouldNotBeNull();
+        }
+
+        [Then(@"the appointment response resource contains a slot reference")]
+        public void ThenTheAppointmentResourceShouldContainASlotReference()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Slot.ShouldNotBeNull();
+        }
+
+
+        [Then(@"the appointment response resource contains a participant which contains a status")]
+        public void ThenTheAppointmentResourceShouldContainAParticipant()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Participant.ShouldNotBeNull();
+           
+        }
+
+        
     }
 }
 

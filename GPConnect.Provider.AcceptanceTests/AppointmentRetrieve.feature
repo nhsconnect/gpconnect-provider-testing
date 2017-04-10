@@ -201,12 +201,6 @@ Scenario: Appointment retrieve bundle contains appointment with slot
 		And the response body should be FHIR JSON
 		And the appointment shall contain a slot or multiple slots
 
-
-Scenario: AttemptToFindFreeSlotsOrganisation
-		Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-		When I request the FHIR Appointment Type operation
-		Then the response status code should indicate success
 		
 		
 		

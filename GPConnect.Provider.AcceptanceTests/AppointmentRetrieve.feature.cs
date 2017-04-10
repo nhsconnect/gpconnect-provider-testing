@@ -609,28 +609,6 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("AttemptToFindFreeSlotsOrganisation")]
-        public virtual void AttemptToFindFreeSlotsOrganisation()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AttemptToFindFreeSlotsOrganisation", ((string[])(null)));
-#line 205
-this.ScenarioSetup(scenarioInfo);
-#line 4
-this.FeatureBackground();
-#line 206
-  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 207
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
-                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 208
-  testRunner.When("I request the FHIR Appointment Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 209
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore
