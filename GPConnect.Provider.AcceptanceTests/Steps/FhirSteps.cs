@@ -78,6 +78,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
         }
 
+        [Then(@"I request the record for patient with NHS Number ""(.*)""")]
+        public void ThenIAmRequestingTheRecordForPatientWithNHSNumber(string nhsNumber)
+        {
+            Given($@"I set the JWT requested scope to ""{JwtConst.Scope.kPatientRead}""");
+            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
+            FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
+        }
+
         [Given(@"I am requesting the record for config patient ""([^""]*)"" using a fhir string parameter")]
         public void GivenIAmRequestingTheRecordForConfigPatientUsingAFHirStringParameter(string patient)
         {
@@ -215,7 +223,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 SearchParams param = new SearchParams();
             //    param.Add("system", "http ://fhir.nhs.net/Id/sds-user-id");
                 param.Add("userid", "G13579135");
-                FhirContext.FhirResponseResource = fhirClient.Search<Practitioner>(param);
+                FhirContext.FhirResponseResource = fhirClient.Search<Appointment>(param);
             }
             catch (Exception e)
             {
@@ -239,7 +247,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             LogToDisk();
         }
-        
+
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
         public void IRequestTheFHIROperation(string operation)
         {

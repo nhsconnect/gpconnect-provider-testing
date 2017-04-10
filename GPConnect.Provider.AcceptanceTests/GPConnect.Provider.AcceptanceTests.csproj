@@ -173,6 +173,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppointmentRetrieve.feature</DependentUpon>
     </Compile>
+    <Compile Include="ReadAppointment.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReadAppointment.feature</DependentUpon>
+    </Compile>
     <Compile Include="Steps\AppointmentsSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />
     <Compile Include="Steps\PatientSteps.cs" />
@@ -243,6 +248,10 @@
     <None Include="JWT.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>JWT.feature.cs</LastGenOutput>
+    </None>
+    <None Include="ReadAppointment.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReadAppointment.feature.cs</LastGenOutput>
     </None>
     <None Include="Security.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

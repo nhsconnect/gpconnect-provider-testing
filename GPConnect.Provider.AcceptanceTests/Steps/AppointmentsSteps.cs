@@ -430,9 +430,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
                 }
             }
+        }
 
-
-
+        [Then(@"the appointment reosurce should contain meta data profile and version id")]
+        public void ThenTheCompositionResourceInTheBundleShouldContainMetaDataProfile()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+          
+            appointment.Meta.ShouldNotBeNull();
+            foreach (string profile in appointment.Meta.Profile)
+            {
+                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-appointment-1");
+            }
 
         }
 

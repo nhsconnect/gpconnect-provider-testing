@@ -12,6 +12,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         private static class Context
         {
             public const string kTraceDirectory = "traceDirectory";
+            public const string kPatient = "patient";
             public const string kPDSData = "pdsData";
             public const string kODSCodeMapData = "odsCodeMapData";
             public const string kNHSNoMapData = "NHSNoMapData";
@@ -27,6 +28,13 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             get { return GlobalContextHelper.GetValue<string>(Context.kTraceDirectory); }
             set { GlobalContextHelper.SaveValue(Context.kTraceDirectory, value); }
         }
+
+        public static Patient patient
+        {
+            get { return GlobalContextHelper.GetValue<Patient>(Context.kPatient); }
+            set { GlobalContextHelper.SaveValue(Context.kPatient, value); }
+        }
+
 
         // Data
 

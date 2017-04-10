@@ -1,5 +1,17 @@
 ﻿Feature: SpecFlowFeature1
 
+
+Background:
+	Given I have the following patient records
+		| Id                 | NHSNumber  |
+		| patientNotInSystem | 9999999999 |
+		| patient1           | 9000000001 |
+		| patient2           | 9000000002 |
+		| patient3           | 9000000003 |
+		| patient16          | 9000000016 |
+		| DeceasedPatient    | 9000000017 |
+
+
 @Appointment
 Scenario Outline: Appointment retrieve success valid id
 	Given I am using the default server
@@ -20,6 +32,7 @@ Scenario Outline: Appointment retrieve fail invalid id
 	When I make a GET request to "/Patient/<id>/Appointment"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
 	Examples:
 		| id  |
 		| **  |
@@ -43,10 +56,10 @@ Scenario Outline: Appointment retrieve failure due to missing header
 		| Ssp-InteractionId |
 		| Authorization     |
 
-Scenario Outline: Appointment retrieve interaction Id incorrect fail
+Scenario Outline: Appointment retrieve interaction id incorrect fail
     Given I am using the default server
         And I am performing the "<interactionId>" interaction
-    When I make a GET request to "/Patient/<id>/Appointment"
+    When I make a GET request to "/Patient/1/Appointment"
     Then the response status code should be "400"
         And the response body should be FHIR JSON
         And the response should be a OperationOutcome resource
@@ -95,7 +108,6 @@ Scenario Outline: Appointment retrieve bundle resource with empty appointment re
 	When I make a GET request to "/Patient/<id>/Appointment"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-	   And the response should be a Bundle resource of type "JSON"
         And the response should be a Bundle resource of type "searchset"
 		And there are zero appointment resources
 	 Examples:
@@ -118,7 +130,6 @@ Scenario Outline: Appointment retrieve bundle resource with multiple appointment
 	Examples:
         | id|  
         | 2 |
-
 
 Scenario: Appointment retrieve bundle resource must contain status and participant 
 	Given I am using the default server
@@ -189,6 +200,18 @@ Scenario: Appointment retrieve bundle contains appointment with slot
 		Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the appointment shall contain a slot or multiple slots
+
+
+Scenario: AttemptToFindFreeSlotsOrganisation
+		Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		When I request the FHIR Appointment Type operation
+		Then the response status code should indicate success
+		
+		
+		
+
+	
 
 
 
