@@ -1166,6 +1166,105 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("System should error if multiple parameters valid or invalid are sent")]
+        [NUnit.Framework.TestCaseAttribute("identifier", "http://fhir.nhs.net/Id/nhs-number", "patient2", "identifier", "http://fhir.nhs.net/Id/nhs-number", "patient2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("identifier", "http://fhir.nhs.net/Id/nhs-number", "patient1", "identifier", "http://fhir.nhs.net/Id/nhs-number", "patient2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("identifier", "http://fhir.nhs.net/Id/nhs-number", "patient2", "identifier", "http://fhir.nhs.net/Id/nhs-number", "patient1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("identifier", "http://fhir.nhs.net/Id/nhs-number", "patient2", "invalidIdentifier", "http://fhir.nhs.net/Id/nhs-number", "patient2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("randomIdentifier", "http://fhir.nhs.net/Id/nhs-number", "patient2", "identifier", "http://fhir.nhs.net/Id/nhs-number", "patient2", new string[0])]
+        public virtual void SystemShouldErrorIfMultipleParametersValidOrInvalidAreSent(string identifier1, string system1, string patientOne, string identifier2, string system2, string patientTwo, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System should error if multiple parameters valid or invalid are sent", exampleTags);
+#line 441
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 442
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 443
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient\" i" +
+                    "nteraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 444
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 445
+  testRunner.And("I set the JWT requested scope to \"patient/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 446
+  testRunner.And(string.Format("I add the parameter \"{0}\" with system \"{1}\" for patient \"{2}\"", identifier1, system1, patientOne), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 447
+  testRunner.And(string.Format("I add the parameter \"{0}\" with system \"{1}\" for patient \"{2}\"", identifier2, system2, patientTwo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 448
+ testRunner.When("I make a GET request to \"/Patient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 449
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 450
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 451
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("JWT requesting scope claim should reflect the operation being performed")]
+        public virtual void JWTRequestingScopeClaimShouldReflectTheOperationBeingPerformed()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting scope claim should reflect the operation being performed", ((string[])(null)));
+#line 460
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 461
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 462
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient\" i" +
+                    "nteraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 463
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 464
+  testRunner.And("I set the JWT requested scope to \"organization/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 465
+ testRunner.When("I search for Patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 466
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 467
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 468
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("JWT patient claim should reflect the patient being searched for")]
+        public virtual void JWTPatientClaimShouldReflectThePatientBeingSearchedFor()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT patient claim should reflect the patient being searched for", ((string[])(null)));
+#line 470
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 471
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 472
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient\" i" +
+                    "nteraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 473
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 474
+  testRunner.And("I set the JWT requested scope to \"patient/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 475
+ testRunner.When("I search for Patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 476
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 477
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 478
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Test that if patient is part of a multiple birth that this is reflected in the pa" +
             "tient resource with a boolean element only")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
@@ -1176,7 +1275,7 @@ this.FeatureBackground();
                     "tient resource with a boolean element only", new string[] {
                         "Manual",
                         "ignore"});
-#line 443
+#line 482
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -1197,7 +1296,7 @@ this.FeatureBackground();
                     " resource.", new string[] {
                         "Manual",
                         "ignore"});
-#line 447
+#line 486
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

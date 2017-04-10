@@ -438,6 +438,45 @@ Scenario: Conformance profile supports the Patient search operation
 		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Patient" resource with a "search-type" interaction
 
+Scenario Outline: System should error if multiple parameters valid or invalid are sent
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient2"
+		And I set the JWT requested scope to "patient/*.read"
+		And I add the parameter "<Identifier1>" with system "<System1>" for patient "<PatientOne>"
+		And I add the parameter "<Identifier2>" with system "<System2>" for patient "<PatientTwo>"
+	When I make a GET request to "/Patient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples: 
+	| Identifier1      | System1                           | PatientOne | Identifier2       | System2                           | PatientTwo |
+	| identifier       | http://fhir.nhs.net/Id/nhs-number | patient2   | identifier        | http://fhir.nhs.net/Id/nhs-number | patient2   |
+	| identifier       | http://fhir.nhs.net/Id/nhs-number | patient1   | identifier        | http://fhir.nhs.net/Id/nhs-number | patient2   |
+	| identifier       | http://fhir.nhs.net/Id/nhs-number | patient2   | identifier        | http://fhir.nhs.net/Id/nhs-number | patient1   |
+	| identifier       | http://fhir.nhs.net/Id/nhs-number | patient2   | invalidIdentifier | http://fhir.nhs.net/Id/nhs-number | patient2   |
+	| randomIdentifier | http://fhir.nhs.net/Id/nhs-number | patient2   | identifier        | http://fhir.nhs.net/Id/nhs-number | patient2   |
+	
+Scenario: JWT requesting scope claim should reflect the operation being performed
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "organization/*.read"
+	When I search for Patient "patient1"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: JWT patient claim should reflect the patient being searched for
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "patient2"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
 @Manual
 @ignore
 Scenario: Test that if patient is part of a multiple birth that this is reflected in the patient resource with a boolean element only
