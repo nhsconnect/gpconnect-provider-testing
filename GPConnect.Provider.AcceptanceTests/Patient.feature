@@ -344,3 +344,25 @@ Scenario Outline: If patient contains marital status it must contain system code
 	| patient1 |
 	| patient2 |
 	| patient3 |
+
+Scenario Outline: If patient contains multiple birth field it must be a boolean type field
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "<Patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And if composition contains the patient resource and it contains the multiple birth field it should be a boolean value
+	Examples: 
+	| Patient         |
+	| patient1        |
+	| patient2        |
+	| DeceasedPatient |
+
+@Manual
+@ignore
+Scenario: Test that if patient is part of a multiple birth that this is reflected in the patient resource with a boolean element only
+

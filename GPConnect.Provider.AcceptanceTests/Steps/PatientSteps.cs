@@ -153,5 +153,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+
+        [Then(@"if composition contains the patient resource and it contains the multiple birth field it should be a boolean value")]
+        public void ThenIfCompositionContainsThePatientResourceAndItContainsTheMultipleBirthFieldItShouldBeABooleanValue()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    if (patient.MultipleBirth != null)
+                    {
+                        patient.MultipleBirth.GetType().ShouldBe(typeof(FhirBoolean));
+                    }
+                }
+            }
+        }
+
     }
 }
