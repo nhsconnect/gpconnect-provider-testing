@@ -10,6 +10,7 @@ using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
 
@@ -37,7 +38,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 // Map the native NHS Number to provider equivalent from CSV file
                 foreach (NHSNoMap nhsNoMap in GlobalContext.NHSNoMapData)
                 {
-                    if (String.Equals(nhsNoMap.NativeNHSNumber, row["NHSNumber"])) {
+                    if (String.Equals(nhsNoMap.NativeNHSNumber, row["NHSNumber"]))
+                    {
                         mappedNHSNumber = nhsNoMap.ProviderNHSNumber;
                         Log.WriteLine("Mapped test NHS number {0} to NHS Number {1}", row["NHSNumber"], nhsNoMap.ProviderNHSNumber);
                         break;
@@ -92,7 +94,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             else if ("searchset".Equals(resourceType))
             {
                 ((Bundle)FhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Searchset);
-            } else
+            }
+            else
             {
                 Assert.Fail("Invalid resourceType: " + resourceType);
             }
@@ -354,9 +357,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
                     Patient patient = (Patient)entry.Resource;
-                    foreach (Patient.ContactComponent contact in patient.Contact) {
+                    foreach (Patient.ContactComponent contact in patient.Contact)
+                    {
                         // Contact Relationship Checks
-                        foreach (CodeableConcept relationship in contact.Relationship) {
+                        foreach (CodeableConcept relationship in contact.Relationship)
+                        {
                             shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
                         }
 
@@ -384,7 +389,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-        
+
         [Then(@"if composition contains the patient resource communication the mandatory fields should matching the specification")]
         public void ThenIfCompositionContainsThePatientResourceCommunicationTheMandatoryFieldsShouldMatchingTheSpecification()
         {
@@ -416,7 +421,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
                     Patient patient = (Patient)entry.Resource;
-                    if (patient.CareProvider != null) {
+                    if (patient.CareProvider != null)
+                    {
                         var count = 0;
                         foreach (ResourceReference careProvider in patient.CareProvider)
                         {
@@ -491,7 +497,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-        
+
         [Then(@"practitioner family name should equal ""(.*)")]
         public void FamilyNameShouldEqualVariable(String familyName)
         {
@@ -505,13 +511,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         Assert.Fail();
                     }
-                    else {
+                    else
+                    {
                         Assert.Pass();
                     }
                 }
             }
         }
-        
+
         [Then(@"practitioner should only have one family name")]
         public void PractitionerShouldNotHaveMoreThenOneFamilyName()
         {
@@ -521,10 +528,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Practitioner practitioner = (Practitioner)entry.Resource;
                     var familyNameCount = 0;
-                    
+
                     foreach (String name in practitioner.Name.Family)
                     {
-                      familyNameCount++;
+                        familyNameCount++;
                     }
 
                     familyNameCount.ShouldBeLessThanOrEqualTo(1);
@@ -548,9 +555,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"practitioner resources must only contain one user id and one profile id")]
-        public void ThenPractitionerResourcesMustOnlyContainOneUserIdAndOneProfileId()
+        [Then(@"practitioner resources must contain one user id and optional profile ids")]
+        public int ThenPractitionerResourcesMustContainOneUserIdAndOptionalProfileIdsReturnSdsRoleProfileCount()
         {
+            var sdsRoleProfileCount = 0;
+
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
@@ -558,34 +567,42 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Practitioner practitioner = (Practitioner)entry.Resource;
 
                     var sdsUserIdCount = 0;
-                    var sdsRoleProfileIdCount = 0;
 
-                    foreach (Identifier identifier in practitioner.Identifier) {
-                        if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id")) {
+                    foreach (Identifier identifier in practitioner.Identifier)
+                    {
+                        if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id"))
+                        {
                             sdsUserIdCount++;
                             identifier.Value.ShouldNotBeNull();
-                        } else if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id"))
+                        }
+                        else if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id"))
                         {
-                            sdsRoleProfileIdCount++;
+                            sdsRoleProfileCount++;
                             identifier.Value.ShouldNotBeNull();
                         }
                     }
-                    sdsUserIdCount.ShouldBeLessThanOrEqualTo(1);
-                    sdsRoleProfileIdCount.ShouldBeLessThanOrEqualTo(1);
+                    sdsUserIdCount.ShouldBe(1, "entry contains invalid http://fhir.nhs.net/Id/sds-user-id system quantity");
                 }
             }
+
+            return sdsRoleProfileCount;
+        }
+
+        [Then(@"practitioner resources must contain one user id and a total of ""([^""]*)"" profile ids")]
+        public void ThenPractitionerResourcesMustContainOneUserIdAndATotalXProfileIds(int profileIdCount)
+        {
+            ThenPractitionerResourcesMustContainOneUserIdAndOptionalProfileIdsReturnSdsRoleProfileCount()
+                .ShouldBe(profileIdCount, "Unexpected http://fhir.nhs.net/Id/sds-role-profile-id system quantity");
         }
 
         [Then(@"all practitioners contain an id")]
         public void AllPractitionersContainAnId()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    ((Practitioner)entry.Resource).Id.ShouldNotBeNullOrEmpty();
-                }
-            }
+            ((Bundle)FhirContext.FhirResponseResource)
+                .Entry
+                .Where(x => x.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                .Where(x => string.IsNullOrWhiteSpace(((Practitioner)x.Resource).Id))
+                .ShouldBeEmpty();
         }
 
         [Then(@"all practitioners contain SDS identifier for practitioner ""([^""]*)""")]
@@ -600,11 +617,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id"))
                         {
                             identifier.Value.ShouldBe(FhirContext.FhirPractitioners[practitionerId]);
-                            Assert.Pass();
+                            return;
                         }
-
-                        Assert.Fail("No identifier with system http://fhir.nhs.net/Id/sds-user-id found");
                     }
+
+                    Assert.Fail("No identifier with system http://fhir.nhs.net/Id/sds-user-id found");
                 }
             }
         }
@@ -630,16 +647,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         [Then(@"if practitionerRole has role element which contains a coding then the system, code and display must exist")]
         public void ThenIfPractitionerRoleHasRoleElementWhichContainsACodingThenTheSystemCodeAndDisplayMustExist()
-            {
+        {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
                 {
                     Practitioner practitioner = (Practitioner)entry.Resource;
-                    foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole) {
-                        if (practitionerRole.Role != null && practitionerRole.Role.Coding != null) {
+                    foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
+                    {
+                        if (practitionerRole.Role != null && practitionerRole.Role.Coding != null)
+                        {
                             var codingCount = 0;
-                            foreach (Coding coding in practitionerRole.Role.Coding) {
+                            foreach (Coding coding in practitionerRole.Role.Coding)
+                            {
                                 codingCount++;
                                 coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
                                 coding.Code.ShouldNotBeNull();
@@ -661,7 +681,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Practitioner practitioner = (Practitioner)entry.Resource;
                     //If the practitioner has a communicaiton elemenets containing a coding then there must be a system, code and display element. There must only be one coding per communication element.
-                    foreach (CodeableConcept codeableConcept in practitioner.Communication) {
+                    foreach (CodeableConcept codeableConcept in practitioner.Communication)
+                    {
                         shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
                     }
                 }
@@ -678,7 +699,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Practitioner practitioner = (Practitioner)entry.Resource;
                     foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
                     {
-                        if (practitionerRole.ManagingOrganization != null) {
+                        if (practitionerRole.ManagingOrganization != null)
+                        {
                             responseBundleContainsReferenceOfType(practitionerRole.ManagingOrganization.Reference, ResourceType.Organization);
                         }
                     }
@@ -693,7 +715,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {
-                    Organization organization  = (Organization)entry.Resource;
+                    Organization organization = (Organization)entry.Resource;
 
                     var odsOrganizationCodeCount = 0;
 
@@ -722,9 +744,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {
                     Organization organization = (Organization)entry.Resource;
-                    if (organization.Type != null && organization.Type.Coding != null) {
+                    if (organization.Type != null && organization.Type.Coding != null)
+                    {
                         var codingCount = 0;
-                        foreach (Coding coding in organization.Type.Coding) {
+                        foreach (Coding coding in organization.Type.Coding)
+                        {
                             codingCount++;
                             coding.System.ShouldNotBeNull();
                             coding.Code.ShouldNotBeNull();
@@ -771,7 +795,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     device.Url.ShouldBeNull();
 
                     var identifierCount = 0;
-                    foreach (Identifier identifier in device.Identifier) {
+                    foreach (Identifier identifier in device.Identifier)
+                    {
                         identifierCount++;
                         identifier.Value.ShouldNotBeNull();
                     }
@@ -791,7 +816,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Device device = (Device)entry.Resource;
                     var codingCount = 0;
-                    foreach (Coding coding in device.Type.Coding) {
+                    foreach (Coding coding in device.Type.Coding)
+                    {
                         codingCount++;
                         coding.System.ShouldBe("http://snomed.info/sct");
                         coding.Code.ShouldBe("462240000");
@@ -811,7 +837,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Composition composition = (Composition)entry.Resource;
                     var sectionCount = 0;
-                    foreach (Composition.SectionComponent section in composition.Section) {
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
                         sectionCount++;
                         var HTML = section.Text.Div;
                         HTML.ShouldMatch(regexPattern);
@@ -830,7 +857,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Composition composition = (Composition)entry.Resource;
                     composition.Meta.ShouldNotBeNull();
-                    foreach (string profile in composition.Meta.Profile) {
+                    foreach (string profile in composition.Meta.Profile)
+                    {
                         profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
                     }
                 }
@@ -867,7 +895,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             checkForValidMetaDataInResource(ResourceType.Location, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
         }
 
-        public void checkForValidMetaDataInResource(ResourceType resourceType, string profileId) {
+        public void checkForValidMetaDataInResource(ResourceType resourceType, string profileId)
+        {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(resourceType))
@@ -886,7 +915,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList) {
+        public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList)
+        {
             var codingCount = 0;
             foreach (Coding coding in codingList)
             {
@@ -911,11 +941,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             pass.ShouldBeTrue();
         }
 
-        public void responseBundleContainsReferenceOfType(string reference, ResourceType resourceType) {
+        public void responseBundleContainsReferenceOfType(string reference, ResourceType resourceType)
+        {
             var pass = false;
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
-                if (reference.Equals(entry.FullUrl) && entry.Resource.ResourceType == resourceType){
+                if (reference.Equals(entry.FullUrl) && entry.Resource.ResourceType == resourceType)
+                {
                     pass = true;
                 }
             }

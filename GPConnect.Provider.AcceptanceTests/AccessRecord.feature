@@ -823,7 +823,7 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And if the response bundle contains a "Practitioner" resource
-		And practitioner resources must only contain one user id and one profile id
+		And practitioner resources must contain one user id and optional profile ids
 		And if practitionerRole has role element which contains a coding then the system, code and display must exist
 		And if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
 	Examples:
