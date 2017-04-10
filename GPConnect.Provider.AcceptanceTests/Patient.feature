@@ -362,7 +362,86 @@ Scenario Outline: If patient contains multiple birth field it must be a boolean 
 	| patient2        |
 	| DeceasedPatient |
 
+Scenario Outline: If patient contains contact the relationship code display and system should be valid
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "<Patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And if composition contains the patient resource contact the mandatory fields should matching the specification
+	Examples: 
+	| Patient  |
+	| patient1 |
+	| patient2 |
+	| patient3 |
+
+Scenario Outline: If patient contains communication element the system and values should be valid
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "<Patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And if composition contains the patient resource communication the mandatory fields should matching the specification
+	Examples: 
+	| Patient  |
+	| patient1 |
+	| patient2 |
+	| patient3 |
+
+Scenario Outline: If patient contains care provider the reference should be valid
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "<Patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And if careProvider is present in patient resource the reference should be valid
+	Examples: 
+	| Patient  |
+	| patient1 |
+	| patient2 |
+	| patient3 |
+
+Scenario Outline: If patient contains managing organization the reference should be valid
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+		And I set the JWT requested record NHS number to config patient "<Patient>"
+		And I set the JWT requested scope to "patient/*.read"
+	When I search for Patient "<Patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And if managingOrganization is present in patient resource the reference should be valid
+	Examples: 
+	| Patient  |
+	| patient1 |
+	| patient2 |
+	| patient3 |
+
+Scenario: Conformance profile supports the Patient search operation
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the conformance profile should contain the "Patient" resource with a "search-type" interaction
+
 @Manual
 @ignore
 Scenario: Test that if patient is part of a multiple birth that this is reflected in the patient resource with a boolean element only
 
+@Manual
+@ignore
+Scenario: Check patients with contacts which contain multiple contacts and contacts with multiple names. There must be only one family name for contacts within the patient resource.

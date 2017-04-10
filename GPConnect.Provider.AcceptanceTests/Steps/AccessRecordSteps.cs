@@ -346,7 +346,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"if composition contains the patient resource contact the mandatory fields should matching the specification")]
+        [Then(@"if care record composition contains the patient resource contact the mandatory fields should matching the specification")]
         public void ThenIfCompositionContainsThePatientResourceContactTheMandatoryFieldsShouldMatchingTheSpecification()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)

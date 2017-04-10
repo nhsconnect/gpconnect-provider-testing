@@ -1600,8 +1600,8 @@ this.FeatureBackground();
 #line 678
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 679
-  testRunner.And("if composition contains the patient resource contact the mandatory fields should " +
-                    "matching the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("if care record composition contains the patient resource contact the mandatory fi" +
+                    "elds should matching the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

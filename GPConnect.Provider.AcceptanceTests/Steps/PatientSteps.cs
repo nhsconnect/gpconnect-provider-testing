@@ -1,4 +1,5 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
+﻿using System.Collections.Generic;
+using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
@@ -170,5 +171,97 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"if composition contains the patient resource contact the mandatory fields should matching the specification")]
+        public void ThenIfCompositionContainsThePatientResourceContactTheMandatoryFieldsShouldMatchingTheSpecification()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    foreach (Patient.ContactComponent contact in patient.Contact)
+                    {
+                        // Contact Relationship Checks
+                        foreach (CodeableConcept relationship in contact.Relationship)
+                        {
+                            shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
+                        }
+
+                        // Contact Name Checks
+                        foreach (var name in patient.Name)
+                        {
+                            name.FamilyElement.Count.ShouldBeLessThanOrEqualTo(1,"There are too many family names within the contact element.");
+                        }
+                        
+                        // Contact Organization Checks
+                        if (contact.Organization != null && contact.Organization.Reference != null)
+                        {
+                            contact.Organization.Reference.ShouldStartWith("Organization/");
+                        }
+                    }
+                }
+            }
+        }
+
+        [Then(@"if careProvider is present in patient resource the reference should be valid")]
+        public void ThenIfCareProviderIsPresentInPatientResourceTheReferenceShouldBeValid()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    if (patient.CareProvider != null)
+                    {
+                        foreach (var careProvider in patient.CareProvider)
+                        {
+                            careProvider.Reference.ShouldStartWith("Practitioner/");
+                        }
+                    }
+                }
+            }
+        }
+
+        [Then(@"if managingOrganization is present in patient resource the reference should be valid")]
+        public void ThenIfManagingOrganizationIsPresentInPatientResourceTheReferenceShouldBeValid()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    if (patient.ManagingOrganization != null)
+                    {
+                        patient.ManagingOrganization.Reference.ShouldStartWith("Organization/");                        
+                    }
+                }
+            }
+        }
+
+        public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList)
+        {
+            var codingCount = 0;
+            foreach (Coding coding in codingList)
+            {
+                codingCount++;
+                valueSetContainsCodeAndDisplay(valueSet, coding);
+            }
+            codingCount.ShouldBeLessThanOrEqualTo(1);
+        }
+
+        public void valueSetContainsCodeAndDisplay(ValueSet valueset, Coding coding)
+        {
+            coding.System.ShouldBe(valueset.CodeSystem.System);
+            // Loop through valid codes to find if the one in the resource is valid
+            var pass = false;
+            foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in valueset.CodeSystem.Concept)
+            {
+                if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
+                {
+                    pass = true;
+                }
+            }
+            pass.ShouldBeTrue();
+        }
     }
 }

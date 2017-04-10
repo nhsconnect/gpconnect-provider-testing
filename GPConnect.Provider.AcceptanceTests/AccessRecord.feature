@@ -676,7 +676,7 @@ Scenario Outline: if patient contains contact
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if composition contains the patient resource contact the mandatory fields should matching the specification
+		And if care record composition contains the patient resource contact the mandatory fields should matching the specification
 	Examples:
 		| Code |
 		| ADM  |
