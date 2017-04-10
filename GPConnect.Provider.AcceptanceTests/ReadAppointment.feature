@@ -83,8 +83,8 @@ Scenario Outline: Read appointment valid request shall include id and structure 
 		And the appointment response resource contains an id
 		And the appointment response resource should contain meta data profile and version id
 	Examples:
-		| id     |
-		| 1		 |
+		| id  |
+		| 1	  |
 
 
 
@@ -94,10 +94,11 @@ Scenario Outline: Read appointment valid request contains necessary elements wit
 	When I make a GET request to "/Appointment/<id>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
+		And the appointment response resource contains a status with a valid value
 		And the appointment response resource contains an start date
 		And the appointment response resource contains an end date
 		And the appointment response resource contains a slot reference
-		And the appointment response resource contains a participant which contains a status
+		And the appointment response resource contains a participant which contains a status with a valid value
 	Examples:
 		| id     |
 		| 1		 |

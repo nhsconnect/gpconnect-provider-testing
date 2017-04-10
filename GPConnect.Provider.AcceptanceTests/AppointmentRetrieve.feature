@@ -174,7 +174,7 @@ Scenario: Appointment retrieve bundle contains appointment with identifer with c
 		And if the appointment resource contains an identifier it contains a valid system and value
 
 
-@Ignore Checks the ranges are sensible but can probably be removed as an appointment is lokely no longer then an hour
+@Ignore Checks the ranges are sensible but can probably be removed as an appointment is lokely no longer then an hour, NEEDS FURTHER THINKING
 Scenario Outline: Appointment retrieve bundle contains appointment with valid start and end date format
 Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction

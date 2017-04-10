@@ -519,7 +519,10 @@ this.FeatureBackground();
         [NUnit.Framework.CategoryAttribute("longer")]
         [NUnit.Framework.CategoryAttribute("then")]
         [NUnit.Framework.CategoryAttribute("an")]
-        [NUnit.Framework.CategoryAttribute("hour")]
+        [NUnit.Framework.CategoryAttribute("hour,")]
+        [NUnit.Framework.CategoryAttribute("NEEDS")]
+        [NUnit.Framework.CategoryAttribute("FURTHER")]
+        [NUnit.Framework.CategoryAttribute("THINKING")]
         [NUnit.Framework.TestCaseAttribute("1", "1", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("0", "0", "0", new string[0])]
         [NUnit.Framework.TestCaseAttribute("4", "12", "3", new string[0])]
@@ -547,7 +550,10 @@ this.FeatureBackground();
                     "longer",
                     "then",
                     "an",
-                    "hour"};
+                    "hour,",
+                    "NEEDS",
+                    "FURTHER",
+                    "THINKING"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

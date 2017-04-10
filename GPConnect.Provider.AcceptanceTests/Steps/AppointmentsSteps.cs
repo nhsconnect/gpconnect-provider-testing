@@ -463,11 +463,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Meta.VersionId.ShouldNotBeNull();
         }
 
+
+        [Then(@"the appointment response resource contains a status with a valid value")]
+        public void ThenTheAppointmentResourceShouldContainAStatus()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Status.ShouldNotBeNull();
+            string statusValue = appointment.Status.Value.ToString();
+            if (statusValue != "Booked" && statusValue != "Pending" && statusValue != "Arrived" && statusValue != "Fufilled" && statusValue != "Cancelled" && statusValue != "Noshow")
+            {
+                Assert.Fail();
+            }
+        }
+
         [Then(@"the appointment response resource contains an start date")]
         public void ThenTheAppointmentResourceShouldContainAStartDate()
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            appointment.Start.ShouldNotBeNull();
+            appointment.Start.ShouldNotBeNull(); 
         }
 
 
@@ -483,15 +496,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Slot.ShouldNotBeNull();
+            
         }
 
 
-        [Then(@"the appointment response resource contains a participant which contains a status")]
+        [Then(@"the appointment response resource contains a participant which contains a status with a valid value")]
         public void ThenTheAppointmentResourceShouldContainAParticipant()
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Participant.ShouldNotBeNull();
-           
+            foreach (Appointment.ParticipantComponent participant in appointment.Participant)
+            {
+                string status = participant.Status.ToString();
+                if (status != "Accepted" && status != "Declined" && status != "Tentative" && status != "Needs-action")
+                {
+                    Assert.Fail();
+                }
+            }
+
         }
 
         
