@@ -215,7 +215,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         // Rest Request Helper
 
-        private void RestRequest(Method method, string relativeUrl, string body = null, Dictionary<string, string> extraParameters = null)
+        private void RestRequest(Method method, string relativeUrl, string body = null)
         {
             var timer = new System.Diagnostics.Stopwatch();
 
@@ -268,17 +268,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
                 restRequest.AddParameter(parameter.Key, parameter.Value);
             }
-
-            // Add The Extra Parameters
-            if (null != extraParameters)
-            {
-                foreach (var parameter in extraParameters)
-                {
-                    Log.WriteLine("Extra Parameter - {0} -> {1}", parameter.Key, parameter.Value);
-                    restRequest.AddParameter(parameter.Key, parameter.Value);
-                }
-            }
-
+            
             // Execute The Request
             IRestResponse restResponse = null;
             try
@@ -449,13 +439,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpRequest(HttpMethod.Post, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), false);
         }
-
-        [When(@"I send a /Organization request with multiple identifier parameters")]
-        public void ISendAOrganizationRequestWithMultipleIdentifierParameters()
-        {
-            RestRequest(Method.GET, "/Organization", null, new Dictionary<string, string> {{ "identifier", "http://fhir.nhs.net/Id/ods-organization-code|ORG2" }});
-        }
-
+        
         [When(@"I send a metadata request but not decompressed")]
         public void ISendAMetadataRequestButNotDecompressed()
         {
