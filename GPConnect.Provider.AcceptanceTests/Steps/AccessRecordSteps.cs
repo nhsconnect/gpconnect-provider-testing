@@ -21,11 +21,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     {
         private readonly FhirContext FhirContext;
         private readonly HttpContext HttpContext;
+        private readonly HttpSteps HttpSteps;
 
-        public AccessRecordSteps(FhirContext fhirContext, HttpContext httpContext)
+        public AccessRecordSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps)
         {
             FhirContext = fhirContext;
             HttpContext = httpContext;
+            HttpSteps = httpSteps;
         }
 
         [Given(@"I have the following patient records")]
@@ -635,6 +637,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         if (practitionerRole.ManagingOrganization != null)
                         {
                             practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull();
+                            practitionerRole.ManagingOrganization.Reference.ShouldStartWith("Organization/");
+                            var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", practitionerRole.ManagingOrganization.Reference);
+                            returnedResource.GetType().ShouldBe(typeof(Organization));
                         }
                     }
                 }
