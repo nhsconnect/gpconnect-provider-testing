@@ -2,24 +2,7 @@
 Feature: Http
 
 Background:
-	Given I have the following patient records
-		| Id                 | NHSNumber  |
-		| patientNotInSystem | 9999999999 |
-		| patient1           | 9000000001 |
-		| patient2           | 9000000002 |
-		| patient3           | 9000000003 |
-		| patient4           | 9000000004 |
-		| patient5           | 9000000005 |
-		| patient6           | 9000000006 |
-		| patient7           | 9000000007 |
-		| patient8           | 9000000008 |
-		| patient9           | 9000000009 |
-		| patient10          | 9000000010 |
-		| patient11          | 9000000011 |
-		| patient12          | 9000000012 |
-		| patient13          | 9000000013 |
-		| patient14          | 9000000014 |
-		| patient15          | 9000000015 |
+	Given I have the test patient codes
 
 Scenario: Http GET from invalid endpoint
 	Given I am using the default server

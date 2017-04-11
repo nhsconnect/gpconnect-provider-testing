@@ -30,24 +30,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps = httpSteps;
         }
 
-        [Given(@"I have the following patient records")]
-        public void GivenIHaveTheFollowingPatientRecords(Table table)
+        [Given(@"I have the test patient codes")]
+        public void GivenIHaveTheTestPatientCodes()
         {
             FhirContext.FhirPatients.Clear();
-            foreach (var row in table.Rows)
+
+            foreach (NHSNoMap nhsNoMap in GlobalContext.NHSNoMapData)
             {
-                string mappedNHSNumber = row["NHSNumber"];
-                // Map the native NHS Number to provider equivalent from CSV file
-                foreach (NHSNoMap nhsNoMap in GlobalContext.NHSNoMapData)
-                {
-                    if (String.Equals(nhsNoMap.NativeNHSNumber, row["NHSNumber"]))
-                    {
-                        mappedNHSNumber = nhsNoMap.ProviderNHSNumber;
-                        Log.WriteLine("Mapped test NHS number {0} to NHS Number {1}", row["NHSNumber"], nhsNoMap.ProviderNHSNumber);
-                        break;
-                    }
-                }
-                FhirContext.FhirPatients.Add(row["Id"], mappedNHSNumber);
+                Log.WriteLine("Mapped test Practitioner code {0} to {1}", nhsNoMap.NativeNHSNumber, nhsNoMap.ProviderNHSNumber);
+                FhirContext.FhirPatients.Add(nhsNoMap.NativeNHSNumber, nhsNoMap.ProviderNHSNumber);
             }
         }
 
@@ -339,11 +330,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
                     Patient patient = (Patient)entry.Resource;
-                    if (patient.MaritalStatus == null || patient.MaritalStatus.Coding == null)
-                    {
-                        return;
-                    }
-                    else
+
+                    if (patient.MaritalStatus != null && patient.MaritalStatus.Coding != null)
                     {
                         shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirMaritalStatusValueSet, patient.MaritalStatus.Coding);
                     }
@@ -400,11 +388,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
                     Patient patient = (Patient)entry.Resource;
-                    if (patient.Communication == null)
-                    {
-                        return;
-                    }
-                    else
+                    if (patient.Communication != null)
                     {
                         foreach (Patient.CommunicationComponent communicaiton in patient.Communication)
                         {
@@ -592,17 +576,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ThenPractitionerResourcesMustContainOneUserIdAndOptionalProfileIdsReturnSdsRoleProfileCount()
                 .ShouldBe(profileIdCount, "Unexpected http://fhir.nhs.net/Id/sds-role-profile-id system quantity");
         }
-
-        [Then(@"all practitioners contain an id")]
-        public void AllPractitionersContainAnId()
-        {
-            ((Bundle)FhirContext.FhirResponseResource)
-                .Entry
-                .Where(x => x.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                .Where(x => string.IsNullOrWhiteSpace(((Practitioner)x.Resource).Id))
-                .ShouldBeEmpty();
-        }
-
+        
         [Then(@"all practitioners contain SDS identifier for practitioner ""([^""]*)""")]
         public void AllPractitionersContainSDSIdentifierForPractitioner(string practitionerId)
         {

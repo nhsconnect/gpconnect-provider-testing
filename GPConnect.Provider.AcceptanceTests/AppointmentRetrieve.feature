@@ -1,16 +1,7 @@
 ﻿Feature: SpecFlowFeature1
 
-
 Background:
-	Given I have the following patient records
-		| Id                 | NHSNumber  |
-		| patientNotInSystem | 9999999999 |
-		| patient1           | 9000000001 |
-		| patient2           | 9000000002 |
-		| patient3           | 9000000003 |
-		| patient16          | 9000000016 |
-		| DeceasedPatient    | 9000000017 |
-
+	Given I have the test patient codes
 
 @Appointment
 Scenario Outline: Appointment retrieve success valid id
@@ -86,7 +77,6 @@ Scenario Outline: Appointment retrieve accept header and _format parameter
         | application/xml+fhir  | application/json+fhir | JSON       |
         | application/xml+fhir  | application/xml+fhir  | XML        |           
 
-
 Scenario Outline: Appointment retrieve accept header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
@@ -99,8 +89,6 @@ Scenario Outline: Appointment retrieve accept header
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
-
-
 
 Scenario Outline: Appointment retrieve bundle resource with empty appointment resource
 	Given I am using the default server
@@ -173,8 +161,7 @@ Scenario: Appointment retrieve bundle contains appointment with identifer with c
 		And the response body should be FHIR JSON
 		And if the appointment resource contains an identifier it contains a valid system and value
 
-
-@Ignore Checks the ranges are sensible but can probably be removed as an appointment is lokely no longer then an hour, NEEDS FURTHER THINKING
+@Ignore Checks the ranges are sensible but can probably be removed as an appointment is lokely no longer then an hour; NEEDS FURTHER THINKING
 Scenario Outline: Appointment retrieve bundle contains appointment with valid start and end date format
 Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
@@ -192,7 +179,6 @@ Given I am using the default server
         | 4    | 12     | 3     |
         | 9    | 1      | 4     |
 		
-	
 Scenario: Appointment retrieve bundle contains appointment with slot 
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
@@ -200,5 +186,3 @@ Scenario: Appointment retrieve bundle contains appointment with slot
 		Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the appointment shall contain a slot or multiple slots
-
-     
