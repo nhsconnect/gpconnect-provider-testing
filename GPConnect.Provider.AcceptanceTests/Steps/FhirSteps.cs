@@ -567,10 +567,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"all search response entities in bundle should contain a logical identifier")]
         public void AllSearchResponseEntitiesShouldContainALogicalIdentifier()
         {
-            var listOfEntrys = ((Bundle)FhirContext.FhirResponseResource).Entry;
-            foreach (var entry in listOfEntrys) {
-                entry.Resource.Id.ShouldNotBeNull();
-            }
+            ((Bundle)FhirContext.FhirResponseResource)
+                .Entry
+                .Where(x => string.IsNullOrWhiteSpace(x.Resource.Id))
+                .ShouldBeEmpty("Found an empty (or non-existant) logical id");
         }
         
         private void LogToDisk()

@@ -137,7 +137,7 @@ Scenario: Organization search failure due to invalid system
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
 
 Scenario: Organization search failure due to no identifier parameter
 	Given I am using the default server

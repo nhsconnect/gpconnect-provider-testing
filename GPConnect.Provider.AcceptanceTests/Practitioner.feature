@@ -13,7 +13,7 @@ Scenario Outline: Practitioner search success
 		And the response body should be FHIR JSON
 		And the response bundle should contain "<EntrySize>" entries
 		And the response should be a Bundle resource of type "searchset"
-		And all practitioners contain an id
+		And all search response entities in bundle should contain a logical identifier
 		And all practitioners contain SDS identifier for practitioner "<Value>"
 		And practitioner resources must contain one user id and a total of "<RoleSize>" profile ids
 	Examples:
@@ -31,6 +31,7 @@ Scenario Outline: Practitioner search with failure due to invalid identifier
 	When I make a GET request to "/Practitioner"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
 	Examples:
 		| System                             | Value         |
 		| http://fhir.nhs.net/Id/sds-user-id |               |
@@ -43,6 +44,7 @@ Scenario Outline: Practitioner search failure due to invalid system id in identi
 	When I make a GET request to "/Practitioner"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
 	Examples:
 		| System                                     |
 		| http://fhir.nhs.net/Id/sds-user-id9        |
@@ -54,6 +56,8 @@ Scenario: Practitioner search without the identifier parameter
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
 	When I make a GET request to "/Practitioner"
 	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
 
 Scenario Outline: Practitioner search where identifier contains the incorrect case or spelling
 	Given I am using the default server
@@ -62,6 +66,7 @@ Scenario Outline: Practitioner search where identifier contains the incorrect ca
 	When I make a GET request to "/Practitioner"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
 	Examples:
 		| ParameterName |
 		| idenddstifier |
