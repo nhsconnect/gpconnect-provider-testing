@@ -133,3 +133,13 @@ Scenario Outline: Read appointment request contains a valid priority
 		| id     |
 		| 1		 |
 
+Scenario Outline: Read appointment response contains a valid slot
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I make a GET request to "/Appointment/<id>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the slot reference is present
+	Examples:
+		| id     |
+		| 1		 |

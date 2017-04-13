@@ -571,6 +571,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail();
             }
         }
+
+        [Then(@"the slot reference is present")]
+        public void ThenTheAppointmentResourceSlotReferenceIsPresent()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Slot.ShouldNotBeNull();
+            foreach (ResourceReference slot in appointment.Slot)
+            {
+                slot.Reference.ShouldNotBeNull();
+               // slot.Display.ShouldNotBeNull();
+            }
+
+        }
     }
 }
 
