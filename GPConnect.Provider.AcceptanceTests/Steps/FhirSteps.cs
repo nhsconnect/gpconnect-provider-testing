@@ -418,6 +418,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the response bundle Organization entries should contain a maximum of 1 http://fhir.nhs.net/Id/ods-organization-code system identifier")]
+        public void ThenResponseBundleOrganizationEntriesShouldContainAMaximumOf1OrgCodeSystemIdentifier()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    Boolean systemAlreadyFound = false;
+
+                    Organization organization = (Organization)entry.Resource;
+
+                    foreach (var identifier in organization.Identifier)
+                    {
+                        if ("http://fhir.nhs.net/Id/ods-organization-code".Equals(identifier.System))
+                        {
+                            systemAlreadyFound.ShouldBeFalse("Found multiple http://fhir.nhs.net/Id/ods-organization-code systems");
+                            systemAlreadyFound = true;
+                        }
+                    }
+                }
+            }
+        }
+
         [Then(@"the response bundle Organization entries should contain ""([^""]*)"" ""([^""]*)"" system identifiers")]
         public void ThenResponseBundleOrganizationEntriesShouldNotContainMultipleSystemIdentifiers(int quantity, string system)
         {
