@@ -213,7 +213,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             RestRequest(Method.OPTIONS, relativeUrl);
         }
 
-        public Resource getReturnedResourceForRelativeURL(string interactionID, string relativeUrl, string storeAsValue = null) {
+        public Resource getReturnedResourceForRelativeURL(string interactionID, string relativeUrl) {
             
             // Store current state
             var preRequestHeaders = HttpContext.RequestHeaders.GetRequestHeaders();
@@ -226,7 +226,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var preRequestContentType = HttpContext.RequestContentType;
             var preRequestBody = HttpContext.RequestBody;
             HttpContext.RequestBody = null;
-
 
             var preResponseTimeInMilliseconds = HttpContext.ResponseTimeInMilliseconds;
             var preResponseStatusCode = HttpContext.ResponseStatusCode;

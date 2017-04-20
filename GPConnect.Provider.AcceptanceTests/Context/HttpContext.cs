@@ -204,7 +204,15 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         // Raw Request
         public string RequestMethod
         {
-            get { return ScenarioContext.Get<string>(Context.kRequestMethod); }
+            get {
+                try
+                {
+                    return ScenarioContext.Get<string>(Context.kRequestMethod);
+                }
+                catch (Exception) {
+                    return "";
+                }
+            }
             set
             {
                 Log.WriteLine("{0}={1}", Context.kRequestMethod, value);
@@ -214,7 +222,15 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         public string RequestUrl
         {
-            get { return ScenarioContext.Get<string>(Context.kRequestUrl); }
+            get {
+                try
+                {
+                    return ScenarioContext.Get<string>(Context.kRequestUrl);
+                }
+                catch (Exception) {
+                    return "";
+                }
+            }
             set
             {
                 Log.WriteLine("{0}={1}", Context.kRequestUrl, value);
@@ -224,7 +240,15 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         public string RequestContentType
         {
-            get { return ScenarioContext.Get<string>(Context.kRequestContentType); }
+            get {
+                try
+                {
+                    return ScenarioContext.Get<string>(Context.kRequestContentType);
+                }
+                catch (Exception) {
+                    return "";
+                }
+            }
             set
             {
                 Log.WriteLine("{0}={1}", Context.kRequestContentType, value);
@@ -234,7 +258,16 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         public string RequestBody
         {
-            get { return ScenarioContext.Get<string>(Context.kRequestBody); }
+            get
+            {
+                try
+                {
+                    return ScenarioContext.Get<string>(Context.kRequestBody);
+                } catch (Exception)
+                {
+                    return "";
+                }
+            }
             set
             {
                 Log.WriteLine("{0}={1}", Context.kRequestBody, value);
@@ -245,7 +278,15 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         // Raw Response
         public string ResponseContentType
         {
-            get { return ScenarioContext.Get<string>(Context.kResponseContentType); }
+            get {
+                try
+                {
+                    return ScenarioContext.Get<string>(Context.kResponseContentType);
+                } catch (Exception)
+                {
+                    return "";
+                }
+            }
             set
             {
                 Log.WriteLine("{0}={1}", Context.kResponseContentType, value);
@@ -255,7 +296,15 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         public HttpStatusCode ResponseStatusCode
         {
-            get { return ScenarioContext.Get<HttpStatusCode>(Context.kResponseStatusCode); }
+            get {
+                try
+                {
+                    return ScenarioContext.Get<HttpStatusCode>(Context.kResponseStatusCode);
+                } catch (Exception)
+                {
+                    return HttpStatusCode.OK;
+                }
+            }
             set
             {
                 Log.WriteLine("{0}={1}", Context.kResponseStatusCode, value);
@@ -265,7 +314,15 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         public string ResponseBody
         {
-            get { return ScenarioContext.Get<string>(Context.kResponseBody); }
+            get {
+                try
+                {
+                    return ScenarioContext.Get<string>(Context.kResponseBody);
+                } catch (Exception)
+                {
+                    return "";
+                }
+            }
             set
             {
                 Log.WriteLine("{0}={1}", Context.kResponseBody, value);
@@ -275,7 +332,16 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         public long ResponseTimeInMilliseconds
         {
-            get { return ScenarioContext.Get<long>(Context.kResponseTimeInMilliseconds); }
+            get
+            {
+                try
+                {
+                    return ScenarioContext.Get<long>(Context.kResponseTimeInMilliseconds);
+                }
+                catch (Exception) {
+                    return -1;
+                }
+            }
             set
             {
                 Log.WriteLine("{0}={1}", Context.kResponseTimeInMilliseconds, value);

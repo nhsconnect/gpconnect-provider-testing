@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
@@ -70,7 +71,15 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         public Resource FhirResponseResource
         {
-            get { return _scenarioContext.Get<Resource>(Context.kFhirResponseResource); }
+            get {
+                try
+                {
+                    return _scenarioContext.Get<Resource>(Context.kFhirResponseResource);
+                }
+                catch (Exception) {
+                    return null;
+                }
+            }
             set
             {
                 Log.WriteLine("{0}={1}", Context.kFhirResponseResource, value);
