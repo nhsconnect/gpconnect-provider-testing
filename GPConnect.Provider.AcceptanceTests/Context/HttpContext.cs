@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
 using System;
 using System.Collections.Generic;
+using Hl7.Fhir.Model;
 // ReSharper disable ClassNeverInstantiated.Global
 
 namespace GPConnect.Provider.AcceptanceTests.Context
@@ -55,6 +56,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         string FhirServerFhirBase { get; set; }
         string ProviderAddress { get; }
         string EndpointAddress { get; }
+        Dictionary<string, Hl7.Fhir.Model.Resource> StoredFhirResources { get;}
     }
 
     public class HttpContext : IHttpContext
@@ -463,6 +465,25 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 var endpointAddress = sspAddress + ProviderAddress;
                 Log.WriteLine("endpointAddress=" + endpointAddress);
                 return endpointAddress;
+            }
+        }
+
+        public Dictionary<string, Resource> StoredFhirResources {
+            get {
+                try
+                {
+                    return ScenarioContext.Get<Dictionary<string, Resource>>(Context.kFhirServerUrl);
+                }
+                catch (Exception) {
+                }
+                try
+                {
+                    ScenarioContext.Set(new Dictionary<string, Resource>(), Context.kResponseStatusCode);
+                    return ScenarioContext.Get<Dictionary<string, Resource>>(Context.kFhirServerUrl);
+                }
+                catch (Exception) {
+                }
+                return null;
             }
         }
 

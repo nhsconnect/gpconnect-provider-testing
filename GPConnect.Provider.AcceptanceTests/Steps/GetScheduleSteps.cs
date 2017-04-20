@@ -29,7 +29,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ((Bundle)returnedResourceBundle).Entry.Count.ShouldBeGreaterThan(0);
             var returnedFirstResource = (Organization)((Bundle)returnedResourceBundle).Entry[0].Resource;
             returnedFirstResource.GetType().ShouldBe(typeof(Organization));
-            // Store returnedFirstResource
+            HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
         }
     }
 }
