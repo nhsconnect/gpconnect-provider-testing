@@ -5,6 +5,7 @@ using Hl7.Fhir.Serialization;
 using RestSharp;
 using Shouldly;
 using TechTalk.SpecFlow;
+using static Hl7.Fhir.Model.Bundle;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -43,6 +44,31 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirRequestParameters.Add("timePeriod", period);
         }
 
+        [Given(@"I add period request parameter with only a start date")]
+        public void GivenIAddPeriodRequestParameterWithOnlyAStartDate()
+        {
+            Period period = new Period();
+            period.StartElement = FhirDateTime.Now();
+            FhirContext.FhirRequestParameters.Add("timePeriod", period);
+        }
+
+        [Given(@"I add period request parameter with only an end date")]
+        public void GivenIAddPeriodRequestParameterWithOnlyAnEndDate()
+        {
+            Period period = new Period();
+            period.EndElement = new FhirDateTime(DateTime.Now.AddDays(2));
+            FhirContext.FhirRequestParameters.Add("timePeriod", period);
+        }
+
+        [Given(@"I add period request parameter with start date ""([^""]*)"" and end date ""([^""]*)""")]
+        public void GivenIAddPeriodRequestParameterWithStartDateAndEndDate(string startDate, string endDate)
+        {
+            Period period = new Period();
+            period.Start = startDate;
+            period.End = endDate;
+            FhirContext.FhirRequestParameters.Add("timePeriod", period);
+        }
+
         [When(@"I send a gpc.getschedule operation for the organization stored as ""([^""]*)""")]
         public void ISendAGpcGetScheduleOperationForTheOrganizationStoredAs(string storeKey)
         {
@@ -54,6 +80,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(string logicalId)
         {
             HttpSteps.RestRequest(Method.POST, "/Organization/" + logicalId + "/$gpc.getschedule", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
+        }
+
+        [Then(@"the response bundle should include slot resources")]
+        public void ThenTheResponseBundlleShouldIncludeSlotResources()
+        {
+            bool slotResourceFoundInResponse = false;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
+                {
+                    slotResourceFoundInResponse = true;
+                    break;
+                }
+            }
+            slotResourceFoundInResponse.ShouldBeTrue("No Slots Resources were found in the response bundle.");
         }
     }
 }
