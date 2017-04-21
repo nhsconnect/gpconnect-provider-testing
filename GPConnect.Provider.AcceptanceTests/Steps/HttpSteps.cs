@@ -279,9 +279,85 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             return returnResource;
         }
 
+        public Resource bookAppointment(string interactionID, string relativeUrl, Appointment appointment)
+        {
+
+            // Store current state
+            var preRequestHeaders = HttpContext.RequestHeaders.GetRequestHeaders();
+            HttpContext.RequestHeaders.Clear();
+            var preRequestUrl = HttpContext.RequestUrl;
+            HttpContext.RequestUrl = "";
+            var preRequestParameters = HttpContext.RequestParameters;
+            HttpContext.RequestParameters.ClearParameters();
+            var preRequestMethod = HttpContext.RequestMethod;
+            var preRequestContentType = HttpContext.RequestContentType;
+            var preRequestBody = HttpContext.RequestBody;
+            HttpContext.RequestBody = null;
+
+
+            var preResponseTimeInMilliseconds = HttpContext.ResponseTimeInMilliseconds;
+            var preResponseStatusCode = HttpContext.ResponseStatusCode;
+            var preResponseContentType = HttpContext.ResponseContentType;
+            var preResponseBody = HttpContext.ResponseBody;
+            var preResponseHeaders = HttpContext.ResponseHeaders;
+            HttpContext.ResponseHeaders.Clear();
+
+            JObject preResponseJSON = null;
+            try
+            {
+                preResponseJSON = HttpContext.ResponseJSON;
+            }
+            catch (Exception) { }
+            XDocument preResponseXML = null;
+            try
+            {
+                preResponseXML = HttpContext.ResponseXML;
+            }
+            catch (Exception) { }
+
+            var preFhirResponseResource = FhirContext.FhirResponseResource;
+
+            // Setup configuration
+            Given($@"I am using the default server");
+            And($@"I set the default JWT");
+            And($@"I am performing the ""{interactionID}"" interaction");
+            FhirSerializer.SerializeToJson(appointment);
+
+          
+            
+            // Make Call
+            RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
+
+            // Check the response
+            HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.OK);
+            Then($@"the response body should be FHIR JSON"); // Create resource object from returned JSON
+            var returnResource = FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
+
+            // Restore state
+            HttpContext.RequestHeaders.SetRequestHeaders(preRequestHeaders);
+            HttpContext.RequestUrl = preRequestUrl;
+            HttpContext.RequestParameters = preRequestParameters;
+            HttpContext.RequestMethod = preRequestMethod;
+            HttpContext.RequestContentType = preRequestContentType;
+            HttpContext.RequestBody = preRequestBody;
+
+            HttpContext.ResponseTimeInMilliseconds = preResponseTimeInMilliseconds;
+            HttpContext.ResponseStatusCode = preResponseStatusCode;
+            HttpContext.ResponseContentType = preResponseContentType;
+            HttpContext.ResponseBody = preResponseBody;
+            HttpContext.ResponseHeaders = preResponseHeaders;
+            HttpContext.ResponseJSON = preResponseJSON;
+            HttpContext.ResponseXML = preResponseXML;
+            FhirContext.FhirResponseResource = preFhirResponseResource;
+
+            return returnResource;
+        }
+
+
+
         // Rest Request Helper
 
-        private void RestRequest(Method method, string relativeUrl, string body = null)
+        private void RestRequest(Method method, string relativeUrl, string body=null)
         {
             var timer = new System.Diagnostics.Stopwatch();
 

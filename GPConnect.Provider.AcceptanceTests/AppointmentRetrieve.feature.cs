@@ -72,36 +72,83 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Appointment retrieve success valid id")]
+        [NUnit.Framework.DescriptionAttribute("Book single appointment for patient 2")]
         [NUnit.Framework.CategoryAttribute("Appointment")]
+        public virtual void BookSingleAppointmentForPatient2()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient 2", new string[] {
+                        "Appointment"});
+#line 8
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 9
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 10
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
+ testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 12
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 13
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 14
+  testRunner.And("I find a patient with id \"2\" and search for a slot and create \"1\" appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Book multiple appointment for patient 3")]
+        public virtual void BookMultipleAppointmentForPatient3()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book multiple appointment for patient 3", ((string[])(null)));
+#line 17
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 18
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 19
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+ testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 21
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 22
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+  testRunner.And("I find a patient with id \"3\" and search for a slot and create \"2\" appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve success valid id")]
         [NUnit.Framework.TestCaseAttribute("1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("400000", new string[0])]
         public virtual void AppointmentRetrieveSuccessValidId(string id, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "Appointment"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve success valid id", @__tags);
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve success valid id", exampleTags);
+#line 28
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 8
+#line 29
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
+#line 30
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
+#line 31
  testRunner.When(string.Format("I make a GET request to \"/Patient/{0}/Appointment\"", id), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 11
+#line 32
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 12
+#line 33
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 34
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -116,23 +163,166 @@ this.FeatureBackground();
         public virtual void AppointmentRetrieveFailInvalidId(string id, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve fail invalid id", exampleTags);
-#line 20
+#line 42
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 21
+#line 43
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 22
+#line 44
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 45
  testRunner.When(string.Format("I make a GET request to \"/Patient/{0}/Appointment\"", id), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 24
+#line 46
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 25
+#line 47
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 48
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve send request with date variations which are valid")]
+        [NUnit.Framework.TestCaseAttribute("2014", "2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "2016-08", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "2016-09-14", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "2016-12-08T09:22:16", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "2016-12-08T23:59:59+00:00", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "9999", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "201", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "2016-13", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "2016-13-14", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "2016-13-08T09:22:16", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "2016-13-08T23:59:59+00:00", new string[0])]
+        public virtual void AppointmentRetrieveSendRequestWithDateVariationsWhichAreValid(string startDate, string endDate, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with date variations which are valid", exampleTags);
+#line 56
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 57
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 58
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
+ testRunner.When(string.Format("I make a GET request to \"/Patient/1/Appointment?start={0}\"", startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 60
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 61
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 62
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve send request with date variations which are invalid")]
+        [NUnit.Framework.TestCaseAttribute("16-02-2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("16/02/2016", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("99-99-99999", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("9999", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("201", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2016-13", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2016-13-14", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2016-13-08T09:22:16", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2016-13-08T23:59:59+00:00", new string[0])]
+        public virtual void AppointmentRetrieveSendRequestWithDateVariationsWhichAreInvalid(string startDate, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with date variations which are invalid", exampleTags);
+#line 79
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 80
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 81
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 82
+ testRunner.When(string.Format("I make a GET request to \"/Patient/1/Appointment?start={0}\"", startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 83
+ testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 84
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 85
+  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve send request with date variations which are valid with prefi" +
+            "x")]
+        [NUnit.Framework.TestCaseAttribute("2014", "eq", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "eq", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "eq", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "eq", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "eq", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "eq", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "ne", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "ne", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "ne", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "ne", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "ne", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "ne", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "sa", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "sa", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "sa", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "sa", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "sa", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "sa", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "sb", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "sb", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "sb", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "sb", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "sb", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "sb", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "ap", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "ap", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "ap", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "ap", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "ap", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "ap", new string[0])]
+        public virtual void AppointmentRetrieveSendRequestWithDateVariationsWhichAreValidWithPrefix(string startDate, string prefix, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with date variations which are valid with prefi" +
+                    "x", exampleTags);
+#line 99
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 100
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 101
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+ testRunner.When(string.Format("I make a GET request to \"/Patient/1/Appointment?start={{{0}}}{1}\"", prefix, startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 103
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 104
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -147,24 +337,24 @@ this.FeatureBackground();
         public virtual void AppointmentRetrieveFailureDueToMissingHeader(string header, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve failure due to missing header", exampleTags);
-#line 34
+#line 153
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 35
+#line 154
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 36
+#line 155
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 156
   testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 157
  testRunner.When("I make a GET request to \"/Patient/1/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 39
+#line 158
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 40
+#line 159
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 160
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -179,21 +369,21 @@ this.FeatureBackground();
         public virtual void AppointmentRetrieveInteractionIdIncorrectFail(string interactionId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve interaction id incorrect fail", exampleTags);
-#line 50
+#line 169
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 51
+#line 170
     testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 52
+#line 171
         testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
+#line 172
     testRunner.When("I make a GET request to \"/Patient/1/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 54
+#line 173
     testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 55
+#line 174
         testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 175
         testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -208,26 +398,26 @@ this.FeatureBackground();
         public virtual void AppointmentRetrieveAcceptHeaderAnd_FormatParameter(string header, string parameter, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve accept header and _format parameter", exampleTags);
-#line 64
+#line 183
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 65
+#line 184
     testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 66
+#line 185
         testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 67
+#line 186
         testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
+#line 187
         testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 188
     testRunner.When("I make a GET request to \"/Patient/1/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 70
+#line 189
     testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 71
+#line 190
         testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 191
         testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -240,24 +430,24 @@ this.FeatureBackground();
         public virtual void AppointmentRetrieveAcceptHeader(string header, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve accept header", exampleTags);
-#line 80
+#line 199
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 81
+#line 200
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 201
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 202
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 203
  testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 85
+#line 204
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 86
+#line 205
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 206
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -272,24 +462,24 @@ this.FeatureBackground();
         public virtual void AppointmentRetrieveBundleResourceWithEmptyAppointmentResource(string id, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle resource with empty appointment resource", exampleTags);
-#line 93
+#line 212
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 94
+#line 213
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 95
+#line 214
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
+#line 215
  testRunner.When(string.Format("I make a GET request to \"/Patient/{0}/Appointment\"", id), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 97
+#line 216
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 98
+#line 217
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 218
         testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 219
   testRunner.And("there are zero appointment resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -301,59 +491,276 @@ this.FeatureBackground();
         public virtual void AppointmentRetrieveBundleResourceWithMultipleAppointmentResources(string id, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle resource with multiple appointment resources", exampleTags);
-#line 108
+#line 227
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 109
+#line 228
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 110
+#line 229
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 230
  testRunner.When(string.Format("I make a GET request to \"/Patient/{0}/Appointment\"", id), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 112
+#line 231
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 113
+#line 232
   testRunner.And("the response should be a Bundle resource of type \"JSON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 233
         testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
+#line 234
   testRunner.And("there are multiple appointment resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
- testRunner.Then("the bundle appointment resource should contain contain a single status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 117
+#line 235
+ testRunner.Then("the bundle appointment resource should contain a single status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 236
   testRunner.And("status should have a valid value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle resource must contain status and participant")]
-        public virtual void AppointmentRetrieveBundleResourceMustContainStatusAndParticipant()
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve appointment which contains all mandatory resources")]
+        public virtual void AppointmentRetrieveAppointmentWhichContainsAllMandatoryResources()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle resource must contain status and participant", ((string[])(null)));
-#line 122
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve appointment which contains all mandatory resources", ((string[])(null)));
+#line 242
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 123
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 124
+#line 243
+   testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 244
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 125
- testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 126
+#line 245
+ testRunner.When("I make a GET request to \"/Patient/3/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 246
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 127
+#line 247
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 248
         testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
- testRunner.Then("the bundle appointment resource should contain contain a single status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 130
+#line 249
+ testRunner.Then("the bundle appointment resource should contain a single status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 250
   testRunner.And("the appointment status element should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 251
+ testRunner.Then("the bundle appointment resource should contain a single start element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 252
+   testRunner.And("the appointment status element should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 253
+ testRunner.Then("the bundle appointment resource should contain a single end element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 254
+ testRunner.Then("the bundle appointment resource should contain at least one slot reference", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 255
+ testRunner.Then("the bundle appointment resource should contain at least one participant", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle resource must contain status with valid value")]
+        public virtual void AppointmentRetrieveBundleResourceMustContainStatusWithValidValue()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle resource must contain status with valid value", ((string[])(null)));
+#line 257
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 258
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 259
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 260
+ testRunner.When("I make a GET request to \"/Patient/3/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 261
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 262
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 263
+        testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 264
+ testRunner.Then("the bundle appointment resource should contain a single status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 265
+  testRunner.And("the appointment status element should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle resource must contain participant with type or actor " +
+            "present")]
+        public virtual void AppointmentRetrieveBundleResourceMustContainParticipantWithTypeOrActorPresent()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle resource must contain participant with type or actor " +
+                    "present", ((string[])(null)));
+#line 267
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 268
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 269
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 270
+ testRunner.When("I make a GET request to \"/Patient/1/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 271
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 272
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 273
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 274
+ testRunner.Then("if appointment is present the single or multiple participant must contain a type " +
+                    "or actor", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle participant actor contains valid references")]
+        public virtual void AppointmentRetrieveBundleParticipantActorContainsValidReferences()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle participant actor contains valid references", ((string[])(null)));
+#line 276
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 277
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 278
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 279
+ testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 280
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 281
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 282
+  testRunner.And("if actor returns a practitioner resource the resource is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 283
+  testRunner.And("if actor returns a location resource the resource is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 284
+  testRunner.And("if actor returns a location resource the resource is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 285
+  testRunner.And("if actor returns a patient resource the resource is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle participant type contains valid references")]
+        public virtual void AppointmentRetrieveBundleParticipantTypeContainsValidReferences()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle participant type contains valid references", ((string[])(null)));
+#line 287
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 288
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 289
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 290
+ testRunner.When("I make a GET request to \"/Patient/3/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 291
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 292
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 293
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 294
+  testRunner.And("if the appointment participant contains a type is should have a valid system and " +
+                    "code", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle contains appointment with identifer with correct syst" +
+            "em and value")]
+        public virtual void AppointmentRetrieveBundleContainsAppointmentWithIdentiferWithCorrectSystemAndValue()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle contains appointment with identifer with correct syst" +
+                    "em and value", ((string[])(null)));
+#line 296
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 297
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 298
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 299
+ testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 300
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 301
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 302
+  testRunner.And("if the appointment resource contains an identifier it contains a valid system and" +
+                    " value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve appointment response should contain meta data profile and ve" +
+            "rsion id")]
+        public virtual void AppointmentRetrieveAppointmentResponseShouldContainMetaDataProfileAndVersionId()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve appointment response should contain meta data profile and ve" +
+                    "rsion id", ((string[])(null)));
+#line 304
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 305
+  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 306
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 307
+ testRunner.When("I make a GET request to \"/Patient/3/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 308
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 309
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 310
+  testRunner.And("the appointment response resource should contain meta data profile and version id" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve appointment response identifier is valid")]
+        public virtual void AppointmentRetrieveAppointmentResponseIdentifierIsValid()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve appointment response identifier is valid", ((string[])(null)));
+#line 313
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 314
+  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 315
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 316
+ testRunner.When("I make a GET request to \"/Patient/3/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 317
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 318
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 319
+  testRunner.And("the appointment response resource contains an identifier with a valid system and " +
+                    "value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -365,22 +772,22 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle of coding type SNOMED resource must contain coding wi" +
                     "th valid system and code and display", ((string[])(null)));
-#line 132
+#line 321
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 133
+#line 322
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 134
+#line 323
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 135
+#line 324
  testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 136
+#line 325
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 137
+#line 326
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
+#line 327
   testRunner.And("if appointment contains the resource coding SNOMED CT element the fields should m" +
                     "atch the fixed values of the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -394,22 +801,22 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle of coding type READ V2 resource must contain coding w" +
                     "ith valid system and code and display", ((string[])(null)));
-#line 140
+#line 329
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 141
+#line 330
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 142
+#line 331
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
+#line 332
  testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 144
+#line 333
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 145
+#line 334
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
+#line 335
   testRunner.And("if appointment contains the resource coding READ V2 element the fields should mat" +
                     "ch the fixed values of the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -423,147 +830,24 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle of coding type SREAD CTV3 resource must contain codin" +
                     "g with valid system and code and display", ((string[])(null)));
-#line 148
+#line 337
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 149
+#line 338
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 150
+#line 339
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 340
  testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 152
+#line 341
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 153
+#line 342
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
+#line 343
   testRunner.And("if appointment contains the resource coding SREAD CTV3 element the fields should " +
                     "match the fixed values of the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle contains appointment with identifer with correct syst" +
-            "em and value")]
-        public virtual void AppointmentRetrieveBundleContainsAppointmentWithIdentiferWithCorrectSystemAndValue()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle contains appointment with identifer with correct syst" +
-                    "em and value", ((string[])(null)));
-#line 156
-this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
-#line 157
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 158
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
-                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 159
- testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 160
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 161
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 162
-  testRunner.And("if the appointment resource contains an identifier it contains a valid system and" +
-                    " value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle contains appointment with valid start and end date fo" +
-            "rmat")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        [NUnit.Framework.CategoryAttribute("Checks")]
-        [NUnit.Framework.CategoryAttribute("the")]
-        [NUnit.Framework.CategoryAttribute("ranges")]
-        [NUnit.Framework.CategoryAttribute("are")]
-        [NUnit.Framework.CategoryAttribute("sensible")]
-        [NUnit.Framework.CategoryAttribute("but")]
-        [NUnit.Framework.CategoryAttribute("can")]
-        [NUnit.Framework.CategoryAttribute("probably")]
-        [NUnit.Framework.CategoryAttribute("be")]
-        [NUnit.Framework.CategoryAttribute("removed")]
-        [NUnit.Framework.CategoryAttribute("as")]
-        [NUnit.Framework.CategoryAttribute("an")]
-        [NUnit.Framework.CategoryAttribute("appointment")]
-        [NUnit.Framework.CategoryAttribute("is")]
-        [NUnit.Framework.CategoryAttribute("lokely")]
-        [NUnit.Framework.CategoryAttribute("no")]
-        [NUnit.Framework.CategoryAttribute("longer")]
-        [NUnit.Framework.CategoryAttribute("then")]
-        [NUnit.Framework.CategoryAttribute("an")]
-        [NUnit.Framework.CategoryAttribute("hour;")]
-        [NUnit.Framework.CategoryAttribute("NEEDS")]
-        [NUnit.Framework.CategoryAttribute("FURTHER")]
-        [NUnit.Framework.CategoryAttribute("THINKING")]
-        [NUnit.Framework.TestCaseAttribute("1", "1", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("0", "0", "0", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("4", "12", "3", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("9", "1", "4", new string[0])]
-        public virtual void AppointmentRetrieveBundleContainsAppointmentWithValidStartAndEndDateFormat(string days, string months, string years, string[] exampleTags)
-        {
-            string[] @__tags = new string[] {
-                    "Ignore",
-                    "Checks",
-                    "the",
-                    "ranges",
-                    "are",
-                    "sensible",
-                    "but",
-                    "can",
-                    "probably",
-                    "be",
-                    "removed",
-                    "as",
-                    "an",
-                    "appointment",
-                    "is",
-                    "lokely",
-                    "no",
-                    "longer",
-                    "then",
-                    "an",
-                    "hour;",
-                    "NEEDS",
-                    "FURTHER",
-                    "THINKING"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle contains appointment with valid start and end date fo" +
-                    "rmat", @__tags);
-#line 165
-this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
-#line 166
-testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 167
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
-                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 168
- testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 169
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 170
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
-  testRunner.And(string.Format("if the bundle contains a appointment resource the start and end date days are wit" +
-                        "hin range \"{0}\" days", days), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 172
-  testRunner.And(string.Format("if the bundle contains a appointment resource the start and end date months are w" +
-                        "ithin range \"{0}\" months", months), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
-  testRunner.And(string.Format("if the bundle contains a appointment resource the start and end date years are wi" +
-                        "thin range \"{0}\" years", years), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
-  testRunner.And("if the the start date must be before the end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -573,23 +857,87 @@ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.S
         public virtual void AppointmentRetrieveBundleContainsAppointmentWithSlot()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle contains appointment with slot", ((string[])(null)));
-#line 182
+#line 345
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 183
+#line 346
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 184
+#line 347
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
+#line 348
  testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 186
+#line 349
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 187
+#line 350
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 188
-  testRunner.And("the appointment shall contain a slot or multiple slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 351
+  testRunner.And("the slot reference is present and valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle contains appointment contact method")]
+        public virtual void AppointmentRetrieveBundleContainsAppointmentContactMethod()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle contains appointment contact method", ((string[])(null)));
+#line 354
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 355
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 356
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 357
+ testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 358
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 359
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 360
+  testRunner.And("if the appointment category element is present it is populated with the correct v" +
+                    "alues", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 361
+  testRunner.And("if the appointment booking element is present it is populated with the correct va" +
+                    "lues", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 362
+  testRunner.And("if the appointment contact element is present it is populated with the correct va" +
+                    "lues", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 363
+  testRunner.And("if the appointment cancellation reason  element is present it is populated with t" +
+                    "he correct values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle contains valid start and end dates")]
+        public virtual void AppointmentRetrieveBundleContainsValidStartAndEndDates()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle contains valid start and end dates", ((string[])(null)));
+#line 365
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 366
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 367
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 368
+ testRunner.When("I make a GET request to \"/Patient/2/Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 369
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 370
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 371
+  testRunner.And("all appointments must have an start element which is populated with a valid date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 372
+  testRunner.And("all appointments must have an end element which is populated vith a valid date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
