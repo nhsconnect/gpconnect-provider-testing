@@ -38,7 +38,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         [Given(@"I add period request parameter with a start date of todays and an end date ""([^""]*)"" days later")]
         public void GivenIAddPeriodRequestParameterWithAStartDateOfTodayAndAnEndDateDaysLater(double numberOfDaysRange) {
-            Period period = new Period(FhirDateTime.Now(), new FhirDateTime(DateTime.Now.AddDays(numberOfDaysRange)));
+            DateTime currentDateTime = DateTime.Now;
+            Period period = new Period(new FhirDateTime(currentDateTime), new FhirDateTime(currentDateTime.AddDays(numberOfDaysRange)));
             FhirContext.FhirRequestParameters.Add("timePeriod", period);
         }
 
@@ -46,8 +47,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISendAGpcGetScheduleOperationForTheOrganizationStoredAs(string storeKey)
         {
             Organization organization = (Organization)HttpContext.StoredFhirResources[storeKey];
-            HttpSteps.RestRequest(Method.POST, "/Organization/"+ organization.Id + "/$gpc.getschedule", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
+            ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(organization.Id);
         }
 
+        [When(@"I send a gpc.getschedule operation for the organization with locical id ""([^""]*)""")]
+        public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(string logicalId)
+        {
+            HttpSteps.RestRequest(Method.POST, "/Organization/" + logicalId + "/$gpc.getschedule", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
+        }
     }
 }
