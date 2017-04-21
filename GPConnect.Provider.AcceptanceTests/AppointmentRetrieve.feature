@@ -4,6 +4,14 @@ Background:
 	Given I have the test patient codes
 
 @Appointment
+Scenario: I successfully perform a AppointmentAssignment
+	Given I am using the default server
+		And I search for an appointments for patient "1" on the provider system and save the first response to "Appointment1"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+	When I make a GET request to "/Patient/2/Appointment"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		
 
 Scenario: Book single appointment for patient 2
 	Given I am using the default server
@@ -23,9 +31,7 @@ Scenario: Book multiple appointment for patient 3
 		And I find a patient with id "3" and search for a slot and create "2" appointment
 
 
-
-
-Scenario Outline: Appointment retrieve success valid id
+Scenario Outline: Appointment retrieve success valid id where appointment resource returned is not required
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I make a GET request to "/Patient/<id>/Appointment"
@@ -38,6 +44,19 @@ Scenario Outline: Appointment retrieve success valid id
 		| 2		 |
 		| 400000 |
 
+Scenario Outline: Appointment retrieve success valid id where single appointment resource is required resource
+	Given I am using the default server
+		And I search for an appointments for patient "<id>" on the provider system and if zero booked i book "<numberOfAppointments>" appointment
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+	When I make a GET request to "/Patient/<id>/Appointment"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+	Examples:
+		| id | numberOfAppointments |
+		| 1  | 1                    |
+		| 2  | 1                    |
+		| 3  | 1                    |
 
 Scenario Outline: Appointment retrieve fail invalid id
 	Given I am using the default server

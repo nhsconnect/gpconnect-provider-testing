@@ -22,22 +22,55 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class AppointmentsSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext FhirContext;
-        private Appointment.AppointmentStatus[] appointmentStatusValues;
         private readonly HttpSteps HttpSteps;
-        private object log;
+        private readonly HttpContext HttpContext;
+   
 
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
-        public AppointmentsSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext, HttpSteps httpSteps)
+        public AppointmentsSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext)
         {
-
-            FhirContext = fhirContext;
             // Helpers
+            FhirContext = fhirContext;
             Headers = headerHelper;
             HttpSteps = httpSteps;
+            HttpContext = httpContext;
 
         }
+
+        [Given(@"I search for an appointments for patient ""([^""]*)"" on the provider system and save the first response to ""([^""]*)""")]
+        public void GivenISearchForAnAppointmentOnTheProviderSystemAndSaveTheFirstResponseTo(int id, string storeKey)
+        {
+
+            var relativeUrl = "/Patient/"+id+"/Appointment";
+            var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", relativeUrl);
+            returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
+            ((Bundle)returnedResourceBundle).Entry.Count.ShouldBeGreaterThan(0);
+            var returnedFirstResource = (Appointment)((Bundle)returnedResourceBundle).Entry[0].Resource;
+            string text = returnedFirstResource.ToString();
+            returnedFirstResource.GetType().ShouldBe(typeof(Appointment));
+            if (HttpContext.StoredFhirResources.ContainsKey(storeKey)) HttpContext.StoredFhirResources.Remove(storeKey);
+            HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
+        }
+
+        [Given(@"I search for an appointments for patient ""([^""]*)"" on the provider system and if zero booked i book ""([^""]*)"" appointment")]
+        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(int id, int numOfAppointments)
+        {
+         
+            var relativeUrl = "/Patient/" + id + "/Appointment";
+            var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", relativeUrl);
+            returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
+            if (((Bundle)returnedResourceBundle).Entry.Count == 0)
+            {
+
+                Then($@"I find a patient with id ""{id}"" and search for a slot and create ""{numOfAppointments}"" appointment");
+            }
+            else { Assert.Pass(); }
+
+           
+        }
+
 
 
         [Then(@"there are zero appointment resources")]
@@ -996,8 +1029,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 //Book the appointment
                 HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
 
-                var appointmentResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", "/Patient/2/Appointment");
-                Log.WriteLine(appointmentResource);
+                //var appointmentResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", "/Patient/2/Appointment");
+                //Log.WriteLine(appointmentResource);
             }
         }
     }
