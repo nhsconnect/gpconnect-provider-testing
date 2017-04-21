@@ -119,6 +119,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public const string kConsumerASID = "consumerASID";
             // Producer
             public const string kProviderASID = "providerASID";
+
+            public const string kStoredFhirResources = "storedFhirResources";
         }
 
         // Protocol
@@ -472,14 +474,14 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             get {
                 try
                 {
-                    return ScenarioContext.Get<Dictionary<string, Resource>>(Context.kFhirServerUrl);
+                    return ScenarioContext.Get<Dictionary<string, Resource>>(Context.kStoredFhirResources);
                 }
                 catch (Exception) {
                 }
                 try
                 {
-                    ScenarioContext.Set(new Dictionary<string, Resource>(), Context.kResponseStatusCode);
-                    return ScenarioContext.Get<Dictionary<string, Resource>>(Context.kFhirServerUrl);
+                    ScenarioContext.Set(new Dictionary<string, Resource>(), Context.kStoredFhirResources);
+                    return ScenarioContext.Get<Dictionary<string, Resource>>(Context.kStoredFhirResources);
                 }
                 catch (Exception) {
                 }

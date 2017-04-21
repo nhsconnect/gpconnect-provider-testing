@@ -1,5 +1,8 @@
-﻿using GPConnect.Provider.AcceptanceTests.Context;
+﻿using System;
+using GPConnect.Provider.AcceptanceTests.Context;
 using Hl7.Fhir.Model;
+using Hl7.Fhir.Serialization;
+using RestSharp;
 using Shouldly;
 using TechTalk.SpecFlow;
 
@@ -29,7 +32,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ((Bundle)returnedResourceBundle).Entry.Count.ShouldBeGreaterThan(0);
             var returnedFirstResource = (Organization)((Bundle)returnedResourceBundle).Entry[0].Resource;
             returnedFirstResource.GetType().ShouldBe(typeof(Organization));
+            if (HttpContext.StoredFhirResources.ContainsKey(storeKey)) HttpContext.StoredFhirResources.Remove(storeKey);
             HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
         }
+
+        [Given(@"I add period request parameter with a start date of todays and an end date ""([^""]*)"" days later")]
+        public void GivenIAddPeriodRequestParameterWithAStartDateOfTodayAndAnEndDateDaysLater(double numberOfDaysRange) {
+            Period period = new Period(FhirDateTime.Now(), new FhirDateTime(DateTime.Now.AddDays(numberOfDaysRange)));
+            FhirContext.FhirRequestParameters.Add("timePeriod", period);
+        }
+
+        [When(@"I send a gpc.getschedule operation for the organization stored as ""([^""]*)""")]
+        public void ISendAGpcGetScheduleOperationForTheOrganizationStoredAs(string storeKey)
+        {
+            Organization organization = (Organization)HttpContext.StoredFhirResources[storeKey];
+            HttpSteps.RestRequest(Method.POST, "/Organization/"+ organization.Id + "/$gpc.getschedule", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
+        }
+
     }
 }

@@ -280,7 +280,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         // Rest Request Helper
 
-        private void RestRequest(Method method, string relativeUrl, string body = null)
+        public void RestRequest(Method method, string relativeUrl, string body = null)
         {
             var timer = new System.Diagnostics.Stopwatch();
 
@@ -366,6 +366,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseContentType = restResponse.ContentType;
             HttpContext.ResponseBody = restResponse.Content;
 
+            HttpContext.ResponseHeaders.Clear();
             foreach (var parameter in restResponse.Headers)
             {
                 HttpContext.ResponseHeaders.Add(parameter.Name, (string)parameter.Value);
