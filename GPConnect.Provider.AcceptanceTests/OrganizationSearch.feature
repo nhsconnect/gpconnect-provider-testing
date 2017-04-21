@@ -13,6 +13,7 @@ Scenario Outline: Organization search success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<Entries>" entries
+		And the response bundle Organization entries should contain a maximum of 1 http://fhir.nhs.net/Id/ods-organization-code system identifier
 		And the response bundle Organization entries should contain "<OrgCodeQuantity>" "http://fhir.nhs.net/Id/ods-organization-code" system identifiers
 		And the response bundle Organization entries should contain "<SiteCodeQuantity>" "http://fhir.nhs.net/Id/ods-site-code" system identifiers
 	Examples:
@@ -23,8 +24,8 @@ Scenario Outline: Organization search success
 		| http://fhir.nhs.net/Id/ods-organization-code | ORG3       | 1       | 1               | 1                |
 		| http://fhir.nhs.net/Id/ods-site-code         | unknownSIT | 0       | 0               | 0                |
 		| http://fhir.nhs.net/Id/ods-site-code         | SIT1       | 1       | 1               | 1                |
-		| http://fhir.nhs.net/Id/ods-site-code         | SIT2       | 1       | 1               | 1                |
-		| http://fhir.nhs.net/Id/ods-site-code         | SIT3       | 2       | 2               | 2                |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT2       | 1       | 1               | 2                |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT3       | 2       | 2               | 3                |
 		
 Scenario: Organization search failure with parameter cruft
 	Given I am using the default server
@@ -37,15 +38,24 @@ Scenario: Organization search failure with parameter cruft
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Organization search multiple identifier parameter failure
+Scenario Outline: Organization search multiple identifier parameter failure
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
+		And I add the organization identifier parameter with system "<System1>" and value "<Value1>"
+		And I add the organization identifier parameter with system "<System2>" and value "<Value2>"
     When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| System1                                      | Value1 | System2                                      | Value2 |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG1   | http://fhir.nhs.net/Id/ods-organization-code | ORG2   |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG2   | http://fhir.nhs.net/Id/ods-organization-code | ORG2   |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG2   | http://fhir.nhs.net/Id/ods-site-code         | SIT2   |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT1   | http://fhir.nhs.net/Id/ods-site-code         | SIT2   |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT2   | http://fhir.nhs.net/Id/ods-site-code         | SIT2   |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT2   | badSystem                                    | SIT2   |
+		| badSystem                                    | SIT2   | http://fhir.nhs.net/Id/ods-site-code         | SIT2   |
 
 Scenario: Organization search by organization code success single result contains correct fields
 	Given I am using the default server
@@ -57,8 +67,7 @@ Scenario: Organization search by organization code success single result contain
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the response bundle "Organization" entries should contain element "fullUrl"
-		And the response bundle "Organization" entries should contain element "resource.meta.versionId"
-		And the response bundle "Organization" entries should contain element "resource.meta.profile[0]" with value "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1"
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the response bundle Organization entries should contain "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifiers
 		And the response bundle Organization entries should contain "1" "http://fhir.nhs.net/Id/ods-site-code" system identifiers
 		And the response should contain ods-organization-codes "ORG1"
@@ -74,8 +83,7 @@ Scenario: Organization search by organization code success multiple results cont
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the response bundle "Organization" entries should contain element "fullUrl"
-		And the response bundle "Organization" entries should contain element "resource.meta.versionId"
-		And the response bundle "Organization" entries should contain element "resource.meta.profile[0]" with value "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1"
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the response bundle Organization entries should contain "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifiers
 		And the response bundle Organization entries should contain "2" "http://fhir.nhs.net/Id/ods-site-code" system identifiers
 		And the response should contain ods-organization-codes "ORG2"
@@ -91,8 +99,7 @@ Scenario: Organization search by site code success single result contains correc
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the response bundle "Organization" entries should contain element "fullUrl"
-		And the response bundle "Organization" entries should contain element "resource.meta.versionId"
-		And the response bundle "Organization" entries should contain element "resource.meta.profile[0]" with value "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1"
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the response bundle Organization entries should contain "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifiers
 		And the response bundle Organization entries should contain "1" "http://fhir.nhs.net/Id/ods-site-code" system identifiers
 		And the response should contain ods-organization-codes "ORG1"
@@ -108,12 +115,11 @@ Scenario: Organization search by site code success multiple results contains cor
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "2" entries
 		And the response bundle "Organization" entries should contain element "fullUrl"
-		And the response bundle "Organization" entries should contain element "resource.meta.versionId"
-		And the response bundle "Organization" entries should contain element "resource.meta.profile[0]" with value "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1"
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the response bundle Organization entries should contain "2" "http://fhir.nhs.net/Id/ods-organization-code" system identifiers
-		And the response bundle Organization entries should contain "2" "http://fhir.nhs.net/Id/ods-site-code" system identifiers
+		And the response bundle Organization entries should contain "3" "http://fhir.nhs.net/Id/ods-site-code" system identifiers
 		And the response should contain ods-organization-codes "ORG2|ORG3"
-		And the response should contain ods-site-codes "SIT3"
+		And the response should contain ods-site-codes "SIT2|SIT3"
 		
 Scenario Outline: Organization search failure due to invalid identifier
 	Given I am using the default server
@@ -231,6 +237,9 @@ Scenario Outline: Organization search accept header and _format parameter
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And the response bundle Organization entries should contain "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifiers
+		And the response bundle Organization entries should contain "1" "http://fhir.nhs.net/Id/ods-site-code" system identifiers
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |

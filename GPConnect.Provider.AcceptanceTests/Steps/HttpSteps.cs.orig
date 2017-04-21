@@ -356,7 +356,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         // Rest Request Helper
 
+<<<<<<< HEAD
+        private void RestRequest(Method method, string relativeUrl, string body=null)
+=======
         public void RestRequest(Method method, string relativeUrl, string body = null)
+>>>>>>> b900050c65a4d86f1a302874051bb4fbd681fdec
         {
             var timer = new System.Diagnostics.Stopwatch();
 
