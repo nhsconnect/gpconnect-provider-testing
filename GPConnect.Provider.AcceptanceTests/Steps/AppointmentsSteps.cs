@@ -761,10 +761,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             appointmentBooking.Url.ShouldBeOfType<Uri>();
                             appointmentBooking.Value.ShouldBeOfType<CodeableConcept>();
                             appointmentBooking.Value.ShouldNotBeNull();
-
-
-
-                        }
+                          }
 
                     }
                 }
@@ -913,6 +910,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             }
         }
+
+      
 
         [Then(@"if actor returns a patient resource the resource is valid")]
         public void actorPatientResourceValid()

@@ -361,7 +361,7 @@ Scenario: Appointment retrieve bundle contains appointment contact method
 		And if the appointment booking element is present it is populated with the correct values
 		And if the appointment contact element is present it is populated with the correct values
 		And if the appointment cancellation reason  element is present it is populated with the correct values
-
+#25-26
 Scenario: Appointment retrieve bundle contains valid start and end dates
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
@@ -370,7 +370,12 @@ Scenario: Appointment retrieve bundle contains valid start and end dates
 		And the response body should be FHIR JSON
 		And all appointments must have an start element which is populated with a valid date
 		And all appointments must have an end element which is populated vith a valid date
-
-
-
-
+#30
+Scenario: Appointment retrieve JWT requesting scope claim should reflect the operation being performed
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient2"
+	When I search for Patient "/Patient/2/Appointment"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
