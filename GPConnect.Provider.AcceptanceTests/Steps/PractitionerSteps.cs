@@ -120,5 +120,40 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+
+        [Then(@"the practitioner resources in the response bundle should contain no more than a single SDS User Id")]
+        public void ThenThePractitionerResourceInTheResponseBundleShouldContainNoMoreThanASingleSDSUserId()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    int userIdCount = 0;
+                    foreach (var identifier in practitioner.Identifier){
+                        if (String.Equals(identifier.System, "http://fhir.nhs.net/Id/sds-user-id")){
+                            userIdCount++;
+                        }
+                    }
+                    userIdCount.ShouldBeLessThanOrEqualTo(1);
+                }
+            }
+        }
+
+        [Then(@"the practitioner resources in the response bundle should only contain an SDS user id or SDS role ids")]
+        public void ThenThePractitionerResourcesInTheResponseBundleShouldOnlyContainAnSDSUserIdOrSDSRoleIds()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    foreach (var identifier in practitioner.Identifier){
+                        var validSystems = new String[2] { "http://fhir.nhs.net/Id/sds-user-id", "http://fhir.nhs.net/Id/sds-role-profile-id" };
+                        identifier.System.ShouldBeOneOf(validSystems);
+                    }
+                }
+            }
+        }
     }
 }

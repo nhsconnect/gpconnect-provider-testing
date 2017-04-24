@@ -348,6 +348,69 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		| ORG1         | 13        |
 		| ORG2         | 11        |
 
+Scenario Outline: I successfully perform a gpc.getschedule operation and check the included practitioner resources returned are valid
+	Given I am using the default server
+		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should include slot resources
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And the practitioner resources in the response bundle should contain no more than a single SDS User Id
+		And the practitioner resources in the response bundle should only contain an SDS user id or SDS role ids
+		And practitioner resources should contain a single name element
+		And practitioner should only have one family name
+		And if practitionerRole has role element which contains a coding then the system, code and display must exist
+		And if practitionerRole has managingOrganization element then reference must exist
+		And the practitioner resource should not contain unwanted fields
+		And if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
+	Examples:
+		| Organization | DaysRange |
+		| ORG1         | 10        |
+		| ORG2         | 13        |
+
+Scenario Outline: I successfully perform a gpc.getschedule operation and check the included organization resources returned are valid
+	Given I am using the default server
+		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should include slot resources
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the response bundle Organization entries should contain a maximum of 1 http://fhir.nhs.net/Id/ods-organization-code system identifier
+		And the response bundle Organization entries should only contain an ODS organization codes and ODS Site Codes
+		And the response bundle Organization entries should contain system code and display if the type coding is included in the resource
+		And if Organization includes partOf it should reference a resource in the response bundle
+	Examples:
+		| Organization | DaysRange |
+		| ORG1         | 13        |
+		| ORG2         | 12        |
+
+Scenario Outline: I successfully perform a gpc.getschedule operation and check the included location resources returned are valid
+	Given I am using the default server
+		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should include slot resources
+		And if the response bundle contains a location resource it should contain meta data profile and version id
+	Examples:
+		| Organization | DaysRange |
+		| ORG1         | 13        |
+		| ORG2         | 13        |
+
 @Manual
 @ignore
 # This is tested by "I perform a getSchedule with valid partial dateTime strings" but would benefit from additional manual testing

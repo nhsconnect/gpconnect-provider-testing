@@ -19,10 +19,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public sealed class OrganizationSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext FhirContext;
+        private readonly AccessRecordSteps AccessRecordSteps;
 
-        public OrganizationSteps(FhirContext fhirContext)
+        public OrganizationSteps(FhirContext fhirContext, AccessRecordSteps accessRecordSteps)
         {
             FhirContext = fhirContext;
+            AccessRecordSteps = accessRecordSteps;
         }
 
         [Given(@"I have the test ods codes")]
@@ -56,6 +58,39 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             string referenceValues = String.Join("|", referenceValueList);
 
             Then($@"the response bundle ""Organization"" entries should contain element ""resource.identifier[?(@.system == 'http://fhir.nhs.net/Id/ods-{system}-code')].value"" with values ""{referenceValues}""");
+        }
+
+        [Then(@"the response bundle Organization entries should only contain an ODS organization codes and ODS Site Codes")]
+        public void ThenThePractitionerResourcesInTheResponseBundleShouldOnlyContainAnSDSUserIdOrSDSRoleIds()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    Organization organization= (Organization)entry.Resource;
+                    foreach (var identifier in organization.Identifier)
+                    {
+                        var validSystems = new String[2] { "http://fhir.nhs.net/Id/ods-organization-code", "http://fhir.nhs.net/Id/ods-site-code" };
+                        identifier.System.ShouldBeOneOf(validSystems);
+                    }
+                }
+            }
+        }
+
+        [Then(@"the response bundle Organization entries should contain system code and display if the type coding is included in the resource")]
+        public void ThenTheResponseBundleOrganizationEntriesShouldContainSystemCodeAndDisplayIfTheTypeCodingIsIncludedInTheResource()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    Organization organization = (Organization)entry.Resource;
+                    if (organization.Type != null && organization.Type.Coding != null) {
+                        organization.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                        AccessRecordSteps.shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirMaritalStatusValueSet, organization.Type.Coding);
+                        }
+                }
+            }
         }
     }
 }
