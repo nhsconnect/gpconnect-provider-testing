@@ -14,7 +14,8 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.Model;
-using System.Collections.Generic;
+using System.Text;
+using RestSharp.Extensions.MonoHttp;
 
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable InconsistentNaming
@@ -369,7 +370,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // Build The Rest Request
             var restClient = new RestClient(HttpContext.EndpointAddress);
-            var restRequest = new RestRequest(relativeUrl, method);
 
             // Setup The Web Proxy
             if (HttpContext.UseWebProxy)
@@ -392,6 +392,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Remove default handlers to stop it sending default Accept header
             restClient.ClearHandlers();
 
+            // Add Parameters
+            String requestParamString = "?";
+            foreach (var parameter in HttpContext.RequestParameters.GetRequestParameters())
+            {
+                Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
+                requestParamString = requestParamString + HttpUtility.UrlEncode(parameter.Key, Encoding.UTF8) + "=" + HttpUtility.UrlEncode(parameter.Value, Encoding.UTF8) + "&";
+            }
+            requestParamString = requestParamString.Substring(0, requestParamString.Length - 1);
+            
+            var restRequest = new RestRequest(relativeUrl+requestParamString, method);
+
             // Set the Content-Type header
             restRequest.AddParameter(HttpContext.RequestContentType, body, ParameterType.RequestBody);
             HttpContext.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, HttpContext.RequestContentType);
@@ -401,13 +412,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
                 restRequest.AddHeader(header.Key, header.Value);
-            }
-            
-            // Add Parameters
-            foreach (var parameter in HttpContext.RequestParameters.GetRequestParameters())
-            {
-                Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
-                restRequest.AddParameter(parameter.Key, parameter.Value);
             }
             
             // Execute The Request

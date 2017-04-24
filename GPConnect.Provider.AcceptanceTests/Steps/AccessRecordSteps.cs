@@ -918,15 +918,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         public void responseBundleContainsReferenceOfType(string reference, ResourceType resourceType)
         {
-            var pass = false;
+            var foundResourceInBundleByFullURLElement = false;
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (reference.Equals(entry.FullUrl) && entry.Resource.ResourceType == resourceType)
                 {
-                    pass = true;
+                    foundResourceInBundleByFullURLElement = true;
                 }
             }
-            pass.ShouldBeTrue();
+            foundResourceInBundleByFullURLElement.ShouldBeTrue("The reference from the resource was not found in the bundle by fullUrl resource element.");
         }
     }
 }

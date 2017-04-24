@@ -165,6 +165,9 @@ Scenario Outline: I perform a getSchedule with valid partial dateTime strings
 		| 2017-12-28                | 2017                      |
 		| 2017-12-29T09:35:15+01:00 | 2017-12-29                |
 		| 2017-12-29                | 2017-12-29T14:55:34+01:00 |
+		| 2017-12-29T12:39:00+00:00 | 2017-12-29T12:41:00+00:00 |
+		| 2017-12-29T12:41:00+00:00 | 2017-12-29T18:00:00+00:00 |
+		| 2017-12-29T12:41:00+00:00 | 2017-12-29T12:42:00+00:00 |
 
 Scenario: I try to getSchedule with multiple parameters of which some are invalid
 	Given I am using the default server
@@ -177,3 +180,145 @@ Scenario: I try to getSchedule with multiple parameters of which some are invali
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
+
+Scenario Outline: I successfully perform a gpc.getschedule operation and check the response bundle resources returned contains required meta data
+	Given I am using the default server
+		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the bundle resources should contain required meta data elements
+	Examples:
+		| Organization | DaysRange |
+		| ORG1         | 14        |
+		| ORG2         | 8         |
+		| ORG3         | 8         |
+
+Scenario Outline: I successfully perform a gpc.getschedule operation and check the slot resources returned are valid
+	Given I am using the default server
+		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should include slot resources
+		And the slots resources within the response bundle should be free
+		And the slot resources in the response bundle should contain meta data information
+		And the slot resources can contain a maximum of one identifier with a populated value
+	Examples:
+		| Organization | DaysRange |
+		| ORG1         | 14        |
+		| ORG2         | 8         |
+
+Scenario Outline: I successfully perform a gpc.getschedule operation and check the slot references to schedule resource can be resolved in bundle
+	Given I am using the default server
+		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should include slot resources
+		And the schedule reference within the slots resources should be resolvable in the response bundle
+	Examples:
+		| Organization | DaysRange |
+		| ORG1         | 14        |
+		| ORG2         | 8         |
+
+Scenario Outline: I successfully perform a gpc.getschedule operation using various content types XML and JSON in Accept header
+	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I set the request content type to "<RequestContentType>"
+		And I set the Accept header to "<AcceptHeaderValue>"
+		And I add period request parameter with a start date of todays and an end date "8" days later
+	When I send a gpc.getschedule operation for the organization stored as "ORG1"
+	Then the response status code should indicate success
+		And the response body should be FHIR <ResponseShouldBe>
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should include slot resources
+		And the schedule reference within the slots resources should be resolvable in the response bundle
+	Examples: 
+		| RequestContentType    | AcceptHeaderValue     | ResponseShouldBe |
+		| application/xml+fhir  | application/xml+fhir  | XML              |
+		| application/json+fhir | application/json+fhir | JSON             |
+		| application/xml+fhir  | application/json+fhir | JSON             |
+		| application/json+fhir | application/xml+fhir  | XML              |
+
+Scenario Outline: I successfully perform a gpc.getschedule operation using various content types XML and JSON in format parameter
+	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I set the request content type to "<RequestContentType>"
+		And I add the parameter "_format" with the value "<FormatParameterValue>"
+		And I add period request parameter with a start date of todays and an end date "8" days later
+	When I send a gpc.getschedule operation for the organization stored as "ORG1"
+	Then the response status code should indicate success
+		And the response body should be FHIR <ResponseShouldBe>
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should include slot resources
+		And the schedule reference within the slots resources should be resolvable in the response bundle
+	Examples: 
+		| RequestContentType    | FormatParameterValue  | ResponseShouldBe |
+		| application/xml+fhir  | application/xml+fhir  | XML              |
+		| application/json+fhir | application/json+fhir | JSON             |
+		| application/xml+fhir  | application/json+fhir | JSON             |
+		| application/json+fhir | application/xml+fhir  | XML              |
+
+Scenario Outline: I successfully perform a gpc.getschedule operation using various content types XML and JSON in the Accept Header and format parameter
+	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I set the request content type to "<RequestContentType>"
+		And I set the Accept header to "<AcceptHeaderValue>"
+		And I add the parameter "_format" with the value "<FormatParameterValue>"
+		And I add period request parameter with a start date of todays and an end date "8" days later
+	When I send a gpc.getschedule operation for the organization stored as "ORG1"
+	Then the response status code should indicate success
+		And the response body should be FHIR <ResponseShouldBe>
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should include slot resources
+		And the schedule reference within the slots resources should be resolvable in the response bundle
+	Examples: 
+		| RequestContentType    | AcceptHeaderValue     | FormatParameterValue  | ResponseShouldBe |
+		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML              |
+		| application/json+fhir | application/json+fhir | application/json+fhir | JSON             |
+		| application/xml+fhir  | application/json+fhir | application/json+fhir | JSON             |
+		| application/json+fhir | application/xml+fhir  | application/xml+fhir  | XML              |
+		| application/xml+fhir  | application/json+fhir | application/xml+fhir  | XML              |
+		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON             |
+		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON             |
+		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML              |
+
+@Manual
+@ignore
+# This is tested by "I perform a getSchedule with valid partial dateTime strings" but would benefit from additional manual testing
+Scenario: I successfully perform a gpc.getschedule operation where the start date in the request is after the start date of a slot but before the end date of the slot
+	Given I search for free slots at organization "ORG1"
+		And I search for slots using a date range I know there is a free slot which has a start date before the request parameter start date but the slot end date is after the requeste parameter start date
+	When I perform the gpc.getSchedule operation
+	Then the response should be successful and return a FHIR Bundle
+	Then the slot which straddles the request parameter start date should appear in the response bundle.
+
+@Manual
+@ignore
+# This is tested by "I perform a getSchedule with valid partial dateTime strings" but would benefit from additional manual testing
+Scenario: I successfully perform a gpc.getschedule operation where the end date parameter in the request is after the start date of a slot but before the end date of the slot
+	Given I search for free slots at organization "ORG1"
+		And I search for slots using a date range I know there is a free slot which has a start date before the request parameter end date but the slot end date is after the requeste parameter end date
+	When I perform the gpc.getSchedule operation
+	Then the response should be successful and return a FHIR Bundle
+	Then the slot which straddles the request parameter start date should appear in the response bundle.
+

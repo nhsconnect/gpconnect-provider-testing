@@ -17,12 +17,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly HttpContext HttpContext;
         private readonly HttpSteps HttpSteps;
+        private readonly AccessRecordSteps AccessRecordSteps;
 
-        public GetScheduleSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps)
+        public GetScheduleSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps)
         {
             FhirContext = fhirContext;
             HttpContext = httpContext;
             HttpSteps = httpSteps;
+            AccessRecordSteps = accessRecordSteps;
         }
 
         public GetScheduleSteps()
@@ -85,7 +87,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I send a gpc.getschedule operation for the organization with locical id ""([^""]*)""")]
         public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(string logicalId)
         {
-            HttpSteps.RestRequest(Method.POST, "/Organization/" + logicalId + "/$gpc.getschedule", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
+            string body = null;
+            if (HttpContext.RequestContentType.Contains("xml"))
+            {
+                body = FhirSerializer.SerializeToXml(FhirContext.FhirRequestParameters);
+            } else
+            {
+                body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
+            }
+            HttpSteps.RestRequest(Method.POST, "/Organization/" + logicalId + "/$gpc.getschedule", body);
         }
 
         [Then(@"the response bundle should include slot resources")]
@@ -102,5 +112,85 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             slotResourceFoundInResponse.ShouldBeTrue("No Slots Resources were found in the response bundle.");
         }
+
+        [Then(@"the slots resources within the response bundle should be free")]
+        public void ThenTheSlotsResourcesWithinTheResponseBundleShouldBeFree()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
+                {
+                    ((Slot)entry.Resource).FreeBusyType.ShouldBe(Slot.SlotStatus.Free, "Slot freeBusy element sould be Free but is not");
+                }
+            }
+        }
+
+        [Then(@"the bundle resources should contain required meta data elements")]
+        public void ThenTheBundleResourcesShouldContainRequiredMetaDataElements()
+        {
+            Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
+            bundle.Meta.ShouldNotBeNull();
+            foreach (string profile in bundle.Meta.Profile)
+            {
+                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
+            }
+        }
+
+        [Then(@"the slot resources in the response bundle should contain meta data information")]
+        public void ThenTheSlotResourcesInTheResponseBundleShouldContainMetaDataInformation()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
+                {
+                    Slot slot = (Slot)entry.Resource;
+                    slot.Meta.ShouldNotBeNull("All Slot resources should contain MetaDate elements");
+                    slot.Meta.VersionId.ShouldNotBeNull("All Slot resource MetaData versionId should be populated");
+                    slot.Meta.VersionId.ShouldNotBeEmpty("All Slot resource MetaData versionId should be populated");
+                    int slotMetaProfileCount = 0;
+                    foreach (string profile in slot.Meta.Profile)
+                    {
+                        profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-slot-1", "The Slot MetaData profile is invalid");
+                        slotMetaProfileCount++;
+                    }
+                    slotMetaProfileCount.ShouldBeGreaterThanOrEqualTo(1,"A Slot Resource is missing the profile within the MetaData element.");
+                }
+            }
+        }
+
+        [Then(@"the slot resources can contain a maximum of one identifier with a populated value")]
+        public void ThenTheSlotResourcesCanContainAMaximumOfOneIdentifierWithAPopulatedValue()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
+                {
+                    Slot slot = (Slot)entry.Resource;
+                    int slotIdentifierCount = 0;
+                    foreach (Identifier identifier in slot.Identifier) {
+                        identifier.Value.ShouldNotBeNull("If an identifier is present in a Slot resource it must have a value.");
+                        identifier.Value.ShouldNotBeEmpty("If an identifier is present in a Slot resource it must have a value.");
+                        slotIdentifierCount++;
+                    }
+                    slotIdentifierCount.ShouldBeLessThanOrEqualTo(1, "There is more than one identifier within a Slot resource when there sould be a maximum of one");
+                }
+            }
+        }
+
+        [Then(@"the schedule reference within the slots resources should be resolvable in the response bundle")]
+        public void ThenTheScheduleReferenceWithinTheSlotsResourcesShouldBeResolvableInTheResponseBundle()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
+                {
+                    Slot slot = (Slot)entry.Resource;
+                    slot.Schedule.Reference.ShouldNotBeNull("There must be a Schedule reference within all slots.");
+                    slot.Schedule.Reference.ShouldNotBeEmpty("There must be a Schedule reference within all slots.");
+                    AccessRecordSteps.responseBundleContainsReferenceOfType(slot.Schedule.Reference, ResourceType.Schedule);
+                }
+            }
+        }
+
     }
 }
