@@ -155,7 +155,7 @@ Scenario Outline: Patient search failure due to invalid interactionId
 	When I search for Patient "patient2"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| InteractionId                                                     |
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
@@ -171,7 +171,7 @@ Scenario Outline: Patient search failure due to missing header
 	When I search for Patient "patient2"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| Header            |
 		| Ssp-TraceID       |

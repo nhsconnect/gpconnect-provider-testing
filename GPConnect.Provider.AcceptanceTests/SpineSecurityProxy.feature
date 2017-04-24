@@ -4,50 +4,21 @@ Feature: SpineSecurityProxy
 Background:
 	Given I have the test patient codes
 
-Scenario: SSP TraceID header not included in request
+Scenario Outline: header not included in metadata request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I do not send header "Ssp-TraceID"
+		And I do not send header "<Header>"
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
-
-Scenario: SSP From header not included in request
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I do not send header "Ssp-From"
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
-
-Scenario: SSP To header not included in request
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I do not send header "Ssp-To"
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
-
-Scenario: SSP InteractionId header not included in request
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I do not send header "Ssp-InteractionId"
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
-
-Scenario: Authorization header not included in request
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I do not send header "Authorization"
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| Header            |
+		| Authorization     |
+		| Ssp-From          |
+		| Ssp-InteractionId |
+		| Ssp-To            |
+		| Ssp-TraceID       |
 
 Scenario: Mismatched interactionId and endpoint in request
 	Given I am using the default server
@@ -55,7 +26,7 @@ Scenario: Mismatched interactionId and endpoint in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: invalid interactionId in request
 	Given I am using the default server
@@ -63,7 +34,7 @@ Scenario: invalid interactionId in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Send to endpoint with incorrect To asid for the provider endpoint
 	Given I am using the default server
