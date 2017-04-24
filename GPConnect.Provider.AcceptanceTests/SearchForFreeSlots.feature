@@ -255,8 +255,6 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		| application/xml+fhir  | application/json+fhir | JSON             |
 		| application/json+fhir | application/xml+fhir  | XML              |
 
-@ignore
-# currently a problem with content type in request being changed by the restclient
 Scenario Outline: I successfully perform a gpc.getschedule operation using various content types XML and JSON in format parameter
 	Given I am using the default server
 		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
@@ -278,8 +276,6 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		| application/xml+fhir  | application/json+fhir | JSON             |
 		| application/json+fhir | application/xml+fhir  | XML              |
 
-@ignore
-# currently a problem with content type in request being changed by the restclient
 Scenario Outline: I successfully perform a gpc.getschedule operation using various content types XML and JSON in the Accept Header and format parameter
 	Given I am using the default server
 		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
