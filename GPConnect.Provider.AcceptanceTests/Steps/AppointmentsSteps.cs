@@ -15,6 +15,9 @@ using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
 using System.Globalization;
 using static Hl7.Fhir.Model.Appointment;
+using Hl7.Fhir.Serialization;
+using RestSharp;
+using Newtonsoft.Json.Linq;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -24,7 +27,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly HttpSteps HttpSteps;
         private readonly HttpContext HttpContext;
-   
+        private object slots;
+
 
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
@@ -39,10 +43,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
+        [Given(@"I get the slots")]
+        public void BookSlots()
+        {
+            DateTime currentDateTime = DateTime.Now;
+            Period period = new Period(new FhirDateTime(currentDateTime), new FhirDateTime(currentDateTime.AddDays(3)));
+            FhirContext.FhirRequestParameters.Add("timePeriod", period);
+     
+            Organization organization = (Organization)HttpContext.StoredFhirResources["ORG1"];
+            HttpSteps.RestRequest(Method.POST, "/Organization/" + organization.Id + "/$gpc.getschedule", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
+      
+
+            HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.kJsonFhir);
+            Log.WriteLine("Response ContentType={0}", HttpContext.ResponseContentType);
+            HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
+            FhirJsonParser fhirJsonParser = new FhirJsonParser();
+            FhirContext.FhirResponseResource = fhirJsonParser.Parse<Resource>(HttpContext.ResponseBody);
+
+        }
+
         [Given(@"I search for an appointments for patient ""([^""]*)"" on the provider system and save the first response to ""([^""]*)""")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndSaveTheFirstResponseTo(int id, string storeKey)
         {
 
+            var url = "/Appointment/";
             var relativeUrl = "/Patient/"+id+"/Appointment";
             var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", relativeUrl);
             returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
@@ -52,6 +76,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             returnedFirstResource.GetType().ShouldBe(typeof(Appointment));
             if (HttpContext.StoredFhirResources.ContainsKey(storeKey)) HttpContext.StoredFhirResources.Remove(storeKey);
             HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
+      
+
         }
 
         [Given(@"I search for an appointments for patient ""([^""]*)"" on the provider system and if zero booked i book ""([^""]*)"" appointment")]
@@ -977,6 +1003,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"I find a patient with id ""(.*)"" and search for a slot and create ""(.*)"" appointment")]
         public void bookAppointmentForPatient(int id, int numOfAppointments)
         {
+
+
+
+            Organization organization = (Organization)HttpContext.StoredFhirResources["ORG1"];
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule");
+            Log.WriteLine("HERE");
+            HttpSteps.RestRequest(Method.POST, "/Organization/" + organization.Id + "/$gpc.getschedule", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters));
+
             for (int i = 0; i < numOfAppointments; i++)
             {
                 Log.WriteLine(numOfAppointments.ToString());

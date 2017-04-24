@@ -6,6 +6,7 @@ using RestSharp;
 using Shouldly;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
+using GPConnect.Provider.AcceptanceTests.Logger;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -24,6 +25,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps = httpSteps;
         }
 
+        public GetScheduleSteps()
+        {
+        }
+
         [Given(@"I search for the organization ""([^""]*)"" on the providers system and save the first response to ""([^""]*)""")]
         public void GivenISearchForTheOrganizationOnTheProviderSystemAndSaveTheFirstResponseTo(string organizaitonName, string storeKey)
         {
@@ -35,6 +40,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             returnedFirstResource.GetType().ShouldBe(typeof(Organization));
             if (HttpContext.StoredFhirResources.ContainsKey(storeKey)) HttpContext.StoredFhirResources.Remove(storeKey);
             HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
+         
         }
 
         [Given(@"I add period request parameter with a start date of todays and an end date ""([^""]*)"" days later")]

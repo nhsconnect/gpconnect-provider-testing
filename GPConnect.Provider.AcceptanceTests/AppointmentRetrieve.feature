@@ -2,6 +2,7 @@
 
 Background:
 	Given I have the test patient codes
+	Given I have the test ods codes
 
 @Appointment
 Scenario: I successfully perform a AppointmentAssignment
@@ -12,7 +13,7 @@ Scenario: I successfully perform a AppointmentAssignment
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		
-
+@ignore
 Scenario: Book single appointment for patient 2
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
@@ -21,7 +22,7 @@ Scenario: Book single appointment for patient 2
 		And the response body should be FHIR JSON
 		And I find a patient with id "2" and search for a slot and create "1" appointment
 
-
+@ignore
 Scenario: Book multiple appointment for patient 3
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
@@ -46,6 +47,10 @@ Scenario Outline: Appointment retrieve success valid id where appointment resour
 
 Scenario Outline: Appointment retrieve success valid id where single appointment resource is required resource
 	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I get the slots
 		And I search for an appointments for patient "<id>" on the provider system and if zero booked i book "<numberOfAppointments>" appointment
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I make a GET request to "/Patient/<id>/Appointment"
@@ -54,7 +59,7 @@ Scenario Outline: Appointment retrieve success valid id where single appointment
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
 		| id | numberOfAppointments |
-		| 1  | 1                    |
+		| 5  | 1                    |
 		| 2  | 1                    |
 		| 3  | 1                    |
 
