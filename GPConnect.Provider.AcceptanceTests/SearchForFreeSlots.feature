@@ -135,9 +135,9 @@ Scenario Outline: I perform a getSchedule with invalid end date and or start dat
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
 		And I add period request parameter with start date "<StartDate>" and end date "<EndDate>"
 	When I send a gpc.getschedule operation for the organization stored as "ORG1"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 	Examples: 
 		| StartDate        | EndDate          |
 		| invalidStartDate | 2017-02-28       |
@@ -162,7 +162,7 @@ Scenario Outline: I perform a getSchedule with valid partial dateTime strings
 		| StartDate                 | EndDate                   |
 		| 2017-02-26                | 2017-02-28                |
 		| 2017                      | 2017-01-03                |
-		| 2017-12-28                | 2017                      |
+		| 2017-12-28                | 2018                      |
 		| 2017-12-29T09:35:15+01:00 | 2017-12-29                |
 		| 2017-12-29T09:35:15+01:00 | 2018-01-02                |
 		| 2017-12-29                | 2017-12-29T14:55:34+01:00 |

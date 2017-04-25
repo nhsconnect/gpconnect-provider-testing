@@ -423,11 +423,12 @@ this.FeatureBackground();
 #line 137
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 138
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 139
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -436,7 +437,7 @@ this.FeatureBackground();
         [NUnit.Framework.DescriptionAttribute("I perform a getSchedule with valid partial dateTime strings")]
         [NUnit.Framework.TestCaseAttribute("2017-02-26", "2017-02-28", new string[0])]
         [NUnit.Framework.TestCaseAttribute("2017", "2017-01-03", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2017-12-28", "2017", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2017-12-28", "2018", new string[0])]
         [NUnit.Framework.TestCaseAttribute("2017-12-29T09:35:15+01:00", "2017-12-29", new string[0])]
         [NUnit.Framework.TestCaseAttribute("2017-12-29T09:35:15+01:00", "2018-01-02", new string[0])]
         [NUnit.Framework.TestCaseAttribute("2017-12-29", "2017-12-29T14:55:34+01:00", new string[0])]
