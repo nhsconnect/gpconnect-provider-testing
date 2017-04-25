@@ -96,8 +96,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
-  testRunner.And(string.Format("I add period request parameter with a start date of todays and an end date \"{0}\" " +
-                        "days later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
+                        "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
@@ -135,8 +135,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
-  testRunner.And(string.Format("I add period request parameter with a start date of todays and an end date \"{0}\" " +
-                        "days later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
+                        "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 30
@@ -167,17 +167,17 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 42
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"6\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"6\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization with locical id \"{0}\"", logicalIdentifier), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 44
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 45
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
-  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
-                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a OperationOutcome resource with error code \"ORGANISATION_" +
+                    "NOT_FOUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -204,8 +204,8 @@ this.FeatureBackground();
 #line 56
   testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"8\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"8\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 58
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 59
@@ -243,8 +243,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"7\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"7\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
   testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
@@ -310,11 +310,11 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 102
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"7\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"7\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"9\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"9\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 105
@@ -496,8 +496,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 178
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"7\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"7\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 179
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 180
@@ -536,8 +536,8 @@ this.FeatureBackground();
 #line 190
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 191
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"7\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"7\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 192
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 193
@@ -575,8 +575,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 202
-  testRunner.And(string.Format("I add period request parameter with a start date of todays and an end date \"{0}\" " +
-                        "days later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
+                        "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 203
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 204
@@ -615,8 +615,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 219
-  testRunner.And(string.Format("I add period request parameter with a start date of todays and an end date \"{0}\" " +
-                        "days later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
+                        "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 220
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 221
@@ -662,8 +662,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 238
-  testRunner.And(string.Format("I add period request parameter with a start date of todays and an end date \"{0}\" " +
-                        "days later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
+                        "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 239
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 240
@@ -711,8 +711,8 @@ this.FeatureBackground();
 #line 256
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeaderValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 257
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"8\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"8\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 259
@@ -760,8 +760,8 @@ this.FeatureBackground();
 #line 277
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", formatParameterValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 278
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"8\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"8\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 279
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 280
@@ -815,8 +815,8 @@ this.FeatureBackground();
 #line 299
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", formatParameterValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 300
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"8\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"8\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 301
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 302
@@ -854,8 +854,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 323
-  testRunner.And("I add period request parameter with a start date of todays and an end date \"8\" da" +
-                    "ys later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add period request parameter with a start date of today and an end date \"8\" day" +
+                    "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 324
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\" to the w" +
                     "rong endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -893,8 +893,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 334
-  testRunner.And(string.Format("I add period request parameter with a start date of todays and an end date \"{0}\" " +
-                        "days later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
+                        "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 335
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 336
@@ -950,8 +950,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 356
-  testRunner.And(string.Format("I add period request parameter with a start date of todays and an end date \"{0}\" " +
-                        "days later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
+                        "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 357
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 358
@@ -1013,8 +1013,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 381
-  testRunner.And(string.Format("I add period request parameter with a start date of todays and an end date \"{0}\" " +
-                        "days later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
+                        "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 382
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 383
@@ -1068,8 +1068,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 402
-  testRunner.And(string.Format("I add period request parameter with a start date of todays and an end date \"{0}\" " +
-                        "days later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
+                        "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 403
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 404
@@ -1083,6 +1083,49 @@ this.FeatureBackground();
 #line 408
   testRunner.And("if the response bundle contains a location resource it should contain meta data p" +
                     "rofile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 409
+  testRunner.And("the response bundle Location entries should contain a maximum of one ODS Site Cod" +
+                    "e and one other identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 410
+  testRunner.And("the response bundle Location entries should contain a name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 411
+  testRunner.And("the response bundle location entries should contain system code and display if th" +
+                    "e Type coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 412
+  testRunner.And("the response bundle location entries should contain valid  system code and displa" +
+                    "y if the PhysicalType coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 413
+  testRunner.And("if the response bundle location entries contain partOf element the reference shou" +
+                    "ld reference a resource in the response bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 414
+  testRunner.And("if the response bundle location entries contain managingOrganization element the " +
+                    "reference should reference a resource in the response bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Conformance profile supports the gpc.getSchedule operation")]
+        public virtual void ConformanceProfileSupportsTheGpc_GetScheduleOperation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the gpc.getSchedule operation", ((string[])(null)));
+#line 420
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 421
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 422
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
+                    "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 423
+ testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 424
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 425
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 426
+  testRunner.And("the conformance profile should contain the \"gpc.getschedule\" operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1098,21 +1141,21 @@ this.FeatureBackground();
                     "quest is after the start date of a slot but before the end date of the slot", new string[] {
                         "Manual",
                         "ignore"});
-#line 417
+#line 431
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 418
+#line 432
  testRunner.Given("I search for free slots at organization \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 419
+#line 433
   testRunner.And("I search for slots using a date range I know there is a free slot which has a sta" +
                     "rt date before the request parameter start date but the slot end date is after t" +
                     "he requeste parameter start date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 420
+#line 434
  testRunner.When("I perform the gpc.getSchedule operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 421
+#line 435
  testRunner.Then("the response should be successful and return a FHIR Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 422
+#line 436
  testRunner.Then("the slot which straddles the request parameter start date should appear in the re" +
                     "sponse bundle.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1132,21 +1175,21 @@ this.FeatureBackground();
                     "lot", new string[] {
                         "Manual",
                         "ignore"});
-#line 427
+#line 441
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 428
+#line 442
  testRunner.Given("I search for free slots at organization \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 429
+#line 443
   testRunner.And("I search for slots using a date range I know there is a free slot which has a sta" +
                     "rt date before the request parameter end date but the slot end date is after the" +
                     " requeste parameter end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 430
+#line 444
  testRunner.When("I perform the gpc.getSchedule operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 431
+#line 445
  testRunner.Then("the response should be successful and return a FHIR Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 432
+#line 446
  testRunner.Then("the slot which straddles the request parameter start date should appear in the re" +
                     "sponse bundle.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

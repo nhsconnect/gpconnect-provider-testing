@@ -39,7 +39,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
         }
 
-        [Given(@"I add period request parameter with a start date of todays and an end date ""([^""]*)"" days later")]
+        [Given(@"I add period request parameter with a start date of today and an end date ""([^""]*)"" days later")]
         public void GivenIAddPeriodRequestParameterWithAStartDateOfTodayAndAnEndDateDaysLater(double numberOfDaysRange) {
             DateTime currentDateTime = DateTime.Now;
             Period period = new Period(new FhirDateTime(currentDateTime), new FhirDateTime(currentDateTime.AddDays(numberOfDaysRange)));

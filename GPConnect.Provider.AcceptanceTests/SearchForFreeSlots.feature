@@ -9,7 +9,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation
 		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+		And I add period request parameter with a start date of today and an end date "<DaysRange>" days later
 	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -25,7 +25,7 @@ Scenario Outline: I send an invalid date range to the getSchedule operation and 
 		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+		And I add period request parameter with a start date of today and an end date "<DaysRange>" days later
 	When I send a gpc.getschedule operation for the organization stored as "ORG1"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -39,11 +39,11 @@ Scenario Outline: I send an invalid date range to the getSchedule operation and 
 Scenario Outline: I send a request to the getSchedule operation with invalid organization logic id
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "6" days later
+		And I add period request parameter with a start date of today and an end date "6" days later
 	When I send a gpc.getschedule operation for the organization with locical id "<LogicalIdentifier>"
-	Then the response status code should be "422"
+	Then the response status code should be "404"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the response should be a OperationOutcome resource with error code "ORGANISATION_NOT_FOUND"
 	Examples: 
 		| LogicalIdentifier         |
 		|                           |
@@ -54,7 +54,7 @@ Scenario Outline: getSchedule failure due to invalid interactionId
 		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
 	Given I am using the default server
 		And I am performing the "<InteractionId>" interaction
-		And I add period request parameter with a start date of todays and an end date "8" days later
+		And I add period request parameter with a start date of today and an end date "8" days later
 	When I send a gpc.getschedule operation for the organization stored as "ORG1"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -70,7 +70,7 @@ Scenario Outline: getSchedule failure due to missing header
 		And I search for the organization "ORG2" on the providers system and save the first response to "ORG2"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "7" days later
+		And I add period request parameter with a start date of today and an end date "7" days later
 		And I do not send header "<Header>"
 	When I send a gpc.getschedule operation for the organization stored as "ORG2"
 	Then the response status code should be "400"
@@ -99,8 +99,8 @@ Scenario: I try to getSchedule with multiple time period parameter
 		And I search for the organization "ORG2" on the providers system and save the first response to "ORG2"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "7" days later
-		And I add period request parameter with a start date of todays and an end date "9" days later
+		And I add period request parameter with a start date of today and an end date "7" days later
+		And I add period request parameter with a start date of today and an end date "9" days later
 	When I send a gpc.getschedule operation for the organization stored as "ORG2"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -175,7 +175,7 @@ Scenario: I try to getSchedule with multiple parameters of which some are invali
 		And I search for the organization "ORG2" on the providers system and save the first response to "ORG2"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "7" days later
+		And I add period request parameter with a start date of today and an end date "7" days later
 		And I am requesting the "SUM" care record section
 	When I send a gpc.getschedule operation for the organization stored as "ORG2"
 	Then the response status code should be "400"
@@ -188,7 +188,7 @@ Scenario: I try to getSchedule with multiple parameters of which some are invali
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
 		And I am requesting the "SUM" care record section
-		And I add period request parameter with a start date of todays and an end date "7" days later
+		And I add period request parameter with a start date of today and an end date "7" days later
 	When I send a gpc.getschedule operation for the organization stored as "ORG2"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -199,7 +199,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+		And I add period request parameter with a start date of today and an end date "<DaysRange>" days later
 	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -216,7 +216,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+		And I add period request parameter with a start date of today and an end date "<DaysRange>" days later
 	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -235,7 +235,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+		And I add period request parameter with a start date of today and an end date "<DaysRange>" days later
 	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -254,7 +254,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
 		And I set the request content type to "<RequestContentType>"
 		And I set the Accept header to "<AcceptHeaderValue>"
-		And I add period request parameter with a start date of todays and an end date "8" days later
+		And I add period request parameter with a start date of today and an end date "8" days later
 	When I send a gpc.getschedule operation for the organization stored as "ORG1"
 	Then the response status code should indicate success
 		And the response body should be FHIR <ResponseShouldBe>
@@ -275,7 +275,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
 		And I set the request content type to "<RequestContentType>"
 		And I add the parameter "_format" with the value "<FormatParameterValue>"
-		And I add period request parameter with a start date of todays and an end date "8" days later
+		And I add period request parameter with a start date of today and an end date "8" days later
 	When I send a gpc.getschedule operation for the organization stored as "ORG1"
 	Then the response status code should indicate success
 		And the response body should be FHIR <ResponseShouldBe>
@@ -297,7 +297,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		And I set the request content type to "<RequestContentType>"
 		And I set the Accept header to "<AcceptHeaderValue>"
 		And I add the parameter "_format" with the value "<FormatParameterValue>"
-		And I add period request parameter with a start date of todays and an end date "8" days later
+		And I add period request parameter with a start date of today and an end date "8" days later
 	When I send a gpc.getschedule operation for the organization stored as "ORG1"
 	Then the response status code should indicate success
 		And the response body should be FHIR <ResponseShouldBe>
@@ -320,7 +320,7 @@ Scenario: Send a request to an invalid endpoint for the gpc.getschedule operatio
 		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "8" days later
+		And I add period request parameter with a start date of today and an end date "8" days later
 	When I send a gpc.getschedule operation for the organization stored as "ORG1" to the wrong endpoint
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -331,7 +331,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+		And I add period request parameter with a start date of today and an end date "<DaysRange>" days later
 	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -353,7 +353,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+		And I add period request parameter with a start date of today and an end date "<DaysRange>" days later
 	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -378,7 +378,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+		And I add period request parameter with a start date of today and an end date "<DaysRange>" days later
 	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -399,17 +399,31 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of todays and an end date "<DaysRange>" days later
+		And I add period request parameter with a start date of today and an end date "<DaysRange>" days later
 	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should include slot resources
 		And if the response bundle contains a location resource it should contain meta data profile and version id
+		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
+		And the response bundle Location entries should contain a name element
+		And the response bundle location entries should contain system code and display if the Type coding is included in the resource
+		And the response bundle location entries should contain valid  system code and display if the PhysicalType coding is included in the resource
+		And if the response bundle location entries contain partOf element the reference should reference a resource in the response bundle
+		And if the response bundle location entries contain managingOrganization element the reference should reference a resource in the response bundle
 	Examples:
 		| Organization | DaysRange |
 		| ORG1         | 13        |
 		| ORG2         | 13        |
+
+Scenario: Conformance profile supports the gpc.getSchedule operation
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the conformance profile should contain the "gpc.getschedule" operation
 
 @Manual
 @ignore
