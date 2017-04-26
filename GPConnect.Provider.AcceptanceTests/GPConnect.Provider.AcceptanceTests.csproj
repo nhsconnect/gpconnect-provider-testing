@@ -76,6 +76,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -184,6 +185,7 @@
       <DependentUpon>SearchForFreeSlots.feature</DependentUpon>
     </Compile>
     <Compile Include="Steps\AppointmentsSteps.cs" />
+    <Compile Include="Steps\LocationSteps.cs" />
     <Compile Include="Steps\GetScheduleSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />
     <Compile Include="Steps\PatientSteps.cs" />
@@ -282,7 +284,9 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

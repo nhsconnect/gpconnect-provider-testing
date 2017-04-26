@@ -177,7 +177,7 @@ Scenario Outline: Appointment retrieve failure due to missing header
 	When I make a GET request to "/Patient/1/Appointment"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| Header            |
 		| Ssp-TraceID       |
@@ -192,7 +192,7 @@ Scenario Outline: Appointment retrieve interaction id incorrect fail
     When I make a GET request to "/Patient/<id>/Appointment"
     Then the response status code should be "400"
         And the response body should be FHIR JSON
-        And the response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
     Examples:
        | id | interactionId                                                     |
        | 1  | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |

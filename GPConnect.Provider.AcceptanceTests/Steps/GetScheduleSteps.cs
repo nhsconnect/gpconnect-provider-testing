@@ -41,7 +41,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
          
         }
 
-        [Given(@"I add period request parameter with a start date of todays and an end date ""([^""]*)"" days later")]
+        [Given(@"I add period request parameter with a start date of today and an end date ""([^""]*)"" days later")]
         public void GivenIAddPeriodRequestParameterWithAStartDateOfTodayAndAnEndDateDaysLater(double numberOfDaysRange) {
             DateTime currentDateTime = DateTime.Now;
             Period period = new Period(new FhirDateTime(currentDateTime), new FhirDateTime(currentDateTime.AddDays(numberOfDaysRange)));
@@ -78,6 +78,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Organization organization = (Organization)HttpContext.StoredFhirResources[storeKey];
             ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(organization.Id);
+        }
+
+        [When(@"I send a gpc.getschedule operation for the organization stored as ""([^""]*)"" to the wrong endpoint")]
+        public void ISendAGpcGetScheduleOperationForTheOrganizationStoredAsToTheWrongEndpoint(string storeKey)
+        {
+            Organization organization = (Organization)HttpContext.StoredFhirResources[storeKey];
+            string body = null;
+            if (HttpContext.RequestContentType.Contains("xml"))
+            {
+                body = FhirSerializer.SerializeToXml(FhirContext.FhirRequestParameters);
+            }
+            else
+            {
+                body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
+            }
+            HttpSteps.RestRequest(Method.POST, "/" + organization.Id + "/$gpc.getschedule", body);
         }
 
         [When(@"I send a gpc.getschedule operation for the organization with locical id ""([^""]*)""")]
@@ -184,6 +200,115 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     slot.Schedule.Reference.ShouldNotBeNull("There must be a Schedule reference within all slots.");
                     slot.Schedule.Reference.ShouldNotBeEmpty("There must be a Schedule reference within all slots.");
                     AccessRecordSteps.responseBundleContainsReferenceOfType(slot.Schedule.Reference, ResourceType.Schedule);
+                }
+            }
+        }
+
+        [Then(@"the schedule resources in the response bundle should contain meta data information")]
+        public void ThenTheScheduleResourcesInTheResponseBundleShouldContainMetaDataInformation()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
+                {
+                    Schedule schedule = (Schedule)entry.Resource;
+                    schedule.Meta.ShouldNotBeNull("All Schedule resources should contain MetaDate elements");
+                    schedule.Meta.VersionId.ShouldNotBeNull("All Schedule resource MetaData versionId should be populated");
+                    schedule.Meta.VersionId.ShouldNotBeEmpty("All Schedule resource MetaData versionId should be populated");
+                    int scheduleMetaProfileCount = 0;
+                    foreach (string profile in schedule.Meta.Profile)
+                    {
+                        profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-schedule-1", "The Schedule MetaData profile is invalid");
+                        scheduleMetaProfileCount++;
+                    }
+                    scheduleMetaProfileCount.ShouldBeGreaterThanOrEqualTo(1, "A Schedule Resource is missing the profile within the MetaData element.");
+                }
+            }
+        }
+
+        [Then(@"the schedule resources in the response bundle should contain an actor which references a location within the response bundle")]
+        public void ThenTheScheduleResourcesInTheResponseBundleShouldContainAnActorWhichReferencesALocationWithinTheResponseBundle()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
+                {
+                    Schedule schedule = (Schedule)entry.Resource;
+                    schedule.Actor.ShouldNotBeNull();
+                    schedule.Actor.Reference.ShouldNotBeNull();
+                    schedule.Actor.Reference.ShouldStartWith("Location/");
+                    AccessRecordSteps.responseBundleContainsReferenceOfType(schedule.Actor.Reference, ResourceType.Location);
+                }
+            }
+        }
+
+        [Then(@"the schedule resources can contain a single identifier but must have a value if present")]
+        public void ThenTheScheduleResourcesCanContainASingleIdentifierButMustHaveAValueIfPresent()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
+                {
+                    Schedule schedule = (Schedule)entry.Resource;
+                    int identifierCount = 0;
+                    foreach (var identifier in schedule.Identifier) {
+                        identifier.Value.ShouldNotBeNull("If a schedule identifier is included it should have a value");
+                        identifier.Value.ShouldNotBeEmpty();
+                        identifierCount++;
+                    }
+                    identifierCount.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one identifier in a schedule resource.");
+                }
+            }
+        }
+        
+        [Then(@"the schedule resources can contain a planningHorizon but it must contain a valid start date")]
+        public void ThenTheScheduleResourcesCanContainAPlanningHorizonButItMustContainAValidStartDate()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
+                {
+                    Schedule schedule = (Schedule)entry.Resource;
+                    if (schedule.PlanningHorizon != null)
+                    {
+                        schedule.PlanningHorizon.Start.ShouldNotBeNull();
+                    }
+                }
+            }
+        }
+
+        [Then(@"the schedule resources can contain a single type element")]
+        public void ThenTheScheduleResourcesCanContainASingleTypeElement()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
+                {
+                    Schedule schedule = (Schedule)entry.Resource;
+                    if (schedule.Type != null)
+                    {
+                        schedule.Type.Count.ShouldBeLessThanOrEqualTo(1);
+                    }
+                }
+            }
+        }
+
+        [Then(@"the schedule resources can contain extensions which references practitioner resources within the bundle")]
+        public void ThenTheScheduleResourcesCanContainExtensionsWhichReferencesPractitionerResourcesWithinTheBundle()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
+                {
+                    Schedule schedule = (Schedule)entry.Resource;
+                    foreach (var extension in schedule.Extension) {
+                        extension.Url.ShouldBe("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-practitioner-1");
+                        extension.Value.ShouldNotBeNull("Practitioner reference extension must have a reference.");
+                        var practitionerReference = ((ResourceReference)extension.Value).Reference;
+                        practitionerReference.ShouldNotBeNull();
+                        practitionerReference.ShouldStartWith("Practitioner/");
+                        AccessRecordSteps.responseBundleContainsReferenceOfType(practitionerReference, ResourceType.Practitioner);
+                    }
                 }
             }
         }
