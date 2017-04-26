@@ -329,8 +329,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
 
             // Check the response
-            HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.OK);
-            Then($@"the response body should be FHIR JSON"); // Create resource object from returned JSON
+            HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.Created);
+  
             var returnResource = FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
 
             // Restore state

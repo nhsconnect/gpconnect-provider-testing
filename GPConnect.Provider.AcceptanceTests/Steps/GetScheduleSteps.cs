@@ -27,10 +27,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             AccessRecordSteps = accessRecordSteps;
         }
 
-        public GetScheduleSteps()
-        {
-        }
-
         [Given(@"I search for the organization ""([^""]*)"" on the providers system and save the first response to ""([^""]*)""")]
         public void GivenISearchForTheOrganizationOnTheProviderSystemAndSaveTheFirstResponseTo(string organizaitonName, string storeKey)
         {

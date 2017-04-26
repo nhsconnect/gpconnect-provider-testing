@@ -57,6 +57,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         string ProviderAddress { get; }
         string EndpointAddress { get; }
         Dictionary<string, Hl7.Fhir.Model.Resource> StoredFhirResources { get;}
+        Dictionary<string, List<Hl7.Fhir.Model.Resource>> StoredSlots { get; }
     }
 
     public class HttpContext : IHttpContext
@@ -121,6 +122,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public const string kProviderASID = "providerASID";
 
             public const string kStoredFhirResources = "storedFhirResources";
+            public const string kStoredSlots = "storedSlots";
         }
 
         // Protocol
@@ -488,6 +490,34 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 return null;
             }
         }
+
+
+        public Dictionary<string, List<Resource>> StoredSlots
+        {
+            get
+            {
+                try
+                {
+                   
+                    return ScenarioContext.Get<Dictionary<string, List<Resource>>>(Context.kStoredSlots);
+                }
+                catch (Exception)
+                {
+                }
+                try
+                {
+                  
+                    ScenarioContext.Set(new Dictionary<string, List<Resource>>(), Context.kStoredSlots);
+                    return ScenarioContext.Get<Dictionary<string, List<Resource>>>(Context.kStoredSlots);
+                }
+                catch (Exception)
+                {
+                }
+                return null;
+            }
+        }
+
+       
 
         // Load App.Config
 
