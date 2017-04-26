@@ -99,6 +99,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Audit.feature</DependentUpon>
     </Compile>
+    <Compile Include="BookAppointment.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BookAppointment.feature</DependentUpon>
+    </Compile>
     <Compile Include="Constants\SpineConst.cs" />
     <Compile Include="Constants\FhirConst.cs" />
     <Compile Include="Constants\HttpConst.cs" />
@@ -223,6 +228,10 @@
     <None Include="Audit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Audit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="BookAppointment.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>BookAppointment.feature.cs</LastGenOutput>
     </None>
     <None Include="FhirBase.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

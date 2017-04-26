@@ -605,6 +605,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.OK);
         }
+        [Then(@"the response status code should indicate created")]
+        public void ThenTheResponseStatusCodeShouldIndicateCreated()
+        {
+            HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.Created);
+        }
 
         [Then(@"the response status code should indicate failure")]
         public void ThenTheResponseStatusCodeShouldIndicateFailure()

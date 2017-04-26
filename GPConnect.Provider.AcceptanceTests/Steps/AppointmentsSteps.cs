@@ -101,9 +101,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
         }
 
-        [Given(@"I search for an appointments for patient ""([^""]*)"" on the provider system and if zero booked i book ""([^""]*)"" appointment")]
-        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(int id, int numOfAppointments)
+        [When(@"I book an appointment for patient ""([^""]*)"" on the provider system")]
+        public void bookAppointmentForUser (int id)
+            {
+            Log.WriteLine("reached here 1");
+            GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(id, 1);
+        }
+
+
+        [When(@"I book an appointment for patient ""([^""]*)"" on the provider system using interaction id ""([^""]*)""")]
+        public void bookAppointmentForUserWithIncorrectInteractionId(int id, string interactionId)
         {
+            Log.WriteLine("reached here 1");
+            bookAppointmentForPatient(id, 1, interactionId);
+        }
+
+
+        [When(@"I book an appointment for patient""([^""]*)"" on the provider system using the url ""([^""]*)""")]
+        public void bookAppointmentForWithInvalidUrl()
+        {
+
+        }
+
+        [Given(@"I search for an appointments for patient ""([^""]*)"" on the provider system and if zero booked i book ""([^""]*)"" appointment")]
+        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(int id, int numOfAppointments, string interactionId = null)
+        {
+            Log.WriteLine("reached here 2");
             var relativeUrl = "/Patient/" + id + "/Appointment";
             var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", relativeUrl);
             returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
@@ -915,14 +938,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"I find a patient with id ""(.*)"" and search for a slot and create ""(.*)"" appointment")]
-        public void bookAppointmentForPatient(int id, int numOfAppointments)
+        public void bookAppointmentForPatient(int id, int numOfAppointments, string interactionId =null)
         {
+            Log.WriteLine("reached here 3");
 
             Organization organization = (Organization)HttpContext.StoredFhirResources["ORG1"];
+            Log.WriteLine("reached here 4");
             List<Resource> slot = (List<Resource>)HttpContext.StoredSlots["Slot"];
             Location locationSaved = (Location)HttpContext.StoredFhirResources["Location"];
             string locationId = locationSaved.Id;
-    
+            Log.WriteLine("reached here 5");
+
             Practitioner practitionerSaved = (Practitioner)HttpContext.StoredFhirResources["Practitioner"];
             string practitionerId = practitionerSaved.Id;
        
@@ -981,7 +1007,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             
             appointment.Status = status;
             //Book the appointment
-            HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+            HttpSteps.bookAppointment(interactionId, "/Appointment", appointment);
          }
 
         [Then(@"patient ""(.*)"" should have ""(.*)"" appointments")]
