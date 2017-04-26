@@ -107,7 +107,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var relativeUrl = "/Patient/" + id + "/Appointment";
             var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", relativeUrl);
             returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
-            if (((Bundle)returnedResourceBundle).Entry.Count != numOfAppointments)
+            if (((Bundle)returnedResourceBundle).Entry.Count < numOfAppointments || ((Bundle)returnedResourceBundle).Entry.Count ==0)
             {
                 for (int i = 0; i < numOfAppointments; i++)
                 {

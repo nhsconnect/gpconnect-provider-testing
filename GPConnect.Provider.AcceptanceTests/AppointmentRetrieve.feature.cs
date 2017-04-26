@@ -114,19 +114,12 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve success valid id where single appointment resource is requir" +
             "ed resource")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        [NUnit.Framework.TestCaseAttribute("5", "5", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("5", "2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("2", "2", new string[0])]
         public virtual void AppointmentRetrieveSuccessValidIdWhereSingleAppointmentResourceIsRequiredResource(string id, string numberOfAppointments, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve success valid id where single appointment resource is requir" +
-                    "ed resource", @__tags);
+                    "ed resource", exampleTags);
 #line 21
 this.ScenarioSetup(scenarioInfo);
 #line 3
@@ -195,7 +188,6 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve send request with date variations with valid start date")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         [NUnit.Framework.TestCaseAttribute("1", "2014", new string[0])]
         [NUnit.Framework.TestCaseAttribute("1", "2014-02", new string[0])]
         [NUnit.Framework.TestCaseAttribute("1", "2014-10-05", new string[0])]
@@ -210,13 +202,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("1", "2015-10-23T11:08:32+00:00", new string[0])]
         public virtual void AppointmentRetrieveSendRequestWithDateVariationsWithValidStartDate(string id, string startDate, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with date variations with valid start date", @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with date variations with valid start date", exampleTags);
 #line 53
 this.ScenarioSetup(scenarioInfo);
 #line 3
@@ -557,8 +543,8 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve appointment which contains all mandatory resources")]
-        [NUnit.Framework.TestCaseAttribute("1", "5", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2", "5", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("1", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2", "2", new string[0])]
         public virtual void AppointmentRetrieveAppointmentWhichContainsAllMandatoryResources(string id, string numberOfAppointments, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve appointment which contains all mandatory resources", exampleTags);

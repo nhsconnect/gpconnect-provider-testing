@@ -17,7 +17,7 @@ Scenario Outline: Appointment retrieve success valid id where appointment resour
 		| 1		 |
 		| 2		 |
 		| 400000 |
-@ignore
+
 Scenario Outline: Appointment retrieve success valid id where single appointment resource is required resource
 	Given I am using the default server
 		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
@@ -33,7 +33,7 @@ Scenario Outline: Appointment retrieve success valid id where single appointment
 		And patient "<id>" should have "<numberOfAppointments>" appointments
 	Examples:
 		| id | numberOfAppointments |
-		| 5  | 5                    |
+		| 5  | 2                    |
 		| 2  | 2                    |
 	
 Scenario Outline: Appointment retrieve fail invalid id
@@ -49,7 +49,7 @@ Scenario Outline: Appointment retrieve fail invalid id
 		| dd  |
 		|     |
 		| null|
-@ignore
+
 Scenario Outline: Appointment retrieve send request with date variations with valid start date
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
@@ -266,8 +266,8 @@ Scenario Outline: Appointment retrieve appointment which contains all mandatory 
 	Then the bundle appointment resource should contain at least one participant
 	 Examples:
         | id | numberOfAppointments |
-		| 1  | 5                    |
-		| 2  | 5                    |
+		| 1  | 2                    |
+		| 2  | 2                    |
 
 
 Scenario Outline: Appointment retrieve bundle resource must contain status with valid value
