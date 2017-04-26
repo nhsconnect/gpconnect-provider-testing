@@ -899,9 +899,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     }
                     countPatient.ShouldBe(1);
-
                 }
-
             }
         }
 
@@ -911,10 +909,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             
             Organization organization = (Organization)HttpContext.StoredFhirResources["ORG1"];
             List<Resource> slot = (List<Resource>)HttpContext.StoredSlots["Slot"];
-
             Appointment appointment = new Appointment();
-
-            var patientResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", "/Patient/1");
 
             //Patient Resource
             ParticipantComponent patient = new ParticipantComponent();
@@ -944,40 +939,34 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Participant.Add(location);
 
             //Slot Resource
-          
-
             ResourceReference slots = new ResourceReference();
-            foreach (Slot slotR in slot)
+            foreach (Slot slotResource in slot)
             {
         
-                String TEXT3 = slotR.FreeBusyType.Value.ToString();
-                Boolean val = TEXT3.Equals("Free");
-                slotR.FreeBusyType.Equals("Free").ToString();
+                string freeBusy = slotResource.FreeBusyType.Value.ToString();
+                Boolean val = freeBusy.Equals("Free");
                 if (val)
                 {
-                    string ids = slotR.Id.ToString();
-                     slots.Reference = slotR.Id;
+                    string ids = slotResource.Id.ToString();
+                    slots.Reference = slotResource.Id;
                     appointment.Slot.Add(slots);
-                    slot.Remove(slotR);
-                 
+                    slot.Remove(slotResource);
+                    appointment.Start = slotResource.Start;
+                    appointment.End = slotResource.End;
+
                     break;
                 }
             }
             //AppointmentResources
             HttpContext.StoredSlots.Remove("Slot");
             HttpContext.StoredSlots.Add("Slot", slot);
-            DateTime start = new DateTime(2017, 4, 20, 7, 0, 0);
-            DateTime end = new DateTime(2017, 4, 20, 7, 0, 0);
-            appointment.Start = start;
-            appointment.End = end;
-
+        
             AppointmentStatus status = new AppointmentStatus();
             appointment.Status = status;
 
             //Book the appointment
             HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
-       
-        }
+         }
 
         [Then(@"patient ""(.*)"" should have ""(.*)"" appointments")]
         public void checkPatientHasTheCorrectAmountOfResources(int id, int numberOfAppointments)
@@ -1034,18 +1023,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             location.Actor = locationReference;
             appointment.Participant.Add(location);
 
-            //Slot Resource
+
             ResourceReference slots = new ResourceReference();
             foreach (Slot slotR in slot)
             {
-           
+
+                String TEXT3 = slotR.FreeBusyType.Value.ToString();
+                Boolean val = TEXT3.Equals("Free");
+                slotR.FreeBusyType.Equals("Free").ToString();
+                if (val)
+                {
+                    string ids = slotR.Id.ToString();
+                    slots.Reference = slotR.Id;
+                    appointment.Slot.Add(slots);
+                    slot.Remove(slotR);
+                    appointment.Start = slotR.Start;
+                    appointment.End = slotR.End;
+
+                    break;
+                }
             }
-
-
-            DateTime start = new DateTime(startDate, 1, 1,1, 0, 0);
-            DateTime end = new DateTime(2017, 4, 20, 7, 0, 0);
-            appointment.Start = start;
-            appointment.End = end;
+            //AppointmentResources
+            HttpContext.StoredSlots.Remove("Slot");
+            HttpContext.StoredSlots.Add("Slot", slot);
 
             AppointmentStatus status = new AppointmentStatus();
             appointment.Status = status;
