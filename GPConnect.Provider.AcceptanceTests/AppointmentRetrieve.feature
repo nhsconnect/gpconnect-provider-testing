@@ -17,7 +17,7 @@ Scenario Outline: Appointment retrieve success valid id where appointment resour
 		| 1		 |
 		| 2		 |
 		| 400000 |
-
+@ignore
 Scenario Outline: Appointment retrieve success valid id where single appointment resource is required resource
 	Given I am using the default server
 		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
@@ -49,7 +49,7 @@ Scenario Outline: Appointment retrieve fail invalid id
 		| dd  |
 		|     |
 		| null|
-
+@ignore
 Scenario Outline: Appointment retrieve send request with date variations with valid start date
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
@@ -71,7 +71,7 @@ Scenario Outline: Appointment retrieve send request with date variations with va
 		| 1  | 2014-05                   |
 		| 1  | 2014-05-01T11:08:32       |
 		| 1  | 2015-10-23T11:08:32+00:00 |
-
+@ignore
 Scenario Outline: Appointment retrieve book appointment then request appointment and check it is returned
 	Given I am using the default server
 		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
@@ -95,7 +95,7 @@ Scenario Outline: Appointment retrieve book appointment then request appointment
 		| 1  | 2015-10-23T11:08:32+00:00 |
 
 		 
-		
+	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
@@ -108,7 +108,7 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		| 16-02-2016                |
 		| 16/02/2016                |
 		| 99-99-99999               |
-		| 9999                      |
+		| 99999                     |
 		| 201                       |
 		| 2016-13                   |
 		| 2016-13-14                |
@@ -266,8 +266,8 @@ Scenario Outline: Appointment retrieve appointment which contains all mandatory 
 	Then the bundle appointment resource should contain at least one participant
 	 Examples:
         | id | numberOfAppointments |
-		| 5  | 1                    |
-		| 2  | 1                    |
+		| 1  | 5                    |
+		| 2  | 5                    |
 
 
 Scenario Outline: Appointment retrieve bundle resource must contain status with valid value

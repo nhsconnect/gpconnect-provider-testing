@@ -53,14 +53,34 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
             FhirJsonParser fhirJsonParser = new FhirJsonParser();
             FhirContext.FhirResponseResource = fhirJsonParser.Parse<Resource>(HttpContext.ResponseBody);
+
+
+
             List<Resource> slots = new List<Resource>();
+
+
+
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                 HttpContext.StoredFhirResources.Add("Organization", (Organization)entry.Resource);
+                }
+                if (entry.Resource.ResourceType.Equals(ResourceType.Location))
+                {
+                    HttpContext.StoredFhirResources.Add("Location", (Location)entry.Resource);
+                }
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+               {
+                    HttpContext.StoredFhirResources.Remove("Practitioner");
+                    HttpContext.StoredFhirResources.Add("Practitioner", (Practitioner)entry.Resource);
+                }
+                
                 if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
                 {                   
                     string id = ((Slot)entry.Resource).Id.ToString();
                     slots.Add((Slot)entry.Resource);
-                }
+                }            
             }
             String here = slots.Count.ToString();
             HttpContext.StoredSlots.Add("Slot", slots);
@@ -314,7 +334,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
                     Appointment appointment = (Appointment)entry.Resource;
-
                     if (appointment.Type == null)
                     {
                         Assert.Pass();
@@ -416,8 +435,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-
-
         [Then(@"if the appointment resource contains an identifier it contains a valid system and value")]
         public void appointmentContainsValidIdentifierWithSystemAndValue()
         {
@@ -452,7 +469,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             }
         }
-
 
         [Then(@"if the the start date must be before the end date")]
         public void startDateBeforeEndDate()
@@ -659,7 +675,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 identifier.System.ShouldBe("http://fhir.nhs.net/Id/gpconnect-appointment-identifier");
                 identifier.Value.ShouldNotBeNull();
                 identifier.Value.ShouldBe(id);
-
             }
         }
 
@@ -769,14 +784,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     int extensionCount = 0;
                     Appointment appointment = (Appointment)entry.Resource;
-
-
                     foreach (Extension appointmentCancellationReason in appointment.ModifierExtension)
                     {
 
                         if (appointmentCancellationReason.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0"))
                         {
-
                             appointmentCancellationReason.Url.ShouldBeOfType<Uri>();
                             appointmentCancellationReason.Value.ShouldBeOfType<String>();
                             appointmentCancellationReason.Value.ShouldNotBeNull();
@@ -876,8 +888,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
-
-        [Then(@"if actor returns a patient resource the resource is valid")]
+       [Then(@"if actor returns a patient resource the resource is valid")]
         public void actorPatientResourceValid()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -906,9 +917,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"I find a patient with id ""(.*)"" and search for a slot and create ""(.*)"" appointment")]
         public void bookAppointmentForPatient(int id, int numOfAppointments)
         {
-            
+
             Organization organization = (Organization)HttpContext.StoredFhirResources["ORG1"];
             List<Resource> slot = (List<Resource>)HttpContext.StoredSlots["Slot"];
+            Location locationSaved = (Location)HttpContext.StoredFhirResources["Location"];
+            string locationId = locationSaved.Id;
+    
+            Practitioner practitionerSaved = (Practitioner)HttpContext.StoredFhirResources["Practitioner"];
+            string practitionerId = practitionerSaved.Id;
+       
             Appointment appointment = new Appointment();
 
             //Patient Resource
@@ -927,14 +944,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             //Practitioner Resource
             ParticipantComponent practitioner = new ParticipantComponent();
             ResourceReference practitionerReference = new ResourceReference();
-            practitionerReference.Reference = "Practitioner/2";
+            
+            practitionerReference.Reference = "Practitioner/"+ practitionerId;
             practitioner.Actor = practitionerReference;
             appointment.Participant.Add(practitioner);
 
             //Location Resource
             ParticipantComponent location = new ParticipantComponent();
             ResourceReference locationReference = new ResourceReference();
-            locationReference.Reference = "Location/3";
+            locationReference.Reference = "Location/"+ locationId;
             location.Actor = locationReference;
             appointment.Participant.Add(location);
 
@@ -942,7 +960,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ResourceReference slots = new ResourceReference();
             foreach (Slot slotResource in slot)
             {
-        
                 string freeBusy = slotResource.FreeBusyType.Value.ToString();
                 Boolean val = freeBusy.Equals("Free");
                 if (val)
@@ -953,7 +970,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     slot.Remove(slotResource);
                     appointment.Start = slotResource.Start;
                     appointment.End = slotResource.End;
-
                     break;
                 }
             }
@@ -962,8 +978,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredSlots.Add("Slot", slot);
         
             AppointmentStatus status = new AppointmentStatus();
+            
             appointment.Status = status;
-
             //Book the appointment
             HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
          }
@@ -974,7 +990,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             int appointmentCount = 0;
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
-
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
                     appointmentCount++;
@@ -984,76 +999,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointmentCount.ShouldBe<int>(numberOfAppointments);
         }
 
-
-        [Given(@"I book an appointment with a start date ""(.*)""")]
-        public void bookAppointmentForPatientWithDate(int startDate)
-        {
-            //needs work
-            int id = 1;
-            List<Resource> slot = (List<Resource>)HttpContext.StoredSlots["slots"];
-          
-            Organization organization = (Organization)HttpContext.StoredFhirResources["ORG1"];
-             Appointment appointment = new Appointment();
-            var patientResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", "/Patient/1");
-
-            //Patient Resource
-            ParticipantComponent patient = new ParticipantComponent();
-            ResourceReference patientReference = new ResourceReference();
-            patientReference.Reference = "Patient/" + id;
-
-            Code code = new Code();
-            code.Equals("accepted");
-            ParticipationStatus stat = new ParticipationStatus();
-
-            patient.Status = stat;
-            patient.Actor = patientReference;
-            appointment.Participant.Add(patient);
-
-            //Practitioner Resource
-            ParticipantComponent practitioner = new ParticipantComponent();
-            ResourceReference practitionerReference = new ResourceReference();
-            practitionerReference.Reference = "Practitioner/2";
-            practitioner.Actor = practitionerReference;
-            appointment.Participant.Add(practitioner);
-
-            //Location Resource
-            ParticipantComponent location = new ParticipantComponent();
-            ResourceReference locationReference = new ResourceReference();
-            locationReference.Reference = "Location/3";
-            location.Actor = locationReference;
-            appointment.Participant.Add(location);
-
-
-            ResourceReference slots = new ResourceReference();
-            foreach (Slot slotR in slot)
-            {
-
-                String TEXT3 = slotR.FreeBusyType.Value.ToString();
-                Boolean val = TEXT3.Equals("Free");
-                slotR.FreeBusyType.Equals("Free").ToString();
-                if (val)
-                {
-                    string ids = slotR.Id.ToString();
-                    slots.Reference = slotR.Id;
-                    appointment.Slot.Add(slots);
-                    slot.Remove(slotR);
-                    appointment.Start = slotR.Start;
-                    appointment.End = slotR.End;
-
-                    break;
-                }
-            }
-            //AppointmentResources
-            HttpContext.StoredSlots.Remove("Slot");
-            HttpContext.StoredSlots.Add("Slot", slot);
-
-            AppointmentStatus status = new AppointmentStatus();
-            appointment.Status = status;
-
-            //Book the appointment
-            HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
-           
-        }
     }
 }
 
