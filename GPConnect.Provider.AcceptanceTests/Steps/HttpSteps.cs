@@ -166,6 +166,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, acceptContentType);
         }
 
+        [Given(@"I set the Prefer header to ""(.*)""")]
+        public void GivenISetThePreferHeaderTo(string preferHeaderContent)
+        {
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kPrefer, preferHeaderContent);
+        }
+
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
         public void GivenIAddTheParameterWithTheValue(string parameterName, string parameterValue)
         {
@@ -329,7 +335,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
 
             // Check the response
-            HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.Created);
+           HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.Created);
   
             var returnResource = FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
 
