@@ -42,8 +42,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var relativeUrl = "/Patient/" + id + "/Appointment";
             var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", relativeUrl);
             returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
-            if (((Bundle)returnedResourceBundle).Entry.Count < 1 || ((Bundle)returnedResourceBundle).Entry.Count == 0)
-          / {
+            if (((Bundle)returnedResourceBundle).Entry.Count < 66 || ((Bundle)returnedResourceBundle).Entry.Count == 0)
+           {
                 for (int i = 0; i < 1; i++)
                {
                     Then($@"I find a patient with id ""{id}"" and search for a slot and create ""{1}"" appointment called ""{appointmentName}""");
@@ -140,17 +140,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             int count = 0;
             foreach (ParticipantComponent patient in appointment.Participant)
             {
-                
-                Log.WriteLine("HELLO");
-                string hi = patient.Actor.Url.ToString();
-                if (hi.Contains("Patient"))
+                               
+                string resource = patient.Actor.Url.ToString();
+                if (resource.Contains("Patient"))
                 {   
                  
                     patient.Actor.Reference.Remove(count);
+                    break;
                 }
                 count++;
-                Log.WriteLine(hi);
+           
             }
+
+            appointment.Participant.RemoveAt(count);
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
 
         }
@@ -163,17 +165,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             int count = 0;
             foreach (ParticipantComponent patient in appointment.Participant)
             {
-
-                Log.WriteLine("HELLO");
-                string hi = patient.Actor.Url.ToString();
-                if (hi.Contains("Location"))
+                             
+                string resource = patient.Actor.Url.ToString();
+                if (resource.Contains("Location"))
                 {
-
                     patient.Actor.Reference.Remove(count);
+                    break;
                 }
                 count++;
-                Log.WriteLine(hi);
+           
             }
+            appointment.Participant.RemoveAt(count);
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
@@ -187,16 +189,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             foreach (ParticipantComponent patient in appointment.Participant)
             {
 
-                Log.WriteLine("HELLO");
-                string hi = patient.Actor.Url.ToString();
-                if (hi.Contains("Practitioner"))
+                string resource = patient.Actor.Url.ToString();
+                if (resource.Contains("Practitioner"))
                 {
 
                     patient.Actor.Reference.Remove(count);
+                    break;
                 }
                 count++;
-                Log.WriteLine(hi);
+  
             }
+            appointment.Participant.RemoveAt(count);
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
