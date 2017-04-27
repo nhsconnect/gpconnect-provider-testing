@@ -189,6 +189,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SearchForFreeSlots.feature</DependentUpon>
     </Compile>
+    <Compile Include="Steps\AppointmentReadSteps.cs" />
     <Compile Include="Steps\AppointmentsSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
     <Compile Include="Steps\GetScheduleSteps.cs" />
