@@ -275,7 +275,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
-     [Then(@"status should have a valid value")]
+     [Then(@"appointment status should have a valid value")]
         public void statusShouldHaveValidValue()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)

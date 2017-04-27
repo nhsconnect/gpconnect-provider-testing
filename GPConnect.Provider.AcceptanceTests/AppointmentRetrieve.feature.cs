@@ -960,8 +960,8 @@ this.FeatureBackground();
   testRunner.And("if the appointment contact element is present it is populated with the correct va" +
                     "lues", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 411
-  testRunner.And("if the appointment cancellation reason  element is present it is populated with t" +
-                    "he correct values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("if the appointment cancellation reason element is present it is populated with th" +
+                    "e correct values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

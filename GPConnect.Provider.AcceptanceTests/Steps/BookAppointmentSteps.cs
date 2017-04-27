@@ -19,8 +19,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly HttpSteps HttpSteps;
         private readonly HttpContext HttpContext;
-        private Predicate<ParticipantComponent> patient;
-
+    
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
@@ -58,14 +57,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"I find a patient with id ""(.*)"" and search for a slot and create ""(.*)"" appointment called ""(.*)""")]
         public void bookAppointmentForPatient(int id, int numOfAppointments, string appointmentName)
         {
-            Log.WriteLine("reached here 3");
-
             Organization organization = (Organization)HttpContext.StoredFhirResources["ORG1"];
-            Log.WriteLine("reached here 4");
             List<Resource> slot = (List<Resource>)HttpContext.StoredSlots["Slot"];
             Location locationSaved = (Location)HttpContext.StoredFhirResources["Location"];
             string locationId = locationSaved.Id;
-            Log.WriteLine("reached here 5");
+         
 
             Practitioner practitionerSaved = (Practitioner)HttpContext.StoredFhirResources["Practitioner"];
             string practitionerId = practitionerSaved.Id;
@@ -122,12 +118,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredSlots.Add("Slot", slot);
 
             AppointmentStatus status = new AppointmentStatus();
-
+            
             appointment.Status = status;
-            //Book the appointment
-         
-
-                HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+            //Store The Appointment
+            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
 
 
         }

@@ -408,7 +408,7 @@ Scenario Outline: Appointment retrieve bundle contains appointment contact metho
 		And if the appointment category element is present it is populated with the correct values
 		And if the appointment booking element is present it is populated with the correct values
 		And if the appointment contact element is present it is populated with the correct values
-		And if the appointment cancellation reason  element is present it is populated with the correct values
+		And if the appointment cancellation reason element is present it is populated with the correct values
 	Examples:
         | id | 
 		| 5  |
