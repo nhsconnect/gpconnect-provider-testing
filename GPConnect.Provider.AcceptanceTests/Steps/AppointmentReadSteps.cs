@@ -35,7 +35,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             int numberOfRequiredAdditionalAppointments = noApp - patientAppointmentsBundle.Entry.Count;
             if (numberOfRequiredAdditionalAppointments > 0) {
 
-                // TODO - Perform get schedule once to get available slots with which to create appointments
+                // Perform get schedule once to get available slots with which to create appointments
+                Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
 
                 for (int numberOfAppointmentsToCreate = numberOfRequiredAdditionalAppointments; numberOfAppointmentsToCreate > 0; numberOfAppointmentsToCreate--)
                 {
@@ -55,7 +56,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             // Search For Patient
             Given($@"I perform a patient search for patient ""{patient}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
-
             // Search For Patients Appointments
             Patient patientResource = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
             Given($@"I am using the default server");
@@ -64,13 +64,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Then($@"the response status code should indicate success");
             And($@"the response body should be FHIR JSON");
             And($@"the response should be a Bundle resource of type ""searchset""");
-
             var returnedPatientAppointmentSearchBundle = (Bundle)FhirContext.FhirResponseResource;
             if (HttpContext.StoredFhirResources.ContainsKey(patientAppointmentSearchBundleKey)) HttpContext.StoredFhirResources.Remove(patientAppointmentSearchBundleKey);
             HttpContext.StoredFhirResources.Add(patientAppointmentSearchBundleKey, returnedPatientAppointmentSearchBundle);
 
         }
 
+        [Given(@"I perform the getSchedule operation for organization ""([^""]*)"" and store the returned bundle resources against key ""([^""]*)""")]
+        public void IPerformTheGetScheduleOperationForOrganizationAndStoreTheReturnedBundleResourceAgainstKey(string organization, string getScheduleResponseBundleKey)
+        {
+            // getSchedule operation for organization
+            Given($@"I am using the default server");
+            And($@"I search for the organization ""{organization}"" on the providers system and save the first response to ""firstOrganizationResource""");
+            Given($@"I am using the default server");
+            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule"" interaction");
+            And($@"I add period request parameter with a start date of today and an end date ""13"" days later");
+            When($@"I send a gpc.getschedule operation for the organization stored as ""firstOrganizationResource""");
+            Then($@"the response status code should indicate success");
+            And($@"the response body should be FHIR JSON");
+            And($@"the response should be a Bundle resource of type ""searchset""");
+            And($@"the response bundle should include slot resources");
+            var returnedGetScheduleResponseBundle = (Bundle)FhirContext.FhirResponseResource;
+            if (HttpContext.StoredFhirResources.ContainsKey(getScheduleResponseBundleKey)) HttpContext.StoredFhirResources.Remove(getScheduleResponseBundleKey);
+            HttpContext.StoredFhirResources.Add(getScheduleResponseBundleKey, returnedGetScheduleResponseBundle);
+        }
 
         [Then(@"the response should be an Appointment resource")]
         public void theResponseShouldBeAnAppointmentResource()

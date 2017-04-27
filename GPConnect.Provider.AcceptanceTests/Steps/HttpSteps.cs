@@ -78,6 +78,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I am using the default server")]
         public void GivenIAmUsingTheDefaultServer()
         {
+            // Clear down headers for pre-steps which get resources for use within the test scenario
+            HttpContext.RequestHeaders.Clear();
+            HttpContext.ResponseHeaders.Clear();
+
             // Load The Default Settings From The App.config File
             HttpContext.LoadAppConfig();
 
