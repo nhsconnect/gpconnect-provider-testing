@@ -25,12 +25,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
         
-        [Given(@"I find or create ""([^ ""] *)"" appointments for patient ""([^""]*)"" at organization ""([^""]*)"" and save a list of resources to ""([^""]*)""")]
-        public void IFindOrCreateAAppointmentsForPatientAtOrganizationAndSaveAListOfResourceTo(string noApp, string patient, string organizaitonName, string appointmentListkey)
+        [Given(@"I find or create ""([^ ""] *)"" appointments for patient ""([^""]*)"" at organization ""([^""]*)"" and save bundle of appintment resources to ""([^""]*)""")]
+        public void IFindOrCreateAAppointmentsForPatientAtOrganizationAndSaveAListOfResourceTo(int noApp, string patient, string organizaitonName, string bundleOfPatientAppointmentskey)
         {
             // Search For Patient appointments
-            Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""patientCurrentAppointments""");
+            Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""{bundleOfPatientAppointmentskey}""");
+            Bundle patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
 
+            int numberOfRequiredAdditionalAppointments = noApp - patientAppointmentsBundle.Entry.Count;
+            if (numberOfRequiredAdditionalAppointments > 0) {
+
+                // TODO - Perform get schedule once to get available slots with which to create appointments
+
+                for (int numberOfAppointmentsToCreate = numberOfRequiredAdditionalAppointments; numberOfAppointmentsToCreate > 0; numberOfAppointmentsToCreate--)
+                {
+                    // TODO - Create a new appointment for the patient using the slots and details from the getSchedule response saved object above
+                }
+
+                // Search for appointments again to make sure that enough have been stored in the provider system and store them
+                Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""{bundleOfPatientAppointmentskey}""");
+                patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
+            }
+            patientAppointmentsBundle.Entry.Count.ShouldBeGreaterThanOrEqualTo(noApp, "We could not create enough appointments for the test to run.");
         }
 
 
