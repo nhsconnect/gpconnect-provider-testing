@@ -1,18 +1,8 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Context;
+﻿using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
-using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
-using NUnit.Framework;
-using System;
 using Shouldly;
-using System.Collections.Generic;
 using TechTalk.SpecFlow;
-using static Hl7.Fhir.Model.Bundle;
-using static Hl7.Fhir.Model.Appointment;
-using Hl7.Fhir.Serialization;
-using RestSharp;
-using Newtonsoft.Json.Linq;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -34,13 +24,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps = httpSteps;
             HttpContext = httpContext;
         }
-
-
-        [Given(@"I find or create a single appointment for patient ""([^""]*)"" at organization ""([^""]*)"" and save the resource to ""([^""]*)""")]
-        public void IFindOrCreateASingleAppointmentForPatientAndSaveTheResourceTo(string patient, string organizaitonName, string patientkey)
+        
+        [Given(@"I find or create ""([^ ""] *)"" appointments for patient ""([^""]*)"" at organization ""([^""]*)"" and save a list of resources to ""([^""]*)""")]
+        public void IFindOrCreateAAppointmentsForPatientAtOrganizationAndSaveAListOfResourceTo(string noApp, string patient, string organizaitonName, string appointmentListkey)
         {
             //FhirContext.FhirOrganizations[organizaitonName]
-            //FhirContext.FhirPatients[patient]
+
+            Given($@"I perform a patient search for patient ""{patient}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
+            // Search for above patient appointments
+
         }
 
         [Then(@"the response should be an Appointment resource")]

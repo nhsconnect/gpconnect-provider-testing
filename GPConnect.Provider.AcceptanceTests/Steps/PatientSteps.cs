@@ -33,21 +33,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         // Patient Steps
-
-        [Given(@"I search for the patient ""([^""]*)"" on the providers system and save the first response to ""([^""]*)""")]
-        public void GivenISearchForThePatientOnTheProviderSystemAndSaveTheFirstResponseTo(string organizaitonName, string storeKey)
+        [Given(@"I perform a patient search for patient ""([^""]*)"" and store the first returned resources against key ""([^""]*)""")]
+        public void IPerformAPatientSearchForPatientAndStoreTheFirstReturnedResourceAgainstKey(string patient, string patientResourceKey)
         {
-            // TODO START
-            var relativeUrl = "Patient?identifier=http://fhir.nhs.net/Id/ods-organization-code|" + FhirContext.FhirOrganizations[organizaitonName];
-            var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:organization", relativeUrl);
-            returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
-            ((Bundle)returnedResourceBundle).Entry.Count.ShouldBeGreaterThan(0);
-            var returnedFirstResource = (Organization)((Bundle)returnedResourceBundle).Entry[0].Resource;
-            returnedFirstResource.GetType().ShouldBe(typeof(Organization));
-            if (HttpContext.StoredFhirResources.ContainsKey(storeKey)) HttpContext.StoredFhirResources.Remove(storeKey);
-            HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
-            // TODO END
+            Given($@"I am using the default server");
+            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient"" interaction");
+            And($@"I set the JWT requested record NHS number to config patient ""{patient}""");
+            And($@"I set the JWT requested scope to ""patient/*.read""");
+            When($@"I search for Patient ""{patient}""");
+            Then($@"the response status code should indicate success");
+            And($@"the response body should be FHIR JSON");
+            And($@"the response should be a Bundle resource of type ""searchset""");
+            And($@"the response bundle should contain ""1"" entries");
 
+            var returnedFirstResource = (Patient)((Bundle)FhirContext.FhirResponseResource).Entry[0].Resource;
+            returnedFirstResource.GetType().ShouldBe(typeof(Patient));
+            if (HttpContext.StoredFhirResources.ContainsKey(patientResourceKey)) HttpContext.StoredFhirResources.Remove(patientResourceKey);
+            HttpContext.StoredFhirResources.Add(patientResourceKey, returnedFirstResource);
         }
 
         [When(@"I search for Patient ""([^""]*)""")]
