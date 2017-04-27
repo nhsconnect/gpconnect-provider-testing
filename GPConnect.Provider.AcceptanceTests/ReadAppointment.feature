@@ -1,14 +1,17 @@
 ﻿Feature: ReadAppointment
 
-#PreReq 1 is a valid appointment. Plan to make this automatic for future testing
+Background:
+	Given I have the test patient codes
+	Given I have the test ods codes
 
-@Appointment
-Scenario: Read appointment valid request
+Scenario: I perform a successful Read appointment
+	Given I find or create a single appointment for patient "patient1" at organization "ORG1" and save the the resource to "Patient1Appointment"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I make a GET request to "/Appointment/1"
+	When I perform a read appointment for the appointment id saved in the "Patient1Appointment" appointment
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
 	
 Scenario Outline: Read appointment invalid request
 	Given I am using the default server

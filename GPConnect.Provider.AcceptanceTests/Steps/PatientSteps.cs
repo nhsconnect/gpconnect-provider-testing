@@ -31,8 +31,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext = fhirContext;
             HttpSteps = httpSteps;
         }
-        
+
         // Patient Steps
+
+        [Given(@"I search for the patient ""([^""]*)"" on the providers system and save the first response to ""([^""]*)""")]
+        public void GivenISearchForThePatientOnTheProviderSystemAndSaveTheFirstResponseTo(string organizaitonName, string storeKey)
+        {
+            // TODO START
+            var relativeUrl = "Patient?identifier=http://fhir.nhs.net/Id/ods-organization-code|" + FhirContext.FhirOrganizations[organizaitonName];
+            var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:organization", relativeUrl);
+            returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
+            ((Bundle)returnedResourceBundle).Entry.Count.ShouldBeGreaterThan(0);
+            var returnedFirstResource = (Organization)((Bundle)returnedResourceBundle).Entry[0].Resource;
+            returnedFirstResource.GetType().ShouldBe(typeof(Organization));
+            if (HttpContext.StoredFhirResources.ContainsKey(storeKey)) HttpContext.StoredFhirResources.Remove(storeKey);
+            HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
+            // TODO END
+
+        }
 
         [When(@"I search for Patient ""([^""]*)""")]
         public void ISearchForPatient(string patient)
