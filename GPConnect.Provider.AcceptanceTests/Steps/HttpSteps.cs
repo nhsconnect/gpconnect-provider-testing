@@ -81,6 +81,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Clear down headers for pre-steps which get resources for use within the test scenario
             HttpContext.RequestHeaders.Clear();
             HttpContext.ResponseHeaders.Clear();
+            HttpContext.RequestUrl = "";
+            HttpContext.RequestParameters.ClearParameters();
+            HttpContext.RequestBody = null;
 
             // Load The Default Settings From The App.config File
             HttpContext.LoadAppConfig();
