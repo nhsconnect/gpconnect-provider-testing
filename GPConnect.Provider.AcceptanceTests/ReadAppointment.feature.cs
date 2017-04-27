@@ -84,7 +84,7 @@ this.ScenarioSetup(scenarioInfo);
 this.FeatureBackground();
 #line 8
  testRunner.Given("I find or create \"1\" appointments for patient \"patient1\" at organization \"ORG1\" a" +
-                    "nd save a list of resources to \"Patient1Appointments\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "nd save bundle of appintment resources to \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10

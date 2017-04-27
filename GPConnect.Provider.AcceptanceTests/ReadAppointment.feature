@@ -5,7 +5,7 @@ Background:
 	Given I have the test ods codes
 
 Scenario: I perform a successful Read appointment
-	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save a list of resources to "Patient1Appointments"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 	When I perform an appointment read for the first appointment saved in the list of resources stored against key "Patient1Appointments"

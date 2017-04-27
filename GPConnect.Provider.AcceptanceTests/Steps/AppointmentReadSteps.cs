@@ -25,15 +25,52 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
         
-        [Given(@"I find or create ""([^ ""] *)"" appointments for patient ""([^""]*)"" at organization ""([^""]*)"" and save a list of resources to ""([^""]*)""")]
-        public void IFindOrCreateAAppointmentsForPatientAtOrganizationAndSaveAListOfResourceTo(string noApp, string patient, string organizaitonName, string appointmentListkey)
+        [Given(@"I find or create ""([^ ""] *)"" appointments for patient ""([^""]*)"" at organization ""([^""]*)"" and save bundle of appintment resources to ""([^""]*)""")]
+        public void IFindOrCreateAAppointmentsForPatientAtOrganizationAndSaveAListOfResourceTo(int noApp, string patient, string organizaitonName, string bundleOfPatientAppointmentskey)
         {
-            //FhirContext.FhirOrganizations[organizaitonName]
+            // Search For Patient appointments
+            Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""{bundleOfPatientAppointmentskey}""");
+            Bundle patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
 
+            int numberOfRequiredAdditionalAppointments = noApp - patientAppointmentsBundle.Entry.Count;
+            if (numberOfRequiredAdditionalAppointments > 0) {
+
+                // TODO - Perform get schedule once to get available slots with which to create appointments
+
+                for (int numberOfAppointmentsToCreate = numberOfRequiredAdditionalAppointments; numberOfAppointmentsToCreate > 0; numberOfAppointmentsToCreate--)
+                {
+                    // TODO - Create a new appointment for the patient using the slots and details from the getSchedule response saved object above
+                }
+
+                // Search for appointments again to make sure that enough have been stored in the provider system and store them
+                Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""{bundleOfPatientAppointmentskey}""");
+                patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
+            }
+            patientAppointmentsBundle.Entry.Count.ShouldBeGreaterThanOrEqualTo(noApp, "We could not create enough appointments for the test to run.");
+        }
+
+
+        [Given(@"I search for patient ""([^""]*)"" appointments and save the returned bundle of appointment resources against key ""([^""]*)""")]
+        public void ISearchForPatientAppointmentsAndSaveTheReturnedBundleOfAppointmentResourcesAgainstKey(string patient, string patientAppointmentSearchBundleKey)
+        {
+            // Search For Patient
             Given($@"I perform a patient search for patient ""{patient}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
-            // Search for above patient appointments
+
+            // Search For Patients Appointments
+            Patient patientResource = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
+            Given($@"I am using the default server");
+            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments"" interaction");
+            When($@"I make a GET request to ""/Patient/{patientResource.Id}/Appointment""");
+            Then($@"the response status code should indicate success");
+            And($@"the response body should be FHIR JSON");
+            And($@"the response should be a Bundle resource of type ""searchset""");
+
+            var returnedPatientAppointmentSearchBundle = (Bundle)FhirContext.FhirResponseResource;
+            if (HttpContext.StoredFhirResources.ContainsKey(patientAppointmentSearchBundleKey)) HttpContext.StoredFhirResources.Remove(patientAppointmentSearchBundleKey);
+            HttpContext.StoredFhirResources.Add(patientAppointmentSearchBundleKey, returnedPatientAppointmentSearchBundle);
 
         }
+
 
         [Then(@"the response should be an Appointment resource")]
         public void theResponseShouldBeAnAppointmentResource()
@@ -41,6 +78,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Appointment);
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
         }
+
 
     }
 }
