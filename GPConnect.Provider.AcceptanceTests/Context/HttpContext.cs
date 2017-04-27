@@ -58,6 +58,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         string EndpointAddress { get; }
         Dictionary<string, Hl7.Fhir.Model.Resource> StoredFhirResources { get;}
         Dictionary<string, List<Hl7.Fhir.Model.Resource>> StoredSlots { get; }
+        Dictionary<string, Appointment> StoredAppointment { get; }
     }
 
     public class HttpContext : IHttpContext
@@ -123,6 +124,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
             public const string kStoredFhirResources = "storedFhirResources";
             public const string kStoredSlots = "storedSlots";
+            public const string kStoredAppointment = "storedAppointment";
         }
 
         // Protocol
@@ -517,7 +519,36 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             }
         }
 
-       
+
+        public Dictionary<string, Appointment> StoredAppointment
+        {
+            get
+            {
+                try
+                {
+
+                    return ScenarioContext.Get<Dictionary<string, Appointment>>(Context.kStoredAppointment);
+                }
+                catch (Exception)
+                {
+                }
+                try
+                {
+
+                    ScenarioContext.Set(new Dictionary<string, Appointment>(), Context.kStoredAppointment);
+                    return ScenarioContext.Get<Dictionary<string, Appointment>>(Context.kStoredAppointment);
+                }
+                catch (Exception)
+                {
+                }
+                return null;
+            }
+        }
+
+
+
+
+
 
         // Load App.Config
 

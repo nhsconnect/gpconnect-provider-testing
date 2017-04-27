@@ -790,7 +790,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"if the appointment cancellation reason  element is present it is populated with the correct values")]
+        [Then(@"if the appointment cancellation reason element is present it is populated with the correct values")]
         public void appointmentCancellationIsPresentAndValid()
         {
 

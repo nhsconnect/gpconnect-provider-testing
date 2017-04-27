@@ -138,11 +138,14 @@ Scenario Outline: Book Appointment and check response returns the correct values
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
+		And the appointment response resource contains an id
 		And the bundle appointment resource should contain a single status element
 		And the bundle appointment resource should contain a single start element
 		And the bundle appointment resource should contain a single end element
 		And the bundle appointment resource should contain at least one participant
 		And the bundle appointment resource should contain at least one slot reference
+		And the appointment response contains a type with a valid system code and display
+		And if the appointment resource contains a priority the value is valid
 	Examples:
 		| id |
 		| 3  |
@@ -164,4 +167,114 @@ Scenario Outline: Book Appointment and check response returns the relevent struc
 		| id |
 		| 3  |
 
+Scenario Outline: Book Appointment and check slot reference is valid
+	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	When I book an appointment for patient "<id>" on the provider system
+	Then the response status code should indicate created
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the appointment response resource contains a slot reference
+		And the slot reference is present and valid
+	Examples:
+		| id |
+		| 3  |
 
+Scenario Outline: Book Appointment and appointment participant is valid
+	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	When I book an appointment for patient "<id>" on the provider system
+	Then the response status code should indicate created
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the bundle appointment resource should contain at least one participant
+		And if appointment is present the single or multiple participant must contain a type or actor
+		And if the appointment participant contains a type is should have a valid system and code
+	Examples:
+		| id |
+		| 3  |
+
+
+Scenario Outline: Book Appointment and check extension methods are valid
+	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	When I book an appointment for patient "<id>" on the provider system
+	Then the response status code should indicate created
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And if the appointment category element is present it is populated with the correct values
+		And if the appointment booking element is present it is populated with the correct values
+		And if the appointment contact element is present it is populated with the correct values
+		And if the appointment cancellation reason element is present it is populated with the correct values
+	Examples:
+		| id |
+		| 3  |
+
+Scenario Outline: Book Appointment and remove patient participant
+	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment for patient "<id>" unless 1 exists and save the appointment called "<Appointment>"
+	Then I remove the patient participant from the appointment called "<Appointment>"
+	Then I book the appointment called "<Appointment>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+	Examples:
+		| id | Appointment  |
+		| 3  | Appointment1 |
+
+	Scenario Outline: Book Appointment and remove location participant
+	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment for patient "<id>" unless 1 exists and save the appointment called "<Appointment>"
+	Then I remove the location participant from the appointment called "<Appointment>"
+	Then I book the appointment called "<Appointment>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		Examples:
+		| id | Appointment  |
+		| 3  | Appointment1 |
+
+		Scenario Outline: Book Appointment and remove practitioner participant
+	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment for patient "<id>" unless 1 exists and save the appointment called "<Appointment>"
+	Then I remove the practitioner participant from the appointment called "<Appointment>"
+	Then I book the appointment called "<Appointment>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+	Examples:
+		| id | Appointment  |
+		| 3  | Appointment1 |

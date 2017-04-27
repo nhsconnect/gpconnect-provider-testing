@@ -191,6 +191,7 @@
     </Compile>
     <Compile Include="Steps\AppointmentReadSteps.cs" />
     <Compile Include="Steps\AppointmentsSteps.cs" />
+    <Compile Include="Steps\BookAppointmentSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
     <Compile Include="Steps\GetScheduleSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />
