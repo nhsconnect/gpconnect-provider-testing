@@ -612,8 +612,8 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Book Appointment and remove patient participant")]
-        [NUnit.Framework.TestCaseAttribute("3", new string[0])]
-        public virtual void BookAppointmentAndRemovePatientParticipant(string id, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("3", "Appointment1", new string[0])]
+        public virtual void BookAppointmentAndRemovePatientParticipant(string id, string appointment, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove patient participant", exampleTags);
 #line 228
@@ -638,11 +638,12 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 236
- testRunner.Then(string.Format("I book an appointment for patient \"{0}\" unless 1 exists and save the appointment", id), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I create an appointment for patient \"{0}\" unless 1 exists and save the appointmen" +
+                        "t called \"{1}\"", id, appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 237
- testRunner.Then("I remove the patient participant from the appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I remove the patient participant from the appointment called \"{0}\"", appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 238
- testRunner.Then("I book the appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I book the appointment called \"{0}\"", appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 239
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 240
@@ -655,8 +656,8 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Book Appointment and remove location participant")]
-        [NUnit.Framework.TestCaseAttribute("3", new string[0])]
-        public virtual void BookAppointmentAndRemoveLocationParticipant(string id, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("3", "Appointment1", new string[0])]
+        public virtual void BookAppointmentAndRemoveLocationParticipant(string id, string appointment, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove location participant", exampleTags);
 #line 246
@@ -681,11 +682,12 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 254
- testRunner.Then(string.Format("I book an appointment for patient \"{0}\" unless 1 exists and save the appointment", id), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I create an appointment for patient \"{0}\" unless 1 exists and save the appointmen" +
+                        "t called \"{1}\"", id, appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 255
- testRunner.Then("I remove the location participant from the appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I remove the location participant from the appointment called \"{0}\"", appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 256
- testRunner.Then("I book the appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I book the appointment called \"{0}\"", appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 257
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 258
@@ -698,8 +700,8 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Book Appointment and remove practitioner participant")]
-        [NUnit.Framework.TestCaseAttribute("3", new string[0])]
-        public virtual void BookAppointmentAndRemovePractitionerParticipant(string id, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("3", "Appointment1", new string[0])]
+        public virtual void BookAppointmentAndRemovePractitionerParticipant(string id, string appointment, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove practitioner participant", exampleTags);
 #line 264
@@ -724,11 +726,12 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 272
- testRunner.Then(string.Format("I book an appointment for patient \"{0}\" unless 1 exists and save the appointment", id), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I create an appointment for patient \"{0}\" unless 1 exists and save the appointmen" +
+                        "t called \"{1}\"", id, appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 273
- testRunner.Then("I remove the practitioner participant from the appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I remove the practitioner participant from the appointment called \"{0}\"", appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 274
- testRunner.Then("I book the appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I book the appointment called \"{0}\"", appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 275
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 276

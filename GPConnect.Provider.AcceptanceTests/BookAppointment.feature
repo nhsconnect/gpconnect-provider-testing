@@ -233,15 +233,15 @@ Scenario Outline: Book Appointment and remove patient participant
 		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	Then I book an appointment for patient "<id>" unless 1 exists and save the appointment
-	Then I remove the patient participant from the appointment
-	Then I book the appointment
+	Then I create an appointment for patient "<id>" unless 1 exists and save the appointment called "<Appointment>"
+	Then I remove the patient participant from the appointment called "<Appointment>"
+	Then I book the appointment called "<Appointment>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| id |
-		| 3  |
+		| id | Appointment  |
+		| 3  | Appointment1 |
 
 	Scenario Outline: Book Appointment and remove location participant
 	Given I am using the default server
@@ -251,15 +251,15 @@ Scenario Outline: Book Appointment and remove patient participant
 		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	Then I book an appointment for patient "<id>" unless 1 exists and save the appointment
-	Then I remove the location participant from the appointment
-	Then I book the appointment
+	Then I create an appointment for patient "<id>" unless 1 exists and save the appointment called "<Appointment>"
+	Then I remove the location participant from the appointment called "<Appointment>"
+	Then I book the appointment called "<Appointment>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-	Examples:
-		| id |
-		| 3  |
+		Examples:
+		| id | Appointment  |
+		| 3  | Appointment1 |
 
 		Scenario Outline: Book Appointment and remove practitioner participant
 	Given I am using the default server
@@ -269,12 +269,12 @@ Scenario Outline: Book Appointment and remove patient participant
 		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	Then I book an appointment for patient "<id>" unless 1 exists and save the appointment
-	Then I remove the practitioner participant from the appointment
-	Then I book the appointment
+	Then I create an appointment for patient "<id>" unless 1 exists and save the appointment called "<Appointment>"
+	Then I remove the practitioner participant from the appointment called "<Appointment>"
+	Then I book the appointment called "<Appointment>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| id |
-		| 3  |
+		| id | Appointment  |
+		| 3  | Appointment1 |

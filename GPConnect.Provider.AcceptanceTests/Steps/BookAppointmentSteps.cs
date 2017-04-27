@@ -35,28 +35,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
     
 
-        [Then(@"I book an appointment for patient ""(.*)"" unless 1 exists and save the appointment")]
-        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(int id)
+        [Then(@"I create an appointment for patient ""(.*)"" unless 1 exists and save the appointment called ""(.*)""")]
+        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(int id, string appointmentName)
         {
             Log.WriteLine("reached here 2");
             var relativeUrl = "/Patient/" + id + "/Appointment";
             var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", relativeUrl);
             returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
-            //if (((Bundle)returnedResourceBundle).Entry.Count < 1 || ((Bundle)returnedResourceBundle).Entry.Count == 0)
-           // {
-            //    for (int i = 0; i < 1; i++)
-            ///    {
-                    Then($@"I find a patient with id ""{id}"" and search for a slot and create ""{1}"" appointmentz");
-             //   }
-          //  }
-           // else
-           // {
+            if (((Bundle)returnedResourceBundle).Entry.Count < 1 || ((Bundle)returnedResourceBundle).Entry.Count == 0)
+          / {
+                for (int i = 0; i < 1; i++)
+               {
+                    Then($@"I find a patient with id ""{id}"" and search for a slot and create ""{1}"" appointment called ""{appointmentName}""");
+                }
+            }
+            else
+           {
 
-            //}
+            }
         }
 
-        [Then(@"I find a patient with id ""(.*)"" and search for a slot and create ""(.*)"" appointmentz")]
-        public void bookAppointmentForPatient(int id, int numOfAppointments)
+        [Then(@"I find a patient with id ""(.*)"" and search for a slot and create ""(.*)"" appointment called ""(.*)""")]
+        public void bookAppointmentForPatient(int id, int numOfAppointments, string appointmentName)
         {
             Log.WriteLine("reached here 3");
 
@@ -127,16 +127,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             //Book the appointment
          
 
-                HttpContext.StoredFhirResources.Add("Appointment", (Appointment)appointment);
+                HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
 
 
         }
 
-        [Then(@"I remove the patient participant from the appointment")]
-        public void removePatientParticipant()
+        [Then(@"I remove the patient participant from the appointment called ""(.*)""")]
+        public void removePatientParticipant(string appointmentName)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources["Appointment"];
-            HttpContext.StoredFhirResources.Remove("Appointment");
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            HttpContext.StoredFhirResources.Remove(appointmentName);
             int count = 0;
             foreach (ParticipantComponent patient in appointment.Participant)
             {
@@ -151,15 +151,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 count++;
                 Log.WriteLine(hi);
             }
-            HttpContext.StoredFhirResources.Add("Appointment", (Appointment)appointment);
+            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
 
         }
 
-        [Then(@"I remove the location participant from the appointment")]
-        public void removeLocationParticipant()
+        [Then(@"I remove the location participant from the appointment called ""(.*)""")]
+        public void removeLocationParticipant(string appointmentName)
         {
-             Appointment appointment = (Appointment)HttpContext.StoredFhirResources["Appointment"];
-            HttpContext.StoredFhirResources.Remove("Appointment");
+             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            HttpContext.StoredFhirResources.Remove(appointmentName);
             int count = 0;
             foreach (ParticipantComponent patient in appointment.Participant)
             {
@@ -174,15 +174,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 count++;
                 Log.WriteLine(hi);
             }
-            HttpContext.StoredFhirResources.Add("Appointment", (Appointment)appointment);
+            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I remove the practitioner participant from the appointment")]
-        public void removePractitonerParticipant()
+        [Then(@"I remove the practitioner participant from the appointment called ""(.*)""")]
+        public void removePractitonerParticipant(string appointmentName)
         {
         
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources["Appointment"];
-            HttpContext.StoredFhirResources.Remove("Appointment");
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            HttpContext.StoredFhirResources.Remove(appointmentName);
             int count = 0;
             foreach (ParticipantComponent patient in appointment.Participant)
             {
@@ -197,12 +197,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 count++;
                 Log.WriteLine(hi);
             }
-            HttpContext.StoredFhirResources.Add("Appointment", (Appointment)appointment);
+            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I book the appointment")]
-        public void bookAppointment() {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources["Appointment"];
+        [Then(@"I book the appointment called ""(.*)""")]
+        public void bookAppointment(string appointmentName) {
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
         }
 
