@@ -58,7 +58,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             When($@"I make a GET request to ""{url}""");
         }
 
-
+        [When(@"I search for ""([^""]*)"" and make a get request for their appointments with the date ""([^""]*)"" and prefix ""([^""]*)""")]
+        public void searchAndGetAppointmentsWithCustomStartDateandPrefix(string patient, string startDate, string prefix)
+        {
+            Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
+            string id = patient1.Id.ToString();
+            var url = "/Patient/" + id + "/Appointment?start=" + prefix+ startDate + "";
+            When($@"I make a GET request to ""{url}""");
+        }
 
         [Given(@"I get the slots avaliable slots for organization ""([^""]*)"" for the next 3 days")]
         public void BookSlots(string appointmentCode)

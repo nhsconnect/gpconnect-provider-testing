@@ -64,35 +64,32 @@ Scenario Outline: Appointment retrieve send request with date variations with va
 		  | 2014-05                   |
 		  | 2014-05-01T11:08:32       |
 	   | 2015-10-23T11:08:32+00:00 |
+
 @ignore
 Scenario Outline: Appointment retrieve book appointment then request appointment and check it is returned
-	Given I am using the default server
-		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
-		And I book an appointment with a start date "<startDate>"
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment?start=<startDate>"
+	When I search for "patient1" and make a get request for their appointments with the date "<startDate>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| id | startDate                 |
-		| 1  | 2014                      |
-		| 1  | 2014-02                   |
-		| 1  | 2014-10-05                |
-		| 1  | 2014-05                   |
-		| 1  | 2014-05-01T11:08:32       |
-		| 1  | 2015-10-23T11:08:32+00:00 |
+		| startDate           |
+		| 2014                |
+		| 2014-02             |
+		| 2014-10-05          |
+		| 2014-05             |
+		| 2014-05-01T11:08:32 |
+		 |2015-10-23T11:08:32+00:00 |
 
 		 
 	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/1/Appointment?start=<startDate>"
+	When I search for "patient1" and make a get request for their appointments with the date "<startDate>"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
@@ -110,9 +107,10 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 
 
 Scenario Outline: Appointment retrieve send request with date variations which are valid with prefix
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/1/Appointment?start={<prefix>}<startDate>"
+	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -164,10 +162,11 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 
 
 Scenario Outline: Appointment retrieve failure due to missing header
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I do not send header "<Header>"
-	When I make a GET request to "/Patient/1/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -180,9 +179,10 @@ Scenario Outline: Appointment retrieve failure due to missing header
 		| Authorization     |
 
 Scenario Outline: Appointment retrieve interaction id incorrect fail
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
     Given I am using the default server
         And I am performing the "<interactionId>" interaction
-    When I make a GET request to "/Patient/<id>/Appointment"
+    When I search for "patient1" and make a get request for their appointments
     Then the response status code should be "400"
         And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -194,59 +194,57 @@ Scenario Outline: Appointment retrieve interaction id incorrect fail
        | 1  | null                                                              |
 	
 Scenario Outline: Appointment retrieve accept header and _format parameter
-    Given I am using the default server
+    Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I am using the default server
         And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
         And I set the Accept header to "<Header>"
         And I add the parameter "_format" with the value "<Parameter>"
-    When I make a GET request to "/Patient/<id>/Appointment"
+    When I search for "patient1" and make a get request for their appointments
     Then the response status code should indicate success
         And the response body should be FHIR <BodyFormat>
         And the response should be a Bundle resource of type "searchset"
     Examples:
-       | id | Header                | Parameter             | BodyFormat |
-       | 1  | application/json+fhir | application/json+fhir | JSON       |
-       | 1  | application/json+fhir | application/xml+fhir  | XML        |
-       | 1  | application/xml+fhir  | application/json+fhir | JSON       |
-       | 1  | application/xml+fhir  | application/xml+fhir  | XML        |  
+       | Header                | Parameter             | BodyFormat |
+       | application/json+fhir | application/json+fhir | JSON       |
+       | application/json+fhir | application/xml+fhir  | XML        |
+       | application/xml+fhir  | application/json+fhir | JSON       |
+       | application/xml+fhir  | application/xml+fhir  | XML        |  
 
 Scenario Outline: Appointment retrieve accept header
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I set the Accept header to "<Header>"
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| id | Header                | BodyFormat |
-		| 1  | application/json+fhir | JSON       |
-		| 1  | application/xml+fhir  | XML        |
+		| Header                | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
 Scenario Outline: Appointment retrieve bundle resource with empty appointment resource
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "<patient>" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
         And the response should be a Bundle resource of type "searchset"
 		And there are zero appointment resources
 	 Examples:
-        | id   |
-        | 1000 |
-        | 45   |
-        | 99   |    
+        | patient   |
+        | patient56 |
+        | patient56888   |
+        | patient5645444   |    
 	
 
-Scenario Outline: Appointment retrieve appointment which contains all mandatory resources
-	Given I am using the default server
-		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
-		And I search for an appointments for patient "<id>" on the provider system and if zero booked i book "<numberOfAppointments>" appointment
+Scenario: Appointment retrieve appointment which contains all mandatory resources
+		Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
         And the response should be a Bundle resource of type "searchset"
@@ -257,166 +255,149 @@ Scenario Outline: Appointment retrieve appointment which contains all mandatory 
 	Then the bundle appointment resource should contain a single end element
 	Then the bundle appointment resource should contain at least one slot reference
 	Then the bundle appointment resource should contain at least one participant
-	 Examples:
-        | id | numberOfAppointments |
-		| 1  | 2                    |
-		| 2  | 2                    |
+	
 
 
-Scenario Outline: Appointment retrieve bundle resource must contain status with valid value
+Scenario: Appointment retrieve bundle resource must contain status with valid value
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
         And the response should be a Bundle resource of type "searchset"
 	Then the bundle appointment resource should contain a single status element
 		And the appointment status element should be valid
-	Examples:
-        | id | 
-		| 5  | 	
 
-Scenario Outline: Appointment retrieve bundle resource must contain participant with type or actor present
+
+Scenario: Appointment retrieve bundle resource must contain participant with type or actor present
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 	Then if appointment is present the single or multiple participant must contain a type or actor
-	Examples:
-        | id | 
-		| 5  | 	
 
-Scenario Outline: Appointment retrieve bundle participant actor contains valid references
+
+Scenario: Appointment retrieve bundle participant actor contains valid references
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And if actor returns a practitioner resource the resource is valid
 		And if actor returns a location resource the resource is valid
 		And if actor returns a location resource the resource is valid
 		And if actor returns a patient resource the resource is valid
-	Examples:
-        | id | 
-		| 5  | 	
 
-Scenario Outline: Appointment retrieve bundle participant type contains valid references
+Scenario: Appointment retrieve bundle participant type contains valid references
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if the appointment participant contains a type is should have a valid system and code
-	Examples:
-        | id | 
-		| 5  | 	
 
-Scenario Outline: Appointment retrieve bundle contains appointment with identifer with correct system and value
+Scenario: Appointment retrieve bundle contains appointment with identifer with correct system and value
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And if the appointment resource contains an identifier it contains a valid system and value
-		Examples:
-        | id | 
-		| 5  | 
 
-Scenario Outline: Appointment retrieve appointment response should contain meta data profile and version id
-		Given I am using the default server
+Scenario: Appointment retrieve appointment response should contain meta data profile and version id
+		Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the appointment response resource should contain meta data profile and version id
-		Examples:
-        | id | 
-		| 5  | 
 	
-Scenario Outline: Appointment retrieve appointment response identifier is valid
-		Given I am using the default server
+Scenario: Appointment retrieve appointment response identifier is valid
+		Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
+	Then the response status code should indicate success
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the appointment response resource contains an identifier with a valid system and value
-		Examples:
-        | id | 
-		| 5  | 
+	
 
-Scenario Outline: Appointment retrieve bundle of coding type SNOMED resource must contain coding with valid system and code and display
+Scenario: Appointment retrieve bundle of coding type SNOMED resource must contain coding with valid system and code and display
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And if appointment contains the resource coding SNOMED CT element the fields should match the fixed values of the specification
-	Examples:
-        | id | 
-		| 5  |
 
 	
-Scenario Outline: Appointment retrieve bundle of coding type READ V2 resource must contain coding with valid system and code and display
+Scenario: Appointment retrieve bundle of coding type READ V2 resource must contain coding with valid system and code and display
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And if appointment contains the resource coding READ V2 element the fields should match the fixed values of the specification
-	Examples:
-        | id | 
-		| 5  |
 
-Scenario Outline: Appointment retrieve bundle of coding type SREAD CTV3 resource must contain coding with valid system and code and display
+
+Scenario: Appointment retrieve bundle of coding type SREAD CTV3 resource must contain coding with valid system and code and display
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And if appointment contains the resource coding SREAD CTV3 element the fields should match the fixed values of the specification
-	Examples:
-        | id | 
-		| 5  |
 
-Scenario Outline: Appointment retrieve bundle contains appointment with slot 
+
+Scenario: Appointment retrieve bundle contains appointment with slot 
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
-		Then the response status code should indicate success
+	When I search for "patient1" and make a get request for their appointments
+	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the slot reference is present and valid
-	Examples:
-        | id | 
-		| 5  |
+
+
 	
-Scenario Outline: Appointment retrieve bundle contains appointment contact method
+Scenario: Appointment retrieve bundle contains appointment contact method
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/5/Appointment"
-		Then the response status code should indicate success
+	When I search for "patient1" and make a get request for their appointments
+	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And if the appointment category element is present it is populated with the correct values
 		And if the appointment booking element is present it is populated with the correct values
 		And if the appointment contact element is present it is populated with the correct values
 		And if the appointment cancellation reason element is present it is populated with the correct values
-	Examples:
-        | id | 
-		| 5  |
 
-Scenario Outline: Appointment retrieve bundle contains valid start and end dates
+
+Scenario: Appointment retrieve bundle contains valid start and end dates
+	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
-		Then the response status code should indicate success
+	When I search for "patient1" and make a get request for their appointments
+	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And all appointments must have an start element which is populated with a valid date
 		And all appointments must have an end element which is populated vith a valid date
-	Examples:
-        | id | 
-		| 5  |
+
+
+
 
 Scenario Outline: Appointment retrieve JWT requesting scope claim should reflect the operation being performed
 	Given I am using the default server
