@@ -19,7 +19,7 @@ Scenario Outline: Appointment retrieve success valid id where appointment resour
 		| 400000 |
 
 Scenario: Appointment retrieve success valid id where single appointment resource is required resource
-Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -43,7 +43,7 @@ Scenario Outline: Appointment retrieve fail invalid id
 		| null|
 
 Scenario Outline: Appointment retrieve send request with date variations with valid start date
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments with the date "<startDate>"
@@ -51,23 +51,23 @@ Scenario Outline: Appointment retrieve send request with date variations with va
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		 | startDate |
-		 | 2014      |
-		  | 2014-02                   |
-		  | 2014-10-05                |
-		  | 2014-05                   |
-		  | 2014-05-01T11:08:32       |
-		  | 2015-10-23T11:08:32+00:00 |
-		  | 2014                      |
-		  | 2014-02                   |
-		  | 2014-10-05                |
-		  | 2014-05                   |
-		  | 2014-05-01T11:08:32       |
-	   | 2015-10-23T11:08:32+00:00 |
+		 | startDate                 |
+		 | 2014                      |
+		 | 2014-02                   |
+		 | 2014-10-05                |
+		 | 2014-05                   |
+		 | 2014-05-01T11:08:32       |
+		 | 2015-10-23T11:08:32+00:00 |
+		 | 2014                      |
+		 | 2014-02                   |
+		 | 2014-10-05                |
+		 | 2014-05                   |
+		 | 2014-05-01T11:08:32       |
+		 | 2015-10-23T11:08:32+00:00 |
 
 @ignore
 Scenario Outline: Appointment retrieve book appointment then request appointment and check it is returned
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments with the date "<startDate>"
@@ -75,18 +75,18 @@ Scenario Outline: Appointment retrieve book appointment then request appointment
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| startDate           |
-		| 2014                |
-		| 2014-02             |
-		| 2014-10-05          |
-		| 2014-05             |
-		| 2014-05-01T11:08:32 |
-		 |2015-10-23T11:08:32+00:00 |
+		| startDate                 |
+		| 2014                      |
+		| 2014-02                   |
+		| 2014-10-05                |
+		| 2014-05                   |
+		| 2014-05-01T11:08:32       |
+		| 2015-10-23T11:08:32+00:00 |
 
 		 
 	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments with the date "<startDate>"
@@ -107,7 +107,7 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 
 
 Scenario Outline: Appointment retrieve send request with date variations which are valid with prefix
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
@@ -162,7 +162,7 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 
 
 Scenario Outline: Appointment retrieve failure due to missing header
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I do not send header "<Header>"
@@ -179,7 +179,7 @@ Scenario Outline: Appointment retrieve failure due to missing header
 		| Authorization     |
 
 Scenario Outline: Appointment retrieve interaction id incorrect fail
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
     Given I am using the default server
         And I am performing the "<interactionId>" interaction
     When I search for "patient1" and make a get request for their appointments
@@ -194,7 +194,7 @@ Scenario Outline: Appointment retrieve interaction id incorrect fail
        | 1  | null                                                              |
 	
 Scenario Outline: Appointment retrieve accept header and _format parameter
-    Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+    Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
         And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
         And I set the Accept header to "<Header>"
@@ -211,7 +211,7 @@ Scenario Outline: Appointment retrieve accept header and _format parameter
        | application/xml+fhir  | application/xml+fhir  | XML        |  
 
 Scenario Outline: Appointment retrieve accept header
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I set the Accept header to "<Header>"
@@ -225,7 +225,7 @@ Scenario Outline: Appointment retrieve accept header
 		| application/xml+fhir  | XML        |
 
 Scenario Outline: Appointment retrieve bundle resource with empty appointment resource
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "0" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "<patient>" and make a get request for their appointments
@@ -234,10 +234,9 @@ Scenario Outline: Appointment retrieve bundle resource with empty appointment re
         And the response should be a Bundle resource of type "searchset"
 		And there are zero appointment resources
 	 Examples:
-        | patient   |
-        | patient56 |
-        | patient56888   |
-        | patient5645444   |    
+        | patient      |
+        | patient2    |
+
 	
 
 Scenario: Appointment retrieve appointment which contains all mandatory resources
@@ -259,7 +258,7 @@ Scenario: Appointment retrieve appointment which contains all mandatory resource
 
 
 Scenario: Appointment retrieve bundle resource must contain status with valid value
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -271,7 +270,7 @@ Scenario: Appointment retrieve bundle resource must contain status with valid va
 
 
 Scenario: Appointment retrieve bundle resource must contain participant with type or actor present
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -282,7 +281,7 @@ Scenario: Appointment retrieve bundle resource must contain participant with typ
 
 
 Scenario: Appointment retrieve bundle participant actor contains valid references
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -294,7 +293,7 @@ Scenario: Appointment retrieve bundle participant actor contains valid reference
 		And if actor returns a patient resource the resource is valid
 
 Scenario: Appointment retrieve bundle participant type contains valid references
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -304,7 +303,7 @@ Scenario: Appointment retrieve bundle participant type contains valid references
 		And if the appointment participant contains a type is should have a valid system and code
 
 Scenario: Appointment retrieve bundle contains appointment with identifer with correct system and value
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -313,7 +312,7 @@ Scenario: Appointment retrieve bundle contains appointment with identifer with c
 		And if the appointment resource contains an identifier it contains a valid system and value
 
 Scenario: Appointment retrieve appointment response should contain meta data profile and version id
-		Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+		Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -322,7 +321,7 @@ Scenario: Appointment retrieve appointment response should contain meta data pro
 		And the appointment response resource should contain meta data profile and version id
 	
 Scenario: Appointment retrieve appointment response identifier is valid
-		Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+		Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -333,7 +332,7 @@ Scenario: Appointment retrieve appointment response identifier is valid
 	
 
 Scenario: Appointment retrieve bundle of coding type SNOMED resource must contain coding with valid system and code and display
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -343,7 +342,7 @@ Scenario: Appointment retrieve bundle of coding type SNOMED resource must contai
 
 	
 Scenario: Appointment retrieve bundle of coding type READ V2 resource must contain coding with valid system and code and display
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -353,7 +352,7 @@ Scenario: Appointment retrieve bundle of coding type READ V2 resource must conta
 
 
 Scenario: Appointment retrieve bundle of coding type SREAD CTV3 resource must contain coding with valid system and code and display
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -363,7 +362,7 @@ Scenario: Appointment retrieve bundle of coding type SREAD CTV3 resource must co
 
 
 Scenario: Appointment retrieve bundle contains appointment with slot 
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -374,7 +373,7 @@ Scenario: Appointment retrieve bundle contains appointment with slot
 
 	
 Scenario: Appointment retrieve bundle contains appointment contact method
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -387,7 +386,7 @@ Scenario: Appointment retrieve bundle contains appointment contact method
 
 
 Scenario: Appointment retrieve bundle contains valid start and end dates
-	Given I find or create "0" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -396,9 +395,7 @@ Scenario: Appointment retrieve bundle contains valid start and end dates
 		And all appointments must have an start element which is populated with a valid date
 		And all appointments must have an end element which is populated vith a valid date
 
-
-
-
+@ignore
 Scenario Outline: Appointment retrieve JWT requesting scope claim should reflect the operation being performed
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction

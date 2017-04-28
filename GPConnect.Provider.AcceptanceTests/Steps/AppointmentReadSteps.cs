@@ -41,7 +41,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 for (int numberOfAppointmentsToCreate = numberOfRequiredAdditionalAppointments; numberOfAppointmentsToCreate > 0; numberOfAppointmentsToCreate--)
                 {
                     // TODO - Create a new appointment for the patient using the slots and details from the getSchedule response saved object above
-                }
+                    When($@"I book an appointment for patient ""{patient}"" on the provider system");
+
+    }
 
                 // Search for appointments again to make sure that enough have been stored in the provider system and store them
                 Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""{bundleOfPatientAppointmentskey}""");
