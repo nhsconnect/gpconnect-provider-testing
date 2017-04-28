@@ -40,6 +40,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
 
+        [When(@"I search for ""([^""]*)"" and make a get request for their appointments")]
+        public void searchAndGetAppointments(string patient)
+        {
+            Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
+            string id = patient1.Id.ToString();
+            var url = "/Patient/"+id+"/Appointment";
+            When($@"I make a GET request to ""{url}""");   
+        }
+
+        [When(@"I search for ""([^""]*)"" and make a get request for their appointments with the date ""([^""]*)""")]
+        public void searchAndGetAppointmentsWithCustomStartDate(string patient, string startDate)
+        {
+            Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
+            string id = patient1.Id.ToString();
+            var url = "/Patient/" + id + "/Appointment?start="+startDate+"";
+            When($@"I make a GET request to ""{url}""");
+        }
+
+
+
         [Given(@"I get the slots avaliable slots for organization ""([^""]*)"" for the next 3 days")]
         public void BookSlots(string appointmentCode)
         {
