@@ -37,11 +37,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"I create an appointment for patient ""(.*)"" unless 1 exists and save the appointment called ""(.*)""")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(int id, string appointmentName)
         {
-            Log.WriteLine("reached here 2");
+            
             var relativeUrl = "/Patient/" + id + "/Appointment";
             var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", relativeUrl);
             returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
-            if (((Bundle)returnedResourceBundle).Entry.Count < 66 || ((Bundle)returnedResourceBundle).Entry.Count == 0)
+            if (((Bundle)returnedResourceBundle).Entry.Count < 2 || ((Bundle)returnedResourceBundle).Entry.Count == 0)
            {
                 for (int i = 0; i < 1; i++)
                {

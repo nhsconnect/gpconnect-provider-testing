@@ -19,7 +19,7 @@ Scenario Outline: Appointment retrieve success valid id where appointment resour
 		| 400000 |
 
 Scenario: Appointment retrieve success valid id where single appointment resource is required resource
-Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+Given I find or create "6" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -370,7 +370,6 @@ Scenario: Appointment retrieve bundle contains appointment with slot
 		And the response body should be FHIR JSON
 		And the slot reference is present and valid
 
-
 	
 Scenario: Appointment retrieve bundle contains appointment contact method
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -383,7 +382,6 @@ Scenario: Appointment retrieve bundle contains appointment contact method
 		And if the appointment booking element is present it is populated with the correct values
 		And if the appointment contact element is present it is populated with the correct values
 		And if the appointment cancellation reason element is present it is populated with the correct values
-
 
 Scenario: Appointment retrieve bundle contains valid start and end dates
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"

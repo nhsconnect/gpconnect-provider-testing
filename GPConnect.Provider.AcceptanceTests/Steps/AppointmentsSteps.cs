@@ -129,9 +129,107 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system")]
-        public void bookAppointmentForUser (string patient)
+        public void bookAppointmentForUser (string patientRef)
             {
-            Then($@"I find a patient with id ""{patient}"" and search for a slot and create appointment");
+            Resource patientRet = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
+            Resource patientBundle = (Bundle)HttpContext.StoredFhirResources["Patient1AppointmentsInBundle"];
+            Practitioner practitionerSaved = new Practitioner(); ;
+            Location locationSaved = new Location();
+            List<Resource> slotsaved = new List<Resource>();
+
+
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
+                {
+                    slotsaved.Add((Slot)entry.Resource);
+
+                }
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+
+                    practitionerSaved = (Practitioner)entry.Resource;
+                }
+                if (entry.Resource.ResourceType.Equals(ResourceType.Location))
+                {
+                    locationSaved = (Location)entry.Resource;
+                }
+
+
+            }
+            if (HttpContext.StoredSlots.ContainsKey("slots"))
+            {
+                slotsaved = HttpContext.StoredSlots["slots"];
+            }
+
+
+            string locationId = locationSaved.Id.ToString();
+            string practitionerId = practitionerSaved.Id;
+            string patientId = patientRet.Id.ToString();
+            Appointment appointment = new Appointment();
+
+            //Patient Resource
+            ParticipantComponent patient = new ParticipantComponent();
+            ResourceReference patientReference = new ResourceReference();
+            patientReference.Reference = "Patient/" + patientId;
+
+            Code code = new Code();
+            code.Equals("accepted");
+            ParticipationStatus stat = new ParticipationStatus();
+
+            patient.Status = stat;
+            patient.Actor = patientReference;
+            appointment.Participant.Add(patient);
+
+            //Practitioner Resource
+            ParticipantComponent practitioner = new ParticipantComponent();
+            ResourceReference practitionerReference = new ResourceReference();
+
+            practitionerReference.Reference = "Practitioner/" + practitionerId;
+            practitioner.Actor = practitionerReference;
+            appointment.Participant.Add(practitioner);
+
+            //Location Resource
+            ParticipantComponent location = new ParticipantComponent();
+            ResourceReference locationReference = new ResourceReference();
+            locationReference.Reference = "Location/" + locationId;
+            location.Actor = locationReference;
+            appointment.Participant.Add(location);
+
+            //Slot Resource
+            int slotResources = 0;
+            ResourceReference slots = new ResourceReference();
+            foreach (Slot slotResource in slotsaved)
+            {
+                string freeBusy = slotResource.FreeBusyType.Value.ToString();
+                Boolean val = freeBusy.Equals("Free");
+                slotResources++;
+                if (val)
+                {
+                    string ids = slotResource.Id.ToString();
+                    slots.Reference = slotResource.Id;
+                    appointment.Slot.Add(slots);
+                    slotsaved.Remove(slotResource);
+                    appointment.Start = slotResource.Start;
+                    appointment.End = slotResource.End;
+                    slotsaved.RemoveAt(slotResources);
+                    break;
+                }
+            }
+            //AppointmentResources
+            if (HttpContext.StoredSlots.ContainsKey("slots"))
+            {
+                HttpContext.StoredSlots.Remove("slots");
+
+            }
+
+            HttpContext.StoredSlots.Add("slots", slotsaved);
+
+            AppointmentStatus status = new AppointmentStatus();
+            appointment.Status = status;
+            //Book the appointment
+            HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
         }
 
                   
@@ -931,111 +1029,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"I find a patient with id ""(.*)"" and search for a slot and create appointment")]
-        public void bookAppointmentForPatient(string patientRef)
-        {
-
-            Resource patientRet = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
-            Resource patientBundle = (Bundle)HttpContext.StoredFhirResources["Patient1AppointmentsInBundle"];
-            Practitioner practitionerSaved = new Practitioner(); ;
-            Location locationSaved = new Location() ;
-            List<Resource> slotsaved = new List<Resource>();
-
-
-
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    slotsaved.Add((Slot)entry.Resource);
-            
-                }
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    
-                    practitionerSaved = (Practitioner)entry.Resource;
-                }
-                if (entry.Resource.ResourceType.Equals(ResourceType.Location))
-                {
-                  locationSaved = (Location)entry.Resource;
-                }
-               
-
-            }
-            if (HttpContext.StoredSlots.ContainsKey("slots"))
-            {
-                slotsaved = HttpContext.StoredSlots["slots"];
-            }
-
-
-            string locationId = locationSaved.Id.ToString();
-            string practitionerId = practitionerSaved.Id;
-            string patientId = patientRet.Id.ToString() ;
-            Appointment appointment = new Appointment();
-
-            //Patient Resource
-            ParticipantComponent patient = new ParticipantComponent();
-            ResourceReference patientReference = new ResourceReference();
-            patientReference.Reference = "Patient/" + patientId;
-
-            Code code = new Code();
-            code.Equals("accepted");
-            ParticipationStatus stat = new ParticipationStatus();
-
-            patient.Status = stat;
-            patient.Actor = patientReference;
-            appointment.Participant.Add(patient);
-
-            //Practitioner Resource
-            ParticipantComponent practitioner = new ParticipantComponent();
-            ResourceReference practitionerReference = new ResourceReference();
-            
-            practitionerReference.Reference = "Practitioner/"+ practitionerId;
-            practitioner.Actor = practitionerReference;
-            appointment.Participant.Add(practitioner);
-
-            //Location Resource
-            ParticipantComponent location = new ParticipantComponent();
-            ResourceReference locationReference = new ResourceReference();
-            locationReference.Reference = "Location/"+ locationId;
-            location.Actor = locationReference;
-            appointment.Participant.Add(location);
-
-            //Slot Resource
-            int slotResources = 0;
-            ResourceReference slots = new ResourceReference();
-             foreach (Slot slotResource in slotsaved)
-             {
-                 string freeBusy = slotResource.FreeBusyType.Value.ToString();
-                 Boolean val = freeBusy.Equals("Free");
-                slotResources++;
-                if (val)
-                 {
-                     string ids = slotResource.Id.ToString();
-                     slots.Reference = slotResource.Id;
-                     appointment.Slot.Add(slots);
-                     slotsaved.Remove(slotResource);
-                     appointment.Start = slotResource.Start;
-                     appointment.End = slotResource.End;
-                     slotsaved.RemoveAt(slotResources);
-                     break;
-                 }
-             }
-            //AppointmentResources
-            if (HttpContext.StoredSlots.ContainsKey("slots"))
-            {
-                HttpContext.StoredSlots.Remove("slots");
-                
-            }
-        
-             HttpContext.StoredSlots.Add("slots", slotsaved);
-
-            AppointmentStatus status = new AppointmentStatus();
-            appointment.Status = status;
-            //Book the appointment
-            HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
-         
-        }
+   
 
         [When(@"I book an appointment for patient ""(.*)"" on the provider system using interaction id ""(.*)""")]
         public void bookAppointmentForPatientWithIncorrectInteractionId(int id, string interactionId)

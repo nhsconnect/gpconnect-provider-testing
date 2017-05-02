@@ -12,7 +12,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly HttpSteps HttpSteps;
         private readonly HttpContext HttpContext;
-      
+
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
@@ -24,7 +24,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps = httpSteps;
             HttpContext = httpContext;
         }
-        
+
+        [Given(@"I find appointments for patient ""([^""]*)"" at organization ""([^""]*)"" and save the bundle of appointment resources to ""([^""]*)""")]
+        public void createFindOrganisationAndAssignSchedule(string patient, string organizaitonName, string bundleOfPatientAppointmentskey) {
+            // Search For Patient appointments
+            Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""{bundleOfPatientAppointmentskey}""");
+            Bundle patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
+            
+        }
+    
+
+
+
+
         [Given(@"I find or create ""([^ ""] *)"" appointments for patient ""([^""]*)"" at organization ""([^""]*)"" and save bundle of appintment resources to ""([^""]*)""")]
         public void IFindOrCreateAAppointmentsForPatientAtOrganizationAndSaveAListOfResourceTo(int noApp, string patient, string organizaitonName, string bundleOfPatientAppointmentskey)
         {

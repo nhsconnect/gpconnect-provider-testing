@@ -5,12 +5,9 @@ Background:
 	Given I have the test ods codes
 
 @Appointment
-Scenario Outline: Book Appointment
-	Given I am using the default server
-		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I get the slots avaliable slots for organization "ORG1" for the next 3 days
+Scenario Outline: Book single appointment for patient
+	
+	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "BookAppointmentBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 	When I book an appointment for patient "<id>" on the provider system
