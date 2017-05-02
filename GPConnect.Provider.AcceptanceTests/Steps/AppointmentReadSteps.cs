@@ -216,7 +216,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IPerformTheGetScheduleOperationForOrganizationAndStoreTheReturnedBundleResourceAgainstKey(string bundleOfPatientAppointmentsKey)
         {
             Bundle patientAppointmentBundel = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentsKey];
-            Given($@"I perform an appointment read for the appointment ""{patientAppointmentBundel.Entry[0].Resource.Id}"""); // Get the Id of the first appointment
+            When($@"I perform an appointment read for the appointment with logical id ""{patientAppointmentBundel.Entry[0].Resource.Id}"""); // Get the Id of the first appointment
         }
 
         [When(@"I perform an appointment read for the appointment with logical id ""([^""]*)""")]
