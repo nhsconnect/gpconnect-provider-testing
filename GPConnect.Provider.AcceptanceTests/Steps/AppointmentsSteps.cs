@@ -136,9 +136,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Practitioner practitionerSaved = new Practitioner(); ;
             Location locationSaved = new Location();
             List<Resource> slotsaved = new List<Resource>();
-
-
-
+            
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
@@ -607,14 +605,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the appointment response resource contains an id")]
         public void ThenTheAppointmentResourceShouldContainAnId()
         {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            appointment.Id.ShouldNotBeNull();
-            int idCount = 0;
-            foreach (char id in appointment.Id)
+
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
-                idCount++;
+                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                {
+                    Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+                    appointment.Id.ShouldNotBeNull();
+                    int idCount = 0;
+                    foreach (char id in appointment.Id)
+                    {
+                        idCount++;
+                    }
+                    idCount.ShouldBe(1);
+                }
             }
-            idCount.ShouldBe(1);
         }
 
 

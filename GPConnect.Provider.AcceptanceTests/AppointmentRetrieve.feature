@@ -234,10 +234,8 @@ Scenario Outline: Appointment retrieve bundle resource with empty appointment re
         And the response should be a Bundle resource of type "searchset"
 		And there are zero appointment resources
 	 Examples:
-        | patient      |
-        | patient2    |
-
-	
+        | patient  |
+        | patient2 |
 
 Scenario: Appointment retrieve appointment which contains all mandatory resources
 		Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -255,8 +253,6 @@ Scenario: Appointment retrieve appointment which contains all mandatory resource
 	Then the bundle appointment resource should contain at least one slot reference
 	Then the bundle appointment resource should contain at least one participant
 	
-
-
 Scenario: Appointment retrieve bundle resource must contain status with valid value
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
