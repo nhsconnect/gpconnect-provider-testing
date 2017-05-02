@@ -6,10 +6,9 @@ Background:
 
 @Appointment
 Scenario: Book single appointment for patient
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
-	Given I am using the default server
+	 Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	When I book an appointment for patient "patient1" on the provider system
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -21,11 +20,11 @@ Scenario: Book Appointment with invalid url for booking appointment
 	Then the response status code should indicate failure
 
 Scenario Outline: Book appointment failure due to missing header
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	 Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 			And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I do not send header "<Header>"
-	When I book an appointment for patient "patient1" on the provider system
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -38,12 +37,12 @@ Scenario Outline: Book appointment failure due to missing header
 		| Authorization     |
 
 Scenario Outline: Book appointment accept header and _format parameter
-    Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+    Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
        	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
         And I set the Accept header to "<Header>"
         And I add the parameter "_format" with the value "<Parameter>"
-	When I book an appointment for patient "patient1" on the provider system
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
     Then the response status code should indicate success
         And the response body should be FHIR <BodyFormat>
         And the response should be a Bundle resource of type "searchset"
@@ -56,11 +55,11 @@ Scenario Outline: Book appointment accept header and _format parameter
 
 
 Scenario Outline: Book appointment accept header variations
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+ Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I set the Accept header to "<Header>"
-	When I book an appointment for patient "patient1" on the provider system
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
@@ -70,11 +69,11 @@ Scenario Outline: Book appointment accept header variations
 		 | application/xml+fhir  | XML        |
 
 Scenario Outline: Book appointment prefer header variations
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	 Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I set the Prefer header to "<Header>"
-	When I book an appointment for patient "patient1" on the provider system
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -84,7 +83,7 @@ Scenario Outline: Book appointment prefer header variations
 		| minimal        |
 
 Scenario Outline: Book appointment interaction id incorrect fail
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	 Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
    When I book an appointment for patient "patient1" on the provider system using interaction id "<interactionId>"
     Then the response status code should be "400"
@@ -115,10 +114,10 @@ Scenario Outline: Book appointment and remove a necessary resource
        | 1  | patient  |
                                                         
 Scenario: Book Appointment and check response returns the correct values
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	When I book an appointment for patient "patient1" on the provider system
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -133,10 +132,10 @@ Scenario: Book Appointment and check response returns the correct values
 
 
 Scenario: Book Appointment and check response returns the relevent structured definition
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	When I book an appointment for patient "patient1" on the provider system
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -144,10 +143,10 @@ Scenario: Book Appointment and check response returns the relevent structured de
 
 
 Scenario: Book Appointment and check slot reference is valid
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	When I book an appointment for patient "patient1" on the provider system
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -156,10 +155,10 @@ Scenario: Book Appointment and check slot reference is valid
 
 
 Scenario: Book Appointment and appointment participant is valid
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	When I book an appointment for patient "patient1" on the provider system
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -168,10 +167,10 @@ Scenario: Book Appointment and appointment participant is valid
 		And if the appointment participant contains a type is should have a valid system and code
 
 Scenario: Book Appointment and check extension methods are valid
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	When I book an appointment for patient "patient1" on the provider system
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -182,7 +181,7 @@ Scenario: Book Appointment and check extension methods are valid
 
 
 Scenario Outline: Book Appointment and remove patient participant
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 	Then I create an appointment for patient "patient1" unless 1 exists and save the appointment called "<Appointment>"
@@ -196,7 +195,7 @@ Scenario Outline: Book Appointment and remove patient participant
 		| Appointment1 |
 
 	Scenario Outline: Book Appointment and remove location participant
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 	Then I create an appointment for patient "patient1" unless 1 exists and save the appointment called "<Appointment>"
@@ -210,7 +209,7 @@ Scenario Outline: Book Appointment and remove patient participant
 		| Appointment1 |
 
 		Scenario Outline: Book Appointment and remove practitioner participant
-	Given I find appointments for patient "patient1" at organization "ORG1" and save the bundle of appointment resources to "Patient1AppointmentsInBundle"
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 	Then I create an appointment for patient "patient1" unless 1 exists and save the appointment called "<Appointment>"
