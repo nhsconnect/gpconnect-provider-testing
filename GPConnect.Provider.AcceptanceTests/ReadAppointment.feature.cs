@@ -92,7 +92,7 @@ this.FeatureBackground();
                     " interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
  testRunner.When("I perform an appointment read for the first appointment saved in the list of reso" +
-                    "urces stored against key \"Patient1Appointments\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "urces stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 12
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 13

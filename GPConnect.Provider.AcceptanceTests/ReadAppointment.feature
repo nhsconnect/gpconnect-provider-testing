@@ -8,7 +8,7 @@ Scenario: I perform a successful Read appointment
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I perform an appointment read for the first appointment saved in the list of resources stored against key "Patient1Appointments"
+	When I perform an appointment read for the first appointment saved in the list of resources stored against key "Patient1AppointmentsInBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
