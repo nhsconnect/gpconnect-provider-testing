@@ -107,11 +107,11 @@ Scenario: Book Appointment and check response returns the correct values
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the returned appointment resource shall contains an id
-		And the bundle appointment resource should contain a single status element
-		And the bundle appointment resource should contain a single start element
-		And the bundle appointment resource should contain a single end element
-		And the bundle appointment resource should contain at least one participant
-		And the bundle appointment resource should contain at least one slot reference
+		And the appointment resource should contain a single status element
+		And the appointment resource should contain a single start element
+		And the appointment resource should contain a single end element
+		And the appointment resource should contain at least one participant
+		And the appointment resource should contain at least one slot reference
 		And the appointment response contains a type with a valid system code and display
 		And if the appointment resource contains a priority the value is valid
   
@@ -143,12 +143,12 @@ Scenario: Book Appointment and appointment participant is valid
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
-	Then the response status code should indicate success
+	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And the bundle appointment resource should contain at least one participant
-		And if appointment is present the single or multiple participant must contain a type or actor
-		And if the appointment participant contains a type is should have a valid system and code
+		And the appointment resource should contain at least one participant
+		And the appointment resource participant must contain a type or actor
+		And the appointment participant contains a type is should have a valid system and code
 
 Scenario: Book Appointment and check extension methods are valid
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
@@ -171,7 +171,7 @@ Scenario Outline: Book Appointment and remove patient participant
 	Then I create an appointment for patient "patient1" called "<Appointment>" from schedule "getScheduleResponseBundle"
 	Then I remove the patient participant from the appointment called "<Appointment>"
 	Then I book the appointment called "<Appointment>"
-	Then the response status code should indicate success
+	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 	Examples:
@@ -185,7 +185,7 @@ Scenario Outline: Book Appointment and remove location participant
 	Then I create an appointment for patient "patient1" called "<Appointment>" from schedule "getScheduleResponseBundle"
 	Then I remove the location participant from the appointment called "<Appointment>"
 	Then I book the appointment called "<Appointment>"
-	Then the response status code should indicate success
+	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		Examples:
@@ -199,7 +199,7 @@ Given I perform the getSchedule operation for organization "ORG1" and store the 
 	Then I create an appointment for patient "patient1" called "<Appointment>" from schedule "getScheduleResponseBundle"
 	Then I remove the practitioner participant from the appointment called "<Appointment>"
 	Then I book the appointment called "<Appointment>"
-	Then the response status code should indicate success
+	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 	And the response should be an Appointment resource
 	Examples:

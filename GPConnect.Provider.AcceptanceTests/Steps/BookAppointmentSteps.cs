@@ -2,6 +2,7 @@
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
+using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -219,6 +220,46 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void bookAppointment(string appointmentName) {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+        }
+
+
+        [Then(@"the appointment resource participant must contain a type or actor")]
+        public void ThenTheAppointmentResourceShouldContainAParticipantWithATypeOrActor()
+        {
+
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (ParticipantComponent part in appointment.Participant)
+                    {
+                        string actor = part.Actor.ToString();
+                        string type = part.Type.ToString();
+
+                        if (null == actor && null == type)
+                        {
+                            Assert.Fail();
+                        }
+                    }
+                }
+
+
+        [Then(@"the appointment participant contains a type is should have a valid system and code")]
+        public void AppointmentParticipantValisType()
+        {
+          
+                    Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+                    foreach (ParticipantComponent part in appointment.Participant)
+                    {
+
+                foreach (CodeableConcept codeConcept in part.Type)
+                {
+                    foreach (Coding code in codeConcept.Coding)
+
+                    {
+                        code.System.ShouldBe("http://hl7.org/fhir/ValueSet/encounter-participant-type");
+                        code.Code.ShouldNotBeNull();
+                        code.Display.ShouldNotBeNull();
+                    }
+                }
+            }
         }
 
     }
