@@ -245,13 +245,11 @@ Scenario: Appointment retrieve appointment which contains all mandatory resource
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
         And the response should be a Bundle resource of type "searchset"
-	Then the bundle appointment resource should contain a single status element
-		And the appointment status element should be valid
-	Then the bundle appointment resource should contain a single start element
-		And the appointment status element should be valid
-	Then the bundle appointment resource should contain a single end element
-	Then the bundle appointment resource should contain at least one slot reference
-	Then the bundle appointment resource should contain at least one participant
+	Then the bundle of appointments should all contain a single status element
+	Then the bundle of appointments should all contain a single start element
+	Then the bundle of appointments should all contain a single end element
+	Then the bundle of appointments should all contain at least one slot reference
+	Then the bundle of appointments should all contain at least one participant
 	
 Scenario: Appointment retrieve bundle resource must contain status with valid value
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -314,7 +312,7 @@ Scenario: Appointment retrieve appointment response should contain meta data pro
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the appointment response resource should contain meta data profile and version id
+		And the bundle of appointments should contain meta data profile and version id
 	
 Scenario: Appointment retrieve bundle of coding type SNOMED resource must contain coding with valid system and code and display
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"

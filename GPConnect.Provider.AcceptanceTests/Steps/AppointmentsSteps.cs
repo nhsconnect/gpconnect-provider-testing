@@ -391,7 +391,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointmentCount.ShouldBeGreaterThan<int>(1);
         }
 
-        [Then(@"the bundle appointment resource should contain a single status element")]
+        [Then(@"the appointment resource should contain a single status element")]
         public void appointmentMustContainStatusElement()
         {
 
@@ -399,7 +399,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Status.ShouldNotBeNull();
 
         }
-        [Then(@"the bundle appointment resource should contain a single start element")]
+        [Then(@"the appointment resource should contain a single start element")]
         public void appointmentMustContainStartElement()
         {
 
@@ -408,21 +408,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         }
-        [Then(@"the bundle appointment resource should contain a single end element")]
+        [Then(@"the appointment resource should contain a single end element")]
         public void appointmentMustContainEndElement()
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.End.ShouldNotBeNull();
         }
 
-        [Then(@"the bundle appointment resource should contain at least one slot reference")]
+        [Then(@"the appointment resource should contain at least one slot reference")]
         public void appointmentMustContainSlotReference()
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Slot.ShouldNotBeNull();
 
         }
-        [Then(@"the bundle appointment resource should contain at least one participant")]
+        [Then(@"the appointment resource should contain at least one participant")]
         public void appointmentMustContainParticipant()
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
