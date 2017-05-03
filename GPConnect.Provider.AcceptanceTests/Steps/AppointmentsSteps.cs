@@ -662,6 +662,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        // Replace with "the returned appointment resource shall contains an id"
         [Then(@"the appointment response resource contains an id")]
         public void ThenTheAppointmentResourceShouldContainAnId()
         {
@@ -683,7 +684,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-
+        // Replace with "the returned appointment resource should contain meta data profile and version id"
         [Then(@"the appointment response resource should contain meta data profile and version id")]
         public void ThenTheAppointmentResourceShouldContainMetaDataProfile()
         {
@@ -739,26 +740,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Slot.ShouldNotBeNull();
-
+            appointment.Slot.Count.ShouldBeGreaterThanOrEqualTo(1);
         }
-
-
-        [Then(@"the appointment response resource contains a participant which contains a status with a valid value")]
-        public void ThenTheAppointmentResourceShouldContainAParticipant()
-        {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            appointment.Participant.ShouldNotBeNull();
-            foreach (Appointment.ParticipantComponent participant in appointment.Participant)
-            {
-                string status = participant.Status.ToString();
-                if (status != "Accepted" && status != "Declined" && status != "Tentative" && status != "Needs-action")
-                {
-                    Assert.Fail();
-                }
-            }
-
-        }
-
+        
         [Then(@"if appointment is present the single or multiple participant must contain a type or actor")]
         public void ThenTheAppointmentResourceShouldContainAParticipantWithATypeOrActor()
         {
@@ -776,29 +760,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         {
                             Assert.Fail();
                         }
-                    }
-                }
-            }
-        }
-
-        [Then(@"the appointment response resource contains an identifier with a valid system and value")]
-        public void ThenTheAppointmentResourceShouldContainAnIdentifier()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-
-                    Appointment appointment = (Appointment)entry.Resource;
-                    appointment.Identifier.ShouldNotBeNull();
-                    String id = appointment.Id.ToString();
-                    foreach (Identifier identifier in appointment.Identifier)
-                    {
-                        identifier.System.ShouldNotBeNull();
-                        identifier.System.ShouldBe("http://fhir.nhs.net/Id/gpconnect-appointment-identifier");
-                        identifier.Value.ShouldNotBeNull();
-                        identifier.Value.ShouldBe(id);
-
                     }
                 }
             }
