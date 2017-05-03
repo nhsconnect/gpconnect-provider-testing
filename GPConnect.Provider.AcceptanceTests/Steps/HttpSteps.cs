@@ -80,11 +80,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             // Clear down headers for pre-steps which get resources for use within the test scenario
             HttpContext.RequestHeaders.Clear();
-            HttpContext.ResponseHeaders.Clear();
+          
             HttpContext.RequestUrl = "";
             HttpContext.RequestParameters.ClearParameters();
             HttpContext.RequestBody = null;
 
+
+            HttpContext.ResponseTimeInMilliseconds = -1;
+            //HttpContext.ResponseStatusCode = null;
+            HttpContext.ResponseContentType = null;
+            HttpContext.ResponseBody = null;
+            HttpContext.ResponseHeaders.Clear();
+            FhirContext.FhirResponseResource = null;
             // Load The Default Settings From The App.config File
             HttpContext.LoadAppConfig();
 
@@ -342,26 +349,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
 
             // Check the response
-           HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.Created);
+        
   
             var returnResource = FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
 
-            // Restore state
-            HttpContext.RequestHeaders.SetRequestHeaders(preRequestHeaders);
-            HttpContext.RequestUrl = preRequestUrl;
-            HttpContext.RequestParameters = preRequestParameters;
-            HttpContext.RequestMethod = preRequestMethod;
-            HttpContext.RequestContentType = preRequestContentType;
-            HttpContext.RequestBody = preRequestBody;
-
-            HttpContext.ResponseTimeInMilliseconds = preResponseTimeInMilliseconds;
-            HttpContext.ResponseStatusCode = preResponseStatusCode;
-            HttpContext.ResponseContentType = preResponseContentType;
-            HttpContext.ResponseBody = preResponseBody;
-            HttpContext.ResponseHeaders = preResponseHeaders;
-            HttpContext.ResponseJSON = preResponseJSON;
-            HttpContext.ResponseXML = preResponseXML;
-            FhirContext.FhirResponseResource = preFhirResponseResource;
+    
 
             return returnResource;
         }
