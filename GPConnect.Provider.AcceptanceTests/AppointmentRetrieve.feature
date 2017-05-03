@@ -65,31 +65,23 @@ Scenario Outline: Appointment retrieve send request with date variations with va
 		 | 2014-05-01T11:08:32       |
 		 | 2015-10-23T11:08:32+00:00 |
 
-@ignore
-Scenario Outline: Appointment retrieve book appointment then request appointment and check it is returned
-	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+##Creates an appointment every time run to check the date exists
+Scenario: Appointment retrieve book appointment then request appointment and check it is returned
+	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "patient1" and make a get request for their appointments with the date "<startDate>"
+	When I search for "patient1" and make a get request for their appointments with the date "startDate"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-	Examples:
-		| startDate                 |
-		| 2014                      |
-		| 2014-02                   |
-		| 2014-10-05                |
-		| 2014-05                   |
-		| 2014-05-01T11:08:32       |
-		| 2015-10-23T11:08:32+00:00 |
+		And the response total should be at least 1
 
-		 
 	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "patient1" and make a get request for their appointments with the date "<startDate>"
+	When I search for "patient1" and make a get request for their appointments searching with the date "<startDate>"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
@@ -103,17 +95,20 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		| 2016-13                   |
 		| 2016-13-14                |
 		| 2016-13-08T09:22:16       |
-		| 2016-13-08T23:59:59+00:00 |      
+		| 2016-13-08T23:59:59+00:00 |
+		| 2014                      |      
 
-
+@ignore
 Scenario Outline: Appointment retrieve send request with date variations which are valid with prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
+		And I save to current time called "timeNow"
+	When I search for "patient1" and make a get request for their appointments with the date "timeNow" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
+		And the response total should be at least 1
 	Examples:
 		| startDate                 | prefix |
 		| 2014                      | eq     |

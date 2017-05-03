@@ -6,6 +6,7 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Appointment;
 using static Hl7.Fhir.Model.Bundle;
+using System;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -52,6 +53,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
 
         }
+
+        [Then(@"the response total should be at least 1")]
+        public void responseTotalSgouldBeAtleast1()
+        {
+            Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
+            bundle.Total.ShouldNotBeNull<int?>();
+            bundle.Total.ShouldBe<int?>(1);
+        }
+
+        [Given(@"I save to current time called ""([^""]*)""")]
+        public void saveCurrentTimeToUseForAppointmentSearch(string timeName)
+        {
+            String currentDateTime = DateTime.Now.ToString("yyyy-MM-dd");
+            HttpContext.StoredDate.Add(timeName, currentDateTime);
+
+
+        }
+
+
 
         [Then(@"the bundle of appointments should all contain a single status element")]
         public void appointmentMustContainStatusElement()
@@ -119,6 +139,31 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
 
 
+        }
+
+        [Given(@"I create ""([^ ""] *)"" appointments for patient ""([^""]*)"" at organization ""([^""]*)"" and save bundle of appintment resources to ""([^""]*)""")]
+        public void IFindOrCreateAAppointmentsForPatientAtOrganizationAndSaveAListOfResourceTo(int noApp, string patient, string organizaitonName, string bundleOfPatientAppointmentskey)
+        {
+            // Search For Patient appointments
+            Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""{bundleOfPatientAppointmentskey}""");
+            Bundle patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
+
+            int numberOfRequiredAdditionalAppointments = noApp - patientAppointmentsBundle.Entry.Count;
+           
+
+                // Perform get schedule once to get available slots with which to create appointments
+                Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
+
+                for (; noApp > 0; noApp--)
+                {
+                    When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle""");
+                }
+
+                // Search for appointments again to make sure that enough have been stored in the provider system and store them
+                Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""{bundleOfPatientAppointmentskey}""");
+                patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
+            
+            patientAppointmentsBundle.Entry.Count.ShouldBeGreaterThanOrEqualTo(noApp, "We could not create enough appointments for the test to run.");
         }
     }
 }

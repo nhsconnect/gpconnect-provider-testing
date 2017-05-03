@@ -196,6 +196,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Start = firstSlot.Start;
             appointment.End = firstSlot.End;
 
+
+            if (HttpContext.StoredDate.ContainsKey("startDate")) HttpContext.StoredDate.Remove("startDate");
+            HttpContext.StoredDate.Add("startDate", firstSlot.StartElement.ToString());
+      
+
             // Now we have used the slot remove from it from the getScheduleBundle so it is not used to book other appointments same getSchedule is used
             EntryComponent entryToRemove = null;
             foreach (EntryComponent entry in getScheduleResponseBundle.Entry)
