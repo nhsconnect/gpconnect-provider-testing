@@ -115,15 +115,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             if (cancelledAppointmentResource == null)
             {
+                // Find or create a booked appointment to cancel
                 if (bookedAppointmentResource == null)
                 {
                     // No booked appointment found so create and store one
                     Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
                     When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle"" and store the appointment to ""bookedAppointmentKey""");
-                    bookedAppointmentResource = (Appointment)HttpContext.StoredFhirResources["bookedAppointmentKey"];
                 }
-                // I cancel the appointment stored in "bookedAppointmentResource" variable
-                When($@"I cancel appointment ""{bookedAppointmentResource.Id}"" on the provider system and store the returned appointment resource against key ""{patientAppointmentkey}""");
+                else {
+                    HttpContext.StoredFhirResources.Add("bookedAppointmentKey", bookedAppointmentResource);
+                }
+                // Cancel appointment
+                When($@"I cancel appointment resource stored against key ""bookedAppointmentKey"" and store the returned appointment resource against key ""{cancelledAppointmentResource}""");
             }
             else {
                 HttpContext.StoredFhirResources.Add(patientAppointmentkey, cancelledAppointmentResource);
