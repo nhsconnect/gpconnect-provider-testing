@@ -62,7 +62,77 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             patientAppointmentsBundle.Entry.Count.ShouldBeGreaterThanOrEqualTo(noApp, "We could not create enough appointments for the test to run.");
         }
-        
+
+        [Given(@"I find or create an appointment with status Booked for patient ""([^""]*)"" at organization ""([^""]*)"" and save the appointment resources to ""([^""]*)""")]
+        public void IFindOrCreateAnAppointmentWithStatusBookedForPatientAtOrganizationAndSaveTheAppointmentResourceTo(string patient, string organizaitonName, string patientAppointmentkey)
+        {
+            // Search For Patient appointments
+            Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""bundleOfPatientAppointmentskey""");
+            Bundle patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources["bundleOfPatientAppointmentskey"];
+
+            Appointment appointmentResource = null;
+            // Find an appointment of required type
+            foreach (var entry in patientAppointmentsBundle.Entry) {
+                Appointment appointment = (Appointment)entry.Resource;
+                if (appointment.Status == AppointmentStatus.Booked)
+                {
+                    appointmentResource = appointment;
+                }
+            }
+            if (appointmentResource == null)
+            {
+                // No booked appointment found so create and store one
+                Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
+                When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle"" and store the appointment to ""{patientAppointmentkey}""");
+            }
+            else {
+                // Else one found so I store it for later use
+                HttpContext.StoredFhirResources.Add(patientAppointmentkey, appointmentResource);
+            }
+        }
+
+        [Given(@"I find or create an appointment with status Cancelled for patient ""([^""]*)"" at organization ""([^""]*)"" and save the appointment resources to ""([^""]*)""")]
+        public void IFindOrCreateAnAppointmentWithStatusCancelledForPatientAtOrganizationAndSaveTheAppointmentResourceTo(string patient, string organizaitonName, string patientAppointmentkey)
+        {
+            // Search For Patient appointments
+            Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""bundleOfPatientAppointmentskey""");
+            Bundle patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources["bundleOfPatientAppointmentskey"];
+
+            Appointment cancelledAppointmentResource = null;
+            Appointment bookedAppointmentResource = null;
+            // Find an appointment of required type
+            foreach (var entry in patientAppointmentsBundle.Entry)
+            {
+                Appointment appointment = (Appointment)entry.Resource;
+                if (appointment.Status == AppointmentStatus.Cancelled)
+                {
+                    cancelledAppointmentResource = appointment;
+                }
+                else if(appointment.Status == AppointmentStatus.Booked)
+                {
+                    bookedAppointmentResource = appointment;
+                }
+            }
+            if (cancelledAppointmentResource == null)
+            {
+                // Find or create a booked appointment to cancel
+                if (bookedAppointmentResource == null)
+                {
+                    // No booked appointment found so create and store one
+                    Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
+                    When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle"" and store the appointment to ""bookedAppointmentKey""");
+                }
+                else {
+                    HttpContext.StoredFhirResources.Add("bookedAppointmentKey", bookedAppointmentResource);
+                }
+                // Cancel appointment
+                When($@"I cancel appointment resource stored against key ""bookedAppointmentKey"" and store the returned appointment resource against key ""{cancelledAppointmentResource}""");
+            }
+            else {
+                HttpContext.StoredFhirResources.Add(patientAppointmentkey, cancelledAppointmentResource);
+            }
+        }
+
         [Given(@"I search for patient ""([^""]*)"" appointments and save the returned bundle of appointment resources against key ""([^""]*)""")]
         public void ISearchForPatientAppointmentsAndSaveTheReturnedBundleOfAppointmentResourcesAgainstKey(string patient, string patientAppointmentSearchBundleKey)
         {
@@ -104,7 +174,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system using a slot from the getSchedule response bundle stored against key ""([^""]*)""")]
         public void IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKey(string patientName, string getScheduleBundleKey)
         {
+            IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentTo(patientName, getScheduleBundleKey);
+        }
 
+        [When(@"I book an appointment for patient ""([^""]*)"" on the provider system using a slot from the getSchedule response bundle stored against key ""([^""]*)"" and store the appointment to ""([^""]*)""")]
+        public void IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentTo(string patientName, string getScheduleBundleKey, string storeAppointmentKey = null)
+        {
             Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
             Patient patientResource = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
             Bundle getScheduleResponseBundle = (Bundle)HttpContext.StoredFhirResources[getScheduleBundleKey];
@@ -214,14 +289,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             getScheduleResponseBundle.Entry.Remove(entryToRemove);
 
             //Book the appointment
-            HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+            var createdAppointmentResource = HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+
+            if (storeAppointmentKey != null)
+            {
+                HttpContext.StoredFhirResources.Add(storeAppointmentKey, createdAppointmentResource);
+            }
         }
         
-        [When(@"I perform an appointment read for the first appointment saved in the list of resources stored against key ""([^""]*)""")]
-        public void IPerformTheGetScheduleOperationForOrganizationAndStoreTheReturnedBundleResourceAgainstKey(string bundleOfPatientAppointmentsKey)
+        [When(@"I perform an appointment read for the first appointment saved in the bundle of resources stored against key ""([^""]*)""")]
+        public void IPerformAnAppointmentReadForTheFirstAppointmentSavedInTheLBundleOfResorcesStoredAgainstKey(string bundleOfPatientAppointmentsKey)
+        {
+            When($@"I perform an appointment read appointment index ""0"" saved in the bundle of resources stored against key ""{bundleOfPatientAppointmentsKey}""");
+        }
+
+        [When(@"I perform an appointment read appointment index ""([^""]*)"" saved in the bundle of resources stored against key ""([^""]*)""")]
+        public void IPerformAnAppointmentReadForTheAppointmentIndexSavedInTheBundleOfResourcesStoredAgainstKey(int appointmentIndex, string bundleOfPatientAppointmentsKey)
         {
             Bundle patientAppointmentBundel = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentsKey];
-            When($@"I perform an appointment read for the appointment with logical id ""{patientAppointmentBundel.Entry[0].Resource.Id}"""); // Get the Id of the first appointment
+            When($@"I perform an appointment read for the appointment with logical id ""{patientAppointmentBundel.Entry[appointmentIndex].Resource.Id}"""); // Get the Id of the first appointment
         }
 
         [When(@"I perform an appointment read for the appointment with logical id ""([^""]*)""")]
@@ -279,5 +365,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             patientFound.ShouldBeTrue("Patient reference not found in appointment");
             practitionerFound.ShouldBeTrue("Practitioner reference not found in appointment");
         }
+
+        [Then(@"if the appointment response resource contains any identifiers they must have a value")]
+        public void ThenIfTheAppointmentResponseResourceContainsAnyIdentifiersTheyMustHaveAValue()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (var identifier in appointment.Identifier) {
+                identifier.Value.ShouldNotBeNullOrEmpty();
+            }
+        }
+
     }
 }
