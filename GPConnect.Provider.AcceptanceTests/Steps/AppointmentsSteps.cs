@@ -27,7 +27,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly HttpSteps HttpSteps;
         private readonly HttpContext HttpContext;
-      
+
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
@@ -45,8 +45,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
             string id = patient1.Id.ToString();
-            var url = "/Patient/"+id+"/Appointment";
-            When($@"I make a GET request to ""{url}""");   
+            var url = "/Patient/" + id + "/Appointment";
+            When($@"I make a GET request to ""{url}""");
         }
 
         [When(@"I search for ""([^""]*)"" and make a get request for their appointments with the date ""([^""]*)""")]
@@ -54,7 +54,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
             string id = patient1.Id.ToString();
-            var url = "/Patient/" + id + "/Appointment?start="+startDate+"";
+            var url = "/Patient/" + id + "/Appointment?start=" + startDate + "";
             When($@"I make a GET request to ""{url}""");
         }
 
@@ -63,7 +63,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
             string id = patient1.Id.ToString();
-            var url = "/Patient/" + id + "/Appointment?start=" + prefix+ startDate + "";
+            var url = "/Patient/" + id + "/Appointment?start=" + prefix + startDate + "";
             When($@"I make a GET request to ""{url}""");
         }
 
@@ -91,27 +91,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {
-                 HttpContext.StoredFhirResources.Add("Organization", (Organization)entry.Resource);
+                    HttpContext.StoredFhirResources.Add("Organization", (Organization)entry.Resource);
                 }
                 if (entry.Resource.ResourceType.Equals(ResourceType.Location))
                 {
                     HttpContext.StoredFhirResources.Add("Location", (Location)entry.Resource);
                 }
                 if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-               {
+                {
                     HttpContext.StoredFhirResources.Remove("Practitioner");
                     HttpContext.StoredFhirResources.Add("Practitioner", (Practitioner)entry.Resource);
                 }
-                
+
                 if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {                   
+                {
                     string id = ((Slot)entry.Resource).Id.ToString();
                     slots.Add((Slot)entry.Resource);
-                }            
+                }
             }
             String here = slots.Count.ToString();
             HttpContext.StoredSlots.Add("Slot", slots);
-         
+
         }
 
         [Given(@"I search for an appointments for patient ""([^""]*)"" on the provider system and save the first response to ""([^""]*)""")]
@@ -129,8 +129,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)""")]
-        public void bookAppointmentForUser (string patientRef, string scheduleName)
-            {
+        public void bookAppointmentForUser(string patientRef, string scheduleName)
+        {
 
             Bundle patientBundle = (Bundle)HttpContext.StoredFhirResources[scheduleName];
             List<Slot> slotList = new List<Slot>();
@@ -397,22 +397,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Status.ShouldNotBeNull();
-           
+
         }
         [Then(@"the bundle appointment resource should contain a single start element")]
         public void appointmentMustContainStartElement()
         {
-          
-              Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-              appointment.Start.ShouldNotBeNull();
-          
-        
+
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Start.ShouldNotBeNull();
+
+
         }
         [Then(@"the bundle appointment resource should contain a single end element")]
         public void appointmentMustContainEndElement()
         {
-               Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-               appointment.End.ShouldNotBeNull();   
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.End.ShouldNotBeNull();
         }
 
         [Then(@"the bundle appointment resource should contain at least one slot reference")]
@@ -427,11 +427,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Participant.ShouldNotBeNull();
-               
+
 
         }
 
-     [Then(@"appointment status should have a valid value")]
+        [Then(@"appointment status should have a valid value")]
         public void statusShouldHaveValidValue()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -662,51 +662,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        // Replace with "the returned appointment resource shall contains an id"
-        [Then(@"the appointment response resource contains an id")]
-        public void ThenTheAppointmentResourceShouldContainAnId()
-        {
-
-
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-                    appointment.Id.ShouldNotBeNull();
-                    int idCount = 0;
-                    foreach (char id in appointment.Id)
-                    {
-                        idCount++;
-                    }
-                    idCount.ShouldBe(1);
-                }
-            }
-        }
-
-        // Replace with "the returned appointment resource should contain meta data profile and version id"
-        [Then(@"the appointment response resource should contain meta data profile and version id")]
-        public void ThenTheAppointmentResourceShouldContainMetaDataProfile()
-        {
-
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    appointment.Meta.ShouldNotBeNull();
-                    int metaProfileCount = 0;
-                    foreach (string profile in appointment.Meta.Profile)
-                    {
-                        metaProfileCount++;
-                        profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-appointment-1");
-                    }
-                    metaProfileCount.ShouldBe(1);
-                    appointment.Meta.VersionId.ShouldNotBeNull();
-                }
-            }
-        }
-
 
         [Then(@"the appointment response resource contains a status with a valid value")]
         public void ThenTheAppointmentResourceShouldContainAStatus()
@@ -742,7 +697,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Slot.ShouldNotBeNull();
             appointment.Slot.Count.ShouldBeGreaterThanOrEqualTo(1);
         }
-        
+
         [Then(@"if appointment is present the single or multiple participant must contain a type or actor")]
         public void ThenTheAppointmentResourceShouldContainAParticipantWithATypeOrActor()
         {
@@ -833,38 +788,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the slot reference is present and valid")]
         public void checkingTheSlotReferenceIsValid()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (ResourceReference slot in appointment.Slot)
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    foreach (ResourceReference slot in appointment.Slot)
-                    {
-                        slot.Reference.ShouldNotBeNull();
-                    }
-                }
+                slot.Reference.ShouldNotBeNull();
             }
+
+
         }
 
 
         [Then(@"if the appointment category element is present it is populated with the correct values")]
         public void appointmentCategoryIsPresentAndValid()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (Extension appointmentCategory in appointment.ModifierExtension)
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                if (appointmentCategory.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1"))
                 {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    foreach (Extension appointmentCategory in appointment.ModifierExtension)
-                    {
-                        if (appointmentCategory.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1"))
-                        {
-                            appointmentCategory.Url.ShouldBeOfType<Uri>();
-                            appointmentCategory.Value.ShouldBeOfType<CodeableConcept>();
-                            appointmentCategory.ShouldNotBeNull();
+                    appointmentCategory.Url.ShouldBeOfType<Uri>();
+                    appointmentCategory.Value.ShouldBeOfType<CodeableConcept>();
+                    appointmentCategory.ShouldNotBeNull();
 
-                        }
-                    }
                 }
             }
         }
@@ -872,76 +818,62 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"if the appointment booking element is present it is populated with the correct values")]
         public void appointmentBookingMethodIsPresentAndValid()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (Extension appointmentBooking in appointment.ModifierExtension)
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                if (appointmentBooking.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1"))
                 {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    foreach (Extension appointmentBooking in appointment.ModifierExtension)
-                    {
-                        if (appointmentBooking.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1"))
-                        {
-                            appointmentBooking.Url.ShouldBeOfType<Uri>();
-                            appointmentBooking.Value.ShouldBeOfType<CodeableConcept>();
-                            appointmentBooking.Value.ShouldNotBeNull();
-                        }
-
-                    }
+                    appointmentBooking.Url.ShouldBeOfType<Uri>();
+                    appointmentBooking.Value.ShouldBeOfType<CodeableConcept>();
+                    appointmentBooking.Value.ShouldNotBeNull();
                 }
+
             }
         }
+
 
         [Then(@"if the appointment contact element is present it is populated with the correct values")]
         public void appointmentContactIsPresentAndValid()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (Extension appointmentContact in appointment.ModifierExtension)
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                if (appointmentContact.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
                 {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    foreach (Extension appointmentContact in appointment.ModifierExtension)
-                    {
-                        if (appointmentContact.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
-                        {
 
-                            appointmentContact.Url.ShouldBeOfType<Uri>();
-                            appointmentContact.Value.ShouldBeOfType<CodeableConcept>();
-                            appointmentContact.Value.ShouldNotBeNull();
+                    appointmentContact.Url.ShouldBeOfType<Uri>();
+                    appointmentContact.Value.ShouldBeOfType<CodeableConcept>();
+                    appointmentContact.Value.ShouldNotBeNull();
 
-                        }
-
-                    }
                 }
+
             }
         }
 
         [Then(@"if the appointment cancellation reason element is present it is populated with the correct values")]
         public void appointmentCancellationIsPresentAndValid()
         {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            int extensionCount = 0;
 
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (Extension appointmentCancellationReason in appointment.ModifierExtension)
             {
 
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                if (appointmentCancellationReason.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0"))
                 {
-                    int extensionCount = 0;
-                    Appointment appointment = (Appointment)entry.Resource;
-                    foreach (Extension appointmentCancellationReason in appointment.ModifierExtension)
-                    {
+                    appointmentCancellationReason.Url.ShouldBeOfType<Uri>();
+                    appointmentCancellationReason.Value.ShouldBeOfType<String>();
+                    appointmentCancellationReason.Value.ShouldNotBeNull();
 
-                        if (appointmentCancellationReason.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0"))
-                        {
-                            appointmentCancellationReason.Url.ShouldBeOfType<Uri>();
-                            appointmentCancellationReason.Value.ShouldBeOfType<String>();
-                            appointmentCancellationReason.Value.ShouldNotBeNull();
-
-                            extensionCount++;
-                        }
-                    }
-                    extensionCount.ShouldBe(1);
+                    extensionCount++;
                 }
+                extensionCount.ShouldBe(1);
             }
+          
         }
+    
+
+        
 
         [Then(@"all appointments must have an start element which is populated with a valid date")]
         public void appointmentPopulatedWithAValidStartDate()
