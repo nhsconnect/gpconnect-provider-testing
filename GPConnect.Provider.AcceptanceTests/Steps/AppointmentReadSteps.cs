@@ -231,6 +231,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Appointment);
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
         }
-        
+
+        [Then(@"the returned appointment resource shall contains an id")]
+        public void ThenTheReturnedAppointmentResourceShallContainAnId()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Id.ShouldNotBeNullOrEmpty();
+        }
+
+        [Then(@"the returned appointment resource should contain meta data profile and version id")]
+        public void ThenTheReturnedAppointmentResourceShouldContainMetaDataProfileAndVersionId()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Meta.ShouldNotBeNull();
+            int metaProfileCount = 0;
+            foreach (string profile in appointment.Meta.Profile)
+            {
+                metaProfileCount++;
+                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-appointment-1");
+            }
+            metaProfileCount.ShouldBe(1);
+            appointment.Meta.VersionId.ShouldNotBeNull();
+        }
     }
 }
