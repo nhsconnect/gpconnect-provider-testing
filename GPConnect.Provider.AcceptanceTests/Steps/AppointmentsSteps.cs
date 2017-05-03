@@ -395,93 +395,39 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void appointmentMustContainStatusElement()
         {
 
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                int count = 0;
-
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    appointment.Status.ShouldNotBeNull();
-                    count++;
-
-
-                }
-                count.ShouldBe<int>(1);
-            }
-
-
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Status.ShouldNotBeNull();
+           
         }
         [Then(@"the bundle appointment resource should contain a single start element")]
         public void appointmentMustContainStartElement()
         {
-           
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                int count = 0;
-
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    appointment.Start.ShouldNotBeNull();
-                    count++;
-                }
-                count.ShouldBe<int>(1);
-            }
           
-
+              Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+              appointment.Start.ShouldNotBeNull();
+          
+        
         }
         [Then(@"the bundle appointment resource should contain a single end element")]
         public void appointmentMustContainEndElement()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                int count = 0;
-
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    appointment.End.ShouldNotBeNull();
-                    count++;
-                }
-                count.ShouldBe<int>(1);
-            }
+               Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+               appointment.End.ShouldNotBeNull();   
         }
 
         [Then(@"the bundle appointment resource should contain at least one slot reference")]
         public void appointmentMustContainSlotReference()
         {
-            int count = 0;
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    appointment.Slot.ShouldNotBeNull();
-                    count++;
-
-                }
-            }
-            count.ShouldBeGreaterThanOrEqualTo<int>(1);
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Slot.ShouldNotBeNull();
 
         }
         [Then(@"the bundle appointment resource should contain at least one participant")]
         public void appointmentMustContainParticipant()
         {
-            int count = 0;
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    appointment.Participant.ShouldNotBeNull();
-                    count++;
-
-                }
-            }
-            count.ShouldBeGreaterThanOrEqualTo<int>(1);
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Participant.ShouldNotBeNull();
+               
 
         }
 

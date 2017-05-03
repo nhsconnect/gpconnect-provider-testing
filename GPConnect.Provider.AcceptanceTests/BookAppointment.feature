@@ -103,10 +103,10 @@ Scenario: Book Appointment and check response returns the correct values
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
-	Then the response status code should indicate success
+	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And the appointment response resource contains an id
+		And the returned appointment resource shall contains an id
 		And the bundle appointment resource should contain a single status element
 		And the bundle appointment resource should contain a single start element
 		And the bundle appointment resource should contain a single end element
@@ -123,7 +123,7 @@ Scenario: Book Appointment and check response returns the relevent structured de
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And the appointment response resource should contain meta data profile and version id
+		And the returned appointment resource should contain meta data profile and version id
 
 
 Scenario: Book Appointment and check slot reference is valid
