@@ -126,7 +126,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     HttpContext.StoredFhirResources.Add("bookedAppointmentKey", bookedAppointmentResource);
                 }
                 // Cancel appointment
-                When($@"I cancel appointment resource stored against key ""bookedAppointmentKey"" and store the returned appointment resource against key ""{cancelledAppointmentResource}""");
+                Given($@"I cancel appointment resource stored against key ""bookedAppointmentKey"" and store the returned appointment resource against key ""{cancelledAppointmentResource}""");
             }
             else {
                 HttpContext.StoredFhirResources.Add(patientAppointmentkey, cancelledAppointmentResource);
@@ -293,6 +293,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             if (storeAppointmentKey != null)
             {
+                createdAppointmentResource.ShouldNotBeNull("When creating resource no Appointment resource payload was returned.");
                 HttpContext.StoredFhirResources.Add(storeAppointmentKey, createdAppointmentResource);
             }
         }
@@ -308,6 +309,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Bundle patientAppointmentBundel = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentsKey];
             When($@"I perform an appointment read for the appointment with logical id ""{patientAppointmentBundel.Entry[appointmentIndex].Resource.Id}"""); // Get the Id of the first appointment
+        }
+        
+        [When(@"I perform an appointment read appointment stored against key ""([^""]*)""")]
+        public void IPerformAnAppointmentReadForAppointmentStoredAgainstKey(string storedAppointmentKey)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[storedAppointmentKey];
+            When($@"I perform an appointment read for the appointment with logical id ""{storedAppointment.Id}""");
         }
 
         [When(@"I perform an appointment read for the appointment with logical id ""([^""]*)""")]

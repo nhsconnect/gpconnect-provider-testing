@@ -59,22 +59,21 @@ Scenario Outline: Read appointment failure with incorrect interaction id
       |                                                                   |
       | null                                                              |
 
-Scenario Outline: Read appointment accept header only
-	Given I find or create "2" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
-	#Given I cancel the appointment index "1" saved in the bundle of resources stored against the key "Patient1AppointmentsInBundle"
+Scenario Outline: Read appointment and send an accept header
+	Given I find or create an appointment with status <AppointmentStatus> for patient "patient1" at organization "ORG1" and save the appointment resources to "<AppointmentStatus>Appointment<BodyFormat>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 		And I set the Accept header to "<Header>"
-	When I perform an appointment read appointment index "<AppointmentIndex>" saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read appointment stored against key "<AppointmentStatus>Appointment<BodyFormat>"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
     Examples:
-        | AppointmentIndex | Header                | BodyFormat |
-        | 0                | application/json+fhir | JSON       |
-        | 0                | application/xml+fhir  | XML        |
-        | 1                | application/json+fhir | JSON       |
-        | 1                | application/xml+fhir  | XML        |
+        | AppointmentStatus | Header                | BodyFormat |
+        | Booked            | application/json+fhir | JSON       |
+        | Booked            | application/xml+fhir  | XML        |
+        | Cancelled         | application/json+fhir | JSON       |
+        | Cancelled         | application/xml+fhir  | XML        |
 
 Scenario Outline: Read appointment _format parameter only
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"

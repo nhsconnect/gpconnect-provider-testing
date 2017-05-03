@@ -27,9 +27,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps = httpSteps;
             HttpContext = httpContext;
         }
-        
+
+        [Given(@"I cancel appointment resource stored against key ""([^""]*)""")]
+        public void ICancelAppointmentResourceStoredAgainstKey(string storedAppointmentKey)
+        {
+            ICancelAppointmentResourceStoredAgainstKeyAndStoreTheReturnedAppointmentResourceAgainstKey(storedAppointmentKey);
+        }
+
         [Given(@"I cancel appointment resource stored against key ""([^""]*)"" and store the returned appointment resource against key ""([^""]*)""")]
-        public void ICancelAppointmentOnTheProviderSystemAndStoreTheReturnedAppointmentResourceAgainstKey(string storedAppointmentKey, string appointmentStorageKey)
+        public void ICancelAppointmentResourceStoredAgainstKeyAndStoreTheReturnedAppointmentResourceAgainstKey(string storedAppointmentKey, string appointmentStorageKey = null)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[storedAppointmentKey];
             storedAppointment.Status = Appointment.AppointmentStatus.Cancelled;
@@ -46,8 +52,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"the response body should be FHIR JSON");
             And($@"the response should be an Appointment resource");
 
-            var returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
-            HttpContext.StoredFhirResources.Add(appointmentStorageKey, returnedAppointment);
+            if (appointmentStorageKey != null)
+            {
+                var returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+                returnedAppointment.ShouldNotBeNull("Cancel appointment did not return the resource in the returned bundle");
+                HttpContext.StoredFhirResources.Add(appointmentStorageKey, returnedAppointment);
+            }
         }
 
     }
