@@ -114,26 +114,18 @@ Scenario: Read appointment valid request shall include id and structure definiti
 		And the returned appointment resource shall contains an id
 		And the returned appointment resource should contain meta data profile and version id
 
-Scenario: Read appointment valid request contains necessary elements with valid values
+Scenario: Read appointment check response contains required elements
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I make a GET request to "/Appointment/1"
+	When I perform an appointment read for the first appointment saved in the list of resources stored against key "Patient1AppointmentsInBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the appointment response resource contains a status with a valid value
 		And the appointment response resource contains an start date
 		And the appointment response resource contains an end date
 		And the appointment response resource contains a slot reference
-		And the appointment response resource contains a participant which contains a status with a valid value
-
-Scenario: Read appointment valid request contains valid identifier
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I make a GET request to "/Appointment/1"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the appointment response resource contains an identifier with a valid system and value
-
+		And the appointment response resource contains atleast 2 participants a practitioner and a patient
+		
 Scenario: Read appointment request contains valid type with system and code
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction

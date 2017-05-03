@@ -253,5 +253,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             metaProfileCount.ShouldBe(1);
             appointment.Meta.VersionId.ShouldNotBeNull();
         }
+
+        [Then(@"the appointment response resource contains atleast 2 participants a practitioner and a patient")]
+        public void ThenTheAppointmentResponseResourceContainsAtleast2ParticipantsAPractitionerAndAPatient()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            appointment.Participant.ShouldNotBeNull();
+            bool patientFound = false;
+            bool practitionerFound = false;
+            foreach (Appointment.ParticipantComponent participant in appointment.Participant)
+            {
+                if (participant.Actor.Reference.StartsWith("Patient/")) {
+                    patientFound = true;
+                }
+                else if (participant.Actor.Reference.StartsWith("Practitioner/"))
+                {
+                    practitionerFound = true;
+                }
+            }
+            patientFound.ShouldBeTrue("Patient reference not found in appointment");
+            practitionerFound.ShouldBeTrue("Practitioner reference not found in appointment");
+        }
     }
 }
