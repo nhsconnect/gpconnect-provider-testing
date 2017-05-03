@@ -45,7 +45,7 @@ Scenario Outline: Book appointment accept header and _format parameter
         And I set the Accept header to "<Header>"
         And I add the parameter "_format" with the value "<Parameter>"
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
-    Then the response status code should indicate success
+    Then the response status code should indicate created
         And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
     Examples:
@@ -62,7 +62,7 @@ Scenario Outline: Book appointment accept header variations
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I set the Accept header to "<Header>"
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
-	Then the response status code should indicate success
+	Then the response status code should indicate created
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 	Examples:
