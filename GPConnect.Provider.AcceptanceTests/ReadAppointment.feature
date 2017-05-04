@@ -129,4 +129,13 @@ Scenario: Read appointment if resource contains identifier then the value is man
 		And the response body should be FHIR JSON
 		And if the appointment response resource contains any identifiers they must have a value
 
-# Read cancelled and amended appointments check that they work correctly - Look at "Read appointment accept header only" as example
+Scenario: Read appointment if reason is included in response check that it conforms to one of the three valid types
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+		And if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
+

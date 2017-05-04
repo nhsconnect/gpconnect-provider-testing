@@ -383,5 +383,38 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements")]
+        public void ThenIfTheAppointmentResponseResourceContainsAReasonElementAndCodingItMustBeOneOfTheThreeAllowedWithSystemCodeAndDisplayElements()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            var reason = appointment.Reason;
+            if (reason != null && reason.Coding != null) {
+                int sctCount = 0;
+                int readv2Count = 0;
+                int ctv3Count = 0;
+                foreach (var coding in reason.Coding) {
+                    var validSystems = new string[3] { "http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3" };
+                    coding.System.ShouldBeOneOf(validSystems, "The reason coding System can only be one of the valid value");
+
+                    switch(coding.System){
+                        case "http://snomed.info/sct":
+                            sctCount++;
+                            break;
+                        case "http://read.info/readv2":
+                            readv2Count++;
+                            break;
+                        case "http://read.info/ctv3":
+                            ctv3Count++;
+                            break;
+                    }
+                    coding.Code.ShouldNotBeNullOrEmpty("The appointment reason coding Code must have a value");
+                    coding.Display.ShouldNotBeNullOrEmpty("The appointment reason coding display must have a value");
+                }
+                // Check there is no more than one of each coding
+                sctCount.ShouldBeLessThanOrEqualTo(1);
+                readv2Count.ShouldBeLessThanOrEqualTo(1);
+                ctv3Count.ShouldBeLessThanOrEqualTo(1);
+            }
+        }
     }
 }
