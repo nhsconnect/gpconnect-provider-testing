@@ -126,7 +126,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     HttpContext.StoredFhirResources.Add("bookedAppointmentKey", bookedAppointmentResource);
                 }
                 // Cancel appointment
-                Given($@"I cancel appointment resource stored against key ""bookedAppointmentKey"" and store the returned appointment resource against key ""{cancelledAppointmentResource}""");
+                Given($@"I cancel appointment resource stored against key ""bookedAppointmentKey"" and store the returned appointment resource against key ""{patientAppointmentkey}""");
             }
             else {
                 HttpContext.StoredFhirResources.Add(patientAppointmentkey, cancelledAppointmentResource);
