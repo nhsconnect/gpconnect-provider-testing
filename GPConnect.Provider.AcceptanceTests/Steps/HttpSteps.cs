@@ -342,20 +342,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"I set the default JWT");
             And($@"I am performing the ""{interactionID}"" interaction");
             FhirSerializer.SerializeToJson(appointment);
-
-          
             
-            // Make Call
+            // Book the apppointment
             RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
 
-            // Check the response
-        
-  
-            var returnResource = FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
-
-    
-
-            return returnResource;
+            // Convert the response to resource
+            Then($@"the response status code should indicate created");
+            And($@"the response body should be FHIR JSON");
+            And($@"the response should be an Appointment resource");
+            
+            return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
         }
 
 
