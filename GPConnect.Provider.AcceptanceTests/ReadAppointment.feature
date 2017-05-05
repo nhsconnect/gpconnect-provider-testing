@@ -139,3 +139,12 @@ Scenario: Read appointment if reason is included in response check that it confo
 		And the response should be an Appointment resource
 		And if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
 
+Scenario: Read appointment containing a priority element and check that the priority is valid
+	Given I create an appointment for patient "patient1" at organization "ORG1" with priority "0" and save appintment resources to "Patient1PriorityAppointment"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I perform an appointment read appointment stored against key "Patient1PriorityAppointment"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+		And if the appointment contains a priority element it should be a valid value
