@@ -6,6 +6,7 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Appointment;
 using static Hl7.Fhir.Model.Bundle;
+using NUnit.Framework;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -442,6 +443,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 priority.Value.ShouldBeLessThanOrEqualTo(9, "The priority should be between 0 and 9");
                 priority.Value.ShouldBeGreaterThanOrEqualTo(0, "The priority should be between 0 and 9");
+            }
+        }
+
+        [Then(@"the returned appointment participants must contain a type or actor element")]
+        public void ThenTheReturnedAppointmentParticipantsMustContainATypeOrActorElement()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (ParticipantComponent participant in appointment.Participant)
+            {
+                string actor = participant.Actor.ToString();
+                string type = participant.Type.ToString();
+
+                if (null == actor && null == type)
+                {
+                    Assert.Fail("There must be an actor or type element within the appointment participants");
+                }
             }
         }
 
