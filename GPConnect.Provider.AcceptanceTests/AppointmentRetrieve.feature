@@ -1,10 +1,9 @@
-﻿Feature: SpecFlowFeature1
+﻿Feature: AppointmentRetrieve
 
 Background:
 	Given I have the test patient codes
 	Given I have the test ods codes
 
-@Appointment
 Scenario Outline: Appointment retrieve success valid id where appointment resource returned is not required
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
@@ -19,7 +18,7 @@ Scenario Outline: Appointment retrieve success valid id where appointment resour
 		| 400000 |
 
 Scenario: Appointment retrieve success valid id where single appointment resource is required resource
-Given I find or create "6" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
@@ -96,8 +95,7 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		| 2016-13-14                |
 		| 2016-13-08T09:22:16       |
 		| 2016-13-08T23:59:59+00:00 |
-		| 2014                      |      
-
+	   
 @ignore
 Scenario Outline: Appointment retrieve send request with date variations which are valid with prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -147,13 +145,24 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		| 2014-05                   | sb     |
 		| 2014-05-01T11:08:32       | sb     |
 		| 2015-10-23T11:08:32+00:00 | sb     |
-		| 2014                      | ap     |
-		| 2014-02                   | ap     |
-		| 2014-10-05                | ap     |
-		| 2014-05                   | ap     |
-		| 2014-05-01T11:08:32       | ap     |
-		| 2015-10-23T11:08:32+00:00 | ap     |
-		
+		| 2014                      | ge     |
+		| 2014-02                   | ge     |
+		| 2014-10-05                | ge     |
+		| 2014-05                   | ge     |
+		| 2014-05-01T11:08:32       | ge     |
+		| 2015-10-23T11:08:32+00:00 | ge     |
+		| 2014                      | le     |
+		| 2014-02                   | le     |
+		| 2014-10-05                | le     |
+		| 2014-05                   | le     |
+		| 2014-05-01T11:08:32       | le     |
+		| 2015-10-23T11:08:32+00:00 | le     |
+		| 2014                      | eb     |
+		| 2014-02                   | eb     |
+		| 2014-10-05                | eb     |
+		| 2014-05                   | eb     |
+		| 2014-05-01T11:08:32       | eb     |
+		| 2015-10-23T11:08:32+00:00 | eb     |
 
 
 Scenario Outline: Appointment retrieve failure due to missing header
@@ -233,18 +242,18 @@ Scenario Outline: Appointment retrieve bundle resource with empty appointment re
         | patient2 |
 
 Scenario: Appointment retrieve appointment which contains all mandatory resources
-		Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
         And the response should be a Bundle resource of type "searchset"
-	Then the bundle of appointments should all contain a single status element
-	Then the bundle of appointments should all contain a single start element
-	Then the bundle of appointments should all contain a single end element
-	Then the bundle of appointments should all contain at least one slot reference
-	Then the bundle of appointments should all contain at least one participant
+		And the bundle of appointments should all contain a single status element
+		And the bundle of appointments should all contain a single start element
+		And the bundle of appointments should all contain a single end element
+		And the bundle of appointments should all contain at least one slot reference
+		And the bundle of appointments should all contain at least one participant
 	
 Scenario: Appointment retrieve bundle resource must contain status with valid value
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -254,7 +263,7 @@ Scenario: Appointment retrieve bundle resource must contain status with valid va
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
         And the response should be a Bundle resource of type "searchset"
-	Then the bundle appointment resource should contain a single status element
+		And the appointment resource within the bundle should contain a single status element
 		And the appointment status element should be valid
 
 
@@ -277,7 +286,6 @@ Scenario: Appointment retrieve bundle participant actor contains valid reference
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And if actor returns a practitioner resource the resource is valid
-		And if actor returns a location resource the resource is valid
 		And if actor returns a location resource the resource is valid
 		And if actor returns a patient resource the resource is valid
 
@@ -346,7 +354,7 @@ Scenario: Appointment retrieve bundle contains appointment with slot
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the slot reference is present and valid
+		And the appointments slot reference in the bundle is present and valid
 
 	
 Scenario: Appointment retrieve bundle contains appointment contact method

@@ -4,7 +4,6 @@ Background:
 	Given I have the test patient codes
 	Given I have the test ods codes
 
-@Appointment
 
 Scenario: Book single appointment for patient 
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"

@@ -242,7 +242,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         [Then(@"the appointment participant contains a type is should have a valid system and code")]
-        public void AppointmentParticipantValisType()
+        public void AppointmentParticipantValidType()
         {
           
                     Appointment appointment = (Appointment)FhirContext.FhirResponseResource;

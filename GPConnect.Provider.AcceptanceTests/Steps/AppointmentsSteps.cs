@@ -522,7 +522,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Appointment appointment = (Appointment)entry.Resource;
                     if (appointment.Type == null)
                     {
-                        Assert.Pass();
+                      
                     }
                     else
                     {
@@ -556,12 +556,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Appointment appointment = (Appointment)entry.Resource;
 
-                    if (appointment.Reason.Coding == null)
-                    {
-                        Assert.Pass();
-                    }
-                    else
-                    {
+                 
                         if (appointment.Reason.Coding != null)
                         {
                             int codingCount = 0;
@@ -579,8 +574,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         {
                             appointment.Reason.Text.ShouldBe("Default Appointment Type");
                         }
-                    }
-                }
+                 }
             }
         }
 
@@ -595,7 +589,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     if (appointment.Reason.Coding == null)
                     {
-                        Assert.Pass();
+                  
                     }
                     else
                     {
@@ -631,7 +625,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Appointment appointment = (Appointment)entry.Resource;
                     if (appointment.Identifier == null)
                     {
-                        Assert.Pass();
+                       
                     }
                     else
                     {
@@ -726,7 +720,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                         if (null == actor && null == type)
                         {
-                            Assert.Fail();
+                            Assert.Fail("Actor and type are null");
                         }
                     }
                 }
@@ -810,83 +804,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         }
-
-
-        [Then(@"if the appointment category element is present it is populated with the correct values")]
-        public void appointmentCategoryIsPresentAndValid()
-        {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            foreach (Extension appointmentCategory in appointment.ModifierExtension)
-            {
-                if (appointmentCategory.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1"))
-                {
-                    appointmentCategory.Url.ShouldBeOfType<Uri>();
-                    appointmentCategory.Value.ShouldBeOfType<CodeableConcept>();
-                    appointmentCategory.ShouldNotBeNull();
-
-                }
-            }
-        }
-
-        [Then(@"if the appointment booking element is present it is populated with the correct values")]
-        public void appointmentBookingMethodIsPresentAndValid()
-        {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            foreach (Extension appointmentBooking in appointment.ModifierExtension)
-            {
-                if (appointmentBooking.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1"))
-                {
-                    appointmentBooking.Url.ShouldBeOfType<Uri>();
-                    appointmentBooking.Value.ShouldBeOfType<CodeableConcept>();
-                    appointmentBooking.Value.ShouldNotBeNull();
-                }
-
-            }
-        }
-
-
-        [Then(@"if the appointment contact element is present it is populated with the correct values")]
-        public void appointmentContactIsPresentAndValid()
-        {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            foreach (Extension appointmentContact in appointment.ModifierExtension)
-            {
-                if (appointmentContact.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
-                {
-
-                    appointmentContact.Url.ShouldBeOfType<Uri>();
-                    appointmentContact.Value.ShouldBeOfType<CodeableConcept>();
-                    appointmentContact.Value.ShouldNotBeNull();
-
-                }
-
-            }
-        }
-
-        [Then(@"if the appointment cancellation reason element is present it is populated with the correct values")]
-        public void appointmentCancellationIsPresentAndValid()
-        {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            int extensionCount = 0;
-
-            foreach (Extension appointmentCancellationReason in appointment.ModifierExtension)
-            {
-
-                if (appointmentCancellationReason.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0"))
-                {
-                    appointmentCancellationReason.Url.ShouldBeOfType<Uri>();
-                    appointmentCancellationReason.Value.ShouldBeOfType<String>();
-                    appointmentCancellationReason.Value.ShouldNotBeNull();
-
-                    extensionCount++;
-                }
-                extensionCount.ShouldBe(1);
-            }
-          
-        }
-    
-
-        
 
         [Then(@"all appointments must have an start element which is populated with a valid date")]
         public void appointmentPopulatedWithAValidStartDate()
