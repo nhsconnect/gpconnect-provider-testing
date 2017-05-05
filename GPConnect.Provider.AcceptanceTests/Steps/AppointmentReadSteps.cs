@@ -485,6 +485,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
                     codableConceptCount.ShouldBeLessThanOrEqualTo(1, "The participant type element may only contain one codable concept.");
                 }
+
+                if (actor != null && actor.Reference != null) {
+                    actor.Reference.ShouldNotBeEmpty();
+                    if (!actor.Reference.StartsWith("Patient/") && 
+                        !actor.Reference.StartsWith("Practitioner/") && 
+                        !actor.Reference.StartsWith("Location/")) {
+                        Assert.Fail("The actor reference should be a Patient, Practitioner or Location");
+                    }
+                }
             }
         }
 
