@@ -62,6 +62,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             patientAppointmentsBundle.Entry.Count.ShouldBeGreaterThanOrEqualTo(noApp, "We could not create enough appointments for the test to run.");
         }
+        
+        [Given(@"I create an appointment for patient ""([^ ""]*)"" at organization ""([^""]*)"" with priority ""([^""]*)"" and save appintment resources to ""([^""]*)""")]
+        public void ICreateAnAppointmentForPatientAtOrganizationWithPriorityAndSaveAppointmentResourceTo(string patient, string organizaitonName, int priority, string patientAppointmentskey)
+        {
+            Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
+            IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentToWithPriority(patient, "getScheduleResponseBundle", patientAppointmentskey, priority);
+        }
 
         [Given(@"I find or create an appointment with status Booked for patient ""([^""]*)"" at organization ""([^""]*)"" and save the appointment resources to ""([^""]*)""")]
         public void IFindOrCreateAnAppointmentWithStatusBookedForPatientAtOrganizationAndSaveTheAppointmentResourceTo(string patient, string organizaitonName, string patientAppointmentkey)
@@ -180,6 +187,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system using a slot from the getSchedule response bundle stored against key ""([^""]*)"" and store the appointment to ""([^""]*)""")]
         public void IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentTo(string patientName, string getScheduleBundleKey, string storeAppointmentKey = null)
         {
+            IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentToWithPriority(patientName, getScheduleBundleKey, storeAppointmentKey);
+        }
+
+        public void IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentToWithPriority(string patientName, string getScheduleBundleKey, string storeAppointmentKey = null, int? priority = null)
+        {
             Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
             Patient patientResource = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
             Bundle getScheduleResponseBundle = (Bundle)HttpContext.StoredFhirResources[getScheduleBundleKey];
@@ -236,6 +248,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Create Appointment
             Appointment appointment = new Appointment();
             appointment.Status = AppointmentStatus.Booked;
+
+            if (priority != null) {
+                appointment.Priority = priority;
+            }
             
             // Appointment Patient Resource
             ParticipantComponent patient = new ParticipantComponent();
@@ -416,5 +432,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 ctv3Count.ShouldBeLessThanOrEqualTo(1);
             }
         }
+
+        [Then(@"if the appointment contains a priority element it should be a valid value")]
+        public void ThenIfTheAppointmentContainsAPriorityElementItShouldBeAValidValue()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            int? priority = appointment.Priority;
+            if (priority != null)
+            {
+                priority.Value.ShouldBeLessThanOrEqualTo(9, "The priority should be between 0 and 9");
+                priority.Value.ShouldBeGreaterThanOrEqualTo(0, "The priority should be between 0 and 9");
+            }
+        }
+
     }
 }
