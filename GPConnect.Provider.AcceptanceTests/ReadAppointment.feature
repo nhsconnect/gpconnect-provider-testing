@@ -157,4 +157,4 @@ Scenario: Read appointment and all participants must have a type or actor elemen
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And if appointment is present the single or multiple participant must contain a type or actor
+		And the returned appointment participants must contain a type or actor element
