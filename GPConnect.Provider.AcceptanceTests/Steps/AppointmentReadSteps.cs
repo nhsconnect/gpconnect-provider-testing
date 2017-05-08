@@ -340,6 +340,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             When($@"I make a GET request to ""/Appointment/{appointmentLogicalId}""");
         }
+        
+        [When(@"I perform an appointment vread with history for appointment stored against key ""([^""]*)""")]
+        public void IPerformAnAppointmentVReadWithHistoryForAppointmentStoredAgainstKey(string storedAppointmentKey)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[storedAppointmentKey];
+            When($@"I make a GET request to ""/Appointment/{storedAppointment.Id}/_history/{storedAppointment.Meta.VersionId}""");
+        }
+
+        [When(@"I perform an appointment vread with version id ""([^""]*)"" for appointment stored against key ""([^""]*)""")]
+        public void IPerformAnAppointmentVReadWithVersionIdForAppointmentStoredAgainstKey(string versionId, string storedAppointmentKey)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[storedAppointmentKey];
+            When($@"I make a GET request to ""/Appointment/{storedAppointment.Id}/_history/{versionId}""");
+        }
 
         [Then(@"the response should be an Appointment resource")]
         public void theResponseShouldBeAnAppointmentResource()
@@ -495,6 +509,128 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
                 }
             }
+        }
+
+        [Then(@"if the returned appointment contains appointmentCategory extension the value should be valid")]
+        public void ThenIfTheReturnedAppointmentContainsAppointmentCategoryExtensionTheValueShouldBeValid()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (var extension in appointment.Extension) {
+                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1")) {
+
+                    string[] codes = new string[5] { "CLI", "ADM", "VIR", "REM", "MSG" };
+                    string[] displays = new string[5] { "Clinical", "Administrative", "Virtual", "Reminder", "Message" };
+
+                    extension.Value.ShouldNotBeNull("There should be a value element within the appointment category extension");
+                    var extensionValueCodeableConcept = (CodeableConcept)extension.Value;
+                    extensionValueCodeableConcept.Coding.ShouldNotBeNull("There should be a coding element within the appointment category extension");
+                    extensionValueCodeableConcept.Coding.Count.ShouldBe(1, "There should be a single code element within the appointment category extension");
+                    foreach (var coding in extensionValueCodeableConcept.Coding) {
+                        // Check that the code and display values are valid for the extension and match each other
+                        bool codeAndDisplayFound = false;
+                        for (int i = 0; i < codes.Length; i++) {
+                            if (string.Equals(codes[i], coding.Code) && string.Equals(displays[i], coding.Display)) {
+                                codeAndDisplayFound = true;
+                                break;
+                            }
+                        }
+                        codeAndDisplayFound.ShouldBeTrue("The code and display values are not valid for the appointmentCategory extension");
+                    }
+                }
+            }
+        }
+
+        [Then(@"if the returned appointment contains appointmentBookingMethod extension the value should be valid")]
+        public void ThenIfTheReturnedAppointmentContainsAppointmentBookingMethodExtensionTheValueShouldBeValid()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (var extension in appointment.Extension)
+            {
+                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1"))
+                {
+
+                    string[] codes = new string[6] { "ONL", "PER", "TEL", "EMA", "LET", "TEX" };
+                    string[] displays = new string[6] { "Online", "In person", "Telephone", "Email", "Letter", "Text" };
+
+                    extension.Value.ShouldNotBeNull("There should be a value element within the appointment booking method extension");
+                    var extensionValueCodeableConcept = (CodeableConcept)extension.Value;
+                    extensionValueCodeableConcept.Coding.ShouldNotBeNull("There should be a coding element within the appointment booking method extension");
+                    extensionValueCodeableConcept.Coding.Count.ShouldBe(1, "There should be a single code element within the appointment booking method extension");
+                    foreach (var coding in extensionValueCodeableConcept.Coding)
+                    {
+                        // Check that the code and display values are valid for the extension and match each other
+                        bool codeAndDisplayFound = false;
+                        for (int i = 0; i < codes.Length; i++)
+                        {
+                            if (string.Equals(codes[i], coding.Code) && string.Equals(displays[i], coding.Display))
+                            {
+                                codeAndDisplayFound = true;
+                                break;
+                            }
+                        }
+                        codeAndDisplayFound.ShouldBeTrue("The code and display values are not valid for the appointmentBookingMethod extension");
+                    }
+                }
+            }
+        }
+
+        [Then(@"if the returned appointment contains appointmentContactMethod extension the value should be valid")]
+        public void ThenIfTheReturnedAppointmentContainsAppointmentContactMethodExtensionTheValueShouldBeValid()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (var extension in appointment.Extension)
+            {
+                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
+                {
+
+                    string[] codes = new string[5] { "ONL", "PER", "TEL", "EMA", "LET" };
+                    string[] displays = new string[5] { "Online", "In person", "Telephone", "Email", "Letter" };
+
+                    extension.Value.ShouldNotBeNull("There should be a value element within the appointment ContactMethod extension");
+                    var extensionValueCodeableConcept = (CodeableConcept)extension.Value;
+                    extensionValueCodeableConcept.Coding.ShouldNotBeNull("There should be a coding element within the appointment ContactMethod extension");
+                    extensionValueCodeableConcept.Coding.Count.ShouldBe(1, "There should be a single code element within the appointment ContactMethod extension");
+                    foreach (var coding in extensionValueCodeableConcept.Coding)
+                    {
+                        // Check that the code and display values are valid for the extension and match each other
+                        bool codeAndDisplayFound = false;
+                        for (int i = 0; i < codes.Length; i++)
+                        {
+                            if (string.Equals(codes[i], coding.Code) && string.Equals(displays[i], coding.Display))
+                            {
+                                codeAndDisplayFound = true;
+                                break;
+                            }
+                        }
+                        codeAndDisplayFound.ShouldBeTrue("The code and display values are not valid for the appointmentContactMethod extension");
+                    }
+                }
+            }
+        }
+
+        [Then(@"if the returned appointment contains appointmentCancellationReason extension the value should be valid")]
+        public void ThenIfTheReturnedAppointmentContainsAppointmentCancellationReasonExtensionTheValueShouldBeValid()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (var extension in appointment.Extension)
+            {
+                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
+                {
+                    extension.Value.ShouldNotBeNull("There should be a value element within the appointment CancellationReason extension");
+                    var extensionValueString = (FhirString)extension.Value;
+                    extensionValueString.Value.ShouldNotBeNullOrEmpty("If appointment cancellation extension is included the value should be present");
+                }
+            }
+        }
+
+        [Then(@"the response should contain the ETag header matching the resource version")]
+        public void ThenTheResponseShouldContainTheETagHeaderMatchingTheResourceVersion()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            string returnedETag = "";
+            HttpContext.ResponseHeaders.TryGetValue("ETag", out returnedETag);
+            returnedETag.ShouldStartWith("W/\"", "The WTag header should start with W/\"");
+            returnedETag.ShouldEndWith(appointment.Meta.VersionId + "\"", "The ETag header should contain the resource version enclosed within speech marks");
         }
 
     }

@@ -150,11 +150,59 @@ Scenario: Read appointment containing a priority element and check that the prio
 		And if the appointment contains a priority element it should be a valid value
 
 Scenario: Read appointment and all participants must have a type or actor element
-	Given I create an appointment for patient "patient1" at organization "ORG1" with priority "0" and save appintment resources to "Patient1PriorityAppointment"
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I perform an appointment read appointment stored against key "Patient1PriorityAppointment"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the returned appointment participants must contain a type or actor element
+
+Scenario Outline: Read appointment if extensions are included they should be valid
+	Given I find or create an appointment with status <AppointmentStatus> for patient "patient1" at organization "ORG1" and save the appointment resources to "<AppointmentStatus>Appointment<BodyFormat>"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+		And I set the Accept header to "<Header>"
+	When I perform an appointment read appointment stored against key "<AppointmentStatus>Appointment<BodyFormat>"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the response should be an Appointment resource
+		And if the returned appointment contains appointmentCategory extension the value should be valid
+		And if the returned appointment contains appointmentBookingMethod extension the value should be valid
+		And if the returned appointment contains appointmentContactMethod extension the value should be valid
+		And if the returned appointment contains appointmentCancellationReason extension the value should be valid
+	Examples:
+        | AppointmentStatus | Header                | BodyFormat |
+        | Booked            | application/json+fhir | JSON       |
+        | Booked            | application/xml+fhir  | XML        |
+        | Cancelled         | application/json+fhir | JSON       |
+        | Cancelled         | application/xml+fhir  | XML        |
+
+Scenario: Read appointment and response should contain an ETag header
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+		And the response should contain the ETag header matching the resource version
+
+Scenario: VRead an appointment for a valid version of the patient appointment resource
+	Given I create an appointment for patient "patient1" at organization "ORG1" with priority "0" and save appintment resources to "Patient1Appointment"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I perform an appointment vread with history for appointment stored against key "Patient1Appointment"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+
+Scenario: VRead an appointment for a invalid version of the patient appoint resource
+	Given I create an appointment for patient "patient1" at organization "ORG1" with priority "0" and save appintment resources to "Patient1Appointment"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I perform an appointment vread with version id "NotARealVersionId" for appointment stored against key "Patient1Appointment"
+	Then the response status code should be "404"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
