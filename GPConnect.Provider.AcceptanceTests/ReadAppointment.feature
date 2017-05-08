@@ -4,15 +4,20 @@ Background:
 	Given I have the test patient codes
 	Given I have the test ods codes
 
-Scenario: I perform a successful Read appointment
-	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+Scenario Outline: I perform a successful Read appointment
+	Given I find or create "1" appointments for patient "<PatientName>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-	
+	Examples: 
+		| PatientName |
+		| patient1    |
+		| patient2    |
+		| patient3    |
+
 Scenario Outline: Read appointment invalid appointment id
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
