@@ -853,14 +853,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             var practitioner = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", actor);
                             practitioner.ShouldNotBeNull();
                             countPractitioner++;
-
-                        }
-
+                       }
                     }
                     countPractitioner.ShouldBe(1);
-
                 }
-
             }
         }
 

@@ -37,6 +37,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext = fhirContext;
         }
 
+        internal void HttpRequest(object post, string v1, object p, bool v2)
+        {
+            throw new NotImplementedException();
+        }
+
         // Before Scenarios
 
         [BeforeScenario(Order = 3)]
@@ -192,6 +197,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestParameters.AddParameter(parameterName, parameterValue);
         }
 
+     
+
         [Given(@"I add the parameter ""([^""]*)"" with system ""([^""]*)"" for patient ""([^""]*)""")]
         public void GivenIAddTheParameterWithSystemForPatient(string parameterName, string parameterSystem, string patient)
         {
@@ -297,6 +304,62 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource = preFhirResponseResource;
 
             return returnResource;
+        }
+
+        public Resource registerPatient(Patient patient)
+        {
+
+
+            var parameterPayload = FhirHelper.ChangeResourceTypeString(FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), FhirConst.Resources.kInvalidResourceType);
+            // Store current state
+            var preRequestHeaders = HttpContext.RequestHeaders.GetRequestHeaders();
+            HttpContext.RequestHeaders.Clear();
+            var preRequestUrl = HttpContext.RequestUrl;
+            HttpContext.RequestUrl = "";
+            var preRequestParameters = HttpContext.RequestParameters;
+            HttpContext.RequestParameters.ClearParameters();
+            var preRequestMethod = HttpContext.RequestMethod;
+            var preRequestContentType = HttpContext.RequestContentType;
+            var preRequestBody = HttpContext.RequestBody;
+            HttpContext.RequestBody = null;
+
+            var preResponseTimeInMilliseconds = HttpContext.ResponseTimeInMilliseconds;
+            var preResponseStatusCode = HttpContext.ResponseStatusCode;
+            var preResponseContentType = HttpContext.ResponseContentType;
+            var preResponseBody = HttpContext.ResponseBody;
+            var preResponseHeaders = HttpContext.ResponseHeaders;
+            HttpContext.ResponseHeaders.Clear();
+
+            JObject preResponseJSON = null;
+            try
+            {
+                preResponseJSON = HttpContext.ResponseJSON;
+            }
+            catch (Exception) { }
+            XDocument preResponseXML = null;
+            try
+            {
+                preResponseXML = HttpContext.ResponseXML;
+            }
+            catch (Exception) { }
+
+            var preFhirResponseResource = FhirContext.FhirResponseResource;
+            string interactionId = "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient";
+            // Setup configuration
+            Given($@"I am using the default server");
+            And($@"I set the default JWT");
+            And($@"I am performing the ""{interactionId}"" interaction");
+            FhirSerializer.SerializeToJson(patient);
+
+            // Book the apppointment
+            RestRequest(Method.POST, "/Patient/$gpc.registerpatient", FhirSerializer.SerializeToJson(patient));
+
+            // Convert the response to resource
+            Then($@"the response status code should indicate created");
+            And($@"the response body should be FHIR JSON");
+            And($@"the response should be an Appointment resource");
+
+            return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
         }
 
         public Resource bookAppointment(string interactionID, string relativeUrl, Appointment appointment)

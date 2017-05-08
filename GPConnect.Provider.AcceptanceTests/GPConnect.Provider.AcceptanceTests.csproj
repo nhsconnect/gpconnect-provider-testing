@@ -184,6 +184,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReadAppointment.feature</DependentUpon>
     </Compile>
+    <Compile Include="RegisterPatient.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RegisterPatient.feature</DependentUpon>
+    </Compile>
     <Compile Include="SearchForFreeSlots.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -203,6 +208,7 @@
     <Compile Include="Steps\JwtSteps.cs" />
     <Compile Include="Steps\ManualSteps.cs" />
     <Compile Include="Steps\PractitionerSteps.cs" />
+    <Compile Include="Steps\RegisterPatientSteps.cs" />
     <Compile Include="Steps\SecuritySteps.cs" />
     <Compile Include="Steps\GenericSteps.cs" />
     <Compile Include="Steps\FhirSteps.cs" />
@@ -273,6 +279,10 @@
     <None Include="ReadAppointment.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ReadAppointment.feature.cs</LastGenOutput>
+    </None>
+    <None Include="RegisterPatient.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RegisterPatient.feature.cs</LastGenOutput>
     </None>
     <None Include="SearchForFreeSlots.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
