@@ -17,8 +17,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly HttpSteps HttpSteps;
         private readonly HttpContext HttpContext;
-        private string patient;
-
+ 
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
@@ -66,9 +65,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             patient.Name.Add(name);
 
-            HttpContext.registerPatient.Add(patientSavedName, patient);
-        
-         
+            HttpContext.registerPatient.Add(patientSavedName, patient);    
+    
         }
 
         [Given(@"I add the registration period with start date ""(.*)"" to ""(.*)""")]
@@ -134,8 +132,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         }
+        [When(@"I register ""(.*)"" with url ""(.*)""")]
+        public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalIdWithIncorrectUrl(string patientSavedName, string url)
+        {
 
-        
+            Patient patient = HttpContext.registerPatient[patientSavedName];
+
+            FhirContext.FhirRequestParameters.Add("registerPatient", patient);
+
+            string body = null;
+            if (HttpContext.RequestContentType.Contains("xml"))
+            {
+                body = FhirSerializer.SerializeToXml(FhirContext.FhirRequestParameters);
+            }
+            else
+            {
+                body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
+            }
+            HttpSteps.RestRequest(Method.POST, url, body);
+        }
+
+
+
         [When(@"I send a gpc.registerpatients to register ""(.*)""")]
         public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(string patientSavedName)
         {
