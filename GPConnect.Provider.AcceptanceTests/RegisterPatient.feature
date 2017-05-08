@@ -12,6 +12,8 @@ Scenario Outline: Register patient
 		And I add the registration type with code "T" to "<patient>"
 	When I send a gpc.registerpatients to register "<patient>"
 	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
 	Examples: 
 		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
 		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
@@ -26,6 +28,7 @@ Scenario Outline: Register patient send request to incorrect URL
 		And I add the registration type with code "T" to "<patient>"
 	When I register "<patient>" with url "<url>"
 	Then the response status code should indicate failure
+		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 	Examples: 
 		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate | url                            |
@@ -44,6 +47,7 @@ Scenario Outline: Register patient with invalid interactionIds
 		And I add the registration type with code "T" to "<patient>"
 	When I send a gpc.registerpatients to register "<patient>"
 	Then the response status code should indicate failure
+		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 	Examples: 
 		| interactionId                                                          | patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
@@ -63,6 +67,7 @@ Scenario Outline: Register patient with missing header
 		And I add the registration type with code "T" to "<patient>"
 	When I send a gpc.registerpatients to register "<patient>"
 	Then the response status code should indicate failure
+		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 	Examples: 
 		| Header            | patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
@@ -82,6 +87,8 @@ Scenario Outline: Register patient and set identifier to null before sending the
 		And I set the identifier from "<patient>" to null
 	When I send a gpc.registerpatients to register "<patient>"
 	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
 	Examples: 
 		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
 		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
@@ -96,6 +103,8 @@ Scenario Outline: Register patient and set active element to null before sending
 		And I set the active element from "<patient>" to null
 	When I send a gpc.registerpatients to register "<patient>"
 	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
 	Examples: 
 		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
 		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
@@ -110,6 +119,8 @@ Scenario Outline: Register patient and set name element to null before sending t
 		And I set the name element from "<patient>" to null
 	When I send a gpc.registerpatients to register "<patient>"
 	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
 	Examples: 
 		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
 		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
@@ -124,6 +135,8 @@ Scenario Outline: Register patient and set gender element to null before sending
 		And I set the gender element from "<patient>" to null
 	When I send a gpc.registerpatients to register "<patient>"
 	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
 	Examples: 
 		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
 		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
@@ -138,6 +151,7 @@ Scenario Outline: Register patient without manadatory values and send request
 		And I set the gender element from "<patient>" to null
 	When I send a gpc.registerpatients to register "<patient>"
 	Then the response status code should indicate failure
+		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 	Examples: 
 		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate | doNotSet   |
@@ -156,10 +170,11 @@ Scenario Outline: Register patient without identifier and send request
 		And I set the gender element from "<patient>" to null
 	When I send a gpc.registerpatients to register "<patient>"
 	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
 	Examples: 
 		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate | doNotSet   |
 		| patient24 | tom       | johnson    | 3455543   | 1993-03-03 | 2017-05-05   | Identifier |
-
 
 Scenario Outline: Register patient with an invalid NHS number
 	Given I am using the default server
@@ -176,3 +191,38 @@ Scenario Outline: Register patient with an invalid NHS number
 		| patient23 | tom       | johnson    | 34555##4  | 1993-03-03 | 2017-05-05   |
 		| patient23 | tom       | johnson    |           | 1993-03-03 | 2017-05-05   |
 		| patient23 | tom       | johnson    | hello     | 1993-03-03 | 2017-05-05   |
+
+Scenario Outline: Register patient and check registration period is not null
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
+		And I add the registration period with start date "<regStartDate>" to "<patient>"
+		And I add the registration status with code "A" to "<patient>"
+		And I add the registration type with code "T" to "<patient>"
+	When I send a gpc.registerpatients to register "<patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the bundle should contain a registration type
+		And the bundle should contain a registration status
+		And the bundle should contain a registration period
+	Examples: 
+		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
+		| patient23 | tom       | johnson    | 34555455  | 1993-03-03 | 2017-05-05   |
+
+Scenario Outline: Register patient and validate patient response contains the correct quantity of elements
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
+		And I add the registration period with start date "<regStartDate>" to "<patient>"
+		And I add the registration status with code "A" to "<patient>"
+		And I add the registration type with code "T" to "<patient>"
+	When I send a gpc.registerpatients to register "<patient>"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the bundle patient response should contain exactly 1 family name
+		And the bundle patient response should contain exactly 1 given name
+		And the bundle patient response should contain exactly 1 gender element
+		And the bundle patient response should contain exactly 1 birthDate element
+	Examples: 
+		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
+		| patient23 | tom       | johnson    | 34555455  | 1993-03-03 | 2017-05-05   |

@@ -231,6 +231,149 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
+        [Then(@"the bundle should contain a registration type")]
+        public void GivenTheResponseValidRegType()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient)) {
+                    Patient patient = (Patient)entry.Resource;
+                    bool regTypePresent = false;
+                    foreach (Extension ext in patient.ModifierExtension)
+                    {
+                        string url = ext.Url.ToString();
+                        if (url == "http://fhir.nhs.net/StructureDefinition/extension-registration-type-1")
+                        {
+                            regTypePresent = true;
+                            ext.Value.ShouldNotBeNull();
+
+                        }
+                  
+                     }
+                    regTypePresent.ShouldBe(true);
+                 }
+            }
+        }
+
+        [Then(@"the bundle should contain a registration status")]
+        public void GivenTheResponseValidRegStatus()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    bool regTypePresent = false;
+                    foreach (Extension ext in patient.ModifierExtension)
+                    {
+                        string url = ext.Url.ToString();
+                        if (url == "http://fhir.nhs.net/StructureDefinition/extension-registration-status-1")
+                        {
+                            regTypePresent = true;
+                            ext.Value.ShouldNotBeNull();
+                        }
+                    }
+                    regTypePresent.ShouldBe(true);
+                }
+            }
+        }
+
+
+        [Then(@"the bundle should contain a registration period")]
+        public void GivenTheResponseValidRegPeriod()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    bool regTypePresent = false;
+                    foreach (Extension ext in patient.ModifierExtension)
+                    {
+                        string url = ext.Url.ToString();
+                        if (url == "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1")
+                        {
+                            regTypePresent = true;
+                            ext.Value.ShouldNotBeNull();
+                        }
+                    }
+                    regTypePresent.ShouldBe(true);
+                    
+                }
+            }
+        }
+
+
+        [Then(@"the bundle patient response should contain exactly 1 family name")]
+        public void checkResponseForExactlyOneFamilyName()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    int count = 0;
+                    Patient patient = (Patient)entry.Resource;
+                    foreach (HumanName name in patient.Name)
+                    {
+                        name.Family.ShouldNotBeNull();
+                        count++;
+                    }
+
+                    count.ShouldBe(1);
+                }
+            }
+        }
+
+     
+        [Then(@"the bundle patient response should contain exactly 1 given name")]
+        public void checkResponseForExactlyOneGivenName()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    int count = 0;
+                    Patient patient = (Patient)entry.Resource;
+                    foreach (HumanName name in patient.Name)
+                    {
+                        name.Given.ShouldNotBeNull();
+                        count++;
+                    }
+
+                    count.ShouldBe(1);
+                }
+            }
+        }
+
+        [Then(@"the bundle patient response should contain exactly 1 gender element")]
+        public void checkResponseForExactlyOneGenderElement()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    patient.Gender.ShouldNotBeNull();
+                }
+            }
+        }
+
+        [Then(@"the bundle patient response should contain exactly 1 birthDate element")]
+        public void checkResponseForExactlyOneBirthDateElement()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    patient.BirthDate.ShouldNotBeNull();
+                }
+            }
+        }
+
+
+
+
         [When(@"I register ""(.*)"" with url ""(.*)""")]
         public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalIdWithIncorrectUrl(string patientSavedName, string url)
         {
@@ -272,6 +415,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             HttpSteps.RestRequest(Method.POST, "/Patient/$gpc.registerpatient", body);
         }
+
+     
 
     }
 }
