@@ -148,3 +148,13 @@ Scenario: Read appointment containing a priority element and check that the prio
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And if the appointment contains a priority element it should be a valid value
+
+Scenario: Read appointment and all participants must have a type or actor element
+	Given I create an appointment for patient "patient1" at organization "ORG1" with priority "0" and save appintment resources to "Patient1PriorityAppointment"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I perform an appointment read appointment stored against key "Patient1PriorityAppointment"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+		And the returned appointment participants must contain a type or actor element

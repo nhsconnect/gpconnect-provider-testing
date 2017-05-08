@@ -6,6 +6,7 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Appointment;
 using static Hl7.Fhir.Model.Bundle;
+using NUnit.Framework;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -442,6 +443,57 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 priority.Value.ShouldBeLessThanOrEqualTo(9, "The priority should be between 0 and 9");
                 priority.Value.ShouldBeGreaterThanOrEqualTo(0, "The priority should be between 0 and 9");
+            }
+        }
+
+        [Then(@"the returned appointment participants must contain a type or actor element")]
+        public void ThenTheReturnedAppointmentParticipantsMustContainATypeOrActorElement()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (ParticipantComponent participant in appointment.Participant)
+            {
+                var actor = participant.Actor;
+                var type = participant.Type;
+
+                if (null == actor && null == type)
+                {
+                    Assert.Fail("There must be an actor or type element within the appointment participants");
+                }
+
+                if (null != type)
+                {
+                    int codableConceptCount = 0;
+                    foreach (var typeCodableConcept in type)
+                    {
+                        codableConceptCount++;
+                        int codingCount = 0;
+                        foreach (var coding in typeCodableConcept.Coding)
+                        {
+                            coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/encounter-participant-type");
+                            string[] codes = new string[12] { "translator", "emergency", "ADM", "ATND", "CALLBCK", "CON", "DIS", "ESC", "REF", "SPRF", "PPRF", "PART" };
+                            string[] codeDisplays = new string[12] { "Translator", "Emergency", "admitter", "attender", "callback contact", "consultant", "discharger", "escort", "referrer", "secondary performer", "primary performer", "Participation" };
+                            coding.Code.ShouldBeOneOf(codes);
+                            coding.Display.ShouldBeOneOf(codeDisplays);
+                            for (int i = 0; i < codes.Length; i++) {
+                                if (string.Equals(coding.Code, codes[i])) {
+                                    coding.Display.ShouldBe(codeDisplays[i], "The participant type code does not match the display element");
+                                }
+                            }
+                            codingCount++;
+                        }
+                        codingCount.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of 1 participant type coding element for each participant");
+                    }
+                    codableConceptCount.ShouldBeLessThanOrEqualTo(1, "The participant type element may only contain one codable concept.");
+                }
+
+                if (actor != null && actor.Reference != null) {
+                    actor.Reference.ShouldNotBeEmpty();
+                    if (!actor.Reference.StartsWith("Patient/") && 
+                        !actor.Reference.StartsWith("Practitioner/") && 
+                        !actor.Reference.StartsWith("Location/")) {
+                        Assert.Fail("The actor reference should be a Patient, Practitioner or Location");
+                    }
+                }
             }
         }
 

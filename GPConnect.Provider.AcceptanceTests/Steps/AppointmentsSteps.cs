@@ -703,6 +703,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Slot.ShouldNotBeNull();
             appointment.Slot.Count.ShouldBeGreaterThanOrEqualTo(1);
+            foreach (var slotReference in appointment.Slot) {
+                slotReference.Reference.ShouldStartWith("Slot/");
+            }
         }
 
         [Then(@"if appointment is present the single or multiple participant must contain a type or actor")]
