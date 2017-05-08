@@ -69,6 +69,65 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     
         }
 
+        [Given(@"I do not set ""(.*)"" and register patient ""(.*)"" with first name ""(.*)"" and family name ""(.*)"" with NHS number ""(.*)"" and birth date ""(.*)""")]
+        public void GivenIRegisterPatientSkipStep(string doNotSet,string patientSavedName, string firstName, string familyName, string nhsNumber, string birthDate)
+        {
+            Patient patient = new Patient();
+
+            if (doNotSet != "Identifier")
+            {
+                Identifier id = new Identifier();
+
+                id.Value = nhsNumber;
+                id.System = "http://fhir.nhs.net/Id/nhs-number";
+                patient.Identifier.Add(id);
+            }
+
+            if (doNotSet != "active")
+            {
+                bool active = true;
+                patient.Active = active;
+            }
+
+
+            if (doNotSet != "gender")
+            {
+                AdministrativeGender code = new AdministrativeGender();
+               patient.Gender = code;
+            }
+
+            if (doNotSet != "birthDate")
+            {
+                string date = birthDate;
+                patient.BirthDate = date;
+            }
+
+            if (doNotSet != "name")
+            {
+                HumanName name = new HumanName();
+
+                string familyString = familyName;
+                string givenString = firstName;
+
+                List<string> familyList = new List<string>();
+                List<string> givenList = new List<string>();
+
+                familyList.Add(familyString);
+                givenList.Add(givenString);
+
+                name.Family = familyList;
+                name.Given = givenList;
+
+                patient.Name.Add(name);
+            }
+
+
+
+            HttpContext.registerPatient.Add(patientSavedName, patient);
+
+        }
+
+
         [Given(@"I set the identifier from ""(.*)"" to null")]
         public void GivenIRemoveTheIdentifier(string patientSavedName)
         {
@@ -108,10 +167,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.registerPatient.Remove(patientSavedName);
             HttpContext.registerPatient.Add(patientSavedName, patient);
         }
-
-
-
-
+        
         [Given(@"I add the registration period with start date ""(.*)"" to ""(.*)""")]
         public void GivenIAddRegistrationPeriodToPatient(string regStartDate, string patientSavedName)
         {
@@ -131,8 +187,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.registerPatient.Add(patientSavedName, patient);
 
         }
-
-      
+              
         [Given(@"I add the registration status with code ""(.*)"" to ""(.*)""")]
         public void GivenIAddRegistrationStatusToPatient(string code, string patientSavedName)
         {
@@ -155,7 +210,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
-
         [Given(@"I add the registration type with code ""(.*)"" to ""(.*)""")]
         public void GivenIAddRegistrationTypeToPatient(string code, string patientSavedName)
         {
@@ -175,8 +229,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.registerPatient.Remove(patientSavedName);
             HttpContext.registerPatient.Add(patientSavedName, patient);
 
-
         }
+
         [When(@"I register ""(.*)"" with url ""(.*)""")]
         public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalIdWithIncorrectUrl(string patientSavedName, string url)
         {
