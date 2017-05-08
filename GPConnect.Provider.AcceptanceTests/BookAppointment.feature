@@ -233,3 +233,17 @@ Scenario Outline: Book single appointment for patient and send additional extens
 		Examples:
 		| Appointment  |
 		| Appointment3 |
+
+Scenario Outline: Book appointment with invalid slot reference
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment with slot reference "<slotReference>" for patient "patient1" called "<Appointment>" from schedule "getScheduleResponseBundle"
+	Then I book the appointment called "<Appointment>"
+	Then the response status code should indicate failure
+		Examples:
+		| Appointment  | slotReference |
+		| Appointment3 | 45555555      |
+		| Appointment3 | 455g55555     |
+		| Appointment3 | 45555555##    |
+		| Appointment3 | hello         |
