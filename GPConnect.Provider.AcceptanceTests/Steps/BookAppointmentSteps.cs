@@ -170,6 +170,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
+        [Then(@"I add an extension to the appointment called ""(.*)""")]
+        public void addExtensionToAppointment(string appointmentName)
+        {
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            HttpContext.StoredFhirResources.Remove(appointmentName);
+
+
+            Extension ext = new Extension();
+            ext.Url = "RANDOM EXTENSION";
+            appointment.Extension.Add(ext);
+    
+
+            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+
+        }
+
         [Then(@"I remove the location participant from the appointment called ""(.*)""")]
         public void removeLocationParticipant(string appointmentName)
         {

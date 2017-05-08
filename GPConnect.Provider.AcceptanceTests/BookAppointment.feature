@@ -219,3 +219,17 @@ Scenario Outline: Book Appointment and remove all participant
 	Examples:
 		| Appointment  |
 		| Appointment1 |
+
+Scenario Outline: Book single appointment for patient and send additional extensions
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment for patient "patient1" called "<Appointment>" from schedule "getScheduleResponseBundle"
+	Then I add an extension to the appointment called "<Appointment>"
+	Then I book the appointment called "<Appointment>"
+	Then the response status code should indicate created
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+		Examples:
+		| Appointment  |
+		| Appointment3 |
