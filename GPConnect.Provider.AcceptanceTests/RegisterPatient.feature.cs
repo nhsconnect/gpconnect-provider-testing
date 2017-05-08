@@ -209,6 +209,142 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Register patient and remove identifier before sending the request")]
+        [NUnit.Framework.TestCaseAttribute("patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
+        public virtual void RegisterPatientAndRemoveIdentifierBeforeSendingTheRequest(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and remove identifier before sending the request", exampleTags);
+#line 72
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 73
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 74
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 75
+  testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
+                        "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 76
+  testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 77
+  testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 78
+  testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 79
+  testRunner.And(string.Format("I set the identifier from \"{0}\" to null", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 80
+ testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 81
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Register patient and remove active element before sending the request")]
+        [NUnit.Framework.TestCaseAttribute("patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
+        public virtual void RegisterPatientAndRemoveActiveElementBeforeSendingTheRequest(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and remove active element before sending the request", exampleTags);
+#line 86
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 87
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 88
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 89
+  testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
+                        "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 90
+  testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 91
+  testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 92
+  testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 93
+  testRunner.And(string.Format("I set the active element from \"{0}\" to null", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 94
+ testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 95
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Register patient and remove name element before sending the request")]
+        [NUnit.Framework.TestCaseAttribute("patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
+        public virtual void RegisterPatientAndRemoveNameElementBeforeSendingTheRequest(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and remove name element before sending the request", exampleTags);
+#line 100
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 101
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 102
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 103
+  testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
+                        "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 104
+  testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+  testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+  testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+  testRunner.And(string.Format("I set the name element from \"{0}\" to null", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 108
+ testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 109
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Register patient and remove gender element before sending the request")]
+        [NUnit.Framework.TestCaseAttribute("patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
+        public virtual void RegisterPatientAndRemoveGenderElementBeforeSendingTheRequest(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and remove gender element before sending the request", exampleTags);
+#line 114
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 115
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 116
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 117
+  testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
+                        "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 118
+  testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 119
+  testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 120
+  testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 121
+  testRunner.And(string.Format("I set the gender element from \"{0}\" to null", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 122
+ testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 123
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

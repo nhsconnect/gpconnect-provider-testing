@@ -42,7 +42,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             bool active = true;
             patient.Active = active;
-
+        
             AdministrativeGender code = new AdministrativeGender();
             string date = birthDate;
 
@@ -69,6 +69,49 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     
         }
 
+        [Given(@"I set the identifier from ""(.*)"" to null")]
+        public void GivenIRemoveTheIdentifier(string patientSavedName)
+        {
+            Patient patient = HttpContext.registerPatient[patientSavedName];
+
+            patient.Identifier = null;
+            HttpContext.registerPatient.Remove(patientSavedName);
+            HttpContext.registerPatient.Add(patientSavedName, patient);
+        }
+
+        [Given(@"I set the active element from ""(.*)"" to null")]
+        public void GivenIRemoveTheActiveElement(string patientSavedName)
+        {
+            Patient patient = HttpContext.registerPatient[patientSavedName];
+
+            patient.Active = null;
+            HttpContext.registerPatient.Remove(patientSavedName);
+            HttpContext.registerPatient.Add(patientSavedName, patient);
+        }
+
+        [Given(@"I set the name element from ""(.*)"" to null")]
+        public void GivenIRemoveTheNameElement(string patientSavedName)
+        {
+            Patient patient = HttpContext.registerPatient[patientSavedName];
+
+            patient.Name = null;
+            HttpContext.registerPatient.Remove(patientSavedName);
+            HttpContext.registerPatient.Add(patientSavedName, patient);
+        }
+
+        [Given(@"I set the gender element from ""(.*)"" to null")]
+        public void GivenIRemoveTheGenderElement(string patientSavedName)
+        {
+            Patient patient = HttpContext.registerPatient[patientSavedName];
+
+            patient.Gender = null;
+            HttpContext.registerPatient.Remove(patientSavedName);
+            HttpContext.registerPatient.Add(patientSavedName, patient);
+        }
+
+
+
+
         [Given(@"I add the registration period with start date ""(.*)"" to ""(.*)""")]
         public void GivenIAddRegistrationPeriodToPatient(string regStartDate, string patientSavedName)
         {
@@ -84,8 +127,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             registrationPeriod.Value = period;
 
             patient.Extension.Add(registrationPeriod);
+            HttpContext.registerPatient.Remove(patientSavedName);
+            HttpContext.registerPatient.Add(patientSavedName, patient);
 
-  }
+        }
 
       
         [Given(@"I add the registration status with code ""(.*)"" to ""(.*)""")]

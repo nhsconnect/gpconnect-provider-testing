@@ -14,7 +14,7 @@ Scenario Outline: Register patient
 	Then the response status code should indicate success
 	Examples: 
 		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
-		| patient23 | tom     | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
+		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
 
 
 Scenario Outline: Register patient send request to incorrect URL
@@ -68,3 +68,59 @@ Scenario Outline: Register patient with missing header
 		| Ssp-To            | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
 		| Ssp-InteractionId | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
 		| Authorization     | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
+
+Scenario Outline: Register patient and remove identifier before sending the request
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
+		And I add the registration period with start date "<regStartDate>" to "<patient>"
+		And I add the registration status with code "A" to "<patient>"
+		And I add the registration type with code "T" to "<patient>"
+		And I set the identifier from "<patient>" to null
+	When I send a gpc.registerpatients to register "<patient>"
+	Then the response status code should indicate success
+	Examples: 
+		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
+		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
+
+Scenario Outline: Register patient and remove active element before sending the request
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
+		And I add the registration period with start date "<regStartDate>" to "<patient>"
+		And I add the registration status with code "A" to "<patient>"
+		And I add the registration type with code "T" to "<patient>"
+		And I set the active element from "<patient>" to null
+	When I send a gpc.registerpatients to register "<patient>"
+	Then the response status code should indicate success
+	Examples: 
+		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
+		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
+
+Scenario Outline: Register patient and remove name element before sending the request
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
+		And I add the registration period with start date "<regStartDate>" to "<patient>"
+		And I add the registration status with code "A" to "<patient>"
+		And I add the registration type with code "T" to "<patient>"
+		And I set the name element from "<patient>" to null
+	When I send a gpc.registerpatients to register "<patient>"
+	Then the response status code should indicate success
+	Examples: 
+		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
+		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
+
+Scenario Outline: Register patient and remove gender element before sending the request
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
+		And I add the registration period with start date "<regStartDate>" to "<patient>"
+		And I add the registration status with code "A" to "<patient>"
+		And I add the registration type with code "T" to "<patient>"
+		And I set the gender element from "<patient>" to null
+	When I send a gpc.registerpatients to register "<patient>"
+	Then the response status code should indicate success
+	Examples: 
+		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
+		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
