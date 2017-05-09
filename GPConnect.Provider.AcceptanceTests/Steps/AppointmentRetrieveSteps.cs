@@ -71,6 +71,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
+        [Then(@"the response total should be 1")]
+        public void responseTotalShouldBe1()
+        {
+            Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
+            bundle.Total.ShouldNotBeNull<int?>();
+            bundle.Total.ShouldBe<int?>(1);
+        }
+
+       
+
 
 
         [Then(@"the bundle of appointments should all contain a single status element")]
