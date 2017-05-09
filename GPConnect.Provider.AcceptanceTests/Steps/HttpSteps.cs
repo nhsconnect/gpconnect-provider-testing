@@ -211,6 +211,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             RestRequest(Method.GET, relativeUrl);
         }
 
+        [When(@"I make a GET request to saved location resource ""(.*)""")]
+        public void WhenIMakeAGETRequestToLocationResource(string locationResource)
+        {
+            string relativeUrl = HttpContext.resourceNameStored[locationResource];
+            RestRequest(Method.GET, relativeUrl);
+        }
+
         [When(@"I make a POST request to ""(.*)""")]
         public void WhenIMakeAPOSTRequestTo(string relativeUrl)
         {

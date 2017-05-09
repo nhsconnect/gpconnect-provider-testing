@@ -247,3 +247,26 @@ Scenario Outline: Book appointment with invalid slot reference
 		| Appointment3 | 455g55555     |
 		| Appointment3 | 45555555##    |
 		| Appointment3 | hello         |
+
+Scenario: Book single appointment for patient and check the location reference is valid
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle"
+	Then the response status code should indicate created
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+		And the appointment location reference is present and is saved as "responseLocation"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
+	When I make a GET request to saved location resource "responseLocation"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a valid Location resource
+
+
+
+
+
+
+

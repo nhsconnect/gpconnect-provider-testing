@@ -362,6 +362,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
         }
 
+        [Then(@"the response should be a valid Location resource")]
+        public void theResponseShouldBeAnLocationResource()
+        {
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
+            Location location = (Location)FhirContext.FhirResponseResource;
+            //Only manadatory field on location specification
+            location.Name.ShouldNotBeNull();
+
+        }
+
         [Then(@"the returned appointment resource shall contains an id")]
         public void ThenTheReturnedAppointmentResourceShallContainAnId()
         {

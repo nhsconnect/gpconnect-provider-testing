@@ -61,6 +61,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         Dictionary<string, Appointment> StoredAppointment { get; }
         Dictionary<string, string> StoredDate { get; }
         Dictionary<string, Patient> registerPatient { get; }
+        Dictionary<string, string> resourceNameStored { get; }
     }
 
     public class HttpContext : IHttpContext
@@ -129,6 +130,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public const string kStoredAppointment = "storedAppointment";
             public const string kStoredDate = "storedDate";
             public const string kRegisterPatient = "registerPatient";
+            public const string kResourceNameStored = "resourceNameStored";
         }
 
         // Protocol
@@ -567,6 +569,31 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
                     ScenarioContext.Set(new Dictionary<string, string>(), Context.kStoredDate);
                     return ScenarioContext.Get<Dictionary<string, string>>(Context.kStoredDate);
+                }
+                catch (Exception)
+                {
+                }
+                return null;
+            }
+        }
+
+        public Dictionary<string, string> resourceNameStored
+        {
+            get
+            {
+                try
+                {
+
+                    return ScenarioContext.Get<Dictionary<string, string>>(Context.kResourceNameStored);
+                }
+                catch (Exception)
+                {
+                }
+                try
+                {
+
+                    ScenarioContext.Set(new Dictionary<string, string>(), Context.kResourceNameStored);
+                    return ScenarioContext.Get<Dictionary<string, string>>(Context.kResourceNameStored);
                 }
                 catch (Exception)
                 {

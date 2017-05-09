@@ -363,6 +363,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
 
 
+        [Then(@"the appointment location reference is present and is saved as ""(.*)""")]
+        public void ThenIMakeAGetRequestAndValidateTheReferences(string responseLocation)
+        {
+
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (ParticipantComponent part in appointment.Participant)
+            {
+                string actor = part.Actor.Reference.ToString();
+                if (actor.Contains("Location"))
+                {
+
+                  HttpContext.resourceNameStored.Add(responseLocation, actor);
+                        
+                }
+
+            }
+        }
+
+
+
         [Then(@"the appointment participant contains a type is should have a valid system and code")]
         public void AppointmentParticipantValidType()
         {
