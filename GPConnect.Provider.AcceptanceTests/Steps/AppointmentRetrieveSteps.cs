@@ -59,7 +59,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
             bundle.Total.ShouldNotBeNull<int?>();
-            bundle.Total.ShouldBe<int?>(1);
+            bundle.Total.ShouldNotBe<int?>(0);
         }
 
         [Given(@"I save to current time called ""([^""]*)""")]

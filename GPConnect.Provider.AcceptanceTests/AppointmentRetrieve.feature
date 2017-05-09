@@ -90,80 +90,31 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		| 2016-08-                  |
 		| 2016-08-05 08:16:07       |
 	   
-@ignore
-Scenario Outline: Appointment retrieve send request with date variations which are valid with prefix
-	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+Scenario Outline: Appointment retrieve send request with date variations and greater than and less than prefix
+	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I save to current time called "timeNow"
-	When I search for "patient1" and make a get request for their appointments with the date "timeNow" and prefix "<prefix>"
+	When I search for "patient1" and make a get request for their appointments with the date "startDate" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response total should be at least 1
 	Examples:
 		| startDate                 | prefix |
-		| 2014                      |        |
-		| 2014-02                   |        |
-		| 2014-10-05                |        |
-		| 2014-05                   |        |
-		| 2014-05-01T11:08:32       |        |
-		| 2015-10-23T11:08:32+00:00 |        |
-		| 2014                      | eq     |
-		| 2014-02                   | eq     |
-		| 2014-10-05                | eq     |
-		| 2014-05                   | eq     |
-		| 2014-05-01T11:08:32       | eq     |
-		| 2015-10-23T11:08:32+00:00 | eq     |
-		| 2014                      | ne     |
-		| 2014-02                   | ne     |
-		| 2014-10-05                | ne     |
-		| 2014-05                   | ne     |
-		| 2014-05-01T11:08:32       | ne     |
-		| 2015-10-23T11:08:32+00:00 | ne     |
 		| 2014                      | gt     |
 		| 2014-02                   | gt     |
 		| 2014-10-05                | gt     |
 		| 2014-05                   | gt     |
 		| 2014-05-01T11:08:32       | gt     |
 		| 2015-10-23T11:08:32+00:00 | gt     |
-		| 2014                      | lt     |
-		| 2014-02                   | lt     |
-		| 2014-10-05                | lt     |
-		| 2014-05                   | lt     |
-		| 2014-05-01T11:08:32       | lt     |
-		| 2015-10-23T11:08:32+00:00 | lt     |
-		| 2014                      | sa     |
-		| 2014-02                   | sa     |
-		| 2014-10-05                | sa     |
-		| 2014-05                   | sa     |
-		| 2014-05-01T11:08:32       | sa     |
-		| 2015-10-23T11:08:32+00:00 | sa     |
-		| 2014                      | sb     |
-		| 2014-02                   | sb     |
-		| 2014-10-05                | sb     |
-		| 2014-05                   | sb     |
-		| 2014-05-01T11:08:32       | sb     |
-		| 2015-10-23T11:08:32+00:00 | sb     |
-		| 2014                      | ge     |
-		| 2014-02                   | ge     |
-		| 2014-10-05                | ge     |
-		| 2014-05                   | ge     |
-		| 2014-05-01T11:08:32       | ge     |
-		| 2015-10-23T11:08:32+00:00 | ge     |
-		| 2014                      | le     |
-		| 2014-02                   | le     |
-		| 2014-10-05                | le     |
-		| 2014-05                   | le     |
-		| 2014-05-01T11:08:32       | le     |
-		| 2015-10-23T11:08:32+00:00 | le     |
-		| 2014                      | eb     |
-		| 2014-02                   | eb     |
-		| 2014-10-05                | eb     |
-		| 2014-05                   | eb     |
-		| 2014-05-01T11:08:32       | eb     |
-		| 2015-10-23T11:08:32+00:00 | eb     |
-
+		| 2044                      | lt     |
+		| 2044-02                   | lt     |
+		| 2044-10-05                | lt     |
+		| 2044-05                   | lt     |
+		| 2044-05-01T11:08:32       | lt     |
+		| 2044-10-23T11:08:32+00:00 | lt     |
+	
+	
 
 Scenario Outline: Appointment retrieve failure due to missing header
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
