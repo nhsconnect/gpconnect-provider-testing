@@ -4,30 +4,46 @@ Background:
 	Given I have the test patient codes
 	Given I have the test ods codes
 
-Scenario Outline: Appointment retrieve success valid id where appointment resource returned is not required
+Scenario: Appointment retrieve success valid id where appointment resource returned is not required
+	Given I am using the default server
+		And I perform a patient search for patient "patient12NoAppointments" and store the first returned resources against key "tom"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I make a GET request to "/Patient/<id>/Appointment"
+	When I search for "tom" from the list of patients and make a get request for their appointments
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And there are zero appointment resources
+
+Scenario Outline: Appointment retrieve success valid id where single appointment resource should be returned
+Given I find or create "1" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+	When I search for "<patient>" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| id     |
-		| 1		 |
-		| 2		 |
-		| 400000 |
+		| patient  |
+		| patient1 |
+		| patient2 |
+		| patient3 |
 
-Scenario: Appointment retrieve success valid id where single appointment resource is required resource
-Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+Scenario Outline: Appointment retrieve multiple appointment retrived
+Given I find or create "2" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "patient1" and make a get request for their appointments
+	When I search for "<patient>" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-	
-	
-Scenario Outline: Appointment retrieve fail invalid id
+	Examples:
+		| patient  |
+		| patient4 |
+		| patient5 |
+		| patient6 |
+		
+Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I make a GET request to "/Patient/<id>/Appointment"
@@ -40,41 +56,16 @@ Scenario Outline: Appointment retrieve fail invalid id
 		| dd  |
 		|     |
 		| null|
-
-Scenario Outline: Appointment retrieve send request with date variations with valid start date
-	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "patient1" and make a get request for their appointments with the date "<startDate>"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-	Examples:
-		 | startDate                 |
-		 | 2014                      |
-		 | 2014-02                   |
-		 | 2014-10-05                |
-		 | 2014-05                   |
-		 | 2014-05-01T11:08:32       |
-		 | 2015-10-23T11:08:32+00:00 |
-		 | 2014                      |
-		 | 2014-02                   |
-		 | 2014-10-05                |
-		 | 2014-05                   |
-		 | 2014-05-01T11:08:32       |
-		 | 2015-10-23T11:08:32+00:00 |
-
-##Creates an appointment every time run to check the date exists
+	
 Scenario: Appointment retrieve book appointment then request appointment and check it is returned
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "patient1" and make a get request for their appointments with the date "startDate"
+	When I search for "patient1" and request the most recently booked appointment
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response total should be at least 1
-
 	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -95,6 +86,9 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		| 2016-13-14                |
 		| 2016-13-08T09:22:16       |
 		| 2016-13-08T23:59:59+00:00 |
+		| 2016-08-05T08:16          |
+		| 2016-08-                  |
+		| 2016-08-05 08:16:07       |
 	   
 @ignore
 Scenario Outline: Appointment retrieve send request with date variations which are valid with prefix
@@ -109,6 +103,12 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		And the response total should be at least 1
 	Examples:
 		| startDate                 | prefix |
+		| 2014                      |        |
+		| 2014-02                   |        |
+		| 2014-10-05                |        |
+		| 2014-05                   |        |
+		| 2014-05-01T11:08:32       |        |
+		| 2015-10-23T11:08:32+00:00 |        |
 		| 2014                      | eq     |
 		| 2014-02                   | eq     |
 		| 2014-10-05                | eq     |
@@ -228,18 +228,28 @@ Scenario Outline: Appointment retrieve accept header
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
-Scenario Outline: Appointment retrieve bundle resource with empty appointment resource
-	Given I find or create "0" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+Scenario Outline: Appointment retrieve _format parameter only
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "<patient>" and make a get request for their appointments
+        And I add the parameter "_format" with the value "<Parameter>"
+	When I search for "patient1" and make a get request for their appointments
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the response should be a Bundle resource of type "searchset"
+    Examples:
+        | Parameter             | BodyFormat |
+        | application/json+fhir | JSON       |
+        | application/xml+fhir  | XML        |
+
+Scenario: Appointment retrieve bundle resource with empty appointment resource
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+	When I search for "patientNoAppointments" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
         And the response should be a Bundle resource of type "searchset"
 		And there are zero appointment resources
-	 Examples:
-        | patient  |
-        | patient2 |
 
 Scenario: Appointment retrieve appointment which contains all mandatory resources
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"

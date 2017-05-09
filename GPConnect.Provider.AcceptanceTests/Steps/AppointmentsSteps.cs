@@ -40,12 +40,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
 
+        [When(@"I search for ""([^""]*)"" from the list of patients and make a get request for their appointments")]
+        public void searchAndGetAppointmentsFromPatientListData(string patient)
+        {
+
+            Patient patientResource = (Patient)HttpContext.StoredFhirResources[patient];
+            string id = patientResource.Id.ToString();
+            var url = "/Patient/"+ id+ "/Appointment";
+            When($@"I make a GET request to ""{url}""");
+        }
+
         [When(@"I search for ""([^""]*)"" and make a get request for their appointments")]
         public void searchAndGetAppointments(string patient)
         {
             Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
             string id = patient1.Id.ToString();
             var url = "/Patient/" + id + "/Appointment";
+            When($@"I make a GET request to ""{url}""");
+        }
+
+        [When(@"I search for ""([^""]*)"" and request the most recently booked appointment")]
+        public void searchAndGetAppointmentsWithCustomStartDate(string patient)
+        {
+            string time = HttpContext.StoredDate["startDate"];
+            Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
+            string id = patient1.Id.ToString();
+            var url = "/Patient/" + id + "/Appointment?start=" + time + "";
             When($@"I make a GET request to ""{url}""");
         }
 
