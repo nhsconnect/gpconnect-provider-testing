@@ -220,10 +220,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         if (appointmentCategory.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1"))
                         {
-                            appointmentCategory.ShouldNotBeNull();
-                            appointmentCategory.Url.ShouldBeOfType<Uri>();
-                            appointmentCategory.Value.ShouldBeOfType<CodeableConcept>();
+                            string[] codes = new string[5] { "CLI", "ADM", "VIR", "REM", "MSG" };
+                            string[] displays = new string[5] { "Clinical", "Administrative", "Virtual", "Reminder", "Message" };
 
+                            appointmentCategory.Value.ShouldNotBeNull("There should be a value element within the appointment category extension");
+                            var extensionValueCodeableConcept = (CodeableConcept)appointmentCategory.Value;
+                            extensionValueCodeableConcept.Coding.ShouldNotBeNull("There should be a coding element within the appointment category extension");
+                            extensionValueCodeableConcept.Coding.Count.ShouldBe(1, "There should be a single code element within the appointment category extension");
+                            foreach (var coding in extensionValueCodeableConcept.Coding)
+                            {
+                                // Check that the code and display values are valid for the extension and match each other
+                                bool codeAndDisplayFound = false;
+                                for (int i = 0; i < codes.Length; i++)
+                                {
+                                    if (string.Equals(codes[i], coding.Code) && string.Equals(displays[i], coding.Display))
+                                    {
+                                        codeAndDisplayFound = true;
+                                        break;
+                                    }
+                                }
+                                codeAndDisplayFound.ShouldBeTrue("The code and display values are not valid for the appointmentCategory extension");
+                            }
                         }
                     }
                 }
@@ -242,12 +259,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         if (appointmentBooking.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1"))
                         {
-                            appointmentBooking.ShouldNotBeNull();
-                            appointmentBooking.Url.ShouldBeOfType<Uri>();
-                            appointmentBooking.Value.ShouldBeOfType<CodeableConcept>();
+                            string[] codes = new string[6] { "ONL", "PER", "TEL", "EMA", "LET", "TEX" };
+                            string[] displays = new string[6] { "Online", "In person", "Telephone", "Email", "Letter", "Text" };
 
+                            appointmentBooking.Value.ShouldNotBeNull("There should be a value element within the appointment booking method extension");
+                            var extensionValueCodeableConcept = (CodeableConcept)appointmentBooking.Value;
+                            extensionValueCodeableConcept.Coding.ShouldNotBeNull("There should be a coding element within the appointment booking method extension");
+                            extensionValueCodeableConcept.Coding.Count.ShouldBe(1, "There should be a single code element within the appointment booking method extension");
+                            foreach (var coding in extensionValueCodeableConcept.Coding)
+                            {
+                                // Check that the code and display values are valid for the extension and match each other
+                                bool codeAndDisplayFound = false;
+                                for (int i = 0; i < codes.Length; i++)
+                                {
+                                    if (string.Equals(codes[i], coding.Code) && string.Equals(displays[i], coding.Display))
+                                    {
+                                        codeAndDisplayFound = true;
+                                        break;
+                                    }
+                                }
+                                codeAndDisplayFound.ShouldBeTrue("The code and display values are not valid for the appointmentBookingMethod extension");
+                            }
                         }
-
                     }
                 }
             }
@@ -266,14 +299,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         if (appointmentContact.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
                         {
-                            appointmentContact.ShouldNotBeNull();
-                            appointmentContact.Url.ShouldBeOfType<Uri>();
-                            appointmentContact.Value.ShouldBeOfType<CodeableConcept>();
+                            string[] codes = new string[5] { "ONL", "PER", "TEL", "EMA", "LET" };
+                            string[] displays = new string[5] { "Online", "In person", "Telephone", "Email", "Letter" };
 
+                            appointmentContact.Value.ShouldNotBeNull("There should be a value element within the appointment ContactMethod extension");
+                            var extensionValueCodeableConcept = (CodeableConcept)appointmentContact.Value;
+                            extensionValueCodeableConcept.Coding.ShouldNotBeNull("There should be a coding element within the appointment ContactMethod extension");
+                            extensionValueCodeableConcept.Coding.Count.ShouldBe(1, "There should be a single code element within the appointment ContactMethod extension");
+                            foreach (var coding in extensionValueCodeableConcept.Coding)
+                            {
+                                // Check that the code and display values are valid for the extension and match each other
+                                bool codeAndDisplayFound = false;
+                                for (int i = 0; i < codes.Length; i++)
+                                {
+                                    if (string.Equals(codes[i], coding.Code) && string.Equals(displays[i], coding.Display))
+                                    {
+                                        codeAndDisplayFound = true;
+                                        break;
+                                    }
+                                }
+                                codeAndDisplayFound.ShouldBeTrue("The code and display values are not valid for the appointmentContactMethod extension");
+                            }
                         }
                     }
                 }
-
             }
         }
 
@@ -296,8 +345,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             appointmentCancellationReason.ShouldNotBeNull();
                             appointmentCancellationReason.Url.ShouldBeOfType<Uri>();
                             appointmentCancellationReason.Value.ShouldBeOfType<String>();
-
-
+                            
                             extensionCount++;
                         }
                         extensionCount.ShouldBe(1);

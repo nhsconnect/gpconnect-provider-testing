@@ -286,7 +286,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Remove(appointmentName);
 
             Extension ext = new Extension();
-            ext.Url = "RANDOM EXTENSION";
+            ext.Url = "RANDOM EXTENSION USED FOR TESTING";
             appointment.Extension.Add(ext);
     
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
