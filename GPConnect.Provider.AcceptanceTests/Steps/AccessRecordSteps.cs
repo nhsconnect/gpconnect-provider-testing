@@ -270,7 +270,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             {
                                 codingCount++;
                                 coding.System.ShouldBe("http://snomed.info/sct");
-                                //coding.Code.ShouldBe("425173008");
+                                coding.Code.ShouldBe("425173008");
                                 coding.Display.ShouldBe("record extract (record artifact)");
                             }
                             codingCount.ShouldBeLessThanOrEqualTo(1);
@@ -307,7 +307,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             {
                                 codingCount++;
                                 coding.System.ShouldBe("http://snomed.info/sct");
-                                //coding.Code.ShouldBe("700232004");
+                                coding.Code.ShouldBe("700232004");
                                 coding.Display.ShouldBe("general medical service (qualifier value)");
                             }
                             codingCount.ShouldBeLessThanOrEqualTo(1);
