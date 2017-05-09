@@ -263,6 +263,7 @@ Scenario: Book single appointment for patient and check the location reference i
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a valid Location resource
+		And if the location response resource contains an identifier it is valid
 
 
 

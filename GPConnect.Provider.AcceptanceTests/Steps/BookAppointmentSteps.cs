@@ -404,5 +404,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"if the location response resource contains an identifier it is valid")]
+        public void CheckLocationContainsAValidIdentifier()
+        {
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
+            Location location = (Location)FhirContext.FhirResponseResource;
+            foreach (Identifier identifier in location.Identifier)
+            {
+                identifier.System.ShouldNotBeNull();
+                identifier.Value.ShouldNotBeNull();
+            }
+        }
+
     }
 }
