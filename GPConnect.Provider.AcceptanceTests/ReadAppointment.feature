@@ -114,6 +114,7 @@ Scenario Outline: Read appointment check response contains required elements
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
+		And the appointment response resource contains a status with a valid value
 		And the appointment response resource contains an start date
 		And the appointment response resource contains an end date
 		And the appointment response resource contains a slot reference
