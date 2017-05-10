@@ -643,27 +643,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
                     Appointment appointment = (Appointment)entry.Resource;
-                    if (appointment.Identifier == null)
+                    foreach (var identifier in appointment.Identifier)
                     {
-                       
-                    }
-                    else
-                    {
-                        if (appointment.Identifier != null)
-                        {
-                            int identifierCount = 0;
-                            foreach (Identifier identifer in appointment.Identifier)
-                            {
-                                identifierCount++;
-                                identifer.Value.ShouldNotBeNullOrEmpty();
-                                if (identifer.System != null)
-                                {
-                                    identifer.System.ShouldBe("http://fhir.nhs.net/Id/gpconnect-appointment-identifier");
-                                }
-
-                            }
-
-                        }
+                        identifier.Value.ShouldNotBeNullOrEmpty();
                     }
                 }
 
@@ -736,14 +718,52 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
                     Appointment appointment = (Appointment)entry.Resource;
-                    foreach (ParticipantComponent part in appointment.Participant)
+                    foreach (ParticipantComponent participant in appointment.Participant)
                     {
-                        string actor = part.Actor.ToString();
-                        string type = part.Type.ToString();
+                        var actor = participant.Actor;
+                        var type = participant.Type;
 
                         if (null == actor && null == type)
                         {
                             Assert.Fail("Actor and type are null");
+                        }
+                        if (null != type)
+                        {
+                            int codableConceptCount = 0;
+                            foreach (var typeCodableConcept in type)
+                            {
+                                codableConceptCount++;
+                                int codingCount = 0;
+                                foreach (var coding in typeCodableConcept.Coding)
+                                {
+                                    coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/encounter-participant-type");
+                                    string[] codes = new string[12] { "translator", "emergency", "ADM", "ATND", "CALLBCK", "CON", "DIS", "ESC", "REF", "SPRF", "PPRF", "PART" };
+                                    string[] codeDisplays = new string[12] { "Translator", "Emergency", "admitter", "attender", "callback contact", "consultant", "discharger", "escort", "referrer", "secondary performer", "primary performer", "Participation" };
+                                    coding.Code.ShouldBeOneOf(codes);
+                                    coding.Display.ShouldBeOneOf(codeDisplays);
+                                    for (int i = 0; i < codes.Length; i++)
+                                    {
+                                        if (string.Equals(coding.Code, codes[i]))
+                                        {
+                                            coding.Display.ShouldBe(codeDisplays[i], "The participant type code does not match the display element");
+                                        }
+                                    }
+                                    codingCount++;
+                                }
+                                codingCount.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of 1 participant type coding element for each participant");
+                            }
+                            codableConceptCount.ShouldBeLessThanOrEqualTo(1, "The participant type element may only contain one codable concept.");
+                        }
+
+                        if (actor != null && actor.Reference != null)
+                        {
+                            actor.Reference.ShouldNotBeEmpty();
+                            if (!actor.Reference.StartsWith("Patient/") &&
+                                !actor.Reference.StartsWith("Practitioner/") &&
+                                !actor.Reference.StartsWith("Location/"))
+                            {
+                                Assert.Fail("The actor reference should be a Patient, Practitioner or Location");
+                            }
                         }
                     }
                 }
@@ -837,7 +857,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Appointment appointment = (Appointment)entry.Resource;
                     appointment.Start.ShouldNotBeNull();
-                    appointment.Start.ShouldBeOfType<DateTimeOffset>();
+                    appointment.Start.ShouldBeOfType<DateTime>();
 
                 }
             }
@@ -852,13 +872,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Appointment appointment = (Appointment)entry.Resource;
                     appointment.End.ShouldNotBeNull();
-                    appointment.End.ShouldBeOfType<DateTimeOffset>();
+                    appointment.End.ShouldBeOfType<DateTime>();
 
                 }
             }
         }
 
-        [Then(@"if actor returns a practitioner resource the resource is valid")]
+        [Then(@"the practitioner resource returned in the appointments bundle is present")]
         public void actorPractitionerResourceValid()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -867,23 +887,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Appointment appointment = (Appointment)entry.Resource;
                     int countPractitioner = 0;
-                    foreach (ParticipantComponent part in appointment.Participant)
+                    foreach (ParticipantComponent participant in appointment.Participant)
                     {
-                        string actor = part.Actor.Reference.ToString();
+                        if (participant.Actor == null){}
+                        else {
 
-                        if (actor.Contains("Practitioner"))
-                        {
-                            var practitioner = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", actor);
-                            practitioner.ShouldNotBeNull();
-                            countPractitioner++;
-                       }
+                            string actor = participant.Actor.Reference.ToString();
+
+                            if (actor.Contains("Practitioner"))
+                            {
+                                var practitioner = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", actor);
+                                practitioner.ShouldNotBeNull();
+                                countPractitioner++;
+                            } }
                     }
                     countPractitioner.ShouldBe(1);
                 }
             }
         }
 
-        [Then(@"if actor returns a location resource the resource is valid")]
+        [Then(@"the location resource returned in the appointments bundle is present")]
         public void actorLocationResourceValid()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -892,17 +915,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Appointment appointment = (Appointment)entry.Resource;
                     int countLocation = 0;
-                    foreach (ParticipantComponent part in appointment.Participant)
+                    foreach (ParticipantComponent participant in appointment.Participant)
                     {
-                        string actor = part.Actor.Reference.ToString();
-
-                        if (actor.Contains("Location"))
+                        if (participant.Actor == null) { }
+                        else
                         {
-                            var location = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", actor);
-                            location.ShouldNotBeNull();
-                            countLocation++;
-                        }
 
+                            string actor = participant.Actor.Reference.ToString();
+
+                            if (actor.Contains("Location"))
+                            {
+                                var location = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", actor);
+                                location.ShouldNotBeNull();
+                                countLocation++;
+                            }
+
+                        }
                     }
                     countLocation.ShouldBe(1);
                 }
@@ -911,7 +939,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
-       [Then(@"if actor returns a patient resource the resource is valid")]
+       [Then(@"the patient resource returned in the appointments bundle is present")]
         public void actorPatientResourceValid()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -920,17 +948,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Appointment appointment = (Appointment)entry.Resource;
                     int countPatient = 0;
-                    foreach (ParticipantComponent part in appointment.Participant)
+                    foreach (ParticipantComponent participant in appointment.Participant)
                     {
-                        string actor = part.Actor.Reference.ToString();
-
-                        if (actor.Contains("Patient"))
+                        if (participant.Actor == null) { }
+                        else
                         {
-                            countPatient++;
-                            var patient = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", actor);
-                            patient.ShouldNotBeNull();
-                        }
+                            string actor = participant.Actor.Reference.ToString();
 
+                            if (actor.Contains("Patient"))
+                            {
+                                countPatient++;
+                                var patient = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", actor);
+                                patient.ShouldNotBeNull();
+                            }
+
+                        }
                     }
                     countPatient.ShouldBe(1);
                 }
