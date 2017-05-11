@@ -362,6 +362,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
         }
 
+
         [Then(@"the response should be a valid Location resource")]
         public void theResponseShouldBeAnLocationResource()
         {

@@ -254,33 +254,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I remove the patient participant from the appointment called ""(.*)""")]
-        public void removePatientParticipant(string appointmentName)
+       
+
+        [Then(@"I add an extra invalid extension to the appointment called ""(.*)"" and populate the value")]
+        public void ThenIAddAnExtraInvalidExtensionToTheAppointmentCalledStringAndPopulateTheValue(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpContext.StoredFhirResources.Remove(appointmentName);
-            int count = 0;
-            foreach (ParticipantComponent patient in appointment.Participant)
-            {
-                               
-                string resource = patient.Actor.Url.ToString();
-                if (resource.Contains("Patient"))
-                {   
-                 
-                    patient.Actor.Reference.Remove(count);
-                    break;
-                }
-                count++;
-           
-            }
 
-            appointment.Participant.RemoveAt(count);
+            Extension ext = new Extension();
+            Code code = new Code();
+            code.Value = "INVALID VALUE";
+            ext.Value = code;
+            appointment.Extension.Add(ext);
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
-
         }
 
-        [Then(@"I add an extension to the appointment called ""(.*)""")]
-        public void addExtensionToAppointment(string appointmentName)
+        [Then(@"I add an extra invalid extension to the appointment called ""(.*)"" and populate the system")]
+        public void ThenIAddAnExtraInvalidExtensionToTheAppointmentCalledStringAndPopulateTheSystem (String appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpContext.StoredFhirResources.Remove(appointmentName);
@@ -288,58 +279,55 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Extension ext = new Extension();
             ext.Url = "RANDOM EXTENSION USED FOR TESTING";
             appointment.Extension.Add(ext);
-    
+
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I remove the location participant from the appointment called ""(.*)""")]
-        public void removeLocationParticipant(string appointmentName)
-        {
-             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
-            int count = 0;
-            foreach (ParticipantComponent patient in appointment.Participant)
-            {
-                             
-                string resource = patient.Actor.Url.ToString();
-                if (resource.Contains("Location"))
-                {
-                    patient.Actor.Reference.Remove(count);
-                    break;
-                }
-                count++;
-           
-            }
-            appointment.Participant.RemoveAt(count);
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
-        }
 
-        [Then(@"I remove the practitioner participant from the appointment called ""(.*)""")]
-        public void removePractitonerParticipant(string appointmentName)
+        [Then(@"I add an extra invalid extension to the appointment called ""(.*)"" and populate the system and value")]
+        public void ThenIAddAnExtraInvalidExtensionToTheAppointmentCalledStringAndPopulateTheSystemAndValue(string appointmentName)
         {
-        
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpContext.StoredFhirResources.Remove(appointmentName);
-            int count = 0;
-            foreach (ParticipantComponent patient in appointment.Participant)
-            {
 
-                string resource = patient.Actor.Url.ToString();
-                if (resource.Contains("Practitioner"))
-                {
+            Extension ext = new Extension();
+            Code code = new Code();
+            code.Value = "INVALID VALUE";
+            ext.Url = "RANDOM EXTENSION USED FOR TESTING";
+            ext.Value = code;
+            appointment.Extension.Add(ext);
 
-                    patient.Actor.Reference.Remove(count);
-                    break;
-                }
-                count++;
-  
-            }
-            appointment.Participant.RemoveAt(count);
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+        }
+
+
+        [Then(@"I remove the participant from the appointment called ""(.*)"" which starts with reference ""(.*)""")]
+        public void ThenIRemoveTheParticipantFromTheAppointmentCalledWhichStartsWithReference(string appointmentName, string reference)
+        {
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            HttpContext.StoredFhirResources.Remove(appointmentName);
+
+            List<ParticipantComponent> componentList = new List<ParticipantComponent>();
+
+            foreach (ParticipantComponent participant in appointment.Participant)
+            {
+                componentList.Add(participant);
+            }
+            for (int i = 0; i < componentList.Count; i++)
+            {
+                if (componentList[i].Actor.Reference.Contains(reference))
+                {
+                    appointment.Participant.RemoveAt(i);
+                }
+            }
+          
+             
+            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+
         }
 
         [Then(@"I book the appointment called ""(.*)""")]
-        public void bookAppointment(string appointmentName) {
+        public void ThenIBookTheAppointmentCalledString(string appointmentName) {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
         }
@@ -384,12 +372,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         [Then(@"the appointment participant contains a type is should have a valid system and code")]
-        public void AppointmentParticipantValidType()
+        public void ThenTheAppointmentParticipantContainsATypeIsShouldHaveAValidSystemAndCode()
         {
           
                     Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
                     foreach (ParticipantComponent part in appointment.Participant)
-                    {
+            {
 
                 foreach (CodeableConcept codeConcept in part.Type)
                 {
@@ -405,7 +393,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"if the location response resource contains an identifier it is valid")]
-        public void CheckLocationContainsAValidIdentifier()
+        public void ThenIfTheLocationResponseResourceContainsAnIdentifierItIsValid()
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
             Location location = (Location)FhirContext.FhirResponseResource;
@@ -415,6 +403,135 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 identifier.Value.ShouldNotBeNull();
             }
         }
+
+
+        [Then(@"if the returned appointment category element is present it is populated with the correct values")]
+        public void ThenIfTheReturnedAppointmentCategoryElementIsPresentItIsPopulatedWithTheCorrectValues()
+        {
+            
+                    Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+                foreach (Extension appointmentCategory in appointment.ModifierExtension)
+                    {
+                        if (appointmentCategory.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1"))
+                        {
+                            string[] codes = new string[5] { "CLI", "ADM", "VIR", "REM", "MSG" };
+                            string[] displays = new string[5] { "Clinical", "Administrative", "Virtual", "Reminder", "Message" };
+
+                            appointmentCategory.Value.ShouldNotBeNull("There should be a value element within the appointment category extension");
+                            var extensionValueCodeableConcept = (CodeableConcept)appointmentCategory.Value;
+                            extensionValueCodeableConcept.Coding.ShouldNotBeNull("There should be a coding element within the appointment category extension");
+                            extensionValueCodeableConcept.Coding.Count.ShouldBe(1, "There should be a single code element within the appointment category extension");
+                            foreach (var coding in extensionValueCodeableConcept.Coding)
+                            {
+                                // Check that the code and display values are valid for the extension and match each other
+                                bool codeAndDisplayFound = false;
+                                for (int i = 0; i < codes.Length; i++)
+                                {
+                                    if (string.Equals(codes[i], coding.Code) && string.Equals(displays[i], coding.Display))
+                                    {
+                                        codeAndDisplayFound = true;
+                                        break;
+                                    }
+                                }
+                                codeAndDisplayFound.ShouldBeTrue("The code and display values are not valid for the appointmentCategory extension");
+                            }
+                        }
+                   
+            }
+        }
+
+        [Then(@"if the returned appointment booking element is present it is populated with the correct values")]
+        public void ThenIfTheReturnedAppointmentBookingElementIsPresentItIsPopulated()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (Extension appointmentBooking in appointment.ModifierExtension)
+                    {
+                        if (appointmentBooking.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1"))
+                        {
+                            string[] codes = new string[6] { "ONL", "PER", "TEL", "EMA", "LET", "TEX" };
+                            string[] displays = new string[6] { "Online", "In person", "Telephone", "Email", "Letter", "Text" };
+
+                            appointmentBooking.Value.ShouldNotBeNull("There should be a value element within the appointment booking method extension");
+                            var extensionValueCodeableConcept = (CodeableConcept)appointmentBooking.Value;
+                            extensionValueCodeableConcept.Coding.ShouldNotBeNull("There should be a coding element within the appointment booking method extension");
+                            extensionValueCodeableConcept.Coding.Count.ShouldBe(1, "There should be a single code element within the appointment booking method extension");
+                            foreach (var coding in extensionValueCodeableConcept.Coding)
+                            {
+                                // Check that the code and display values are valid for the extension and match each other
+                                bool codeAndDisplayFound = false;
+                                for (int i = 0; i < codes.Length; i++)
+                                {
+                                    if (string.Equals(codes[i], coding.Code) && string.Equals(displays[i], coding.Display))
+                                    {
+                                        codeAndDisplayFound = true;
+                                        break;
+                                    }
+                                }
+                                codeAndDisplayFound.ShouldBeTrue("The code and display values are not valid for the appointmentBookingMethod extension");
+                            }
+                    
+                }
+            }
+        }
+
+
+        [Then(@"if the returned appointment contact element is present it is populated with the correct values")]
+        public void ThenIfTheReturnedAppointmentContactElementIsPresentItIsPopulatedWithTheCorrectValues()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (Extension appointmentContact in appointment.ModifierExtension)
+                    {
+                        if (appointmentContact.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
+                        {
+                            string[] codes = new string[5] { "ONL", "PER", "TEL", "EMA", "LET" };
+                            string[] displays = new string[5] { "Online", "In person", "Telephone", "Email", "Letter" };
+
+                            appointmentContact.Value.ShouldNotBeNull("There should be a value element within the appointment ContactMethod extension");
+                            var extensionValueCodeableConcept = (CodeableConcept)appointmentContact.Value;
+                            extensionValueCodeableConcept.Coding.ShouldNotBeNull("There should be a coding element within the appointment ContactMethod extension");
+                            extensionValueCodeableConcept.Coding.Count.ShouldBe(1, "There should be a single code element within the appointment ContactMethod extension");
+                            foreach (var coding in extensionValueCodeableConcept.Coding)
+                            {
+                                // Check that the code and display values are valid for the extension and match each other
+                                bool codeAndDisplayFound = false;
+                                for (int i = 0; i < codes.Length; i++)
+                                {
+                                    if (string.Equals(codes[i], coding.Code) && string.Equals(displays[i], coding.Display))
+                                    {
+                                        codeAndDisplayFound = true;
+                                        break;
+                                    }
+                                }
+                                codeAndDisplayFound.ShouldBeTrue("The code and display values are not valid for the appointmentContactMethod extension");
+                            }
+                      
+                }
+            }
+        }
+
+        [Then(@"if the returned appointment cancellation reason element is present it is populated with the correct values")]
+        public void ThenIfTheReturnedAppointmentCancellationReasonElementIsPresentItIsPopulatedWithTheCorrectValues()
+        {
+
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            int extensionCount = 0;
+
+                    foreach (Extension appointmentCancellationReason in appointment.ModifierExtension)
+                    {
+
+                        if (appointmentCancellationReason.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0"))
+                        {
+                            appointmentCancellationReason.ShouldNotBeNull();
+                            appointmentCancellationReason.Url.ShouldBeOfType<Uri>();
+                            appointmentCancellationReason.Value.ShouldBeOfType<String>();
+
+                            extensionCount++;
+                        }
+                        extensionCount.ShouldBe(1);
+                    }
+              
+        }
+
 
     }
 }
