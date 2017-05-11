@@ -96,14 +96,14 @@ Scenario Outline: html section headers present
 		| patient4 | PRB  | Active Problems and Issues,Inactive Problems and Issues |
 		| patient1 | REF  | Referrals |
 		| patient2 | REF  | Referrals |
-		| patient1 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient2 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient3 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient4 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient5 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient6 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient7 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient8 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
+		| patient1 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Last 3 Encounters |
+		| patient2 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Last 3 Encounters |
+		| patient3 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Last 3 Encounters |
+		| patient4 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Last 3 Encounters |
+		| patient5 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Last 3 Encounters |
+		| patient6 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Last 3 Encounters |
+		| patient7 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Last 3 Encounters |
+		| patient8 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Last 3 Encounters |
 
 Scenario Outline: html table headers present and in order that is expected
 	Given I am using the default server
@@ -255,7 +255,7 @@ Scenario Outline: sections should return no data available html banner
 		| SUM  | patient1 | Current Medication Issues                  |
 		| SUM  | patient1 | Current Repeat Medications                 |
 		| SUM  | patient1 | Current Allergies and Adverse Reactions    |
-		| SUM  | patient1 | Encounters                                 |
+		| SUM  | patient1 | Last 3 Encounters                          |
 		| REF  | patient1 | Referrals                                  |
 		| ALL  | patient1 | Current Allergies and Adverse Reactions    |
 		| ALL  | patient1 | Historical Allergies and Adverse Reactions |
