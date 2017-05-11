@@ -239,7 +239,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient)) {
                     Patient patient = (Patient)entry.Resource;
                     bool regTypePresent = false;
-                    foreach (Extension ext in patient.ModifierExtension)
+                    foreach (Extension ext in patient.Extension)
                     {
                         string url = ext.Url.ToString();
                         if (url == "http://fhir.nhs.net/StructureDefinition/extension-registration-type-1")
@@ -264,7 +264,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Patient patient = (Patient)entry.Resource;
                     bool regTypePresent = false;
-                    foreach (Extension ext in patient.ModifierExtension)
+                    foreach (Extension ext in patient.Extension)
                     {
                         string url = ext.Url.ToString();
                         if (url == "http://fhir.nhs.net/StructureDefinition/extension-registration-status-1")
@@ -288,7 +288,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Patient patient = (Patient)entry.Resource;
                     bool regTypePresent = false;
-                    foreach (Extension ext in patient.ModifierExtension)
+                    foreach (Extension ext in patient.Extension)
                     {
                         string url = ext.Url.ToString();
                         if (url == "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1")
