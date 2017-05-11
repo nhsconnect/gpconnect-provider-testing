@@ -59,8 +59,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             When($@"I make a GET request to ""{url}""");
         }
 
-        [When(@"I search for ""([^""]*)"" and request the most recently booked appointment")]
-        public void searchAndGetAppointmentsWithCustomStartDate(string patient)
+        [When(@"I search for patient ""([^""]*)"" and search for the most recently booked appointment using the stored startDate from the last booked appointment as a search parameter")]
+        public void ISearchForPatientAndSearchForTheMostRecentlyBookedAppointmentUsingTheStoredStartDateFromTheLastBookedAppointmentAsASearchParameter(string patient)
         {
             string time = HttpContext.StoredDate["startDate"];
             Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
