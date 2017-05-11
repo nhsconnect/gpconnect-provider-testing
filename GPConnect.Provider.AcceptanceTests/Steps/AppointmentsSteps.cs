@@ -905,8 +905,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     int countPractitioner = 0;
                     foreach (ParticipantComponent participant in appointment.Participant)
                     {
-                        if (participant.Actor == null){}
-                        else {
+                        if (participant.Actor != null && participant.Actor.Reference != null)
+                        {
 
                             string actor = participant.Actor.Reference.ToString();
 
@@ -917,7 +917,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                 countPractitioner++;
                             } }
                     }
-                    countPractitioner.ShouldBe(1);
+                    countPractitioner.ShouldBeGreaterThanOrEqualTo(1);
                 }
             }
         }
@@ -930,11 +930,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
                     Appointment appointment = (Appointment)entry.Resource;
-                    int countLocation = 0;
                     foreach (ParticipantComponent participant in appointment.Participant)
                     {
-                        if (participant.Actor == null) { }
-                        else
+                        if (participant.Actor != null && participant.Actor.Reference != null)
                         {
 
                             string actor = participant.Actor.Reference.ToString();
@@ -943,12 +941,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             {
                                 var location = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", actor);
                                 location.ShouldNotBeNull();
-                                countLocation++;
                             }
 
                         }
                     }
-                    countLocation.ShouldBe(1);
                 }
 
             }
@@ -966,8 +962,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     int countPatient = 0;
                     foreach (ParticipantComponent participant in appointment.Participant)
                     {
-                        if (participant.Actor == null) { }
-                        else
+                        if (participant.Actor != null && participant.Actor.Reference != null)
                         {
                             string actor = participant.Actor.Reference.ToString();
 
@@ -980,7 +975,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                         }
                     }
-                    countPatient.ShouldBe(1);
+                    countPatient.ShouldBeGreaterThanOrEqualTo(1);
                 }
             }
         }
