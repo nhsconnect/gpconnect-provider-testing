@@ -873,7 +873,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Appointment appointment = (Appointment)entry.Resource;
                     appointment.Start.ShouldNotBeNull();
-                    appointment.Start.ShouldBeOfType<DateTime>();
+                    appointment.Start.ShouldBeOfType<Instant>();
 
                 }
             }
@@ -888,7 +888,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Appointment appointment = (Appointment)entry.Resource;
                     appointment.End.ShouldNotBeNull();
-                    appointment.End.ShouldBeOfType<DateTime>();
+                    appointment.End.ShouldBeOfType<Instant>();
 
                 }
             }
