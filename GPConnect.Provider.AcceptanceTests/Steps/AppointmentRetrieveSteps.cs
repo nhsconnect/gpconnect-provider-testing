@@ -318,7 +318,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
                     Appointment appointment = (Appointment)entry.Resource;
-                    foreach (Extension appointmentCategory in appointment.ModifierExtension)
+                    foreach (Extension appointmentCategory in appointment.Extension)
                     {
                         if (appointmentCategory.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1"))
                         {
@@ -357,7 +357,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
                     Appointment appointment = (Appointment)entry.Resource;
-                    foreach (Extension appointmentBooking in appointment.ModifierExtension)
+                    foreach (Extension appointmentBooking in appointment.Extension)
                     {
                         if (appointmentBooking.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1"))
                         {
@@ -397,7 +397,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
                     Appointment appointment = (Appointment)entry.Resource;
-                    foreach (Extension appointmentContact in appointment.ModifierExtension)
+                    foreach (Extension appointmentContact in appointment.Extension)
                     {
                         if (appointmentContact.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
                         {
@@ -439,7 +439,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Appointment appointment = (Appointment)entry.Resource;
                     int extensionCount = 0;
 
-                    foreach (Extension appointmentCancellationReason in appointment.ModifierExtension)
+                    foreach (Extension appointmentCancellationReason in appointment.Extension)
                     {
 
                         if (appointmentCancellationReason.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0"))

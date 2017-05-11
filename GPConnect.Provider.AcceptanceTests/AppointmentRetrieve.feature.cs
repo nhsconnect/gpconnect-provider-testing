@@ -900,12 +900,12 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Appointment retrieve bundle of coding type SNOMED resource must contain coding wi" +
-            "th valid system and code and display")]
-        public virtual void AppointmentRetrieveBundleOfCodingTypeSNOMEDResourceMustContainCodingWithValidSystemAndCodeAndDisplay()
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve returned resources must contain coding with valid system cod" +
+            "e and display")]
+        public virtual void AppointmentRetrieveReturnedResourcesMustContainCodingWithValidSystemCodeAndDisplay()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle of coding type SNOMED resource must contain coding wi" +
-                    "th valid system and code and display", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve returned resources must contain coding with valid system cod" +
+                    "e and display", ((string[])(null)));
 #line 349
 this.ScenarioSetup(scenarioInfo);
 #line 3

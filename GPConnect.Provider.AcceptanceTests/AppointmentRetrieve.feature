@@ -346,7 +346,7 @@ Scenario: Appointment retrieve appointment response should contain meta data pro
 		And the response body should be FHIR JSON
 		And the bundle of appointments should contain meta data profile and version id
 	
-Scenario: Appointment retrieve bundle of coding type SNOMED resource must contain coding with valid system and code and display
+Scenario: Appointment retrieve returned resources must contain coding with valid system code and display
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
