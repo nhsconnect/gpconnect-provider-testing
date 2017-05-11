@@ -112,7 +112,7 @@ Scenario Outline: Book appointment prefer header set to minimal
 	Then the response status code should indicate created
 	Examples:
 		| Header                |interactionId                                                 |
-		| return=minimal        |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
+		| return-minimal        |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
 
 
 Scenario Outline: Book appointment interaction id incorrect fail
@@ -293,6 +293,57 @@ Scenario Outline: Book single appointment for patient and check the location ref
 		Examples:
 		| interactionId  |
 		|urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
+
+Scenario Outline: Book appointment with invalid start element in appointment resource
+		Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment for patient "patient1" called "<Appointment>" from schedule "getScheduleResponseBundle"
+	Then I set the appointment start element to null for "<Appointment>"
+	Then I book the appointment called "<Appointment>"
+	Then the response status code should indicate failure
+		And the response body should be FHIR JSON
+		Examples:
+		| Appointment  |interactionId                                                 |
+		| Appointment3 |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
+
+Scenario Outline: Book appointment with invalid end element in appointment resource
+		Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment for patient "patient1" called "<Appointment>" from schedule "getScheduleResponseBundle"
+	Then I set the appointment end element to null for "<Appointment>"
+	Then I book the appointment called "<Appointment>"
+	Then the response status code should indicate failure
+		And the response body should be FHIR JSON
+		Examples:
+		| Appointment  |interactionId                                                 |
+		| Appointment3 |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
+
+
+Scenario Outline: Book appointment and send patient resource in the request
+		Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment for patient "patient1" called "<Appointment>" using a patient resource
+	Then I book the appointment called "<Appointment>" which is an incorrect resource
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		Examples:
+		| Appointment  |interactionId                                                 |
+		| Appointment3 |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
+
+Scenario Outline: Book appointment and send bundle resource in the request
+		Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment for patient "patient1" called "<Appointment>" using a bundle resource
+	Then I book the appointment called "<Appointment>" which is an incorrect resource
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		Examples:
+		| Appointment  |interactionId                                                 |
+		| Appointment3 |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
 
 
 

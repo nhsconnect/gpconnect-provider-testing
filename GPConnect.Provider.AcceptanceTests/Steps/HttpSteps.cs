@@ -315,8 +315,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         public Resource registerPatient(Patient patient)
         {
-
-
             var parameterPayload = FhirHelper.ChangeResourceTypeString(FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), FhirConst.Resources.kInvalidResourceType);
             // Store current state
             var preRequestHeaders = HttpContext.RequestHeaders.GetRequestHeaders();
@@ -358,7 +356,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"I am performing the ""{interactionId}"" interaction");
             FhirSerializer.SerializeToJson(patient);
 
-            // Book the apppointment
+            // Register Patient
             RestRequest(Method.POST, "/Patient/$gpc.registerpatient", FhirSerializer.SerializeToJson(patient));
 
             // Convert the response to resource
@@ -369,7 +367,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
         }
 
-        public Resource bookAppointment(string interactionID, string relativeUrl, Appointment appointment)
+        public Resource bookAppointment(string interactionID, string relativeUrl, Resource appointment)
         {
 
             // Store current state

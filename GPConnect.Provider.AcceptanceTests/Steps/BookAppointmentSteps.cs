@@ -145,6 +145,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
+        [Then(@"I create an appointment for patient ""(.*)"" called ""(.*)"" using a patient resource")]
+        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference2(string patientName, string appointmentName)
+        {
+            Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
+            Patient patientResource = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
+            HttpContext.StoredFhirResources.Add(appointmentName, patientResource);
+        }
+
+        [Then(@"I create an appointment for patient ""(.*)"" called ""(.*)"" using a bundle resource")]
+        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference3(string patientName, string appointmentName)
+        {
+            Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
+            Bundle bundle = new Bundle();
+            HttpContext.StoredFhirResources.Add(appointmentName, bundle);
+        }
+
+
+
         [Then(@"I create an appointment with slot reference ""(.*)"" for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference(string slotReference, string patientName, string appointmentName, string getScheduleBundleKey)
         {
@@ -289,7 +307,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpContext.StoredFhirResources.Remove(appointmentName);
-
             Extension ext = new Extension();
             Code code = new Code();
             code.Value = "INVALID VALUE";
@@ -299,6 +316,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
+
+
+        [Then(@"I set the appointment start element to null for ""(.*)""")]
+        public void ThenISetTheAppointmentStartElementToNull(string appointmentName)
+        {
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            HttpContext.StoredFhirResources.Remove(appointmentName);
+            appointment.Start = null;
+            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+        }
+
+
+        [Then(@"I set the appointment end element to null for ""(.*)""")]
+        public void ThenISetTheAppointmentEndElementToNull(string appointmentName)
+        {
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            HttpContext.StoredFhirResources.Remove(appointmentName);
+            appointment.End = null;
+            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+        }
+
+
 
 
         [Then(@"I remove the participant from the appointment called ""(.*)"" which starts with reference ""(.*)""")]
@@ -329,6 +368,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"I book the appointment called ""(.*)""")]
         public void ThenIBookTheAppointmentCalledString(string appointmentName) {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+        }
+
+        [Then(@"I book the appointment called ""(.*)"" which is an incorrect resource")]
+        public void ThenIBookTheAppointmentCalledStringWhichIsAnIncorrectResource(string appointmentName)
+        {
+            Resource appointment = HttpContext.StoredFhirResources[appointmentName];
             HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
         }
 
