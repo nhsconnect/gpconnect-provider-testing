@@ -263,6 +263,18 @@ Scenario Outline: Book single appointment for patient and send additional extens
 		| Appointment  |interactionId                                                 |
 		| Appointment3 |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
 
+Scenario Outline: Book single appointment for patient and send extra fields in the resource
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment for patient "patient1" called "<Appointment>" from schedule "getScheduleResponseBundle"
+	Then I change the appointment id to "random" to the appointment called "<Appointment>"
+	Then I book the appointment called "<Appointment>"
+	Then the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		Examples:
+		| Appointment  |interactionId                                                 |
+		| Appointment3 |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
+
 Scenario Outline: Book appointment with invalid slot reference
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server

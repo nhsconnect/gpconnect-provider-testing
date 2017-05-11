@@ -248,7 +248,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
+        [Then(@"I change the appointment id to ""(.*)"" to the appointment called ""(.*)""")]
+        public void ThenIAddAnExtraFieldsToTheAppointmentCalledStringAndPopulateTheSystemAndValue(string randomId, string appointmentName)
+        {
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            HttpContext.StoredFhirResources.Remove(appointmentName);
 
+            appointment.Id = randomId;
+
+            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+        }
+
+   
         [Then(@"I set the appointment start element to null for ""(.*)""")]
         public void ThenISetTheAppointmentStartElementToNull(string appointmentName)
         {
