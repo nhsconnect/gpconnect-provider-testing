@@ -23,6 +23,7 @@ Given I find or create "1" appointments for patient "<patient>" at organization 
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain atleast "1" appointment
 	Examples:
 		| patient  |
 		| patient1 |
@@ -37,6 +38,7 @@ Given I find or create "2" appointments for patient "<patient>" at organization 
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain atleast "2" appointment
 	Examples:
 		| patient  |
 		| patient4 |

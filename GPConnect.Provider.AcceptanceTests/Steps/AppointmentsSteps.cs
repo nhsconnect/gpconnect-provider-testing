@@ -424,6 +424,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointmentCount.ShouldBeGreaterThan<int>(1);
         }
 
+        [Then(@"the response bundle should contain atleast ""([^""]*)"" appointment")]
+        public void TheResponseBundleShouldContainAtleastAppointments (int minNumberOfAppointments)
+        {
+            int appointmentCount = 0;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+
+                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                {
+                    appointmentCount++;
+                    Appointment appointment = (Appointment)entry.Resource;
+                }
+            }
+            appointmentCount.ShouldBeGreaterThanOrEqualTo(minNumberOfAppointments);
+        }
+        
         [Then(@"the appointment resource should contain a single status element")]
         public void appointmentMustContainStatusElement()
         {
