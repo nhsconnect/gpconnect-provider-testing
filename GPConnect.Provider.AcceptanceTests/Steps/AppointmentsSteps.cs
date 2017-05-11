@@ -88,15 +88,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var url = "/Patient/" + id + "/Appointment?start=" + startDate + "";
             When($@"I make a GET request to ""{url}""");
         }
-
-
-        [When(@"I search for ""([^""]*)"" and make a get request for their appointments with the date ""([^""]*)"" and prefix ""([^""]*)""")]
-        public void searchAndGetAppointmentsWithCustomStartDateandPrefix(string patient, string startDate, string prefix)
+        [When(@"I search for ""([^""]*)"" and make a get request for their appointments with the saved slot start date ""([^""]*)"" and prefix ""([^""]*)""")]
+        public void searchAndGetAppointmentsWithTheSavedSlotStartDateCustomStartDateandPrefix(string patient, string startDate, string prefix)
         {
             string time = HttpContext.StoredDate[startDate];
             Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
             string id = patient1.Id.ToString();
             var url = "/Patient/" + id + "/Appointment?start=" + prefix + time + "";
+            When($@"I make a GET request to ""{url}""");
+        }
+
+        [When(@"I search for ""([^""]*)"" and make a get request for their appointments with the date ""([^""]*)"" and prefix ""([^""]*)""")]
+        public void searchAndGetAppointmentsWithCustomStartDateandPrefix(string patient, string startDate, string prefix)
+        {
+            Resource patient1 = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
+            string id = patient1.Id.ToString();
+            var url = "/Patient/" + id + "/Appointment?start=" + prefix + startDate + "";
             When($@"I make a GET request to ""{url}""");
         }
 

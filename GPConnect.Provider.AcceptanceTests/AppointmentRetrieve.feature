@@ -97,7 +97,7 @@ Scenario: Appointment retrieve send request and find request using equal to pref
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 		Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "patient1" and make a get request for their appointments with the date "startDate" and prefix "eq"
+	When I search for "patient1" and make a get request for their appointments with the saved slot start date "slotStartDate" and prefix "eq"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -138,6 +138,7 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 		| 2044-05                   | le     |
 		| 2044-05-01T11:08:32       | le     |
 		| 2044-10-23T11:08:32+00:00 | le     |
+	
 
 @ignore
 Scenario Outline: Appointment retrieve send request with date variations and not equal to prefix

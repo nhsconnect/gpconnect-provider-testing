@@ -54,13 +54,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
         
-        [Given(@"I save to current time called ""([^""]*)""")]
-        public void ISaveToCurrentTimeCalledTimeName(string timeName)
-        {
-            String currentDateTime = DateTime.Now.ToString("yyyy-MM-dd");
-            HttpContext.StoredDate.Add(timeName, currentDateTime);
-        }
-
+     
         [Then(@"the response bundle should contain ""([^""]*)"" appointment")]
         public void TheResponseBundleShouldContainAppointments(int numOfAppointments)
         {
