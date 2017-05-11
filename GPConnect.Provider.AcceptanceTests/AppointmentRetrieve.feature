@@ -31,19 +31,19 @@ Given I find or create "1" appointments for patient "<patient>" at organization 
 		| patient3 |
 
 Scenario Outline: Appointment retrieve multiple appointment retrived
-Given I find or create "2" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+Given I find or create "<numberOfAppointments>" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "<patient>" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "2" appointment
+		And the response bundle should contain atleast "<numberOfAppointments>" appointment
 	Examples:
-		| patient  |
-		| patient4 |
-		| patient5 |
-		| patient6 |
+		| patient  | numberOfAppointments |
+		| patient4 | 2                    |
+		| patient5 | 4                    |
+		| patient6 | 3                    |
 		
 Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 	Given I am using the default server

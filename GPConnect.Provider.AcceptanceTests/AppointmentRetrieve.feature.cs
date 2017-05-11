@@ -147,10 +147,10 @@ testRunner.Given(string.Format("I find or create \"1\" appointments for patient 
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve multiple appointment retrived")]
-        [NUnit.Framework.TestCaseAttribute("patient4", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient5", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient6", new string[0])]
-        public virtual void AppointmentRetrieveMultipleAppointmentRetrived(string patient, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("patient4", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient5", "4", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient6", "3", new string[0])]
+        public virtual void AppointmentRetrieveMultipleAppointmentRetrived(string patient, string numberOfAppointments, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve multiple appointment retrived", exampleTags);
 #line 33
@@ -158,8 +158,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 34
-testRunner.Given(string.Format("I find or create \"2\" appointments for patient \"{0}\" at organization \"ORG1\" and sa" +
-                        "ve bundle of appintment resources to \"Patient1AppointmentsInBundle\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given(string.Format("I find or create \"{0}\" appointments for patient \"{1}\" at organization \"ORG1\" and " +
+                        "save bundle of appintment resources to \"Patient1AppointmentsInBundle\"", numberOfAppointments, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 36
@@ -174,7 +174,7 @@ testRunner.Given(string.Format("I find or create \"2\" appointments for patient 
 #line 40
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
-  testRunner.And("the response bundle should contain atleast \"2\" appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the response bundle should contain atleast \"{0}\" appointment", numberOfAppointments), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
