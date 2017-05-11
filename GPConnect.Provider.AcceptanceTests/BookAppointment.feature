@@ -89,29 +89,27 @@ Scenario Outline: Book appointment accept header variations
 		 | Header                | BodyFormat |interactionId                                                 |
 		 | application/json+fhir | JSON       |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
 		 | application/xml+fhir  | XML        |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
+
 ##Come back to get working
 Scenario Outline: Book appointment prefer header set to representation
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I set the Prefer header to "<Header>"
-		And I add the parameter "Prefer" with the value "<Header>"
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "<interactionId>"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 	Examples:
 		| Header                |interactionId                                                 |
-		| return=representation |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
+		| return-representation |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |
 
 ##Come back to get working
 Scenario Outline: Book appointment prefer header set to minimal
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I set the Prefer header to "<Header>"
-		And I add the parameter "Prefer" with the value "<Header>"
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "<interactionId>"
-	Then the response status code should indicate success
-		And there are zero appointment resources
+	Then the response status code should indicate created
 	Examples:
 		| Header                |interactionId                                                 |
 		| return=minimal        |urn:nhs:names:services:gpconnect:fhir:rest:create:appointment |

@@ -822,6 +822,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
+                    int countLocation = 0; 
                     Appointment appointment = (Appointment)entry.Resource;
                     foreach (ParticipantComponent participant in appointment.Participant)
                     {

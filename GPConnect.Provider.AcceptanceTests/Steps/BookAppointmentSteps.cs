@@ -529,9 +529,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         }
                         extensionCount.ShouldBe(1);
                     }
-              
         }
-
-
     }
 }
