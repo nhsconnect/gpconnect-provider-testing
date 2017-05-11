@@ -53,33 +53,31 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
 
         }
-
-        [Then(@"the response total should be at least 1")]
-        public void TheResponseTotalShouldBeAtleast1()
-        {
-            Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
-            bundle.Total.ShouldNotBeNull<int?>();
-            bundle.Total.ShouldNotBe<int?>(0);
-        }
-
+        
         [Given(@"I save to current time called ""([^""]*)""")]
         public void ISaveToCurrentTimeCalledTimeName(string timeName)
         {
             String currentDateTime = DateTime.Now.ToString("yyyy-MM-dd");
             HttpContext.StoredDate.Add(timeName, currentDateTime);
-
-
         }
 
-        [Then(@"the response total should be 1")]
-        public void TheResponseTotalShouldBe1()
+        [Then(@"the response bundle should contain ""([^""]*)"" appointment")]
+        public void TheResponseBundleShouldContainAppointments(int numOfAppointments)
         {
-            Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
-            bundle.Total.ShouldNotBeNull<int?>();
-            bundle.Total.ShouldBe<int?>(1);
+            int appointmentCount = 0;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+
+                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                {
+                    appointmentCount++;
+                    Appointment appointment = (Appointment)entry.Resource;
+                }
+            }
+            appointmentCount.ShouldBe(numOfAppointments);
         }
 
-       
+
 
 
 

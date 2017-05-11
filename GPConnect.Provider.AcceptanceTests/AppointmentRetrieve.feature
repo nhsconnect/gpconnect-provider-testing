@@ -23,6 +23,7 @@ Given I find or create "1" appointments for patient "<patient>" at organization 
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain atleast "1" appointment
 	Examples:
 		| patient  |
 		| patient1 |
@@ -30,18 +31,19 @@ Given I find or create "1" appointments for patient "<patient>" at organization 
 		| patient3 |
 
 Scenario Outline: Appointment retrieve multiple appointment retrived
-Given I find or create "2" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+Given I find or create "<numberOfAppointments>" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "<patient>" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain atleast "<numberOfAppointments>" appointment
 	Examples:
-		| patient  |
-		| patient4 |
-		| patient5 |
-		| patient6 |
+		| patient  | numberOfAppointments |
+		| patient4 | 2                    |
+		| patient5 | 4                    |
+		| patient6 | 3                    |
 		
 Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 	Given I am using the default server
@@ -61,11 +63,11 @@ Scenario: Appointment retrieve book appointment then request appointment and che
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "patient1" and request the most recently booked appointment
+	When I search for patient "patient1" and search for the most recently booked appointment using the stored startDate from the last booked appointment as a search parameter
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response total should be at least 1
+		And the response bundle should contain atleast "1" appointment
 	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -99,7 +101,7 @@ Scenario: Appointment retrieve send request and find request using equal to pref
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response total should be 1
+		And the response bundle should contain "1" appointment
 	   
 Scenario Outline: Appointment retrieve send request with date variations and greater than and less than prefix
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -109,7 +111,7 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response total should be at least 1
+		And the response bundle should contain atleast "1" appointment
 	Examples:
 		| startDate                 | prefix |
 		| 2014                      | gt     |
@@ -137,8 +139,6 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 		| 2044-05-01T11:08:32       | le     |
 		| 2044-10-23T11:08:32+00:00 | le     |
 
-
- ##Unknown comparator: NOT_EQUAL
 @ignore
 Scenario Outline: Appointment retrieve send request with date variations and not equal to prefix
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -148,7 +148,7 @@ Scenario Outline: Appointment retrieve send request with date variations and not
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response total should be at least 1
+		And the response bundle should contain atleast "1" appointment
 	Examples:
 		| startDate                 | prefix |
 		| 2013                      | ne     |
@@ -158,7 +158,6 @@ Scenario Outline: Appointment retrieve send request with date variations and not
 		| 2013-05-01T11:08:32       | ne     |
 		| 2013-10-23T11:08:32+00:00 | ne     |
 	
-##"Unknown comparator: STARTS_AFTER"
 @ignore
 Scenario Outline: Appointment retrieve send request with date variations and starts after to prefix
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -168,7 +167,7 @@ Scenario Outline: Appointment retrieve send request with date variations and sta
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response total should be at least 1
+		And the response bundle should contain atleast "1" appointment
 	Examples:
 		| startDate                 | prefix |
 		| 2013                      | sa     |
@@ -177,7 +176,7 @@ Scenario Outline: Appointment retrieve send request with date variations and sta
 		| 2013-05                   | sa     |
 		| 2013-05-01T11:08:32       | sa     |
 		| 2013-10-23T11:08:32+00:00 | sa     |
-##Unknown comparator: ENDS_BEFORE"
+
 @ignore
 Scenario Outline: Appointment retrieve send request with date variations and ends before prefix
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -187,7 +186,7 @@ Scenario Outline: Appointment retrieve send request with date variations and end
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response total should be at least 1
+		And the response bundle should contain atleast "1" appointment
 	Examples:
 		| startDate                 | prefix |
 		| 2013                      | eb     |
@@ -196,7 +195,7 @@ Scenario Outline: Appointment retrieve send request with date variations and end
 		| 2013-05                   | eb     |
 		| 2013-05-01T11:08:32       | eb     |
 		| 2013-10-23T11:08:32+00:00 | eb     |
-##"Unknown comparator: APPROXIMATE"
+
 @ignore
 Scenario Outline: Appointment retrieve send request with date variations and approximately prefix
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -206,7 +205,7 @@ Scenario Outline: Appointment retrieve send request with date variations and app
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response total should be at least 1
+		And the response bundle should contain atleast "1" appointment
 	Examples:
 		| startDate                 | prefix |
 		| 2013                      | ap     |

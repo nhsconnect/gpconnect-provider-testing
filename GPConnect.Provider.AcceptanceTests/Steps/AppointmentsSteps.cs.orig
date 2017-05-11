@@ -825,8 +825,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Appointment appointment = (Appointment)entry.Resource;
                     foreach (ParticipantComponent participant in appointment.Participant)
                     {
+<<<<<<< HEAD
+                        if (participant.Actor != null) {
+
+=======
                         if (participant.Actor != null && participant.Actor.Reference != null)
                         {
+>>>>>>> 40e91e0a8653c45af8bd485756efd76ee15c30af
 
                             string actor = participant.Actor.Reference.ToString();
 
@@ -834,12 +839,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             {
                                 var location = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", actor);
                                 location.ShouldNotBeNull();
-                                countLocation++;
                             }
 
                         }
                     }
-                    countLocation.ShouldBe(1);
                 }
 
             }
