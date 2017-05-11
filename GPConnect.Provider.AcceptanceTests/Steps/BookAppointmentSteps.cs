@@ -94,42 +94,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
 
             // Create Appointment
-            Appointment appointment = new Appointment();
-            appointment.Status = AppointmentStatus.Booked;
+            Appointment appointment = buildAndReturnAppointment(patientResource, practitionerReferenceForSelectedSlot, locationReferenceForSelectedSlot,firstSlot);
 
-            // Appointment Patient Resource
-            ParticipantComponent patient = new ParticipantComponent();
-            ResourceReference patientReference = new ResourceReference();
-            patientReference.Reference = "Patient/" + patientResource.Id;
-            patient.Actor = patientReference;
-            patient.Status = ParticipationStatus.Accepted;
-            appointment.Participant.Add(patient);
-
-            // Appointment Practitioner Resource
-            foreach (var practitionerSlotReference in practitionerReferenceForSelectedSlot)
-            {
-                ParticipantComponent practitioner = new ParticipantComponent();
-                ResourceReference practitionerReference = new ResourceReference();
-                practitionerReference.Reference = practitionerSlotReference;
-                practitioner.Actor = practitionerReference;
-                practitioner.Status = ParticipationStatus.Accepted;
-                appointment.Participant.Add(practitioner);
-            }
-
-            // Appointment Location Resource
-            ParticipantComponent location = new ParticipantComponent();
-            ResourceReference locationReference = new ResourceReference();
-            locationReference.Reference = locationReferenceForSelectedSlot;
-            location.Actor = locationReference;
-            location.Status = ParticipationStatus.Accepted;
-            appointment.Participant.Add(location);
-
-            // Appointment Slot Resource
-            ResourceReference slot = new ResourceReference();
-            slot.Reference = "Slot/" + firstSlot.Id;
-            appointment.Slot.Add(slot);
-            appointment.Start = firstSlot.Start;
-            appointment.End = firstSlot.End;
 
             // Now we have used the slot remove from it from the getScheduleBundle so it is not used to book other appointments same getSchedule is used
             EntryComponent entryToRemove = null;
@@ -161,7 +127,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, bundle);
         }
 
-
+  
 
         [Then(@"I create an appointment with slot reference ""(.*)"" for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference(string slotReference, string patientName, string appointmentName, string getScheduleBundleKey)
@@ -221,42 +187,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
 
             // Create Appointment
-            Appointment appointment = new Appointment();
-            appointment.Status = AppointmentStatus.Booked;
-
-            // Appointment Patient Resource
-            ParticipantComponent patient = new ParticipantComponent();
-            ResourceReference patientReference = new ResourceReference();
-            patientReference.Reference = "Patient/" + patientResource.Id;
-            patient.Actor = patientReference;
-            patient.Status = ParticipationStatus.Accepted;
-            appointment.Participant.Add(patient);
-
-            // Appointment Practitioner Resource
-            foreach (var practitionerSlotReference in practitionerReferenceForSelectedSlot)
-            {
-                ParticipantComponent practitioner = new ParticipantComponent();
-                ResourceReference practitionerReference = new ResourceReference();
-                practitionerReference.Reference = practitionerSlotReference;
-                practitioner.Actor = practitionerReference;
-                practitioner.Status = ParticipationStatus.Accepted;
-                appointment.Participant.Add(practitioner);
-            }
-
-            // Appointment Location Resource
-            ParticipantComponent location = new ParticipantComponent();
-            ResourceReference locationReference = new ResourceReference();
-            locationReference.Reference = locationReferenceForSelectedSlot;
-            location.Actor = locationReference;
-            location.Status = ParticipationStatus.Accepted;
-            appointment.Participant.Add(location);
-
-            // Appointment Slot Resource
-            ResourceReference slot = new ResourceReference();
-            slot.Reference = "Slot/" + slotReference;
-            appointment.Slot.Add(slot);
-            appointment.Start = firstSlot.Start;
-            appointment.End = firstSlot.End;
+            Appointment appointment = buildAndReturnAppointment(patientResource, practitionerReferenceForSelectedSlot, locationReferenceForSelectedSlot, firstSlot);
 
             // Now we have used the slot remove from it from the getScheduleBundle so it is not used to book other appointments same getSchedule is used
             EntryComponent entryToRemove = null;
@@ -376,6 +307,42 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Resource appointment = HttpContext.StoredFhirResources[appointmentName];
             HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+        }
+
+        [Then(@"the content-type should not be equal to null")]
+        public void ThenTheContentTypeShouldNotBeEqualToZero()
+        {
+            string contentType = "";
+            HttpContext.ResponseHeaders.TryGetValue("Content-Type", out contentType);
+            if ((!contentType.Contains("json+fhir")) && (!contentType.Contains("xml+fhir")))
+            {
+                Assert.Fail("Content type incorrect");
+            }
+        }
+
+        [Then(@"the content-type should be equal to null")]
+        public void ThenTheContentTypeShouldBeEqualToZero()
+        {
+            string contentType = "";
+            HttpContext.ResponseHeaders.TryGetValue("Content-Type", out contentType);
+            contentType.ShouldBe(null);
+        }
+
+
+        [Then(@"the content-length should not be equal to zero")]
+        public void ThenTheContentLengthShouldNotBeEqualToZero()
+        {
+            string contentType = "";
+            HttpContext.ResponseHeaders.TryGetValue("Content-Length", out contentType);
+            contentType.ShouldNotBe("0");
+        }
+
+        [Then(@"the content-length should be equal to zero")]
+        public void ThenTheContentLengthShouldBeEqualToZero()
+        {
+            string contentType = "";
+            HttpContext.ResponseHeaders.TryGetValue("Content-Length", out contentType);
+            contentType.ShouldBe("0");
         }
 
 
@@ -575,6 +542,48 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         }
                         extensionCount.ShouldBe(1);
                     }
+        }
+
+        private Appointment buildAndReturnAppointment(Patient patientResource, List<string> practitionerReferenceForSelectedSlot, string locationReferenceForSelectedSlot, Slot firstSlot)
+        {
+            Appointment appointment = new Appointment();
+            appointment.Status = AppointmentStatus.Booked;
+
+            // Appointment Patient Resource
+            ParticipantComponent patient = new ParticipantComponent();
+            ResourceReference patientReference = new ResourceReference();
+            patientReference.Reference = "Patient/" + patientResource.Id;
+            patient.Actor = patientReference;
+            patient.Status = ParticipationStatus.Accepted;
+            appointment.Participant.Add(patient);
+
+            // Appointment Practitioner Resource
+            foreach (var practitionerSlotReference in practitionerReferenceForSelectedSlot)
+            {
+                ParticipantComponent practitioner = new ParticipantComponent();
+                ResourceReference practitionerReference = new ResourceReference();
+                practitionerReference.Reference = practitionerSlotReference;
+                practitioner.Actor = practitionerReference;
+                practitioner.Status = ParticipationStatus.Accepted;
+                appointment.Participant.Add(practitioner);
+            }
+
+            // Appointment Location Resource
+            ParticipantComponent location = new ParticipantComponent();
+            ResourceReference locationReference = new ResourceReference();
+            locationReference.Reference = locationReferenceForSelectedSlot;
+            location.Actor = locationReference;
+            location.Status = ParticipationStatus.Accepted;
+            appointment.Participant.Add(location);
+
+            // Appointment Slot Resource
+            ResourceReference slot = new ResourceReference();
+            slot.Reference = "Slot/" + firstSlot.Id;
+            appointment.Slot.Add(slot);
+            appointment.Start = firstSlot.Start;
+            appointment.End = firstSlot.End;
+
+            return appointment;
         }
     }
 }

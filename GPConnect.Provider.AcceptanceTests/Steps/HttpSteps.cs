@@ -416,9 +416,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // Convert the response to resource
             Then($@"the response status code should indicate created");
-            And($@"the response body should be FHIR JSON");
+            Then($@"the response body should be FHIR JSON");
             And($@"the response should be an Appointment resource");
             
+            return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
+        }
+
+        public Resource bookWithoutCleanUpAppointment(string interactionID, string relativeUrl, Resource appointment)
+        {
+            FhirSerializer.SerializeToJson(appointment);
+            Given($@"I am performing the ""{interactionID}"" interaction");
+            // Book the apppointment
+            RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
             return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
         }
 

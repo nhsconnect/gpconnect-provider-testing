@@ -356,6 +356,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource = fhirJsonParser.Parse<Resource>(HttpContext.ResponseBody);
         }
 
+        [Then(@"the response body should be empty")]
+        public void ThenTheResponseBodyShouldBeEmpty()
+        {
+            string response = "";
+            HttpContext.ResponseContentType.ShouldStartWith(response);
+            HttpContext.ResponseContentType.ShouldBe(response);
+        }
+
         [Then(@"the response body should be FHIR XML")]
         public void ThenTheResponseBodyShouldBeFHIRXML()
         {
