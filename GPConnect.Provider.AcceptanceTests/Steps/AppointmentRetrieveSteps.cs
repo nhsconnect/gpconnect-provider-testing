@@ -53,8 +53,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
 
         }
-        
-     
+
+
         [Then(@"the response bundle should contain ""([^""]*)"" appointment")]
         public void TheResponseBundleShouldContainAppointments(int numOfAppointments)
         {
@@ -103,14 +103,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the bundle of appointments should all contain a single start element")]
         public void ThenTheBundleOfAppointmentShouldAllContainASingleStartElement()
         {
-   
+
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
                     Appointment appointment = (Appointment)entry.Resource;
                     appointment.Start.ShouldNotBeNull();
-                   
+
                 }
             }
 
@@ -136,7 +136,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
-                   
+
                     Appointment appointment = (Appointment)entry.Resource;
                     appointment.Slot.ShouldNotBeNull();
                     appointment.Slot.Count.ShouldBeGreaterThanOrEqualTo(1);
@@ -146,7 +146,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
                 }
             }
-           }
+        }
 
         //Need to check the validity of the reference but currently no GET method
         [Then(@"the appointments slot reference in the bundle is present and valid")]
@@ -162,7 +162,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         slot.Reference.ShouldNotBeNull();
                         string slotRef = slot.Reference.ToString();
                         slotRef.ShouldContain("Slot/");
-                        
+
                     }
 
                 }
@@ -277,7 +277,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
-    
+
         [Given(@"I create ""([^ ""] *)"" appointments for patient ""([^""]*)"" at organization ""([^""]*)"" and save bundle of appintment resources to ""([^""]*)""")]
         public void ICreateAAppointmentsForPatientAtOrganizationAndSaveAListOfResourceTo(int noApp, string patient, string organizaitonName, string bundleOfPatientAppointmentskey)
         {
@@ -286,20 +286,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Bundle patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
 
             int numberOfRequiredAdditionalAppointments = noApp - patientAppointmentsBundle.Entry.Count;
-           
 
-                // Perform get schedule once to get available slots with which to create appointments
-                Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
 
-                for (; noApp > 0; noApp--)
-                {
-                    When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle""");
-                }
+            // Perform get schedule once to get available slots with which to create appointments
+            Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
 
-                // Search for appointments again to make sure that enough have been stored in the provider system and store them
-                Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""{bundleOfPatientAppointmentskey}""");
-                patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
-            
+            for (; noApp > 0; noApp--)
+            {
+                When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle""");
+            }
+
+            // Search for appointments again to make sure that enough have been stored in the provider system and store them
+            Given($@"I search for patient ""{patient}"" appointments and save the returned bundle of appointment resources against key ""{bundleOfPatientAppointmentskey}""");
+            patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
+
             patientAppointmentsBundle.Entry.Count.ShouldBeGreaterThanOrEqualTo(noApp, "We could not create enough appointments for the test to run.");
         }
 
@@ -441,7 +441,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             appointmentCancellationReason.ShouldNotBeNull();
                             appointmentCancellationReason.Url.ShouldBeOfType<Uri>();
                             appointmentCancellationReason.Value.ShouldBeOfType<String>();
-                            
+
                             extensionCount++;
                         }
                         extensionCount.ShouldBe(1);
@@ -450,7 +450,145 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+
+        [Then(@"the returned appointment start date should match ""([^""]*)"" start Date")]
+        public void ThenTheReturnedAppointmentStartDateShouldMatchStartDate(string appointmentName)
+        {
+            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                {
+                    Appointment appointment = (Appointment)entry.Resource;
+                    savedAppointment.Start.ShouldBe(appointment.Start);
+
+                }
+            }
+        }
+
+
+
+        [Then(@"the returned appointment end date should match ""([^""]*)"" end date")]
+        public void ThenTheReturnedAppointmentEndtDateShouldMatchEndDate(string appointmentName)
+        {
+            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                {
+                    Appointment appointment = (Appointment)entry.Resource;
+                    savedAppointment.End.ShouldBe(appointment.End);
+
+                }
+            }
+        }
+
+
+
+        [Then(@"the returned appointment patient reference should match ""([^""]*)"" patient reference")]
+        public void ThenTheReturnedAppointmentPatientReferenceShouldMatchPatientReference(string appointmentName)
+        {
+            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            string savedAppointmentPatientReference = "";
+            string returnedResponseAppointmentPatientReference = "";
+
+            foreach (Appointment.ParticipantComponent participant in savedAppointment.Participant)
+            {
+                if (participant.Actor.Reference.StartsWith("Patient/"))
+                {
+                    savedAppointmentPatientReference = participant.Actor.Reference.ToString();
+                }
+
+            }
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                {
+                    Appointment appointment = (Appointment)entry.Resource;
+                    appointment.Participant.ShouldNotBeNull();
+                    foreach (Appointment.ParticipantComponent participant in appointment.Participant)
+                    {
+                        if (participant.Actor.Reference.StartsWith("Patient/"))
+                        {
+                            returnedResponseAppointmentPatientReference = participant.Actor.Reference.ToString();
+                        }
+
+                    }
+                }
+            }
+
+            savedAppointmentPatientReference.ShouldBe(returnedResponseAppointmentPatientReference);
+        }
+
+
+
+        [Then(@"the returned appointment slot reference should match ""([^""]*)"" slot reference")]
+        public void ThenTheReturnedAppointmentSlotReferenceShouldMatchSlotReference(string appointmentName)
+        {
+            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            List<string> savedAppointmentSlotURLs = new List<string>();
+            List<string> returnedResponseAppointmentsSlotURL = new List<string>();
+            foreach (ResourceReference slot in savedAppointment.Slot)
+            {
+                savedAppointmentSlotURLs.Add(slot.Url.ToString());
+
+            }
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                {
+                    Appointment appointment = (Appointment)entry.Resource;
+                    foreach (ResourceReference slot in appointment.Slot)
+                    {
+                        returnedResponseAppointmentsSlotURL.Add(slot.Url.ToString());
+
+                    }
+                }
+            }
+            savedAppointmentSlotURLs.ShouldBe(returnedResponseAppointmentsSlotURL);
+        }
+    
+
+
+
+        [Then(@"the returned appointment participant status should match ""([^""]*)"" participant status")]
+        public void ThenTheReturnedAppointmentParticipantStatusShouldMatchParticipantStatus(string appointmentName)
+        {
+            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            ParticipationStatus savedAppointmentParticipantStatus = new ParticipationStatus();
+            ParticipationStatus returnedResponseAppointmentParticipantStatus = new ParticipationStatus();
+
+            foreach (Appointment.ParticipantComponent participant in savedAppointment.Participant)
+            {
+                if (participant.Actor.Reference.StartsWith("Patient/"))
+                {
+                    savedAppointmentParticipantStatus = participant.Status.Value;
+                }
+
+            }
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                {
+                    Appointment appointment = (Appointment)entry.Resource;
+                    appointment.Participant.ShouldNotBeNull();
+                    foreach (Appointment.ParticipantComponent participant in appointment.Participant)
+                    {
+                        if (participant.Actor.Reference.StartsWith("Patient/"))
+                        {
+                            returnedResponseAppointmentParticipantStatus = participant.Status.Value;
+                        }
+
+                    }
+                }
+            }
+
+            savedAppointmentParticipantStatus.ShouldBe(returnedResponseAppointmentParticipantStatus);
+        }
+
     }
-}
+    }
     
 

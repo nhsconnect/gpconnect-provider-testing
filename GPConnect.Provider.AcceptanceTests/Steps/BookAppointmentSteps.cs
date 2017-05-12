@@ -93,7 +93,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 practitionerReferenceForSelectedSlot.Add(((ResourceReference)practitionerReferenceExtension.Value).Reference);
             }
 
-            // Create Appointment
+              // Create Appointment
             Appointment appointment = buildAndReturnAppointment(patientResource, practitionerReferenceForSelectedSlot, locationReferenceForSelectedSlot,firstSlot);
 
 
@@ -592,6 +592,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Slot.Add(slot);
             appointment.Start = firstSlot.Start;
             appointment.End = firstSlot.End;
+
+            if (HttpContext.StoredDate.ContainsKey("slotStartDate")) HttpContext.StoredDate.Remove("slotStartDate");
+            HttpContext.StoredDate.Add("slotStartDate", firstSlot.StartElement.ToString());
+
 
             return appointment;
         }
