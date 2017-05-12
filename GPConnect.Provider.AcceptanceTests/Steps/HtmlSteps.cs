@@ -233,7 +233,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        html.ShouldContain("<p>All relevant items subject to patient preferences and/or RCGP exclusions</p>");
+                        html.ShouldContain("<p>All relevant items</p>");
                     }
                 }
             }
