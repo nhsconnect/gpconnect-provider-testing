@@ -122,7 +122,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"I create an appointment for patient ""(.*)"" called ""(.*)"" using a bundle resource")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference3(string patientName, string appointmentName)
         {
-            Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
             Bundle bundle = new Bundle();
             HttpContext.StoredFhirResources.Add(appointmentName, bundle);
         }
