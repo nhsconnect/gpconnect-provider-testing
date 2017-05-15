@@ -16,7 +16,7 @@ Scenario: Appointment retrieve success valid id where appointment resource retur
 		And there are zero appointment resources
 
 Scenario Outline: Appointment retrieve success valid id where single appointment resource should be returned
-Given I find or create "1" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I find or create "1" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "<patient>" and make a get request for their appointments
@@ -58,16 +58,6 @@ Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 		| dd  |
 		|     |
 		| null|
-	
-Scenario: Appointment retrieve book appointment then request appointment and check it is returned
-	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for patient "patient1" and search for the most recently booked appointment using the stored startDate from the last booked appointment as a search parameter
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
 	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -162,6 +152,23 @@ Scenario Outline: Appointment retrieve send request with start date and start pr
 		| 2014-05                   | ge     | 2044-05                   | le      |
 		| 2014-05-01T11:08:32       | ge     | 2044-05-01T11:08:32       | le      |
 		| 2015-10-23T11:08:32+00:00 | ge     | 2044-10-23T11:08:32+00:00 | le      |
+
+Scenario Outline: Appointment retrieve send request with start date and invalid start prefix and end date and invalid end prefix 
+	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+	When I search for "patient1" and make a get request for their appointments with the start range date "<startDate>" with prefix "<prefix>" and end range date "<endDate>" with prefix "<prefix2>"
+	Then the response status code should indicate failure
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| startDate                 | prefix | endDate                   | prefix2 |
+		| 2015                      | lt     | 2018                      | lt      |
+		| 2014-02                   | lt     | 2018-07                   | lt      |
+		| 2014-10-05                | gt     | 2018-10-05                | gt      |
+		| 2014-05                   | gt     | 2044-05-01T11:08:32       | gt      |
+		| 2014-05-01T11:08:32       | tt     | 2018-05                   | lu      |
+		| 2015-10-23T11:08:32+00:00 | dd     | 2018-10-23T11:08:32+00:00 | zz      |
 
 
 @ignore
@@ -267,12 +274,12 @@ Scenario Outline: Appointment retrieve interaction id incorrect fail
         And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
     Examples:
-       | id | interactionId                                                     |
-       | 1  | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
-       | 1  | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
-       | 1  | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-       | 1  |                                                                   |
-       | 1  | null                                                              |
+       | interactionId                                                     |
+       | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
+       | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
+       | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+       |                                                                   |
+       | null                                                              |
 	
 Scenario Outline: Appointment retrieve accept header and _format parameter
     Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -418,7 +425,7 @@ Scenario: Appointment retrive book appointment and search for the appointment an
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 	Then I create an appointment for patient "patient1" called "Appointment3" from schedule "getScheduleResponseBundle"
-	Then I book the appointment called "Appointment3 "
+	Then I book the appointment called "Appointment3"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for patient "patient1" and search for the most recently booked appointment using the stored startDate from the last booked appointment as a search parameter
@@ -426,8 +433,8 @@ Scenario: Appointment retrive book appointment and search for the appointment an
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain atleast "1" appointment
-		And the returned appointment start date should match "Appointment3 " start Date
-		And the returned appointment end date should match "Appointment3 " end date
-		And the returned appointment patient reference should match "Appointment3 " patient reference
-		And the returned appointment slot reference should match "Appointment3 " slot reference
-		And the returned appointment participant status should match "Appointment3 " participant status
+		And the returned appointment start date should match "Appointment3" start Date
+		And the returned appointment end date should match "Appointment3" end date
+		And the returned appointment patient reference should match "Appointment3" patient reference
+		And the returned appointment slot reference should match "Appointment3" slot reference
+		And the returned appointment participant status should match "Appointment3" participant status

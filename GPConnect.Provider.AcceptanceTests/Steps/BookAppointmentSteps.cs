@@ -21,7 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly HttpSteps HttpSteps;
         private readonly HttpContext HttpContext;
-    
+
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
@@ -93,10 +93,257 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 practitionerReferenceForSelectedSlot.Add(((ResourceReference)practitionerReferenceExtension.Value).Reference);
             }
 
-              // Create Appointment
-            Appointment appointment = buildAndReturnAppointment(patientResource, practitionerReferenceForSelectedSlot, locationReferenceForSelectedSlot,firstSlot);
+            //Elements of the appointment
+            CodeableConcept reason = new CodeableConcept();
+            Coding coding = new Coding();
+            List<Extension> extensionList = new List<Extension>();
+            Extension extension = new Extension();
+            Identifier identifier = new Identifier();
+            List<Identifier> identifiers = new List<Identifier>();
+            AppointmentStatus status = new AppointmentStatus();
+            int priority = new int();
+
+            switch (appointmentName)
+            {
+                case "CustomAppointment1":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "ONL", "Online"));
+                    //Define Identifier
+                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                    identifier.Value = "898976578";
+                    identifiers.Add(identifier);
+                    //Define Status
+                    status = AppointmentStatus.Fulfilled;
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 1;
+                    //Define participant
+
+                    
+                    break;
+
+                case "CustomAppointment2":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "ONL", "Online"));
+                    //Define Identifier
+                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                    identifier.Value = "898976579";
+                    identifiers.Add(identifier);
+                    //Define Status
+                    status = AppointmentStatus.Noshow;
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 7;
+                    //Define participant
+
+                    break;
+
+                case "CustomAppointment3":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "CLI", "Clinical"));
+                    //Define Identifier
+                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                    identifier.Value = "898976580";
+                    identifiers.Add(identifier);
+                    //Define Status
+                    status = AppointmentStatus.Arrived;
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 9;
+                    //Define participant
 
 
+                    break;
+
+                case "CustomAppointment4":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", "", "Double booked"));
+                    //Define Identifier
+                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                    identifier.Value = "898976581";
+                    identifiers.Add(identifier);
+                    //Define Status
+                    status = AppointmentStatus.Cancelled;
+
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 9;
+                     //Define participant
+
+                
+
+                    break;
+                case "CustomAppointment5":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "PER", "In person"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "ADM", "Administrative"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "ONL", "Online"));
+                    //Define Identifier
+                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                    identifier.Value = "898976582";
+                    identifiers.Add(identifier);
+                    //Define Status
+                    status = AppointmentStatus.Booked;
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 2;
+
+                    //Define participant
+
+
+
+                    break;
+
+                case "CustomAppointment6":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "TEL", "Telephone"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "VIR", "Virtual"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "PER", "In person"));
+                    //Define Identifier
+                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                    identifier.Value = "898976583";
+                    identifiers.Add(identifier);
+                    //Define Status
+                    status = AppointmentStatus.Booked;
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 3;
+
+                    //Define participant
+
+                    break;
+
+                case "CustomAppointment7":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "EMA", "Email"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "REM", "Reminder"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "TEL", "Telephone"));
+                    //Define Identifier
+                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                    identifier.Value = "898976584";
+                    identifiers.Add(identifier);
+                    //Define Status
+                    status = AppointmentStatus.Booked;
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 4;
+
+                    //Define participant
+
+                    break;
+
+                case "CustomAppointment8":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "LET", "Letter"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "MSG", "Message"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "EMA", "Email"));
+                    //Define Identifier
+                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                    identifier.Value = "898976585";
+                    identifiers.Add(identifier);
+                    //Define Status
+                    status = AppointmentStatus.Booked;
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 5;
+
+                    //Define participant
+
+                    break;
+
+                case "CustomAppointment9":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "TEX", "Text"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "ADM", "Administrative"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "LET", "Letter"));
+                    //Define Identifier
+                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                    identifier.Value = "898976586";
+                    identifiers.Add(identifier);
+                    //Define Status
+                    status = AppointmentStatus.Booked;
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 6;
+
+                    //Define participant
+
+                    break;
+
+                case "CustomAppointment10":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "PER", "In person"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "CLI", "Clinical"));
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "PER", "In person"));
+                    //Define Identifier
+                    Identifier multipleIdentifier;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        multipleIdentifier = new Identifier();
+                        multipleIdentifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                        multipleIdentifier.Value = "89897652"+i;
+                        identifiers.Add(multipleIdentifier);
+                    }
+                    //Define Status
+                    status = AppointmentStatus.Booked;
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
+                    reason.Coding.Add(coding);
+                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 7;
+
+                    //Define participant
+                 
+                    break;
+            }
+
+            Appointment appointment = buildAndReturnAppointment(patientResource, practitionerReferenceForSelectedSlot, locationReferenceForSelectedSlot, firstSlot , reason, extension, identifiers, status, priority);
             // Now we have used the slot remove from it from the getScheduleBundle so it is not used to book other appointments same getSchedule is used
             EntryComponent entryToRemove = null;
             foreach (EntryComponent entry in getScheduleResponseBundle.Entry)
@@ -106,7 +353,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     entryToRemove = entry;
                     break;
                 }
-            }
+            } 
             getScheduleResponseBundle.Entry.Remove(entryToRemove);
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
@@ -139,6 +386,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Dictionary<string, Practitioner> practitionerDictionary = new Dictionary<string, Practitioner>();
             Dictionary<string, Location> locationDictionary = new Dictionary<string, Location>();
             Dictionary<string, Schedule> scheduleDictionary = new Dictionary<string, Schedule>();
+            List<Identifier> identifiers = new List<Identifier>();
 
             // Group together resources
             foreach (EntryComponent entry in getScheduleResponseBundle.Entry)
@@ -185,8 +433,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 practitionerReferenceForSelectedSlot.Add(((ResourceReference)practitionerReferenceExtension.Value).Reference);
             }
 
+
+            Extension extension = new Extension();
+            CodeableConcept reason = new CodeableConcept();
+            AppointmentStatus status = new AppointmentStatus();
+            int priority = 0;
+
             // Create Appointment
-            Appointment appointment = buildAndReturnAppointment(patientResource, practitionerReferenceForSelectedSlot, locationReferenceForSelectedSlot, firstSlot);
+           Appointment appointment = buildAndReturnAppointment(patientResource, practitionerReferenceForSelectedSlot, locationReferenceForSelectedSlot, firstSlot, reason, extension, identifiers, status, priority);
 
             // Now we have used the slot remove from it from the getScheduleBundle so it is not used to book other appointments same getSchedule is used
             EntryComponent entryToRemove = null;
@@ -338,21 +592,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             contentType.ShouldBe(null);
         }
 
-
+   
         [Then(@"the content-length should not be equal to zero")]
         public void ThenTheContentLengthShouldNotBeEqualToZero()
         {
-            string contentType = "";
-            HttpContext.ResponseHeaders.TryGetValue("Content-Length", out contentType);
-            contentType.ShouldNotBe("0");
+            string contentLength = "";
+            HttpContext.ResponseHeaders.TryGetValue("Content-Length", out contentLength);
+            contentLength.ShouldNotBe("0");
         }
 
         [Then(@"the content-length should be equal to zero")]
         public void ThenTheContentLengthShouldBeEqualToZero()
         {
-            string contentType = "";
-            HttpContext.ResponseHeaders.TryGetValue("Content-Length", out contentType);
-            contentType.ShouldBe("0");
+            string contentLength = "";
+            HttpContext.ResponseHeaders.TryGetValue("Content-Length", out contentLength);
+            contentLength.ShouldBe("0");
         }
 
 
@@ -554,10 +808,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
         }
 
-        private Appointment buildAndReturnAppointment(Patient patientResource, List<string> practitionerReferenceForSelectedSlot, string locationReferenceForSelectedSlot, Slot firstSlot)
+        private Appointment buildAndReturnAppointment(Patient patientResource, List<string> practitionerReferenceForSelectedSlot, string locationReferenceForSelectedSlot, Slot firstSlot, CodeableConcept reason,Extension extension, List<Identifier> identifier, AppointmentStatus appointmentStatus, int priority)
         {
             Appointment appointment = new Appointment();
-            appointment.Status = AppointmentStatus.Booked;
+            appointment.Status = appointmentStatus;
+            appointment.Identifier = identifier;
+            appointment.Priority = priority;
 
             // Appointment Patient Resource
             ParticipantComponent patient = new ParticipantComponent();
@@ -593,11 +849,36 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Start = firstSlot.Start;
             appointment.End = firstSlot.End;
 
+
+         
             if (HttpContext.StoredDate.ContainsKey("slotStartDate")) HttpContext.StoredDate.Remove("slotStartDate");
             HttpContext.StoredDate.Add("slotStartDate", firstSlot.StartElement.ToString());
 
-
+            appointment.Reason = reason;
+            appointment.Extension.Add(extension);
             return appointment;
         }
+
+        private Coding buildReasonForAppointment(string system, string code, string display)
+        {
+            Coding codingSnomedCT = new Coding();
+            codingSnomedCT.System = system;
+            codingSnomedCT.Code = code;
+            codingSnomedCT.Display = display;
+            return codingSnomedCT;
+        }
+
+        private Extension buildAppointmentCategoryExtension(Extension extension, string url, string code, string display)
+        {
+            extension.Url = url;
+            CodeableConcept value = new CodeableConcept();
+            Coding coding = new Coding();
+            coding.Code = code;
+            coding.Display = display;
+            value.Coding.Add(coding);
+            extension.Value = value;
+            return extension;
+        }
+
     }
 }

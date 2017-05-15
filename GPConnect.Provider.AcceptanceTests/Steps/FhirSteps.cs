@@ -360,8 +360,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheResponseBodyShouldBeEmpty()
         {
             string response = "";
-            HttpContext.ResponseContentType.ShouldStartWith(response);
-            HttpContext.ResponseContentType.ShouldBe(response);
+            HttpContext.ResponseBody.ShouldStartWith(response);
+            HttpContext.ResponseBody.ShouldBe(response);
         }
 
         [Then(@"the response body should be FHIR XML")]
