@@ -52,10 +52,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(patientResourceKey, returnedFirstResource);
         }
 
+        [Given(@"I perform a patient search for patient with NHSNumber ""([^""]*)"" and store the response bundle against key ""([^""]*)""")]
+        public void IPerformAPatientSearchForPatientWithNHSNumberAndStoreTheResponseBundleAgainstKey(string nhsNumber, string patientSearchResponseBundleKey)
+        {
+            Given($@"I am using the default server");
+            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient"" interaction");
+            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
+            And($@"I set the JWT requested scope to ""patient/*.read""");
+            When($@"I search for Patient with NHS Number ""{nhsNumber}""");
+            Then($@"the response status code should indicate success");
+            And($@"the response body should be FHIR JSON");
+            And($@"the response should be a Bundle resource of type ""searchset""");
+            if (HttpContext.StoredFhirResources.ContainsKey(patientSearchResponseBundleKey)) HttpContext.StoredFhirResources.Remove(patientSearchResponseBundleKey);
+            HttpContext.StoredFhirResources.Add(patientSearchResponseBundleKey, (Bundle)FhirContext.FhirResponseResource);
+        }
+
         [When(@"I search for Patient ""([^""]*)""")]
         public void ISearchForPatient(string patient)
         {
             ISearchForPatientWithSystem(patient, FhirConst.IdentifierSystems.kNHSNumber);
+        }
+
+        [When(@"I search for Patient with NHS Number ""([^""]*)""")]
+        public void ISearchForPatientWithNHSNumber(string nhsNumber)
+        {
+            var parameterString = FhirConst.IdentifierSystems.kNHSNumber + "|" + nhsNumber;
+            ISearchForAPatientWithParameterNameAndParameterString("identifier", parameterString);
         }
 
         [When(@"I search for Patient ""([^""]*)"" with system ""([^""]*)""")]

@@ -76,6 +76,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [BeforeTestRun(Order = 1)]
+        public static void LoadRegisterPatientData()
+        {
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
+                Assert.Fail("Data Directory Not Found.");
+            }
+
+            var registerPatientsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"RegisterPatients.csv");
+            Log.WriteLine("RegisterPatients CSV = '{0}'", registerPatientsCSV);
+            GlobalContext.RegisterPatientsData = RegisterPatientsImporter.LoadCsv(registerPatientsCSV);
+        }
+
+        [BeforeTestRun(Order = 1)]
         public static void LoadPractitionerCodeMapData()
         {
             if (!Directory.Exists(AppSettingsHelper.DataDirectory))

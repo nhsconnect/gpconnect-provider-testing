@@ -8,6 +8,9 @@ using static Hl7.Fhir.Model.Bundle;
 using System.Net.Http;
 using Hl7.Fhir.Serialization;
 using RestSharp;
+using GPConnect.Provider.AcceptanceTests.Data;
+using GPConnect.Provider.AcceptanceTests.Constants;
+using NUnit.Framework;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -30,6 +33,62 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
         
+        [Given(@"I find the next patient to register and store the Patient Resource against key ""([^""]*)""")]
+        public void GivenIFindTheNextPatientToRegisterAndStoreThePatientResourceAgainstKey(string patientResourceKey)
+        {
+            Patient returnPatient = null;
+
+            List<RegisterPatient> registerPatients = GlobalContext.RegisterPatientsData;
+            for (int index = 0; index < registerPatients.Count; index++) {
+                RegisterPatient registerPatient = registerPatients[index];
+                // Search for patient
+                Given($@"I perform a patient search for patient with NHSNumber ""{registerPatient.SPINE_NHS_NUMBER}"" and store the response bundle against key ""registerPatient""");
+                // See if number of returned patients is > zero, ie patient already registered, else use patient
+                Bundle patientSearchBiundle = (Bundle)HttpContext.StoredFhirResources["registerPatient"];
+                if (patientSearchBiundle.Entry.Count == 0) {
+                    // Patient not registered yet
+                    returnPatient = new Patient();
+                    returnPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, registerPatient.SPINE_NHS_NUMBER));
+                    HumanName name = new HumanName();
+                    name.FamilyElement.Add(new FhirString(registerPatient.NAME_FAMILY));
+                    name.GivenElement.Add(new FhirString(registerPatient.NAME_GIVEN));
+                    returnPatient.Name = new List<HumanName>();
+                    returnPatient.Name.Add(name);
+                    switch (registerPatient.GENDER) {
+                        case "MALE":
+                            returnPatient.Gender = AdministrativeGender.Male;
+                            break;
+                        case "FEMALE":
+                            returnPatient.Gender = AdministrativeGender.Female;
+                            break;
+                        case "OTHER":
+                            returnPatient.Gender = AdministrativeGender.Other;
+                            break;
+                        case "UNKNOWN":
+                            returnPatient.Gender = AdministrativeGender.Unknown;
+                            break;
+                    }
+                    returnPatient.BirthDateElement = new Date(registerPatient.DOB);
+                    break; // Stop looking for the next patient
+                }
+            }
+            if (returnPatient != null)
+            {
+                // Store the created patient
+                if (HttpContext.StoredFhirResources.ContainsKey(patientResourceKey)) HttpContext.StoredFhirResources.Remove(patientResourceKey);
+                HttpContext.StoredFhirResources.Add(patientResourceKey, returnPatient);
+            }
+            else {
+                Assert.Fail("No patients left to register patient with");
+            }
+        }
+
+        [Given(@"I build the register patient from stored patient resource against key ""(.*)""")]
+        public void GivenIBuildTheRegisterPatientFromStoredPatientResourceAgainstKey(string storedPatientKey)
+        {
+            HttpContext.registerPatient.Add(storedPatientKey, (Patient)HttpContext.StoredFhirResources[storedPatientKey]);
+        }
+
         [Given(@"I register patient ""(.*)"" with first name ""(.*)"" and family name ""(.*)"" with NHS number ""(.*)"" and birth date ""(.*)""")]
         public void GivenIRegisterPatient(string patientSavedName ,string firstName, string familyName, string nhsNumber,string birthDate)
         {
@@ -65,7 +124,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             patient.Name.Add(name);
 
-            HttpContext.registerPatient.Add(patientSavedName, patient);    
+            HttpContext.registerPatient.Add(patientSavedName, patient);
     
         }
 

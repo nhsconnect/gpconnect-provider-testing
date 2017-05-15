@@ -3,21 +3,18 @@
 Background:
 	Given I have the test patient codes
 
-Scenario Outline: Register patient 
+Scenario: Register patient 
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
-		And I add the registration period with start date "<regStartDate>" to "<patient>"
-		And I add the registration status with code "A" to "<patient>"
-		And I add the registration type with code "T" to "<patient>"
-	When I send a gpc.registerpatients to register "<patient>"
+		And I build the register patient from stored patient resource against key "registerPatient"
+		And I add the registration period with start date "2017-05-05" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I send a gpc.registerpatients to register "registerPatient"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-	Examples: 
-		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
-		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
-
 
 Scenario Outline: Register patient send request to incorrect URL
 	Given I am using the default server
