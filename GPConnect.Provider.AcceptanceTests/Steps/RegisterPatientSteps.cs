@@ -88,104 +88,51 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.registerPatient.Add(storedPatientKey, (Patient)HttpContext.StoredFhirResources[storedPatientKey]);
         }
-
-        [Given(@"I do not set ""(.*)"" and register patient ""(.*)"" with first name ""(.*)"" and family name ""(.*)"" with NHS number ""(.*)"" and birth date ""(.*)""")]
-        public void GivenIRegisterPatientSkipStep(string doNotSet,string patientSavedName, string firstName, string familyName, string nhsNumber, string birthDate)
+        
+        [Given(@"I remove the patients identifiers from the patient stored against key ""([^""]*)""")]
+        public void GivenIRemoveThePatientsIdentifiersFromThePatientStoredAgainstKey(string storedPatientKey)
         {
-            Patient patient = new Patient();
-
-            if (doNotSet != "Identifier")
-            {
-                Identifier id = new Identifier();
-
-                id.Value = nhsNumber;
-                id.System = "http://fhir.nhs.net/Id/nhs-number";
-                patient.Identifier.Add(id);
-            }
-
-            if (doNotSet != "active")
-            {
-                bool active = true;
-                patient.Active = active;
-            }
-
-
-            if (doNotSet != "gender")
-            {
-                AdministrativeGender code = new AdministrativeGender();
-               patient.Gender = code;
-            }
-
-            if (doNotSet != "birthDate")
-            {
-                string date = birthDate;
-                patient.BirthDate = date;
-            }
-
-            if (doNotSet != "name")
-            {
-                HumanName name = new HumanName();
-
-                string familyString = familyName;
-                string givenString = firstName;
-
-                List<string> familyList = new List<string>();
-                List<string> givenList = new List<string>();
-
-                familyList.Add(familyString);
-                givenList.Add(givenString);
-
-                name.Family = familyList;
-                name.Given = givenList;
-
-                patient.Name.Add(name);
-            }
-
-
-
-            HttpContext.registerPatient.Add(patientSavedName, patient);
-
-        }
-
-
-        [Given(@"I set the identifier from ""(.*)"" to null")]
-        public void GivenIRemoveTheIdentifier(string patientSavedName)
-        {
-            Patient patient = HttpContext.registerPatient[patientSavedName];
-
+            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             patient.Identifier = null;
-            HttpContext.registerPatient.Remove(patientSavedName);
-            HttpContext.registerPatient.Add(patientSavedName, patient);
+            HttpContext.StoredFhirResources.Remove(storedPatientKey);
+            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
         }
-
-        [Given(@"I set the active element from ""(.*)"" to null")]
-        public void GivenIRemoveTheActiveElement(string patientSavedName)
+        
+        [Given(@"I remove the name element from the patient stored against key ""([^""]*)""")]
+        public void GivenIRemoveTheNameElementFromThePatientStoredAgainstKey(string storedPatientKey)
         {
-            Patient patient = HttpContext.registerPatient[patientSavedName];
-
-            patient.Active = null;
-            HttpContext.registerPatient.Remove(patientSavedName);
-            HttpContext.registerPatient.Add(patientSavedName, patient);
-        }
-
-        [Given(@"I set the name element from ""(.*)"" to null")]
-        public void GivenIRemoveTheNameElement(string patientSavedName)
-        {
-            Patient patient = HttpContext.registerPatient[patientSavedName];
-
+            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             patient.Name = null;
-            HttpContext.registerPatient.Remove(patientSavedName);
-            HttpContext.registerPatient.Add(patientSavedName, patient);
+            HttpContext.StoredFhirResources.Remove(storedPatientKey);
+            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
         }
 
-        [Given(@"I set the gender element from ""(.*)"" to null")]
-        public void GivenIRemoveTheGenderElement(string patientSavedName)
+        [Given(@"I remove the gender element from the patient stored against key ""([^""]*)""")]
+        public void GivenIRemoveTheGenderElementFromThePatientStoredAgainstKey(string storedPatientKey)
         {
-            Patient patient = HttpContext.registerPatient[patientSavedName];
-
+            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             patient.Gender = null;
-            HttpContext.registerPatient.Remove(patientSavedName);
-            HttpContext.registerPatient.Add(patientSavedName, patient);
+            HttpContext.StoredFhirResources.Remove(storedPatientKey);
+            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
+        }
+
+        [Given(@"I remove the DOB element from the patient stored against key ""([^""]*)""")]
+        public void GivenIRemoveTheDOBElementFromThePatientStoredAgainstKey(string storedPatientKey)
+        {
+            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            patient.BirthDate = null;
+            HttpContext.StoredFhirResources.Remove(storedPatientKey);
+            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
+        }
+
+        [Given(@"I clear exisiting identifiers in the patient stored against key ""([^""]*)"" and add an NHS number identifier ""([^""]*)""")]
+        public void GivenIRemoveTheDOBElementFromThePatientStoredAgainstKey(string storedPatientKey, string nhsNumber)
+        {
+            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            patient.Identifier.Clear();
+            patient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber));
+            HttpContext.StoredFhirResources.Remove(storedPatientKey);
+            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
         }
 
         [Given(@"I add the registration period with start date ""([^""]*)"" to ""([^""]*)""")]
