@@ -72,31 +72,32 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Register patient")]
-        [NUnit.Framework.TestCaseAttribute("patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
-        public virtual void RegisterPatient(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
+        [NUnit.Framework.DescriptionAttribute("Successful registration of a temporary patient")]
+        public virtual void SuccessfulRegistrationOfATemporaryPatient()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successful registration of a temporary patient", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 7
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 9
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 9
-  testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
-                        "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
-  testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the registration period with start date \"2017-05-05\" and end date \"2018-03-" +
+                    "12\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
-  testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
-  testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
@@ -109,119 +110,125 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Register patient send request to incorrect URL")]
-        [NUnit.Framework.TestCaseAttribute("patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", "/Patient/$gpc.registerpatien", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", "/PAtient/$gpc.registerpatient", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", "/$gpc.registerpatient", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", "/Patient/$gpc.registerpati#ent", new string[0])]
-        public virtual void RegisterPatientSendRequestToIncorrectURL(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string url, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("2017-05-05", "/Patient/$gpc.registerpatien", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2016-12-05", "/PAtient/$gpc.registerpatient", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("1999-01-22", "/Patient/$gpc.registerpati#ent", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2017-08-12", "/Patient", new string[0])]
+        public virtual void RegisterPatientSendRequestToIncorrectURL(string regStartDate, string url, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient send request to incorrect URL", exampleTags);
-#line 22
+#line 18
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 23
+#line 19
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 20
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 24
+#line 21
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 22
+  testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"registerPatient\"", regStartDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 24
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
-  testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
-                        "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When(string.Format("I register patient stored against key \"registerPatient\" with url \"{0}\"", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 26
-  testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 27
-  testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
-  testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
- testRunner.When(string.Format("I register \"{0}\" with url \"{1}\"", patient, url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 30
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 31
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
-  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 28
+  testRunner.And("the response should be a OperationOutcome resource with error code \"REFERENCE_NOT" +
+                    "_FOUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Register patient with invalid interactionIds")]
-        [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatsssient", "patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("", "patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("null", "patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", "patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
-        public virtual void RegisterPatientWithInvalidInteractionIds(string interactionId, string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatsssient", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("null", new string[0])]
+        public virtual void RegisterPatientWithInvalidInteractionIds(string interactionId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with invalid interactionIds", exampleTags);
-#line 41
+#line 36
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 42
+#line 37
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 38
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 43
+#line 39
   testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 40
+  testRunner.And("I add the registration period with start date \"2017-05-05\" and end date \"2018-03-" +
+                    "12\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 43
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 44
-  testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
-                        "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 45
-  testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
-  testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
-  testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
- testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 49
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 50
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
-  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Register patient with missing header")]
-        [NUnit.Framework.TestCaseAttribute("Ssp-TraceID", "patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Ssp-From", "patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Ssp-To", "patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Ssp-InteractionId", "patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Authorization", "patient23", "tom", "johnson", "345554", "1993-03-03", "2017-05-05", new string[0])]
-        public virtual void RegisterPatientWithMissingHeader(string header, string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("Ssp-TraceID", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Ssp-From", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Ssp-To", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Ssp-InteractionId", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Authorization", new string[0])]
+        public virtual void RegisterPatientWithMissingHeader(string header, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with missing header", exampleTags);
-#line 60
+#line 55
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 61
+#line 56
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 57
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 62
+#line 58
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
+#line 59
+  testRunner.And("I add the registration period with start date \"2017-04-12\" and end date \"2017-12-" +
+                    "24\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 60
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 62
   testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 63
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 64
-  testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
-                        "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 65
-  testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
-  testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 67
-  testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
- testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 69
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 70
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
-  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -232,33 +239,33 @@ this.FeatureBackground();
         public virtual void RegisterPatientAndSetIdentifierToNullBeforeSendingTheRequest(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and set identifier to null before sending the request", exampleTags);
-#line 80
+#line 75
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 81
+#line 76
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 77
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 78
   testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
                         "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 79
   testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 85
+#line 80
   testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 81
   testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 82
   testRunner.And(string.Format("I set the identifier from \"{0}\" to null", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 83
  testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 89
+#line 84
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 90
+#line 85
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
+#line 86
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -270,33 +277,33 @@ this.FeatureBackground();
         public virtual void RegisterPatientAndSetActiveElementToNullBeforeSendingTheRequest(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and set active element to null before sending the request", exampleTags);
-#line 96
+#line 91
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 97
+#line 92
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 98
+#line 93
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 94
   testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
                         "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 95
   testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
+#line 96
   testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 97
   testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
+#line 98
   testRunner.And(string.Format("I set the active element from \"{0}\" to null", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 104
+#line 99
  testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 105
+#line 100
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 106
+#line 101
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 102
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -308,33 +315,33 @@ this.FeatureBackground();
         public virtual void RegisterPatientAndSetNameElementToNullBeforeSendingTheRequest(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and set name element to null before sending the request", exampleTags);
-#line 112
+#line 107
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 113
+#line 108
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 114
+#line 109
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
+#line 110
   testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
                         "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 111
   testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 112
   testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
+#line 113
   testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
+#line 114
   testRunner.And(string.Format("I set the name element from \"{0}\" to null", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
+#line 115
  testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 121
+#line 116
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 122
+#line 117
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
+#line 118
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -346,33 +353,33 @@ this.FeatureBackground();
         public virtual void RegisterPatientAndSetGenderElementToNullBeforeSendingTheRequest(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and set gender element to null before sending the request", exampleTags);
-#line 128
+#line 123
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 129
+#line 124
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 130
+#line 125
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 131
+#line 126
   testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
                         "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
+#line 127
   testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 128
   testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
+#line 129
   testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 135
+#line 130
   testRunner.And(string.Format("I set the gender element from \"{0}\" to null", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
+#line 131
  testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 137
+#line 132
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 138
+#line 133
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 139
+#line 134
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -387,33 +394,33 @@ this.FeatureBackground();
         public virtual void RegisterPatientWithoutManadatoryValuesAndSendRequest(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string doNotSet, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient without manadatory values and send request", exampleTags);
-#line 144
+#line 139
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 145
+#line 140
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 146
+#line 141
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 142
   testRunner.And(string.Format("I do not set \"{0}\" and register patient \"{1}\" with first name \"{2}\" and family na" +
                         "me \"{3}\" with NHS number \"{4}\" and birth date \"{5}\"", doNotSet, patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 143
   testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 144
   testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 145
   testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 146
   testRunner.And(string.Format("I set the gender element from \"{0}\" to null", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
+#line 147
  testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 153
+#line 148
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 154
+#line 149
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 155
+#line 150
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -425,33 +432,33 @@ this.FeatureBackground();
         public virtual void RegisterPatientWithoutIdentifierAndSendRequest(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string doNotSet, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient without identifier and send request", exampleTags);
-#line 163
+#line 158
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 164
+#line 159
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 165
+#line 160
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 166
+#line 161
   testRunner.And(string.Format("I do not set \"{0}\" and register patient \"{1}\" with first name \"{2}\" and family na" +
                         "me \"{3}\" with NHS number \"{4}\" and birth date \"{5}\"", doNotSet, patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 167
+#line 162
   testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 168
+#line 163
   testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
+#line 164
   testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 170
+#line 165
   testRunner.And(string.Format("I set the gender element from \"{0}\" to null", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
+#line 166
  testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 172
+#line 167
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 173
+#line 168
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
+#line 169
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -465,29 +472,29 @@ this.FeatureBackground();
         public virtual void RegisterPatientWithAnInvalidNHSNumber(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with an invalid NHS number", exampleTags);
-#line 179
+#line 174
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 180
+#line 175
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 181
+#line 176
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+#line 177
   testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
                         "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
+#line 178
   testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
+#line 179
   testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
+#line 180
   testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 186
+#line 181
  testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 187
+#line 182
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 188
+#line 183
   testRunner.And("the response should be a OperationOutcome resource with error code \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -499,35 +506,35 @@ this.FeatureBackground();
         public virtual void RegisterPatientAndCheckRegistrationPeriodIsNotNull(string patient, string firstName, string secondName, string nhsNumber, string birthDate, string regStartDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and check registration period is not null", exampleTags);
-#line 195
+#line 190
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 196
+#line 191
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 197
+#line 192
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
+#line 193
   testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
                         "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
+#line 194
   testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
+#line 195
   testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
+#line 196
   testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 197
  testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 203
+#line 198
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 204
+#line 199
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 205
+#line 200
   testRunner.And("the bundle should contain a registration type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 206
+#line 201
   testRunner.And("the bundle should contain a registration status", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 207
+#line 202
   testRunner.And("the bundle should contain a registration period", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -541,37 +548,37 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and validate patient response contains the correct quantity of e" +
                     "lements", exampleTags);
-#line 212
+#line 207
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 213
+#line 208
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 214
+#line 209
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
                     "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 215
+#line 210
   testRunner.And(string.Format("I register patient \"{0}\" with first name \"{1}\" and family name \"{2}\" with NHS num" +
                         "ber \"{3}\" and birth date \"{4}\"", patient, firstName, secondName, nhsNumber, birthDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
+#line 211
   testRunner.And(string.Format("I add the registration period with start date \"{0}\" to \"{1}\"", regStartDate, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
+#line 212
   testRunner.And(string.Format("I add the registration status with code \"A\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 218
+#line 213
   testRunner.And(string.Format("I add the registration type with code \"T\" to \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 219
+#line 214
  testRunner.When(string.Format("I send a gpc.registerpatients to register \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 220
+#line 215
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 221
+#line 216
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 222
+#line 217
   testRunner.And("the bundle patient response should contain exactly 1 family name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 223
+#line 218
   testRunner.And("the bundle patient response should contain exactly 1 given name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
+#line 219
   testRunner.And("the bundle patient response should contain exactly 1 gender element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
+#line 220
   testRunner.And("the bundle patient response should contain exactly 1 birthDate element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

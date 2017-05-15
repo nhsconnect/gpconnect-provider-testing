@@ -113,6 +113,7 @@
     <Compile Include="Context\FhirContext.cs" />
     <Compile Include="Context\HttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
+    <Compile Include="Data\RegisterPatient.cs" />
     <Compile Include="Data\PractitionerCodeMap.cs" />
     <Compile Include="Data\ODSCodeMap.cs" />
     <Compile Include="Data\NHSNoMap.cs" />
@@ -144,6 +145,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Http.feature</DependentUpon>
     </Compile>
+    <Compile Include="Importers\RegisterPatientsImporter.cs" />
     <Compile Include="Importers\PractitionerCodeMapConverter.cs" />
     <Compile Include="Importers\PractitionerCodeMapImporter.cs" />
     <Compile Include="Importers\ODSCodeMapImporter.cs" />
