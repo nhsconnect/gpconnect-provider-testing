@@ -89,45 +89,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.registerPatient.Add(storedPatientKey, (Patient)HttpContext.StoredFhirResources[storedPatientKey]);
         }
 
-        [Given(@"I register patient ""(.*)"" with first name ""(.*)"" and family name ""(.*)"" with NHS number ""(.*)"" and birth date ""(.*)""")]
-        public void GivenIRegisterPatient(string patientSavedName ,string firstName, string familyName, string nhsNumber,string birthDate)
-        {
-            Patient patient = new Patient();
-            Identifier id = new Identifier();
-
-            id.Value = nhsNumber;
-            id.System = "http://fhir.nhs.net/Id/nhs-number";
-            patient.Identifier.Add(id);
-
-            bool active = true;
-            patient.Active = active;
-        
-            AdministrativeGender code = new AdministrativeGender();
-            string date = birthDate;
-
-            patient.Gender = code;
-            patient.BirthDate = date;
-
-            HumanName name = new HumanName();
-
-            string familyString = familyName;
-            string givenString = firstName;
-
-            List<string> familyList = new List<string>();
-            List<string> givenList = new List<string>();
-
-            familyList.Add(familyString);
-            givenList.Add(givenString);
-
-            name.Family = familyList;
-            name.Given = givenList;
-
-            patient.Name.Add(name);
-
-            HttpContext.registerPatient.Add(patientSavedName, patient);
-    
-        }
-
         [Given(@"I do not set ""(.*)"" and register patient ""(.*)"" with first name ""(.*)"" and family name ""(.*)"" with NHS number ""(.*)"" and birth date ""(.*)""")]
         public void GivenIRegisterPatientSkipStep(string doNotSet,string patientSavedName, string firstName, string familyName, string nhsNumber, string birthDate)
         {
@@ -226,68 +187,67 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.registerPatient.Remove(patientSavedName);
             HttpContext.registerPatient.Add(patientSavedName, patient);
         }
-        
-        [Given(@"I add the registration period with start date ""(.*)"" to ""(.*)""")]
-        public void GivenIAddRegistrationPeriodToPatient(string regStartDate, string patientSavedName)
+
+        [Given(@"I add the registration period with start date ""([^""]*)"" to ""([^""]*)""")]
+        public void GivenIAddTheRegistrationPeriodWithStartDateTo(string regStartDate, string storedPatientKey)
         {
-            Patient patient = HttpContext.registerPatient[patientSavedName];
-
+            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             Extension registrationPeriod = new Extension();
-
             registrationPeriod.Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1";
-
             Period period = new Period();
             period.Start = regStartDate;
-            period.End = "";
             registrationPeriod.Value = period;
-
             patient.Extension.Add(registrationPeriod);
-            HttpContext.registerPatient.Remove(patientSavedName);
-            HttpContext.registerPatient.Add(patientSavedName, patient);
+            HttpContext.StoredFhirResources.Remove(storedPatientKey);
+            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
+        }
 
+        [Given(@"I add the registration period with start date ""([^""]*)"" and end date ""([^""]*)"" to ""([^""]*)""")]
+        public void GivenIAddTheRegistrationPeriodWithStartDateAndEndDateTo(string regStartDate, string regEndDate, string storedPatientKey)
+        {
+            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            Extension registrationPeriod = new Extension();
+            registrationPeriod.Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1";
+            Period period = new Period();
+            period.Start = regStartDate;
+            period.End = regEndDate;
+            registrationPeriod.Value = period;
+            patient.Extension.Add(registrationPeriod);
+            HttpContext.StoredFhirResources.Remove(storedPatientKey);
+            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
         }
               
-        [Given(@"I add the registration status with code ""(.*)"" to ""(.*)""")]
-        public void GivenIAddRegistrationStatusToPatient(string code, string patientSavedName)
+        [Given(@"I add the registration status with code ""([^""]*)"" to ""([^""]*)""")]
+        public void GivenIAddRegistrationStatusWithCodeTo(string code, string storedPatientKey)
         {
-            Patient patient = HttpContext.registerPatient[patientSavedName];
+            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             Extension registrationStatus = new Extension();
-
             registrationStatus.Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-status-1";
             CodeableConcept codableConcept = new CodeableConcept();
-
             Coding code1 = new Coding();
             code1.Code = code;
             codableConcept.Coding.Add(code1);
-
             registrationStatus.Value = codableConcept;
-
             patient.Extension.Add(registrationStatus);
-
-            HttpContext.registerPatient.Remove(patientSavedName);
-            HttpContext.registerPatient.Add(patientSavedName, patient);
+            HttpContext.StoredFhirResources.Remove(storedPatientKey);
+            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
 
         }
 
-        [Given(@"I add the registration type with code ""(.*)"" to ""(.*)""")]
-        public void GivenIAddRegistrationTypeToPatient(string code, string patientSavedName)
+        [Given(@"I add the registration type with code ""([^""]*)"" to ""([^""]*)""")]
+        public void GivenIAddRegistrationTypeWithCodeTo(string code, string storedPatientKey)
         {
-            Patient patient = HttpContext.registerPatient[patientSavedName];
+            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             Extension registrationType = new Extension();
-
             registrationType.Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-type-1";
             CodeableConcept codableConcepts = new CodeableConcept();
-
             Coding code2 = new Coding();
             code2.Code = code;
             codableConcepts.Coding.Add(code2);
-
             registrationType.Value = codableConcepts;
-
             patient.Extension.Add(registrationType);
-            HttpContext.registerPatient.Remove(patientSavedName);
-            HttpContext.registerPatient.Add(patientSavedName, patient);
-
+            HttpContext.StoredFhirResources.Remove(storedPatientKey);
+            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
         }
 
         [Then(@"the bundle should contain a registration type")]
@@ -429,15 +389,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+        
+        [When(@"I send a gpc.registerpatient to create patient stored against key ""([^""]*)""")]
+        public void ISendAGpcRegisterPatientToCreatepatientStoredAgainstKey(string storedPatientKey)
+        {
+            IRegisterPatientStoredAgainstKeyWithURL(storedPatientKey, "/Patient/$gpc.registerpatient");
+        }
 
-
-
-
-        [When(@"I register ""(.*)"" with url ""(.*)""")]
-        public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalIdWithIncorrectUrl(string patientSavedName, string url)
+        [When(@"I register patient stored against key ""(.*)"" with url ""(.*)""")]
+        public void IRegisterPatientStoredAgainstKeyWithURL(string storedPatientKey, string url)
         {
 
-            Patient patient = HttpContext.registerPatient[patientSavedName];
+            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
 
             FhirContext.FhirRequestParameters.Add("registerPatient", patient);
 
@@ -452,30 +415,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             HttpSteps.RestRequest(Method.POST, url, body);
         }
-
-
-
-        [When(@"I send a gpc.registerpatients to register ""(.*)""")]
-        public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(string patientSavedName)
-        {
-
-            Patient patient = HttpContext.registerPatient[patientSavedName];
-
-            FhirContext.FhirRequestParameters.Add("registerPatient", patient);
-
-            string body = null;
-            if (HttpContext.RequestContentType.Contains("xml"))
-            {
-                body = FhirSerializer.SerializeToXml(FhirContext.FhirRequestParameters);
-            }
-            else
-            {
-                body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
-            }
-            HttpSteps.RestRequest(Method.POST, "/Patient/$gpc.registerpatient", body);
-        }
-
-     
-
+        
     }
 }

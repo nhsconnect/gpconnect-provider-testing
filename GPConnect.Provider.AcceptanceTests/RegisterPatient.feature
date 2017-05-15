@@ -3,76 +3,74 @@
 Background:
 	Given I have the test patient codes
 
-Scenario: Register patient 
+Scenario: Successful registration of a temporary patient
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I build the register patient from stored patient resource against key "registerPatient"
-		And I add the registration period with start date "2017-05-05" to "registerPatient"
+		And I add the registration period with start date "2017-05-05" and end date "2018-03-12" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
-	When I send a gpc.registerpatients to register "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 
 Scenario Outline: Register patient send request to incorrect URL
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
-		And I add the registration period with start date "<regStartDate>" to "<patient>"
-		And I add the registration status with code "A" to "<patient>"
-		And I add the registration type with code "T" to "<patient>"
-	When I register "<patient>" with url "<url>"
-	Then the response status code should indicate failure
+		And I add the registration period with start date "<regStartDate>" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I register patient stored against key "registerPatient" with url "<url>"
+	Then the response status code should be "404"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
 	Examples: 
-		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate | url                            |
-		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   | /Patient/$gpc.registerpatien   |
-		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   | /PAtient/$gpc.registerpatient  |
-		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   | /$gpc.registerpatient          |
-		| patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   | /Patient/$gpc.registerpati#ent |
-
+		| regStartDate | url                            |
+		| 2017-05-05   | /Patient/$gpc.registerpatien   |
+		| 2016-12-05   | /PAtient/$gpc.registerpatient  |
+		| 1999-01-22   | /Patient/$gpc.registerpati#ent |
+		| 2017-08-12   | /Patient                       |
 
 Scenario Outline: Register patient with invalid interactionIds 
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "<interactionId>" interaction
-		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
-		And I add the registration period with start date "<regStartDate>" to "<patient>"
-		And I add the registration status with code "A" to "<patient>"
-		And I add the registration type with code "T" to "<patient>"
-	When I send a gpc.registerpatients to register "<patient>"
-	Then the response status code should indicate failure
+		And I add the registration period with start date "2017-05-05" and end date "2018-03-12" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples: 
-		| interactionId                                                          | patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatsssient | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
-		|                                                                        | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
-		| null                                                                   | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
-		| urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
-
+		| interactionId                                                          |
+		| urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments |
+		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatsssient |
+		| urn:nhs:names:services:gpconnect:fhir:rest:create:appointment          |
+		|                                                                        |
+		| null                                                                   |
 
 Scenario Outline: Register patient with missing header
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-04-12" and end date "2017-12-24" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
 		And I do not send header "<Header>"
-		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
-		And I add the registration period with start date "<regStartDate>" to "<patient>"
-		And I add the registration status with code "A" to "<patient>"
-		And I add the registration type with code "T" to "<patient>"
-	When I send a gpc.registerpatients to register "<patient>"
-	Then the response status code should indicate failure
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples: 
-		| Header            | patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
-		| Ssp-TraceID       | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
-		| Ssp-From          | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
-		| Ssp-To            | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
-		| Ssp-InteractionId | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
-		| Authorization     | patient23 | tom       | johnson    | 345554    | 1993-03-03 | 2017-05-05   |
+		| Header            |
+		| Ssp-TraceID       |
+		| Ssp-From          |
+		| Ssp-To            |
+		| Ssp-InteractionId |
+		| Authorization     |
 
 Scenario Outline: Register patient and set identifier to null before sending the request
 	Given I am using the default server
