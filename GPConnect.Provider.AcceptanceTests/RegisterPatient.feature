@@ -3,18 +3,6 @@
 Background:
 	Given I have the test patient codes
 
-Scenario: Successful registration of a temporary patient
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-
 Scenario Outline: Register patient send request to incorrect URL
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
@@ -147,37 +135,267 @@ Scenario Outline: Register patient with an invalid NHS number
 		| 9000000008  |
 		| 90000000090 |
 
-Scenario Outline: Register patient and check registration period is not null
+Scenario Outline: Register patient and check all elements conform to the gp connect profile
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the request content type to "<ContentType>"
+		And I set the Accept header to "<ContentType>"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
-		And I add the registration period with start date "<regStartDate>" to "<patient>"
-		And I add the registration status with code "A" to "<patient>"
-		And I add the registration type with code "T" to "<patient>"
-	When I send a gpc.registerpatients to register "<patient>"
+		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the bundle should contain a registration type
-		And the bundle should contain a registration status
+		And the response body should be FHIR <Format>
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain a single Patient resource
 		And the bundle should contain a registration period
+		And the bundle should contain a registration status
+		And the bundle should contain a registration type
+		And the response bundle should contain a patient resource which contains atleast a single NHS number identifier matching patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 family name matching the patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 given name matching the patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 gender element matching the patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 birthDate element matching the patient stored against key "registerPatient"
 	Examples: 
-		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
-		| patient23 | tom       | johnson    | 34555455  | 1993-03-03 | 2017-05-05   |
+		| ContentType           | Format |
+		| application/xml+fhir  | XML    |
+		| application/json+fhir | JSON   |
 
-Scenario Outline: Register patient and validate patient response contains the correct quantity of elements
+Scenario: Register patient and check all elements conform to the gp connect profile with Extensions sent in a different order
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
-		And I add the registration period with start date "<regStartDate>" to "<patient>"
-		And I add the registration status with code "A" to "<patient>"
-		And I add the registration type with code "T" to "<patient>"
-	When I send a gpc.registerpatients to register "<patient>"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the bundle patient response should contain exactly 1 family name
-		And the bundle patient response should contain exactly 1 given name
-		And the bundle patient response should contain exactly 1 gender element
-		And the bundle patient response should contain exactly 1 birthDate element
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain a single Patient resource
+		And the bundle should contain a registration period
+		And the bundle should contain a registration status
+		And the bundle should contain a registration type
+		And the response bundle should contain a patient resource which contains atleast a single NHS number identifier matching patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 family name matching the patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 given name matching the patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 gender element matching the patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 birthDate element matching the patient stored against key "registerPatient"
+
+Scenario: Register patient without registration period element
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient without registration status code element
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient without registration type element
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient without registration period or type code elements
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient without registration status code or registration type element
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient without any extension elements
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with duplicate extension
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with duplicate extension and missing extension
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the registration period with start date "2017-04-11" and end date "2018-12-28" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with invalid bundle resource type
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I register Patient stored against key "registerPatient" using JSON but change the bundle resource type to INVALIDRESOURCE
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with invalid patient resource type
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I register Patient stored against key "registerPatient" using JSON but change the patient resource type to INVALIDRESOURCE
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with invalid patient resource with additional element
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I register Patient stored against key "registerPatient" using JSON but add an additional invalid field to the patient resource
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with duplicate patient resource parameters
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
+		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
+	When I send a gpc.registerpatient to create patient
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with duplicate parameters valid first
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
+		And I am requesting the "SUM" care record section
+	When I send a gpc.registerpatient to create patient
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with duplicate parameters invalid first
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I am requesting the "SUM" care record section
+		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
+	When I send a gpc.registerpatient to create patient
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario Outline: Register patient with invalid parameters name
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the resource stored against key "registerPatient" as a parameter named "<ParameterName>" to the request
+	When I send a gpc.registerpatient to create patient
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples: 
-		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
-		| patient23 | tom       | johnson    | 34555455  | 1993-03-03 | 2017-05-05   |
+	| ParameterName        |
+	| invalidName          |
+	| registerPatient test |
+	|                      |
+	| null                 |
+
+@ignore
+Scenario: Register patient which alread exists on the system as a normal patient
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
+	When I send a gpc.registerpatient to create patient
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient which alread exists on the system as a temporary patient
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain a single Patient resource
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"		
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

@@ -182,7 +182,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)""")]
         public void bookAppointmentForUser(string patientRef, string scheduleName, string interactionID)
         {
+            bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, "/Appointment");
+        }
 
+        [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)"" without status check")]
+        public void bookAppointmentForUserWithoutStatusCheck(string patientRef, string scheduleName, string interactionID)
+        {
+            bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, "/Appointment", false);
+        }
+
+        [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)"" via url ""([^""]*)""")]
+        public void bookAppointmentForUserWithUrl(string patientRef, string scheduleName, string interactionID, string url)
+        {
+            bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, url, true);
+        }
+
+        public void bookAppointmentForUserWithUrl(string patientRef, string scheduleName, string interactionID, string url, bool statusCheck)
+        {
             Bundle patientBundle = (Bundle)HttpContext.StoredFhirResources[scheduleName];
             List<Slot> slotList = new List<Slot>();
             Dictionary<string, Practitioner> practitionerDictionary = new Dictionary<string, Practitioner>();
@@ -285,7 +301,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             patientBundle.Entry.Remove(entryToRemove);
 
             //Book the appointment
-            HttpSteps.bookAppointment(interactionID, "/Appointment", appointment);
+            if (statusCheck)
+            {
+                HttpSteps.bookAppointment(interactionID, url, appointment);
+            }
+            else
+            {
+                HttpSteps.bookAppointmentNoStatusCheck(interactionID, url, appointment);
+            }
         }
 
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)"" without header clean up")]
@@ -974,10 +997,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheAppointmentResourceContainsPriorityAndTheValueIsValid()
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            appointment.Priority.ShouldNotBeNull();
-            if (appointment.Priority < 0 || appointment.Priority > 9)
+
+            if (null != appointment && (appointment.Priority < 0 || appointment.Priority > 9))
             {
-                Assert.Fail();
+                Assert.Fail("Invalid priority value: " + appointment.Priority);
             }
         }
         //Need to check the validity of the reference but currently no GET method

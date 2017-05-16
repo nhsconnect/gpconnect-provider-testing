@@ -90,6 +90,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestParameters.ClearParameters();
             HttpContext.RequestBody = null;
 
+            FhirContext.FhirRequestParameters = new Parameters();
 
             HttpContext.ResponseTimeInMilliseconds = -1;
             //HttpContext.ResponseStatusCode = null;
@@ -369,7 +370,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         public Resource bookAppointment(string interactionID, string relativeUrl, Resource appointment)
         {
+            Resource Resource = bookAppointmentNoStatusCheck(interactionID, relativeUrl, appointment);
 
+            // Convert the response to resource
+            Then($@"the response status code should indicate created");
+            Then($@"the response body should be FHIR JSON");
+            And($@"the response should be an Appointment resource");
+
+            return Resource;
+        }
+
+        public Resource bookAppointmentNoStatusCheck(string interactionID, string relativeUrl, Resource appointment)
+        {
             // Store current state
             var preRequestHeaders = HttpContext.RequestHeaders.GetRequestHeaders();
             HttpContext.RequestHeaders.Clear();
@@ -381,8 +393,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var preRequestContentType = HttpContext.RequestContentType;
             var preRequestBody = HttpContext.RequestBody;
             HttpContext.RequestBody = null;
-
-
+            
             var preResponseTimeInMilliseconds = HttpContext.ResponseTimeInMilliseconds;
             var preResponseStatusCode = HttpContext.ResponseStatusCode;
             var preResponseContentType = HttpContext.ResponseContentType;
@@ -410,15 +421,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"I set the default JWT");
             And($@"I am performing the ""{interactionID}"" interaction");
             FhirSerializer.SerializeToJson(appointment);
-            
+
             // Book the apppointment
             RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
 
-            // Convert the response to resource
-            Then($@"the response status code should indicate created");
-            Then($@"the response body should be FHIR JSON");
-            And($@"the response should be an Appointment resource");
-            
             return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
         }
 
@@ -683,6 +689,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.OK);
         }
+
         [Then(@"the response status code should indicate created")]
         public void ThenTheResponseStatusCodeShouldIndicateCreated()
         {

@@ -197,6 +197,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
         }
 
+        [Given(@"I add the resource stored against key ""([^""]*)"" as a parameter named ""([^""]*)"" to the request")]
+        public void GivenIAddTheResourceStoredAgainstKeyAsAParameternamedToTheRequest(string storedPatientKey, string parameterName)
+        {
+            FhirContext.FhirRequestParameters.Add(parameterName, HttpContext.StoredFhirResources[storedPatientKey]);
+        }
+
         [Then(@"the bundle should contain a registration type")]
         public void GivenTheResponseValidRegType()
         {
@@ -269,70 +275,136 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-
-        [Then(@"the bundle patient response should contain exactly 1 family name")]
-        public void checkResponseForExactlyOneFamilyName()
+        [Then(@"the response bundle should contain a patient resource which contains atleast a single NHS number identifier matching patient stored against key ""([^""]*)""")]
+        public void ThenTheResponseBundleShouldContainAPatientResourceWhichContainsAtleastASingleNHSNumberIdentifier(string storedPatientKey)
         {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            string storedPatientNHSNumber = null;
+            foreach (Identifier identifier in storedPatient.Identifier) {
+                if (identifier.System != null && string.Equals(identifier.System, FhirConst.IdentifierSystems.kNHSNumber)) {
+                    storedPatientNHSNumber = identifier.Value;
+                }
+            }
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
-                    int count = 0;
+                    int nhsNumberIdentifierCount = 0;
+                    string patientNHSNumber = null;
                     Patient patient = (Patient)entry.Resource;
+                    foreach (Identifier identifier in patient.Identifier)
+                    {
+                        if (identifier.System != null && string.Equals(identifier.System, FhirConst.IdentifierSystems.kNHSNumber))
+                        {
+                            identifier.Value.ShouldNotBeNullOrEmpty("The NHS Number identifier must have a value element.");
+                            patientNHSNumber = identifier.Value;
+                            nhsNumberIdentifierCount++;
+                        }
+                    }
+                    nhsNumberIdentifierCount.ShouldBe(1, "The returned Patient Resource should contain a single NHS Number identifier");
+                    if (storedPatientNHSNumber != null)
+                    {
+                        storedPatientNHSNumber.ShouldBe(patientNHSNumber, "The patient NHS Number does not match the created patient NHS number");
+                    }
+                }
+            }
+
+        }
+        
+        [Then(@"the response bundle should contain a patient resource which contains exactly 1 family name matching the patient stored against key ""([^""]*)""")]
+        public void ThenTheResponseBundleShouldContainAPatientResourceWhichContainsExactly1FamilyName(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            string storedFamilyName = "";
+            foreach (HumanName name in storedPatient.Name)
+            {
+                foreach (var familyname in name.Family)
+                {
+                    storedFamilyName = familyname;
+                }
+            }
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+                    patient.Name.Count.ShouldBe(1, "There should be a single name element within the returned patient resource");
                     foreach (HumanName name in patient.Name)
                     {
                         name.Family.ShouldNotBeNull();
-                        count++;
+                        int count = 0;
+                        foreach (var familyname in name.Family)
+                        {
+                            familyname.ShouldBe(storedFamilyName, Case.Insensitive, "Returned patient family name does not match created patient family name");
+                            count++;
+                        }
+                        count.ShouldBe(1, "The returned Patient Resource should contain a single family name");
                     }
-
-                    count.ShouldBe(1);
+                    
                 }
             }
         }
 
      
-        [Then(@"the bundle patient response should contain exactly 1 given name")]
-        public void checkResponseForExactlyOneGivenName()
+        [Then(@"the response bundle should contain a patient resource which contains exactly 1 given name matching the patient stored against key ""([^""]*)""")]
+        public void ThenTheResponseBundleShouldContainAPatientResourceWhichContainsExactly1GivenName(string storedPatientKey)
         {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            string storedGivenName = "";
+            foreach (HumanName name in storedPatient.Name)
+            {
+                foreach (var givenname in name.Given)
+                {
+                    storedGivenName = givenname;
+                }
+            }
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
-                    int count = 0;
                     Patient patient = (Patient)entry.Resource;
+                    patient.Name.Count.ShouldBe(1, "There should be a single name element within the returned patient resource");
                     foreach (HumanName name in patient.Name)
                     {
                         name.Given.ShouldNotBeNull();
-                        count++;
+                        int count = 0;
+                        foreach (var givenname in name.Given)
+                        {
+                            givenname.ShouldBe(storedGivenName, Case.Insensitive, "Returned patient given name does not match created patient family name");
+                            count++;
+                        }
+                        count.ShouldBe(1, "The returned Patient Resource should contain a single given name");
                     }
-
-                    count.ShouldBe(1);
                 }
             }
         }
 
-        [Then(@"the bundle patient response should contain exactly 1 gender element")]
-        public void checkResponseForExactlyOneGenderElement()
+        [Then(@"the response bundle should contain a patient resource which contains exactly 1 gender element matching the patient stored against key ""([^""]*)""")]
+        public void ThenTheResponseBundleShouldContainAPatientResourceWhichContainsExactly1GenerElement(string storedPatientKey)
         {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
                     Patient patient = (Patient)entry.Resource;
-                    patient.Gender.ShouldNotBeNull();
+                    patient.Gender.ShouldNotBeNull("The patient resource should contain a gender element");
+                    patient.Gender.ShouldBe(storedPatient.Gender, "The returned patient gender does not match the creted patient gender");
                 }
             }
         }
 
-        [Then(@"the bundle patient response should contain exactly 1 birthDate element")]
-        public void checkResponseForExactlyOneBirthDateElement()
+        [Then(@"the response bundle should contain a patient resource which contains exactly 1 birthDate element matching the patient stored against key ""([^""]*)""")]
+        public void ThenTheResponseBundleShouldContainAPatientResourceWhichContainsExactly1BirthDateElement(string storedPatientKey)
         {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
                     Patient patient = (Patient)entry.Resource;
                     patient.BirthDate.ShouldNotBeNull();
+                    patient.BirthDate.ShouldBe(storedPatient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
                 }
             }
         }
@@ -346,11 +418,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I register patient stored against key ""(.*)"" with url ""(.*)""")]
         public void IRegisterPatientStoredAgainstKeyWithURL(string storedPatientKey, string url)
         {
-
             Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
-
             FhirContext.FhirRequestParameters.Add("registerPatient", patient);
+            IRegisterPatientWithURL(url);
+        }
 
+        [When(@"I send a gpc.registerpatient to create patient")]
+        public void ISendAGPCRegisterPatientToCreatePatient()
+        {
+            IRegisterPatientWithURL("/Patient/$gpc.registerpatient");
+        }
+
+        [When(@"I register patient with url ""(.*)""")]
+        public void IRegisterPatientWithURL(string url)
+        {
             string body = null;
             if (HttpContext.RequestContentType.Contains("xml"))
             {
@@ -362,6 +443,36 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             HttpSteps.RestRequest(Method.POST, url, body);
         }
-        
+
+        [When(@"I register Patient stored against key ""(.*)"" using JSON but change the patient resource type to INVALIDRESOURCE")]
+        public void IRegisterPatientStoredAgainstKeyUsingJSONButChangeThePatientResourceTypeToINVaLIDRESOURCE(string storedPatientKey)
+        {
+            Resource patient = HttpContext.StoredFhirResources[storedPatientKey];
+            string patientString = FhirSerializer.SerializeToJson(patient);
+            patientString = FhirHelper.ChangeResourceTypeString(patientString, "INVALIDRESOURCE");
+            string body = "{\"resourceType\":\"Parameters\",\"parameter\":[{\"name\":\"registerPatient\",\"resource\":" + patientString + "}]}";
+            HttpSteps.RestRequest(Method.POST, "/Patient/$gpc.registerpatient", body);
+        }
+
+        [When(@"I register Patient stored against key ""(.*)"" using JSON but add an additional invalid field to the patient resource")]
+        public void IRegisterPatientStoredAgainstKeyUsingJSONButAddAnAdditionalInvalidFieldToThepatientResource(string storedPatientKey)
+        {
+            Resource patient = HttpContext.StoredFhirResources[storedPatientKey];
+            string patientString = FhirSerializer.SerializeToJson(patient);
+            patientString = FhirHelper.AddInvalidFieldToResourceJson(patientString);
+            string body = "{\"resourceType\":\"Parameters\",\"parameter\":[{\"name\":\"registerPatient\",\"resource\":" + patientString + "}]}";
+            HttpSteps.RestRequest(Method.POST, "/Patient/$gpc.registerpatient", body);
+        }
+
+        [When(@"I register Patient stored against key ""(.*)"" using JSON but change the bundle resource type to INVALIDRESOURCE")]
+        public void IRegisterPatientStoredAgainstKeyUsingJSONButChangeTheBundleResourceTypeToINVaLIDRESOURCE(string storedPatientKey)
+        {
+            Resource patient = HttpContext.StoredFhirResources[storedPatientKey];
+            FhirContext.FhirRequestParameters.Add("registerPatient", patient);
+            string body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
+            body = FhirHelper.ChangeResourceTypeString(body, "INVALIDRESOURCE");
+            HttpSteps.RestRequest(Method.POST, "/Patient/$gpc.registerpatient", body);
+        }
+
     }
 }
