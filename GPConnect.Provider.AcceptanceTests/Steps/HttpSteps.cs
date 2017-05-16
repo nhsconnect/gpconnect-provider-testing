@@ -197,9 +197,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.RequestParameters.AddParameter(parameterName, parameterValue);
         }
-
-     
-
+        
         [Given(@"I add the parameter ""([^""]*)"" with system ""([^""]*)"" for patient ""([^""]*)""")]
         public void GivenIAddTheParameterWithSystemForPatient(string parameterName, string parameterSystem, string patient)
         {
@@ -250,7 +248,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         public Resource getReturnedResourceForRelativeURL(string interactionID, string relativeUrl) {
-            
             // Store current state
             var preRequestHeaders = HttpContext.RequestHeaders.GetRequestHeaders();
             HttpContext.RequestHeaders.Clear();
@@ -382,6 +379,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         public Resource bookAppointmentNoStatusCheck(string interactionID, string relativeUrl, Resource appointment)
         {
+            return bookCustomAppointment(interactionID, relativeUrl, FhirSerializer.SerializeToJson(appointment));
+        }
+
+        public Resource bookCustomAppointment(string interactionID, string relativeUrl, String appointment)
+        {
             // Store current state
             var preRequestHeaders = HttpContext.RequestHeaders.GetRequestHeaders();
             HttpContext.RequestHeaders.Clear();
@@ -393,7 +395,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var preRequestContentType = HttpContext.RequestContentType;
             var preRequestBody = HttpContext.RequestBody;
             HttpContext.RequestBody = null;
-            
+
             var preResponseTimeInMilliseconds = HttpContext.ResponseTimeInMilliseconds;
             var preResponseStatusCode = HttpContext.ResponseStatusCode;
             var preResponseContentType = HttpContext.ResponseContentType;
@@ -420,10 +422,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given($@"I am using the default server");
             And($@"I set the default JWT");
             And($@"I am performing the ""{interactionID}"" interaction");
-            FhirSerializer.SerializeToJson(appointment);
 
             // Book the apppointment
-            RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
+            RestRequest(Method.POST, relativeUrl, appointment);
 
             return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
         }
@@ -436,9 +437,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
             return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
         }
-
-
-
+        
         // Rest Request Helper
 
         public void RestRequest(Method method, string relativeUrl, string body = null)
@@ -756,7 +755,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         // Logger
-
         private void LogToDisk()
         {
             var traceDirectory = GlobalContext.TraceDirectory;

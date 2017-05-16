@@ -2,10 +2,13 @@
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
+using Hl7.Fhir.Serialization;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -536,9 +539,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"I book the appointment called ""(.*)""")]
-        public void ThenIBookTheAppointmentCalledString(string appointmentName) {
+        public void ThenIBookTheAppointmentCalledString(string appointmentName)
+        {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+        }
+
+        [Then(@"I book the appointment called ""(.*)"" with an invalid field")]
+        public void ThenIBookTheAppointmentCalledStringWithAnInvalidField(string appointmentName)
+        {
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            string appointmentString = FhirSerializer.SerializeToJson(appointment);
+            appointmentString = FhirHelper.AddInvalidFieldToResourceJson(appointmentString);
+            HttpSteps.bookCustomAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointmentString);
         }
 
         [Then(@"I book the appointment called ""(.*)"" without status check")]
