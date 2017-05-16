@@ -82,7 +82,6 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		| 2016-08-                  |
 		| 2016-08-05 08:16:07       |
 
-
 Scenario: Appointment retrieve send request and find request using equal to prefix
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -160,7 +159,7 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 	When I search for "patient1" and make a get request for their appointments with the start range date "<startDate>" with prefix "<prefix>" and end range date "<endDate>" with prefix "<prefix2>"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "400"
 	Examples:
 		| startDate                 | prefix | endDate                   | prefix2 |
 		| 2015                      | lt     | 2018                      | lt      |
@@ -169,7 +168,6 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 		| 2014-05                   | gt     | 2044-05-01T11:08:32       | gt      |
 		| 2014-05-01T11:08:32       | tt     | 2018-05                   | lu      |
 		| 2015-10-23T11:08:32+00:00 | dd     | 2018-10-23T11:08:32+00:00 | zz      |
-
 
 @ignore
 Scenario Outline: Appointment retrieve send request with date variations and not equal to prefix

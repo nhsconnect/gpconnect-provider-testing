@@ -196,6 +196,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SearchForFreeSlots.feature</DependentUpon>
     </Compile>
+    <Compile Include="AmendAppointment.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AmendAppointment.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Steps\AmendAppointmentSteps.cs" />
     <Compile Include="Steps\AppointmentReadSteps.cs" />
     <Compile Include="Steps\AppointmentCancelSteps.cs" />
     <Compile Include="Steps\AppointmentRetrieveSteps.cs" />
@@ -297,6 +303,10 @@
     <None Include="AppointmentRetrieve.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AppointmentRetrieve.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AmendAppointment.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AmendAppointment.feature.cs</LastGenOutput>
     </None>
     <None Include="SpineSecurityProxy.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

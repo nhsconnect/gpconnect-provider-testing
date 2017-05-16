@@ -52,7 +52,6 @@ Scenario Outline: Read appointment failure with incorrect interaction id
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "<interactionId>" interaction
-		And I do not send header "<Header>"
 	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
