@@ -32,7 +32,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps = httpSteps;
             HttpContext = httpContext;
         }
-        
+
         [Given(@"I find the next patient to register and store the Patient Resource against key ""([^""]*)""")]
         public void GivenIFindTheNextPatientToRegisterAndStoreThePatientResourceAgainstKey(string patientResourceKey)
         {
@@ -225,6 +225,48 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     regTypePresent.ShouldBe(true);
                  }
             }
+        }
+
+        [Given(@"I convert patient stored in ""([^""]*)"" to a register temporary patient against key ""([^""]*)""")]
+        public void GivenIConvertPatientStoredInToARegisterTemporaryPatientAgainsKey(string storedPatientKey, string returnPatientKey)
+        {
+            Patient storedPatient = (Patient) HttpContext.StoredFhirResources[storedPatientKey];
+            Patient returnPatient = new Patient();
+
+            foreach(var identifier in storedPatient.Identifier) {
+                if (string.Equals(identifier.System, FhirConst.IdentifierSystems.kNHSNumber))
+                {
+                    returnPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, identifier.Value));
+                    break;
+                }
+            }
+
+            string familyName = "GPConnectFamilyName";
+            string givenName = "GPConnectGivenName";
+            foreach (var storedPatientName in storedPatient.Name)
+            {
+                foreach (var storedPatientFamilyName in storedPatientName.Family)
+                {
+                    familyName = storedPatientFamilyName;
+                    break;
+                }
+                foreach (var storedPatientGivenName in storedPatientName.Given)
+                {
+                    givenName = storedPatientGivenName;
+                    break;
+                }
+            }
+            HumanName name = new HumanName();
+            name.FamilyElement.Add(new FhirString(familyName));
+            name.GivenElement.Add(new FhirString(givenName));
+            returnPatient.Name = new List<HumanName>();
+            returnPatient.Name.Add(name);
+
+            returnPatient.Gender = storedPatient.Gender != null ? storedPatient.Gender : AdministrativeGender.Unknown;
+            returnPatient.BirthDateElement = storedPatient.BirthDateElement != null ? storedPatient.BirthDateElement : new Date();
+            
+            if (HttpContext.StoredFhirResources.ContainsKey(returnPatientKey)) HttpContext.StoredFhirResources.Remove(returnPatientKey);
+            HttpContext.StoredFhirResources.Add(returnPatientKey, returnPatient);
         }
 
         [Then(@"the bundle should contain a registration status")]
