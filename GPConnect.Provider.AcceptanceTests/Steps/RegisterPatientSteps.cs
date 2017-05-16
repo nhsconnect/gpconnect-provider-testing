@@ -197,6 +197,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
         }
 
+        [Given(@"I add the resource stored against key ""([^""]*)"" as a parameter named ""([^""]*)"" to the request")]
+        public void GivenIAddTheResourceStoredAgainstKeyAsAParameternamedToTheRequest(string storedPatientKey, string parameterName)
+        {
+            FhirContext.FhirRequestParameters.Add(parameterName, HttpContext.StoredFhirResources[storedPatientKey]);
+        }
+
         [Then(@"the bundle should contain a registration type")]
         public void GivenTheResponseValidRegType()
         {
@@ -414,9 +420,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
 
             Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
-
             FhirContext.FhirRequestParameters.Add("registerPatient", patient);
+            IRegisterPatientWithURL(url);
+        }
 
+        [When(@"I send a gpc.registerpatient to create patient")]
+        public void ISendAGPCRegisterPatientToCreatePatient()
+        {
+            IRegisterPatientWithURL("/Patient/$gpc.registerpatient");
+        }
+
+        [When(@"I register patient with url ""(.*)""")]
+        public void IRegisterPatientWithURL(string url)
+        {
             string body = null;
             if (HttpContext.RequestContentType.Contains("xml"))
             {
@@ -428,6 +444,36 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             HttpSteps.RestRequest(Method.POST, url, body);
         }
-        
+
+        [When(@"I register Patient stored against key ""(.*)"" using JSON but change the patient resource type to INVALIDRESOURCE")]
+        public void IRegisterPatientStoredAgainstKeyUsingJSONButChangeThePatientResourceTypeToINVaLIDRESOURCE(string storedPatientKey)
+        {
+            Resource patient = HttpContext.StoredFhirResources[storedPatientKey];
+            string patientString = FhirSerializer.SerializeToJson(patient);
+            patientString = FhirHelper.ChangeResourceTypeString(patientString, "INVALIDRESOURCE");
+            string body = "{\"resourceType\":\"Parameters\",\"parameter\":[{\"name\":\"registerPatient\",\"resource\":" + patientString + "}]}";
+            HttpSteps.RestRequest(Method.POST, "/Patient/$gpc.registerpatient", body);
+        }
+
+        [When(@"I register Patient stored against key ""(.*)"" using JSON but add an additional invalid field to the patient resource")]
+        public void IRegisterPatientStoredAgainstKeyUsingJSONButAddAnAdditionalInvalidFieldToThepatientResource(string storedPatientKey)
+        {
+            Resource patient = HttpContext.StoredFhirResources[storedPatientKey];
+            string patientString = FhirSerializer.SerializeToJson(patient);
+            patientString = FhirHelper.AddInvalidFieldToResourceJson(patientString);
+            string body = "{\"resourceType\":\"Parameters\",\"parameter\":[{\"name\":\"registerPatient\",\"resource\":" + patientString + "}]}";
+            HttpSteps.RestRequest(Method.POST, "/Patient/$gpc.registerpatient", body);
+        }
+
+        [When(@"I register Patient stored against key ""(.*)"" using JSON but change the bundle resource type to INVALIDRESOURCE")]
+        public void IRegisterPatientStoredAgainstKeyUsingJSONButChangeTheBundleResourceTypeToINVaLIDRESOURCE(string storedPatientKey)
+        {
+            Resource patient = HttpContext.StoredFhirResources[storedPatientKey];
+            FhirContext.FhirRequestParameters.Add("registerPatient", patient);
+            string body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
+            body = FhirHelper.ChangeResourceTypeString(body, "INVALIDRESOURCE");
+            HttpSteps.RestRequest(Method.POST, "/Patient/$gpc.registerpatient", body);
+        }
+
     }
 }
