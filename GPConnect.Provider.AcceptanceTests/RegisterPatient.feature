@@ -3,18 +3,6 @@
 Background:
 	Given I have the test patient codes
 
-Scenario: Successful registration of a temporary patient
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-
 Scenario Outline: Register patient send request to incorrect URL
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
@@ -147,37 +135,23 @@ Scenario Outline: Register patient with an invalid NHS number
 		| 9000000008  |
 		| 90000000090 |
 
-Scenario Outline: Register patient and check registration period is not null
+Scenario: Register patient and check all elements conform to the gp connect profile
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
-		And I add the registration period with start date "<regStartDate>" to "<patient>"
-		And I add the registration status with code "A" to "<patient>"
-		And I add the registration type with code "T" to "<patient>"
-	When I send a gpc.registerpatients to register "<patient>"
+		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the bundle should contain a registration type
-		And the bundle should contain a registration status
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain a single Patient resource
 		And the bundle should contain a registration period
-	Examples: 
-		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
-		| patient23 | tom       | johnson    | 34555455  | 1993-03-03 | 2017-05-05   |
-
-Scenario Outline: Register patient and validate patient response contains the correct quantity of elements
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I register patient "<patient>" with first name "<firstName>" and family name "<secondName>" with NHS number "<nhsNumber>" and birth date "<birthDate>"
-		And I add the registration period with start date "<regStartDate>" to "<patient>"
-		And I add the registration status with code "A" to "<patient>"
-		And I add the registration type with code "T" to "<patient>"
-	When I send a gpc.registerpatients to register "<patient>"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the bundle patient response should contain exactly 1 family name
-		And the bundle patient response should contain exactly 1 given name
-		And the bundle patient response should contain exactly 1 gender element
-		And the bundle patient response should contain exactly 1 birthDate element
-	Examples: 
-		| patient   | firstName | secondName | nhsNumber | birthDate  | regStartDate |
-		| patient23 | tom       | johnson    | 34555455  | 1993-03-03 | 2017-05-05   |
+		And the bundle should contain a registration status
+		And the bundle should contain a registration type
+		And the response bundle should contain a patient resource which contains atleast a single NHS number identifier matching patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 family name matching the patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 given name matching the patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 gender element matching the patient stored against key "registerPatient"
+		And the response bundle should contain a patient resource which contains exactly 1 birthDate element matching the patient stored against key "registerPatient"
