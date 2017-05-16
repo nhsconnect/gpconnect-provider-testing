@@ -418,7 +418,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I register patient stored against key ""(.*)"" with url ""(.*)""")]
         public void IRegisterPatientStoredAgainstKeyWithURL(string storedPatientKey, string url)
         {
-
             Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             FhirContext.FhirRequestParameters.Add("registerPatient", patient);
             IRegisterPatientWithURL(url);

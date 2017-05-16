@@ -367,3 +367,35 @@ Scenario Outline: Register patient with invalid parameters name
 	|                      |
 	| null                 |
 
+@ignore
+Scenario: Register patient which alread exists on the system as a normal patient
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
+	When I send a gpc.registerpatient to create patient
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient which alread exists on the system as a temporary patient
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain a single Patient resource
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"		
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
