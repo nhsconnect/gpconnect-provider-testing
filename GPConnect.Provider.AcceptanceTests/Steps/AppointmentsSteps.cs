@@ -182,11 +182,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)""")]
         public void bookAppointmentForUser(string patientRef, string scheduleName, string interactionID)
         {
-            bookAppointmentForUser(patientRef, scheduleName, interactionID, "/Appointment");
+            bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, "/Appointment");
+        }
+
+        [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)"" without status check")]
+        public void bookAppointmentForUserWithoutStatusCheck(string patientRef, string scheduleName, string interactionID)
+        {
+            bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, "/Appointment", false);
         }
 
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)"" via url ""([^""]*)""")]
-        public void bookAppointmentForUser(string patientRef, string scheduleName, string interactionID, string url)
+        public void bookAppointmentForUserWithUrl(string patientRef, string scheduleName, string interactionID, string url)
+        {
+            bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, url, true);
+        }
+
+        public void bookAppointmentForUserWithUrl(string patientRef, string scheduleName, string interactionID, string url, bool statusCheck)
         {
             Bundle patientBundle = (Bundle)HttpContext.StoredFhirResources[scheduleName];
             List<Slot> slotList = new List<Slot>();
@@ -290,7 +301,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             patientBundle.Entry.Remove(entryToRemove);
 
             //Book the appointment
-            HttpSteps.bookAppointment(interactionID, url, appointment);
+            if (statusCheck)
+            {
+                HttpSteps.bookAppointment(interactionID, url, appointment);
+            }
+            else
+            {
+                HttpSteps.bookAppointmentNoStatusCheck(interactionID, url, appointment);
+            }
         }
 
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)"" without header clean up")]

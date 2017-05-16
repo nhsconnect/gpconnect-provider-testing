@@ -149,7 +149,7 @@ this.FeatureBackground();
 #line 25
  testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
                     "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
-                    "s:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "s:gpconnect:fhir:rest:create:appointment\" without status check", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 26
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 27
@@ -364,7 +364,8 @@ this.FeatureBackground();
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 112
  testRunner.When(string.Format("I book an appointment for patient \"patient1\" on the provider system with the sche" +
-                        "dule name \"getScheduleResponseBundle\" with interaction id \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "dule name \"getScheduleResponseBundle\" with interaction id \"{0}\" without status c" +
+                        "heck", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 113
     testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 114
@@ -582,7 +583,7 @@ this.FeatureBackground();
  testRunner.Then(string.Format("I remove the participant from the appointment called \"{0}\" which starts with refe" +
                         "rence \"{1}\"", appointment, participant), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 186
- testRunner.Then(string.Format("I book the appointment called \"{0}\"", appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I book the appointment called \"{0}\" without status check", appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 187
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 188
@@ -623,7 +624,7 @@ this.FeatureBackground();
  testRunner.Then("I remove the participant from the appointment called \"Appointment1\" which starts " +
                     "with reference \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 203
- testRunner.Then("I book the appointment called \"Appointment1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I book the appointment called \"Appointment1\" without status check", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 204
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 205
@@ -804,7 +805,7 @@ this.FeatureBackground();
  testRunner.Then(string.Format("I create an appointment with slot reference \"{0}\" for patient \"patient1\" called \"" +
                         "Appointment3\" from schedule \"getScheduleResponseBundle\"", slotReference), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 257
- testRunner.Then("I book the appointment called \"Appointment3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I book the appointment called \"Appointment3\" without status check", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 258
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 259
@@ -883,7 +884,7 @@ this.FeatureBackground();
 #line 289
  testRunner.Then("I set the appointment start element to null for \"Appointment3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 290
- testRunner.Then("I book the appointment called \"Appointment3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I book the appointment called \"Appointment3\" without status check", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 291
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 292
@@ -915,7 +916,7 @@ this.FeatureBackground();
 #line 299
  testRunner.Then("I set the appointment end element to null for \"Appointment3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 300
- testRunner.Then("I book the appointment called \"Appointment3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I book the appointment called \"Appointment3\" without status check", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 301
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 302
@@ -947,7 +948,7 @@ this.FeatureBackground();
  testRunner.Then("I create an appointment for patient \"patient1\" called \"Appointment3\" using a pati" +
                     "ent resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 310
- testRunner.Then("I book the appointment called \"Appointment3\" which is an incorrect resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I book the appointment called \"Appointment3\" without status check", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 311
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 312
@@ -974,7 +975,7 @@ this.FeatureBackground();
  testRunner.Then("I create a new bundle to contain an appointment for patient \"patient1\" called \"Ap" +
                     "pointment3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 318
- testRunner.Then("I book the appointment called \"Appointment3\" which is an incorrect resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I book the appointment called \"Appointment3\" without status check", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 319
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 320

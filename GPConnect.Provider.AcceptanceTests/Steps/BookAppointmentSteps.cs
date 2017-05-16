@@ -541,8 +541,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
         }
 
-        [Then(@"I book the appointment called ""(.*)"" which is an incorrect resource")]
-        public void ThenIBookTheAppointmentCalledStringWhichIsAnIncorrectResource(string appointmentName)
+        [Then(@"I book the appointment called ""(.*)"" without status check")]
+        public void ThenIBookTheAppointmentCalledStringWithoutStatusCheck(string appointmentName)
         {
             Resource appointment = HttpContext.StoredFhirResources[appointmentName];
             HttpSteps.bookAppointmentNoStatusCheck("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
