@@ -238,16 +238,26 @@ Scenario: Book single appointment for patient and send additional extensions wit
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 
-Scenario: Book single appointment for patient and send extra fields in the resource
+Scenario: Book single appointment for patient with random id
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 	Then I create an appointment for patient "patient1" called "Appointment3" from schedule "getScheduleResponseBundle"
 	Then I change the appointment id to "random" to the appointment called "Appointment3"
 	Then I book the appointment called "Appointment3"
-	Then the response status code should indicate created
+	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the response should be an Appointment resource
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Book single appointment for patient and send extra fields in the resource
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+	Then I create an appointment for patient "patient1" called "Appointment3" from schedule "getScheduleResponseBundle"
+	Then I book the appointment called "Appointment3" with an invalid field
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario Outline: Book appointment with invalid slot reference
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"

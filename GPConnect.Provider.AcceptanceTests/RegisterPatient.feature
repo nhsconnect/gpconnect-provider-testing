@@ -367,9 +367,9 @@ Scenario Outline: Register patient with invalid parameters name
 	|                      |
 	| null                 |
 
-@ignore
 Scenario: Register patient which alread exists on the system as a normal patient
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "registerPatient"
+		And I convert patient stored in "registerPatient" to a register temporary patient against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
