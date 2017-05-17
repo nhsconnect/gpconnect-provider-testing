@@ -127,7 +127,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set ""(.*)"" request header to ""(.*)""")]
         public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
         {
-            HttpContext.RequestHeaders.ReplaceHeader(headerKey, headerValue);
+
+           string value = HttpContext.resourceNameStored[headerValue];
+           HttpContext.RequestHeaders.ReplaceHeader(headerKey, value);
         }
 
         [Given(@"I am accredited system ""(.*)""")]

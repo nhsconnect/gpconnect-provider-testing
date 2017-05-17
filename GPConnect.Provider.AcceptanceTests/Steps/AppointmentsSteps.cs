@@ -846,9 +846,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Status.ShouldNotBeNull();
             string statusValue = appointment.Status.Value.ToString();
-            if (statusValue != "Booked" && statusValue != "Pending" && statusValue != "Arrived" && statusValue != "Fufilled" && statusValue != "Cancelled" && statusValue != "Noshow")
+            if (statusValue != "Booked" && statusValue != "Pending" && statusValue != "Arrived" && statusValue != "Fulfilled" && statusValue != "Cancelled" && statusValue != "Noshow")
             {
-                Assert.Fail();
+                Assert.Fail("Appointment status value is invalid : " + statusValue);
             }
         }
 
