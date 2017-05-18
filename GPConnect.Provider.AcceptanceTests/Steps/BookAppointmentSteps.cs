@@ -421,14 +421,38 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 practitionerReferenceForSelectedSlot.Add(((ResourceReference)practitionerReferenceExtension.Value).Reference);
             }
-            
-            Extension extension = new Extension();
-            CodeableConcept reason = new CodeableConcept();
-            AppointmentStatus status = new AppointmentStatus();
-            int priority = 0;
 
-            // Create Appointment
-            Appointment appointment = buildAndReturnAppointment(patientResource, practitionerReferenceForSelectedSlot, locationReferenceForSelectedSlot, firstSlot, reason, extension, identifiers, status, priority);
+            CodeableConcept reason = new CodeableConcept();
+            Coding coding = new Coding();
+            List<Extension> extensionList = new List<Extension>();
+            Extension extension = new Extension();
+            Identifier identifier = new Identifier();
+           
+            AppointmentStatus status = new AppointmentStatus();
+            int priority = new int();
+
+            switch (appointmentName)
+            {
+                case "CustomAppointment1":
+                    //Define category
+                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "ONL", "Online"));
+                    //Define Identifier
+                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
+                    identifier.Value = "898976578";
+                    identifiers.Add(identifier);
+                    //Define Status
+                    status = AppointmentStatus.Fulfilled;
+                    //Define Reason
+                    coding = buildReasonForAppointment("http://snomed.info/sct", "SBJ", "SBJ");
+                    reason.Coding.Add(coding);
+                    //Define Priority
+                    priority = 1;
+                    //Define participant
+                    break;
+            }
+
+                    // Create Appointment
+                Appointment appointment = buildAndReturnAppointment(patientResource, practitionerReferenceForSelectedSlot, locationReferenceForSelectedSlot, firstSlot, reason, extension, identifiers, status, priority);
 
             // Now we have used the slot remove from it from the getScheduleBundle so it is not used to book other appointments same getSchedule is used
             EntryComponent entryToRemove = null;
@@ -818,7 +842,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             
             if (HttpContext.StoredDate.ContainsKey("slotStartDate")) HttpContext.StoredDate.Remove("slotStartDate");
             HttpContext.StoredDate.Add("slotStartDate", firstSlot.StartElement.ToString());
-
+            Coding coding = buildReasonForAppointment("http://snomed.info/sct", "1", "1");
+            reason.Coding.Add(coding);
             appointment.Reason = reason;
             appointment.Extension.Add(extension);
             return appointment;

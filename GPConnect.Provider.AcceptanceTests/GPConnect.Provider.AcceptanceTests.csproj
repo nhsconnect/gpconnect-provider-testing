@@ -104,6 +104,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BookAppointment.feature</DependentUpon>
     </Compile>
+    <Compile Include="CancelAppointment.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CancelAppointment.feature</DependentUpon>
+    </Compile>
     <Compile Include="Constants\SpineConst.cs" />
     <Compile Include="Constants\FhirConst.cs" />
     <Compile Include="Constants\HttpConst.cs" />
@@ -207,6 +212,7 @@
     <Compile Include="Steps\AppointmentRetrieveSteps.cs" />
     <Compile Include="Steps\AppointmentsSteps.cs" />
     <Compile Include="Steps\BookAppointmentSteps.cs" />
+    <Compile Include="Steps\CancelAppointmentSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
     <Compile Include="Steps\GetScheduleSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />
@@ -250,6 +256,10 @@
     <None Include="BookAppointment.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BookAppointment.feature.cs</LastGenOutput>
+    </None>
+    <None Include="CancelAppointment.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CancelAppointment.feature.cs</LastGenOutput>
     </None>
     <None Include="FhirBase.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

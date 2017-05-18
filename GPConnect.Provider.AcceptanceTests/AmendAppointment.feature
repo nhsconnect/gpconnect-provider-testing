@@ -42,7 +42,6 @@ Scenario: Amend appointment and update element which cannot be updated
 	Then the response status code should indicate authentication failure
 		And the response should be a OperationOutcome resource
 		
-	
 
 Scenario Outline: Amend appointment sending invalid URL
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"

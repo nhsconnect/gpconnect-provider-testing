@@ -89,7 +89,7 @@ Scenario: Book appointment prefer header set to representation
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I set the Prefer header to "return=representation"
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" without header clean up
+	When I book an appointment for patient "CustomAppointment1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" without header clean up
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource

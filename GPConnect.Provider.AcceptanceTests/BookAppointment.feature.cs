@@ -295,9 +295,9 @@ this.FeatureBackground();
 #line 91
   testRunner.And("I set the Prefer header to \"return=representation\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
- testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
-                    "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
-                    "s:gpconnect:fhir:rest:create:appointment\" without header clean up", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I book an appointment for patient \"CustomAppointment1\" on the provider system wit" +
+                    "h the schedule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:nam" +
+                    "es:services:gpconnect:fhir:rest:create:appointment\" without header clean up", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 93
  testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 94

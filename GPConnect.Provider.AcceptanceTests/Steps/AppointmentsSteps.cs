@@ -200,6 +200,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void bookAppointmentForUserWithUrl(string patientRef, string scheduleName, string interactionID, string url, bool statusCheck)
         {
             Bundle patientBundle = (Bundle)HttpContext.StoredFhirResources[scheduleName];
+            Patient patientResource = (Patient)HttpContext.StoredFhirResources[patientRef];
             List<Slot> slotList = new List<Slot>();
             Dictionary<string, Practitioner> practitionerDictionary = new Dictionary<string, Practitioner>();
             Dictionary<string, Location> locationDictionary = new Dictionary<string, Location>();
@@ -257,7 +258,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Appointment Patient Resource
             ParticipantComponent patient = new ParticipantComponent();
             ResourceReference patientReference = new ResourceReference();
-            patientReference.Reference = "Patient/1";
+            patientReference.Reference = "Patient/13";
             patient.Actor = patientReference;
             patient.Status = ParticipationStatus.Accepted;
             appointment.Participant.Add(patient);
@@ -373,7 +374,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Appointment Patient Resource
             ParticipantComponent patient = new ParticipantComponent();
             ResourceReference patientReference = new ResourceReference();
-            patientReference.Reference = "Patient/1";
+            patientReference.Reference = "Patient/13";
             patient.Actor = patientReference;
             patient.Status = ParticipationStatus.Accepted;
             appointment.Participant.Add(patient);
