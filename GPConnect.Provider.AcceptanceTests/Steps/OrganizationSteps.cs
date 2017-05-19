@@ -20,11 +20,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     {
         private readonly FhirContext FhirContext;
         private readonly AccessRecordSteps AccessRecordSteps;
+        private readonly HttpContext HttpContext;
 
-        public OrganizationSteps(FhirContext fhirContext, AccessRecordSteps accessRecordSteps)
+        public OrganizationSteps(FhirContext fhirContext, AccessRecordSteps accessRecordSteps, HttpContext httpContext)
         {
             FhirContext = fhirContext;
             AccessRecordSteps = accessRecordSteps;
+            HttpContext = httpContext;
         }
 
         [Given(@"I have the test ods codes")]
@@ -92,5 +94,35 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+
+
+        [Given(@"I get organization ""(.*)"" id and save it as ""(.*)""")]
+        public void GivenIGetPracIdAndSaveItAsIdName(string orgName, string savedOrg)
+        {
+            string identifier = "urn:nhs:names:services:gpconnect:fhir:rest:search:organization";
+            string system = "http://fhir.nhs.net/Id/ods-organization-code";
+            string value = FhirContext.FhirOrganizations[orgName];
+            string URL = "/Organization";
+
+            Given("I am using the default server");
+            Given($@"I am performing the ""{identifier}"" interaction");
+            Given($@"I add the organization identifier parameter with system ""{system}"" and value ""{orgName}""");
+            When($@"I make a GET request to ""{URL}""");
+            Then("the response status code should indicate success");
+            Then("the response body should be FHIR JSON");
+
+            Organization organization = new Organization();
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    organization = (Organization)entry.Resource;
+
+                }
+            }
+            HttpContext.StoredFhirResources.Add(savedOrg, organization);
+        }
+
     }
 }

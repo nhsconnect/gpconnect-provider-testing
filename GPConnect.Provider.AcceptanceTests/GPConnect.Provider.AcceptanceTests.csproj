@@ -159,6 +159,11 @@
     <Compile Include="Importers\ODSCodeMapConverter.cs" />
     <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
+    <Compile Include="OrganizationRead.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OrganizationRead.feature</DependentUpon>
+    </Compile>
     <Compile Include="Practitioner.feature.cs">
       <DependentUpon>Practitioner.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -273,6 +278,10 @@
     <None Include="Foundation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Foundation.feature.cs</LastGenOutput>
+    </None>
+    <None Include="OrganizationRead.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OrganizationRead.feature.cs</LastGenOutput>
     </None>
     <None Include="Practitioner.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
