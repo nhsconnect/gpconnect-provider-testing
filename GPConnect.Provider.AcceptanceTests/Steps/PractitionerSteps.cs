@@ -50,7 +50,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + FhirContext.FhirPractitioners[valueParameter]}""");
         }
-        
+
         [Then(@"the interactionId ""(.*)"" should be valid")]
         public void ValidInteractionId(String interactionId)
         {
@@ -132,8 +132,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Practitioner practitioner = (Practitioner)entry.Resource;
                     int userIdCount = 0;
-                    foreach (var identifier in practitioner.Identifier){
-                        if (String.Equals(identifier.System, "http://fhir.nhs.net/Id/sds-user-id")){
+                    foreach (var identifier in practitioner.Identifier) {
+                        if (String.Equals(identifier.System, "http://fhir.nhs.net/Id/sds-user-id")) {
                             userIdCount++;
                         }
                     }
@@ -150,7 +150,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
                 {
                     Practitioner practitioner = (Practitioner)entry.Resource;
-                    foreach (var identifier in practitioner.Identifier){
+                    foreach (var identifier in practitioner.Identifier) {
                         var validSystems = new String[2] { "http://fhir.nhs.net/Id/sds-user-id", "http://fhir.nhs.net/Id/sds-role-profile-id" };
                         identifier.System.ShouldBeOneOf(validSystems);
                     }
@@ -163,8 +163,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Practitioner pracValue = (Practitioner)HttpContext.StoredFhirResources[practitioner];
             string id = pracValue.Id.ToString();
-            string URL = URLpassed + id;
-           When($@"I make a GET request to ""{URL}""");
+            string URL = "/Practitioner/" + id;
+            When($@"I make a GET request to ""{URL}""");
         }
 
         [When(@"I make a GET request for a practitioner using an invalid id of ""(.*)""")]
@@ -174,7 +174,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             When($@"I make a GET request to ""{URL}""");
         }
 
-        
+
         [Given(@"I get ""(.*)"" id and save it as ""(.*)""")]
         public void GivenIGetPracIdAndSaveItAsIdName(string practitionerName, string practitionerId)
         {
@@ -196,7 +196,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
                 {
                     practitioner = (Practitioner)entry.Resource;
-                    
+
                 }
             }
             HttpContext.StoredFhirResources.Add(practitionerId, practitioner);
@@ -208,6 +208,148 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Practitioner);
         }
 
+        [Then(@"the practitioner resource it should contain meta data profile and version id")]
+        public void thePractitionerResourceItShouldContainMetaDataProfileAndVersionId()
+        {
 
+            Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
+            practitioner.Meta.VersionId.ShouldNotBeNull();
+            practitioner.Meta.Profile.ShouldNotBeNull();
+
+            foreach (string profile in practitioner.Meta.Profile)
+            {
+                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
+            }
+       
+        }
+
+
+        [Then(@"the practitioner resource should contain a single name element")]
+        public void ThenPractitionerResourcesShouldContainASingleNameElement()
+        {
+            Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
+            practitioner.Name.ShouldNotBeNull();
+            int count = 0;
+            foreach (string family in practitioner.Name.Family)
+            {
+                count++;
+            }
+            count.ShouldBe(1);
+           
+        }
+
+        [Then(@"if the practitioner resource contains an identifier it is valid")]
+        public void ThenIfThePractitionerResourcesContainAnIdentifierItIsValid()
+        {
+            Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
+            foreach (Identifier identifier in practitioner.Identifier)
+            {
+                identifier.System.ShouldBeNullOrEmpty();
+                var validSystems = new string[2] { "http://fhir.nhs.net/Id/sds-role-profile-id", "http://fhir.nhs.net/Id/sds-user-id" };
+                identifier.System.ShouldBeOneOf(validSystems, "The identifier System can only be one of the valid value");
+                identifier.Value.ShouldBeNullOrEmpty();
+            }
+        }
+
+        [Then(@"if the practitioner resource contains a practitioner role it has a valid coding and system")]
+        public void ThenIfPractitionerRoleHasRoleElementWhichContainsACodingThenTheSystemCodeAndDisplayMustExist()
+        {
+
+                Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
+                foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
+                    {
+                        if (practitionerRole.Role != null && practitionerRole.Role.Coding != null)
+                        {
+                            var codingCount = 0;
+                            foreach (Coding coding in practitionerRole.Role.Coding)
+                            {
+                                codingCount++;
+                                coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
+                                coding.Code.ShouldNotBeNull();
+                                coding.Display.ShouldNotBeNull();
+                            }
+                            codingCount.ShouldBeLessThanOrEqualTo(1);
+                        }
+             }
+        }
+
+
+        [Then(@"the single practitioner resource should not contain unwanted fields")]
+        public void ThenTheSinglePractitionerResourceShouldNotContainFhirFieldsPhotoOrQualification()
+        {
+
+            Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
+
+                    if (null != practitioner.Photo && practitioner.Photo.Count > 0)
+                    {
+                        Assert.Fail("Practitioner should not contain a Photo");
+                    }
+
+                    if (null != practitioner.Qualification && practitioner.Qualification.Count > 0)
+                    {
+                        Assert.Fail("Practitioner should not contain a Qualification");
+                    }
+
+                    if (null != practitioner.BirthDate)
+                    {
+                        Assert.Fail("Practitioner should not contain a BirthDate");
+                    }
+
+                    if (null != practitioner.BirthDateElement)
+                    {
+                        Assert.Fail("Practitioner should not contain a BirthDateElement");
+                    }
+
+                    foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
+                    {
+                        if (null != practitionerRole.HealthcareService && practitionerRole.HealthcareService.Count > 0)
+                        {
+                            Assert.Fail("Practitioner role should not contain a HealthcareService");
+                        }
+
+                        if (null != practitionerRole.Location && practitionerRole.Location.Count > 0)
+                        {
+                            Assert.Fail("Practitioner role should not contain a Location");
+                        }
+               
+            }
+        }
+
+        [Then(@"the returned practitioner resource contains a communication element")]
+        public void ThenTheReturnedPractitionerResourceContainsACommunicationElement()
+        {
+            Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
+            practitioner.Communication.ShouldNotBeNull("Communication should not be null");
+
+            foreach (CodeableConcept codeableConcept in practitioner.Communication)
+            {
+                shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
+            }
+        }
+
+        public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList)
+        {
+            var codingCount = 0;
+            foreach (Coding coding in codingList)
+            {
+                codingCount++;
+                valueSetContainsCodeAndDisplay(valueSet, coding);
+            }
+            codingCount.ShouldBeLessThanOrEqualTo(1);
+        }
+        public void valueSetContainsCodeAndDisplay(ValueSet valueset, Coding coding)
+        {
+            coding.System.ShouldBe(valueset.CodeSystem.System);
+            // Loop through valid codes to find if the one in the resource is valid
+            var pass = false;
+            foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in valueset.CodeSystem.Concept)
+            {
+                if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
+                {
+                    pass = true;
+                }
+            }
+            pass.ShouldBeTrue();
+        }
     }
 }
