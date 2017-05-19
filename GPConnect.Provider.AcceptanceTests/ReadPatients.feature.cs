@@ -24,7 +24,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "ReadPatient.feature"
+#line 1 "ReadPatients.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
@@ -94,6 +94,39 @@ this.FeatureBackground();
 #line 12
   testRunner.And("the response should be a OperationOutcome resource with error code \"PATIENT_NOT_F" +
                     "OUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Read patient _format parameter only")]
+        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "XML", new string[0])]
+        public virtual void ReadPatient_FormatParameterOnly(string parameter, string bodyFormat, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read patient _format parameter only", exampleTags);
+#line 14
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 15
+ testRunner.Given("I perform the searchPatient operation for patient \"patient1\" and store the return" +
+                    "ed patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 16
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 17
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:patient\" int" +
+                    "eraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 18
+        testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+ testRunner.When("I make a GET request for patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 20
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 21
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 22
+  testRunner.And("the response should be a Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

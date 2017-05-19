@@ -196,6 +196,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PractitionerRead.feature</DependentUpon>
     </Compile>
+    <Compile Include="ReadPatients.feature.cs">
+      <DependentUpon>ReadPatients.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="ReadAppointment.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -311,6 +316,10 @@
     <None Include="PractitionerRead.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PractitionerRead.feature.cs</LastGenOutput>
+    </None>
+    <None Include="ReadPatients.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReadPatients.feature.cs</LastGenOutput>
     </None>
     <None Include="ReadAppointment.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
