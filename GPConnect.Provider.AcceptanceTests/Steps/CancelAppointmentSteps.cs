@@ -43,6 +43,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         
         }
 
+
+        [When(@"I set the URL to ""(.*)"" and cancel ""(.*)""")]
+        public void WhenISetTheURLtoStringAndCancel(string URL, string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            storedAppointment.Status = AppointmentStatus.Cancelled;
+          
+
+            Extension extension = new Extension();
+            List<Extension> extensionList = new List<Extension>();
+            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "Double booked", "Double booked"));
+            storedAppointment.ModifierExtension.Add(extension);
+            HttpSteps.RestRequest(RestSharp.Method.PUT, URL, FhirSerializer.SerializeToJson(storedAppointment));
+        }
+
+
+
         [When(@"I cancel the appointment called ""(.*)""")]
         public void WhenICancelTheAppointmentCalledAppointmentName(string appointmentName)
         {
@@ -55,6 +72,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "Double booked", "Double booked"));
             storedAppointment.ModifierExtension.Add(extension);
             HttpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
+        }
+
+        [When(@"I cancel the appointment called ""(.*)"" with an invalid extension")]
+        public void WhenICancelTheAppointmentCalledAppointmentNameWithAnInvalidExtension(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            storedAppointment.Status = AppointmentStatus.Cancelled;
+            string url = "Appointment/" + storedAppointment.Id;
+
+            Extension extension = new Extension();
+            List<Extension> extensionList = new List<Extension>();
+            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "", ""));
+            storedAppointment.ModifierExtension.Add(extension);
+            HttpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
+        }
+
+
+        [Then("the returned appointment resource should be cancelled")]
+        public void ThenTheReturnedAppointmentResourceShouldBeCancelled()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            //Only manadatory field on location specification
+            appointment.Status.ShouldBe(AppointmentStatus.Cancelled);
         }
 
         private Extension buildAppointmentCancelExtension(Extension extension, string url, string code, string display)

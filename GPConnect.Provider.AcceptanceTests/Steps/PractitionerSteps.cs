@@ -21,14 +21,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class PractitionerSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext FhirContext;
+        private readonly HttpContext HttpContext;
 
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
-        public PractitionerSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext)
+        public PractitionerSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext, HttpContext httpContext)
         {
             FhirContext = fhirContext;
             Headers = headerHelper;
+            HttpContext = httpContext;
         }
 
         [Given(@"I have the test practitioner codes")]
@@ -155,5 +157,57 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+
+        [When(@"I get ""(.*)"" id then make a GET request to ""(.*)""")]
+        public void ThenIMakeAGetRequestToURLAndSearchForPractitioner(string practitioner, string URLpassed)
+        {
+            Practitioner pracValue = (Practitioner)HttpContext.StoredFhirResources[practitioner];
+            string id = pracValue.Id.ToString();
+            string URL = URLpassed + id;
+           When($@"I make a GET request to ""{URL}""");
+        }
+
+        [When(@"I make a GET request for a practitioner using an invalid id of ""(.*)""")]
+        public void ThenIMakeAGetRequestForAPractitionerUsingAnInvalidIdOf(string invalidId)
+        {
+            string URL = "/Practitioner/" + invalidId;
+            When($@"I make a GET request to ""{URL}""");
+        }
+
+        
+        [Given(@"I get ""(.*)"" id and save it as ""(.*)""")]
+        public void GivenIGetPracIdAndSaveItAsIdName(string practitionerName, string practitionerId)
+        {
+            string identifier = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";
+            string system = "http://fhir.nhs.net/Id/sds-user-id";
+            string value = FhirContext.FhirPractitioners[practitionerName];
+            string URL = "/Practitioner";
+
+            Given("I am using the default server");
+            Given($@"I am performing the ""{identifier}"" interaction");
+            Given($@"I add the practitioner identifier parameter with system ""{system}"" and value ""{practitionerName}""");
+            When($@"I make a GET request to ""{URL}""");
+            Then("the response status code should indicate success");
+            Then("the response body should be FHIR JSON");
+
+            Practitioner practitioner = new Practitioner();
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    practitioner = (Practitioner)entry.Resource;
+                    
+                }
+            }
+            HttpContext.StoredFhirResources.Add(practitionerId, practitioner);
+        }
+
+        [Then(@"the response should be an Practitioner resource")]
+        public void theResponseShouldBeAnPractitionerResource()
+        {
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Practitioner);
+        }
+
+
     }
 }
