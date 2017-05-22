@@ -244,10 +244,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
             foreach (Identifier identifier in practitioner.Identifier)
             {
-                identifier.System.ShouldBeNullOrEmpty();
+                identifier.System.ShouldNotBeNullOrEmpty();
                 var validSystems = new string[2] { "http://fhir.nhs.net/Id/sds-role-profile-id", "http://fhir.nhs.net/Id/sds-user-id" };
                 identifier.System.ShouldBeOneOf(validSystems, "The identifier System can only be one of the valid value");
-                identifier.Value.ShouldBeNullOrEmpty();
+                identifier.Value.ShouldNotBeNullOrEmpty();
             }
         }
 

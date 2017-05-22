@@ -33,7 +33,7 @@ Scenario Outline: Practitioner read invalid request invalid URL
 	Given I get "practitioner1" id and save it as "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get "practitioner1Id" id then make a GET request to "<InvalidURL>""
+	When I get "practitioner1Id" id then make a GET request to "<InvalidURL>"
 	Then the response status code should be "404"
 		Examples: 
 		| InvalidURL      |
@@ -77,11 +77,11 @@ Scenario Outline: Practitioner read failure with incorrect interaction id
 Scenario Outline: Practitioner read _format parameter only
 	Given I get "practitioner1" id and save it as "practitioner1Id"
 	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I get "practitioner1Id" id then make a GET request to "/Practitioner/""
 	Then the response status code should indicate success
-			And the response body should be FHIR <BodyFormat>
+		And the response body should be FHIR <BodyFormat>
 		And the response should be an Practitioner resource
 		Examples:
         | Parameter             | BodyFormat |
@@ -89,7 +89,7 @@ Scenario Outline: Practitioner read _format parameter only
         | application/xml+fhir  | XML        |
 
 Scenario Outline: Practitioner read accept header and _format
-Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I get "practitioner1" id and save it as "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 		And I set the Accept header to "<Header>"

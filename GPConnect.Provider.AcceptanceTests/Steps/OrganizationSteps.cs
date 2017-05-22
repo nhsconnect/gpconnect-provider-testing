@@ -124,5 +124,67 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(savedOrg, organization);
         }
 
+        [When(@"I get ""(.*)"" id then make a GET request to organization url ""(.*)""")]
+        public void ThenIMakeAGetRequestToURLAndSearchForOrganization(string organizationName, string URL)
+        {
+            Organization organizationValue = (Organization)HttpContext.StoredFhirResources[organizationName];
+            string id = organizationValue.Id.ToString();
+            string fullUrl = "/"+URL+"/" + id;
+            When($@"I make a GET request to ""{fullUrl}""");
+        }
+
+        [Then(@"the response should be an Organization resource")]
+        public void theResponseShouldBeAnOrganizationResource()
+        {
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Organization);
+        }
+
+        [When(@"I make a GET request for a organization using an invalid id of ""(.*)""")]
+        public void ThenIMakeAGetRequestForAOrganizationUsingAnInvalidIdOf(string invalidId)
+        {
+            string URL = "/Organization/" + invalidId;
+            When($@"I make a GET request to ""{URL}""");
+        }
+
+        [Then(@"the organization resource it should contain meta data profile and version id")]
+        public void theOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
+        {
+
+            Organization organization = (Organization)FhirContext.FhirResponseResource;
+            organization.Meta.VersionId.ShouldNotBeNull();
+            organization.Meta.Profile.ShouldNotBeNull();
+
+            foreach (string profile in organization.Meta.Profile)
+            {
+                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
+            }
+
+        }
+
+        [Then(@"if the organization resource contains an identifier it is valid")]
+        public void ThenIfTheOrganizationResourcesContainAnIdentifierItIsValid()
+        {
+            Organization organization = (Organization)FhirContext.FhirResponseResource;
+            foreach (Identifier identifier in organization.Identifier)
+            {
+                identifier.System.ShouldNotBeNullOrEmpty();
+                var validSystems = new string[2] { "http://fhir.nhs.net/Id/ods-organization-code", "http://fhir.nhs.net/Id/ods-site-code" };
+                identifier.System.ShouldBeOneOf(validSystems, "The identifier System can only be one of the valid value");
+                identifier.Value.ShouldNotBeNullOrEmpty();
+            }
+        }
+
+        [Then(@"if the organization resource contains type it is valid")]
+        public void ThenIfTheOrganizationResourceContainsTypeItIsValis()
+        {
+            Organization organization = (Organization)FhirContext.FhirResponseResource;
+            if (organization.Type != null && organization.Type.Coding != null)
+            {
+                organization.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                AccessRecordSteps.shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirMaritalStatusValueSet, organization.Type.Coding);
+            }
+        }
+
+      
     }
 }
