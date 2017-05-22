@@ -61,3 +61,29 @@ Scenario: Read patient should contain ETag
 		And the response body should be FHIR JSON
 		And the response should be a Patient resource
 		And the response should contain the ETag header matching the resource version
+
+Scenario: Read patient If-None-Match should return a 304 on match
+	Given I perform the searchPatient operation for patient "patient1" and store the returned patient
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+	When I make a GET request for patient "patient1"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Patient resource
+		And the response ETag is saved as "etagPatientRead"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set "If-None-Match" request header to "etagPatientRead"
+	When I make a GET request for patient "patient1"
+	Then the response status code should be "304"
+	
+Scenario: Read patient If-None-Match should return full resource if no match
+	Given I perform the searchPatient operation for patient "patient1" and store the returned patient
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the If-None-Match header to "W/\"somethingincorrect\""
+	When I make a GET request for patient "patient1"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Patient resource
+		And the response should contain the ETag header matching the resource version

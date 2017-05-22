@@ -160,7 +160,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response ETag is saved as ""(.*)""")]
         public void ThenTheResponseETagIsSavedAString(string etagName)
         {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             string returnedETag = "";
             HttpContext.ResponseHeaders.TryGetValue("ETag", out returnedETag);
             HttpContext.resourceNameStored.Add(etagName, returnedETag);
