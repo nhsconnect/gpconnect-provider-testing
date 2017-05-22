@@ -375,8 +375,7 @@ Scenario: Register patient which alread exists on the system as a normal patient
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
-	When I send a gpc.registerpatient to create patient
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -399,3 +398,68 @@ Scenario: Register patient which alread exists on the system as a temporary pati
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with Prefer header representation response
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I set the Prefer header to "return=representation"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain a single Patient resource
+		And the content-type should not be equal to null
+		And the content-length should not be equal to zero
+		And the response location header should resolve to a patient resource with matching details to stored patient "registerPatient"
+
+Scenario: Register patient with Prefer header minimal response
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I set the Prefer header to "return=minimal"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should indicate success
+		And the response body should be empty
+		And the content-type should be equal to null
+		And the content-length should be equal to zero
+		And the response location header should resolve to a patient resource with matching details to stored patient "registerPatient"
+		
+@ignore
+Scenario: Multiple Family names
+
+@ignore
+Scenario: Multiple given names
+
+@ignore
+Scenario: Multiple Names
+
+@ignore
+Scenario: INvalid Identifier use codes
+
+@ignore
+Scenario: Invalid registration period
+
+@ignore
+Scenario: Invalid registration status
+
+@ignore
+Scenario: Invalid registration type
+
+@ignore
+Scenario: Additional invalid fields, such as telecom, address
+
+@ignore
+Scenario: Accept Header & _format parameter tests, JSON & XML
+
+@ignore
+Scenario: JWT matches patient patient type request
+
+@ignore
+Scenario: JWT patient reference match payload nhs number

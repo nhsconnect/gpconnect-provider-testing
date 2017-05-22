@@ -516,5 +516,34 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps.RestRequest(Method.POST, "/Patient/$gpc.registerpatient", body);
         }
 
+        [Then(@"the response location header should resolve to a patient resource with matching details to stored patient ""([^""]*)""")]
+        public void ThenTheResponseLocationHeaderShouldResolveToAPatientResourceWithMatchingDetailsToStoredPatient(string storedPatientKey)
+        {
+            string patientResourceLocationHeader = HttpContext.RequestHeaders.GetHeaderValue(HttpConst.Headers.kLocation);
+            patientResourceLocationHeader.ShouldNotBeNullOrEmpty();
+            Patient returnedResource = (Patient)HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", patientResourceLocationHeader);
+            returnedResource.GetType().ShouldBe(typeof(Patient));
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            returnedResource.Name.Count.ShouldBe(storedPatient.Name.Count);
+            // Check names match in resources
+            foreach (var returnedName in returnedResource.Name)
+            {
+                foreach (var storedName in storedPatient.Name)
+                {
+                    foreach (var givenName in storedName.Given)
+                    {
+                        returnedName.Given.ShouldContain(givenName, "The create patient name is not in the returned patient when read from the resource location.");
+                    }
+                    foreach (var familyName in storedName.Family)
+                    {
+                        returnedName.Family.ShouldContain(familyName, "The create patient name is not in the returned patient when read from the resource location.");
+                    }
+                }
+            }
+            // Check DOB matches
+            returnedResource.BirthDate.ShouldBe(storedPatient.BirthDate);
+            // Check Gender matches
+            returnedResource.Gender.ShouldBe(storedPatient.Gender);
+        }
     }
 }
