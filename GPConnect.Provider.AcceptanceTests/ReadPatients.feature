@@ -2,11 +2,19 @@
 
 Background:
 	Given I have the test patient codes
-
+	
 Scenario: Read patient 404 if patient not found
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
 	When I make a GET request to "/Patient/123"
+	Then the response status code should be "404"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+		
+Scenario: Read patient 404 if patient id not sent
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+	When I make a GET request to "/Patient/"
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
@@ -41,6 +49,23 @@ Scenario Outline: Read patient accept header and _format parameter
         | application/json+fhir | application/xml+fhir  | XML        |
         | application/xml+fhir  | application/json+fhir | JSON       |
         | application/xml+fhir  | application/xml+fhir  | XML        |
+		
+Scenario Outline: Read patient failure due to missing header
+	Given I perform the searchPatient operation for patient "patient1" and store the returned patient
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I do not send header "<Header>"
+	When I make a GET request for patient "patient1"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| Header            |
+		| Ssp-TraceID       |
+		| Ssp-From          |
+		| Ssp-To            |
+		| Ssp-InteractionId |
+		| Authorization     |
 
 Scenario: Read patient should contain correct logical identifier
 	Given I perform the searchPatient operation for patient "patient1" and store the returned patient
