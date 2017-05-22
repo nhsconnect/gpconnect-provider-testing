@@ -123,6 +123,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             When($@"I make a GET request to ""/Patient/{id}""");
         }
 
+        [Then(@"the response patient logical identifier should match that of stored patient ""([^""]*)""")]
+        public void TheResponsePatientLogicalIdentifierShouldMatchThatOfStoredPatient(string patient)
+        {
+            var patientResource = HttpContext.StoredFhirResources[patient];
+            var id = ((Bundle)patientResource).Entry[0].Resource.Id;
+            
+            id.ShouldBe(((Patient)FhirContext.FhirResponseResource).Id);
+        }
+
         [When(@"I search for Patient ""([^""]*)"" with system ""([^""]*)""")]
         public void ISearchForPatientWithSystem(string patient, string identifierSystem)
         {
