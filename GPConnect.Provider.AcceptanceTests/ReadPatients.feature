@@ -40,7 +40,7 @@ Scenario Outline: Read patient accept header and _format parameter
         | application/json+fhir | application/json+fhir | JSON       |
         | application/json+fhir | application/xml+fhir  | XML        |
         | application/xml+fhir  | application/json+fhir | JSON       |
-        | application/xml+fhir  | application/xml+fhir  | XML        |   
+        | application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario: Read patient should contain correct logical identifier
 	Given I perform the searchPatient operation for patient "patient1" and store the returned patient
@@ -51,3 +51,13 @@ Scenario: Read patient should contain correct logical identifier
 		And the response body should be FHIR JSON
 		And the response should be a Patient resource
 		And the response patient logical identifier should match that of stored patient "patient1"
+
+Scenario: Read patient should contain ETag
+	Given I perform the searchPatient operation for patient "patient1" and store the returned patient
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+	When I make a GET request for patient "patient1"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Patient resource
+		And the response should contain the ETag header matching the resource version
