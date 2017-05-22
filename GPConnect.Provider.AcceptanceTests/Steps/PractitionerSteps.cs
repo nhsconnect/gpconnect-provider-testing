@@ -163,14 +163,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Practitioner pracValue = (Practitioner)HttpContext.StoredFhirResources[practitioner];
             string id = pracValue.Id.ToString();
-            string URL = "/Practitioner/" + id;
+            string URL = "/"+URLpassed +"/"+ id;
             When($@"I make a GET request to ""{URL}""");
         }
 
-        [When(@"I make a GET request for a practitioner using an invalid id of ""(.*)""")]
-        public void ThenIMakeAGetRequestForAPractitionerUsingAnInvalidIdOf(string invalidId)
+        [When(@"I make a GET request for a practitioner using an invalid id of ""(.*)"" and url ""(.*)""")]
+        public void ThenIMakeAGetRequestForAPractitionerUsingAnInvalidIdOf(string invalidId, string url)
         {
-            string URL = "/Practitioner/" + invalidId;
+            string URL = "/"+url+"/" + invalidId;
             When($@"I make a GET request to ""{URL}""");
         }
 
