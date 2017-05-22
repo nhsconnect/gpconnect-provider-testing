@@ -6,6 +6,7 @@ using Hl7.Fhir.Model;
 using Shouldly;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
+using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
@@ -78,6 +79,57 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var parameterString = FhirConst.IdentifierSystems.kNHSNumber + "|" + nhsNumber;
             ISearchForAPatientWithParameterNameAndParameterString("identifier", parameterString);
+        }
+
+        [Given(@"I perform the searchPatient operation for patient ""([^""]*)"" and store the returned patient")]
+        public void IPerformTheSearchPatientOperationForPatientAndStoreTheReturnedPatientAgainstKey(string patient)
+        {
+            var nhsNumber = FhirContext.FhirPatients[patient];
+            Given($@"I am using the default server");
+            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient"" interaction");
+            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
+            And($@"I set the JWT requested scope to ""patient/*.read""");
+            When($@"I search for Patient with NHS Number ""{nhsNumber}""");
+            Then($@"the response status code should indicate success");
+            And($@"the response body should be FHIR JSON");
+            And($@"the response should be a Bundle resource of type ""searchset""");
+
+            var entries = ((Bundle)FhirContext.FhirResponseResource).Entry;
+
+            if (entries.Count == 0)
+            {
+                Assert.Fail("Id not found");
+            }
+
+            if (entries.Count > 1)
+            {
+                Assert.Fail("Miltiple NHS numbers found");
+            }
+            
+            if (HttpContext.StoredFhirResources.ContainsKey(patient))
+            {
+                HttpContext.StoredFhirResources.Remove(patient);
+            }
+            
+            HttpContext.StoredFhirResources.Add(patient, FhirContext.FhirResponseResource);
+        }
+
+        [When(@"I make a GET request for patient ""([^""]*)""")]
+        public void IMakeAGETRequestForPatient(string patient)
+        {
+            var patientResource = HttpContext.StoredFhirResources[patient];
+            var id = ((Bundle)patientResource).Entry[0].Resource.Id;
+
+            When($@"I make a GET request to ""/Patient/{id}""");
+        }
+
+        [Then(@"the response patient logical identifier should match that of stored patient ""([^""]*)""")]
+        public void TheResponsePatientLogicalIdentifierShouldMatchThatOfStoredPatient(string patient)
+        {
+            var patientResource = HttpContext.StoredFhirResources[patient];
+            var id = ((Bundle)patientResource).Entry[0].Resource.Id;
+            
+            id.ShouldBe(((Patient)FhirContext.FhirResponseResource).Id);
         }
 
         [When(@"I search for Patient ""([^""]*)"" with system ""([^""]*)""")]
@@ -314,6 +366,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
             pass.ShouldBeTrue();
+        }
+
+        [Then(@"the response should be a Patient resource")]
+        public void theResponseShouldBeAPatientResource()
+        {
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Patient);
         }
     }
 }

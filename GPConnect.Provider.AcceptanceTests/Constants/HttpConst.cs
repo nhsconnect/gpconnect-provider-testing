@@ -13,6 +13,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         {
             public const string kAccept = "Accept";
             public const string kPrefer = "Prefer";
+            public const string kIfNoneMatch = "If-None-Match";
             public const string kAuthorization = "Authorization";
             public const string kSspFrom = "Ssp-From";
             public const string kSspTo = "Ssp-To";

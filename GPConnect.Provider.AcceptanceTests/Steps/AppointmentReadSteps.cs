@@ -36,7 +36,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Bundle patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
 
             Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
-
         }
 
         [Given(@"I find or create ""([^ ""] *)"" appointments for patient ""([^""]*)"" at organization ""([^""]*)"" and save bundle of appintment resources to ""([^""]*)""")]
@@ -47,8 +46,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Bundle patientAppointmentsBundle = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentskey];
 
             int numberOfRequiredAdditionalAppointments = noApp - patientAppointmentsBundle.Entry.Count;
-            if (numberOfRequiredAdditionalAppointments > 0) {
-
+            if (numberOfRequiredAdditionalAppointments > 0)
+            {
                 // Perform get schedule once to get available slots with which to create appointments
                 Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
 
@@ -93,7 +92,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
                 When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle"" and store the appointment to ""{patientAppointmentkey}""");
             }
-            else {
+            else
+            {
                 // Else one found so I store it for later use
                 HttpContext.StoredFhirResources.Add(patientAppointmentkey, appointmentResource);
             }
@@ -116,7 +116,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     cancelledAppointmentResource = appointment;
                 }
-                else if(appointment.Status == AppointmentStatus.Booked)
+                else if (appointment.Status == AppointmentStatus.Booked)
                 {
                     bookedAppointmentResource = appointment;
                 }
@@ -130,13 +130,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
                     When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle"" and store the appointment to ""bookedAppointmentKey""");
                 }
-                else {
+                else
+                {
                     HttpContext.StoredFhirResources.Add("bookedAppointmentKey", bookedAppointmentResource);
                 }
                 // Cancel appointment
                 Given($@"I cancel appointment resource stored against key ""bookedAppointmentKey"" and store the returned appointment resource against key ""{patientAppointmentkey}""");
             }
-            else {
+            else
+            {
                 HttpContext.StoredFhirResources.Add(patientAppointmentkey, cancelledAppointmentResource);
             }
         }
@@ -157,7 +159,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var returnedPatientAppointmentSearchBundle = (Bundle)FhirContext.FhirResponseResource;
             if (HttpContext.StoredFhirResources.ContainsKey(patientAppointmentSearchBundleKey)) HttpContext.StoredFhirResources.Remove(patientAppointmentSearchBundleKey);
             HttpContext.StoredFhirResources.Add(patientAppointmentSearchBundleKey, returnedPatientAppointmentSearchBundle);
-
         }
 
         [Given(@"I perform the getSchedule operation for organization ""([^""]*)"" and store the returned bundle resources against key ""([^""]*)""")]
@@ -287,8 +288,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Slot.Add(slot);
             appointment.Start = firstSlot.Start;
             appointment.End = firstSlot.End;
-
-
+            
             if (HttpContext.StoredDate.ContainsKey("slotStartDate")) HttpContext.StoredDate.Remove("slotStartDate");
             HttpContext.StoredDate.Add("slotStartDate", firstSlot.StartElement.ToString());
       
@@ -376,7 +376,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Location location = (Location)FhirContext.FhirResponseResource;
             //Only manadatory field on location specification
             location.Name.ShouldNotBeNull();
-
         }
 
         [Then(@"the returned appointment resource shall contains an id")]
@@ -643,12 +642,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response should contain the ETag header matching the resource version")]
         public void ThenTheResponseShouldContainTheETagHeaderMatchingTheResourceVersion()
         {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            Resource resource = FhirContext.FhirResponseResource;
             string returnedETag = "";
             HttpContext.ResponseHeaders.TryGetValue("ETag", out returnedETag);
             returnedETag.ShouldStartWith("W/\"", "The WTag header should start with W/\"");
-            returnedETag.ShouldEndWith(appointment.Meta.VersionId + "\"", "The ETag header should contain the resource version enclosed within speech marks");
+            returnedETag.ShouldEndWith(resource.Meta.VersionId + "\"", "The ETag header should contain the resource version enclosed within speech marks");
+            returnedETag.ShouldBe("W/\"" + resource.Meta.VersionId + "\"", "The ETag header contains invalid characters");
         }
-
     }
 }

@@ -22,9 +22,9 @@ Scenario Outline: Read appointment invalid appointment id
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 	When I make a GET request to "/Appointment/<id>"
-	Then the response status code should be "422"
+	Then the response status code should be "404"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
+		And the response should be a OperationOutcome resource with error code "RESOURCE_NOT_FOUND"
 	Examples:
 		| id          |
 		| Invalid4321 |

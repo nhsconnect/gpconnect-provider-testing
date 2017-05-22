@@ -1100,8 +1100,8 @@ this.FeatureBackground();
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 372
-  testRunner.And("I convert patient stored in \"registerPatient\" to a register temporary patient aga" +
-                    "inst key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I convert patient stored in \"registerPatient\" to a register temporary patient aga" +
+                    "inst key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 373
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 374
