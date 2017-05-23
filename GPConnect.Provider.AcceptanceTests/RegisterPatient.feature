@@ -167,6 +167,7 @@ Scenario Outline: Register patient and check all elements conform to the gp conn
 		And the response body should be FHIR <Format>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
+		And the patient resource in the bundle should contain meta data profile and version id
 		And the bundle should contain a registration period
 		And the bundle should contain a registration status
 		And the bundle should contain a registration type
@@ -516,6 +517,20 @@ Scenario: Register patient which alread exists on the system as a temporary pati
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 	When I send a gpc.registerpatient to create patient stored against key "registerPatient"		
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient which is not on PDS
+	Given I create a patient to register which does not exist on PDS and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

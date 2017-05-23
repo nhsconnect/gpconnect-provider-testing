@@ -33,6 +33,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
 
+        [Given(@"I create a patient to register which does not exist on PDS and store the Patient Resource against key ""([^""]*)""")]
+        public void GivenICreateAPatientToRegisterWhichDoesNoteExistOnPDSAndStoreThePatientResourceAgainstKey(string patientResourceKey)
+        {
+            Patient returnPatient = new Patient();
+            returnPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, "9019546082"));
+            HumanName name = new HumanName();
+            name.FamilyElement.Add(new FhirString("GPConnectFamilyName"));
+            name.GivenElement.Add(new FhirString("GPConnectGivenName"));
+            returnPatient.Name = new List<HumanName>();
+            returnPatient.Name.Add(name);
+            returnPatient.Gender = AdministrativeGender.Other;
+            returnPatient.BirthDateElement = new Date("2017-05-05");
+            if (HttpContext.StoredFhirResources.ContainsKey(patientResourceKey)) HttpContext.StoredFhirResources.Remove(patientResourceKey);
+            HttpContext.StoredFhirResources.Add(patientResourceKey, returnPatient);
+        }
+        
         [Given(@"I find the next patient to register and store the Patient Resource against key ""([^""]*)""")]
         public void GivenIFindTheNextPatientToRegisterAndStoreThePatientResourceAgainstKey(string patientResourceKey)
         {
