@@ -156,14 +156,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Extension registrationPeriod = new Extension();
             registrationPeriod.Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1";
             Period period = new Period();
-            period.Start = regStartDate;
-            period.End = regEndDate;
+            if (!string.IsNullOrEmpty(regStartDate)) { period.Start = regStartDate; }
+            if (!string.IsNullOrEmpty(regEndDate)) { period.End = regEndDate; }
             registrationPeriod.Value = period;
             patient.Extension.Add(registrationPeriod);
             HttpContext.StoredFhirResources.Remove(storedPatientKey);
             HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
         }
-              
+
         [Given(@"I add the registration status with code ""([^""]*)"" to ""([^""]*)""")]
         public void GivenIAddRegistrationStatusWithCodeTo(string code, string storedPatientKey)
         {
@@ -267,6 +267,62 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             
             if (HttpContext.StoredFhirResources.ContainsKey(returnPatientKey)) HttpContext.StoredFhirResources.Remove(returnPatientKey);
             HttpContext.StoredFhirResources.Add(returnPatientKey, returnPatient);
+        }
+
+        [Given(@"I add the family name ""([^""]*)"" to the patient stored against key ""([^""]*)""")]
+        public void GivenIAddTheFamilyNameToThePatientStoredAgainstKey(string familyName, string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            foreach (var name in storedPatient.Name) {
+                name.FamilyElement.Add(new FhirString(familyName));
+            }
+        }
+
+        [Given(@"I add the given name ""([^""]*)"" to the patient stored against key ""([^""]*)""")]
+        public void GivenIAddTheGivenNameToThePatientStoredAgainstKey(string givenName, string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            foreach (var name in storedPatient.Name)
+            {
+                name.GivenElement.Add(new FhirString(givenName));
+            }
+        }
+
+        [Given(@"I add a name with given name ""([^""]*)"" and family name ""([^""]*)"" to the patient stored against key ""([^""]*)""")]
+        public void GivenIAddTheGivenNameToThePatientStoredAgainstKey(string givenName, string familyName, string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            var name = new HumanName();
+            name.GivenElement.Add(new FhirString(givenName));
+            name.FamilyElement.Add(new FhirString(familyName));
+            storedPatient.Name.Add(name);
+        }
+
+        [Given(@"I add an identifier with no system element to stored patient ""([^""]*)""")]
+        public void GivenIAddAnIdentifierWithAnInvalidUseElement(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            var identifier = new Identifier();
+            identifier.Value = "NewIdentifierNoSystem";
+            storedPatient.Identifier.Add(identifier);
+        }
+
+        [Given(@"I add a telecom element to patient stored against ""([^""]*)""")]
+        public void GivenIAddATelecomElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            storedPatient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+        }
+        [Given(@"I add a address element to patient stored against ""([^""]*)""")]
+        public void GivenIAddAAddressElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            var address = new Address();
+            address.LineElement.Add(new FhirString("1 Trevelyan Square"));
+            address.LineElement.Add(new FhirString("Boar Lane"));
+            address.CityElement = new FhirString("Leeds");
+            address.PostalCode = "LS1 6AE";
+            storedPatient.Address.Add(address);
         }
 
         [Then(@"the bundle should contain a registration status")]

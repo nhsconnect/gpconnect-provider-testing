@@ -1273,121 +1273,409 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Multiple Family names")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.DescriptionAttribute("Multiple family names")]
         public virtual void MultipleFamilyNames()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Family names", new string[] {
-                        "ignore"});
-#line 435
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple family names", ((string[])(null)));
+#line 434
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
+#line 435
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 436
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 437
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 438
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 439
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 440
+  testRunner.And("I add the registration period with start date \"2017-04-12\" and end date \"2018-12-" +
+                    "24\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 441
+  testRunner.And("I add the family name \"AddFamilyName\" to the patient stored against key \"register" +
+                    "Patient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 442
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 443
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 444
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 445
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Multiple given names")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         public virtual void MultipleGivenNames()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple given names", new string[] {
-                        "ignore"});
-#line 438
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple given names", ((string[])(null)));
+#line 447
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
+#line 448
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 449
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 450
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 451
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 452
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 453
+  testRunner.And("I add the registration period with start date \"2017-04-12\" and end date \"2018-12-" +
+                    "24\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 454
+  testRunner.And("I add the given name \"AddGivenName\" to the patient stored against key \"registerPa" +
+                    "tient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 455
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 456
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 457
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 458
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Multiple Names")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         public virtual void MultipleNames()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Names", new string[] {
-                        "ignore"});
-#line 441
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Names", ((string[])(null)));
+#line 460
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
+#line 461
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 462
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 463
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 464
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 465
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 466
+  testRunner.And("I add the registration period with start date \"2017-04-12\" and end date \"2018-12-" +
+                    "24\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 467
+  testRunner.And("I add a name with given name \"NewGivenName\" and family name \"NewFamilyName\" to th" +
+                    "e patient stored against key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 468
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 469
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 470
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 471
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("INvalid Identifier use codes")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void INvalidIdentifierUseCodes()
+        [NUnit.Framework.DescriptionAttribute("Identifier without mandatory system elements")]
+        public virtual void IdentifierWithoutMandatorySystemElements()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("INvalid Identifier use codes", new string[] {
-                        "ignore"});
-#line 444
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Identifier without mandatory system elements", ((string[])(null)));
+#line 473
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
+#line 474
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 475
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 476
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 477
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 478
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 479
+  testRunner.And("I add the registration period with start date \"2017-04-12\" and end date \"2018-12-" +
+                    "24\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 480
+  testRunner.And("I add an identifier with no system element to stored patient \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 481
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 482
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 483
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 484
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Invalid registration period")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void InvalidRegistrationPeriod()
+        [NUnit.Framework.TestCaseAttribute("abc", "2018-12-24", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2017-08-24", "invalid", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("noEnd", "", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("", "noStart", new string[0])]
+        public virtual void InvalidRegistrationPeriod(string startDate, string endDate, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid registration period", new string[] {
-                        "ignore"});
-#line 447
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid registration period", exampleTags);
+#line 486
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
+#line 487
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 488
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 489
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 490
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 491
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 492
+  testRunner.And(string.Format("I add the registration period with start date \"{0}\" and end date \"{1}\" to \"regist" +
+                        "erPatient\"", startDate, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 493
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 494
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 495
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 496
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Registration period with only end date")]
+        public virtual void RegistrationPeriodWithOnlyEndDate()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Registration period with only end date", ((string[])(null)));
+#line 504
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 505
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 506
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 507
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 508
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 509
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 510
+  testRunner.And("I add the registration period with start date \"\" and end date \"2018-12-24\" to \"re" +
+                    "gisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 511
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 512
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 513
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 514
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 515
+  testRunner.And("the response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 516
+  testRunner.And("the bundle should contain a registration period", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Registration period with only start date")]
+        public virtual void RegistrationPeriodWithOnlyStartDate()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Registration period with only start date", ((string[])(null)));
+#line 518
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 519
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 520
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 521
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 522
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 523
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 524
+  testRunner.And("I add the registration period with start date \"2016-09-24\" and end date \"\" to \"re" +
+                    "gisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 525
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 526
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 527
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 528
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 529
+  testRunner.And("the response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 530
+  testRunner.And("the bundle should contain a registration period", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Invalid registration status")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void InvalidRegistrationStatus()
+        [NUnit.Framework.TestCaseAttribute("Z", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Active", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Inactive", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("AA", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OK", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("", new string[0])]
+        public virtual void InvalidRegistrationStatus(string code, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid registration status", new string[] {
-                        "ignore"});
-#line 450
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid registration status", exampleTags);
+#line 532
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
+#line 533
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 534
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 535
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 536
+  testRunner.And(string.Format("I add the registration status with code \"{0}\" to \"registerPatient\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 537
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 538
+  testRunner.And("I add the registration period with start date \"2017-04-12\" and end date \"2018-12-" +
+                    "24\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 539
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 540
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 541
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 542
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Invalid registration type")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void InvalidRegistrationType()
+        [NUnit.Framework.TestCaseAttribute("Fully Registered", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Private", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Temp", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Private", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("", new string[0])]
+        public virtual void InvalidRegistrationType(string code, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid registration type", new string[] {
-                        "ignore"});
-#line 453
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid registration type", exampleTags);
+#line 552
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
+#line 553
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 554
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 555
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 556
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 557
+  testRunner.And(string.Format("I add the registration type with code \"{0}\" to \"registerPatient\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 558
+  testRunner.And("I add the registration period with start date \"2017-04-12\" and end date \"2018-12-" +
+                    "24\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 559
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 560
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 561
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 562
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Additional invalid fields, such as telecom, address")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
-        public virtual void AdditionalInvalidFieldsSuchAsTelecomAddress()
+        [NUnit.Framework.DescriptionAttribute("Additional not allowed elements")]
+        [NUnit.Framework.TestCaseAttribute("telecom", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("address", new string[0])]
+        public virtual void AdditionalNotAllowedElements(string elementToAdd, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Additional invalid fields, such as telecom, address", new string[] {
-                        "ignore"});
-#line 456
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Additional not allowed elements", exampleTags);
+#line 571
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
+#line 572
+ testRunner.Given("I find the next patient to register and store the Patient Resource against key \"r" +
+                    "egisterPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 573
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 574
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.register" +
+                    "patient\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 575
+  testRunner.And("I add the registration status with code \"A\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 576
+  testRunner.And("I add the registration type with code \"T\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 577
+  testRunner.And("I add the registration period with start date \"2017-04-12\" and end date \"2018-12-" +
+                    "24\" to \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 578
+  testRunner.And(string.Format("I add a {0} element to patient stored against \"registerPatient\"", elementToAdd), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 579
+ testRunner.When("I send a gpc.registerpatient to create patient stored against key \"registerPatien" +
+                    "t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 580
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 581
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 582
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1399,7 +1687,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Accept Header & _format parameter tests, JSON & XML", new string[] {
                         "ignore"});
-#line 459
+#line 589
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
@@ -1414,7 +1702,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT matches patient patient type request", new string[] {
                         "ignore"});
-#line 462
+#line 592
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
@@ -1429,7 +1717,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT patient reference match payload nhs number", new string[] {
                         "ignore"});
-#line 465
+#line 595
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
