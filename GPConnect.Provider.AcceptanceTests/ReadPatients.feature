@@ -112,3 +112,28 @@ Scenario: Read patient If-None-Match should return full resource if no match
 		And the response body should be FHIR JSON
 		And the response should be a Patient resource
 		And the response should contain the ETag header matching the resource version
+
+Scenario: VRead patient _history should return historical patient
+	Given I perform the searchPatient operation for patient "patient1" and store the returned patient
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+	When I make a GET request for patient "patient1"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Patient resource
+		And the response ETag is saved as "etagPatientRead"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+	When I perform a patient vread for patient "patient1" with ETag "etagPatientRead"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Patient resource
+		
+Scenario: VRead patient _history with invalid etag should give a 404
+	Given I perform the searchPatient operation for patient "patient1" and store the returned patient
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+	When I perform a patient vread for patient "patient1" with invalid ETag
+	Then the response status code should be "404"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
