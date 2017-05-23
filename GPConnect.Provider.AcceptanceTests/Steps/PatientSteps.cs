@@ -123,6 +123,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             When($@"I make a GET request to ""/Patient/{id}""");
         }
 
+        [When(@"I perform a patient vread for patient ""([^""]*)"" with ETag ""([^""]*)""")]
+        public void IPerformAPatientVReadForPatientWithETag(string patient, string etag)
+        {
+            var patientResource = HttpContext.StoredFhirResources[patient];
+            var id = ((Bundle)patientResource).Entry[0].Resource.Id;
+
+            string versionId = HttpContext.resourceNameStored[etag];
+            string[] elements = versionId.Split(new char[] { '"' });
+
+            When($@"I make a GET request to ""/Patient/{id}/_history/{elements[1]}""");
+        }
+
+        [When(@"I perform a patient vread for patient ""([^""]*)"" with invalid ETag")]
+        public void IPerformAPatientVReadForPatientWithInvalidETag(string patient)
+        {
+            var patientResource = HttpContext.StoredFhirResources[patient];
+            var id = ((Bundle)patientResource).Entry[0].Resource.Id;
+            
+            When($@"I make a GET request to ""/Patient/{id}/_history/badETag""");
+        }
+
         [Then(@"the response patient logical identifier should match that of stored patient ""([^""]*)""")]
         public void TheResponsePatientLogicalIdentifierShouldMatchThatOfStoredPatient(string patient)
         {
