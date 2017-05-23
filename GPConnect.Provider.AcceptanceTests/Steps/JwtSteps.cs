@@ -14,6 +14,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class JwtSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext FhirContext;
+        private readonly HttpContext HttpContext;
 
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
@@ -21,10 +22,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         // JWT Helper
         public JwtHelper Jwt { get; }
 
-        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper, FhirContext fhirContext)
+        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper, FhirContext fhirContext, HttpContext httpContext)
         {
             Log.WriteLine("JwtSteps() Constructor");
             FhirContext = fhirContext;
+            HttpContext = httpContext;
             // Helpers
             Headers = headerHelper;
             Jwt = jwtHelper;
@@ -292,6 +294,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISetTheJWTRequestedRecordNHSnumberToConfigPatient(string patient)
         {
             Jwt.RequestedPatientNHSNumber = FhirContext.FhirPatients[patient];
+            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+        }
+
+        [Given(@"I set the JWT requested record NHS number to the NHS number of patient stored against key ""([^""]*)""")]
+        public void ISetTheJWTRequestRecordNHSNumberToTheNHSNumberOfPatientSotredAgainstKey(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            foreach (Identifier identifier in storedPatient.Identifier)
+            {
+                if (identifier.System != null && string.Equals(identifier.System, FhirConst.IdentifierSystems.kNHSNumber))
+                {
+                    Jwt.RequestedPatientNHSNumber = identifier.Value;
+                    break;
+                }
+            }
             Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
         }
     }

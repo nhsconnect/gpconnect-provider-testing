@@ -313,6 +313,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             storedPatient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
         }
+
         [Given(@"I add a address element to patient stored against ""([^""]*)""")]
         public void GivenIAddAAddressElementToPatientStoredAgainst(string storedPatientKey)
         {
@@ -323,6 +324,99 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             address.CityElement = new FhirString("Leeds");
             address.PostalCode = "LS1 6AE";
             storedPatient.Address.Add(address);
+        }
+
+        [Given(@"I add a active element to patient stored against ""([^""]*)""")]
+        public void GivenIAddAActiveElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            storedPatient.Active = true;
+        }
+
+        [Given(@"I add a deceased element to patient stored against ""([^""]*)""")]
+        public void GivenIAddADeceasedElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            storedPatient.Deceased = new FhirBoolean(false);
+        }
+        
+        [Given(@"I add a marital element to patient stored against ""([^""]*)""")]
+        public void GivenIAddAMaritalElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            storedPatient.MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "M");
+        }
+
+        [Given(@"I add a births element to patient stored against ""([^""]*)""")]
+        public void GivenIAddABirthsElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            storedPatient.MultipleBirth = new FhirBoolean(true);
+        }
+        
+        [Given(@"I add a photo element to patient stored against ""([^""]*)""")]
+        public void GivenIAddAPhotoElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            var attachment = new Attachment();
+            attachment.Url = "Test Photo Element";
+            storedPatient.Photo.Add(attachment);
+        }
+
+        [Given(@"I add a contact element to patient stored against ""([^""]*)""")]
+        public void GivenIAddAContactElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            var contact = new Patient.ContactComponent();
+            contact.Name.GivenElement.Add(new FhirString("TestGiven"));
+            contact.Name.FamilyElement.Add(new FhirString("TestFamily"));
+            storedPatient.Contact.Add(contact);
+        }
+
+        [Given(@"I add a animal element to patient stored against ""([^""]*)""")]
+        public void GivenIAddAAnimalElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            storedPatient.Animal.Species = new CodeableConcept("AllSpecies", "Human");
+        }
+
+        [Given(@"I add a communication element to patient stored against ""([^""]*)""")]
+        public void GivenIAddACommunicationElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            var com = new Patient.CommunicationComponent();
+            com.Language = new CodeableConcept("https://tools.ietf.org/html/bcp47", "en");
+            storedPatient.Communication.Add(com);
+        }
+        
+        [Given(@"I add a careprovider element to patient stored against ""([^""]*)""")]
+        public void GivenIAddACareProviderElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            var reference = new ResourceReference();
+            reference.Display = "Test Care Provider";
+            storedPatient.CareProvider.Add(reference);
+        }
+
+        [Given(@"I add a managingorg element to patient stored against ""([^""]*)""")]
+        public void GivenIAddAManagingOrgElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            var reference = new ResourceReference();
+            reference.Display = "Test Managing Org";
+            storedPatient.ManagingOrganization = reference;
+        }
+
+        [Given(@"I add a link element to patient stored against ""([^""]*)""")]
+        public void GivenIAddALinkElementToPatientStoredAgainst(string storedPatientKey)
+        {
+            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            var reference = new ResourceReference();
+            reference.Display = "Test Care Provider";
+            var link = new Patient.LinkComponent();
+            link.Other = reference;
+            link.Type = Patient.LinkType.Refer;
+            storedPatient.Link.Add(link);
         }
 
         [Then(@"the bundle should contain a registration status")]
