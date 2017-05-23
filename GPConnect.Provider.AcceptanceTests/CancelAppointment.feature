@@ -66,15 +66,125 @@ Scenario Outline: Cancel appointment failure with incorrect interaction id
 	  |                                                                   |
 	  | null                                                              |
 
-Scenario: Cancel appointment invalid cancel extension
+Scenario Outline: Cancel appointment _format parameter only
+	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
+		And I add the parameter "_format" with the value "<Parameter>"
+	When I cancel the appointment called "patientApp"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the response should be an Appointment resource
+		And the returned appointment resource should be cancelled
+	 Examples:
+        | Parameter             | BodyFormat |
+        | application/json+fhir | JSON       |
+        | application/xml+fhir  | XML        |
+
+Scenario Outline: Cancel appointment accept header and _format parameter
+	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
+		And I set the Accept header to "<Header>"
+        And I add the parameter "_format" with the value "<Parameter>"
+		When I cancel the appointment called "patientApp"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the response should be an Appointment resource
+		And the returned appointment resource should be cancelled
+	 Examples:
+	    | Header                | Parameter             | BodyFormat |
+        | application/json+fhir | application/json+fhir | JSON       |
+        | application/json+fhir | application/xml+fhir  | XML        |
+        | application/xml+fhir  | application/json+fhir | JSON       |
+        | application/xml+fhir  | application/xml+fhir  | XML        |   
+
+
+Scenario Outline: Cancel appointment check cancellation reason is equal to the request cancellation reason
 	Given I find or create an appointment with status Booked for patient "CustomAppointment1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-	When I cancel the appointment called "patientApp" with an invalid extension
+	When I cancel the appointment with cancel extension with url "<url>" code "<code>" and display "<display>" called "patientApp"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+		And the returned appointment resource should be cancelled
+		And the cancellation reason in the returned response should be equal to "<display>"
+		Examples: 
+		| url                                                                                             | code | display     |
+		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0 | aa   | Too busy    |
+		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0 | aa   | Car crashed |
+		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0 | aa   | Too tired   |
+
+
+Scenario Outline: Cancel appointment invalid cancellation extension
+	Given I find or create an appointment with status Booked for patient "CustomAppointment1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
+	When I cancel the appointment with cancel extension with url "<url>" code "<code>" and display "<display>" called "patientApp"
 	Then the response status code should indicate failure
-	
-	
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "500"
+		Examples: 
+		| url                                                                                             | code | display |
+		|                                                                                                 |      |         |
+		|                                                                                                 | ff   |         |
+		|                                                                                                 |      | ee      |
+		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0 |      |         |
+		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0 | ff   |         |
+		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0 |      | ee      |
 
+Scenario: Cancel appointment and check the returned appointment resource is a valid resource
+	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
+	When I cancel the appointment called "patientApp"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+		And the returned appointment resource should be cancelled
+		And the returned appointment resource should contain meta data profile and version id
 
+Scenario: Conformance profile supports the cancel appointment operation
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the conformance profile should contain the "Appointment" resource with a "update" interaction
+
+Scenario: Cancel appointment verify resource is updated when an valid ETag value is provided
+Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I perform an appointment read for the appointment called "patientApp"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response ETag is saved as "etagCancel"
+		And the response should be an Appointment resource
+	Given I am using the default server
+	And I set "If-Match" request header to "etagCancel"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
+	When I cancel the appointment called "patientApp"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+		And the returned appointment resource should be cancelled
 	
-		 
+Scenario: Cancel appointment verify resource is not updated when an out of date ETag value is provided
+Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I perform an appointment read for the appointment called "patientApp"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response ETag is saved as "etagCancel"
+		And the response should be an Appointment resource
+	Given I am using the default server
+	And I set If-Match request header to "hello"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
+	When I cancel the appointment called "patientApp"
+	Then the response status code should be "409"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
+ 

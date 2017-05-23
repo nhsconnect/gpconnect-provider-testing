@@ -74,18 +74,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
         }
 
-        [When(@"I cancel the appointment called ""(.*)"" with an invalid extension")]
-        public void WhenICancelTheAppointmentCalledAppointmentNameWithAnInvalidExtension(string appointmentName)
+        [When(@"I cancel the appointment with cancel extension with url ""(.*)"" code ""(.*)"" and display ""(.*)"" called ""(.*)""")]
+        public void ICancelTheAppointmentCalledAppointmentNameWithAnInvalidExtension(string url, string code, string display,string appointmentName)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             storedAppointment.Status = AppointmentStatus.Cancelled;
-            string url = "Appointment/" + storedAppointment.Id;
+            string fullUrl = "Appointment/" + storedAppointment.Id;
 
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
-            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "", ""));
+            extension = (buildAppointmentCancelExtension(extension, url, code, display));
             storedAppointment.ModifierExtension.Add(extension);
-            HttpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
+            HttpSteps.RestRequest(RestSharp.Method.PUT, fullUrl, FhirSerializer.SerializeToJson(storedAppointment));
         }
 
 
@@ -96,7 +96,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             //Only manadatory field on location specification
             appointment.Status.ShouldBe(AppointmentStatus.Cancelled);
         }
-
+          [Then(@"the cancellation reason in the returned response should be equal to ""(.*)""")]
+        public void ThenTheCancellationReasonInTheReturnedResponseShouldBeEqualToStrings(string display)
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (var extension in appointment.Extension)
+            {
+                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
+                {
+                    extension.Value.ShouldNotBeNull("There should be a value element within the appointment CancellationReason extension");
+                    var extensionValueString = (FhirString)extension.Value;
+                    extensionValueString.Value.ShouldBe(display);
+                }
+            }
+        }
+        
         private Extension buildAppointmentCancelExtension(Extension extension, string url, string code, string display)
         {
             extension.Url = url;

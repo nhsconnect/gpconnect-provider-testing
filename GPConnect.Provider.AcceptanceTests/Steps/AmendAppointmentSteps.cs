@@ -47,7 +47,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I perform an appointment read for the appointment called ""(.*)""")]
         public void IPerformAnAppointmentReadForTheAppointmentCalled(string appointment)
         {
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment["appointmentName"];
+            Appointment fhirApp = (Appointment)HttpContext.StoredFhirResources[appointment];
             string url = "Appointment/" + fhirApp.Id;
             When($@"I make a GET request to ""{url}""");
       

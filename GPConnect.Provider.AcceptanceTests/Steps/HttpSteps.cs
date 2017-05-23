@@ -132,6 +132,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
            HttpContext.RequestHeaders.ReplaceHeader(headerKey, value);
         }
 
+        [Given(@"I set If-Match request header to ""(.*)""")]
+        public void GivenISetRequestHeaderToNotStored(string headerValue)
+        {
+
+         
+            HttpContext.RequestHeaders.ReplaceHeader("If-Match", headerValue);
+        }
+
         [Given(@"I am accredited system ""(.*)""")]
         public void GivenIAmAccreditedSystem(string fromASID)
         {

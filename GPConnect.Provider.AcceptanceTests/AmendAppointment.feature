@@ -216,7 +216,7 @@ Scenario: Conformance profile supports the amend appointment operation
 Scenario: Amend appointment send an update with an invalid if-match header
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
 	Given I am using the default server
-		And I set "If-Match" request header to "hello"
+		And I set If-Match request header to "hello"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 	When I amend "CustomAppointment1" by changing the comment to "customComment"
 	Then the response status code should be "409"
