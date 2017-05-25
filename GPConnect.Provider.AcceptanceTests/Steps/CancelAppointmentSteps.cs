@@ -110,7 +110,244 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-        
+
+
+        [Then(@"the resource type of ""(.*)"" and the returned response should be equal")]
+        public void TheResponseTypeOfStringAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            storedAppointment.ResourceType.ShouldBe(returnedAppointment.ResourceType);
+        }
+
+        [Then(@"the id of ""(.*)"" and the returned response should be equal")]
+        public void TheIdOfStringAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            storedAppointment.Id.ShouldBe(returnedAppointment.Id);
+        }
+
+        [Then(@"the status of ""(.*)"" and the returned response should be equal")]
+        public void TheStatusOfStringAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            storedAppointment.Status.ShouldBe(returnedAppointment.Status);
+        }
+
+        [Then(@"the extension of ""(.*)"" and the returned response should be equal")]
+        public void TheExtensionOfStringAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            FhirString extensionValueString = new FhirString();
+            foreach (var extension in returnedAppointment.Extension)
+            {
+                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
+                {
+                    extension.Value.ShouldNotBeNull("There should be a value element within the appointment CancellationReason extension");
+                    extensionValueString = (FhirString)extension.Value;
+                 }
+            }
+
+            foreach (var extension in storedAppointment.Extension)
+            {
+                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
+                {
+                    extension.Value.ShouldNotBeNull("There should be a value element within the appointment CancellationReason extension");
+                    var value = (FhirString)extension.Value;
+                    value.ShouldBe(extensionValueString);
+                }
+            }
+        }
+
+        [Then(@"the description of ""(.*)"" and the returned response should be equal")]
+        public void ThenTheDescriptionOfAppointmentAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            storedAppointment.Description.ShouldBe(returnedAppointment.Description);
+        }
+
+
+        [Then(@"the start and end date of ""(.*)"" and the returned response should be equal")]
+        public void ThenTheStartAndEndDateOfAppointmentAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            storedAppointment.Start.ShouldBe(returnedAppointment.Start);
+            storedAppointment.End.ShouldBe(returnedAppointment.End);
+        }
+
+        [Then(@"the reason of ""(.*)"" and the returned response should be equal")]
+        public void ThenTheReasonDateOfAppointmentAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            storedAppointment.Reason.Text.ShouldBe(returnedAppointment.Reason.Text);
+          }
+
+        [Then(@"the slot display and reference of ""(.*)"" and the returned response should be equal")]
+        public void ThenTheSlotDisplayOfAppointmentAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            string storedSlotReference = "";
+            string storedSlotDisplay = "";
+
+
+            foreach (var slotReference in storedAppointment.Slot)
+            {
+                storedSlotReference = slotReference.Reference;
+                storedSlotDisplay = slotReference.Display;
+            }
+
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (var slotReference in returnedAppointment.Slot)
+            {
+                storedSlotReference.ShouldBe(slotReference.Reference);
+                storedSlotDisplay.ShouldBe(slotReference.Display);
+            }
+        }
+
+        [Then(@"the type and reference of ""(.*)"" and the returned response should be equal")]
+        public void ThenTheTypeOfAppointmentAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            var code = "";
+            returnedAppointment.Type.Text.ShouldBe(storedAppointment.Type.Text);
+            foreach (var coding in returnedAppointment.Type.Coding)
+            {
+                code = coding.Code;
+            }
+            foreach (var coding in storedAppointment.Type.Coding)
+            {
+                coding.Code.ShouldBe(code);
+              
+            }
+            storedAppointment.Comment.ShouldBe(returnedAppointment.Comment);
+        }
+
+        [Then(@"the patient participant of ""(.*)"" and the returned response should be equal")]
+        public void ThenTheParticipantsOfAppointmentAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            ParticipationStatus savedAppointmentParticipantStatus = new ParticipationStatus();
+            ParticipationStatus returnedResponseAppointmentParticipantStatus = new ParticipationStatus();
+
+            foreach (Appointment.ParticipantComponent participant in savedAppointment.Participant)
+            {
+                if (participant.Actor.Reference.StartsWith("Patient/"))
+                {
+                    savedAppointmentParticipantStatus = participant.Status.Value;
+                }
+
+            }
+
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            returnedAppointment.Participant.ShouldNotBeNull();
+                    foreach (Appointment.ParticipantComponent participant in returnedAppointment.Participant)
+                    {
+                        if (participant.Actor.Reference.StartsWith("Patient/"))
+                        {
+                            returnedResponseAppointmentParticipantStatus = participant.Status.Value;
+                        }
+
+            }
+
+            savedAppointmentParticipantStatus.ShouldBe(returnedResponseAppointmentParticipantStatus);
+        }
+
+
+
+        [Then(@"the location participant of ""(.*)"" and the returned response should be equal")]
+        public void ThenTheLocationOfAppointmentAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            ParticipationStatus savedAppointmentParticipantStatus = new ParticipationStatus();
+            ParticipationStatus returnedResponseAppointmentParticipantStatus = new ParticipationStatus();
+
+            foreach (Appointment.ParticipantComponent participant in savedAppointment.Participant)
+            {
+                if (participant.Actor.Reference.StartsWith("Patient/"))
+                {
+                    savedAppointmentParticipantStatus = participant.Status.Value;
+                }
+
+            }
+
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            returnedAppointment.Participant.ShouldNotBeNull();
+            foreach (Appointment.ParticipantComponent participant in returnedAppointment.Participant)
+            {
+                if (participant.Actor.Reference.StartsWith("Patient/"))
+                {
+                    returnedResponseAppointmentParticipantStatus = participant.Status.Value;
+                }
+
+            }
+
+            savedAppointmentParticipantStatus.ShouldBe(returnedResponseAppointmentParticipantStatus);
+        }
+
+
+
+
+
+
+
+
+
+
+
+        [Then(@"the practitioner participant of ""(.*)"" and the returned response should be equal")]
+        public void ThenThePractitionerOfAppointmentAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            ParticipationStatus savedAppointmentParticipantStatus = new ParticipationStatus();
+            ParticipationStatus returnedResponseAppointmentParticipantStatus = new ParticipationStatus();
+
+            foreach (Appointment.ParticipantComponent participant in savedAppointment.Participant)
+            {
+                if (participant.Actor.Reference.StartsWith("Patient/"))
+                {
+                    savedAppointmentParticipantStatus = participant.Status.Value;
+                }
+
+            }
+
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            returnedAppointment.Participant.ShouldNotBeNull();
+            foreach (Appointment.ParticipantComponent participant in returnedAppointment.Participant)
+            {
+                if (participant.Actor.Reference.StartsWith("Patient/"))
+                {
+                    returnedResponseAppointmentParticipantStatus = participant.Status.Value;
+                }
+
+            }
+
+            savedAppointmentParticipantStatus.ShouldBe(returnedResponseAppointmentParticipantStatus);
+        }
+
+
+
+
+
+
+
+
+
+
+        [Then(@"the comment of ""(.*)"" and the returned response should be equal")]
+        public void ThenTheCommentOfAppointmentAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            storedAppointment.Comment.ShouldBe(returnedAppointment.Comment);
+        }
+
         private Extension buildAppointmentCancelExtension(Extension extension, string url, string code, string display)
         {
             extension.Url = url;

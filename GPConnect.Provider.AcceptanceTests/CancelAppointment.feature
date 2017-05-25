@@ -187,4 +187,30 @@ Given I find or create an appointment with status Booked for patient "patient1" 
 	Then the response status code should be "409"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
+
+Scenario: Cancel appointment compare values send in request and returned in the response
+	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
+	When I cancel the appointment called "patientApp"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Appointment resource
+		And the returned appointment resource should be cancelled
+		And the resource type of "patientApp" and the returned response should be equal
+		And the id of "patientApp" and the returned response should be equal
+		And the status of "patientApp" and the returned response should be equal
+		And the extension of "patientApp" and the returned response should be equal
+		And the description of "patientApp" and the returned response should be equal
+		And the start and end date of "patientApp" and the returned response should be equal
+		And the slot display and reference of "patientApp" and the returned response should be equal
+		And the type and reference of "patientApp" and the returned response should be equal
+		And the reason of "patientApp" and the returned response should be equal
+		And the patient participant of "patientApp" and the returned response should be equal
+		And the location participant of "patientApp" and the returned response should be equal
+		And the practitioner participant of "patientApp" and the returned response should be equal
+
+
+
+
  

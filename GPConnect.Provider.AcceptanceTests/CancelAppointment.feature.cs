@@ -521,6 +521,65 @@ testRunner.Given("I find or create an appointment with status Booked for patient
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Cancel appointment compare values send in request and returned in the response")]
+        public virtual void CancelAppointmentCompareValuesSendInRequestAndReturnedInTheResponse()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment compare values send in request and returned in the response", ((string[])(null)));
+#line 191
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 192
+ testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
+                    "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 193
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 194
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
+                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 195
+ testRunner.When("I cancel the appointment called \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 196
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 197
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 198
+  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 199
+  testRunner.And("the returned appointment resource should be cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 200
+  testRunner.And("the resource type of \"patientApp\" and the returned response should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 201
+  testRunner.And("the id of \"patientApp\" and the returned response should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 202
+  testRunner.And("the status of \"patientApp\" and the returned response should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 203
+  testRunner.And("the extension of \"patientApp\" and the returned response should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 204
+  testRunner.And("the description of \"patientApp\" and the returned response should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 205
+  testRunner.And("the start and end date of \"patientApp\" and the returned response should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 206
+  testRunner.And("the slot display and reference of \"patientApp\" and the returned response should b" +
+                    "e equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 207
+  testRunner.And("the type and reference of \"patientApp\" and the returned response should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 208
+  testRunner.And("the reason of \"patientApp\" and the returned response should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 209
+  testRunner.And("the patient participant of \"patientApp\" and the returned response should be equal" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 210
+  testRunner.And("the location participant of \"patientApp\" and the returned response should be equa" +
+                    "l", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 211
+  testRunner.And("the practitioner participant of \"patientApp\" and the returned response should be " +
+                    "equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

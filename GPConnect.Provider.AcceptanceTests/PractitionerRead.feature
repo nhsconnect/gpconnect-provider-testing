@@ -36,7 +36,7 @@ Scenario Outline: Practitioner read invalid request invalid URL
 	When I get "practitioner1Id" id then make a GET request to "<InvalidURL>"
 	Then the response status code should be "404"
 		Examples: 
-		| InvalidURL      |
+		| InvalidURL    |
 		| Practitioners |
 		| Practitioner! |
 		| Practitioner2 |

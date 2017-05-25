@@ -21,12 +21,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly AccessRecordSteps AccessRecordSteps;
         private readonly HttpContext HttpContext;
+        private readonly HttpSteps HttpSteps;
 
-        public OrganizationSteps(FhirContext fhirContext, AccessRecordSteps accessRecordSteps, HttpContext httpContext)
+        public OrganizationSteps(FhirContext fhirContext, AccessRecordSteps accessRecordSteps, HttpContext httpContext, HttpSteps httpSteps)
         {
             FhirContext = fhirContext;
             AccessRecordSteps = accessRecordSteps;
             HttpContext = httpContext;
+            HttpSteps = httpSteps;
         }
 
         [Given(@"I have the test ods codes")]
@@ -99,15 +101,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I get organization ""(.*)"" id and save it as ""(.*)""")]
         public void GivenIGetPracIdAndSaveItAsIdName(string orgName, string savedOrg)
         {
-            string identifier = "urn:nhs:names:services:gpconnect:fhir:rest:search:organization";
+         
             string system = "http://fhir.nhs.net/Id/ods-organization-code";
             string value = FhirContext.FhirOrganizations[orgName];
-            string URL = "/Organization";
-
+ 
             Given("I am using the default server");
-            Given($@"I am performing the ""{identifier}"" interaction");
+            Given($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:organization"" interaction");
             Given($@"I add the organization identifier parameter with system ""{system}"" and value ""{orgName}""");
-            When($@"I make a GET request to ""{URL}""");
+            When($@"I make a GET request to ""/Organization""");
             Then("the response status code should indicate success");
             Then("the response body should be FHIR JSON");
 
@@ -128,9 +129,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenIMakeAGetRequestToURLAndSearchForOrganization(string organizationName, string URL)
         {
             Organization organizationValue = (Organization)HttpContext.StoredFhirResources[organizationName];
-            string id = organizationValue.Id.ToString();
-            string fullUrl = "/"+URL+"/" + id;
-            When($@"I make a GET request to ""{fullUrl}""");
+            string fullUrl = "";
+
+            if (organizationValue.Id == null)
+            {
+                fullUrl = "/" + URL + "/" + null;
+                When($@"I make a GET request to ""{fullUrl}""");
+            }
+            else
+            {
+                string id = organizationValue.Id.ToString();
+                fullUrl = "/" + URL + "/" + id;
+                When($@"I make a GET request to ""{fullUrl}""");
+            }
         }
 
         [Then(@"the response should be an Organization resource")]
@@ -185,6 +196,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-      
-    }
+        [Then(@"if the organization resource contains a partOf reference it is valid")]
+        public void ThenIfTheOrganizationResourceContainsAPartOfReferenceItIsValid()
+        {
+            Organization organization = (Organization)FhirContext.FhirResponseResource;
+            if (organization.PartOf != null)
+            {
+                organization.PartOf.Reference.ShouldNotBeNull();
+                string reference = organization.PartOf.Reference;
+                reference.ShouldStartWith("Organization/");
+                var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", reference);
+                returnedResource.GetType().ShouldBe(typeof(Organization));
+
+            }
+        }
+     }
 }

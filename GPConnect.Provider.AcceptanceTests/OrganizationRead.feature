@@ -19,7 +19,7 @@ Scenario Outline: Organization Read successful request
 		| ORG3         |
 
 Scenario: Organization Read invalid ORG code
-	Given I get organization "UnknownOrg" id and save it as "ORG1ID"
+	Given I get organization "unknownORG" id and save it as "ORG1ID"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
 	When I get "ORG1ID" id then make a GET request to organization url "Organization"
@@ -30,12 +30,11 @@ Scenario Outline: Organization read invalid request invalid id
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
 	When I make a GET request for a organization using an invalid id of "<InvalidId>"
-	Then the response status code should be "400"
+	Then the response status code should be "404"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "ORGANISATION_NOT_FOUND"
 		Examples: 
 		| InvalidId |
-		| ##        |
 		| 1@        |
 		| 9i        |
 		| 40-9      |
@@ -132,7 +131,7 @@ Scenario: Organization read check meta data profile and version id
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
-		And the practitioner resource it should contain meta data profile and version id
+		And the organization resource it should contain meta data profile and version id
 
 Scenario: Organization read organization contains identifier it is valid
 	Given I get organization "ORG1" id and save it as "ORG1ID"
@@ -143,3 +142,13 @@ Scenario: Organization read organization contains identifier it is valid
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
 		And if the organization resource contains an identifier it is valid
+
+Scenario: Organization read organization contains valid partOf element with a valid reference
+	Given I get organization "unknownORG" id and save it as "ORG1ID"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
+	When I get "ORG1ID" id then make a GET request to organization url "Organization"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Organization resource
+		And if the organization resource contains a partOf reference it is valid
