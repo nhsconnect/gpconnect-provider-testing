@@ -6,10 +6,10 @@ Background:
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
 	Given I am using the default server
-		And I perform a patient search for patient "patient12NoAppointments" and store the first returned resources against key "tom"
+		And I perform a patient search for patient "patient12NoAppointments" and store the first returned resources against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "tom" from the list of patients and make a get request for their appointments
+	When I search for "registerPatient" from the list of patients and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -436,3 +436,46 @@ Scenario: Appointment retrive book appointment and search for the appointment an
 		And the returned appointment patient reference should match "Appointment3" patient reference
 		And the returned appointment slot reference should match "Appointment3" slot reference
 		And the returned appointment participant status should match "Appointment3" participant status
+
+
+
+Scenario Outline: Appointment retrieve JWT patient type request invalid
+	Given I am using the default server
+		And I perform a patient search for patient "patient1" and store the first returned resources against key "registerPatient"
+	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "<JWTType>"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+	When I search for "registerPatient" from the list of patients and make a get request for their appointments
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+			Examples: 
+	| JWTType              |
+	| organization/*.read  |
+	| organization/*.write |
+	| patient/*.write      |
+
+Scenario: Appointment retrieve JWT patient type request valid
+	Given I am using the default server
+		And I perform a patient search for patient "patient1" and store the first returned resources against key "registerPatient"
+	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.read"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+	When I search for "registerPatient" from the list of patients and make a get request for their appointments
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+
+Scenario: Appointment retrieve JWT patient reference must match payload patient nhs number
+	Given I am using the default server
+		And I perform a patient search for patient "patient1" and store the first returned resources against key "registerPatient"
+	Given I am using the default server
+		And I set the JWT requested record NHS number to config patient "patient2"
+		And I set the JWT requested scope to "patient/*.read"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+	When I search for "registerPatient" from the list of patients and make a get request for their appointments
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

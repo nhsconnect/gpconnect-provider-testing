@@ -88,15 +88,15 @@ this.FeatureBackground();
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
   testRunner.And("I perform a patient search for patient \"patient12NoAppointments\" and store the fi" +
-                    "rst returned resources against key \"tom\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "rst returned resources against key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
                     "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.When("I search for \"tom\" from the list of patients and make a get request for their app" +
-                    "ointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I search for \"registerPatient\" from the list of patients and make a get request f" +
+                    "or their appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 14
@@ -1141,6 +1141,119 @@ this.FeatureBackground();
 #line 438
   testRunner.And("the returned appointment participant status should match \"Appointment3\" participa" +
                     "nt status", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve JWT patient type request invalid")]
+        [NUnit.Framework.TestCaseAttribute("organization/*.read", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("organization/*.write", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient/*.write", new string[0])]
+        public virtual void AppointmentRetrieveJWTPatientTypeRequestInvalid(string jWTType, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve JWT patient type request invalid", exampleTags);
+#line 442
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 443
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 444
+  testRunner.And("I perform a patient search for patient \"patient1\" and store the first returned re" +
+                    "sources against key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 445
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 446
+  testRunner.And("I set the JWT requested record NHS number to the NHS number of patient stored aga" +
+                    "inst key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 447
+  testRunner.And(string.Format("I set the JWT requested scope to \"{0}\"", jWTType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 448
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 449
+ testRunner.When("I search for \"registerPatient\" from the list of patients and make a get request f" +
+                    "or their appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 450
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 451
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 452
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve JWT patient type request valid")]
+        public virtual void AppointmentRetrieveJWTPatientTypeRequestValid()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve JWT patient type request valid", ((string[])(null)));
+#line 459
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 460
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 461
+  testRunner.And("I perform a patient search for patient \"patient1\" and store the first returned re" +
+                    "sources against key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 462
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 463
+  testRunner.And("I set the JWT requested record NHS number to the NHS number of patient stored aga" +
+                    "inst key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 464
+  testRunner.And("I set the JWT requested scope to \"patient/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 465
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 466
+ testRunner.When("I search for \"registerPatient\" from the list of patients and make a get request f" +
+                    "or their appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 467
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 468
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 469
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve JWT patient reference must match payload patient nhs number")]
+        public virtual void AppointmentRetrieveJWTPatientReferenceMustMatchPayloadPatientNhsNumber()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve JWT patient reference must match payload patient nhs number", ((string[])(null)));
+#line 471
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 472
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 473
+  testRunner.And("I perform a patient search for patient \"patient1\" and store the first returned re" +
+                    "sources against key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 474
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 475
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 476
+  testRunner.And("I set the JWT requested scope to \"patient/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 477
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:patient_ap" +
+                    "pointments\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 478
+ testRunner.When("I search for \"registerPatient\" from the list of patients and make a get request f" +
+                    "or their appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 479
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 480
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 481
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
