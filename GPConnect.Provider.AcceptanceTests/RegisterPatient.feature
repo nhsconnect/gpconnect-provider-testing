@@ -6,6 +6,8 @@ Background:
 Scenario Outline: Register patient send request to incorrect URL
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "<regStartDate>" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -24,6 +26,8 @@ Scenario Outline: Register patient send request to incorrect URL
 Scenario Outline: Register patient with invalid interactionIds 
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "<interactionId>" interaction
 		And I add the registration period with start date "2017-05-05" and end date "2018-11-12" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -43,6 +47,8 @@ Scenario Outline: Register patient with invalid interactionIds
 Scenario Outline: Register patient with missing header
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -63,6 +69,8 @@ Scenario Outline: Register patient with missing header
 Scenario: Register patient without sending identifier within patient
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -76,6 +84,8 @@ Scenario: Register patient without sending identifier within patient
 Scenario: Register patient without name element
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -89,6 +99,8 @@ Scenario: Register patient without name element
 Scenario: Register patient without gender element
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -102,6 +114,8 @@ Scenario: Register patient without gender element
 Scenario: Register patient without date of birth element
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -115,6 +129,8 @@ Scenario: Register patient without date of birth element
 Scenario Outline: Register patient with an invalid NHS number
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -138,6 +154,8 @@ Scenario Outline: Register patient with an invalid NHS number
 Scenario Outline: Register patient and check all elements conform to the gp connect profile
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I set the request content type to "<ContentType>"
 		And I set the Accept header to "<ContentType>"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
@@ -149,6 +167,7 @@ Scenario Outline: Register patient and check all elements conform to the gp conn
 		And the response body should be FHIR <Format>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
+		And the patient resource in the bundle should contain meta data profile and version id
 		And the bundle should contain a registration period
 		And the bundle should contain a registration status
 		And the bundle should contain a registration type
@@ -165,6 +184,8 @@ Scenario Outline: Register patient and check all elements conform to the gp conn
 Scenario Outline: Register patient checking that the format parameter works correctly
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I set the request content type to "<ContentType>"
 		And I add the parameter "_format" with the value "<ContentType>"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
@@ -192,6 +213,8 @@ Scenario Outline: Register patient checking that the format parameter works corr
 Scenario Outline: Register patient checking that the format parameter and accept header works correctly
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I set the request content type to "<ContentType>"
 		And I set the Accept header to "<AcceptHeader>"
 		And I add the parameter "_format" with the value "<FormatParam>"
@@ -228,6 +251,8 @@ Scenario Outline: Register patient checking that the format parameter and accept
 Scenario: Register patient and check all elements conform to the gp connect profile with Extensions sent in a different order
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration type with code "T" to "registerPatient"
 		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
@@ -249,6 +274,8 @@ Scenario: Register patient and check all elements conform to the gp connect prof
 Scenario: Register patient without registration period element
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -260,6 +287,8 @@ Scenario: Register patient without registration period element
 Scenario: Register patient without registration status code element
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -271,6 +300,8 @@ Scenario: Register patient without registration status code element
 Scenario: Register patient without registration type element
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -282,6 +313,8 @@ Scenario: Register patient without registration type element
 Scenario: Register patient without registration period or type code elements
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
@@ -292,6 +325,8 @@ Scenario: Register patient without registration period or type code elements
 Scenario: Register patient without registration status code or registration type element
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
@@ -302,6 +337,8 @@ Scenario: Register patient without registration status code or registration type
 Scenario: Register patient without any extension elements
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
 	Then the response status code should be "400"
@@ -311,6 +348,8 @@ Scenario: Register patient without any extension elements
 Scenario: Register patient with duplicate extension
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -324,6 +363,8 @@ Scenario: Register patient with duplicate extension
 Scenario: Register patient with duplicate extension and missing extension
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration period with start date "2017-04-11" and end date "2018-12-28" to "registerPatient"
@@ -336,6 +377,8 @@ Scenario: Register patient with duplicate extension and missing extension
 Scenario: Register patient with invalid bundle resource type
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -348,6 +391,8 @@ Scenario: Register patient with invalid bundle resource type
 Scenario: Register patient with invalid patient resource type
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -360,6 +405,8 @@ Scenario: Register patient with invalid patient resource type
 Scenario: Register patient with invalid patient resource with additional element
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -372,6 +419,8 @@ Scenario: Register patient with invalid patient resource with additional element
 Scenario: Register patient with duplicate patient resource parameters
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -386,6 +435,8 @@ Scenario: Register patient with duplicate patient resource parameters
 Scenario: Register patient with duplicate parameters valid first
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -400,6 +451,8 @@ Scenario: Register patient with duplicate parameters valid first
 Scenario: Register patient with duplicate parameters invalid first
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -414,6 +467,8 @@ Scenario: Register patient with duplicate parameters invalid first
 Scenario Outline: Register patient with invalid parameters name
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -434,6 +489,8 @@ Scenario: Register patient which alread exists on the system as a normal patient
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "registerPatient"
 	Given I convert patient stored in "registerPatient" to a register temporary patient against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -446,6 +503,8 @@ Scenario: Register patient which alread exists on the system as a normal patient
 Scenario: Register patient which alread exists on the system as a temporary patient
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -462,9 +521,25 @@ Scenario: Register patient which alread exists on the system as a temporary pati
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+Scenario: Register patient which is not on PDS
+	Given I create a patient to register which does not exist on PDS and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
 Scenario: Register patient with Prefer header representation response
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -482,6 +557,8 @@ Scenario: Register patient with Prefer header representation response
 Scenario: Register patient with Prefer header minimal response
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
 		And I add the registration status with code "A" to "registerPatient"
@@ -497,6 +574,8 @@ Scenario: Register patient with Prefer header minimal response
 Scenario: Multiple family names
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -510,6 +589,8 @@ Scenario: Multiple family names
 Scenario: Multiple given names
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -523,6 +604,8 @@ Scenario: Multiple given names
 Scenario: Multiple Names
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -536,6 +619,8 @@ Scenario: Multiple Names
 Scenario: Identifier without mandatory system elements
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -549,6 +634,8 @@ Scenario: Identifier without mandatory system elements
 Scenario Outline: Invalid registration period
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -567,6 +654,8 @@ Scenario Outline: Invalid registration period
 Scenario: Registration period with only end date
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -581,6 +670,8 @@ Scenario: Registration period with only end date
 Scenario: Registration period with only start date
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -595,6 +686,8 @@ Scenario: Registration period with only start date
 Scenario Outline: Invalid registration status
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "<Code>" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -615,6 +708,8 @@ Scenario Outline: Invalid registration status
 Scenario Outline: Invalid registration type
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "<Code>" to "registerPatient"
@@ -634,6 +729,8 @@ Scenario Outline: Invalid registration type
 Scenario Outline: Additional not allowed elements
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
 		And I add the registration status with code "A" to "registerPatient"
 		And I add the registration type with code "T" to "registerPatient"
@@ -644,12 +741,50 @@ Scenario Outline: Additional not allowed elements
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples: 
-	| ElementToAdd |
-	| telecom      |
-	| address      |
+	| ElementToAdd  |
+	| active        |
+	| telecom       |
+	| deceased      |
+	| address       |
+	| marital       |
+	| births        |
+	| photo         |
+	| contact       |
+	| animal        |
+	| communication |
+	| careprovider  |
+	| managingorg   |
+	| link          |
 
-@ignore
-Scenario: JWT matches patient patient type request
+Scenario Outline: JWT matches patient patient type request
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+		And I set the JWT requested scope to "<JWTType>"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples: 
+	| JWTType              |
+	| patient/*.read       |
+	| organization/*.read  |
+	| organization/*.write |
 
-@ignore
-Scenario: JWT patient reference match payload nhs number
+Scenario: JWT patient reference match payload patients nhs number
+	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
+	Given I am using the default server
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
+		And I add the registration status with code "A" to "registerPatient"
+		And I add the registration type with code "T" to "registerPatient"
+		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
