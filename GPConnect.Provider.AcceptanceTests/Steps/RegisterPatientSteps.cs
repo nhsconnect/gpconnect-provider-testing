@@ -53,15 +53,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIFindTheNextPatientToRegisterAndStoreThePatientResourceAgainstKey(string patientResourceKey)
         {
             Patient returnPatient = null;
-
             List<RegisterPatient> registerPatients = GlobalContext.RegisterPatientsData;
             for (int index = 0; index < registerPatients.Count; index++) {
                 RegisterPatient registerPatient = registerPatients[index];
                 // Search for patient
                 Given($@"I perform a patient search for patient with NHSNumber ""{registerPatient.SPINE_NHS_NUMBER}"" and store the response bundle against key ""registerPatient""");
                 // See if number of returned patients is > zero, ie patient already registered, else use patient
-                Bundle patientSearchBiundle = (Bundle)HttpContext.StoredFhirResources["registerPatient"];
-                if (patientSearchBiundle.Entry.Count == 0) {
+                Bundle patientSearchBundle = (Bundle)HttpContext.StoredFhirResources["registerPatient"];
+                if (patientSearchBundle.Entry.Count == 0) {
                     // Patient not registered yet
                     returnPatient = new Patient();
                     returnPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, registerPatient.SPINE_NHS_NUMBER));
@@ -142,7 +141,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I clear exisiting identifiers in the patient stored against key ""([^""]*)"" and add an NHS number identifier ""([^""]*)""")]
-        public void GivenIRemoveTheDOBElementFromThePatientStoredAgainstKey(string storedPatientKey, string nhsNumber)
+        public void GivenIClearExisitingIdentifiersInThePatientStoredAgainstKey(string storedPatientKey, string nhsNumber)
         {
             Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             patient.Identifier.Clear();
@@ -220,7 +219,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the bundle should contain a registration type")]
-        public void GivenTheResponseValidRegType()
+        public void ThenTheBundleShouldContainARegistrationType()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
@@ -292,6 +291,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             foreach (var name in storedPatient.Name) {
                 name.FamilyElement.Add(new FhirString(familyName));
             }
+
         }
 
         [Given(@"I add the given name ""([^""]*)"" to the patient stored against key ""([^""]*)""")]
@@ -305,7 +305,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I add a name with given name ""([^""]*)"" and family name ""([^""]*)"" to the patient stored against key ""([^""]*)""")]
-        public void GivenIAddTheGivenNameToThePatientStoredAgainstKey(string givenName, string familyName, string storedPatientKey)
+        public void GivenIAddTheGivenNameAndFamilyNameToThePatientStoredAgainstKey(string givenName, string familyName, string storedPatientKey)
         {
             Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             var name = new HumanName();
@@ -315,7 +315,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I add an identifier with no system element to stored patient ""([^""]*)""")]
-        public void GivenIAddAnIdentifierWithAnInvalidUseElement(string storedPatientKey)
+        public void GivenIAddAnIdentifierWithNoSystemElementToStoredPatient(string storedPatientKey)
         {
             Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             var identifier = new Identifier();
@@ -436,7 +436,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the bundle should contain a registration status")]
-        public void GivenTheResponseValidRegStatus()
+        public void ThenTheBundleShouldContainARegistrationStatus()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
@@ -460,7 +460,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         [Then(@"the bundle should contain a registration period")]
-        public void GivenTheResponseValidRegPeriod()
+        public void ThenTheBundleShouldContainARegistrationPeriod()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
@@ -588,7 +588,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the response bundle should contain a patient resource which contains exactly 1 gender element matching the patient stored against key ""([^""]*)""")]
-        public void ThenTheResponseBundleShouldContainAPatientResourceWhichContainsExactly1GenerElement(string storedPatientKey)
+        public void ThenTheResponseBundleShouldContainAPatientResourceWhichContainsExactly1GenderElement(string storedPatientKey)
         {
             Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
