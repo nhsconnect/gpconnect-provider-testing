@@ -166,6 +166,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Organization);
         }
 
+        [Then(@"the returned organization resource should contain a logical id")]
+        public void TheReturnedOrganizationResourceShouldContainALogicalId()
+        {
+            FhirContext.FhirResponseResource.Id.ShouldNotBeNullOrEmpty("The returned organization resource should include a logical identifier");
+        }
+
         [When(@"I make a GET request for a organization using an invalid id of ""(.*)""")]
         public void ThenIMakeAGetRequestForAOrganizationUsingAnInvalidIdOf(string invalidId)
         {
