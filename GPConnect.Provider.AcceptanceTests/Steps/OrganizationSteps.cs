@@ -99,7 +99,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         [Given(@"I get organization ""(.*)"" id and save it as ""(.*)""")]
-        public void GivenIGetPracIdAndSaveItAsIdName(string orgName, string savedOrg)
+        public void GivenIGetOrganizationIdAndSaveItAs(string orgName, string savedOrg)
         {
          
             string system = "http://fhir.nhs.net/Id/ods-organization-code";
@@ -109,13 +109,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:organization"" interaction");
             Given($@"I add the organization identifier parameter with system ""{system}"" and value ""{orgName}""");
             When($@"I make a GET request to ""/Organization""");
-            Then("the response status code should indicate success");
-            Then("the response body should be FHIR JSON");
+            Then($@"the response status code should indicate success");
+            Then($@"the response body should be FHIR JSON");
+            Then($@"the response should be a Bundle resource of type ""searchset""");
+            Then($@"the response bundle should contain ""1"" entries");
 
             Organization organization = new Organization();
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
-
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {
                     organization = (Organization)entry.Resource;
@@ -126,7 +127,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I get ""(.*)"" id then make a GET request to organization url ""(.*)""")]
-        public void ThenIMakeAGetRequestToURLAndSearchForOrganization(string organizationName, string URL)
+        public void ThenIGetIdThenMakeAGETRequestToOrganizationUrl(string organizationName, string URL)
         {
             Organization organizationValue = (Organization)HttpContext.StoredFhirResources[organizationName];
             string fullUrl = "";
@@ -142,6 +143,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 fullUrl = "/" + URL + "/" + id;
                 When($@"I make a GET request to ""{fullUrl}""");
             }
+        }
+
+        [When(@"I perform a vread for organizaiton ""([^""]*)""")]
+        public void WhenIPerformAVreadForOrganizaiton(string storedOrganizationKey)
+        {
+            Organization organization = (Organization)HttpContext.StoredFhirResources[storedOrganizationKey];
+            When($@"I make a GET request to ""/Organization/{organization.Id}/_history/{organization.Meta.VersionId}""");
+        }
+
+        [When(@"I perform an organization vread with version ""([^""]*)"" for organization stored against key ""([^""]*)""")]
+        public void WhenIPerformAnOrganizationVreadWithVersionForOrganizationStoredAgainstKey(string version, string storedOrganizationKey)
+        {
+            Organization organizationValue = (Organization)HttpContext.StoredFhirResources[storedOrganizationKey];
+            
+            When($@"I make a GET request to ""/Organization/{organizationValue.Id}/_history/{version}""");
         }
 
         [Then(@"the response should be an Organization resource")]
@@ -192,7 +208,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (organization.Type != null && organization.Type.Coding != null)
             {
                 organization.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
-                AccessRecordSteps.shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirMaritalStatusValueSet, organization.Type.Coding);
+                foreach (var coding in organization.Type.Coding) {
+                    coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/organisation-type-1", "Returned Organization coding should contain a valid system element.");
+                    coding.Code.ShouldNotBeNullOrEmpty("Returned Organization coding should contain a code element");
+                    coding.Display.ShouldNotBeNullOrEmpty("Returned Organization coding should contain a display element");
+                }
             }
         }
 
