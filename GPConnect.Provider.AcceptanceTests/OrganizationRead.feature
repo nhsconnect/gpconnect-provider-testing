@@ -17,13 +17,6 @@ Scenario Outline: Organization Read successful request
 		| ORG1         |
 		| ORG2         |
 		| ORG3         |
-
-Scenario: Organization Read invalid ORG code
-	Given I get organization "unknownORG" id and save it as "ORG1ID"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
-	When I get "ORG1ID" id then make a GET request to organization url "Organization"
-	Then the response status code should indicate failure
 	
 Scenario Outline: Organization read invalid request invalid id
 	Given I get organization "ORG1" id and save it as "ORG1ID"
@@ -31,8 +24,6 @@ Scenario Outline: Organization read invalid request invalid id
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
 	When I make a GET request for a organization using an invalid id of "<InvalidId>"
 	Then the response status code should be "404"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "ORGANISATION_NOT_FOUND"
 		Examples: 
 		| InvalidId |
 		| 1@        |
@@ -99,12 +90,12 @@ Scenario Outline: Organization read _format parameter only
         | application/xml+fhir  | XML        |
 
 Scenario Outline: Organization read accept header and _format
-	Given I get organization "ORG1" id and save it as "ORG1ID"
+	Given I get organization "ORG2" id and save it as "ORG2ID"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
-	When I get "ORG1ID" id then make a GET request to organization url "Organization"
+	When I get "ORG2ID" id then make a GET request to organization url "Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Organization resource
@@ -134,6 +125,16 @@ Scenario: Organization read check meta data profile and version id
 		And the organization resource it should contain meta data profile and version id
 
 Scenario: Organization read organization contains identifier it is valid
+	Given I get organization "ORG3" id and save it as "ORG3ID"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
+	When I get "ORG3ID" id then make a GET request to organization url "Organization"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Organization resource
+		And if the organization resource contains an identifier it is valid
+
+Scenario: Organization read organization contains valid partOf element with a valid reference
 	Given I get organization "ORG1" id and save it as "ORG1ID"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
@@ -141,14 +142,55 @@ Scenario: Organization read organization contains identifier it is valid
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
-		And if the organization resource contains an identifier it is valid
+		And if the organization resource contains a partOf reference it is valid
 
-Scenario: Organization read organization contains valid partOf element with a valid reference
-	Given I get organization "unknownORG" id and save it as "ORG1ID"
+Scenario: Organization read organization contains valid Type element it must contain code system and display
+	Given I get organization "ORG2" id and save it as "ORG2ID"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
+	When I get "ORG2ID" id then make a GET request to organization url "Organization"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Organization resource
+		And if the organization resource contains type it is valid
+
+Scenario: Organization read response should contain ETag header
+	Given I get organization "ORG1" id and save it as "ORG1ID"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
 	When I get "ORG1ID" id then make a GET request to organization url "Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
-		And if the organization resource contains a partOf reference it is valid
+		And the response should contain the ETag header matching the resource version
+
+Scenario: VRead of current resource should return resource
+	Given I get organization "ORG3" id and save it as "ORGID"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
+	When I perform a vread for organizaiton "ORGID"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be an Organization resource
+
+Scenario: VRead of non existant version should return an error
+	Given I get organization "ORG2" id and save it as "storedOrganization"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
+	When I perform an organization vread with version "NotARealVersionId" for organization stored against key "storedOrganization"
+	Then the response status code should be "404"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
+
+@Manual
+@ignore
+Scenario: If provider supports versioning test that once a resource is updated that the old version can be retrieved
+
+@Manual
+@ignore
+Scenario: Check that the optional fields are populated in the Organization resource if they are available in the provider system
+	# name - Organization Name
+	# telecom - Telecom information for the Organization, can be multiple instances for different types.
+	# address - Address(s) for the Organization.
+	# contact - the details of a person, telecom or address for contact with the organizaiton.
+

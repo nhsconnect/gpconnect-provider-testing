@@ -476,7 +476,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenResponseBundleEntryShouldNotBeEmpty(int expectedSize)
         {
             Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
-            bundle.Entry.Count.ShouldBe(expectedSize);
+            bundle.Entry.Count.ShouldBe(expectedSize, "The response bundle does not contain the expected number of entries");
         }
 
         [Then(@"the response bundle entry ""([^""]*)"" should contain element ""([^""]*)""")]

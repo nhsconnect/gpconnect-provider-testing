@@ -103,30 +103,6 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Organization Read invalid ORG code")]
-        public virtual void OrganizationReadInvalidORGCode()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization Read invalid ORG code", ((string[])(null)));
-#line 21
-this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
-#line 22
- testRunner.Given("I get organization \"unknownORG\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 23
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 24
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
-                    "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
- testRunner.When("I get \"ORG1ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 26
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Organization read invalid request invalid id")]
         [NUnit.Framework.TestCaseAttribute("1@", new string[0])]
         [NUnit.Framework.TestCaseAttribute("9i", new string[0])]
@@ -134,26 +110,21 @@ this.FeatureBackground();
         public virtual void OrganizationReadInvalidRequestInvalidId(string invalidId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read invalid request invalid id", exampleTags);
-#line 28
+#line 21
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 29
+#line 22
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
+#line 23
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 31
+#line 24
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
+#line 25
  testRunner.When(string.Format("I make a GET request for a organization using an invalid id of \"{0}\"", invalidId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 33
+#line 26
  testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 34
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
-  testRunner.And("the response should be a OperationOutcome resource with error code \"ORGANISATION_" +
-                    "NOT_FOUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -166,20 +137,20 @@ this.FeatureBackground();
         public virtual void OrganizationReadInvalidRequestInvalidURL(string invalidURL, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read invalid request invalid URL", exampleTags);
-#line 42
+#line 33
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 43
+#line 34
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 44
+#line 35
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 45
+#line 36
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 37
  testRunner.When(string.Format("I get \"ORG1ID\" id then make a GET request to organization url \"{0}\"", invalidURL), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 47
+#line 38
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -195,26 +166,26 @@ this.FeatureBackground();
         public virtual void OrganizationReadFailureDueToMissingHeader(string header, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read failure due to missing header", exampleTags);
-#line 54
+#line 45
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 55
+#line 46
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
+#line 47
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 57
+#line 48
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 49
   testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 50
  testRunner.When("I get \"ORG1ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 60
+#line 51
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 61
+#line 52
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 53
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -230,23 +201,23 @@ this.FeatureBackground();
         public virtual void OrganizationReadFailureWithIncorrectInteractionId(string interactionId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read failure with incorrect interaction id", exampleTags);
-#line 71
+#line 62
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 72
+#line 63
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 73
+#line 64
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 74
+#line 65
   testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 66
  testRunner.When("I get \"ORG1ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 76
+#line 67
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 77
+#line 68
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
+#line 69
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -259,26 +230,26 @@ this.FeatureBackground();
         public virtual void OrganizationRead_FormatParameterOnly(string parameter, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read _format parameter only", exampleTags);
-#line 87
+#line 78
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 88
+#line 79
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 89
+#line 80
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 90
+#line 81
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
+#line 82
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 83
  testRunner.When("I get \"ORG1ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 93
+#line 84
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 94
+#line 85
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 95
+#line 86
   testRunner.And("the response should be an Organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -293,28 +264,28 @@ this.FeatureBackground();
         public virtual void OrganizationReadAcceptHeaderAnd_Format(string header, string parameter, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read accept header and _format", exampleTags);
-#line 101
+#line 92
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 102
- testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 103
+#line 93
+ testRunner.Given("I get organization \"ORG2\" id and save it as \"ORG2ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 94
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 104
+#line 95
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 105
+#line 96
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 97
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
- testRunner.When("I get \"ORG1ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 108
+#line 98
+ testRunner.When("I get \"ORG2ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 99
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 109
+#line 100
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
+#line 101
   testRunner.And("the response should be an Organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -325,22 +296,22 @@ this.FeatureBackground();
         public virtual void ConformanceProfileSupportsTheOrganizationReadOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Organization read operation", ((string[])(null)));
-#line 118
+#line 109
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 119
+#line 110
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 120
+#line 111
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
+#line 112
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 122
+#line 113
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 123
+#line 114
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 124
+#line 115
   testRunner.And("the conformance profile should contain the \"Organization\" resource with a \"read\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -352,26 +323,26 @@ this.FeatureBackground();
         public virtual void OrganizationReadCheckMetaDataProfileAndVersionId()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read check meta data profile and version id", ((string[])(null)));
-#line 126
+#line 117
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 127
+#line 118
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 128
+#line 119
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 129
+#line 120
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 130
+#line 121
  testRunner.When("I get \"ORG1ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 131
+#line 122
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 132
+#line 123
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 124
   testRunner.And("the response should be an Organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
+#line 125
   testRunner.And("the organization resource it should contain meta data profile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -382,26 +353,26 @@ this.FeatureBackground();
         public virtual void OrganizationReadOrganizationContainsIdentifierItIsValid()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read organization contains identifier it is valid", ((string[])(null)));
-#line 136
+#line 127
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 137
- testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 138
+#line 128
+ testRunner.Given("I get organization \"ORG3\" id and save it as \"ORG3ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 129
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 139
+#line 130
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
- testRunner.When("I get \"ORG1ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 141
+#line 131
+ testRunner.When("I get \"ORG3ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 132
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 142
+#line 133
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
+#line 134
   testRunner.And("the response should be an Organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 144
+#line 135
   testRunner.And("if the organization resource contains an identifier it is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -414,27 +385,184 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read organization contains valid partOf element with a valid referen" +
                     "ce", ((string[])(null)));
-#line 146
+#line 137
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 147
- testRunner.Given("I get organization \"unknownORG\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 148
+#line 138
+ testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 139
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 149
+#line 140
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 141
  testRunner.When("I get \"ORG1ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 151
+#line 142
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 152
+#line 143
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
+#line 144
   testRunner.And("the response should be an Organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
+#line 145
   testRunner.And("if the organization resource contains a partOf reference it is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Organization read organization contains valid Type element it must contain code s" +
+            "ystem and display")]
+        public virtual void OrganizationReadOrganizationContainsValidTypeElementItMustContainCodeSystemAndDisplay()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read organization contains valid Type element it must contain code s" +
+                    "ystem and display", ((string[])(null)));
+#line 147
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 148
+ testRunner.Given("I get organization \"ORG2\" id and save it as \"ORG2ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 149
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 150
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
+                    "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 151
+ testRunner.When("I get \"ORG2ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 152
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 153
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 154
+  testRunner.And("the response should be an Organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 155
+  testRunner.And("if the organization resource contains type it is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Organization read response should contain ETag header")]
+        public virtual void OrganizationReadResponseShouldContainETagHeader()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read response should contain ETag header", ((string[])(null)));
+#line 157
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 158
+ testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 159
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 160
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
+                    "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 161
+ testRunner.When("I get \"ORG1ID\" id then make a GET request to organization url \"Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 162
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 163
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 164
+  testRunner.And("the response should be an Organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 165
+  testRunner.And("the response should contain the ETag header matching the resource version", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("VRead of current resource should return resource")]
+        public virtual void VReadOfCurrentResourceShouldReturnResource()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VRead of current resource should return resource", ((string[])(null)));
+#line 167
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 168
+ testRunner.Given("I get organization \"ORG3\" id and save it as \"ORGID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 169
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 170
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
+                    "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 171
+ testRunner.When("I perform a vread for organizaiton \"ORGID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 172
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 173
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 174
+  testRunner.And("the response should be an Organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("VRead of non existant version should return an error")]
+        public virtual void VReadOfNonExistantVersionShouldReturnAnError()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VRead of non existant version should return an error", ((string[])(null)));
+#line 176
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 177
+ testRunner.Given("I get organization \"ORG2\" id and save it as \"storedOrganization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 178
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 179
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:organization" +
+                    "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 180
+ testRunner.When("I perform an organization vread with version \"NotARealVersionId\" for organization" +
+                    " stored against key \"storedOrganization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 181
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 182
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 183
+  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("If provider supports versioning test that once a resource is updated that the old" +
+            " version can be retrieved")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
+        public virtual void IfProviderSupportsVersioningTestThatOnceAResourceIsUpdatedThatTheOldVersionCanBeRetrieved()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("If provider supports versioning test that once a resource is updated that the old" +
+                    " version can be retrieved", new string[] {
+                        "Manual",
+                        "ignore"});
+#line 187
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check that the optional fields are populated in the Organization resource if they" +
+            " are available in the provider system")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
+        public virtual void CheckThatTheOptionalFieldsArePopulatedInTheOrganizationResourceIfTheyAreAvailableInTheProviderSystem()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check that the optional fields are populated in the Organization resource if they" +
+                    " are available in the provider system", new string[] {
+                        "Manual",
+                        "ignore"});
+#line 191
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
