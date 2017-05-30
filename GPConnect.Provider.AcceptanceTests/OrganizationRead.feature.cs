@@ -530,6 +530,36 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("If-None-Match read organization on a matching version")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void If_None_MatchReadOrganizationOnAMatchingVersion()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("If-None-Match read organization on a matching version", new string[] {
+                        "ignore"});
+#line 186
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("If-None-Match read organization on a non matching version")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        public virtual void If_None_MatchReadOrganizationOnANonMatchingVersion()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("If-None-Match read organization on a non matching version", new string[] {
+                        "ignore"});
+#line 190
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("If provider supports versioning test that once a resource is updated that the old" +
             " version can be retrieved")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
@@ -540,7 +570,7 @@ this.FeatureBackground();
                     " version can be retrieved", new string[] {
                         "Manual",
                         "ignore"});
-#line 187
+#line 195
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
@@ -559,7 +589,7 @@ this.FeatureBackground();
                     " are available in the provider system", new string[] {
                         "Manual",
                         "ignore"});
-#line 191
+#line 199
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();

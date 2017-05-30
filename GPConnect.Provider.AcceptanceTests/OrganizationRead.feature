@@ -182,6 +182,14 @@ Scenario: VRead of non existant version should return an error
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 
+@ignore
+Scenario: If-None-Match read organization on a matching version
+	# Need to check if this is supported
+
+@ignore
+Scenario: If-None-Match read organization on a non matching version
+	# Need to check if this is supported
+
 @Manual
 @ignore
 Scenario: If provider supports versioning test that once a resource is updated that the old version can be retrieved
