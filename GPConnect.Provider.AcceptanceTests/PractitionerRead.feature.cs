@@ -85,14 +85,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 9
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 14
@@ -117,7 +119,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 18
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 19
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 20
@@ -149,7 +152,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 33
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
@@ -178,7 +182,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 45
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 46
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 47
@@ -187,7 +192,8 @@ this.FeatureBackground();
 #line 48
   testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 50
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 51
@@ -213,13 +219,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 62
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 63
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
   testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 66
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 67
@@ -242,7 +250,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 78
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 79
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 80
@@ -251,7 +260,8 @@ this.FeatureBackground();
 #line 81
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 83
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 84
@@ -276,7 +286,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 92
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 93
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 94
@@ -287,7 +298,8 @@ this.FeatureBackground();
 #line 96
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 97
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 98
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 99
@@ -335,14 +347,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 117
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 118
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 119
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 120
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 121
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 122
@@ -365,14 +379,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 127
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 128
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 129
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 131
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 132
@@ -395,14 +411,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 137
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 138
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 139
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 141
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 142
@@ -425,14 +443,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 147
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 148
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 149
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 150
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 151
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 152
@@ -456,14 +476,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 157
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 158
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 159
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 160
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 161
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 162
@@ -488,14 +510,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 167
- testRunner.Given("I get \"practitioner1\" id and save it as \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I search for practitioner \"practitioner1\" and save the first practitioner against" +
+                    " key \"practitioner1Id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 168
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 169
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 170
- testRunner.When("I get \"practitioner1Id\" id then make a GET request to \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform a practitioner read for the practitioner stored against key \"practition" +
+                    "er1Id\" against the URL \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 171
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 172

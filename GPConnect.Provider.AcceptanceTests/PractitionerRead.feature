@@ -6,16 +6,16 @@ Background:
 	Given I have the test ods codes
 
 Scenario: Practitioner read successful request
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 
 Scenario Outline: Practitioner read invalid request invalid id
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 	When I make a GET request for a practitioner using an invalid id of "<InvalidId>" and url "Practitioner"
@@ -30,7 +30,7 @@ Scenario Outline: Practitioner read invalid request invalid id
 		| 40-9      |
 
 Scenario Outline: Practitioner read invalid request invalid URL
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 	When I get "practitioner1Id" id then make a GET request to "<InvalidURL>"
@@ -42,11 +42,11 @@ Scenario Outline: Practitioner read invalid request invalid URL
 		| Practitioner2 |
 		
 Scenario Outline: Practitioner read failure due to missing header
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 		And I do not send header "<Header>"
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -59,10 +59,10 @@ Scenario Outline: Practitioner read failure due to missing header
 		| Authorization     |
 
 Scenario Outline: Practitioner read failure with incorrect interaction id
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "<interactionId>" interaction
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -75,11 +75,11 @@ Scenario Outline: Practitioner read failure with incorrect interaction id
 		  | null                                                              |
 
 Scenario Outline: Practitioner read _format parameter only
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 		And I add the parameter "_format" with the value "<Parameter>"
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Practitioner resource
@@ -89,12 +89,12 @@ Scenario Outline: Practitioner read _format parameter only
         | application/xml+fhir  | XML        |
 
 Scenario Outline: Practitioner read accept header and _format
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Practitioner resource
@@ -114,60 +114,60 @@ Scenario: Conformance profile supports the Practitioner read operation
 		And the conformance profile should contain the "Practitioner" resource with a "read" interaction
 
 Scenario: Practitioner read check meta data profile and version id
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 		And the practitioner resource it should contain meta data profile and version id
 
 Scenario: Practitioner read practitioner contains single name element
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 		And the practitioner resource should contain a single name element
 
 Scenario: Practitioner read practitioner contains identifier it is valid
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 		And if the practitioner resource contains an identifier it is valid
 
 Scenario: Practitioner read practitioner contains practitioner role it is valid
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 		And if the practitioner resource contains a practitioner role it has a valid coding and system
 
 Scenario: Practitioner read practitioner contains communication which is valid
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 		And the returned practitioner resource contains a communication element
 
 Scenario: Practitioner read practitioner returned does not contain elements not in the specification
-	Given I get "practitioner1" id and save it as "practitioner1Id"
+	Given I search for practitioner "practitioner1" and save the first practitioner against key "practitioner1Id"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get "practitioner1Id" id then make a GET request to "Practitioner"
+	When I perform a practitioner read for the practitioner stored against key "practitioner1Id" against the URL "Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource

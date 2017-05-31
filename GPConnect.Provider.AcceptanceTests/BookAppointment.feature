@@ -258,7 +258,7 @@ Scenario: Book single appointment for patient with random id
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "patient1" called "Appointment3" from schedule "getScheduleResponseBundle"
-	Given I change the appointment id to "random" to the appointment called "Appointment3"
+		Given I change the appointment id to "random" to the appointment called "Appointment3"
 	When I book the appointment called "Appointment3" without status check
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
