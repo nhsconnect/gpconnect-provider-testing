@@ -158,37 +158,39 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [When(@"I get ""(.*)"" id then make a GET request to ""(.*)""")]
-        public void ThenIMakeAGetRequestToURLAndSearchForPractitioner(string practitioner, string URLpassed)
+        [When(@"I get practitioner ""(.*)"" and use the id to make a get request to the url ""(.*)""")]
+        public void WhenIGetPractitionerAndUseTheIdToMakeAGetRequestToTheURL(string practitioner, string URLpassed)
         {
             Practitioner pracValue = (Practitioner)HttpContext.StoredFhirResources[practitioner];
             string id = pracValue.Id.ToString();
-            string URL = "/"+URLpassed +"/"+ id;
+            string URL = "/" + URLpassed + "/" + id;
             When($@"I make a GET request to ""{URL}""");
         }
 
         [When(@"I make a GET request for a practitioner using an invalid id of ""(.*)"" and url ""(.*)""")]
-        public void ThenIMakeAGetRequestForAPractitionerUsingAnInvalidIdOf(string invalidId, string url)
+        public void WhenIMakeAGetRequestForAPractitionerUsingAnInvalidIdOfAndUrl(string invalidId, string url)
         {
-            string URL = "/"+url+"/" + invalidId;
+            string URL = "/" + url + "/" + invalidId;
             When($@"I make a GET request to ""{URL}""");
         }
 
 
-        [Given(@"I get ""(.*)"" id and save it as ""(.*)""")]
-        public void GivenIGetPracIdAndSaveItAsIdName(string practitionerName, string practitionerId)
+        [Given(@"I find practitioner ""(.*)"" and save it with the key ""(.*)""")]
+        public void GivenIFindPractitionerAndSaveItWithTheKey(string practitionerName, string practitionerId)
         {
-            string identifier = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";
+            string interactionId = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";
             string system = "http://fhir.nhs.net/Id/sds-user-id";
-            string value = FhirContext.FhirPractitioners[practitionerName];
             string URL = "/Practitioner";
 
             Given("I am using the default server");
-            Given($@"I am performing the ""{identifier}"" interaction");
+            Given($@"I am performing the ""{interactionId}"" interaction");
             Given($@"I add the practitioner identifier parameter with system ""{system}"" and value ""{practitionerName}""");
             When($@"I make a GET request to ""{URL}""");
             Then("the response status code should indicate success");
             Then("the response body should be FHIR JSON");
+            Then($@"the response should be a Bundle resource of type ""searchset""");
+            Then("the response bundle should contain at least One Practitioner resource");
+
 
             Practitioner practitioner = new Practitioner();
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -220,7 +222,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
             }
-       
+
         }
 
 
@@ -234,8 +236,43 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 count++;
             }
-            count.ShouldBe(1);
-           
+            count.ShouldBeLessThanOrEqualTo(1);
+
+        }
+
+        [Then(@"the practitioner resource should contain a role id equal to role id ""(.*)"" or role id ""(.*)"" or role id ""(.*)""")]
+        public void ThenThePractitionerResourceShouldContainARoleIdEqualTo(string roleId, string roleId2, string roleId3)
+        {
+            List<String> roleIds = new List<string>();
+            roleIds = addRoleIdsToList(roleIds, roleId, roleId2,roleId3);
+    
+            Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
+            foreach (Identifier identifier in practitioner.Identifier)
+            {
+                if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id"))
+                {
+                    roleIds.ShouldContain(identifier.Value.ToString());
+                }
+                    
+            }
+        }
+
+        private List<string> addRoleIdsToList(List<string> roleIdList , string roleId, string roleId2, string roleId3)
+        {
+            if (roleId.StartsWith("PT"))
+                {
+                roleIdList.Add(roleId);
+                }
+            if (roleId2.StartsWith("PT"))
+            {
+                roleIdList.Add(roleId2);
+            }
+            if (roleId3.StartsWith("PT"))
+            {
+                roleIdList.Add(roleId3);
+            }
+
+            return roleIdList;
         }
 
         [Then(@"if the practitioner resource contains an identifier it is valid")]
@@ -251,26 +288,37 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the identifier used to search for ""(.*)"" is the same as the identifier returned in practitioner read")]
+        public void ThenTheIdentifierUsedToSearchForIsTheSameAsTheIdentifierReturnedInPractitionerRead(string practitionerKey)
+        {
+            string practitionerIdentifier = FhirContext.FhirPractitioners[practitionerKey];
+            Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
+            foreach (Identifier identifier in practitioner.Identifier)
+            { 
+                identifier.Value.ShouldBe(practitionerIdentifier);
+            }
+        }
+        
         [Then(@"if the practitioner resource contains a practitioner role it has a valid coding and system")]
-        public void ThenIfPractitionerRoleHasRoleElementWhichContainsACodingThenTheSystemCodeAndDisplayMustExist()
+        public void ThenIfThePractitionerResourceContainsAPractitionerRoleItHasAValidCodingAndSystem()
         {
 
-                Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
-                foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
+            Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
+            foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
+            {
+                if (practitionerRole.Role != null && practitionerRole.Role.Coding != null)
+                {
+                    var codingCount = 0;
+                    foreach (Coding coding in practitionerRole.Role.Coding)
                     {
-                        if (practitionerRole.Role != null && practitionerRole.Role.Coding != null)
-                        {
-                            var codingCount = 0;
-                            foreach (Coding coding in practitionerRole.Role.Coding)
-                            {
-                                codingCount++;
-                                coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
-                                coding.Code.ShouldNotBeNull();
-                                coding.Display.ShouldNotBeNull();
-                            }
-                            codingCount.ShouldBeLessThanOrEqualTo(1);
-                        }
-             }
+                        codingCount++;
+                        coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
+                        coding.Code.ShouldNotBeNull();
+                        coding.Display.ShouldNotBeNull();
+                    }
+                    codingCount.ShouldBeLessThanOrEqualTo(1);
+                }
+            }
         }
 
 
@@ -280,38 +328,38 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
 
-                    if (null != practitioner.Photo && practitioner.Photo.Count > 0)
-                    {
-                        Assert.Fail("Practitioner should not contain a Photo");
-                    }
+            if (null != practitioner.Photo && practitioner.Photo.Count > 0)
+            {
+                Assert.Fail("Practitioner should not contain a Photo");
+            }
 
-                    if (null != practitioner.Qualification && practitioner.Qualification.Count > 0)
-                    {
-                        Assert.Fail("Practitioner should not contain a Qualification");
-                    }
+            if (null != practitioner.Qualification && practitioner.Qualification.Count > 0)
+            {
+                Assert.Fail("Practitioner should not contain a Qualification");
+            }
 
-                    if (null != practitioner.BirthDate)
-                    {
-                        Assert.Fail("Practitioner should not contain a BirthDate");
-                    }
+            if (null != practitioner.BirthDate)
+            {
+                Assert.Fail("Practitioner should not contain a BirthDate");
+            }
 
-                    if (null != practitioner.BirthDateElement)
-                    {
-                        Assert.Fail("Practitioner should not contain a BirthDateElement");
-                    }
+            if (null != practitioner.BirthDateElement)
+            {
+                Assert.Fail("Practitioner should not contain a BirthDateElement");
+            }
 
-                    foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
-                    {
-                        if (null != practitionerRole.HealthcareService && practitionerRole.HealthcareService.Count > 0)
-                        {
-                            Assert.Fail("Practitioner role should not contain a HealthcareService");
-                        }
+            foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
+            {
+                if (null != practitionerRole.HealthcareService && practitionerRole.HealthcareService.Count > 0)
+                {
+                    Assert.Fail("Practitioner role should not contain a HealthcareService");
+                }
 
-                        if (null != practitionerRole.Location && practitionerRole.Location.Count > 0)
-                        {
-                            Assert.Fail("Practitioner role should not contain a Location");
-                        }
-               
+                if (null != practitionerRole.Location && practitionerRole.Location.Count > 0)
+                {
+                    Assert.Fail("Practitioner role should not contain a Location");
+                }
+
             }
         }
 
@@ -319,13 +367,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheReturnedPractitionerResourceContainsACommunicationElement()
         {
             Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
-            practitioner.Communication.ShouldNotBeNull("Communication should not be null");
+
 
             foreach (CodeableConcept codeableConcept in practitioner.Communication)
             {
                 shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
             }
         }
+
+        [When(@"I perform a vread for practitioner ""([^""]*)""")]
+        public void WhenIPerformAVreadForPractitioner(string practitionerKey)
+        {
+            Practitioner practioner = (Practitioner)HttpContext.StoredFhirResources[practitionerKey];
+            When($@"I make a GET request to ""/Practitioner/{practioner.Id}/_history/{practioner.Meta.VersionId}""");
+
+        }
+
+        [When(@"I perform an practitioner vread with version id ""([^""]*)"" for practitioner stored against key ""([^""]*)""")]
+        public void WhenIPerformAnPractitionerVReadWithVersionForPractitionerStoredAgainstKey(string version, string practitionerKey)
+        {
+            Practitioner practioner = (Practitioner)HttpContext.StoredFhirResources[practitionerKey];
+            When($@"I make a GET request to ""/Practitioner/{practioner.Id}/_history/{version}""");
+        } 
+
 
         public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList)
         {

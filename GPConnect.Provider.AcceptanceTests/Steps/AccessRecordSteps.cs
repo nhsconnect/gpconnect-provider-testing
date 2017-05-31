@@ -182,6 +182,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             count.ShouldBe(1);
         }
+        [Then(@"the response bundle should contain at least One Practitioner resource")]
+        public void ThenTheResponseBundleShouldContainAtLeastOnePractitionerResource()
+        {
+            int count = 0;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner)) count++;
+            }
+            count.ShouldBeGreaterThan(0);
+        }
 
         [Then(@"the response bundle should contain a single Composition resource")]
         public void ThenTheResponseBundleShouldContainASingleCompositionResource()
