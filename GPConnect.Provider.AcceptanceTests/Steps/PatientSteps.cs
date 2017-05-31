@@ -84,7 +84,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I perform the searchPatient operation for patient ""([^""]*)"" and store the returned patient")]
         public void IPerformTheSearchPatientOperationForPatientAndStoreTheReturnedPatientAgainstKey(string patient)
         {
-            var nhsNumber = FhirContext.FhirPatients[patient];
+            ISearchForPatientAndStoreTheFirstReturnedPatientAgainstKey(patient, patient);
+        }
+
+        [Given(@"I search for Patient ""([^""]*)"" and store the first returned patient against key ""([^""]*)""")]
+        public void ISearchForPatientAndStoreTheFirstReturnedPatientAgainstKey(string patientName, string patientKey)
+        {
+            var nhsNumber = FhirContext.FhirPatients[patientName];
             Given($@"I am using the default server");
             And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient"" interaction");
             And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
@@ -94,54 +100,51 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"the response body should be FHIR JSON");
             And($@"the response should be a Bundle resource of type ""searchset""");
 
-            var entries = ((Bundle)FhirContext.FhirResponseResource).Entry;
+            var listOfPatients = ((Bundle)FhirContext.FhirResponseResource).Entry;
 
-            if (entries.Count == 0)
+            if (listOfPatients.Count == 0)
             {
-                Assert.Fail("Id not found");
+                Assert.Fail("No patient found for NHS Number");
             }
 
-            if (entries.Count > 1)
+            if (listOfPatients.Count > 1)
             {
-                Assert.Fail("Miltiple NHS numbers found");
+                Assert.Fail("Miltiple patients found for NHS number");
+            }
+
+            Patient foundPatient = (Patient)listOfPatients[0].Resource;
+
+            if (HttpContext.StoredFhirResources.ContainsKey(patientKey))
+            {
+                HttpContext.StoredFhirResources.Remove(patientKey);
             }
             
-            if (HttpContext.StoredFhirResources.ContainsKey(patient))
-            {
-                HttpContext.StoredFhirResources.Remove(patient);
-            }
-            
-            HttpContext.StoredFhirResources.Add(patient, FhirContext.FhirResponseResource);
+            HttpContext.StoredFhirResources.Add(patientKey, foundPatient);
         }
 
         [When(@"I make a GET request for patient ""([^""]*)""")]
         public void IMakeAGETRequestForPatient(string patient)
         {
             var patientResource = HttpContext.StoredFhirResources[patient];
-            var id = ((Bundle)patientResource).Entry[0].Resource.Id;
-
-            When($@"I make a GET request to ""/Patient/{id}""");
+            When($@"I make a GET request to ""/Patient/{patientResource.Id}""");
         }
 
         [When(@"I perform a patient vread for patient ""([^""]*)"" with ETag ""([^""]*)""")]
         public void IPerformAPatientVReadForPatientWithETag(string patient, string etag)
         {
             var patientResource = HttpContext.StoredFhirResources[patient];
-            var id = ((Bundle)patientResource).Entry[0].Resource.Id;
 
             string versionId = HttpContext.resourceNameStored[etag];
             string[] elements = versionId.Split(new char[] { '"' });
 
-            When($@"I make a GET request to ""/Patient/{id}/_history/{elements[1]}""");
+            When($@"I make a GET request to ""/Patient/{patientResource.Id}/_history/{elements[1]}""");
         }
 
         [When(@"I perform a patient vread for patient ""([^""]*)"" with invalid ETag")]
         public void IPerformAPatientVReadForPatientWithInvalidETag(string patient)
         {
             var patientResource = HttpContext.StoredFhirResources[patient];
-            var id = ((Bundle)patientResource).Entry[0].Resource.Id;
-            
-            When($@"I make a GET request to ""/Patient/{id}/_history/badETag""");
+            When($@"I make a GET request to ""/Patient/{patientResource.Id}/_history/badETag""");
         }
 
         [Then(@"the response patient logical identifier should match that of stored patient ""([^""]*)""")]

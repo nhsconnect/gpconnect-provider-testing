@@ -4,7 +4,8 @@ Background:
 	Given I have the test patient codes
 	Given I have the test ods codes
 
-Scenario: Book single appointment for patient 
+Scenario: Book single appointment for patient
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
@@ -13,12 +14,14 @@ Scenario: Book single appointment for patient
 		And the response should be an Appointment resource
 	
 Scenario: Book Appointment with invalid url for booking appointment
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" via url "/Appointments"
 	Then the response status code should indicate failure
 
 Scenario Outline: Book appointment failure due to missing header
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I do not send header "<Header>"
@@ -35,6 +38,7 @@ Scenario Outline: Book appointment failure due to missing header
 		| Authorization     |
 
 Scenario Outline: Book appointment accept header and _format parameter
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
     Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
         And I set the Accept header to "<Header>"
@@ -54,6 +58,7 @@ Scenario Outline: Book appointment accept header and _format parameter
        | application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario Outline: Book appointment _format parameter only
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
         And I add the parameter "_format" with the value "<Parameter>"
@@ -70,6 +75,7 @@ Scenario Outline: Book appointment _format parameter only
         | application/xml+fhir  | XML        |
 
 Scenario Outline: Book appointment accept header variations
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I set the Accept header to "<Header>"
@@ -86,6 +92,7 @@ Scenario Outline: Book appointment accept header variations
 		 | application/xml+fhir  | XML        |
 
 Scenario: Book appointment prefer header set to representation
+	Given I search for Patient "CustomAppointment1" and store the first returned patient against key "CustomAppointment1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I set the Prefer header to "return=representation"
@@ -97,6 +104,7 @@ Scenario: Book appointment prefer header set to representation
 		And the content-length should not be equal to zero
 
 Scenario: Book appointment prefer header set to minimal
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I set the Prefer header to "return=minimal"
@@ -107,6 +115,7 @@ Scenario: Book appointment prefer header set to minimal
 		And the content-length should be equal to zero
 
 Scenario Outline: Book appointment interaction id incorrect fail
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "<interactionId>" without status check
@@ -121,6 +130,7 @@ Scenario Outline: Book appointment interaction id incorrect fail
        | null                                                              |
                                                   
 Scenario: Book Appointment and check response returns the correct values
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
@@ -136,6 +146,7 @@ Scenario: Book Appointment and check response returns the correct values
 		And if the appointment resource contains a priority the value is valid
   
 Scenario: Book Appointment and check response returns the relevent structured definition
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
@@ -145,6 +156,7 @@ Scenario: Book Appointment and check response returns the relevent structured de
 		And the returned appointment resource should contain meta data profile and version id
 
 Scenario: Book Appointment and appointment participant is valid
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
@@ -155,6 +167,7 @@ Scenario: Book Appointment and appointment participant is valid
 		And the returned appointment participants must contain a type or actor element
 
 Scenario: Book Appointment and check extension methods are valid
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
@@ -276,6 +289,7 @@ Scenario Outline: Book appointment with invalid slot reference
 		| hello         |
 
 Scenario: Book single appointment for patient and check the location reference is valid
+	Given I search for Patient "patient1" and store the first returned patient against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
@@ -398,7 +412,6 @@ Scenario Outline: Book Appointment and remove participant type coding element fr
 		| Practitioner | display       |
 
 Scenario: Book appointment and send patient resource in the request
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "AppointmentReadPatientResource"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 	Then I create an appointment for patient "patient1" called "Appointment3" using a patient resource
