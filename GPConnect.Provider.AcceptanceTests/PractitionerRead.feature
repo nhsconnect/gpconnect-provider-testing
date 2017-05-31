@@ -48,7 +48,7 @@ Scenario Outline: Practitioner read invalid request invalid URL
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get practitioner "practitioner1Id" and use the id to make a get request to the url "<InvalidURL>"
+	When I get practitioner "practitioner1Saved" and use the id to make a get request to the url "<InvalidURL>"
 	Then the response status code should be "404"
 		Examples: 
 		| InvalidURL    |
