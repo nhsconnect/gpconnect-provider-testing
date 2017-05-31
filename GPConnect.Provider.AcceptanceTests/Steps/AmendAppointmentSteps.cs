@@ -36,8 +36,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given($@"I perform the getSchedule operation for organization ""{ORG1}"" and store the returned bundle resources against key ""{getScheduleResponseBundle}""");
             Given($@"I am using the default server");
             Given($@"I am performing the ""{interactionId}"" interaction");
-            Then($@"I create an appointment for patient ""{patient}"" called ""{appointment}"" from schedule ""{getScheduleResponseBundle}""");
-            Then($@"I book the appointment called ""{appointment}""");
+            Given($@"I create an appointment for patient ""{patient}"" called ""{appointment}"" from schedule ""{getScheduleResponseBundle}""");
+            When($@"I book the appointment called ""{appointment}""");
             Then("the response status code should indicate created");
             And("the response body should be FHIR JSON");
             And($@"the response should be an Appointment resource which is saved as ""savedFhirResource""");

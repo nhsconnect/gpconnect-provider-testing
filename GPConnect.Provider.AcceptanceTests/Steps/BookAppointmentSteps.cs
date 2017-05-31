@@ -37,7 +37,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
         
-        [Then(@"I create an appointment for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
+        [Given(@"I create an appointment for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(string patientName, string appointmentName, string getScheduleBundleKey)
         {
             Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
@@ -510,8 +510,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I change the appointment id to ""(.*)"" to the appointment called ""(.*)""")]
-        public void ThenIAddAnExtraFieldsToTheAppointmentCalledStringAndPopulateTheSystemAndValue(string randomId, string appointmentName)
+        [Given(@"I change the appointment id to ""(.*)"" to the appointment called ""(.*)""")]
+        public void GivenIChangeTheAppointmentIdToToTheAppointmentCalled(string randomId, string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpContext.StoredFhirResources.Remove(appointmentName);
@@ -769,14 +769,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I book the appointment called ""(.*)""")]
+        [When(@"I book the appointment called ""(.*)""")]
         public void ThenIBookTheAppointmentCalledString(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
         }
 
-        [Then(@"I book the appointment called ""(.*)"" with an invalid field")]
+        [When(@"I book the appointment called ""(.*)"" with an invalid field")]
         public void ThenIBookTheAppointmentCalledStringWithAnInvalidField(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -785,7 +785,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps.bookCustomAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointmentString);
         }
 
-        [Then(@"I book the appointment called ""(.*)"" without status check")]
+        [When(@"I book the appointment called ""(.*)"" without status check")]
         public void ThenIBookTheAppointmentCalledStringWithoutStatusCheck(string appointmentName)
         {
             Resource appointment = HttpContext.StoredFhirResources[appointmentName];

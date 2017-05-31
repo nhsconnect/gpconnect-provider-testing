@@ -201,6 +201,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Bundle patientBundle = (Bundle)HttpContext.StoredFhirResources[scheduleName];
             Patient patientResource = (Patient)HttpContext.StoredFhirResources[patientRef];
+
             List<Slot> slotList = new List<Slot>();
             Dictionary<string, Practitioner> practitionerDictionary = new Dictionary<string, Practitioner>();
             Dictionary<string, Location> locationDictionary = new Dictionary<string, Location>();
@@ -258,7 +259,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Appointment Patient Resource
             ParticipantComponent patient = new ParticipantComponent();
             ResourceReference patientReference = new ResourceReference();
-            patientReference.Reference = "Patient/13";
+            patientReference.Reference = "Patient/" + patientResource.Id;
             patient.Actor = patientReference;
             patient.Status = ParticipationStatus.Accepted;
             appointment.Participant.Add(patient);
