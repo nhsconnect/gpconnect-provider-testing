@@ -7,7 +7,7 @@ Background:
 
 
 Scenario: Practitioner read successful request
-	Given I find practitioner "<practitioner>" and save it with the key "practitionerSaved"
+	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 	When I get practitioner "practitionerSaved" and use the id to make a get request to the url "Practitioner"
@@ -15,7 +15,6 @@ Scenario: Practitioner read successful request
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 
-# na = not applicable, some practitioner have only 1 role id and some have numerous possibilitys
 Scenario Outline: Practitioner read successful request checking the correct SDS role id is returned
 	Given I find practitioner "<practitioner>" and save it with the key "practitionerSaved"
 	Given I am using the default server
@@ -26,6 +25,7 @@ Scenario Outline: Practitioner read successful request checking the correct SDS 
 		And the response should be an Practitioner resource
 		And the practitioner resource should contain a role id equal to role id "<roleId>" or role id "<roleId2>" or role id "<roleId3>" 
 		Examples:
+		# na = not applicable, some practitioner have only 1 role id and some have numerous possibilitys
 		| practitioner  | roleId | roleId2 | roleId3 |
 		| practitioner2 | PT1234 | na      | na      |
 		| practitioner3 | PT1122 | PT1234  | na      |
@@ -37,8 +37,6 @@ Scenario Outline: Practitioner read invalid request invalid id
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 	When I make a GET request for a practitioner using an invalid id of "<InvalidId>" and url "Practitioner"
 	Then the response status code should be "404"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "PRACTITIONER_NOT_FOUND"
 		Examples: 
 		| InvalidId |
 		| ##        |
@@ -227,9 +225,9 @@ Scenario: Practiotioner read VRead of non existant version should return error
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 	When I perform an practitioner vread with version id "NotRealVersionId" for practitioner stored against key "practitionerSaved"
-		Then the response status code should indicate success
+		Then the response status code should be "404"
 		And the response body should be FHIR JSON
-		And the response should be an Practitioner resource
+		And the response should be a OperationOutcome resource
 
 @Manual
 @ignore
@@ -245,7 +243,7 @@ Scenario: If the provider supports active and inactive practitioners is this inf
 
 @Manual
 @ignore
-Scenario: Check that the optional fields are populated in the Organization resource if they are available in the provider system
+Scenario: Check that the optional fields are populated in the practitioner resource if they are available in the provider system
 		# telecom - Telecom information for the practitioner, can be multiple instances for different types.
 		# address - Address(s) for the Practitioner.
 		# gender -  Gender of the practitioner
