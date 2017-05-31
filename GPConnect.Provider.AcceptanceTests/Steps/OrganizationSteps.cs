@@ -44,13 +44,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
         
         [Given(@"I add the organization identifier parameter with system ""(.*)"" and value ""(.*)""")]
-        public void GivenIAddTheIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
+        public void GivenIAddTheOrganizationIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
         {
             Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + FhirContext.FhirOrganizations[valueParameter]}""");
         }
 
         [Then(@"the response should contain ods-([^""]*)-codes ""([^""]*)""")]
-        public void ThenResponseShouldContainODSOrganizationCodesWithValues(string system, string elementValues)
+        public void ThenTheResponseShouldContainODSOrganizationCodesWithValues(string system, string elementValues)
         {
             List<string> referenceValueList = new List<string>();
 
@@ -65,7 +65,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the response bundle Organization entries should only contain an ODS organization codes and ODS Site Codes")]
-        public void ThenThePractitionerResourcesInTheResponseBundleShouldOnlyContainAnSDSUserIdOrSDSRoleIds()
+        public void TheResponseBundleOrganizationEntriesShouldOnlyContainAnOdsOrganizationCodesAndOdsSiteCodes()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
@@ -126,8 +126,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(savedOrg, organization);
         }
 
-        [When(@"I get ""(.*)"" id then make a GET request to organization url ""(.*)""")]
-        public void ThenIGetIdThenMakeAGETRequestToOrganizationUrl(string organizationName, string URL)
+        [When(@"I get organization ""(.*)"" and use the id to make a get request to the url ""(.*)""")]
+        public void WhenIGetOrganizationAndUseTheIdToMakeAGetRequestToTheURL(string organizationName, string URL)
         {
             Organization organizationValue = (Organization)HttpContext.StoredFhirResources[organizationName];
             string fullUrl = "";
@@ -161,13 +161,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the response should be an Organization resource")]
-        public void theResponseShouldBeAnOrganizationResource()
+        public void ThenTheResponseShouldBeAnOrganizationResource()
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Organization);
         }
 
         [Then(@"the returned organization resource should contain a logical id")]
-        public void TheReturnedOrganizationResourceShouldContainALogicalId()
+        public void ThenTheReturnedOrganizationResourceShouldContainALogicalId()
         {
             FhirContext.FhirResponseResource.Id.ShouldNotBeNullOrEmpty("The returned organization resource should include a logical identifier");
         }
@@ -180,7 +180,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the organization resource it should contain meta data profile and version id")]
-        public void theOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
+        public void ThenTheOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
         {
 
             Organization organization = (Organization)FhirContext.FhirResponseResource;
