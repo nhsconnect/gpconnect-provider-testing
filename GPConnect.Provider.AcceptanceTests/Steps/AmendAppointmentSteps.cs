@@ -37,7 +37,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given($@"I am using the default server");
             Given($@"I am performing the ""{interactionId}"" interaction");
             Given($@"I create an appointment for patient ""{patient}"" called ""{appointment}"" from schedule ""{getScheduleResponseBundle}""");
-            Then($@"I book the appointment called ""{appointment}""");
+            When($@"I book the appointment called ""{appointment}""");
             Then("the response status code should indicate created");
             And("the response body should be FHIR JSON");
             And($@"the response should be an Appointment resource which is saved as ""savedFhirResource""");

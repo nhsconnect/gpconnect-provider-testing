@@ -423,7 +423,7 @@ Scenario: Appointment retrive book appointment and search for the appointment an
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "patient1" called "Appointment3" from schedule "getScheduleResponseBundle"
-	Then I book the appointment called "Appointment3"
+	When I book the appointment called "Appointment3"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for patient "patient1" and search for the most recently booked appointment using the stored startDate from the last booked appointment as a search parameter
