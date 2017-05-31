@@ -37,7 +37,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
         
-        [Then(@"I create an appointment for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
+        [Given(@"I create an appointment for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(string patientName, string appointmentName, string getScheduleBundleKey)
         {
             Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");

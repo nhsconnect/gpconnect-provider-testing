@@ -422,7 +422,7 @@ Scenario: Appointment retrive book appointment and search for the appointment an
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	Then I create an appointment for patient "patient1" called "Appointment3" from schedule "getScheduleResponseBundle"
+		And I create an appointment for patient "patient1" called "Appointment3" from schedule "getScheduleResponseBundle"
 	Then I book the appointment called "Appointment3"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction

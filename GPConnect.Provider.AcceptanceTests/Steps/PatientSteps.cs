@@ -81,47 +81,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ISearchForAPatientWithParameterNameAndParameterString("identifier", parameterString);
         }
 
-        [Given(@"I perform the searchPatient operation for patient ""([^""]*)"" and store the returned patient")]
-        public void IPerformTheSearchPatientOperationForPatientAndStoreTheReturnedPatientAgainstKey(string patient)
-        {
-            ISearchForPatientAndStoreTheFirstReturnedPatientAgainstKey(patient, patient);
-        }
-
-        [Given(@"I search for Patient ""([^""]*)"" and store the first returned patient against key ""([^""]*)""")]
-        public void ISearchForPatientAndStoreTheFirstReturnedPatientAgainstKey(string patientName, string patientKey)
-        {
-            var nhsNumber = FhirContext.FhirPatients[patientName];
-            Given($@"I am using the default server");
-            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient"" interaction");
-            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
-            And($@"I set the JWT requested scope to ""patient/*.read""");
-            When($@"I search for Patient with NHS Number ""{nhsNumber}""");
-            Then($@"the response status code should indicate success");
-            And($@"the response body should be FHIR JSON");
-            And($@"the response should be a Bundle resource of type ""searchset""");
-
-            var listOfPatients = ((Bundle)FhirContext.FhirResponseResource).Entry;
-
-            if (listOfPatients.Count == 0)
-            {
-                Assert.Fail("No patient found for NHS Number");
-            }
-
-            if (listOfPatients.Count > 1)
-            {
-                Assert.Fail("Miltiple patients found for NHS number");
-            }
-
-            Patient foundPatient = (Patient)listOfPatients[0].Resource;
-
-            if (HttpContext.StoredFhirResources.ContainsKey(patientKey))
-            {
-                HttpContext.StoredFhirResources.Remove(patientKey);
-            }
-            
-            HttpContext.StoredFhirResources.Add(patientKey, foundPatient);
-        }
-
         [When(@"I make a GET request for patient ""([^""]*)""")]
         public void IMakeAGETRequestForPatient(string patient)
         {
