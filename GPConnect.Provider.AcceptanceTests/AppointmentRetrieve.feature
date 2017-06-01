@@ -419,6 +419,7 @@ Scenario: Appointment retrieve JWT requesting scope claim should reflect the ope
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		
 Scenario: Appointment retrive book appointment and search for the appointment and compare the results
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
