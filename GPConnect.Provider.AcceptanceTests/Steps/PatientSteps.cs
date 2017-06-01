@@ -109,8 +109,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response patient logical identifier should match that of stored patient ""([^""]*)""")]
         public void TheResponsePatientLogicalIdentifierShouldMatchThatOfStoredPatient(string patient)
         {
-            var patientResource = HttpContext.StoredFhirResources[patient];
-            var id = ((Bundle)patientResource).Entry[0].Resource.Id;
+            var id = HttpContext.StoredFhirResources[patient].Id;
             
             id.ShouldBe(((Patient)FhirContext.FhirResponseResource).Id);
         }
@@ -340,21 +339,192 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             coding.System.ShouldBe(valueset.CodeSystem.System);
             // Loop through valid codes to find if the one in the resource is valid
-            var pass = false;
+
             foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in valueset.CodeSystem.Concept)
             {
-                if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
-                {
-                    pass = true;
-                }
+                coding.Code.ShouldBe(valueSetConcept.Code);
+                coding.Display.ShouldBe(valueSetConcept.Display);
             }
-            pass.ShouldBeTrue();
         }
 
         [Then(@"the response should be a Patient resource")]
         public void theResponseShouldBeAPatientResource()
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Patient);
+        }
+
+        [Then(@"the patient resource should contain an id")]
+        public void ThenThePatientResourceShouldContainAnId()
+        {
+            ((Patient)FhirContext.FhirResponseResource).Id.ShouldNotBeNullOrWhiteSpace("Id must be set");
+        }
+
+        [Then(@"the patient resource should contain valid meta data")]
+        public void ThenThePatientResourceShouldContainValidMetaData()
+        {
+            ((Patient)FhirContext.FhirResponseResource).Meta.ShouldNotBeNull("Null Meta");
+            ((Patient)FhirContext.FhirResponseResource).Meta.VersionId.ShouldNotBeNull("Null Meta VersionId");
+            ((Patient)FhirContext.FhirResponseResource).Meta.LastUpdated.ShouldNotBeNull("Null Meta LastUpdated");
+            ((Patient)FhirContext.FhirResponseResource).Meta.Profile.ShouldHaveSingleItem("Empty Meta Profile");
+            ((Patient)FhirContext.FhirResponseResource).Meta.ProfileElement[0].Value.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
+        }
+
+        [Then(@"the patient resource should contain a single NHS Number identifier for patient ""([^""]*)""")]
+        public void ThenThePatientResourceShouldContainASingleNHSNumberIdentifierForPatient(string patient)
+        {
+            ((Patient)FhirContext.FhirResponseResource).Identifier.ShouldNotBeNull("Null Identifier");
+            ((Patient)FhirContext.FhirResponseResource).Identifier.ShouldHaveSingleItem("Empty Identifier");
+            ((Patient)FhirContext.FhirResponseResource).Identifier[0].System.ShouldBe("http://fhir.nhs.net/Id/nhs-number");
+            ((Patient)FhirContext.FhirResponseResource).Identifier[0].Value.ShouldBe(FhirContext.FhirPatients[patient]);
+        }
+
+        [Then(@"the patient resource should contain a valid careProvider Practitioner reference")]
+        public void ThenThePatientResourceShouldContainAValidCareProviderPractitionerReference()
+        {
+            var CareProvider = ((Patient)FhirContext.FhirResponseResource).CareProvider;
+
+            CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
+
+            if (CareProvider.Count > 0)
+            {
+                CareProvider[0].Reference.ShouldNotBeNull();
+                CareProvider[0].Reference.ShouldStartWith("Practitioner/");
+                var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", CareProvider[0].Reference);
+                returnedResource.GetType().ShouldBe(typeof(Practitioner));
+            }
+        }
+
+        [Then(@"the patient resource should contain a valid managingOrganization Organization reference")]
+        public void ThenThePatientResourceShouldContainAValidManagingOrganizationOrganizationReference()
+        {
+            var ManagingOrganization = ((Patient)FhirContext.FhirResponseResource).ManagingOrganization;
+
+            if (ManagingOrganization != null)
+            {
+                ManagingOrganization.Reference.ShouldNotBeNull();
+                ManagingOrganization.Reference.ShouldStartWith("Organization/");
+                var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", ManagingOrganization.Reference);
+                returnedResource.GetType().ShouldBe(typeof(Organization));
+            }
+        }
+
+        [Then(@"the patient resource should contain a valid deceased dateTime field")]
+        public void ThenThePatientResourceShouldContainAValidDeceasedDateTimeField()
+        {
+            var Deceased = ((Patient)FhirContext.FhirResponseResource).Deceased;
+
+            if (Deceased != null)
+            {
+                Deceased.ShouldBeOfType<FhirDateTime>();
+            }
+        }
+
+        [Then(@"the patient resource should contain a valid multipleBirth boolean field")]
+        public void ThenThePatientResourceShouldContainAValidMultipleBirthBooleanField()
+        {
+            var MultipleBirth = ((Patient)FhirContext.FhirResponseResource).MultipleBirth;
+
+            if (MultipleBirth != null)
+            {
+                MultipleBirth.ShouldBeOfType<FhirBoolean>();
+            }
+        }
+
+        [Then(@"the patient resource should contain valid telecom fields")]
+        public void ThenThePatientResourceShouldContainValidTelecomFields()
+        {
+            foreach (var contactPoint in ((Patient)FhirContext.FhirResponseResource).Telecom)
+            {
+                contactPoint.System.ShouldNotBeNull("ContactPoint system was null.");
+                contactPoint.Value.ShouldNotBeNullOrWhiteSpace("ContactPoint value was null/blank.");
+            }
+        }
+
+        [Then(@"the patient resource should contain valid relationship coding fields")]
+        public void ThenThePatientResourceShouldContainValidRelationshipCodingFields()
+        {
+            foreach (var contact in ((Patient)FhirContext.FhirResponseResource).Contact)
+            {
+                foreach (var relationship in contact.Relationship)
+                {
+                    shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
+                }
+            }
+        }
+
+        [Then(@"the patient resource should contain valid maritalStatus coding fields")]
+        public void ThenThePatientResourceShouldContainValidMaritalStatusCodingFields()
+        {
+            var maritalStatus = ((Patient)FhirContext.FhirResponseResource).MaritalStatus;
+
+            if (null != maritalStatus)
+            {
+                shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirMaritalStatusValueSet, maritalStatus.Coding);
+            }
+        }
+
+        [Then(@"the patient resource should contain valid language coding fields for each communication")]
+        public void ThenThePatientResourceShouldContainValidLanguageCodingFieldsForEachCommunication()
+        {
+            foreach (var communication in ((Patient)FhirContext.FhirResponseResource).Communication)
+            {
+                shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, communication.Language.Coding);
+            }
+        }
+
+        [Then(@"the patient resource should contain no more than one family or given name")]
+        public void ThenThePatientResourceShouldContainNoMoreThanOneFamilyOrGivenName()
+        {
+            foreach (var name in ((Patient)FhirContext.FhirResponseResource).Name)
+            {
+                int familynamecount = 0;
+
+                foreach (var familyname in name.Family)
+                {
+                    familynamecount++;
+                }
+
+                familynamecount.ShouldBeLessThanOrEqualTo(1);
+
+                int givennamecount = 0;
+
+                foreach (var givenname in name.Given)
+                {
+                    givennamecount++;
+                }
+
+                givennamecount.ShouldBeLessThanOrEqualTo(1);
+            }
+        }
+
+        [Then(@"the patient resource should contain no more than one family name field for each contact")]
+        public void ThenThePatientResourceShouldContainNoMoreThanOneFamilyNameFieldForEachContact()
+        {
+            foreach (var contact in ((Patient)FhirContext.FhirResponseResource).Contact)
+            {
+                var name = contact.Name;
+
+                if (null != name)
+                {
+                    int familynamecount = 0;
+
+                    foreach (var familyname in name.Family)
+                    {
+                        familynamecount++;
+                    }
+
+                    familynamecount.ShouldBeLessThanOrEqualTo(1);
+                }
+            }
+        }
+        
+        [Then(@"the patient resource should not contain the fhir fields photo animal or link")]
+        public void ThenThePatientResourceShouldNotContainTheFhirFieldsPhotoAnimalOrLink()
+        {
+            Patient patient = (Patient)FhirContext.FhirResponseResource;
+            (patient.Photo == null || patient.Photo.Count == 0).ShouldBeTrue("There should be no photo element in Patient Resource"); // C# API creates an empty list if no element is present
+            patient.Animal.ShouldBeNull("There should be no Animal element in Patient Resource");
+            (patient.Link == null || patient.Link.Count == 0).ShouldBeTrue("There should be no link element in Patient Resource");
         }
     }
 }
