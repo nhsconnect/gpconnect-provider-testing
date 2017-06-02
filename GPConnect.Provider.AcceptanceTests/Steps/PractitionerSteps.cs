@@ -176,7 +176,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         [Given(@"I find practitioner ""(.*)"" and save it with the key ""(.*)""")]
-        public void GivenIFindPractitionerAndSaveItWithTheKey(string practitionerName, string practitionerId)
+        public void GivenIFindPractitionerAndSaveItWithTheKey(string practitionerName, string practitionerKey)
         {
             string interactionId = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";
             string system = "http://fhir.nhs.net/Id/sds-user-id";
@@ -191,17 +191,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Then($@"the response should be a Bundle resource of type ""searchset""");
             Then("the response bundle should contain at least One Practitioner resource");
 
-
-            Practitioner practitioner = new Practitioner();
+            int practitionerCount = 0;
+            Practitioner practitioner = null;
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
                 {
+                    practitionerCount++;
                     practitioner = (Practitioner)entry.Resource;
-
+                    break;
                 }
             }
-            HttpContext.StoredFhirResources.Add(practitionerId, practitioner);
+            practitionerCount.ShouldBeGreaterThanOrEqualTo(1, "No Practitioner found for given practitioner ODS Code.");
+            practitioner.ShouldNotBeNull("No practitioner was taken from the practitioner search response.");
+            if (practitioner != null)
+            {
+                if (HttpContext.StoredFhirResources.ContainsKey(practitionerKey)) HttpContext.StoredFhirResources.Remove(practitionerKey);
+                HttpContext.StoredFhirResources.Add(practitionerKey, practitioner);
+            }
         }
 
         [Then(@"the response should be an Practitioner resource")]
@@ -293,10 +300,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             string practitionerIdentifier = FhirContext.FhirPractitioners[practitionerKey];
             Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
+            Boolean identifierFound = false;
             foreach (Identifier identifier in practitioner.Identifier)
-            { 
-                identifier.Value.ShouldBe(practitionerIdentifier);
+            {
+                if (string.Equals(identifier.Value, practitionerIdentifier)) {
+                    identifierFound = true;
+                    break;
+                }
             }
+            identifierFound.ShouldBeTrue("The practitioner identifier used to search for practitioner is not present in the practitioner read response");
         }
         
         [Then(@"if the practitioner resource contains a practitioner role it has a valid coding and system")]
@@ -367,8 +379,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheReturnedPractitionerResourceContainsACommunicationElement()
         {
             Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
-
-
+            
             foreach (CodeableConcept codeableConcept in practitioner.Communication)
             {
                 shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);

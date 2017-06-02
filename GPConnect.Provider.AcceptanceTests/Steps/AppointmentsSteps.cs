@@ -194,7 +194,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)"" via url ""([^""]*)""")]
         public void bookAppointmentForUserWithUrl(string patientRef, string scheduleName, string interactionID, string url)
         {
-            bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, url, true);
+            bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, url, false);
         }
 
         public void bookAppointmentForUserWithUrl(string patientRef, string scheduleName, string interactionID, string url, bool statusCheck)

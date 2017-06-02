@@ -543,7 +543,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         int count = 0;
                         foreach (var familyname in name.Family)
                         {
-                            familyname.ShouldBe(storedFamilyName, Case.Insensitive, "Returned patient family name does not match created patient family name");
+                            familyname.ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
                             count++;
                         }
                         count.ShouldBe(1, "The returned Patient Resource should contain a single family name");
@@ -578,7 +578,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         int count = 0;
                         foreach (var givenname in name.Given)
                         {
-                            givenname.ShouldBe(storedGivenName, Case.Insensitive, "Returned patient given name does not match created patient family name");
+                            givenname.ShouldBe(storedGivenName, "Returned patient given name does not match created patient family name", StringCompareShould.IgnoreCase);
                             count++;
                         }
                         count.ShouldBe(1, "The returned Patient Resource should contain a single given name");

@@ -38,10 +38,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
         
         [Given(@"I create an appointment for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
-        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(string patientName, string appointmentName, string getScheduleBundleKey)
+        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(string patientKey, string appointmentName, string getScheduleBundleKey)
         {
-            Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
-            Patient patientResource = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
+            Patient patientResource = (Patient)HttpContext.StoredFhirResources[patientKey];
             Bundle getScheduleResponseBundle = (Bundle)HttpContext.StoredFhirResources[getScheduleBundleKey];
 
             List<Slot> slotList = new List<Slot>();
@@ -101,7 +100,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Extension extension = new Extension();
             Identifier identifier = new Identifier();
             List<Identifier> identifiers = new List<Identifier>();
-            AppointmentStatus status = new AppointmentStatus();
+            AppointmentStatus status = AppointmentStatus.Booked;
             int priority = new int();
 
             switch (appointmentName)
@@ -113,8 +112,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
                     identifier.Value = "898976578";
                     identifiers.Add(identifier);
-                    //Define Status
-                    status = AppointmentStatus.Fulfilled;
                     //Define Reason
                     coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
                     reason.Coding.Add(coding);
@@ -130,8 +127,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
                     identifier.Value = "898976579";
                     identifiers.Add(identifier);
-                    //Define Status
-                    status = AppointmentStatus.Noshow;
                     //Define Reason
                     coding = buildReasonForAppointment("http://read.info/readv2", "", "");
                     reason.Coding.Add(coding);
@@ -147,8 +142,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
                     identifier.Value = "898976580";
                     identifiers.Add(identifier);
-                    //Define Status
-                    status = AppointmentStatus.Arrived;
                     //Define Reason
                     coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
                     reason.Coding.Add(coding);
@@ -164,9 +157,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
                     identifier.Value = "898976581";
                     identifiers.Add(identifier);
-                    //Define Status
-                    status = AppointmentStatus.Cancelled;
-
                     //Define Reason
                     coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
                     reason.Coding.Add(coding);
@@ -188,8 +178,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
                     identifier.Value = "898976582";
                     identifiers.Add(identifier);
-                    //Define Status
-                    status = AppointmentStatus.Booked;
                     //Define Reason
                     coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
                     reason.Coding.Add(coding);
@@ -212,8 +200,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
                     identifier.Value = "898976583";
                     identifiers.Add(identifier);
-                    //Define Status
-                    status = AppointmentStatus.Booked;
                     //Define Reason
                     coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
                     reason.Coding.Add(coding);
@@ -237,8 +223,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
                     identifier.Value = "898976584";
                     identifiers.Add(identifier);
-                    //Define Status
-                    status = AppointmentStatus.Booked;
                     //Define Reason
                     coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
                     reason.Coding.Add(coding);
@@ -262,8 +246,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
                     identifier.Value = "898976585";
                     identifiers.Add(identifier);
-                    //Define Status
-                    status = AppointmentStatus.Booked;
                     //Define Reason
                     coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
                     reason.Coding.Add(coding);
@@ -287,8 +269,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
                     identifier.Value = "898976586";
                     identifiers.Add(identifier);
-                    //Define Status
-                    status = AppointmentStatus.Booked;
                     //Define Reason
                     coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
                     reason.Coding.Add(coding);
@@ -317,8 +297,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         multipleIdentifier.Value = "89897652"+i;
                         identifiers.Add(multipleIdentifier);
                     }
-                    //Define Status
-                    status = AppointmentStatus.Booked;
                     //Define Reason
                     coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
                     reason.Coding.Add(coding);
@@ -770,10 +748,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I book the appointment called ""(.*)""")]
-        public void ThenIBookTheAppointmentCalledString(string appointmentName)
+        public void WhenIBookTheAppointmentCalledString(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+            HttpSteps.bookAppointmentNoStatusCheck("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+        }
+
+        [When(@"I book the appointment called ""([^""]*)"" against the URL ""([^""]*)"" with the interactionId ""([^""]*)""")]
+        public void WhenIBookTheAppointmentCalledAgainstTheUrlWithTheInteractionId(string appointmentName, string url, string interactionId)
+        {
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            HttpSteps.bookAppointmentNoStatusCheck(interactionId, url, appointment);
         }
 
         [When(@"I book the appointment called ""(.*)"" with an invalid field")]
