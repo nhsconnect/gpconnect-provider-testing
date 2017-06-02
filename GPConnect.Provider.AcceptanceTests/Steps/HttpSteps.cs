@@ -124,12 +124,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestContentType = requestContentType;
         }
 
-        [Given(@"I set ""(.*)"" request header to ""(.*)""")]
+        [Given(@"I set ""(.*)"" request header to ""(.*)"" version")]
         public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
         {
 
-           string value = HttpContext.resourceNameStored[headerValue];
-           HttpContext.RequestHeaders.ReplaceHeader(headerKey, value);
+           Resource value = HttpContext.StoredFhirResources[headerValue];
+           HttpContext.RequestHeaders.ReplaceHeader(headerKey, value.VersionId);
         }
 
         [Given(@"I set If-Match request header to ""(.*)""")]

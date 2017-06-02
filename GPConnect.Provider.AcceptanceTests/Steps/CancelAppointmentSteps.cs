@@ -56,112 +56,142 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And("the response should be an Appointment resource");
         }
 
-       
+
         [When(@"I set the URL to ""(.*)"" and cancel appointment with key ""(.*)""")]
-        public void WhenISetTheURLToAndCancel(string URL, string appointmentName)
+        public void WhenISetTheURLToAndCancelAppointmentWithKey(string URL, string appointmentName)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             storedAppointment.Status = AppointmentStatus.Cancelled;
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
-            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "Double booked", "Double booked"));
+            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "Double booked"));
             storedAppointment.ModifierExtension.Add(extension);
             HttpSteps.RestRequest(RestSharp.Method.PUT, URL, FhirSerializer.SerializeToJson(storedAppointment));
         }
 
-
-
-        [When(@"I cancel the appointment with the key ""(.*)""")]
-        public void WhenICancelTheAppointmentWithTheKey(string appointmentName)
+        [When(@"I cancel the appointment with the key ""(.*)"" and set the reason to double booked")]
+        public void WhenICancelTheAppointmentWithTheKeyAndSetTheReasonToDoubleBooked(string appointmentName)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             storedAppointment.Status = AppointmentStatus.Cancelled;
             string url = "Appointment/" + storedAppointment.Id;
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
-            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "Double booked", "Double booked"));
+            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "Double booked"));
             storedAppointment.ModifierExtension.Add(extension);
             HttpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
         }
 
-        [When(@"I cancel the appointment with the key ""(.*)"" and change the ""(.*)"" element")]
-        public void WhenICancelTheAppointmentWithTheKeyAndChangeTheElement(string appointmentName, string element)
+        [Given(@"I add an extension to ""(.*)"" with url ""(.*)"" code ""(.*)"" and display ""(.*)""")]
+        public void GivenIAddAnExtensionToWithUrlCodeAndDisplay(string appointmentName, string url, string code, string display)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            storedAppointment.Status = AppointmentStatus.Cancelled;
-            string url = "Appointment/" + storedAppointment.Id;
+            Extension extensionToAdd = new Extension();
+            extensionToAdd = buildAppointmentOtherExtension(extensionToAdd,url, code , display);
+            storedAppointment.ModifierExtension.Add(extensionToAdd);
+        }
 
-            Extension extension = new Extension();
-            List<Extension> extensionList = new List<Extension>();
-            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "Double booked", "Double booked"));
-            storedAppointment.ModifierExtension.Add(extension);
-            switch (element)
+        [Given(@"I set the description to ""(.*)"" for appointment ""(.*)""")]
+        public void GivenISetTheDescriptionToForAppointment(string description, string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            storedAppointment.Description = description;
+        }
+
+        [Given(@"I set the priority to ""(.*)"" for appointment ""(.*)""")]
+        public void GivenISetThePriorityToForAppointment(int priority, string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            storedAppointment.Priority = priority;
+        }
+
+        [Given(@"I set the minutes to ""(.*)"" for appointment ""(.*)""")]
+        public void GivenISetTheMinutesToForAppointment(int minutes, string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            storedAppointment.MinutesDuration = minutes;
+        }
+
+        [Given(@"I set the comment to ""(.*)"" for appointment ""(.*)""")]
+        public void GivenISetTheCommentToForAppointment(string comment, string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            storedAppointment.Comment = comment;
+        }
+
+        [Given(@"I set the type text to ""(.*)"" for appointment ""(.*)""")]
+        public void GivenISetTheTypeTextToForAppointment(string typeText, string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            storedAppointment.Type.Text = typeText;
+
+        }
+
+        [Given(@"I set the identifier with system ""(.*)"" and value ""(.*)"" for the appointment ""(.*)""")]
+        public void GivenISetTheIdentifierWithSystemAndValueForTheAppointment(string system,string value, string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Identifier identifier = new Identifier();
+            identifier.System = system;
+            identifier.Value = value;
+            storedAppointment.Identifier.Add(identifier);
+        }
+
+        [Given(@"I add participant ""(.*)"" with reference ""(.*)"" to appointment ""(.*)""")]
+        public void GivenIAddParticipantWithReferenceToAppointment(string participant,string reference, string appointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            switch (participant)
             {
-                case "description":
-                    storedAppointment.Description = "RANDOM DESCRIPTION";
-                    break;
-                case "priority":
-                    storedAppointment.Priority = 30;
-                    break;
-                case "minutesDuration":
-                    storedAppointment.MinutesDuration = 30;
-                    break;
-                case "comment":
-                    storedAppointment.Comment = "RANDOM COMMENT";
-                    break;
-                case "typeText":
-                    storedAppointment.Type.Text = "RANDOM TEXT";
-                    break;
-                case "identifier":
-                    Identifier identifier = new Identifier();
-                    identifier.System = "RANDOM SYSTEM";
-                    identifier.Value = "RANDOM VALUE";
-                    storedAppointment.Identifier.Add(identifier);
-                    break;
-                case "reason":
-                    var reason = storedAppointment.Reason;
-                    Coding coding = new Coding();
-                    coding.System = "http://snomed.info/sct";
-                    coding.Display = "RANDOM DISPLAY";
-                    coding.Code = "RANDOM CODE";
-                    reason.Coding.Add(coding);
-                    storedAppointment.Reason = reason;
-                    break;
-                case "participant":
+                case "location":
+
                     ParticipantComponent location = new ParticipantComponent();
                     ResourceReference locationReference = new ResourceReference();
-                    locationReference.Reference = "RANDOM/REFERENCE";
+                    locationReference.Reference = reference;
                     location.Actor = locationReference;
                     location.Status = ParticipationStatus.Declined;
                     storedAppointment.Participant.Add(location);
+
                     break;
+                case "patient":
 
+                    ParticipantComponent patient = new ParticipantComponent();
+                    ResourceReference patientReference = new ResourceReference();
+                    patientReference.Reference = reference;
+                    patient.Actor = patientReference;
+                    patient.Status = ParticipationStatus.Declined;
+                    storedAppointment.Participant.Add(patient);
+                    break;
+                case "practitioner":
+
+                    ParticipantComponent practitioner = new ParticipantComponent();
+                    ResourceReference practitionerReference = new ResourceReference();
+                    practitionerReference.Reference = reference;
+                    practitioner.Actor = practitionerReference;
+                    practitioner.Status = ParticipationStatus.Declined;
+                    storedAppointment.Participant.Add(practitioner);
+
+                    break;
             }
-                
-            HttpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
         }
-
-
-
-        [When(@"I cancel the appointment and set the cancel extension to have url ""(.*)"" code ""(.*)"" and display ""(.*)"" called ""(.*)""")]
-        public void WhenICancelTheAppointmentAndSetTheCancelExtensionToHaveURLCodeAndDisplayCalled(string url, string code, string display,string appointmentName)
+        
+        [When(@"I cancel the appointment and set the cancel extension to have url ""(.*)"" and reason ""(.*)"" called ""(.*)""")]
+        public void WhenICancelTheAppointmentAndSetTheCancelExtensionToHaveURLCodeAndDisplayCalled(string url, string reasonString ,string appointmentName)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             storedAppointment.Status = AppointmentStatus.Cancelled;
             string fullUrl = "Appointment/" + storedAppointment.Id;
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
-            extension = (buildAppointmentCancelExtension(extension, url, code, display));
+            extension = (buildAppointmentCancelExtension(extension, url, reasonString));
             storedAppointment.ModifierExtension.Add(extension);
             HttpSteps.RestRequest(RestSharp.Method.PUT, fullUrl, FhirSerializer.SerializeToJson(storedAppointment));
         }
-
 
         [Then("the returned appointment resource status should be set to cancelled")]
         public void ThenTheReturnedAppointmentResourceStatusShouldBeCancelled()
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            //Only manadatory field on location specification
             appointment.Status.ShouldBe(AppointmentStatus.Cancelled);
         }
 
@@ -171,7 +201,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             foreach (var extension in appointment.Extension)
             {
-                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
+                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0"))
                 {
                     extension.Value.ShouldNotBeNull("There should be a value element within the appointment CancellationReason extension");
                     var extensionValueString = (FhirString)extension.Value;
@@ -206,29 +236,37 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             storedAppointment.Status.ShouldBe(returnedAppointment.Status);
         }
 
-        [Then(@"the extension of the appointment with key ""(.*)"" and the returned response should be equal")]
+        [Then(@"the extensions of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenTheExtensionOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
             FhirString extensionValueString = new FhirString();
-            foreach (var extension in returnedAppointment.Extension)
+
+            List<Extension> returnedExtensions = new List<Extension>();
+            List<Extension> storedExtensions = new List<Extension>();
+
+            
+            foreach (var extension in returnedAppointment.ModifierExtension)
             {
-                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
-                {
-                    extension.Value.ShouldNotBeNull("There should be a value element within the appointment CancellationReason extension");
-                    extensionValueString = (FhirString)extension.Value;
-                 }
+                returnedExtensions.Add(extension);
             }
 
-            foreach (var extension in storedAppointment.Extension)
+            foreach (var extension in storedAppointment.ModifierExtension)
             {
-                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1"))
-                {
-                    extension.Value.ShouldNotBeNull("There should be a value element within the appointment CancellationReason extension");
-                    var value = (FhirString)extension.Value;
-                    value.ShouldBe(extensionValueString);
-                }
+                storedExtensions.Add(extension);
+            }
+            returnedExtensions.Sort();
+            storedExtensions.Sort();
+
+            returnedExtensions.Count.ShouldBe(storedExtensions.Count);
+           
+            for (int i = 0; i < returnedExtensions.Count; i++)
+            {
+                storedExtensions[i].Equals(returnedExtensions[i]);
+                storedExtensions[i].Url.ShouldBe(returnedExtensions[i].Url);
+                storedExtensions[i].Value.ToString().ShouldBe(returnedExtensions[i].Value.ToString());
+
             }
         }
 
@@ -278,87 +316,121 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 returnedSlotReferences.Add(slotReference);
             }
 
-            storedSlotReferences.ShouldNotBeNull("The stored appointment contains zero slots which is invalid");
-            returnedSlotReferences.ShouldNotBeNull("The returned appointment resource contains zero slots which is invalid");
+            storedSlotReferences.ShouldNotBeEmpty("The stored appointment contains zero slots which is invalid");
+            returnedSlotReferences.ShouldNotBeEmpty("The returned appointment resource contains zero slots which is invalid");
             storedSlotReferences.Sort();
             returnedSlotReferences.Sort();
+            storedSlotReferences.Count.ShouldBe(returnedSlotReferences.Count);
 
             for (int i = 0; i < returnedSlotReferences.Count; i++)
             {
-                storedSlotReferences[i].Equals(returnedSlotReferences[i]);
+                storedSlotReferences[i].Reference.Equals(returnedSlotReferences[i].Reference);
             }
         }
 
 
-        [Then(@"the ""(.*)"" participant of the appointment with key ""(.*)"" and the returned response should be equal")]
-        public void ThenThePatientParticipantsOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string participantValue, string appointmentName)
+        [Then(@"the participants of the appointment with key ""(.*)"" and the returned response should be equal")]
+        public void ThenThePatientParticipantsOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            List<ParticipationStatus> savedAppointmentParticipantStatus = new List<ParticipationStatus>();
-            List<ParticipationStatus> returnedResponseAppointmentParticipantStatus = new List<ParticipationStatus>();
+            List<ParticipantComponent> savedAppointmentParticipants = new List<ParticipantComponent>();
+            List<ParticipantComponent> returnedResponseAppointmentParticipants = new List<ParticipantComponent>();
 
             foreach (Appointment.ParticipantComponent participant in savedAppointment.Participant)
             {
-                if (participant.Actor.Reference.StartsWith(participantValue + "/"))
-                {
-                    savedAppointmentParticipantStatus.Add(participant.Status.Value);
-                }
-
+              savedAppointmentParticipants.Add(participant);
             }
 
             Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
             returnedAppointment.Participant.ShouldNotBeNull();
             foreach (Appointment.ParticipantComponent participant in returnedAppointment.Participant)
             {
-                if (participant.Actor.Reference.StartsWith(participantValue + "/"))
-                {
-                    returnedResponseAppointmentParticipantStatus.Add(participant.Status.Value);
-                }
-
+               
+                    returnedResponseAppointmentParticipants.Add(participant);
             }
-            returnedResponseAppointmentParticipantStatus.Sort();
-            savedAppointmentParticipantStatus.Sort();
-            for (int i = 0; i < returnedResponseAppointmentParticipantStatus.Count; i++)
+
+            returnedResponseAppointmentParticipants.Count.ShouldBe(savedAppointmentParticipants.Count);
+
+            for (int i = 0; i < returnedResponseAppointmentParticipants.Count; i++)
             {
-                returnedResponseAppointmentParticipantStatus[i].Equals(savedAppointmentParticipantStatus[i]);
+                returnedResponseAppointmentParticipants[i].Actor.Url.ToString().ShouldBe(savedAppointmentParticipants[i].Actor.Url.ToString());
+                returnedResponseAppointmentParticipants[i].Actor.Reference.ToString().ShouldBe(savedAppointmentParticipants[i].Actor.Reference.ToString());
+                returnedResponseAppointmentParticipants[i].Status.ToString().ShouldBe(savedAppointmentParticipants[i].Status.ToString());
             }
         }
-    
-        
 
-        [Then(@"the appointment participant ""(.*)"" reference must be a valid reference and is saved as ""(.*)""")]
-        public void ThenTheAppointmentParticipantPractitionerReferenceMustBeAValidReference(string participantSent, string practitionerSaved)
+
+
+        [Then(@"the appointment participants of the appointment must conform to the gp connect specifications")]
+        public void ThenTheAppointmentParticipantPractitionerReferenceMustBeAValidReference()
         {
+            List<ParticipantComponent> participantComponents = new List<ParticipantComponent>();
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             foreach (Appointment.ParticipantComponent participant in appointment.Participant)
             {
-                if (participant.Actor.Reference.StartsWith("Practitioner/") && "Practitioner" == participantSent)
+                participantComponents.Add(participant);
+            }
+
+            foreach (ParticipantComponent participants in participantComponents)
+            {
+
+
+                if (participants.Actor.Reference.StartsWith("Practitioner/"))
                 {
-                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", participant.Actor.Reference);
+                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", participants.Actor.Reference);
                     returnedResource.ShouldNotBeNull("Practitioner reference returns a null practitioner");
                     returnedResource.GetType().ShouldBe(typeof(Practitioner));
-                    HttpContext.StoredFhirResources.Add(practitionerSaved, returnedResource);
+                    verifyPractitioner(returnedResource);
                 }
 
 
-                if (participant.Actor.Reference.StartsWith("Patient/") && "Patient" == participantSent)
+                if (participants.Actor.Reference.StartsWith("Patient/"))
                 {
-                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", participant.Actor.Reference);
+                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", participants.Actor.Reference);
                     returnedResource.ShouldNotBeNull("Practitioner reference returns a null patient");
                     returnedResource.GetType().ShouldBe(typeof(Patient));
-                    HttpContext.StoredFhirResources.Add(practitionerSaved, returnedResource);
+                    verifyPatient(returnedResource);
+
                 }
 
-                if (participant.Actor.Reference.StartsWith("Location/") && "Location" == participantSent)
+                if (participants.Actor.Reference.StartsWith("Location/"))
                 {
-                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", participant.Actor.Reference);
+                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", participants.Actor.Reference);
                     returnedResource.ShouldNotBeNull("Practitioner reference returns a null location");
                     returnedResource.GetType().ShouldBe(typeof(Location));
-                    HttpContext.StoredFhirResources.Add(practitionerSaved, returnedResource);
+                    verifyLocation(returnedResource);
                 }
+            }
 
-            }    
         }
+
+        private void verifyLocation(Resource location)
+        {
+            ThenIfTheLocationResourceContainsAnIdentifierThenItIsValid(location);
+            ThenIfTheLocationResourceShouldContainANameANameElement(location);
+            ThenIfTheLocationResourceShouldContainSystemCodeAndDisplayIfTheTypeCodingIsIncludedInTheResource(location);
+            ThenIfTheLocationResourceContainsValidSystemCodeAndDisplayIfThePhysicalTypeCodingIsIncludedInTheResource(location);
+            ThenIfTheLocationResourceContainsPartOfElementTheReferenceShouldReferenceAResourceInTheResponseBundle(location);
+
+
+            }
+
+
+
+        private void verifyPatient(Resource patient)
+        {
+            ThenThePatientResourceShouldContainMetaDataProfileAndVersionId(patient);
+            ThenThePatientResourceMustContainIdentifierWithValidSystemAndValue(patient);
+        }
+
+        
+        private void verifyPractitioner(Resource practitioner)
+        {
+            ThenThePractitionerResourceMustContainNameWithAValidSubsetOfElements(practitioner);
+            ThenThePractitionerResourceContainsAnIdentifierThenItIsValid(practitioner);
+            ThenIfThePractitionerResourceContainsAPractitionerRoleItIsValid(practitioner);
+            ThenIfThePractitionerResourceHasCommunicationElementsContainingACodingThenThereMustBeASystemCodeAndDisplayElement(practitioner);
+       }
 
         [Then(@"the comment of ""(.*)"" and the returned response should be equal")]
         public void ThenTheCommentOfAndTheReturnedResponseShouldBeEqual(string appointmentName)
@@ -369,10 +441,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
-        [Then(@"the practitoner resource saved with name ""(.*)"" must contain name with a valid subset of elements")]
-        public void ThenThePractitionerResourceSavedWithTheNameMustContainNameWithAValidSubsetOfElements(string practitionerName)
+        [Then(@"the practitoner resource ""(.*)"" must contain name with a valid subset of elements")]
+        public void ThenThePractitionerResourceMustContainNameWithAValidSubsetOfElements(Resource practitionerPassed)
         {
-            Practitioner practitioner = (Practitioner)HttpContext.StoredFhirResources[practitionerName];
+            Practitioner practitioner = (Practitioner)practitionerPassed;
             practitioner.ShouldNotBeNull("The stored practitioner resource is being returned as null, this is invalid");
             var familyNameCount = 0;
             practitioner.Name.ShouldNotBeNull("Practitioner Name is null, this is invalid as this is manadatory");
@@ -384,10 +456,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             familyNameCount.ShouldBeLessThanOrEqualTo(1);
         }
 
-        [Then(@"if the practitioner resource saved with name ""(.*)"" contains an identifier then it is valid")]
-        public void ThenThePractitionerResourceSavedWithTheNameContainsAnIdentifierThenItIsValid(string practitionerName)
+        [Then(@"if the practitioner resource ""(.*)"" contains an identifier then it is valid")]
+        public void ThenThePractitionerResourceContainsAnIdentifierThenItIsValid(Resource practitionerName)
         {
-            Practitioner practitioner = (Practitioner)HttpContext.StoredFhirResources[practitionerName];
+            Practitioner practitioner = (Practitioner)practitionerName;
             practitioner.ShouldNotBeNull("The stored practitioner resource is being returned as null, this is invalid");
             foreach (Identifier identifier in practitioner.Identifier)
             {
@@ -398,10 +470,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"if the practitioner resource saved with name ""(.*)"" contains a practitioner role it is valid")]
-        public void ThenIfThePractitionerResourceSavedWithTheNameContainsAPractitionerRoleItIsValid(string practitionerName)
+        [Then(@"if the practitioner resource ""(.*)"" contains a practitioner role it is valid")]
+        public void ThenIfThePractitionerResourceContainsAPractitionerRoleItIsValid(Resource practitionerName)
         {
-            Practitioner practitioner = (Practitioner)HttpContext.StoredFhirResources[practitionerName];
+            Practitioner practitioner = (Practitioner)practitionerName;
             practitioner.ShouldNotBeNull("The stored practitioner resource is being returned as null, this is invalid");
 
             foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
@@ -434,10 +506,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
         
-        [Then(@"if the practitioner resource saved with name ""(.*)"" has communicaiton elemenets containing a coding then there must be a system, code and display element")]
-        public void ThenIfThePractitionerResourceSavedWithNameHasCommunicationElementsContainingACodingThenThereMustBeASystemCodeAndDisplayElement(string practitionerName)
+        [Then(@"if the practitioner resource ""(.*)"" has communicaiton elemenets containing a coding then there must be a system, code and display element")]
+        public void ThenIfThePractitionerResourceHasCommunicationElementsContainingACodingThenThereMustBeASystemCodeAndDisplayElement(Resource practitionerName)
         {
-            Practitioner practitioner = (Practitioner)HttpContext.StoredFhirResources[practitionerName];
+            Practitioner practitioner = (Practitioner)practitionerName;
             practitioner.ShouldNotBeNull("The stored practitioner resource is being returned as null, this is invalid");
             //If the practitioner has a communicaiton elemenets containing a coding then there must be a system, code and display element. There must only be one coding per communication element.
             foreach (CodeableConcept codeableConcept in practitioner.Communication)
@@ -447,10 +519,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         
          }
 
-        [Then(@"the patient resource saved with name ""(.*)"" must contain identifier with valid system and value")]
-        public void ThenThePatientResourceSavedWithNameMustContainIdentifierWithValidSystemAndValue(string patientName)
+        [Then(@"the patient resource ""(.*)"" must contain identifier with valid system and value")]
+        public void ThenThePatientResourceMustContainIdentifierWithValidSystemAndValue(Resource patientName)
         {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[patientName];
+            Patient patient = (Patient)patientName;
             patient.Identifier.ShouldNotBeNull();
             foreach (Identifier identifier in patient.Identifier)
             {
@@ -460,10 +532,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the patient resource saved with name ""(.*)"" should contain meta data profile and version id")]
-        public void ThenThePatientResourceSaveWithNameShouldContainMetaDataProfileAndVersionId(string patientName)
+        [Then(@"the patient resource ""(.*)"" should contain meta data profile and version id")]
+        public void ThenThePatientResourceShouldContainMetaDataProfileAndVersionId(Resource patientName)
         {
-            var resource = (Patient)HttpContext.StoredFhirResources[patientName];
+            var resource = (Patient)patientName;
             resource.Meta.ShouldNotBeNull();
             int metaProfileCount = 0;
             foreach (string profile in resource.Meta.Profile)
@@ -476,17 +548,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
-        [Then(@"if the location resource saved with the name ""(.*)"" should contain a name element")]
-        public void ThenIfTheLocationResourceSavedWithTheNameShouldContainANameANameElement(string locationName)
+        [Then(@"if the location resource ""(.*)"" should contain a name element")]
+        public void ThenIfTheLocationResourceShouldContainANameANameElement(Resource locationName)
         {
-            Location location = (Location)HttpContext.StoredFhirResources[locationName];
+            Location location = (Location)locationName;
             location.Name.ShouldNotBeNullOrEmpty();
         }
 
-        [Then(@"if the location resource saved with the name ""(.*)"" should contain a maximum of one ODS Site Code and one other identifier")]
-        public void ThenIfTheLocationResourceSavedWithTheNameContainsAnIdentifierThenItIsValid(string locationName)
+        [Then(@"if the location resource ""(.*)"" should contain a maximum of one ODS Site Code and one other identifier")]
+        public void ThenIfTheLocationResourceContainsAnIdentifierThenItIsValid(Resource locationName)
         {
-            Location resource = (Location)HttpContext.StoredFhirResources[locationName];
+            Location resource = (Location)locationName;
             int odsSiteCodeIdentifierCount = 0;
             foreach (var identifier in resource.Identifier)
             {
@@ -499,10 +571,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             resource.Identifier.Count.ShouldBeLessThanOrEqualTo(2, "There should be no more than one ODS Site Code and One other identifier, there is more than 2 identifiers in the Location resource.");
         }
 
-        [Then(@"if the location resource saved with the name ""(.*)"" should contain system code and display if the Type coding is included in the resource")]
-        public void ThenIfTheLocationResourceSavedWithTheNameShouldContainSystemCodeAndDisplayIfTheTypeCodingIsIncludedInTheResource(string locationName)
+        [Then(@"if the location resource ""(.*)"" should contain system code and display if the Type coding is included in the resource")]
+        public void ThenIfTheLocationResourceShouldContainSystemCodeAndDisplayIfTheTypeCodingIsIncludedInTheResource(Resource locationName)
         {
-            Location location = (Location)HttpContext.StoredFhirResources[locationName];
+            Location location = (Location)locationName;
             if (location.Type != null && location.Type.Coding != null)
             {
                 location.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
@@ -517,10 +589,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"if the location resource saved with the name ""(.*)"" should contain valid system code and display if the PhysicalType coding is included in the resource")]
-        public void ThenIfTheLocationResourceSavedWithTheNameShouldContainValidSystemCodeAndDisplayIfThePhysicalTypeCodingIsIncludedInTheResource(string locationName)
+        [Then(@"if the location resource ""(.*)"" contains valid system code and display if the PhysicalType coding is included in the resource")]
+        public void ThenIfTheLocationResourceContainsValidSystemCodeAndDisplayIfThePhysicalTypeCodingIsIncludedInTheResource(Resource locationName)
         {
-            Location location = (Location)HttpContext.StoredFhirResources[locationName];
+            Location location = (Location)locationName;
             if (location.PhysicalType != null && location.PhysicalType.Coding != null)
             {
                 location.PhysicalType.Coding.Count.ShouldBeLessThanOrEqualTo(1);
@@ -534,10 +606,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"if the location resource saved with the name ""(.*)"" contains partOf element the reference should reference a resource in the response bundle")]
-        public void ThenIfTheLocationResourceSavedWithTheNameContainsPartOfElementTheReferenceShouldReferenceAResourceInTheResponseBundle(string locationName)
+        [Then(@"if the location resource ""(.*)"" contains partOf element the reference should reference a resource in the response bundle")]
+        public void ThenIfTheLocationResourceContainsPartOfElementTheReferenceShouldReferenceAResourceInTheResponseBundle(Resource locationName)
         {
-            Location location = (Location)HttpContext.StoredFhirResources[locationName];
+            Location location = (Location)locationName;
             if (location.PartOf != null)
             {
                 location.PartOf.Reference.ShouldNotBeNullOrEmpty();
@@ -545,10 +617,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"if the location resource saved with the name ""(.*)"" contains managingOrganization element the reference should reference a resource in the response bundle")]
-        public void ThenIfTheLocationResourceSavedWithTheNameContainsManagingOrganizationElementTheReferenceShouldReferenceAResourceInTheResponseBundle(string locationName)
+        [Then(@"if the location resource ""(.*)"" contains managingOrganization element the reference should reference a resource in the response bundle")]
+        public void ThenIfTheLocationResourceContainsManagingOrganizationElementTheReferenceShouldReferenceAResourceInTheResponseBundle(Resource locationName)
         {
-            Location location = (Location)HttpContext.StoredFhirResources[locationName];
+            Location location = (Location)locationName;
             if (location.ManagingOrganization != null)
             {
                 location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
@@ -579,14 +651,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Status.ShouldBe(AppointmentStatus.Cancelled);
         }
+
+        [Then(@"the response version id should be different to the version id stored in ""(.*)""")]
+        public void ThenTheResponseVersionIdShouldBeDifferentToTheVersionIdStoredIn(string storedAppointmentName)
+        {
+            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[storedAppointmentName];
+            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            storedAppointment.VersionId.ToString().ShouldNotBe(returnedAppointment.VersionId.ToString());
+        }
         
-        private Extension buildAppointmentCancelExtension(Extension extension, string url, string code, string display)
+        private Extension buildAppointmentCancelExtension(Extension extension, string url, string reasonString)
         {
             extension.Url = url;
-            CodeableConcept value = new CodeableConcept();
-            Coding coding = new Coding();
-            coding.Display = display;
-            extension.Value = coding.DisplayElement;
+            FhirString reason = new FhirString(reasonString);
+            extension.Value = reason;
+            return extension;
+        }
+
+        private Extension buildAppointmentOtherExtension(Extension extension, string url, string codes, string display)
+        {
+            extension.Url = url;
+            CodeableConcept reason = new CodeableConcept();
+            Coding code = new Coding();
+            code.Code = codes;
+            code.Display = display;
+            reason.Coding.Add(code);
+            extension.Value = reason;
             return extension;
         }
 
