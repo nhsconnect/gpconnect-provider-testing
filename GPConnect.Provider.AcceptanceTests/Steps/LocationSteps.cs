@@ -26,6 +26,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             AccessRecordSteps = accessRecordSteps;
         }
 
+        [Given(@"I add the location identifier parameter with system ""(.*)"" and value ""(.*)""")]
+        public void GivenIAddThePractitionerIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
+        {
+            Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + FhirContext.FhirOrganizations[valueParameter]}""");
+        }
+
         [Then(@"the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier")]
         public void ThenTheResponseBundleLocationEntriesShouldContainAMaximumOfOneODSSiteCodeAndOneOtherIdentifier()
         {

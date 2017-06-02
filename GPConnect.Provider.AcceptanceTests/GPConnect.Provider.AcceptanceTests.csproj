@@ -159,6 +159,11 @@
     <Compile Include="Importers\ODSCodeMapConverter.cs" />
     <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
+    <Compile Include="LocationSearch.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocationSearch.feature</DependentUpon>
+    </Compile>
     <Compile Include="OrganizationRead.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -283,6 +288,10 @@
     <None Include="Foundation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Foundation.feature.cs</LastGenOutput>
+    </None>
+    <None Include="LocationSearch.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>LocationSearch.feature.cs</LastGenOutput>
     </None>
     <None Include="OrganizationRead.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
