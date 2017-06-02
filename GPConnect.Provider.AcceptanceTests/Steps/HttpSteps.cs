@@ -123,9 +123,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, requestContentType);
             HttpContext.RequestContentType = requestContentType;
         }
+        [Given(@"I set ""(.*)"" request header to ""(.*)""")]
+        public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
+        {
+
+            string value = HttpContext.resourceNameStored[headerValue];
+            HttpContext.RequestHeaders.ReplaceHeader(headerKey, value);
+        }
 
         [Given(@"I set ""(.*)"" request header to ""(.*)"" version")]
-        public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
+        public void GivenISetRequestHeaderToVersion(string headerKey, string headerValue)
         {
 
            Resource value = HttpContext.StoredFhirResources[headerValue];
