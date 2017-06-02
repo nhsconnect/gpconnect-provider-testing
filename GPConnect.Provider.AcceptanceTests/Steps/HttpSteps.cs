@@ -123,12 +123,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, requestContentType);
             HttpContext.RequestContentType = requestContentType;
         }
-        [Given(@"I set ""(.*)"" request header to ""(.*)""")]
-        public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
+
+
+        [Given(@"I set ""(.*)"" request header to resource stored ""(.*)""")]
+        public void GivenISetRequestHeaderToResourceStored(string headerKey, string headerValue)
         {
 
             string value = HttpContext.resourceNameStored[headerValue];
             HttpContext.RequestHeaders.ReplaceHeader(headerKey, value);
+        }
+
+        [Given(@"I set ""(.*)"" request header to ""(.*)""")]
+        public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
+        {
+            HttpContext.RequestHeaders.ReplaceHeader(headerKey, headerValue);
+
         }
 
         [Given(@"I set ""(.*)"" request header to ""(.*)"" version")]
@@ -142,8 +151,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set If-Match request header to ""(.*)""")]
         public void GivenISetRequestHeaderToNotStored(string headerValue)
         {
-
-         
             HttpContext.RequestHeaders.ReplaceHeader("If-Match", headerValue);
         }
 
