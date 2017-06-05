@@ -34,6 +34,7 @@ Scenario Outline: Location search success
 		And the response bundle should contain "<EntrySize>" entries
 		And the response should be a Bundle resource of type "searchset"
 		And all search response entities in bundle should contain a logical identifier
+		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
 		Examples:
 		| Value | EntrySize |
 		| SIT1  | 1         |
@@ -296,3 +297,9 @@ Scenario Outline: Location search response contains correct type
 Scenario: Ensure out of date site codes are no longer returning any resource
 	# Run tests with a site code which has recently expired and expect an error
 	
+@Manual
+@ignore
+Scenario: Check that the optional fields are populated in the Location resource if they are available in the provider system
+	# telecom - Telecom information for the Location, can be multiple instances for different types.
+	# address - Address(s) for the Location.
+	# contact - the details of a person, telecom or address for contact with the location.
