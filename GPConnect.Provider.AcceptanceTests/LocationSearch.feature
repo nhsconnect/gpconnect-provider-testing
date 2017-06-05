@@ -1,4 +1,4 @@
-﻿Feature: Location
+﻿Feature: LocationSearch
 
 Background:
 	Given I have the test practitioner codes
@@ -24,7 +24,6 @@ Scenario: if location contains telecom
 # There is no need to check that the location telecom value sets are valid as this is done by the parse of the response within scenario above.
 # The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
 
-
 Scenario Outline: Location search success
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
@@ -38,38 +37,20 @@ Scenario Outline: Location search success
 		Examples:
 		| Value | EntrySize |
 		| SIT1  | 1         |
-		| SIT2  | 1         |
-		| SIT3  | 2         |
+		| SIT2  | 2         |
+		| SIT3  | 8         |
 
-Scenario Outline: Location search no entrys found
+Scenario: Location search no entrys found
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "<Value>"
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT4"
 	When I make a GET request to "/Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response bundle should contain "0" entries
 		And the response should be a Bundle resource of type "searchset"
 		And all search response entities in bundle should contain a logical identifier
-		Examples:
-		| Value |
-		| ORG1  |
-		| ORG2  |
-		| ORG3  |
 	
-Scenario Outline: Location search failure due to invalid identifier
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "<system>" and value "<Value>"
-	When I make a GET request to "/Location"
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-		Examples:
-		| System                               | Value |
-		| http://fhir.nhs.net/Id/ods-site-code |       |
-		|                                      | SIT1  |
-
 Scenario Outline: Location search failure invalid system
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
@@ -93,7 +74,7 @@ Scenario: Location search failure missing identifier
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario Outline: Location search failure due to invalid identifier case
+Scenario Outline: Location search failure due to invalid identifier name
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
 		And I add the parameter "<Identifier>" with the value "http://fhir.nhs.net/Id/ods-site-code |Z33432"
@@ -109,18 +90,20 @@ Scenario Outline: Location search failure due to invalid identifier case
 Scenario Outline: Location search parameter order test
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the parameter "<Header1>" with the value "<Parameter1>"
-		And I add the parameter "<Header2>" with the value "<Parameter2>"
+		And I add the parameter "<Parameter1Name>" with the value "<Parameter1>"
+		And I add the parameter "<Parameter2Name>" with the value "<Parameter2>"
 	When I make a GET request to "/Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
+		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
+		And the response bundle Location entries should contain a name element
 		Examples:
-		| Header1    | Header2    | Parameter1                                   | Parameter2                                   | BodyFormat |
-		| _format    | identifier | application/json+fhir                        | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | JSON       |
-		| _format    | identifier | application/xml+fhir                         | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | XML        |
-		| identifier | _format    | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | application/json+fhir                        | JSON       |
-		| identifier | _format    | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | application/xml+fhir                         | XML        |
+		| Parameter1Name | Parameter2Name | Parameter1                                   | Parameter2                                   | BodyFormat |
+		| _format        | identifier     | application/json+fhir                        | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | JSON       |
+		| _format        | identifier     | application/xml+fhir                         | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | XML        |
+		| identifier     | _format        | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | application/json+fhir                        | JSON       |
+		| identifier     | _format        | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | application/xml+fhir                         | XML        |
 
 Scenario Outline: Location search accept header
 	Given I am using the default server
@@ -136,10 +119,25 @@ Scenario Outline: Location search accept header
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+Scenario Outline: Location search _format parameter only
+Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT2"
+		And I add the parameter "_format" with the value "<Parameter>"
+	When I make a GET request to "/Location"
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the response should be a Bundle resource of type "searchset"
+	Examples:
+		| Header                | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
+
+
 Scenario Outline: Location search accept header and _format parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT3"
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make a GET request to "/Location"
@@ -192,7 +190,7 @@ Scenario: Conformance profile supports the Location search operation
 		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Location" resource with a "search-type" interaction
 
-Scenario Outline: Location search locations contain metadata and populated fields single entry returned
+Scenario Outline: Location search locations contain metadata and populated fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
 		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "<Value>"
@@ -205,20 +203,10 @@ Scenario Outline: Location search locations contain metadata and populated field
 		Examples:
 		| Value | EntrySize |
 		| SIT1  | 1         |
-		| SIT2  | 1         |
+		| SIT2  | 2         |
+		| SIT3  | 8         |
 
-Scenario: Location search locations contain metadata and populated fields multiple entries returned
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT3"
-	When I make a GET request to "/Location"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response bundle should contain "2" entries
-		And the response should be a Bundle resource of type "searchset"
-		And if the response bundle contains a location resource it should contain meta data profile and version id
-
-Scenario Outline: Location search send multiple identifiers in the request
+Scenario: Location search send multiple identifiers in the request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
 		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
@@ -227,61 +215,81 @@ Scenario Outline: Location search send multiple identifiers in the request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		Examples:
-		| Value | EntrySize |
-		| SIT1  | 1         |
-		| SIT2  | 1         |
-		| SIT3  | 2         |
-
-Scenario: Location search response contains name element
+	
+Scenario Outline: Location search response contains name element
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "<siteCode>"
 	When I make a GET request to "/Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle Location entries should contain a name element
+		Examples: 
+		| siteCode |
+		| SIT1     |
+		| SIT2     |
+		| SIT3     |
 
-Scenario: Location search response contains correct coding if present
+Scenario Outline: Location search response contains correct coding if present
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "<siteCode>"
 	When I make a GET request to "/Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle location entries should contain valid  system code and display if the PhysicalType coding is included in the resource
+		Examples: 
+		| siteCode |
+		| SIT1     |
+		| SIT2     |
+		| SIT3     |
 
-Scenario: Location search response contains correct managing organization
+Scenario Outline: Location search response contains correct managing organization
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "<siteCode>"
 	When I make a GET request to "/Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if the response bundle location entries contain managingOrganization element the reference should reference a resource in the response bundle
+		Examples: 
+		| siteCode |
+		| SIT1     |
+		| SIT2     |
+		| SIT3     |
 
-Scenario: Location search response contains correct partOf
+Scenario Outline: Location search response contains correct partOf
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "<siteCode>"
 	When I make a GET request to "/Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if the response bundle location entries contain partOf element the reference should reference a resource in the response bundle
+		Examples: 
+		| siteCode |
+		| SIT1     |
+		| SIT2     |
+		| SIT3     |
 
-Scenario: Location search response contains correct type
+Scenario Outline: Location search response contains correct type
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "<siteCode>"
 	When I make a GET request to "/Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle location entries should contain system code and display if the Type coding is included in the resource
+		Examples: 
+		| siteCode |
+		| SIT1     |
+		| SIT2     |
+		| SIT3     |
 
 @ignore
 @Manual
