@@ -31,7 +31,7 @@ Scenario Outline: Location read successful request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a valid Location resource
-		Examples: 
+	Examples: 
 		| Location |
 		| SIT1     |
 		| SIT2     |
@@ -103,7 +103,7 @@ Scenario Outline: Location read _format parameter only
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+		And the response body should be FHIR <BodyFormat>
 		And the response should be a valid Location resource
 		Examples:
         | Parameter             | BodyFormat |
