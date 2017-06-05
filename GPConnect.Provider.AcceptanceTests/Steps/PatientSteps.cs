@@ -88,15 +88,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             When($@"I make a GET request to ""/Patient/{patientResource.Id}""");
         }
 
-        [When(@"I perform a patient vread for patient ""([^""]*)"" with ETag ""([^""]*)""")]
-        public void IPerformAPatientVReadForPatientWithETag(string patient, string etag)
+        [When(@"I make a GET request for patient ""([^""]*)"" with If-None-Match header")]
+        public void IMakeAGETRequestForPatientWithIf_None_MatchHeader(string patient)
+        {
+            var etag = "W/\"" + HttpContext.StoredFhirResources[patient].Meta.VersionId + "\"";
+
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfNoneMatch, etag);
+            IMakeAGETRequestForPatient(patient);
+        }
+
+        [When(@"I perform a patient vread for patient ""([^""]*)""")]
+        public void IPerformAPatientVReadForPatient(string patient)
         {
             var patientResource = HttpContext.StoredFhirResources[patient];
 
-            string versionId = HttpContext.resourceNameStored[etag];
-            string[] elements = versionId.Split(new char[] { '"' });
-
-            When($@"I make a GET request to ""/Patient/{patientResource.Id}/_history/{elements[1]}""");
+            var versionId = HttpContext.StoredFhirResources[patient].Meta.VersionId;
+            
+            When($@"I make a GET request to ""/Patient/{patientResource.Id}/_history/{versionId}""");
         }
 
         [When(@"I perform a patient vread for patient ""([^""]*)"" with invalid ETag")]
@@ -383,14 +391,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var CareProvider = ((Patient)FhirContext.FhirResponseResource).CareProvider;
 
-            CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
-
-            if (CareProvider.Count > 0)
+            if (null != CareProvider)
             {
-                CareProvider[0].Reference.ShouldNotBeNull();
-                CareProvider[0].Reference.ShouldStartWith("Practitioner/");
-                var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", CareProvider[0].Reference);
-                returnedResource.GetType().ShouldBe(typeof(Practitioner));
+                CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
+
+                foreach (var careProvider in CareProvider)
+                {
+                    if (null != careProvider.Reference)
+                    {
+                        careProvider.Reference.ShouldStartWith("Practitioner/");
+                        var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", careProvider.Reference);
+                        returnedResource.GetType().ShouldBe(typeof(Practitioner));
+                    }
+                }
             }
         }
 
@@ -401,10 +414,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             if (ManagingOrganization != null)
             {
-                ManagingOrganization.Reference.ShouldNotBeNull();
-                ManagingOrganization.Reference.ShouldStartWith("Organization/");
-                var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", ManagingOrganization.Reference);
-                returnedResource.GetType().ShouldBe(typeof(Organization));
+                if (null != ManagingOrganization.Reference)
+                {
+                    ManagingOrganization.Reference.ShouldStartWith("Organization/");
+                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", ManagingOrganization.Reference);
+                    returnedResource.GetType().ShouldBe(typeof(Organization));
+                }
             }
         }
 

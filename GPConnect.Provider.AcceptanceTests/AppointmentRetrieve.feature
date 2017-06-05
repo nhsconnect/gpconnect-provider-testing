@@ -53,11 +53,11 @@ Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 	Examples:
-		| id  |
-		| **  |
-		| dd  |
-		|     |
-		| null|
+		| id   |
+		| **   |
+		| dd   |
+		|      |
+		| null |
 	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -244,7 +244,6 @@ Scenario Outline: Appointment retrieve send request with date variations and app
 		| 2013-05                   | ap     |
 		| 2013-05-01T11:08:32       | ap     |
 		| 2013-10-23T11:08:32+00:00 | ap     |
-	
 
 Scenario Outline: Appointment retrieve failure due to missing header
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -438,8 +437,6 @@ Scenario: Appointment retrive book appointment and search for the appointment an
 		And the returned appointment slot reference should match "Appointment3" slot reference
 		And the returned appointment participant status should match "Appointment3" participant status
 
-
-
 Scenario Outline: Appointment retrieve JWT patient type request invalid
 	Given I am using the default server
 		And I perform a patient search for patient "patient1" and store the first returned resources against key "registerPatient"
@@ -451,11 +448,11 @@ Scenario Outline: Appointment retrieve JWT patient type request invalid
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-			Examples: 
-	| JWTType              |
-	| organization/*.read  |
-	| organization/*.write |
-	| patient/*.write      |
+	Examples: 
+		| JWTType              |
+		| organization/*.read  |
+		| organization/*.write |
+		| patient/*.write      |
 
 Scenario: Appointment retrieve JWT patient type request valid
 	Given I am using the default server
