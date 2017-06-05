@@ -3,13 +3,17 @@
 Background:
 	Given I have the test patient codes
 	
-Scenario: Read patient 404 if patient not found
+Scenario Outline: Read patient 404 if patient not found
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
-	When I make a GET request to "/Patient/123"
+	When I make a GET request to "/Patient/<id>"
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+    Examples:
+        | id                                                         |
+        | somethngVryRongThtAbsalutelyWontBeExistinOnTheRemostSistam |
+        | 4543567638475665845564986758479086840564796854665748763454 |
 		
 Scenario: Read patient 404 if patient id not sent
 	Given I am using the default server
@@ -91,15 +95,7 @@ Scenario: Read patient If-None-Match should return a 304 on match
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
-	When I make a GET request for patient "patient1"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Patient resource
-		And the response ETag is saved as "etagPatientRead"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
-		And I set "If-None-Match" request header to "etagPatientRead"
-	When I make a GET request for patient "patient1"
+	When I make a GET request for patient "patient1" with If-None-Match header
 	Then the response status code should be "304"
 	
 Scenario: Read patient If-None-Match should return full resource if no match
@@ -113,18 +109,11 @@ Scenario: Read patient If-None-Match should return full resource if no match
 		And the response should be a Patient resource
 		And the response should contain the ETag header matching the resource version
 
-Scenario: VRead patient _history should return historical patient
+Scenario: VRead patient _history with current etag should return current patient
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
-	When I make a GET request for patient "patient1"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Patient resource
-		And the response ETag is saved as "etagPatientRead"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
-	When I perform a patient vread for patient "patient1" with ETag "etagPatientRead"
+	When I perform a patient vread for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Patient resource
@@ -135,16 +124,15 @@ Scenario: VRead patient _history with invalid etag should give a 404
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
 	When I perform a patient vread for patient "patient1" with invalid ETag
 	Then the response status code should be "404"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 		
-Scenario: Read patient should contain valid resource
+Scenario Outline: Read patient with accept header should contain valid resource
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the Accept header to "<Header>"
 	When I make a GET request for patient "patient1"
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+		And the response body should be FHIR <BodyFormat>
 		And the response should be a Patient resource
 		And the patient resource should contain an id
 		And the patient resource should contain valid meta data
@@ -160,3 +148,7 @@ Scenario: Read patient should contain valid resource
 		And the patient resource should contain no more than one family or given name
 		And the patient resource should contain no more than one family name field for each contact
 		And the patient resource should not contain the fhir fields photo animal or link
+    Examples:
+        | Header                | BodyFormat |
+        | application/json+fhir | JSON       |
+        | application/xml+fhir  | XML        |
