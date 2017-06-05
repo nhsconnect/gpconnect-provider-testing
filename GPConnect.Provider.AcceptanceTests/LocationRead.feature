@@ -117,7 +117,7 @@ Scenario Outline: Location read accept header
 		And I set the Accept header to "<Header>"
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+		And the response body should be FHIR <BodyFormat>
 		And the response should be a valid Location resource
 		Examples:
 		| Header                | BodyFormat |
@@ -132,7 +132,7 @@ Scenario Outline: Location read accept header and _format
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+		And the response body should be FHIR <BodyFormat>
 		And the response should be a valid Location resource
 		  Examples:
         | Header                | Parameter             | BodyFormat |
