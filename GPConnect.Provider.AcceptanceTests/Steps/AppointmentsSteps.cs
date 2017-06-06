@@ -181,20 +181,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, "/Appointment");
         }
-
-        [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)"" without status check")]
-        public void bookAppointmentForUserWithoutStatusCheck(string patientRef, string scheduleName, string interactionID)
-        {
-            bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, "/Appointment", false);
-        }
-
+        
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)"" via url ""([^""]*)""")]
         public void bookAppointmentForUserWithUrl(string patientRef, string scheduleName, string interactionID, string url)
-        {
-            bookAppointmentForUserWithUrl(patientRef, scheduleName, interactionID, url, false);
-        }
-
-        public void bookAppointmentForUserWithUrl(string patientRef, string scheduleName, string interactionID, string url, bool statusCheck)
         {
             Bundle patientBundle = (Bundle)HttpContext.StoredFhirResources[scheduleName];
             Patient patientResource = (Patient)HttpContext.StoredFhirResources[patientRef];
@@ -299,15 +288,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             patientBundle.Entry.Remove(entryToRemove);
 
-            //Book the appointment
-            if (statusCheck)
-            {
-                BookAppointmentSteps.bookAppointment(interactionID, url, appointment);
-            }
-            else
-            {
-                BookAppointmentSteps.bookCustomAppointment(interactionID, url, FhirSerializer.SerializeToJson(appointment));
-            }
+            BookAppointmentSteps.bookAppointment(interactionID, url, FhirSerializer.SerializeToJson(appointment));
         }
 
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system with the schedule name ""([^""]*)"" with interaction id ""([^""]*)"" without header clean up")]
@@ -526,7 +507,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             patientBundle.Entry.Remove(entryToRemove);
 
             //Book the appointment
-            BookAppointmentSteps.bookAppointment(interactionID, "/Appointment", appointment);
+            BookAppointmentSteps.bookAppointmentValidateSuccesfulResponseAndParseResponse(interactionID, "/Appointment", appointment);
         }
 
         [Then(@"there are zero appointment resources")]
@@ -1205,7 +1186,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             appointment.Status = status;
             //Book the appointment
-            BookAppointmentSteps.bookAppointment(interactionId, "/Appointment", appointment);
+            BookAppointmentSteps.bookAppointmentValidateSuccesfulResponseAndParseResponse(interactionId, "/Appointment", appointment);
         }
 
         

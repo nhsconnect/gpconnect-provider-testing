@@ -293,7 +293,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             for (; noApp > 0; noApp--)
             {
-                When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle""");
+                When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle"" and store the appointment to ""storedAppointment""");
             }
 
             // Search for appointments again to make sure that enough have been stored in the provider system and store them

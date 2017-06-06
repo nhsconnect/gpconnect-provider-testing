@@ -8,6 +8,8 @@ Scenario: Book single appointment for patient
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 	When I book the appointment called "Appointment"
@@ -16,18 +18,22 @@ Scenario: Book single appointment for patient
 		And the response should be an Appointment resource
 
 Scenario: Book Appointment with invalid url for booking appointment
-Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 	When I book the appointment called "Appointment" against the URL "/Appointments" with the interactionId "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" 
-	Then the response status code should indicate failure
+	Then the response status code should be "404"
 
 Scenario Outline: Book appointment failure due to missing header
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 		And I do not send header "<Header>"
@@ -124,7 +130,7 @@ Scenario Outline: Book appointment interaction id incorrect fail
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "<interactionId>" without status check
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "<interactionId>"
     Then the response status code should be "400"
         And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
