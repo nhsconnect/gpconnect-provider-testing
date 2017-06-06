@@ -130,7 +130,7 @@ Scenario Outline: Book appointment interaction id incorrect fail
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "<interactionId>" without status check
+	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "<interactionId>"
     Then the response status code should be "400"
         And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

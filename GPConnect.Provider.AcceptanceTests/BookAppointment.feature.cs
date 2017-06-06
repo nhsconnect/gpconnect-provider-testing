@@ -420,8 +420,7 @@ this.FeatureBackground();
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 133
  testRunner.When(string.Format("I book an appointment for patient \"patient1\" on the provider system with the sche" +
-                        "dule name \"getScheduleResponseBundle\" with interaction id \"{0}\" without status c" +
-                        "heck", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "dule name \"getScheduleResponseBundle\" with interaction id \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 134
     testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 135
