@@ -752,7 +752,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void WhenIBookTheAppointmentCalledString(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", FhirSerializer.SerializeToJson(appointment));
+            bookAppointmentNoClearDown("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", FhirSerializer.SerializeToJson(appointment));
         }
 
         [When(@"I book the appointment called ""([^""]*)"" against the URL ""([^""]*)"" with the interactionId ""([^""]*)""")]
@@ -770,14 +770,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointmentString = FhirHelper.AddInvalidFieldToResourceJson(appointmentString);
             bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointmentString);
         }
-
-        [When(@"I book the appointment called ""([^""]*)"" without status check")]
-        public void ThenIBookTheAppointmentCalledStringWithoutStatusCheck(string appointmentName)
-        {
-            Resource appointment = HttpContext.StoredFhirResources[appointmentName];
-            bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", FhirSerializer.SerializeToJson(appointment));
-        }
-
 
         public void bookAppointmentValidateSuccesfulResponseAndParseResponse(string interactionID, string relativeUrl, Resource appointment)
         {
@@ -804,6 +796,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"I am performing the ""{interactionID}"" interaction");
 
             // Book the apppointment
+            HttpSteps.RestRequest(Method.POST, relativeUrl, appointment);
+        }
+
+        public void bookAppointmentNoClearDown(string interactionID, string relativeUrl, String appointment)
+        {
             HttpSteps.RestRequest(Method.POST, relativeUrl, appointment);
         }
 
