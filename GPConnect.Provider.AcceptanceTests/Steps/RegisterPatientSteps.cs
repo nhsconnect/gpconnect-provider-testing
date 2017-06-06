@@ -384,6 +384,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             var contact = new Patient.ContactComponent();
+            contact.Name = new HumanName();
             contact.Name.GivenElement.Add(new FhirString("TestGiven"));
             contact.Name.FamilyElement.Add(new FhirString("TestFamily"));
             storedPatient.Contact.Add(contact);
@@ -393,6 +394,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAddAAnimalElementToPatientStoredAgainst(string storedPatientKey)
         {
             Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            storedPatient.Animal = new Patient.AnimalComponent();
             storedPatient.Animal.Species = new CodeableConcept("AllSpecies", "Human");
         }
 
