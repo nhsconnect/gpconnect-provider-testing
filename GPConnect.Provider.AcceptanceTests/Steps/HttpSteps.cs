@@ -225,9 +225,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
         public void GivenIAddTheParameterWithTheValue(string parameterName, string parameterValue)
         {
+             HttpContext.RequestParameters.AddParameter(parameterName, parameterValue);
+        }
+
+        [Given(@"I add the parameter ""(.*)"" with the value or sitecode ""(.*)""")]
+        public void GivenIAddTheParameterWithTheSiteCode(string parameterName, string parameterValue)
+        {
+            if (parameterValue.Contains("http://fhir.nhs.net/Id/ods-site-code"))
+            {
+                var result = parameterValue.LastIndexOf('|');
+                var siteCode = parameterValue.Substring(parameterValue.LastIndexOf('|') + 1);
+                string mappedSiteValue = FhirContext.FhirOrganizations[siteCode];
+                HttpContext.RequestParameters.AddParameter(parameterName, "http://fhir.nhs.net/Id/ods-site-code|" + mappedSiteValue);
+                return;
+            }
+
             HttpContext.RequestParameters.AddParameter(parameterName, parameterValue);
         }
-        
+
         [Given(@"I add the parameter ""([^""]*)"" with system ""([^""]*)"" for patient ""([^""]*)""")]
         public void GivenIAddTheParameterWithSystemForPatient(string parameterName, string parameterSystem, string patient)
         {

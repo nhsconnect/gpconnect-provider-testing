@@ -78,7 +78,7 @@ Scenario: Location search failure missing identifier
 Scenario Outline: Location search failure due to invalid identifier name
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the parameter "<Identifier>" with the value "http://fhir.nhs.net/Id/ods-site-code |Z33432"
+		And I add the parameter "<Identifier>" with the value "http://fhir.nhs.net/Id/ods-site-code|SIT1"
 	When I make a GET request to "/Location"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -91,20 +91,19 @@ Scenario Outline: Location search failure due to invalid identifier name
 Scenario Outline: Location search parameter order test
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the parameter "<Parameter1Name>" with the value "<Parameter1>"
-		And I add the parameter "<Parameter2Name>" with the value "<Parameter2>"
+		And I add the parameter "<Parameter1Name>" with the value or sitecode "<Parameter1>"
+		And I add the parameter "<Parameter2Name>" with the value or sitecode "<Parameter2>"
 	When I make a GET request to "/Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
-		And the response bundle Location entries should contain a name element
 		Examples:
-		| Parameter1Name | Parameter2Name | Parameter1                                   | Parameter2                                   | BodyFormat |
-		| _format        | identifier     | application/json+fhir                        | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | JSON       |
-		| _format        | identifier     | application/xml+fhir                         | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | XML        |
-		| identifier     | _format        | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | application/json+fhir                        | JSON       |
-		| identifier     | _format        | http://fhir.nhs.net/Id/ods-site-code\|Z33432 | application/xml+fhir                         | XML        |
+		| Parameter1Name | Parameter2Name | Parameter1                                 | Parameter2                                 | BodyFormat |
+		| _format        | identifier     | application/json+fhir                      | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | JSON       |
+		| _format        | identifier     | application/xml+fhir                       | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | XML        |
+		| identifier     | _format        | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | application/json+fhir                      | JSON       |
+		| identifier     | _format        | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | application/xml+fhir                       | XML        |
 
 Scenario Outline: Location search accept header
 	Given I am using the default server
@@ -216,7 +215,19 @@ Scenario: Location search send multiple identifiers in the request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	
+
+Scenario: Location search send duplicate siteCodes in the request
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+	When I make a GET request to "/Location"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+
+
 Scenario Outline: Location search response contains name element
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
@@ -240,7 +251,7 @@ Scenario Outline: Location search response contains correct coding if present
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle location entries should contain valid  system code and display if the PhysicalType coding is included in the resource
+		And the response bundle location entries should contain valid system code and display if the PhysicalType coding is included in the resource
 		Examples: 
 		| siteCode |
 		| SIT1     |
