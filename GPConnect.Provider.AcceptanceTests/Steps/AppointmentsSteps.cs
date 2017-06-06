@@ -27,18 +27,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly HttpSteps HttpSteps;
         private readonly HttpContext HttpContext;
-
-        // Headers Helper
-        public HttpHeaderHelper Headers { get; }
-
-        public AppointmentsSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext)
+        private readonly BookAppointmentSteps BookAppointmentSteps;
+        
+        public AppointmentsSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, BookAppointmentSteps bookAppointmentSteps)
         {
-            // Helpers
             FhirContext = fhirContext;
-            Headers = headerHelper;
             HttpSteps = httpSteps;
             HttpContext = httpContext;
-        }
+            BookAppointmentSteps = bookAppointmentSteps;
+    }
 
         [When(@"I search for ""([^""]*)"" from the list of patients and make a get request for their appointments")]
         public void searchAndGetAppointmentsFromPatientListData(string patient)
@@ -305,11 +302,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             //Book the appointment
             if (statusCheck)
             {
-                HttpSteps.bookAppointment(interactionID, url, appointment);
+                BookAppointmentSteps.bookAppointment(interactionID, url, appointment);
             }
             else
             {
-                HttpSteps.bookAppointmentNoStatusCheck(interactionID, url, appointment);
+                BookAppointmentSteps.bookAppointmentNoStatusCheck(interactionID, url, appointment);
             }
         }
 
@@ -419,7 +416,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             patientBundle.Entry.Remove(entryToRemove);
 
             //Book the appointment
-            HttpSteps.bookWithoutCleanUpAppointment(interactionID, "/Appointment", appointment);
+            BookAppointmentSteps.bookWithoutCleanUpAppointment(interactionID, "/Appointment", appointment);
         }
 
 
@@ -529,7 +526,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             patientBundle.Entry.Remove(entryToRemove);
 
             //Book the appointment
-            HttpSteps.bookAppointment(interactionID, "/Appointment", appointment);
+            BookAppointmentSteps.bookAppointment(interactionID, "/Appointment", appointment);
         }
 
         [Then(@"there are zero appointment resources")]
@@ -1208,7 +1205,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             appointment.Status = status;
             //Book the appointment
-            HttpSteps.bookAppointment(interactionId, "/Appointment", appointment);
+            BookAppointmentSteps.bookAppointment(interactionId, "/Appointment", appointment);
         }
 
         

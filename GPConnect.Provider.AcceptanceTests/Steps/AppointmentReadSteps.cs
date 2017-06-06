@@ -14,18 +14,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class AppointmentReadSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext FhirContext;
-        private readonly HttpSteps HttpSteps;
+        private readonly BookAppointmentSteps BookAppointmentSteps;
         private readonly HttpContext HttpContext;
-
-        // Headers Helper
-        public HttpHeaderHelper Headers { get; }
-
-        public AppointmentReadSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext)
+        
+        public AppointmentReadSteps(FhirContext fhirContext, BookAppointmentSteps bookAppointmentSteps, HttpContext httpContext)
         {
-            // Helpers
             FhirContext = fhirContext;
-            Headers = headerHelper;
-            HttpSteps = httpSteps;
+            BookAppointmentSteps = bookAppointmentSteps;
             HttpContext = httpContext;
         }
 
@@ -306,7 +301,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             getScheduleResponseBundle.Entry.Remove(entryToRemove);
 
             //Book the appointment
-            HttpSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+            BookAppointmentSteps.bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
             var createdAppointmentResource = FhirContext.FhirResponseResource;
 
             if (storeAppointmentKey != null)
