@@ -145,7 +145,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
 
            Resource value = HttpContext.StoredFhirResources[headerValue];
-           HttpContext.RequestHeaders.ReplaceHeader(headerKey, value.VersionId);
+           HttpContext.RequestHeaders.ReplaceHeader(headerKey, "W/\""+ value.VersionId + "\"");
         }
 
         [Given(@"I set If-Match request header to ""(.*)""")]

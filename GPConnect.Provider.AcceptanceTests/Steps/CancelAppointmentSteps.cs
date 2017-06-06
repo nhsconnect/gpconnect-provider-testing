@@ -385,38 +385,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the appointment participants of the appointment must conform to the gp connect specifications")]
         public void ThenTheAppointmentParticipantPractitionerReferenceMustBeAValidReference()
         {
-            List<ParticipantComponent> participantComponents = new List<ParticipantComponent>();
+         
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             foreach (Appointment.ParticipantComponent participant in appointment.Participant)
             {
-                participantComponents.Add(participant);
-            }
-
-            foreach (ParticipantComponent participants in participantComponents)
-            {
-
-
-                if (participants.Actor.Reference.StartsWith("Practitioner/"))
+            
+                if (participant.Actor.Reference.StartsWith("Practitioner/"))
                 {
-                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", participants.Actor.Reference);
+                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", participant.Actor.Reference);
                     returnedResource.ShouldNotBeNull("Practitioner reference returns a null practitioner");
                     returnedResource.GetType().ShouldBe(typeof(Practitioner));
                     verifyPractitioner(returnedResource);
                 }
 
 
-                if (participants.Actor.Reference.StartsWith("Patient/"))
+                if (participant.Actor.Reference.StartsWith("Patient/"))
                 {
-                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", participants.Actor.Reference);
+                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", participant.Actor.Reference);
                     returnedResource.ShouldNotBeNull("Practitioner reference returns a null patient");
                     returnedResource.GetType().ShouldBe(typeof(Patient));
                     verifyPatient(returnedResource);
 
                 }
 
-                if (participants.Actor.Reference.StartsWith("Location/"))
+                if (participant.Actor.Reference.StartsWith("Location/"))
                 {
-                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", participants.Actor.Reference);
+                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", participant.Actor.Reference);
                     returnedResource.ShouldNotBeNull("Practitioner reference returns a null location");
                     returnedResource.GetType().ShouldBe(typeof(Location));
                     verifyLocation(returnedResource);
