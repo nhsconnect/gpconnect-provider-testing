@@ -226,6 +226,25 @@ Scenario: Location search send duplicate siteCodes in the request
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+Scenario: Location search send organization identifier in the request
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
+	When I make a GET request to "/Location"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Location search send invalid parameter
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
+		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add the parameter "ticktock" with the value "boom"
+	When I make a GET request to "/Location"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 
 Scenario Outline: Location search response contains name element
