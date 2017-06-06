@@ -302,11 +302,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             //Book the appointment
             if (statusCheck)
             {
-                BookAppointmentSteps.bookAppointment(interactionID, url, appointment);
+                BookAppointmentSteps.bookAppointmentValidateSuccesfulResponseAndParseResponse(interactionID, url, appointment);
             }
             else
             {
-                BookAppointmentSteps.bookCustomAppointment(interactionID, url, FhirSerializer.SerializeToJson(appointment));
+                BookAppointmentSteps.bookAppointment(interactionID, url, FhirSerializer.SerializeToJson(appointment));
             }
         }
 
@@ -526,7 +526,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             patientBundle.Entry.Remove(entryToRemove);
 
             //Book the appointment
-            BookAppointmentSteps.bookAppointment(interactionID, "/Appointment", appointment);
+            BookAppointmentSteps.bookAppointmentValidateSuccesfulResponseAndParseResponse(interactionID, "/Appointment", appointment);
         }
 
         [Then(@"there are zero appointment resources")]
@@ -1205,7 +1205,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             appointment.Status = status;
             //Book the appointment
-            BookAppointmentSteps.bookAppointment(interactionId, "/Appointment", appointment);
+            BookAppointmentSteps.bookAppointmentValidateSuccesfulResponseAndParseResponse(interactionId, "/Appointment", appointment);
         }
 
         

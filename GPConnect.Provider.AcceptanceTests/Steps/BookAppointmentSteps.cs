@@ -752,14 +752,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void WhenIBookTheAppointmentCalledString(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            bookCustomAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", FhirSerializer.SerializeToJson(appointment));
+            bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", FhirSerializer.SerializeToJson(appointment));
         }
 
         [When(@"I book the appointment called ""([^""]*)"" against the URL ""([^""]*)"" with the interactionId ""([^""]*)""")]
         public void WhenIBookTheAppointmentCalledAgainstTheUrlWithTheInteractionId(string appointmentName, string url, string interactionId)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            bookCustomAppointment(interactionId, url, FhirSerializer.SerializeToJson(appointment));
+            bookAppointment(interactionId, url, FhirSerializer.SerializeToJson(appointment));
         }
 
         [When(@"I book the appointment called ""([^""]*)"" with an invalid field")]
@@ -768,20 +768,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             string appointmentString = FhirSerializer.SerializeToJson(appointment);
             appointmentString = FhirHelper.AddInvalidFieldToResourceJson(appointmentString);
-            bookCustomAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointmentString);
+            bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointmentString);
         }
 
         [When(@"I book the appointment called ""([^""]*)"" without status check")]
         public void ThenIBookTheAppointmentCalledStringWithoutStatusCheck(string appointmentName)
         {
             Resource appointment = HttpContext.StoredFhirResources[appointmentName];
-            bookCustomAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", FhirSerializer.SerializeToJson(appointment));
+            bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", FhirSerializer.SerializeToJson(appointment));
         }
 
 
-        public void bookAppointment(string interactionID, string relativeUrl, Resource appointment)
+        public void bookAppointmentValidateSuccesfulResponseAndParseResponse(string interactionID, string relativeUrl, Resource appointment)
         {
-            bookCustomAppointment(interactionID, relativeUrl, FhirSerializer.SerializeToJson(appointment));
+            bookAppointment(interactionID, relativeUrl, FhirSerializer.SerializeToJson(appointment));
 
             // Convert the response to resource
             Then($@"the response status code should indicate created");
@@ -789,7 +789,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"the response should be an Appointment resource");
         }
 
-        public void bookCustomAppointment(string interactionID, string relativeUrl, String appointment)
+        public void bookAppointment(string interactionID, string relativeUrl, String appointment)
         {
             // Clear down previous requests
             HttpContext.RequestHeaders.Clear();
