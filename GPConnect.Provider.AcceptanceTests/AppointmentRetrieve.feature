@@ -6,7 +6,7 @@ Background:
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
 	Given I am using the default server
-		And I perform a patient search for patient "patient12NoAppointments" and store the first returned resources against key "registerPatient"
+		And I perform a patient search for patient "patient12" and store the first returned resources against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 	When I search for "registerPatient" from the list of patients and make a get request for their appointments

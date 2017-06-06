@@ -98,7 +98,7 @@ Scenario Outline: Book appointment accept header variations
 		 | application/xml+fhir  | XML        |
 
 Scenario: Book appointment prefer header set to representation
-	Given I perform a patient search for patient "CustomAppointment1" and store the first returned resources against key "CustomAppointment1"
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "CustomAppointment1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I set the Prefer header to "return=representation"

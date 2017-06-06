@@ -16,14 +16,15 @@ Scenario Outline: I perform a successful cancel appointment
 		And the cancellation reason in the returned appointment response should be equal to "Double Booked"
 		And the returned appointment resource should contain meta data profile and version id
 	Examples: 
-		| PatientName        |
-		| patient1           |
-		| patient2           |
-		| patient3           |
-		| CustomAppointment1 |
+		| PatientName                 |
+		| patient1                    |
+		| patient2                    |
+		| patient3                    |
+		| patient8                    |
+		| patient9                    |
 
 Scenario Outline: I perform cancel appointment and update an element which is invalid
-	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I find or create an appointment with status Booked for patient "<PatientName>" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 		And I add an extension to "patientApp" with url "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1" code "CLI" and display "Clinical"
@@ -43,11 +44,14 @@ Scenario Outline: I perform cancel appointment and update an element which is in
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		Examples: 
-		| PatientName        |
-		| patient1           |
-		| patient2           |
-		| patient3           |
-		| CustomAppointment1 |           
+		| PatientName |
+		| patient1    |
+		| patient2    |
+		| patient3    |
+		| patient10   |
+		| patient11   |
+		| patient12   |
+	       
 		        	
 Scenario Outline: Cancel appointment sending invalid URL
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
@@ -168,7 +172,7 @@ Scenario Outline: Cancel appointment checking that the format parameter and acce
 		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON   |
 
 Scenario Outline: Cancel appointment check cancellation reason is equal to the request cancellation reason
-	Given I find or create an appointment with status Booked for patient "CustomAppointment1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 	When I cancel the appointment and set the cancel extension to have url "<url>" and reason "<reason>" called "patientApp"
@@ -185,7 +189,7 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 
 
 Scenario Outline: Cancel appointment invalid cancellation extension url
-	Given I find or create an appointment with status Booked for patient "CustomAppointment1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 	When I cancel the appointment and set the cancel extension to have url "<url>" and reason "<reason>" called "patientApp"
@@ -199,7 +203,7 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0      | Too busy | 
 
 Scenario: Cancel appointment invalid cancellation extension reason
-	Given I find or create an appointment with status Booked for patient "CustomAppointment1" at organization "ORG1" and save the appointment resources to "patientApp"
+	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 	When I cancel the appointment and set the cancel extension to have url "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0 " and reason "" called "patientApp"
@@ -300,11 +304,12 @@ Scenario Outline: Cancel appointment prefer header set to representation
 		And if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
 		And the returned appointment resource should contain meta data profile and version id
 		Examples: 
-		| PatientName        |
-		| patient1           |
-		| patient2           |
-		| patient3           |
-		| CustomAppointment1 |
+		| PatientName |
+		| patient1    |
+		| patient2    |
+		| patient3    |
+		| patient8    |
+		| patient9    |
 
 
 Scenario: Cancel appointment prefer header set to minimal
@@ -330,8 +335,10 @@ Scenario Outline: Cancel appointment check the version id of the cancelled resou
 		And the cancellation reason in the returned appointment response should be equal to "Double Booked"
 		And the response version id should be different to the version id stored in "patientApp"
 		Examples: 
-		| PatientName        |
-		| patient1           |
-		| patient2           |
-		| patient3           |
-		| CustomAppointment1 |
+		| PatientName |
+		| patient1    |
+		| patient2    |
+		| patient3    |
+		| patient8    |
+		| patient10   |
+		| patient12   |

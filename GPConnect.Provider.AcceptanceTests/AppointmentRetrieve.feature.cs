@@ -87,8 +87,8 @@ this.FeatureBackground();
 #line 8
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
-  testRunner.And("I perform a patient search for patient \"patient12NoAppointments\" and store the fi" +
-                    "rst returned resources against key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I perform a patient search for patient \"patient12\" and store the first returned r" +
+                    "esources against key \"registerPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11

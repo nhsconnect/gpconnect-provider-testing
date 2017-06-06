@@ -31,7 +31,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I store the schedule for ""(.*)"" called ""(.*)"" and create an appointment called ""(.*)"" for patient ""(.*)"" using the interaction id ""(.*)""")]
-        public void IstoreThescheduleForCalledAndCreateAnAppointmentCalledForPatientUsingTheInteractionId(string ORG1, string getScheduleResponseBundle, string appointment, string patient, string interactionId)
+       public void IstoreThescheduleForCalledAndCreateAnAppointmentCalledForPatientUsingTheInteractionId(string ORG1, string getScheduleResponseBundle, string appointment, string patient, string interactionId)
         {
             Given($@"I perform the getSchedule operation for organization ""{ORG1}"" and store the returned bundle resources against key ""{getScheduleResponseBundle}""");
             Given($@"I am using the default server");

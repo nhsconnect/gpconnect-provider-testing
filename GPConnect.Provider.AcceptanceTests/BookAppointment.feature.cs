@@ -320,8 +320,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 101
- testRunner.Given("I perform a patient search for patient \"CustomAppointment1\" and store the first r" +
-                    "eturned resources against key \"CustomAppointment1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
+                    "sources against key \"CustomAppointment1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 102
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
