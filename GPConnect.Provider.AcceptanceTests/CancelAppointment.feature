@@ -198,19 +198,15 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 		| http://fhir.nhs.net/StructureDefinition/extension-gpINCORRECTect-appointment-cancellation-reason-1-0 | Too busy |
 		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0      | Too busy | 
 
-Scenario Outline: Cancel appointment invalid cancellation extension reason
+Scenario: Cancel appointment invalid cancellation extension reason
 	Given I find or create an appointment with status Booked for patient "CustomAppointment1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-	When I cancel the appointment and set the cancel extension to have url "<url>" and reason "<reason>" called "patientApp"
+	When I cancel the appointment and set the cancel extension to have url "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0 " and reason "" called "patientApp"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "500"
-	Examples: 
-		| url                                                                                             | reason |
-		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0 |        |
 		
-
 Scenario: Conformance profile supports the cancel appointment operation
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction

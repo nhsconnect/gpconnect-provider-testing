@@ -150,7 +150,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the response bundle location entries should contain valid  system code and display if the PhysicalType coding is included in the resource")]
+        [Then(@"the response bundle location entries should contain valid system code and display if the PhysicalType coding is included in the resource")]
         public void ThenTheResponseBundleLocationEntriesShouldContainValidSystemCodeAndDisplayIfThePhysicalTypeCodingIsIncludedInTheResource()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -208,7 +208,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the location resource should contain meta data profile and version id")]
-        public void ThenTheLocationResourceShouldContailMetaDataProfileAndVersionId()
+        public void ThenTheLocationResourceShouldContainMetaDataProfileAndVersionId()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
             location.Meta.VersionId.ShouldNotBeNull();
@@ -302,10 +302,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             }
         }
-
-
-
-
-
     }
 }

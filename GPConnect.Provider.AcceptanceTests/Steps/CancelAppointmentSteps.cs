@@ -304,28 +304,49 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             List <ResourceReference> storedSlotReferences = new List<ResourceReference>();
             List<ResourceReference> returnedSlotReferences = new List<ResourceReference>();
+            List<String> storedSlotDisplay = new List<String>();
+            List<String> returnedSlotDisplay = new List<String>();
 
             foreach (var slotReference in storedAppointment.Slot)
             {
                 storedSlotReferences.Add(slotReference);
+                storedSlotDisplay.Add(slotReference.Display);
+
+
             }
 
             Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
             foreach (var slotReference in returnedAppointment.Slot)
             {
                 returnedSlotReferences.Add(slotReference);
+                returnedSlotDisplay.Add(slotReference.Display);
             }
 
             storedSlotReferences.ShouldNotBeEmpty("The stored appointment contains zero slots which is invalid");
             returnedSlotReferences.ShouldNotBeEmpty("The returned appointment resource contains zero slots which is invalid");
             storedSlotReferences.Sort();
             returnedSlotReferences.Sort();
+            storedSlotDisplay.Sort();
+            returnedSlotDisplay.Sort();
+
             storedSlotReferences.Count.ShouldBe(returnedSlotReferences.Count);
 
             for (int i = 0; i < returnedSlotReferences.Count; i++)
             {
                 storedSlotReferences[i].Reference.Equals(returnedSlotReferences[i].Reference);
+               
             }
+            for (int i = 0; i < returnedSlotDisplay.Count; i++)
+            {
+                if (storedSlotDisplay[i] == null && returnedSlotDisplay[i] == null)
+                {
+                    continue;
+                }
+                    storedSlotDisplay[i].Equals(returnedSlotDisplay[i]); 
+
+            }
+
+          
         }
 
 
