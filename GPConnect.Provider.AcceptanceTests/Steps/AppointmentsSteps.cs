@@ -306,7 +306,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             else
             {
-                BookAppointmentSteps.bookAppointmentNoStatusCheck(interactionID, url, appointment);
+                BookAppointmentSteps.bookCustomAppointment(interactionID, url, FhirSerializer.SerializeToJson(appointment));
             }
         }
 

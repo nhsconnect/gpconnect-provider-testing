@@ -752,14 +752,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void WhenIBookTheAppointmentCalledString(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            bookAppointmentNoStatusCheck("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+            bookCustomAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", FhirSerializer.SerializeToJson(appointment));
         }
 
         [When(@"I book the appointment called ""([^""]*)"" against the URL ""([^""]*)"" with the interactionId ""([^""]*)""")]
         public void WhenIBookTheAppointmentCalledAgainstTheUrlWithTheInteractionId(string appointmentName, string url, string interactionId)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            bookAppointmentNoStatusCheck(interactionId, url, appointment);
+            bookCustomAppointment(interactionId, url, FhirSerializer.SerializeToJson(appointment));
         }
 
         [When(@"I book the appointment called ""([^""]*)"" with an invalid field")]
@@ -775,62 +775,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenIBookTheAppointmentCalledStringWithoutStatusCheck(string appointmentName)
         {
             Resource appointment = HttpContext.StoredFhirResources[appointmentName];
-            bookAppointmentNoStatusCheck("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+            bookCustomAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", FhirSerializer.SerializeToJson(appointment));
         }
 
 
-        public Resource bookAppointment(string interactionID, string relativeUrl, Resource appointment)
+        public void bookAppointment(string interactionID, string relativeUrl, Resource appointment)
         {
-            Resource Resource = bookAppointmentNoStatusCheck(interactionID, relativeUrl, appointment);
+            bookCustomAppointment(interactionID, relativeUrl, FhirSerializer.SerializeToJson(appointment));
 
             // Convert the response to resource
             Then($@"the response status code should indicate created");
             Then($@"the response body should be FHIR JSON");
             And($@"the response should be an Appointment resource");
-
-            return Resource;
         }
 
-        public Resource bookAppointmentNoStatusCheck(string interactionID, string relativeUrl, Resource appointment)
+        public void bookCustomAppointment(string interactionID, string relativeUrl, String appointment)
         {
-            return bookCustomAppointment(interactionID, relativeUrl, FhirSerializer.SerializeToJson(appointment));
-        }
-
-        public Resource bookCustomAppointment(string interactionID, string relativeUrl, String appointment)
-        {
-            // Store current state
-            var preRequestHeaders = HttpContext.RequestHeaders.GetRequestHeaders();
+            // Clear down previous requests
             HttpContext.RequestHeaders.Clear();
-            var preRequestUrl = HttpContext.RequestUrl;
             HttpContext.RequestUrl = "";
-            var preRequestParameters = HttpContext.RequestParameters;
             HttpContext.RequestParameters.ClearParameters();
-            var preRequestMethod = HttpContext.RequestMethod;
-            var preRequestContentType = HttpContext.RequestContentType;
-            var preRequestBody = HttpContext.RequestBody;
             HttpContext.RequestBody = null;
-
-            var preResponseTimeInMilliseconds = HttpContext.ResponseTimeInMilliseconds;
-            var preResponseStatusCode = HttpContext.ResponseStatusCode;
-            var preResponseContentType = HttpContext.ResponseContentType;
-            var preResponseBody = HttpContext.ResponseBody;
-            var preResponseHeaders = HttpContext.ResponseHeaders;
             HttpContext.ResponseHeaders.Clear();
-
-            JObject preResponseJSON = null;
-            try
-            {
-                preResponseJSON = HttpContext.ResponseJSON;
-            }
-            catch (Exception) { }
-            XDocument preResponseXML = null;
-            try
-            {
-                preResponseXML = HttpContext.ResponseXML;
-            }
-            catch (Exception) { }
-
-            var preFhirResponseResource = FhirContext.FhirResponseResource;
 
             // Setup configuration
             Given($@"I am using the default server");
@@ -839,17 +805,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // Book the apppointment
             HttpSteps.RestRequest(Method.POST, relativeUrl, appointment);
-
-            return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
         }
 
-        public Resource bookWithoutCleanUpAppointment(string interactionID, string relativeUrl, Resource appointment)
+        public void bookWithoutCleanUpAppointment(string interactionID, string relativeUrl, Resource appointment)
         {
             FhirSerializer.SerializeToJson(appointment);
             Given($@"I am performing the ""{interactionID}"" interaction");
-            // Book the apppointment
             HttpSteps.RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
-            return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
         }
 
 
