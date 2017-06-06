@@ -1,17 +1,15 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
-using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using RestSharp;
 using Shouldly;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml.Linq;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Appointment;
 using static Hl7.Fhir.Model.Bundle;
@@ -19,7 +17,7 @@ using static Hl7.Fhir.Model.Bundle;
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     [Binding]
-    class BookAppointmentSteps : TechTalk.SpecFlow.Steps
+    public class BookAppointmentSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext FhirContext;
         private readonly HttpSteps HttpSteps;
@@ -327,6 +325,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
+        // Will be changing
         [Then(@"I create an appointment for patient ""(.*)"" called ""(.*)"" using a patient resource")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference2(string patientName, string appointmentName)
         {
@@ -335,6 +334,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, patientResource);
         }
         
+        // Will be changing as it is not clear what it is doing
         [Then(@"I create a new bundle to contain an appointment for patient ""(.*)"" called ""(.*)""")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference3(string patientName, string appointmentName)
         {
@@ -342,6 +342,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, bundle);
         }
         
+        // Aim to remove this
         [Then(@"I create an appointment with slot reference ""(.*)"" for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference(string slotReference, string patientName, string appointmentName, string getScheduleBundleKey)
         {
@@ -747,35 +748,110 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [When(@"I book the appointment called ""(.*)""")]
+        [When(@"I book the appointment called ""([^""]*)""")]
         public void WhenIBookTheAppointmentCalledString(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpSteps.bookAppointmentNoStatusCheck("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+            bookAppointmentNoStatusCheck("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
         }
 
         [When(@"I book the appointment called ""([^""]*)"" against the URL ""([^""]*)"" with the interactionId ""([^""]*)""")]
         public void WhenIBookTheAppointmentCalledAgainstTheUrlWithTheInteractionId(string appointmentName, string url, string interactionId)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpSteps.bookAppointmentNoStatusCheck(interactionId, url, appointment);
+            bookAppointmentNoStatusCheck(interactionId, url, appointment);
         }
 
-        [When(@"I book the appointment called ""(.*)"" with an invalid field")]
+        [When(@"I book the appointment called ""([^""]*)"" with an invalid field")]
         public void ThenIBookTheAppointmentCalledStringWithAnInvalidField(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             string appointmentString = FhirSerializer.SerializeToJson(appointment);
             appointmentString = FhirHelper.AddInvalidFieldToResourceJson(appointmentString);
-            HttpSteps.bookCustomAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointmentString);
+            bookCustomAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointmentString);
         }
 
-        [When(@"I book the appointment called ""(.*)"" without status check")]
+        [When(@"I book the appointment called ""([^""]*)"" without status check")]
         public void ThenIBookTheAppointmentCalledStringWithoutStatusCheck(string appointmentName)
         {
             Resource appointment = HttpContext.StoredFhirResources[appointmentName];
-            HttpSteps.bookAppointmentNoStatusCheck("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
+            bookAppointmentNoStatusCheck("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", appointment);
         }
+
+
+        public Resource bookAppointment(string interactionID, string relativeUrl, Resource appointment)
+        {
+            Resource Resource = bookAppointmentNoStatusCheck(interactionID, relativeUrl, appointment);
+
+            // Convert the response to resource
+            Then($@"the response status code should indicate created");
+            Then($@"the response body should be FHIR JSON");
+            And($@"the response should be an Appointment resource");
+
+            return Resource;
+        }
+
+        public Resource bookAppointmentNoStatusCheck(string interactionID, string relativeUrl, Resource appointment)
+        {
+            return bookCustomAppointment(interactionID, relativeUrl, FhirSerializer.SerializeToJson(appointment));
+        }
+
+        public Resource bookCustomAppointment(string interactionID, string relativeUrl, String appointment)
+        {
+            // Store current state
+            var preRequestHeaders = HttpContext.RequestHeaders.GetRequestHeaders();
+            HttpContext.RequestHeaders.Clear();
+            var preRequestUrl = HttpContext.RequestUrl;
+            HttpContext.RequestUrl = "";
+            var preRequestParameters = HttpContext.RequestParameters;
+            HttpContext.RequestParameters.ClearParameters();
+            var preRequestMethod = HttpContext.RequestMethod;
+            var preRequestContentType = HttpContext.RequestContentType;
+            var preRequestBody = HttpContext.RequestBody;
+            HttpContext.RequestBody = null;
+
+            var preResponseTimeInMilliseconds = HttpContext.ResponseTimeInMilliseconds;
+            var preResponseStatusCode = HttpContext.ResponseStatusCode;
+            var preResponseContentType = HttpContext.ResponseContentType;
+            var preResponseBody = HttpContext.ResponseBody;
+            var preResponseHeaders = HttpContext.ResponseHeaders;
+            HttpContext.ResponseHeaders.Clear();
+
+            JObject preResponseJSON = null;
+            try
+            {
+                preResponseJSON = HttpContext.ResponseJSON;
+            }
+            catch (Exception) { }
+            XDocument preResponseXML = null;
+            try
+            {
+                preResponseXML = HttpContext.ResponseXML;
+            }
+            catch (Exception) { }
+
+            var preFhirResponseResource = FhirContext.FhirResponseResource;
+
+            // Setup configuration
+            Given($@"I am using the default server");
+            And($@"I set the default JWT");
+            And($@"I am performing the ""{interactionID}"" interaction");
+
+            // Book the apppointment
+            HttpSteps.RestRequest(Method.POST, relativeUrl, appointment);
+
+            return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
+        }
+
+        public Resource bookWithoutCleanUpAppointment(string interactionID, string relativeUrl, Resource appointment)
+        {
+            FhirSerializer.SerializeToJson(appointment);
+            Given($@"I am performing the ""{interactionID}"" interaction");
+            // Book the apppointment
+            HttpSteps.RestRequest(Method.POST, relativeUrl, FhirSerializer.SerializeToJson(appointment));
+            return FhirContext.FhirResponseResource; // Store the found resource for use in the calling system
+        }
+
 
         [Then(@"the content-type should not be equal to null")]
         public void ThenTheContentTypeShouldNotBeEqualToZero()

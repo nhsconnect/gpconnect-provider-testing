@@ -25,11 +25,13 @@ Given I perform a patient search for patient "patient1" and store the first retu
 	Then the response status code should indicate failure
 
 Scenario Outline: Book appointment failure due to missing header
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 		And I do not send header "<Header>"
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" without status check
+	When I book the appointment called "Appointment"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
