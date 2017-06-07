@@ -334,111 +334,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, bundle);
         }
         
-        // Aim to remove this
-        [Then(@"I create an appointment with slot reference ""(.*)"" for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
-        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference(string slotReference, string patientName, string appointmentName, string getScheduleBundleKey)
-        {
-            Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
-            Patient patientResource = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
-            Bundle getScheduleResponseBundle = (Bundle)HttpContext.StoredFhirResources[getScheduleBundleKey];
-
-            List<Slot> slotList = new List<Slot>();
-            Dictionary<string, Practitioner> practitionerDictionary = new Dictionary<string, Practitioner>();
-            Dictionary<string, Location> locationDictionary = new Dictionary<string, Location>();
-            Dictionary<string, Schedule> scheduleDictionary = new Dictionary<string, Schedule>();
-            List<Identifier> identifiers = new List<Identifier>();
-
-            // Group together resources
-            foreach (EntryComponent entry in getScheduleResponseBundle.Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    slotList.Add((Slot)entry.Resource);
-                }
-                else if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    if (!practitionerDictionary.ContainsKey(entry.FullUrl))
-                    {
-                        practitionerDictionary.Add(entry.FullUrl, (Practitioner)entry.Resource);
-                    }
-                }
-                else if (entry.Resource.ResourceType.Equals(ResourceType.Location))
-                {
-                    if (!locationDictionary.ContainsKey(entry.FullUrl))
-                    {
-                        locationDictionary.Add(entry.FullUrl, (Location)entry.Resource);
-                    }
-                }
-                else if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
-                {
-                    if (!scheduleDictionary.ContainsKey(entry.FullUrl))
-                    {
-                        scheduleDictionary.Add(entry.FullUrl, (Schedule)entry.Resource);
-                    }
-                }
-            }
-
-            // Select first slot
-            Slot firstSlot = slotList[0];
-
-            string scheduleReference = firstSlot.Schedule.Reference;
-            Schedule schedule = null;
-            scheduleDictionary.TryGetValue(scheduleReference, out schedule);
-
-            string locationReferenceForSelectedSlot = schedule.Actor.Reference;
-
-            List<string> practitionerReferenceForSelectedSlot = new List<string>();
-            foreach (var practitionerReferenceExtension in schedule.Extension)
-            {
-                practitionerReferenceForSelectedSlot.Add(((ResourceReference)practitionerReferenceExtension.Value).Reference);
-            }
-
-            CodeableConcept reason = new CodeableConcept();
-            Coding coding = new Coding();
-            List<Extension> extensionList = new List<Extension>();
-            Extension extension = new Extension();
-            Identifier identifier = new Identifier();
-           
-            AppointmentStatus status = new AppointmentStatus();
-            int priority = new int();
-
-            switch (appointmentName)
-            {
-                case "CustomAppointment1":
-                    //Define category
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "ONL", "Online"));
-                    //Define Identifier
-                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
-                    identifier.Value = "898976578";
-                    identifiers.Add(identifier);
-                    //Define Status
-                    status = AppointmentStatus.Fulfilled;
-                    //Define Reason
-                    coding = buildReasonForAppointment("http://snomed.info/sct", "SBJ", "SBJ");
-                    reason.Coding.Add(coding);
-                    //Define Priority
-                    priority = 1;
-                    //Define participant
-                    break;
-            }
-
-                    // Create Appointment
-                Appointment appointment = buildAndReturnAppointment(patientResource, practitionerReferenceForSelectedSlot, locationReferenceForSelectedSlot, firstSlot, reason, extension, identifiers, status, priority);
-
-            // Now we have used the slot remove from it from the getScheduleBundle so it is not used to book other appointments same getSchedule is used
-            EntryComponent entryToRemove = null;
-            foreach (EntryComponent entry in getScheduleResponseBundle.Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot) && string.Equals(((Slot)entry.Resource).Id, firstSlot.Id))
-                {
-                    entryToRemove = entry;
-                    break;
-                }
-            }
-            getScheduleResponseBundle.Entry.Remove(entryToRemove);
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
-        }
-        
         [Then(@"I add an extra invalid extension to the appointment called ""(.*)"" and populate the value")]
         public void ThenIAddAnExtraInvalidExtensionToTheAppointmentCalledStringAndPopulateTheValue(string appointmentName)
         {
@@ -740,6 +635,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
+        [Given(@"I set the appointment Priority to ""(.*)"" on appointment stored against key ""([^""]*)""")]
+        public void GivenISetTheAppointmentPriorityToOnAppointmentStoredAgainstKey(int priority, string appointmentKey)
+        {
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentKey];
+            appointment.Priority = priority;
+        }
+
         [When(@"I book the appointment called ""([^""]*)""")]
         public void WhenIBookTheAppointmentCalledString(string appointmentName)
         {
@@ -771,147 +673,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I book an appointment for patient ""([^""]*)"" on the provider system using a slot from the getSchedule response bundle stored against key ""([^""]*)"" and store the appointment to ""([^""]*)""")]
-        public void IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentTo(string patientName, string getScheduleBundleKey, string storeAppointmentKey = null)
+        public void IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentTo(string patientName, string getScheduleBundleKey, string storeAppointmentKey)
         {
-            IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentToWithPriority(patientName, getScheduleBundleKey, storeAppointmentKey);
+            IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentToWithPriority(patientName, getScheduleBundleKey, storeAppointmentKey, 1);
         }
 
-        public void IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentToWithPriority(string patientName, string getScheduleBundleKey, string storeAppointmentKey = null, int? priority = null)
+        public void IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentToWithPriority(string patientName, string getScheduleBundleKey, string storeAppointmentKey, int priority)
         {
-            Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
-            Patient patientResource = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
-            Bundle getScheduleResponseBundle = (Bundle)HttpContext.StoredFhirResources[getScheduleBundleKey];
-
-            List<Slot> slotList = new List<Slot>();
-            Dictionary<string, Practitioner> practitionerDictionary = new Dictionary<string, Practitioner>();
-            Dictionary<string, Location> locationDictionary = new Dictionary<string, Location>();
-            Dictionary<string, Schedule> scheduleDictionary = new Dictionary<string, Schedule>();
-
-            // Group together resources
-            foreach (EntryComponent entry in getScheduleResponseBundle.Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    slotList.Add((Slot)entry.Resource);
-                }
-                else if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    if (!practitionerDictionary.ContainsKey(entry.FullUrl))
-                    {
-                        practitionerDictionary.Add(entry.FullUrl, (Practitioner)entry.Resource);
-                    }
-                }
-                else if (entry.Resource.ResourceType.Equals(ResourceType.Location))
-                {
-                    if (!locationDictionary.ContainsKey(entry.FullUrl))
-                    {
-                        locationDictionary.Add(entry.FullUrl, (Location)entry.Resource);
-                    }
-                }
-                else if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
-                {
-                    if (!scheduleDictionary.ContainsKey(entry.FullUrl))
-                    {
-                        scheduleDictionary.Add(entry.FullUrl, (Schedule)entry.Resource);
-                    }
-                }
-            }
-
-            // Select first slot
-            Slot firstSlot = slotList[0];
-
-            string scheduleReference = firstSlot.Schedule.Reference;
-            Schedule schedule = null;
-            scheduleDictionary.TryGetValue(scheduleReference, out schedule);
-
-            string locationReferenceForSelectedSlot = schedule.Actor.Reference;
-
-            List<string> practitionerReferenceForSelectedSlot = new List<string>();
-            foreach (var practitionerReferenceExtension in schedule.Extension)
-            {
-                practitionerReferenceForSelectedSlot.Add(((ResourceReference)practitionerReferenceExtension.Value).Reference);
-            }
-
-            // Create Appointment
-            Appointment appointment = new Appointment();
-            appointment.Status = AppointmentStatus.Booked;
-
-            if (priority != null)
-            {
-                appointment.Priority = priority;
-            }
-
-            // Appointment Patient Resource
-            ParticipantComponent patient = new ParticipantComponent();
-            ResourceReference patientReference = new ResourceReference();
-            patientReference.Reference = "Patient/" + patientResource.Id;
-            patient.Actor = patientReference;
-            patient.Status = ParticipationStatus.Accepted;
-            appointment.Participant.Add(patient);
-
-            // Appointment Practitioner Resource
-            foreach (var practitionerSlotReference in practitionerReferenceForSelectedSlot)
-            {
-                ParticipantComponent practitioner = new ParticipantComponent();
-                ResourceReference practitionerReference = new ResourceReference();
-                practitionerReference.Reference = practitionerSlotReference;
-                practitioner.Actor = practitionerReference;
-                practitioner.Status = ParticipationStatus.Accepted;
-                appointment.Participant.Add(practitioner);
-            }
-
-            // Appointment Location Resource
-            ParticipantComponent location = new ParticipantComponent();
-            ResourceReference locationReference = new ResourceReference();
-            locationReference.Reference = locationReferenceForSelectedSlot;
-            location.Actor = locationReference;
-            location.Status = ParticipationStatus.Accepted;
-            appointment.Participant.Add(location);
-
-            // Appointment Slot Resource
-            ResourceReference slot = new ResourceReference();
-            slot.Reference = "Slot/" + firstSlot.Id;
-            appointment.Slot.Add(slot);
-            appointment.Start = firstSlot.Start;
-            appointment.End = firstSlot.End;
-
-            if (HttpContext.StoredDate.ContainsKey("slotStartDate")) HttpContext.StoredDate.Remove("slotStartDate");
-            HttpContext.StoredDate.Add("slotStartDate", firstSlot.StartElement.ToString());
-
-
-            // Now we have used the slot remove from it from the getScheduleBundle so it is not used to book other appointments same getSchedule is used
-            EntryComponent entryToRemove = null;
-            foreach (EntryComponent entry in getScheduleResponseBundle.Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot) && string.Equals(((Slot)entry.Resource).Id, firstSlot.Id))
-                {
-                    entryToRemove = entry;
-                    break;
-                }
-            }
-            getScheduleResponseBundle.Entry.Remove(entryToRemove);
-
-            //Book the appointment
+            Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""StoredPatientKey""");
             Given($@"I am using the default server");
-            And($@"I set the default JWT");
-            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"" interaction");
-            bookAppointment("urn:nhs:names:services:gpconnect:fhir:rest:create:appointment", "/Appointment", FhirSerializer.SerializeToJson(appointment));
-
-            // Convert the response to resource
+            And($@"I set the JWT requested record NHS number to the NHS number of patient stored against key ""StoredPatientKey""");
+		    And($@"I set the JWT requested scope to ""patient/*.write""");
+		    And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"" interaction");
+            Given($@"I create an appointment for patient ""StoredPatientKey"" called ""Appointment"" from schedule ""{getScheduleBundleKey}""");
+            Given($@"I set the appointment Priority to ""{priority}"" on appointment stored against key ""Appointment""");
+            When($@"I book the appointment called ""Appointment""");
             Then($@"the response status code should indicate created");
             Then($@"the response body should be FHIR JSON");
             And($@"the response should be an Appointment resource");
-
-            var createdAppointmentResource = FhirContext.FhirResponseResource;
-
-            if (storeAppointmentKey != null)
+            if (HttpContext.StoredFhirResources.ContainsKey(storeAppointmentKey))
             {
-                if (HttpContext.StoredFhirResources.ContainsKey(storeAppointmentKey))
-                {
-                    HttpContext.StoredFhirResources.Remove(storeAppointmentKey);
-                }
-                HttpContext.StoredFhirResources.Add(storeAppointmentKey, createdAppointmentResource);
+                HttpContext.StoredFhirResources.Remove(storeAppointmentKey);
             }
+            HttpContext.StoredFhirResources.Add(storeAppointmentKey, FhirContext.FhirResponseResource);
         }
 
         public void bookAppointment(string interactionID, string relativeUrl, String appointment)
