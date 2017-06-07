@@ -2,14 +2,12 @@
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using RestSharp;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Appointment;
 using static Hl7.Fhir.Model.Bundle;
@@ -36,7 +34,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
         
         [Given(@"I create an appointment for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
-        public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointment(string patientKey, string appointmentName, string getScheduleBundleKey)
+        public void GivenICreateAnAppointmentForPatientCalledFromSchedule(string patientKey, string appointmentName, string getScheduleBundleKey)
         {
             Patient patientResource = (Patient)HttpContext.StoredFhirResources[patientKey];
             Bundle getScheduleResponseBundle = (Bundle)HttpContext.StoredFhirResources[getScheduleBundleKey];
@@ -103,7 +101,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             switch (appointmentName)
             {
-                case "patient8":
+                case "Appointment1":
                     //Define category
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "ONL", "Online"));
                     //Define Identifier
@@ -118,7 +116,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     //Define participant
                     break;
 
-                case "patient9":
+                case "Appointment2":
                     //Define category
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "ONL", "Online"));
                     //Define Identifier
@@ -133,22 +131,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     //Define participant
                     break;
 
-                case "patient10":
+                case "Appointment3":
                     //Define category
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "CLI", "Clinical"));
                     //Define Identifier
                     identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
                     identifier.Value = "898976580";
                     identifiers.Add(identifier);
-                    //Define Reason
-                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
-                    reason.Coding.Add(coding);
-                    //Define Priority
-                    priority = 9;
-                    //Define participant
                     break;
 
-                case "patient11":
+                case "Appointment4":
                     //Define category
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", "", "Double booked"));
                     //Define Identifier
@@ -167,7 +159,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                      //Define participant
                     break;
 
-                case "patient12":
+                case "Appointment5":
                     //Define category
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "PER", "In person"));
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "ADM", "Administrative"));
@@ -189,7 +181,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     //Define participant
                     break;
 
-                case "patient13":
+                case "Appointment6":
                     //Define category
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "TEL", "Telephone"));
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "VIR", "Virtual"));
@@ -212,7 +204,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     break;
 
-                case "patient14":
+                case "Appointment7":
                     //Define category
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "EMA", "Email"));
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "REM", "Reminder"));
@@ -235,7 +227,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     break;
 
-                case "patient15":
+                case "Appointment8":
                     //Define category
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "LET", "Letter"));
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "MSG", "Message"));
@@ -258,7 +250,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     break;
 
-                case "patient16":
+                case "Appointment9":
                     //Define category
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "TEX", "Text"));
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "ADM", "Administrative"));
@@ -281,7 +273,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     break;
 
-                case "patient17":
+                case "Appointment10":
                     //Define category
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "PER", "In person"));
                     extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "CLI", "Clinical"));
