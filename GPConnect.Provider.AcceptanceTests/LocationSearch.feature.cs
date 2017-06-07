@@ -266,9 +266,9 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Location search failure due to invalid identifier name")]
-        [NUnit.Framework.TestCaseAttribute("IDENTIFIER", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("identiffer", new string[0])]
-        public virtual void LocationSearchFailureDueToInvalidIdentifierName(string identifier, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("IDENTIFIER", "http://fhir.nhs.net/Id/ods-site-code|SIT1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("identiffer", "http://fhir.nhs.net/Id/ods-site-code|SIT1", new string[0])]
+        public virtual void LocationSearchFailureDueToInvalidIdentifierName(string identifier, string parameterValue, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search failure due to invalid identifier name", exampleTags);
 #line 78
@@ -281,8 +281,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 81
-  testRunner.And(string.Format("I add the parameter \"{0}\" with the value \"http://fhir.nhs.net/Id/ods-site-code|SI" +
-                        "T1\"", identifier), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add the parameter \"{0}\" with the value or sitecode \"{1}\"", identifier, parameterValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 83
@@ -680,7 +679,7 @@ this.FeatureBackground();
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 243
-  testRunner.And("I add the parameter \"ticktock\" with the value \"boom\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"additionalParam\" with the value \"invalidParameter\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 244
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 245

@@ -78,15 +78,15 @@ Scenario: Location search failure missing identifier
 Scenario Outline: Location search failure due to invalid identifier name
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the parameter "<Identifier>" with the value "http://fhir.nhs.net/Id/ods-site-code|SIT1"
+		And I add the parameter "<Identifier>" with the value or sitecode "<ParameterValue>"
 	When I make a GET request to "/Location"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		Examples:
-		| Identifier |
-		| IDENTIFIER |
-		| identiffer |
+		| Identifier | ParameterValue                             |
+		| IDENTIFIER | http://fhir.nhs.net/Id/ods-site-code\|SIT1 |
+		| identiffer | http://fhir.nhs.net/Id/ods-site-code\|SIT1 |
 
 Scenario Outline: Location search parameter order test
 	Given I am using the default server
@@ -240,7 +240,7 @@ Scenario: Location search send invalid parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
 		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
-		And I add the parameter "ticktock" with the value "boom"
+		And I add the parameter "additionalParam" with the value "invalidParameter"
 	When I make a GET request to "/Location"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
