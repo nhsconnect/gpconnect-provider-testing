@@ -90,10 +90,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             //Elements of the appointment
             CodeableConcept reason = null;
-            Coding coding = null;
             List<Extension> extensionList = null;
-            Extension extension = null;
-            Identifier identifier = null;
             List<Identifier> identifiers = null;
             AppointmentStatus status = AppointmentStatus.Booked;
             int? priority = null;
@@ -102,133 +99,42 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 case "Appointment1":
                     extensionList = new List<Extension>();
-                    extension = new Extension();
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "ONL", "Online"));
-                    identifier = new Identifier();
-                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
-                    identifier.Value = "898976578";
-                    identifiers = new List<Identifier>();
-                    identifiers.Add(identifier);
-                    coding = new Coding();
-                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
-                    reason = new CodeableConcept();
-                    reason.Coding.Add(coding);
-                    priority = 1;
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "CLI", "Clinical"));
                     break;
 
                 case "Appointment2":
                     extensionList = new List<Extension>();
-                    extension = new Extension();
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "ONL", "Online"));
-                    priority = 0;
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "ONL", "Online"));
                     break;
 
                 case "Appointment3":
                     extensionList = new List<Extension>();
-                    extension = new Extension();
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "CLI", "Clinical"));
-                    identifier = new Identifier();
-                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
-                    identifier.Value = "898976580";
-                    identifiers = new List<Identifier>();
-                    identifiers.Add(identifier);
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "ONL", "Online"));
                     break;
 
                 case "Appointment4":
                     extensionList = new List<Extension>();
-                    extension = new Extension();
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", "", "Double booked"));
-                    identifier = new Identifier();
-                    identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
-                    identifier.Value = "898976581";
-                    identifiers = new List<Identifier>();
-                    identifiers.Add(identifier);
-                    reason = new CodeableConcept();
-                    coding = new Coding();
-                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
-                    reason.Coding.Add(coding);
-                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
-                    reason.Coding.Add(coding);
-                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
-                    reason.Coding.Add(coding);
-                    priority = 9;
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "ADM", "Administrative"));
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "TEL", "Telephone"));
                     break;
 
                 case "Appointment5":
                     extensionList = new List<Extension>();
-                    extension = new Extension();
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "PER", "In person"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "ADM", "Administrative"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "ONL", "Online"));
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "PER", "In person"));
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "MSG", "Message"));
                     break;
 
                 case "Appointment6":
                     extensionList = new List<Extension>();
-                    extension = new Extension();
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "TEL", "Telephone"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "VIR", "Virtual"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "PER", "In person"));
-                    priority = 3;
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "LET", "Letter"));
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "EMA", "Email"));
                     break;
 
                 case "Appointment7":
                     extensionList = new List<Extension>();
-                    extension = new Extension();
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "EMA", "Email"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "REM", "Reminder"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "TEL", "Telephone"));
-                    priority = 4;
-                    break;
-
-                case "Appointment8":
-                    extensionList = new List<Extension>();
-                    extension = new Extension();
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "LET", "Letter"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "MSG", "Message"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "EMA", "Email"));
-                    reason = new CodeableConcept();
-                    coding = new Coding();
-                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
-                    reason.Coding.Add(coding);
-                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
-                    reason.Coding.Add(coding);
-                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
-                    reason.Coding.Add(coding);
-                    priority = 5;
-                    break;
-
-                case "Appointment9":
-                    extensionList = new List<Extension>();
-                    extension = new Extension();
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "TEX", "Text"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "ADM", "Administrative"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "LET", "Letter"));
-                    priority = 6;
-                    break;
-
-                case "Appointment10":
-                    extensionList = new List<Extension>();
-                    extension = new Extension();
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "PER", "In person"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "CLI", "Clinical"));
-                    extensionList.Add(buildAppointmentCategoryExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "PER", "In person"));
-                    identifiers = new List<Identifier>();
-                    for (int i = 0; i < 3; i++)
-                    {
-                        identifier = new Identifier();
-                        identifier.System = "http://fhir.nhs.net/Id/gpconnect-appointment-identifier";
-                        identifier.Value = "89897652"+i;
-                        identifiers.Add(identifier);
-                    }
-                    reason = new CodeableConcept();
-                    coding = new Coding();
-                    coding = buildReasonForAppointment("http://snomed.info/sct", "", "");
-                    reason.Coding.Add(coding);
-                    coding = buildReasonForAppointment("http://read.info/readv2", "", "");
-                    reason.Coding.Add(coding);
-                    coding = buildReasonForAppointment("http://read.info/ctv3", "", "");
-                    reason.Coding.Add(coding);
-                    priority = 7;
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "TEX", "Text"));
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "VIR", "Virtual"));
+                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "LET", "Letter"));
                     break;
             }
 
@@ -313,46 +219,41 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, bundle);
         }
         
-        [Then(@"I add an extra invalid extension to the appointment called ""(.*)"" and populate the value")]
-        public void ThenIAddAnExtraInvalidExtensionToTheAppointmentCalledStringAndPopulateTheValue(string appointmentName)
+        [Given(@"I add an extra invalid extension to the appointment called ""([^""]*)"" only populating the value")]
+        public void GivenIAddAnExtraInvalidExtensionToTheAppointmentCalledOnlyPopulatingTheValue(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
-
             Extension ext = new Extension();
-            Code code = new Code();
-            code.Value = "INVALID VALUE";
-            ext.Value = code;
+            CodeableConcept codableConcept = new CodeableConcept();
+            Coding coding = new Coding();
+            coding.Code = "TEL";
+            codableConcept.Coding.Add(coding);
+            ext.Value = codableConcept;
             appointment.Extension.Add(ext);
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I add an extra invalid extension to the appointment called ""(.*)"" and populate the system")]
-        public void ThenIAddAnExtraInvalidExtensionToTheAppointmentCalledStringAndPopulateTheSystem (String appointmentName)
+        [Given(@"I add an extra invalid extension to the appointment called ""([^""]*)"" only populating the url")]
+        public void GivenIAddAnExtraInvalidExtensionToTheAppointmentCalledOnlyPopulatingTheUrl (String appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
-
             Extension ext = new Extension();
-            ext.Url = "RANDOM EXTENSION USED FOR TESTING";
+            ext.Url = "RandomExtensionUsedForTesting";
             appointment.Extension.Add(ext);
-
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
         
-        [Then(@"I add an extra invalid extension to the appointment called ""(.*)"" and populate the system and value")]
-        public void ThenIAddAnExtraInvalidExtensionToTheAppointmentCalledStringAndPopulateTheSystemAndValue(string appointmentName)
+        [Given(@"I add an extra invalid extension to the appointment called ""([^""]*)"" containing the url code and display")]
+        public void GivenIAddAnExtraInvalidExtensionToTheAppointmentCalledContainingTheUrlCodeAndDisplay(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
             Extension ext = new Extension();
-            Code code = new Code();
-            code.Value = "INVALID VALUE";
-            ext.Url = "RANDOM EXTENSION USED FOR TESTING";
-            ext.Value = code;
+            CodeableConcept codableConcept = new CodeableConcept();
+            Coding coding = new Coding();
+            coding.Code = "TEL";
+            coding.Display = "Telephone";
+            codableConcept.Coding.Add(coding);
+            ext.Url = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-notanextension-1";
+            ext.Value = codableConcept;
             appointment.Extension.Add(ext);
-
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
         [Given(@"I change the appointment id to ""(.*)"" to the appointment called ""(.*)""")]
@@ -591,30 +492,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I remove the participant from the appointment called ""(.*)"" which starts with reference ""(.*)""")]
-        public void ThenIRemoveTheParticipantFromTheAppointmentCalledWhichStartsWithReference(string appointmentName, string reference)
+        [Given(@"I remove the participant from the appointment called ""(.*)"" which starts with reference ""(.*)""")]
+        public void GivenIRemoveTheParticipantFromTheAppointmentCalledWhichStartsWithReference(string appointmentName, string referenceContainsValue)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
-
-            List<ParticipantComponent> componentList = new List<ParticipantComponent>();
+            List<ParticipantComponent> participantsToRemove = new List<ParticipantComponent>();
 
             foreach (ParticipantComponent participant in appointment.Participant)
             {
-                componentList.Add(participant);
-            }
-            for (int i = 0; i < componentList.Count; i++)
-            {
-                if (componentList[i].Actor.Reference.Contains(reference))
+                if (participant.Actor.Reference.Contains(referenceContainsValue))
                 {
-                    appointment.Participant.RemoveAt(i);
+                    participantsToRemove.Add(participant);
                 }
             }
-
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+            foreach (ParticipantComponent participant in participantsToRemove)
+            {
+                appointment.Participant.Remove(participant);
+            }
         }
 
-        [Given(@"I set the appointment Priority to ""(.*)"" on appointment stored against key ""([^""]*)""")]
+        [Given(@"I set the appointment Priority to ""([^""]*)"" on appointment stored against key ""([^""]*)""")]
         public void GivenISetTheAppointmentPriorityToOnAppointmentStoredAgainstKey(int priority, string appointmentKey)
         {
             ((Appointment)HttpContext.StoredFhirResources[appointmentKey]).Priority = priority;
@@ -919,15 +816,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             return codingSnomedCT;
         }
 
-        private Extension buildAppointmentCategoryExtension(Extension extension, string url, string code, string display)
+        private Extension buildAppointmentCategoryExtension(string url, string code, string display)
         {
+            Extension extension = new Extension();
             extension.Url = url;
-            CodeableConcept value = new CodeableConcept();
+            CodeableConcept codeableConcept = new CodeableConcept();
             Coding coding = new Coding();
             coding.Code = code;
             coding.Display = display;
-            value.Coding.Add(coding);
-            extension.Value = value;
+            codeableConcept.Coding.Add(coding);
+            extension.Value = codeableConcept;
             return extension;
         }
     }

@@ -226,15 +226,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheReturnedAppointmentResourceShouldContainMetaDataProfileAndVersionId()
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            appointment.Meta.ShouldNotBeNull();
+            appointment.Meta.ShouldNotBeNull("Returned resource should contain a meta data element.");
             int metaProfileCount = 0;
             foreach (string profile in appointment.Meta.Profile)
             {
                 metaProfileCount++;
-                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-appointment-1");
+                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-appointment-1", "The Meta data elemenet profile is not correct for the resource.");
             }
-            metaProfileCount.ShouldBe(1);
-            appointment.Meta.VersionId.ShouldNotBeNull();
+            metaProfileCount.ShouldBe(1, "The returned resource meta data element should contain only one profile element");
+            appointment.Meta.VersionId.ShouldNotBeNull("The returned resource meta data element should contain a versionId element");
         }
 
         [Then(@"the appointment response resource contains atleast 2 participants a practitioner and a patient")]

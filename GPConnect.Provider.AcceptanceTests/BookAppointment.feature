@@ -168,14 +168,18 @@ Scenario Outline: Book appointment with invalid interaction id
        | null                                                              |
                                                   
 Scenario: Book Appointment and check response returns the correct values
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
+	When I book the appointment called "Appointment"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And the returned appointment resource shall contains an id
+		And the returned resource shall contains a logical id
 		And the appointment resource should contain a status element
 		And the appointment resource should contain a single start element
 		And the appointment resource should contain a single end element
@@ -183,32 +187,44 @@ Scenario: Book Appointment and check response returns the correct values
 		And the appointment resource should contain at least one slot reference
 		And if the appointment resource contains a priority the value is valid
   
-Scenario: Book Appointment and check response returns the relevent structured definition
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
+Scenario: Book Appointment and check returned appointment resource contains meta data
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
+	When I book the appointment called "Appointment"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the returned appointment resource should contain meta data profile and version id
 
 Scenario: Book Appointment and appointment participant is valid
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
+	When I book the appointment called "Appointment"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the appointment response resource contains atleast 2 participants a practitioner and a patient
 		And the returned appointment participants must contain a type or actor element
 
-Scenario: Book Appointment and check extension methods are valid
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
+Scenario Outline: Book Appointment and check extensions are valid
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I create an appointment for patient "storedPatient1" called "<AppointmentName>" from schedule "getScheduleResponseBundle"
+	When I book the appointment called "<AppointmentName>"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
@@ -216,14 +232,26 @@ Scenario: Book Appointment and check extension methods are valid
 		And if the returned appointment booking element is present it is populated with the correct values
 		And if the returned appointment contact element is present it is populated with the correct values
 		And if the returned appointment cancellation reason element is present it is populated with the correct values
+	Examples: 
+	| AppointmentName |
+	| Appointment     |
+	| Appointment1    |
+	| Appointment2    |
+	| Appointment3    |
+	| Appointment4    |
+	| Appointment5    |
+	| Appointment6    |
+	| Appointment7    |
 
-Scenario: Book Appointment and remove location from the appointment booking
+Scenario: Book Appointment without location participant
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
-	Then I remove the participant from the appointment called "Appointment" which starts with reference "Location"
+		And I remove the participant from the appointment called "Appointment" which starts with reference "Location"
 	When I book the appointment called "Appointment"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
@@ -233,67 +261,85 @@ Scenario Outline: Book Appointment and remove manadatory resources from the appo
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-		And I create an appointment for patient "storedPatient1" called "<Appointment>" from schedule "getScheduleResponseBundle"
-	Then I remove the participant from the appointment called "<Appointment>" which starts with reference "<participant>"
-	When I book the appointment called "<Appointment>"
+		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
+		And I remove the participant from the appointment called "Appointment" which starts with reference "<ParticipantToRemove>"
+	When I book the appointment called "Appointment"
 	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response body should be FHIR JSON
 		And the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| Appointment  | participant  |
-		| Appointment1 | Patient      |
-		| Appointment3 | Practitioner |
+		| ParticipantToRemove |
+		| Patient             |
+		| Practitioner        |
 
 Scenario: Book Appointment and remove all participants
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
-	Then I remove the participant from the appointment called "Appointment" which starts with reference "Patient"
-	Then I remove the participant from the appointment called "Appointment" which starts with reference "Location"
-	Then I remove the participant from the appointment called "Appointment" which starts with reference "Practitioner"
+		And I remove the participant from the appointment called "Appointment" which starts with reference "Patient"
+		And I remove the participant from the appointment called "Appointment" which starts with reference "Practitioner"
+		And I remove the participant from the appointment called "Appointment" which starts with reference "Location"
 	When I book the appointment called "Appointment"
 	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response body should be FHIR JSON
 		And the response status code should be "400"
-    
-Scenario: Book single appointment for patient and send additional extension with value populated
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
-	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
-	Then I add an extra invalid extension to the appointment called "Appointment" and populate the value
-	When I book the appointment called "Appointment"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Book single appointment for patient and send additional extensions with system populated
+Scenario: Book appointment containing additional extension with only value populated
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
-	Then I add an extra invalid extension to the appointment called "Appointment" and populate the system
+		And I add an extra invalid extension to the appointment called "Appointment" only populating the value
 	When I book the appointment called "Appointment"
-	Then the response status code should be "400"
+	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
+		And the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Book single appointment for patient and send additional extensions with system and value populated
+Scenario: Book appointment containing additional extensions with only the system populated
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
-	Then I add an extra invalid extension to the appointment called "Appointment" and populate the system and value
+		And I add an extra invalid extension to the appointment called "Appointment" only populating the url
 	When I book the appointment called "Appointment"
-	Then the response status code should be "400"
+	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
+		And the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Book single appointment for patient and send additional extensions with url and value populated
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I create an appointment for patient "storedPatient1" called "Appointment2" from schedule "getScheduleResponseBundle"
+		And I add an extra invalid extension to the appointment called "Appointment2" containing the url code and display
+	When I book the appointment called "Appointment2"
+	Then the response status code should indicate failure
+		And the response body should be FHIR JSON
+		And the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+
+## Stop updating today here
 
 Scenario: Book single appointment for patient with random id
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
@@ -491,3 +537,8 @@ Scenario: Multi slot booking
 	# Non adjacent slot failure
 	# Slots from different schedules that are adjacent failure
 	# Slots from different schedules which are not adjacent failure
+
+@ignore
+@Manual
+Scenario: Extension supported
+	# Is the data represented by the extensions such as booking method supported by the provider system? If so are the details saved when sent in and returned when resource is returned.
