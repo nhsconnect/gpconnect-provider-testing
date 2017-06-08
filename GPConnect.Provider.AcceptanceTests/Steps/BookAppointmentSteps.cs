@@ -799,13 +799,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
             Location location = (Location)FhirContext.FhirResponseResource;
+
+            location.Identifier.Count.ShouldBeLessThanOrEqualTo(2, "Too many location identifiers.");
+
+            var odsSystemCount = 0;
+
             foreach (Identifier identifier in location.Identifier)
             {
-                identifier.System.ShouldNotBeNull();
-                identifier.Value.ShouldNotBeNull();
+                if ("http://fhir.nhs.net/Id/ods-site-code".Equals(identifier.System))
+                {
+                    identifier.Value.ShouldNotBeNullOrEmpty();
+                    odsSystemCount++;
+                }
             }
+
+            odsSystemCount.ShouldBeLessThanOrEqualTo(1, "Too many ods-site-code systems.");
         }
-        
+
         [Then(@"if the returned appointment category element is present it is populated with the correct values")]
         public void ThenIfTheReturnedAppointmentCategoryElementIsPresentItIsPopulatedWithTheCorrectValues()
         {

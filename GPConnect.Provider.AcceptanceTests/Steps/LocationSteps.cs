@@ -6,13 +6,13 @@ using RestSharp;
 using Shouldly;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
+using System.Collections.Generic;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     [Binding]
     class LocationSteps : TechTalk.SpecFlow.Steps
     {
-
         private readonly FhirContext FhirContext;
         private readonly HttpContext HttpContext;
         private readonly HttpSteps HttpSteps;
@@ -51,37 +51,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             HttpContext.StoredFhirResources.Add(savedOrg, location);
         }
-        [When(@"I get location ""(.*)"" and use the id to make a get request to the invalid url ""(.*)""")]
-        public void WhenIGetLocationAndUseTheIdToMakeAGetRequestToTheURL(string location1, string invalidURL)
-        {
-            string URL = invalidURL + "1";
-            When($@"I make a GET request to ""{URL}""");
-        }
-
 
         [When(@"I get location ""(.*)"" and use the id to make a get request to the url ""(.*)""")]
         public void WhenIGetLocationAndUseTheIdToMakeAGetRequestToTheUrl(string locationName, string URL)
         {
             Location locationValue = (Location)HttpContext.StoredFhirResources[locationName];
-            string fullUrl = "";
+            string fullUrl = locationValue.Id == null
+                ? $"/{URL}/"
+                : $"/{URL}/{locationValue.Id.ToString()}";
 
-            if (locationValue.Id == null)
-            {
-                fullUrl = "/" + URL + "/" + null;
-                When($@"I make a GET request to ""{fullUrl}""");
-            }
-            else
-            {
-                string id = locationValue.Id.ToString();
-                fullUrl = "/" + URL + "/" + id;
-                When($@"I make a GET request to ""{fullUrl}""");
-            }
+            When($@"I make a GET request to ""{fullUrl}""");
         }
 
-        [When(@"I make a GET request for a location using an invalid id of ""(.*)""")]
-        public void WhenIMakeAGetRequestForALocationUsingAnInvalidIdOf(string invalidId)
+        [When(@"I make a GET request for a location with id ""(.*)""")]
+        public void WhenIMakeAGetRequestForALocationWithId(string id)
         {
-            string URL = "/Location/" + invalidId;
+            string URL = "/Location/" + id;
             When($@"I make a GET request to ""{URL}""");
         }
 
@@ -144,7 +129,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             coding.Code.ShouldNotBeNullOrEmpty();
                             coding.Display.ShouldNotBeNullOrEmpty();
                         }
-
                     }
                 }
             }
@@ -219,47 +203,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
             }
         }
-
-        [Then(@"the response Location entry should contain a maximum of one ODS Site Code and one other identifier")]
-        public void ThenTheResponseLocationEntryShouldContainAMaximumOfOneODSSiteCodeAndOneOtherIdentifier()
-        {
-
-            Location location = (Location)FhirContext.FhirResponseResource;
-            int odsSiteCodeIdentifierCount = 0;
-            foreach (var identifier in location.Identifier)
-            {
-                if (string.Equals(identifier.System, "http://fhir.nhs.net/Id/ods-site-code"))
-                {
-                    odsSiteCodeIdentifierCount++;
-                }
-            }
-            odsSiteCodeIdentifierCount.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one ODS Site Code within the Location resource.");
-            location.Identifier.Count.ShouldBeLessThanOrEqualTo(2, "There should be no more than one ODS Site Code and One other identifier, there is more than 2 identifiers in the Location resource.");
-        }
-
+        
         [Then(@"the response Location entry should contain a name element")]
         public void ThenTheResponseLocationEntryShouldContainANameElement()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
             location.Name.ShouldNotBeNullOrEmpty();
         }
-
-
+        
         [Then(@"the location response should contain valid system code and display if the PhysicalType coding is included in the resource")]
         public void ThenTheLocationResponseShouldContainValidSystemCodeAndDisplayIfThePhysicalTypecodingIsIncludedInTheResource()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
             if (location.PhysicalType != null && location.PhysicalType.Coding != null)
             {
-                location.PhysicalType.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                var validSystems = new List<string>() { "http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3" };
+                
                 foreach (var coding in location.PhysicalType.Coding)
                 {
-                    var validSystems = new String[] { "http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3" };
-                    coding.System.ShouldBeOneOf(validSystems);
+                    validSystems.Remove(coding.System).ShouldBeTrue($"Invalid or duplicate system: {coding.System}");
                     coding.Code.ShouldNotBeNullOrEmpty();
                     coding.Display.ShouldNotBeNullOrEmpty();
                 }
-
             }
         }
 
@@ -289,17 +254,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenIfTheLocationResponseContainsATypeElementItIsValid()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
+
             if (location.Type != null && location.Type.Coding != null)
             {
                 location.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
                 foreach (var coding in location.Type.Coding)
                 {
-                    // Need to pull in valueset from URL and validate against that
                     coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType");
                     coding.Code.ShouldNotBeNullOrEmpty();
                     coding.Display.ShouldNotBeNullOrEmpty();
                 }
-
             }
         }
     }

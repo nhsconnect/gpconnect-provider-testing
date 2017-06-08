@@ -3,7 +3,7 @@
 Background:
 	Given I have the test ods codes
 
-	@ignore
+@ignore
 Scenario: if location contains status elements
 # There is no need to check that the location resource status element value sets are correct if included as this is done by the parse of the response within scenario above.
 # The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
@@ -30,35 +30,33 @@ Scenario Outline: Location read successful request
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the response should be a valid Location resource
+		And the response should be a Location resource
 	Examples: 
 		| Location |
 		| SIT1     |
 		| SIT2     |
 		| SIT3     |
 
-Scenario Outline: Location read invalid request invalid id
+Scenario Outline: Location read invalid id
 	Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
-	When I make a GET request for a location using an invalid id of "<InvalidId>"
+	When I make a GET request for a location with id "<InvalidId>"
 	Then the response status code should be "404"
 	Examples: 
-		| InvalidId |
-		| 1@        |
-		| 9i        |
-		| 40-88     |
-		|           |
-		| null      |
+		| InvalidId         |
+		| thisIsAnInv@lidId |
+		|                   |
+		| null              |
 
 Scenario Outline: Location read invalid request URL
-	Given I get location "SIT1" id and save it as "Location1"
+	Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
-	When I get location "location1" and use the id to make a get request to the invalid url "<InvalidURL>"
-	Then the response status code should be "400"
-		Examples: 
-		| InvalidURL |
+	When I get location "location1" and use the id to make a get request to the url "<InvalidURL>"
+	Then the response status code should be "404"
+	Examples: 
+		| InvalidURL  |
 		| Locationss/ |
 		| Location!/  |
 		| Location2/  |
@@ -72,7 +70,7 @@ Scenario Outline: Location read failure due to missing header
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		Examples:
+	Examples:
 		| Header            |
 		| Ssp-TraceID       |
 		| Ssp-From          |
@@ -88,13 +86,13 @@ Scenario Outline: Location read failure with incorrect interaction id
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		Examples:
-		  | interactionId                                                     |
-		  | urn:nhs:names:services:gpconnect:fhir:rest:read:location3         |
-		  | urn:nhs:names:services:gpconnect:fhir:rest:read:locations         |
-		  | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		  |                                                                   |
-		  | null                                                              |
+	Examples:
+		| interactionId                                                     |
+		| urn:nhs:names:services:gpconnect:fhir:rest:read:location3         |
+		| urn:nhs:names:services:gpconnect:fhir:rest:read:locations         |
+		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		|                                                                   |
+		| null                                                              |
 
 Scenario Outline: Location read _format parameter only
 	Given I get location "SIT1" id and save it as "location1"
@@ -104,8 +102,8 @@ Scenario Outline: Location read _format parameter only
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
-		And the response should be a valid Location resource
-		Examples:
+		And the response should be a Location resource
+	Examples:
         | Parameter             | BodyFormat |
         | application/json+fhir | JSON       |
         | application/xml+fhir  | XML        |
@@ -118,8 +116,8 @@ Scenario Outline: Location read accept header
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
-		And the response should be a valid Location resource
-		Examples:
+		And the response should be a Location resource
+	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
@@ -133,8 +131,8 @@ Scenario Outline: Location read accept header and _format
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
-		And the response should be a valid Location resource
-		  Examples:
+		And the response should be a Location resource
+	Examples:
         | Header                | Parameter             | BodyFormat |
         | application/json+fhir | application/json+fhir | JSON       |
         | application/json+fhir | application/xml+fhir  | XML        |
@@ -156,19 +154,18 @@ Scenario: Location read check meta data profile and version id
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the response should be a valid Location resource
+		And the response should be a Location resource
 		And the location resource should contain meta data profile and version id
 
-Scenario: Location read location contains identifier it is valid
+Scenario: Location read contains valid identifiers
 Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the response should be a valid Location resource
+		And the response should be a Location resource
 		And if the location response resource contains an identifier it is valid
-		And the response Location entry should contain a maximum of one ODS Site Code and one other identifier
 
 Scenario: Location read location contains valid name element
 	Given I get location "SIT1" id and save it as "location1"
@@ -177,17 +174,17 @@ Scenario: Location read location contains valid name element
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the response should be a valid Location resource
+		And the response should be a Location resource
 		And the response Location entry should contain a name element
 
-Scenario: Location read returned resorce conforms to gp location specification
+Scenario: Location read resource conforms to GP-Connect specification
 Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the response should be a valid Location resource
+		And the response should be a Location resource
 		And the location response should contain valid system code and display if the PhysicalType coding is included in the resource
 		And if the location response contains a managing organization it contains a valid reference
 		And if the location response contains a partOf element its reference is valid

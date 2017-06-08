@@ -158,21 +158,19 @@ this.FeatureBackground();
 #line 32
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
-  testRunner.And("the response should be a valid Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Location read invalid request invalid id")]
-        [NUnit.Framework.TestCaseAttribute("1@", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("9i", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("40-88", new string[0])]
+        [NUnit.Framework.DescriptionAttribute("Location read invalid id")]
+        [NUnit.Framework.TestCaseAttribute("thisIsAnInv@lidId", new string[0])]
         [NUnit.Framework.TestCaseAttribute("", new string[0])]
         [NUnit.Framework.TestCaseAttribute("null", new string[0])]
-        public virtual void LocationReadInvalidRequestInvalidId(string invalidId, string[] exampleTags)
+        public virtual void LocationReadInvalidId(string invalidId, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read invalid request invalid id", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read invalid id", exampleTags);
 #line 40
 this.ScenarioSetup(scenarioInfo);
 #line 3
@@ -185,7 +183,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
- testRunner.When(string.Format("I make a GET request for a location using an invalid id of \"{0}\"", invalidId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I make a GET request for a location with id \"{0}\"", invalidId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 45
  testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -200,22 +198,21 @@ this.FeatureBackground();
         public virtual void LocationReadInvalidRequestURL(string invalidURL, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read invalid request URL", exampleTags);
-#line 54
+#line 52
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 55
- testRunner.Given("I get location \"SIT1\" id and save it as \"Location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
+#line 53
+ testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 54
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 57
+#line 55
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
- testRunner.When(string.Format("I get location \"location1\" and use the id to make a get request to the invalid ur" +
-                        "l \"{0}\"", invalidURL), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 59
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 56
+ testRunner.When(string.Format("I get location \"location1\" and use the id to make a get request to the url \"{0}\"", invalidURL), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 57
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -230,27 +227,27 @@ this.FeatureBackground();
         public virtual void LocationReadFailureDueToMissingHeader(string header, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read failure due to missing header", exampleTags);
-#line 66
+#line 64
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 67
+#line 65
  testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 68
+#line 66
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 69
+#line 67
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 68
   testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 69
  testRunner.When("I get location \"location1\" and use the id to make a get request to the url \"Locat" +
                     "ion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 72
+#line 70
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 73
+#line 71
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 72
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -266,24 +263,24 @@ this.FeatureBackground();
         public virtual void LocationReadFailureWithIncorrectInteractionId(string interactionId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read failure with incorrect interaction id", exampleTags);
-#line 83
+#line 81
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 84
+#line 82
  testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 85
+#line 83
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 86
+#line 84
   testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 85
  testRunner.When("I get location \"location1\" and use the id to make a get request to the url \"Locat" +
                     "ion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 88
+#line 86
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 89
+#line 87
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
+#line 88
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -296,28 +293,28 @@ this.FeatureBackground();
         public virtual void LocationRead_FormatParameterOnly(string parameter, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read _format parameter only", exampleTags);
-#line 99
+#line 97
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 100
+#line 98
  testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 101
+#line 99
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 102
+#line 100
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
+#line 101
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 104
+#line 102
  testRunner.When("I get location \"location1\" and use the id to make a get request to the url \"Locat" +
                     "ion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 105
+#line 103
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 106
+#line 104
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
-  testRunner.And("the response should be a valid Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+  testRunner.And("the response should be a Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -329,28 +326,28 @@ this.FeatureBackground();
         public virtual void LocationReadAcceptHeader(string header, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read accept header", exampleTags);
-#line 113
+#line 111
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 114
+#line 112
  testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 115
+#line 113
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 116
+#line 114
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 115
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
+#line 116
  testRunner.When("I get location \"location1\" and use the id to make a get request to the url \"Locat" +
                     "ion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 119
+#line 117
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 120
+#line 118
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
-  testRunner.And("the response should be a valid Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 119
+  testRunner.And("the response should be a Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -364,30 +361,30 @@ this.FeatureBackground();
         public virtual void LocationReadAcceptHeaderAnd_Format(string header, string parameter, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read accept header and _format", exampleTags);
-#line 127
+#line 125
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 128
+#line 126
  testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 129
+#line 127
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 130
+#line 128
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 131
+#line 129
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
+#line 130
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 131
  testRunner.When("I get location \"location1\" and use the id to make a get request to the url \"Locat" +
                     "ion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 134
+#line 132
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 135
+#line 133
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
-  testRunner.And("the response should be a valid Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 134
+  testRunner.And("the response should be a Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -397,22 +394,22 @@ this.FeatureBackground();
         public virtual void ConformanceProfileSupportsTheLocationReadOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Location read operation", ((string[])(null)));
-#line 144
+#line 142
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 145
+#line 143
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 146
+#line 144
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 145
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 148
+#line 146
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 149
+#line 147
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 148
   testRunner.And("the conformance profile should contain the \"Location\" resource with a \"read\" inte" +
                     "raction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -424,62 +421,59 @@ this.FeatureBackground();
         public virtual void LocationReadCheckMetaDataProfileAndVersionId()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read check meta data profile and version id", ((string[])(null)));
-#line 152
+#line 150
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 153
+#line 151
  testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 154
+#line 152
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 155
+#line 153
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 156
+#line 154
  testRunner.When("I get location \"location1\" and use the id to make a get request to the url \"Locat" +
                     "ion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 157
+#line 155
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 158
+#line 156
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 159
-  testRunner.And("the response should be a valid Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
+#line 157
+  testRunner.And("the response should be a Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 158
   testRunner.And("the location resource should contain meta data profile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Location read location contains identifier it is valid")]
-        public virtual void LocationReadLocationContainsIdentifierItIsValid()
+        [NUnit.Framework.DescriptionAttribute("Location read contains valid identifiers")]
+        public virtual void LocationReadContainsValidIdentifiers()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read location contains identifier it is valid", ((string[])(null)));
-#line 162
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read contains valid identifiers", ((string[])(null)));
+#line 160
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 163
+#line 161
 testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 164
+#line 162
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 165
+#line 163
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 166
+#line 164
  testRunner.When("I get location \"location1\" and use the id to make a get request to the url \"Locat" +
                     "ion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 167
+#line 165
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 168
+#line 166
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
-  testRunner.And("the response should be a valid Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 170
+#line 167
+  testRunner.And("the response should be a Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 168
   testRunner.And("if the location response resource contains an identifier it is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
-  testRunner.And("the response Location entry should contain a maximum of one ODS Site Code and one" +
-                    " other identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -489,66 +483,66 @@ testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((st
         public virtual void LocationReadLocationContainsValidNameElement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read location contains valid name element", ((string[])(null)));
-#line 173
+#line 170
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 174
+#line 171
  testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 175
+#line 172
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 176
+#line 173
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
+#line 174
  testRunner.When("I get location \"location1\" and use the id to make a get request to the url \"Locat" +
                     "ion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
+#line 175
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 179
+#line 176
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
-  testRunner.And("the response should be a valid Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
+#line 177
+  testRunner.And("the response should be a Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 178
   testRunner.And("the response Location entry should contain a name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Location read returned resorce conforms to gp location specification")]
-        public virtual void LocationReadReturnedResorceConformsToGpLocationSpecification()
+        [NUnit.Framework.DescriptionAttribute("Location read resource conforms to GP-Connect specification")]
+        public virtual void LocationReadResourceConformsToGP_ConnectSpecification()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read returned resorce conforms to gp location specification", ((string[])(null)));
-#line 183
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location read resource conforms to GP-Connect specification", ((string[])(null)));
+#line 180
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 184
+#line 181
 testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 185
+#line 182
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 186
+#line 183
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
+#line 184
  testRunner.When("I get location \"location1\" and use the id to make a get request to the url \"Locat" +
                     "ion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 188
+#line 185
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 189
+#line 186
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 190
-  testRunner.And("the response should be a valid Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 191
+#line 187
+  testRunner.And("the response should be a Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 188
   testRunner.And("the location response should contain valid system code and display if the Physica" +
                     "lType coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
+#line 189
   testRunner.And("if the location response contains a managing organization it contains a valid ref" +
                     "erence", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 193
+#line 190
   testRunner.And("if the location response contains a partOf element its reference is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 194
+#line 191
   testRunner.And("if the location response contains a type element it is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -561,7 +555,7 @@ testRunner.Given("I get location \"SIT1\" id and save it as \"location1\"", ((st
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("If-None-Match read location on a matching version", new string[] {
                         "ignore"});
-#line 197
+#line 194
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
@@ -576,7 +570,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("If-None-Match read location on a non matching version", new string[] {
                         "ignore"});
-#line 201
+#line 198
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
@@ -595,7 +589,7 @@ this.FeatureBackground();
                     " available in the provider system", new string[] {
                         "Manual",
                         "ignore"});
-#line 206
+#line 203
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
