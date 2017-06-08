@@ -157,26 +157,6 @@ Scenario: Location read check meta data profile and version id
 		And the response should be a Location resource
 		And the location resource should contain meta data profile and version id
 
-Scenario: Location read contains valid identifiers
-Given I get location "SIT1" id and save it as "location1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
-	When I get location "location1" and use the id to make a get request to the url "Location"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Location resource
-		And if the location response resource contains an identifier it is valid
-
-Scenario: Location read location contains valid name element
-	Given I get location "SIT1" id and save it as "location1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
-	When I get location "location1" and use the id to make a get request to the url "Location"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Location resource
-		And the response Location entry should contain a name element
-
 Scenario: Location read resource conforms to GP-Connect specification
 Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
@@ -185,10 +165,15 @@ Given I get location "SIT1" id and save it as "location1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Location resource
+		And if the location response resource contains an identifier it is valid
+#		status // This is checked by the FHIR .NET library
+		And the response Location entry should contain a name element
+		And if the location response contains a type element it is valid
+		And if the location response contains any telecom elements they are valid
+#		address // This is checked by the FHIR .NET library
 		And the location response should contain valid system code and display if the PhysicalType coding is included in the resource
 		And if the location response contains a managing organization it contains a valid reference
 		And if the location response contains a partOf element its reference is valid
-		And if the location response contains a type element it is valid
 
 @ignore
 Scenario: If-None-Match read location on a matching version

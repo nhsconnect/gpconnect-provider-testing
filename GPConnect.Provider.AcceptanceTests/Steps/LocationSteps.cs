@@ -266,5 +266,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+
+        [Then(@"if the location response contains any telecom elements they are valid")]
+        public void ThenIfTheLocationResponseContainsAnyTelecomElementsTheyAreValid()
+        {
+            Location location = (Location)FhirContext.FhirResponseResource;
+
+            if (location.Telecom != null)
+            {
+                foreach (var contactPoint in location.Telecom)
+                {
+                    if (contactPoint.Period != null)
+                    {
+                        contactPoint.Period.Start.ShouldNotBeNullOrWhiteSpace("Telecom Period Start field is mandatory");
+                        // System and use fields are already checked by the FHIR library
+                    }
+                }
+            }
+        }
     }
 }
