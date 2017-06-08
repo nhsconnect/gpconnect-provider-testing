@@ -101,7 +101,7 @@ Scenario: Read appointment valid request shall include id and structure definiti
 	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the returned appointment resource shall contains an id
+		And the returned resource shall contains a logical id
 		And the returned appointment resource should contain meta data profile and version id
 
 Scenario Outline: Read appointment check response contains required elements

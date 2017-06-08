@@ -359,9 +359,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response body should be empty")]
         public void ThenTheResponseBodyShouldBeEmpty()
         {
-            string response = "";
-            HttpContext.ResponseBody.ShouldStartWith(response);
-            HttpContext.ResponseBody.ShouldBe(response);
+            HttpContext.ResponseBody.ShouldBeNullOrEmpty("The response should not contain a payload but the response was not null or empty");
         }
 
         [Then(@"the response body should be FHIR XML")]
@@ -603,7 +601,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 .Where(x => string.IsNullOrWhiteSpace(x.Resource.Id))
                 .ShouldBeEmpty("Found an empty (or non-existant) logical id");
         }
-        
+
+        [Then(@"the returned resource shall contains a logical id")]
+        public void ThenTheReturnedResourceShallContainALogicalId()
+        {
+            FhirContext.FhirResponseResource.Id.ShouldNotBeNullOrEmpty("The returned resource should contain a logical Id but does not.");
+        }
+
         private void LogToDisk()
         {
             var traceDirectory = GlobalContext.TraceDirectory;

@@ -12,7 +12,7 @@ Scenario Outline: Organization Read successful request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
-		And the returned organization resource should contain a logical id
+		And the returned resource shall contains a logical id
 		Examples: 
 		| Organization |
 		| ORG1         |
@@ -100,7 +100,7 @@ Scenario Outline: Organization read accept header and _format
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Organization resource
-		And the returned organization resource should contain a logical id
+		And the returned resource shall contains a logical id
 		  Examples:
         | Header                | Parameter             | BodyFormat |
         | application/json+fhir | application/json+fhir | JSON       |

@@ -303,7 +303,7 @@ this.FeatureBackground();
 #line 103
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
-  testRunner.And("the returned appointment resource shall contains an id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the returned resource shall contains a logical id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 105
   testRunner.And("the returned appointment resource should contain meta data profile and version id" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

@@ -100,7 +100,7 @@ this.FeatureBackground();
 #line 14
   testRunner.And("the response should be an Organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
-  testRunner.And("the returned organization resource should contain a logical id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the returned resource shall contains a logical id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -296,7 +296,7 @@ this.FeatureBackground();
 #line 102
   testRunner.And("the response should be an Organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
-  testRunner.And("the returned organization resource should contain a logical id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the returned resource shall contains a logical id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

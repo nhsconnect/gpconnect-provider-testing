@@ -831,7 +831,7 @@ this.FeatureBackground();
 #line 298
   testRunner.And("the content-length should not be equal to zero", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 299
-  testRunner.And("the returned appointment resource shall contains an id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the returned resource shall contains a logical id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 300
   testRunner.And("the appointment resource should contain a single start element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 301

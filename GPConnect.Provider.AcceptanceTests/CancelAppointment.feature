@@ -296,7 +296,7 @@ Scenario Outline: Cancel appointment prefer header set to representation
 		And the returned appointment resource status should be set to cancelled
 		And the content-type should not be equal to null
 		And the content-length should not be equal to zero
-		And the returned appointment resource shall contains an id
+		And the returned resource shall contains a logical id
 		And the appointment resource should contain a single start element
 		And the appointment resource should contain a single end element
 		And the appointment resource should contain at least one slot reference

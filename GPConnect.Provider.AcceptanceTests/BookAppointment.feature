@@ -25,7 +25,7 @@ Scenario: Book Appointment with invalid url for booking appointment
 		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
-	When I book the appointment called "Appointment" against the URL "/Appointments" with the interactionId "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" 
+	When I book the appointment called "Appointment" against the URL "/Appointments"
 	Then the response status code should be "404"
 
 Scenario Outline: Book appointment failure due to missing header
@@ -50,17 +50,21 @@ Scenario Outline: Book appointment failure due to missing header
 		| Authorization     |
 
 Scenario Outline: Book appointment accept header and _format parameter
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
-    Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
+	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
         And I set the Accept header to "<Header>"
         And I add the parameter "_format" with the value "<Parameter>"
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
+	When I book the appointment called "Appointment"
     Then the response status code should indicate created
         And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And the returned appointment resource shall contains an id
-		And the appointment resource should contain a single status element
+		And the returned resource shall contains a logical id
+		And the appointment resource should contain a status element
 		And the appointment response resource contains a slot reference
     Examples:
        | Header                | Parameter             | BodyFormat | 
@@ -69,34 +73,45 @@ Scenario Outline: Book appointment accept header and _format parameter
        | application/xml+fhir  | application/json+fhir | JSON       |
        | application/xml+fhir  | application/xml+fhir  | XML        |
 
-Scenario Outline: Book appointment _format parameter only
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
+Scenario Outline: Book appointment _format parameter only but varying request content types
+	Given I perform a patient search for patient "patient2" and store the first returned resources against key "storedPatient"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I set the request content type to "<ContentType>"
+		And I create an appointment for patient "storedPatient" called "Appointment" from schedule "getScheduleResponseBundle"
         And I add the parameter "_format" with the value "<Parameter>"
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
-	Then the response status code should indicate created
-		And the response body should be FHIR <BodyFormat>
+	When I book the appointment called "Appointment"
+    Then the response status code should indicate created
+        And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And the returned appointment resource shall contains an id
-		And the appointment resource should contain a single status element
+		And the returned resource shall contains a logical id
+		And the appointment resource should contain a status element
 		And the appointment response resource contains a slot reference
     Examples:
-        | Parameter             | BodyFormat |
-        | application/json+fhir | JSON       |
-        | application/xml+fhir  | XML        |
+        | ContentType           | Parameter             | BodyFormat |
+        | application/json+fhir | application/json+fhir | JSON       |
+        | application/json+fhir | application/xml+fhir  | XML        |
+        | application/xml+fhir  | application/json+fhir | JSON       |
+        | application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario Outline: Book appointment accept header variations
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
+	Given I perform a patient search for patient "patient3" and store the first returned resources against key "storedPatient"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
-		And I set the Accept header to "<Header>"
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
-	Then the response status code should indicate created
-		And the response body should be FHIR <BodyFormat>
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I create an appointment for patient "storedPatient" called "Appointment" from schedule "getScheduleResponseBundle"
+        And I set the Accept header to "<Header>"
+	When I book the appointment called "Appointment"
+    Then the response status code should indicate created
+        And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And the returned appointment resource shall contains an id
-		And the appointment resource should contain a single status element
+		And the returned resource shall contains a logical id
+		And the appointment resource should contain a status element
 		And the appointment response resource contains a slot reference
 	Examples:
 		 | Header                | BodyFormat |
@@ -104,11 +119,15 @@ Scenario Outline: Book appointment accept header variations
 		 | application/xml+fhir  | XML        |
 
 Scenario: Book appointment prefer header set to representation
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "CustomAppointment1"
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 		And I set the Prefer header to "return=representation"
-	When I book an appointment for patient "CustomAppointment1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" without header clean up
+	When I book the appointment called "Appointment"
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
@@ -116,22 +135,29 @@ Scenario: Book appointment prefer header set to representation
 		And the content-length should not be equal to zero
 
 Scenario: Book appointment prefer header set to minimal
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
+		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 		And I set the Prefer header to "return=minimal"
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" without header clean up
+	When I book the appointment called "Appointment"
 	Then the response status code should indicate created
 		And the response body should be empty
 		And the content-type should be equal to null
-		And the content-length should be equal to zero
 
-Scenario Outline: Book appointment interaction id incorrect fail
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
+Scenario Outline: Book appointment with invalid interaction id
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
-	When I book an appointment for patient "patient1" on the provider system with the schedule name "getScheduleResponseBundle" with interaction id "<interactionId>"
-    Then the response status code should be "400"
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
+		And I am performing the "<interactionId>" interaction
+		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
+	When I book the appointment called "Appointment"
+	Then the response status code should be "400"
         And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
     Examples:
@@ -150,7 +176,7 @@ Scenario: Book Appointment and check response returns the correct values
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the returned appointment resource shall contains an id
-		And the appointment resource should contain a single status element
+		And the appointment resource should contain a status element
 		And the appointment resource should contain a single start element
 		And the appointment resource should contain a single end element
 		And the appointment resource should contain at least one participant
@@ -457,3 +483,11 @@ Scenario: Book appointment and send bundle resource in the request
 
 @ignore
 Scenario: Book appointment for temporary patient
+
+@ignore
+@Manual
+Scenario: Multi slot booking
+	# Multiple adjacent slots success
+	# Non adjacent slot failure
+	# Slots from different schedules that are adjacent failure
+	# Slots from different schedules which are not adjacent failure

@@ -236,14 +236,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointmentCount.ShouldBeGreaterThanOrEqualTo(minNumberOfAppointments);
         }
         
-        [Then(@"the appointment resource should contain a single status element")]
+        [Then(@"the appointment resource should contain a status element")]
         public void appointmentMustContainStatusElement()
         {
-
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            appointment.Status.ShouldNotBeNull();
-
+            ((Appointment)FhirContext.FhirResponseResource).Status.ShouldNotBeNull("Appointment Status is a mandatory element and should be populated but is not in the returned resource.");
         }
+
         [Then(@"the appointment resource should contain a single start element")]
         public void appointmentMustContainStartElement()
         {
@@ -515,10 +513,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheAppointmentResourceShouldContainASlotReference()
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            appointment.Slot.ShouldNotBeNull();
-            appointment.Slot.Count.ShouldBeGreaterThanOrEqualTo(1);
+            appointment.Slot.ShouldNotBeNull("The returned appointment does not contain a slot reference");
+            appointment.Slot.Count.ShouldBeGreaterThanOrEqualTo(1, "The returned appointment does not contain a slot reference");
             foreach (var slotReference in appointment.Slot) {
-                slotReference.Reference.ShouldStartWith("Slot/");
+                slotReference.Reference.ShouldStartWith("Slot/", "The returned appointment does not contain a valid slot reference");
             }
         }
 

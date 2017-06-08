@@ -142,9 +142,7 @@ this.FeatureBackground();
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
- testRunner.When("I book the appointment called \"Appointment\" against the URL \"/Appointments\" with " +
-                    "the interactionId \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I book the appointment called \"Appointment\" against the URL \"/Appointments\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
  testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -213,72 +211,94 @@ this.ScenarioSetup(scenarioInfo);
 this.FeatureBackground();
 #line 53
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
-                    "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 54
-    testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
+ testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 55
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 56
-        testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT requested record NHS number to the NHS number of patient stored aga" +
+                    "inst key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
-        testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 58
- testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
-                    "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
-                    "s:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
+                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
-    testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
+                    "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
-        testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
-  testRunner.And("the returned appointment resource shall contains an id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 63
-  testRunner.And("the appointment resource should contain a single status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 64
+        testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 65
+  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+  testRunner.And("the returned resource shall contains a logical id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+  testRunner.And("the appointment resource should contain a status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 68
   testRunner.And("the appointment response resource contains a slot reference", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book appointment _format parameter only")]
-        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "JSON", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "XML", new string[0])]
-        public virtual void BookAppointment_FormatParameterOnly(string parameter, string bodyFormat, string[] exampleTags)
+        [NUnit.Framework.DescriptionAttribute("Book appointment _format parameter only but varying request content types")]
+        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "application/json+fhir", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "application/xml+fhir", "XML", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "application/json+fhir", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "application/xml+fhir", "XML", new string[0])]
+        public virtual void BookAppointment_FormatParameterOnlyButVaryingRequestContentTypes(string contentType, string parameter, string bodyFormat, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment _format parameter only", exampleTags);
-#line 72
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment _format parameter only but varying request content types", exampleTags);
+#line 76
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 73
- testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
-                    "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 74
+#line 77
+ testRunner.Given("I perform a patient search for patient \"patient2\" and store the first returned re" +
+                    "sources against key \"storedPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 78
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 75
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 76
-        testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
- testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
-                    "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
-                    "s:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 78
- testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 79
-  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 80
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT requested record NHS number to the NHS number of patient stored aga" +
+                    "inst key \"storedPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 81
-  testRunner.And("the returned appointment resource shall contains an id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
-  testRunner.And("the appointment resource should contain a single status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
+                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
+  testRunner.And(string.Format("I set the request content type to \"{0}\"", contentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 84
+  testRunner.And("I create an appointment for patient \"storedPatient\" called \"Appointment\" from sch" +
+                    "edule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 85
+        testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 86
+ testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 87
+    testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 88
+        testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 89
+  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 90
+  testRunner.And("the returned resource shall contains a logical id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 91
+  testRunner.And("the appointment resource should contain a status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 92
   testRunner.And("the appointment response resource contains a slot reference", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -291,35 +311,44 @@ this.FeatureBackground();
         public virtual void BookAppointmentAcceptHeaderVariations(string header, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment accept header variations", exampleTags);
-#line 89
+#line 100
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 90
- testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
-                    "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 91
+#line 101
+ testRunner.Given("I perform a patient search for patient \"patient3\" and store the first returned re" +
+                    "sources against key \"storedPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 102
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 92
+#line 103
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 93
-  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 94
- testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
-                    "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
-                    "s:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 95
- testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 96
-  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 104
+  testRunner.And("I set the JWT requested record NHS number to the NHS number of patient stored aga" +
+                    "inst key \"storedPatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
+                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+  testRunner.And("I create an appointment for patient \"storedPatient\" called \"Appointment\" from sch" +
+                    "edule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 108
+        testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 109
+ testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 110
+    testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 111
+        testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 112
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
-  testRunner.And("the returned appointment resource shall contains an id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
-  testRunner.And("the appointment resource should contain a single status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 113
+  testRunner.And("the returned resource shall contains a logical id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 114
+  testRunner.And("the appointment resource should contain a status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 115
   testRunner.And("the appointment response resource contains a slot reference", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -330,33 +359,42 @@ this.FeatureBackground();
         public virtual void BookAppointmentPreferHeaderSetToRepresentation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment prefer header set to representation", ((string[])(null)));
-#line 106
+#line 121
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 107
+#line 122
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
-                    "sources against key \"CustomAppointment1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 108
+                    "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 123
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 109
+#line 124
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 110
+#line 125
+  testRunner.And("I set the JWT requested record NHS number to the NHS number of patient stored aga" +
+                    "inst key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 126
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 127
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
+                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 128
+  testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
+                    "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
   testRunner.And("I set the Prefer header to \"return=representation\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
- testRunner.When("I book an appointment for patient \"CustomAppointment1\" on the provider system wit" +
-                    "h the schedule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:nam" +
-                    "es:services:gpconnect:fhir:rest:create:appointment\" without header clean up", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 112
+#line 130
+ testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 131
  testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 113
+#line 132
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 133
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
+#line 134
   testRunner.And("the content-type should not be equal to null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 135
   testRunner.And("the content-length should not be equal to zero", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -367,65 +405,81 @@ this.FeatureBackground();
         public virtual void BookAppointmentPreferHeaderSetToMinimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment prefer header set to minimal", ((string[])(null)));
-#line 118
+#line 137
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 119
+#line 138
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
-                    "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 120
+                    "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 139
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 121
+#line 140
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 122
+#line 141
+  testRunner.And("I set the JWT requested record NHS number to the NHS number of patient stored aga" +
+                    "inst key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 142
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 143
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
+                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 144
+  testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
+                    "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 145
   testRunner.And("I set the Prefer header to \"return=minimal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
- testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
-                    "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
-                    "s:gpconnect:fhir:rest:create:appointment\" without header clean up", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 124
+#line 146
+ testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 147
  testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 125
+#line 148
   testRunner.And("the response body should be empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
+#line 149
   testRunner.And("the content-type should be equal to null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
-  testRunner.And("the content-length should be equal to zero", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book appointment interaction id incorrect fail")]
+        [NUnit.Framework.DescriptionAttribute("Book appointment with invalid interaction id")]
         [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:rest:search:organization", new string[0])]
         [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord", new string[0])]
         [NUnit.Framework.TestCaseAttribute("", new string[0])]
         [NUnit.Framework.TestCaseAttribute("null", new string[0])]
-        public virtual void BookAppointmentInteractionIdIncorrectFail(string interactionId, string[] exampleTags)
+        public virtual void BookAppointmentWithInvalidInteractionId(string interactionId, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment interaction id incorrect fail", exampleTags);
-#line 129
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with invalid interaction id", exampleTags);
+#line 151
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 130
+#line 152
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
-                    "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 131
+                    "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 153
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 132
+#line 154
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 133
- testRunner.When(string.Format("I book an appointment for patient \"patient1\" on the provider system with the sche" +
-                        "dule name \"getScheduleResponseBundle\" with interaction id \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 134
-    testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 135
+#line 155
+  testRunner.And("I set the JWT requested record NHS number to the NHS number of patient stored aga" +
+                    "inst key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 156
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 157
+  testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 158
+  testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
+                    "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 159
+ testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 160
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 161
         testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
+#line 162
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -436,85 +490,6 @@ this.FeatureBackground();
         public virtual void BookAppointmentAndCheckResponseReturnsTheCorrectValues()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and check response returns the correct values", ((string[])(null)));
-#line 144
-this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
-#line 145
- testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
-                    "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 146
- testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
-                    "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 147
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 148
- testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
-                    "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
-                    "s:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 149
- testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 150
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
-  testRunner.And("the returned appointment resource shall contains an id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
-  testRunner.And("the appointment resource should contain a single status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
-  testRunner.And("the appointment resource should contain a single start element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 155
-  testRunner.And("the appointment resource should contain a single end element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 156
-  testRunner.And("the appointment resource should contain at least one participant", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 157
-  testRunner.And("the appointment resource should contain at least one slot reference", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 158
-  testRunner.And("if the appointment resource contains a priority the value is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book Appointment and check response returns the relevent structured definition")]
-        public virtual void BookAppointmentAndCheckResponseReturnsTheReleventStructuredDefinition()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and check response returns the relevent structured definition", ((string[])(null)));
-#line 160
-this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
-#line 161
- testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
-                    "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 162
- testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
-                    "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 163
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 164
- testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
-                    "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
-                    "s:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 165
- testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 166
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 167
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 168
-  testRunner.And("the returned appointment resource should contain meta data profile and version id" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book Appointment and appointment participant is valid")]
-        public virtual void BookAppointmentAndAppointmentParticipantIsValid()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and appointment participant is valid", ((string[])(null)));
 #line 170
 this.ScenarioSetup(scenarioInfo);
 #line 3
@@ -538,9 +513,88 @@ this.FeatureBackground();
 #line 177
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 178
+  testRunner.And("the returned appointment resource shall contains an id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 179
+  testRunner.And("the appointment resource should contain a status element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 180
+  testRunner.And("the appointment resource should contain a single start element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 181
+  testRunner.And("the appointment resource should contain a single end element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 182
+  testRunner.And("the appointment resource should contain at least one participant", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 183
+  testRunner.And("the appointment resource should contain at least one slot reference", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 184
+  testRunner.And("if the appointment resource contains a priority the value is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Book Appointment and check response returns the relevent structured definition")]
+        public virtual void BookAppointmentAndCheckResponseReturnsTheReleventStructuredDefinition()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and check response returns the relevent structured definition", ((string[])(null)));
+#line 186
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 187
+ testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
+                    "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 188
+ testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
+                    "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 189
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 190
+ testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
+                    "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
+                    "s:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 191
+ testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 192
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 193
+  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 194
+  testRunner.And("the returned appointment resource should contain meta data profile and version id" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Book Appointment and appointment participant is valid")]
+        public virtual void BookAppointmentAndAppointmentParticipantIsValid()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and appointment participant is valid", ((string[])(null)));
+#line 196
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 197
+ testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
+                    "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 198
+ testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
+                    "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 199
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 200
+ testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
+                    "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
+                    "s:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 201
+ testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 202
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 203
+  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 204
   testRunner.And("the appointment response resource contains atleast 2 participants a practitioner " +
                     "and a patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
+#line 205
   testRunner.And("the returned appointment participants must contain a type or actor element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -551,38 +605,38 @@ this.FeatureBackground();
         public virtual void BookAppointmentAndCheckExtensionMethodsAreValid()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and check extension methods are valid", ((string[])(null)));
-#line 181
+#line 207
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 182
+#line 208
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 183
+#line 209
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 184
+#line 210
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 185
+#line 211
  testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
                     "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
                     "s:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 186
+#line 212
  testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 187
+#line 213
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 188
+#line 214
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 189
+#line 215
   testRunner.And("if the returned appointment category element is present it is populated with the " +
                     "correct values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 190
+#line 216
   testRunner.And("if the returned appointment booking element is present it is populated with the c" +
                     "orrect values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 191
+#line 217
   testRunner.And("if the returned appointment contact element is present it is populated with the c" +
                     "orrect values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
+#line 218
   testRunner.And("if the returned appointment cancellation reason element is present it is populate" +
                     "d with the correct values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -594,34 +648,34 @@ this.FeatureBackground();
         public virtual void BookAppointmentAndRemoveLocationFromTheAppointmentBooking()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove location from the appointment booking", ((string[])(null)));
-#line 194
+#line 220
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 195
+#line 221
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 196
+#line 222
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 197
+#line 223
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 198
+#line 224
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
+#line 225
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
+#line 226
  testRunner.Then("I remove the participant from the appointment called \"Appointment\" which starts w" +
                     "ith reference \"Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 201
+#line 227
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 202
+#line 228
  testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 203
+#line 229
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
+#line 230
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -634,34 +688,34 @@ this.FeatureBackground();
         public virtual void BookAppointmentAndRemoveManadatoryResourcesFromTheAppointmentBooking(string appointment, string participant, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove manadatory resources from the appointment booking", exampleTags);
-#line 206
+#line 232
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 207
+#line 233
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 208
+#line 234
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 209
+#line 235
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 210
+#line 236
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 211
+#line 237
   testRunner.And(string.Format("I create an appointment for patient \"storedPatient1\" called \"{0}\" from schedule \"" +
                         "getScheduleResponseBundle\"", appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 212
+#line 238
  testRunner.Then(string.Format("I remove the participant from the appointment called \"{0}\" which starts with refe" +
                         "rence \"{1}\"", appointment, participant), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 213
+#line 239
  testRunner.When(string.Format("I book the appointment called \"{0}\"", appointment), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 214
+#line 240
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 215
+#line 241
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
+#line 242
   testRunner.And("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -672,92 +726,6 @@ this.FeatureBackground();
         public virtual void BookAppointmentAndRemoveAllParticipants()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove all participants", ((string[])(null)));
-#line 222
-this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
-#line 223
- testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
-                    "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 224
- testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
-                    "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 225
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 226
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
-                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
-  testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
-                    "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 228
- testRunner.Then("I remove the participant from the appointment called \"Appointment\" which starts w" +
-                    "ith reference \"Patient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 229
- testRunner.Then("I remove the participant from the appointment called \"Appointment\" which starts w" +
-                    "ith reference \"Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 230
- testRunner.Then("I remove the participant from the appointment called \"Appointment\" which starts w" +
-                    "ith reference \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 231
- testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 232
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 233
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 234
-  testRunner.And("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book single appointment for patient and send additional extension with value popu" +
-            "lated")]
-        public virtual void BookSingleAppointmentForPatientAndSendAdditionalExtensionWithValuePopulated()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient and send additional extension with value popu" +
-                    "lated", ((string[])(null)));
-#line 236
-this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
-#line 237
- testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
-                    "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 238
- testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
-                    "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 239
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 240
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
-                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 241
-  testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
-                    "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 242
- testRunner.Then("I add an extra invalid extension to the appointment called \"Appointment\" and popu" +
-                    "late the value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 243
- testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 244
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 245
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 246
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book single appointment for patient and send additional extensions with system po" +
-            "pulated")]
-        public virtual void BookSingleAppointmentForPatientAndSendAdditionalExtensionsWithSystemPopulated()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient and send additional extensions with system po" +
-                    "pulated", ((string[])(null)));
 #line 248
 this.ScenarioSetup(scenarioInfo);
 #line 3
@@ -777,15 +745,101 @@ this.FeatureBackground();
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 254
+ testRunner.Then("I remove the participant from the appointment called \"Appointment\" which starts w" +
+                    "ith reference \"Patient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 255
+ testRunner.Then("I remove the participant from the appointment called \"Appointment\" which starts w" +
+                    "ith reference \"Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 256
+ testRunner.Then("I remove the participant from the appointment called \"Appointment\" which starts w" +
+                    "ith reference \"Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 257
+ testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 258
+ testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 259
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 260
+  testRunner.And("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Book single appointment for patient and send additional extension with value popu" +
+            "lated")]
+        public virtual void BookSingleAppointmentForPatientAndSendAdditionalExtensionWithValuePopulated()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient and send additional extension with value popu" +
+                    "lated", ((string[])(null)));
+#line 262
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 263
+ testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
+                    "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 264
+ testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
+                    "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 265
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 266
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
+                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 267
+  testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
+                    "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 268
+ testRunner.Then("I add an extra invalid extension to the appointment called \"Appointment\" and popu" +
+                    "late the value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 269
+ testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 270
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 271
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 272
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Book single appointment for patient and send additional extensions with system po" +
+            "pulated")]
+        public virtual void BookSingleAppointmentForPatientAndSendAdditionalExtensionsWithSystemPopulated()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient and send additional extensions with system po" +
+                    "pulated", ((string[])(null)));
+#line 274
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 275
+ testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
+                    "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 276
+ testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
+                    "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 277
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 278
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
+                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 279
+  testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
+                    "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 280
  testRunner.Then("I add an extra invalid extension to the appointment called \"Appointment\" and popu" +
                     "late the system", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 255
+#line 281
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 256
+#line 282
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 257
+#line 283
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 258
+#line 284
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -798,34 +852,34 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient and send additional extensions with system an" +
                     "d value populated", ((string[])(null)));
-#line 260
+#line 286
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 261
+#line 287
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 262
+#line 288
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 263
+#line 289
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 264
+#line 290
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 265
+#line 291
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 266
+#line 292
  testRunner.Then("I add an extra invalid extension to the appointment called \"Appointment\" and popu" +
                     "late the system and value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 267
+#line 293
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 268
+#line 294
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 269
+#line 295
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 270
+#line 296
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -836,33 +890,33 @@ this.FeatureBackground();
         public virtual void BookSingleAppointmentForPatientWithRandomId()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient with random id", ((string[])(null)));
-#line 272
+#line 298
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 273
+#line 299
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 274
+#line 300
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 275
+#line 301
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 276
+#line 302
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 277
+#line 303
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 278
+#line 304
   testRunner.Given("I change the appointment id to \"random\" to the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 279
+#line 305
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 280
+#line 306
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 281
+#line 307
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 282
+#line 308
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -873,31 +927,31 @@ this.FeatureBackground();
         public virtual void BookSingleAppointmentForPatientAndSendExtraFieldsInTheResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient and send extra fields in the resource", ((string[])(null)));
-#line 284
+#line 310
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 285
+#line 311
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 286
+#line 312
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 287
+#line 313
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 288
+#line 314
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 289
+#line 315
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
+#line 316
  testRunner.When("I book the appointment called \"Appointment\" with an invalid field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 291
+#line 317
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 292
+#line 318
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 293
+#line 319
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -912,28 +966,28 @@ this.FeatureBackground();
         public virtual void BookAppointmentWithInvalidSlotReference(string slotReference, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with invalid slot reference", exampleTags);
-#line 295
+#line 321
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 296
+#line 322
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 297
+#line 323
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 298
+#line 324
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 299
+#line 325
  testRunner.Then(string.Format("I create an appointment with slot reference \"{0}\" for patient \"patient1\" called \"" +
                         "Appointment\" from schedule \"getScheduleResponseBundle\"", slotReference), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 300
+#line 326
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 301
+#line 327
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 302
+#line 328
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 303
+#line 329
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -944,44 +998,44 @@ this.FeatureBackground();
         public virtual void BookSingleAppointmentForPatientAndCheckTheLocationReferenceIsValid()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient and check the location reference is valid", ((string[])(null)));
-#line 311
+#line 337
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 312
+#line 338
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 313
+#line 339
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 314
+#line 340
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 315
+#line 341
  testRunner.When("I book an appointment for patient \"patient1\" on the provider system with the sche" +
                     "dule name \"getScheduleResponseBundle\" with interaction id \"urn:nhs:names:service" +
                     "s:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 316
+#line 342
  testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 317
+#line 343
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 318
+#line 344
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 319
+#line 345
   testRunner.And("the appointment location reference is present and is saved as \"responseLocation\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 320
+#line 346
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 321
+#line 347
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:location\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 322
+#line 348
  testRunner.When("I make a GET request to saved location resource \"responseLocation\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 323
+#line 349
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 324
+#line 350
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 325
+#line 351
   testRunner.And("the response should be a valid Location resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 326
+#line 352
   testRunner.And("if the location response resource contains an identifier it is valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -992,33 +1046,33 @@ this.FeatureBackground();
         public virtual void BookAppointmentWithMissingStartElementInAppointmentResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with missing start element in appointment resource", ((string[])(null)));
-#line 328
+#line 354
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 329
+#line 355
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 330
+#line 356
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 331
+#line 357
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 332
+#line 358
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 333
+#line 359
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 334
+#line 360
  testRunner.Then("I set the appointment start element to null for \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 335
+#line 361
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 336
+#line 362
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 337
+#line 363
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 338
+#line 364
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1029,33 +1083,33 @@ this.FeatureBackground();
         public virtual void BookAppointmentWithMissingEndElementInAppointmentResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with missing end element in appointment resource", ((string[])(null)));
-#line 340
+#line 366
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 341
+#line 367
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 342
+#line 368
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 343
+#line 369
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 344
+#line 370
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 345
+#line 371
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 346
+#line 372
  testRunner.Then("I set the appointment end element to null for \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 347
+#line 373
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 348
+#line 374
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 349
+#line 375
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 350
+#line 376
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1066,33 +1120,33 @@ this.FeatureBackground();
         public virtual void BookAppointmentWithMissingStatusElementInAppointmentResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with missing status element in appointment resource", ((string[])(null)));
-#line 352
+#line 378
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 353
+#line 379
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 354
+#line 380
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 355
+#line 381
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 356
+#line 382
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 357
+#line 383
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 358
+#line 384
  testRunner.Then("I set the appointment status element to null for \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 359
+#line 385
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 360
+#line 386
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 361
+#line 387
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 362
+#line 388
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1103,33 +1157,33 @@ this.FeatureBackground();
         public virtual void BookAppointmentWithMissingSlotElementInAppointmentResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with missing slot element in appointment resource", ((string[])(null)));
-#line 364
+#line 390
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 365
+#line 391
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 366
+#line 392
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 367
+#line 393
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 368
+#line 394
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 369
+#line 395
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 370
+#line 396
  testRunner.Then("I set the appointment slot element to null for \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 371
+#line 397
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 372
+#line 398
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 373
+#line 399
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 374
+#line 400
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1140,33 +1194,33 @@ this.FeatureBackground();
         public virtual void BookAppointmentAndRemoveIdentifierValueFromTheAppointmentBooking()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove identifier value from the appointment booking", ((string[])(null)));
-#line 376
+#line 402
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 377
+#line 403
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 378
+#line 404
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 379
+#line 405
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 380
+#line 406
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 381
+#line 407
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 382
+#line 408
  testRunner.Then("I set the appointment identifier value element to null for \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 383
+#line 409
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 384
+#line 410
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 385
+#line 411
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 386
+#line 412
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1180,33 +1234,33 @@ this.FeatureBackground();
         public virtual void BookAppointmentAndRemoveReasonCodingElementFromTheAppointmentBooking(string codingElement, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove reason coding element from the appointment booking", exampleTags);
-#line 388
+#line 414
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 389
+#line 415
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 390
+#line 416
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 391
+#line 417
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 392
+#line 418
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 393
+#line 419
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 394
+#line 420
  testRunner.Then(string.Format("I set the appointment reason coding {0} element to null for \"Appointment\"", codingElement), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 395
+#line 421
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 396
+#line 422
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 397
+#line 423
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 398
+#line 424
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1220,33 +1274,33 @@ this.FeatureBackground();
         public virtual void BookAppointmentAndRemoveParticipantStatusFromTheAppointmentBooking(string participant, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove participant status from the appointment booking", exampleTags);
-#line 405
+#line 431
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 406
+#line 432
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 407
+#line 433
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 408
+#line 434
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 409
+#line 435
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 410
+#line 436
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 411
+#line 437
  testRunner.Then(string.Format("I set the appointment {0} participant status element to null for \"Appointment\"", participant), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 412
+#line 438
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 413
+#line 439
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 414
+#line 440
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 415
+#line 441
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1265,34 +1319,34 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove participant type coding element from the appointment " +
                     "booking", exampleTags);
-#line 422
+#line 448
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 423
+#line 449
  testRunner.Given("I perform a patient search for patient \"patient1\" and store the first returned re" +
                     "sources against key \"storedPatient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 424
+#line 450
  testRunner.Given("I perform the getSchedule operation for organization \"ORG1\" and store the returne" +
                     "d bundle resources against key \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 425
+#line 451
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 426
+#line 452
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 427
+#line 453
   testRunner.And("I create an appointment for patient \"storedPatient1\" called \"Appointment\" from sc" +
                     "hedule \"getScheduleResponseBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 428
+#line 454
  testRunner.Then(string.Format("I set the appointment {0} participant type coding {1} element to null for \"Appoin" +
                         "tment\"", participant, codingElement), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 429
+#line 455
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 430
+#line 456
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 431
+#line 457
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 432
+#line 458
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1303,23 +1357,23 @@ this.FeatureBackground();
         public virtual void BookAppointmentAndSendPatientResourceInTheRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment and send patient resource in the request", ((string[])(null)));
-#line 442
+#line 468
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 443
+#line 469
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 444
+#line 470
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 445
+#line 471
  testRunner.Then("I create an appointment for patient \"patient1\" called \"Appointment\" using a patie" +
                     "nt resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 446
+#line 472
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 447
+#line 473
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 448
+#line 474
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1330,23 +1384,23 @@ this.FeatureBackground();
         public virtual void BookAppointmentAndSendBundleResourceInTheRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment and send bundle resource in the request", ((string[])(null)));
-#line 450
+#line 476
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 451
+#line 477
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 452
+#line 478
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 453
+#line 479
  testRunner.Then("I create a new bundle to contain an appointment for patient \"patient1\" called \"Ap" +
                     "pointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 454
+#line 480
  testRunner.When("I book the appointment called \"Appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 455
+#line 481
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 456
+#line 482
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1359,7 +1413,24 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment for temporary patient", new string[] {
                         "ignore"});
-#line 459
+#line 485
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Multi slot booking")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.CategoryAttribute("Manual")]
+        public virtual void MultiSlotBooking()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multi slot booking", new string[] {
+                        "ignore",
+                        "Manual"});
+#line 489
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();

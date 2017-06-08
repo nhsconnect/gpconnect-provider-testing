@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Helpers;
+﻿using GPConnect.Provider.AcceptanceTests.Context;
 using Hl7.Fhir.Model;
 using Shouldly;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Appointment;
-using static Hl7.Fhir.Model.Bundle;
 using NUnit.Framework;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
@@ -223,13 +220,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void theResponseShouldBeAnLocationResource()
         {
             FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
-        }
-        
-        [Then(@"the returned appointment resource shall contains an id")]
-        public void ThenTheReturnedAppointmentResourceShallContainAnId()
-        {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            appointment.Id.ShouldNotBeNullOrEmpty();
         }
 
         [Then(@"the returned appointment resource should contain meta data profile and version id")]
