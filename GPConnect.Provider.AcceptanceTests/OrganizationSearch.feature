@@ -32,7 +32,7 @@ Scenario: Organization search failure with parameter cruft
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
 		And I add the parameter "ohyeah" with the value "woohoo"
 		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
-		And I add the parameter "ticktock" with the value "boom"
+		And I add the parameter "invalidParam" with the value "notValid"
 	When I make a GET request to "/Organization"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON

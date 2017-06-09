@@ -568,7 +568,6 @@ Scenario: Register patient with Prefer header minimal response
 	Then the response status code should indicate success
 		And the response body should be empty
 		And the content-type should be equal to null
-		And the content-length should be equal to zero
 		And the response location header should resolve to a patient resource with matching details to stored patient "registerPatient"
 		
 Scenario: Multiple family names

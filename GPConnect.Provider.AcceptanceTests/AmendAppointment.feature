@@ -203,7 +203,6 @@ Scenario: Amend appointment prefer header set to minimal
 	Then the response status code should indicate success
 		And the response body should be empty
 		And the content-type should be equal to null
-		And the content-length should be equal to zero
 
 Scenario: Conformance profile supports the amend appointment operation
 	Given I am using the default server

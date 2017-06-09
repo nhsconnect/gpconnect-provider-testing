@@ -33,7 +33,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
         
-        [Given(@"I create an appointment for patient ""(.*)"" called ""(.*)"" from schedule ""(.*)""")]
+        [Given(@"I create an appointment for patient ""([^""]*)"" called ""([^""]*)"" from schedule ""([^""]*)""")]
         public void GivenICreateAnAppointmentForPatientCalledFromSchedule(string patientKey, string appointmentName, string getScheduleBundleKey)
         {
             Patient patientResource = (Patient)HttpContext.StoredFhirResources[patientKey];
@@ -203,7 +203,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         // Will be changing
-        [Then(@"I create an appointment for patient ""(.*)"" called ""(.*)"" using a patient resource")]
+        [Then(@"I create an appointment for patient ""([^""]*)"" called ""([^""]*)"" using a patient resource")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference2(string patientName, string appointmentName)
         {
             Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
@@ -212,7 +212,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
         
         // Will be changing as it is not clear what it is doing
-        [Then(@"I create a new bundle to contain an appointment for patient ""(.*)"" called ""(.*)""")]
+        [Then(@"I create a new bundle to contain an appointment for patient ""([^""]*)"" called ""([^""]*)""")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference3(string patientName, string appointmentName)
         {
             Bundle bundle = new Bundle();
@@ -256,45 +256,45 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Extension.Add(ext);
         }
 
-        [Given(@"I change the appointment id to ""(.*)"" to the appointment called ""(.*)""")]
-        public void GivenIChangeTheAppointmentIdToToTheAppointmentCalled(string randomId, string appointmentName)
+        [Given(@"I change the appointment id to ""([^""]*)"" in the appointment stored against key ""([^""]*)""")]
+        public void GivenIChangeTheAppointmentIdToInTheAppointmentStoredAgainstKey(string id, string appointmentKey)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
-
-            appointment.Id = randomId;
-
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentKey];
+            appointment.Id = id;
         }
-        
-        [Then(@"I set the appointment start element to null for ""(.*)""")]
-        public void ThenISetTheAppointmentStartElementToNull(string appointmentName)
+
+        [Given(@"I change the appointment slot reference to ""([^""]*)"" in the appointment stored against key ""([^""]*)""")]
+        public void GivenIChangeTheAppointmentSlotReferenceToInTheAppointmentStoredAgainstKey(string slotRef, string appointmentKey)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentKey];
+            appointment.Slot.Clear();
+            ResourceReference reference = new ResourceReference();
+            reference.Reference = slotRef;
+            appointment.Slot.Add(reference);
+        }
+
+        [Given(@"I remove the appointment start element in appointment stored against key ""([^""]*)""")]
+        public void GivenIRemoveTheAppointmentStartElementInAppointmentStoredAgainstKey(string appointmentKey)
+        {
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentKey];
             appointment.Start = null;
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment end element to null for ""(.*)""")]
-        public void ThenISetTheAppointmentEndElementToNull(string appointmentName)
+        [Given(@"I remove the appointment end element in appointment stored against key ""([^""]*)""")]
+        public void GivenIRemoveTheAppointmentEndElementInAppointmentStoredAgainstKey(string appointmentKey)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentKey];
             appointment.End = null;
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
         
-        [Then(@"I set the appointment status element to null for ""(.*)""")]
-        public void ThenISetTheAppointmentStatusElementToNull(string appointmentName)
+        [Given(@"I remove the appointment status element in appointment stored against key ""([^""]*)""")]
+        public void GivenIRemoveTheAppointmentStatusElementInAppointmentStoredAgainstKey(string appointmentKey)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentKey];
             appointment.Status = null;
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment slot element to null for ""(.*)""")]
+        [Then(@"I set the appointment slot element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentSlotElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -303,7 +303,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
         
-        [Then(@"I set the appointment identifier value element to null for ""(.*)""")]
+        [Then(@"I set the appointment identifier value element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentIdentifierValueElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -312,7 +312,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment reason coding system element to null for ""(.*)""")]
+        [Then(@"I set the appointment reason coding system element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentReasonCodingSystemElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -321,7 +321,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment reason coding code element to null for ""(.*)""")]
+        [Then(@"I set the appointment reason coding code element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentReasonCodingCodeElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -330,7 +330,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment reason coding display element to null for ""(.*)""")]
+        [Then(@"I set the appointment reason coding display element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentReasonCodingDisplayElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -339,7 +339,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Patient participant status element to null for ""(.*)""")]
+        [Then(@"I set the appointment Patient participant status element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentPatientParticipantStatusElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -356,7 +356,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Practitioner participant status element to null for ""(.*)""")]
+        [Then(@"I set the appointment Practitioner participant status element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentPractitionerParticipantStatusElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -373,7 +373,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Location participant status element to null for ""(.*)""")]
+        [Then(@"I set the appointment Location participant status element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentLocationParticipantStatusElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -390,7 +390,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Patient participant type coding system element to null for ""(.*)""")]
+        [Then(@"I set the appointment Patient participant type coding system element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentPatientParticipantTypeCodingSystemElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -407,7 +407,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Patient participant type coding code element to null for ""(.*)""")]
+        [Then(@"I set the appointment Patient participant type coding code element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentPatientParticipantTypeCodingCodeElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -424,7 +424,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Patient participant type coding display element to null for ""(.*)""")]
+        [Then(@"I set the appointment Patient participant type coding display element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentPatientParticipantTypeCodingDisplayElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -441,7 +441,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Practitioner participant type coding system element to null for ""(.*)""")]
+        [Then(@"I set the appointment Practitioner participant type coding system element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentPractitionerParticipantTypeCodingSystemElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -458,7 +458,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Practitioner participant type coding code element to null for ""(.*)""")]
+        [Then(@"I set the appointment Practitioner participant type coding code element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentPractitionerParticipantTypeCodingCodeElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -475,7 +475,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Practitioner participant type coding display element to null for ""(.*)""")]
+        [Then(@"I set the appointment Practitioner participant type coding display element to null for ""([^""]*)""")]
         public void ThenISetTheAppointmentPractitionerParticipantTypeCodingDisplayElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -492,7 +492,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Given(@"I remove the participant from the appointment called ""(.*)"" which starts with reference ""(.*)""")]
+        [Given(@"I remove the participant from the appointment called ""([^""]*)"" which starts with reference ""([^""]*)""")]
         public void GivenIRemoveTheParticipantFromTheAppointmentCalledWhichStartsWithReference(string appointmentName, string referenceContainsValue)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -545,9 +545,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I book the appointment called ""([^""]*)"" with an invalid field")]
-        public void ThenIBookTheAppointmentCalledStringWithAnInvalidField(string appointmentName)
+        public void ThenIBookTheAppointmentCalledWithAnInvalidField(string appointmentKey)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentKey];
             string appointmentString = FhirSerializer.SerializeToJson(appointment);
             appointmentString = FhirHelper.AddInvalidFieldToResourceJson(appointmentString);
             HttpSteps.RestRequest(Method.POST, "/Appointment", appointmentString);
@@ -634,20 +634,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
         
-        [Then(@"the appointment location reference is present and is saved as ""(.*)""")]
-        public void ThenIMakeAGetRequestAndValidateTheReferences(string responseLocation)
-        {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            foreach (ParticipantComponent part in appointment.Participant)
-            {
-                string actor = part.Actor.Reference.ToString();
-                if (actor.Contains("Location"))
-                {
-                    HttpContext.resourceNameStored.Add(responseLocation, actor); 
-                }
-            }
-        }
-        
         [Then(@"the appointment participant contains a type is should have a valid system and code")]
         public void ThenTheAppointmentParticipantContainsATypeIsShouldHaveAValidSystemAndCode()
         {
@@ -664,28 +650,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
                 }
             }
-        }
-
-        [Then(@"if the location response resource contains an identifier it is valid")]
-        public void ThenIfTheLocationResponseResourceContainsAnIdentifierItIsValid()
-        {
-            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
-            Location location = (Location)FhirContext.FhirResponseResource;
-
-            location.Identifier.Count.ShouldBeLessThanOrEqualTo(2, "Too many location identifiers.");
-
-            var odsSystemCount = 0;
-
-            foreach (Identifier identifier in location.Identifier)
-            {
-                if ("http://fhir.nhs.net/Id/ods-site-code".Equals(identifier.System))
-                {
-                    identifier.Value.ShouldNotBeNullOrEmpty();
-                    odsSystemCount++;
-                }
-            }
-
-            odsSystemCount.ShouldBeLessThanOrEqualTo(1, "Too many ods-site-code systems.");
         }
 
         [Then(@"if the returned appointment category element is present it is populated with the correct values")]
@@ -807,6 +771,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
         
+        [Then(@"any location participant references included in returned appointment should be valid")]
+        public void ThenAnyLocationParticipantReferencesIncludedInReturnedAppointmentShouldBeValid()
+        {
+            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            foreach (var participant in appointment.Participant) {
+                if (participant.Actor.Reference.Contains("Location/")) {
+                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", participant.Actor.Reference);
+                    returnedResource.ShouldNotBeNull("Practitioner reference returns a null location");
+                    returnedResource.GetType().ShouldBe(typeof(Location));
+                }
+            }
+        }
+
         private Coding buildReasonForAppointment(string system, string code, string display)
         {
             Coding codingSnomedCT = new Coding();
