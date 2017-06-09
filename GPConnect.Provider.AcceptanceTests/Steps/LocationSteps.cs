@@ -198,10 +198,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             location.Meta.VersionId.ShouldNotBeNull();
             location.Meta.Profile.ShouldNotBeNull();
 
+            var count = 0;
+
             foreach (string profile in location.Meta.Profile)
             {
                 profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
+                count++;
             }
+
+            count.ShouldBe(1);
         }
         
         [Then(@"the response Location entry should contain a name element")]
