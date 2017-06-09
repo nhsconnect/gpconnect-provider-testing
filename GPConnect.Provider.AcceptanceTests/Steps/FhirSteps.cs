@@ -621,5 +621,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
             FhirContext.SaveToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
         }
+
+        [Then(@"the response resource logical identifier should match that of stored resource ""([^""]*)""")]
+        public void TheResponseResourceLogicalIdentifierShouldMatchThatOfStoredResource(string resource)
+        {
+            var id = HttpContext.StoredFhirResources[resource].Id;
+
+            FhirContext.FhirResponseResource.Id.ShouldBe(id);
+        }
     }
 }

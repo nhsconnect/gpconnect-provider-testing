@@ -11,6 +11,7 @@ Scenario Outline: Location read successful request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Location resource
+		And the response resource logical identifier should match that of stored resource "location1"
 	Examples: 
 		| Location |
 		| SIT1     |
@@ -127,7 +128,7 @@ Scenario: Conformance profile supports the Location read operation
 		And the conformance profile should contain the "Location" resource with a "read" interaction
 
 Scenario Outline: Location read resource conforms to GP-Connect specification
-Given I get location "SIT1" id and save it as "location1"
+    Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 		And I set the Accept header to "<Header>"
@@ -150,10 +151,46 @@ Given I get location "SIT1" id and save it as "location1"
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
-@ignore
-Scenario: If-None-Match read location on a matching version
-	# Need to check if this is supported
+Scenario: Read location should contain ETag
+	Given I get location "SIT1" id and save it as "location1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
+	When I get location "location1" and use the id to make a get request to the url "Location"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Location resource
+		And the response should contain the ETag header matching the resource version
 
-@ignore
-Scenario: If-None-Match read location on a non matching version
-	# Need to check if this is supported
+Scenario: Read location If-None-Match should return a 304 on match
+	Given I get location "SIT1" id and save it as "location1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
+	When I make a GET request for location "location1" with If-None-Match header
+	Then the response status code should be "304"
+	
+Scenario: Read location If-None-Match should return full resource if no match
+	Given I get location "SIT1" id and save it as "location1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
+		And I set the If-None-Match header to "W/\"somethingincorrect\""
+	When I get location "location1" and use the id to make a get request to the url "Location"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Location resource
+		And the response should contain the ETag header matching the resource version
+
+Scenario: VRead location _history with current etag should return current location
+	Given I get location "SIT1" id and save it as "location1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
+	When I perform a location vread for location "location1"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Location resource
+		
+Scenario: VRead location _history with invalid etag should give a 404
+	Given I get location "SIT1" id and save it as "location1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
+	When I perform a location vread for location "location1" with invalid ETag
+	Then the response status code should be "404"

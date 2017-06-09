@@ -7,6 +7,7 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
 using System.Collections.Generic;
+using GPConnect.Provider.AcceptanceTests.Constants;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -68,6 +69,33 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             string URL = "/Location/" + id;
             When($@"I make a GET request to ""{URL}""");
+        }
+
+        [When(@"I make a GET request for location ""([^""]*)"" with If-None-Match header")]
+        public void IMakeAGETRequestForLocationWithIf_None_MatchHeader(string location)
+        {
+            var locationResource = HttpContext.StoredFhirResources[location];
+            var etag = "W/\"" + locationResource.Meta.VersionId + "\"";
+
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfNoneMatch, etag);
+            WhenIMakeAGetRequestForALocationWithId(locationResource.Id);
+        }
+
+        [When(@"I perform a location vread for location ""([^""]*)""")]
+        public void IPerformALocationVReadForLocation(string location)
+        {
+            var locationResource = HttpContext.StoredFhirResources[location];
+
+            var versionId = HttpContext.StoredFhirResources[location].Meta.VersionId;
+
+            When($@"I make a GET request to ""/Location/{locationResource.Id}/_history/{versionId}""");
+        }
+
+        [When(@"I perform a location vread for location ""([^""]*)"" with invalid ETag")]
+        public void IPerformALocationVReadForLocationWithInvalidETag(string location)
+        {
+            var locationResource = HttpContext.StoredFhirResources[location];
+            When($@"I make a GET request to ""/Location/{locationResource.Id}/_history/badETag""");
         }
 
         [Given(@"I add the location identifier parameter with system ""(.*)"" and value ""(.*)""")]
