@@ -1,4 +1,4 @@
-﻿@Practitioner
+﻿@practitioner
 Feature: Practitioner
 
 Background:
@@ -23,7 +23,7 @@ Scenario Outline: Practitioner search success
 		| practitioner3 | 1         | 2        |
 		| practitioner4 | 0         | 0        |
 		| practitioner5 | 2         | 3        |
-		
+
 Scenario Outline: Practitioner search with failure due to invalid identifier
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
@@ -72,7 +72,7 @@ Scenario Outline: Practitioner search where identifier contains the incorrect ca
 		| idenddstifier |
 		| Idenddstifier |
 		| Identifier    |
-		
+
 Scenario Outline: Practitioner search parameter order test
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
@@ -88,7 +88,7 @@ Scenario Outline: Practitioner search parameter order test
 		| _format    | identifier | application/xml+fhir                              | http://fhir.nhs.net/Id/sds-user-id\|practitioner2 | XML        |
 		| identifier | _format    | http://fhir.nhs.net/Id/sds-user-id\|practitioner2 | application/json+fhir                             | JSON       |
 		| identifier | _format    | http://fhir.nhs.net/Id/sds-user-id\|practitioner2 | application/xml+fhir                              | XML        |
-		
+
 Scenario Outline: Practitioner search accept header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
@@ -200,7 +200,7 @@ Scenario: Practitioner search should not contain photo or qualification informat
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-        And the practitioner resource should not contain unwanted fields
+		And the practitioner resource should not contain unwanted fields
 
 Scenario: Practitioner search contains communication element
 	Given I am using the default server
@@ -211,7 +211,7 @@ Scenario: Practitioner search contains communication element
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
-		
+
 Scenario: Practitioner search multiple identifier parameter failure
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction

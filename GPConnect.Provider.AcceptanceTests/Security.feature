@@ -1,7 +1,7 @@
 ﻿@security
 Feature: Security
 
-Scenario: Security reject a  non ssl request
+Scenario: Security reject a non ssl request
 	Given I am using the default server
 		And I am not using TLS Connection
 		And I am connecting to server on port "80"

@@ -94,11 +94,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessRecord.feature</DependentUpon>
     </Compile>
-    <Compile Include="Audit.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Audit.feature</DependentUpon>
-    </Compile>
     <Compile Include="BookAppointment.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -131,11 +126,6 @@
     </Compile>
     <Compile Include="Helpers\AppSettingsHelper.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
-    <Compile Include="Foundation.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Foundation.feature</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\FhirHelper.cs" />
     <Compile Include="Helpers\GlobalContextHelper.cs" />
     <Compile Include="Helpers\IGlobalContextHelper.cs" />
@@ -274,10 +264,6 @@
       <LastGenOutput>AccessRecord.feature.cs</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="Audit.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Audit.feature.cs</LastGenOutput>
-    </None>
     <None Include="BookAppointment.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BookAppointment.feature.cs</LastGenOutput>
@@ -289,10 +275,6 @@
     <None Include="FhirBase.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FhirBase.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Foundation.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Foundation.feature.cs</LastGenOutput>
     </None>
     <None Include="LocationRead.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

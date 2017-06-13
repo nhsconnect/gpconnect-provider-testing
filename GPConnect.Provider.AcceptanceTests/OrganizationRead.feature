@@ -1,8 +1,8 @@
-﻿Feature: OrganizationRead
+﻿@organization
+Feature: OrganizationRead
 
 Background:
 	Given I have the test ods codes
-
 
 Scenario Outline: Organization Read successful request
 	Given I get organization "<Organization>" id and save it as "ORG1ID"
@@ -13,7 +13,7 @@ Scenario Outline: Organization Read successful request
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
 		And the returned resource shall contains a logical id
-		Examples: 
+	Examples:
 		| Organization |
 		| ORG1         |
 		| ORG2         |
@@ -25,7 +25,7 @@ Scenario Outline: Organization read invalid request invalid id
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
 	When I make a GET request for a organization using an invalid id of "<InvalidId>"
 	Then the response status code should be "404"
-		Examples: 
+	Examples:
 		| InvalidId |
 		| 1@        |
 		| 9i        |
@@ -37,7 +37,7 @@ Scenario Outline: Organization read invalid request invalid URL
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
 	When I get organization "ORG1ID" and use the id to make a get request to the url "<InvalidURL>"
 	Then the response status code should be "400"
-		Examples: 
+	Examples:
 		| InvalidURL    |
 		| Organizations |
 		| Organization! |
@@ -52,7 +52,7 @@ Scenario Outline: Organization read failure due to missing header
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		Examples:
+	Examples:
 		| Header            |
 		| Ssp-TraceID       |
 		| Ssp-From          |
@@ -68,13 +68,13 @@ Scenario Outline: Organization read failure with incorrect interaction id
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		Examples:
-		  | interactionId                                                     |
-		  | urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3     |
-		  | urn:nhs:names:services:gpconnect:fhir:rest:read:practitioners     |
-		  | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		  |                                                                   |
-		  | null                                                              |
+	Examples:
+		| interactionId                                                     |
+		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3     |
+		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioners     |
+		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		|                                                                   |
+		| null                                                              |
 
 Scenario Outline: Organization read _format parameter only
 	Given I get organization "ORG1" id and save it as "ORG1ID"
@@ -85,10 +85,10 @@ Scenario Outline: Organization read _format parameter only
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Organization resource
-		Examples:
-        | Parameter             | BodyFormat |
-        | application/json+fhir | JSON       |
-        | application/xml+fhir  | XML        |
+	Examples:
+		| Parameter             | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
 Scenario Outline: Organization read accept header and _format
 	Given I get organization "ORG2" id and save it as "ORG2ID"
@@ -101,12 +101,12 @@ Scenario Outline: Organization read accept header and _format
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Organization resource
 		And the returned resource shall contains a logical id
-		  Examples:
-        | Header                | Parameter             | BodyFormat |
-        | application/json+fhir | application/json+fhir | JSON       |
-        | application/json+fhir | application/xml+fhir  | XML        |
-        | application/xml+fhir  | application/json+fhir | JSON       |
-        | application/xml+fhir  | application/xml+fhir  | XML        |
+	Examples:
+		| Header                | Parameter             | BodyFormat |
+		| application/json+fhir | application/json+fhir | JSON       |
+		| application/json+fhir | application/xml+fhir  | XML        |
+		| application/xml+fhir  | application/json+fhir | JSON       |
+		| application/xml+fhir  | application/xml+fhir  | XML        |
 	
 Scenario: Conformance profile supports the Organization read operation
 	Given I am using the default server
@@ -203,4 +203,3 @@ Scenario: Check that the optional fields are populated in the Organization resou
 	# telecom - Telecom information for the Organization, can be multiple instances for different types.
 	# address - Address(s) for the Organization.
 	# contact - the details of a person, telecom or address for contact with the organizaiton.
-

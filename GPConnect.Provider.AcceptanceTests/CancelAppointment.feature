@@ -1,4 +1,5 @@
-﻿Feature: CancelAppointment
+﻿@appointment
+Feature: CancelAppointment
 
 Background:
 	Given I have the test patient codes
@@ -15,7 +16,7 @@ Scenario Outline: I perform a successful cancel appointment
 		And the returned appointment resource status should be set to cancelled
 		And the cancellation reason in the returned appointment response should be equal to "Double booked"
 		And the returned appointment resource should contain meta data profile and version id
-	Examples: 
+	Examples:
 		| PatientName  |
 		| patient1     |
 		| patient2     |
@@ -43,7 +44,7 @@ Scenario Outline: I perform cancel appointment and update an element which is in
 	When I cancel the appointment with the key "patientApp" and set the reason to double booked
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples: 
+	Examples:
 		| PatientName |
 		| patient1    |
 		| patient2    |
@@ -58,7 +59,7 @@ Scenario Outline: Cancel appointment sending invalid URL
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 	When I set the URL to "<url>" and cancel appointment with key "patientApp"
 	Then the response status code should be "404"
-	Examples: 
+	Examples:
 		| url             |
 		| /appointment/!  |
 		| /Appointments/# |
@@ -89,12 +90,12 @@ Scenario Outline: Cancel appointment failure with incorrect interaction id
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-	  | interactionId                                                     |
-	  | urn:nhs:names:services:gpconnect:fhir:rest:update:appointmentss   |
-	  | urn:nhs:names:services:gpconnect:fhir:rest:update:appointmenT     |
-	  | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-	  |                                                                   |
-	  | null                                                              |
+		| interactionId                                                     |
+		| urn:nhs:names:services:gpconnect:fhir:rest:update:appointmentss   |
+		| urn:nhs:names:services:gpconnect:fhir:rest:update:appointmenT     |
+		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		|                                                                   |
+		| null                                                              |
 
 Scenario Outline: Cancel appointment _format parameter only
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
@@ -107,9 +108,9 @@ Scenario Outline: Cancel appointment _format parameter only
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
 	Examples:
-        | Parameter             | BodyFormat |
-        | application/json+fhir | JSON       |
-        | application/xml+fhir  | XML        |
+		| Parameter             | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
 Scenario Outline: Cancel appointment accept header only
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
@@ -122,40 +123,40 @@ Scenario Outline: Cancel appointment accept header only
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
 	Examples:
-        | Header                | BodyFormat |
-        | application/json+fhir | JSON       |
-        | application/xml+fhir  | XML        |
+		| Header                | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
 Scenario Outline: Cancel appointment accept header and _format parameter
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 		And I set the Accept header to "<Header>"
-        And I add the parameter "_format" with the value "<Parameter>"
+		And I add the parameter "_format" with the value "<Parameter>"
 	When I cancel the appointment with the key "patientApp" and set the reason to double booked
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
 	Examples:
-	    | Header                | Parameter             | BodyFormat |
-        | application/json+fhir | application/json+fhir | JSON       |
-        | application/json+fhir | application/xml+fhir  | XML        |
-        | application/xml+fhir  | application/json+fhir | JSON       |
-        | application/xml+fhir  | application/xml+fhir  | XML        |
+		| Header                | Parameter             | BodyFormat |
+		| application/json+fhir | application/json+fhir | JSON       |
+		| application/json+fhir | application/xml+fhir  | XML        |
+		| application/xml+fhir  | application/json+fhir | JSON       |
+		| application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario Outline: Cancel appointment checking that the format parameter and accept header works correctly
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 		And I set the Accept header to "<AcceptHeader>"
-        And I add the parameter "_format" with the value "<FormatParam>"
+		And I add the parameter "_format" with the value "<FormatParam>"
 	When I cancel the appointment with the key "patientApp" and set the reason to double booked
 	Then the response status code should indicate success
 		And the response body should be FHIR <Format>
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
-	Examples: 
+	Examples:
 		| AcceptHeader          | FormatParam           | Format |
 		| application/xml+fhir  | application/xml+fhir  | XML    |
 		| application/json+fhir | application/json+fhir | JSON   |
@@ -178,7 +179,7 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
 		And the cancellation reason in the returned appointment response should be equal to "<reason>"
-	Examples: 
+	Examples:
 		| url                                                                                           | reason      |
 		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1 | Too busy    |
 		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1 | Car crashed |
@@ -192,11 +193,11 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "500"
-	Examples: 
+	Examples:
 		| url                                                                                                | reason   |
 		|                                                                                                    | Too busy |
 		| http://fhir.nhs.net/StructureDefinition/extension-gpINCORRECTect-appointment-cancellation-reason-1 | Too busy |
-		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1      | Too busy | 
+		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1      | Too busy |
 
 Scenario: Cancel appointment missing cancellation extension reason
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
@@ -206,7 +207,7 @@ Scenario: Cancel appointment missing cancellation extension reason
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "400"
-		
+
 Scenario: Conformance profile supports the cancel appointment operation
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -298,7 +299,7 @@ Scenario Outline: Cancel appointment prefer header set to representation
 		And the appointment resource should contain at least one participant
 		And if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
 		And the returned appointment resource should contain meta data profile and version id
-	Examples: 
+	Examples:
 		| PatientName |
 		| patient1    |
 		| patient2    |
@@ -327,7 +328,7 @@ Scenario Outline: Cancel appointment check the version id of the cancelled resou
 		And the returned appointment resource status should be set to cancelled
 		And the cancellation reason in the returned appointment response should be equal to "Double booked"
 		And the response version id should be different to the version id stored in "patientApp"
-	Examples: 
+	Examples:
 		| PatientName |
 		| patient1    |
 		| patient2    |

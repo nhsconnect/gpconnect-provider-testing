@@ -1,4 +1,4 @@
-﻿@fhir @accessrecord
+﻿@accessrecord
 Feature: AccessRecord
 
 Background:

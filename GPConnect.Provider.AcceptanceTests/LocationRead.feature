@@ -1,4 +1,5 @@
-﻿Feature: LocationRead
+﻿@location
+Feature: LocationRead
 
 Background:
 	Given I have the test ods codes
@@ -12,7 +13,7 @@ Scenario Outline: Location read successful request
 		And the response body should be FHIR JSON
 		And the response should be a Location resource
 		And the response resource logical identifier should match that of stored resource "location1"
-	Examples: 
+	Examples:
 		| Location |
 		| SIT1     |
 		| SIT2     |
@@ -23,7 +24,7 @@ Scenario Outline: Location read invalid id
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 	When I make a GET request for a location with id "<InvalidId>"
 	Then the response status code should be "404"
-	Examples: 
+	Examples:
 		| InvalidId         |
 		| thisIsAnInv@lidId |
 		|                   |
@@ -35,7 +36,7 @@ Scenario Outline: Location read invalid request URL
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 	When I get location "location1" and use the id to make a get request to the url "<InvalidURL>"
 	Then the response status code should be "404"
-	Examples: 
+	Examples:
 		| InvalidURL  |
 		| Locationss/ |
 		| Location!/  |
@@ -84,9 +85,9 @@ Scenario Outline: Location read _format parameter only
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Location resource
 	Examples:
-        | Parameter             | BodyFormat |
-        | application/json+fhir | JSON       |
-        | application/xml+fhir  | XML        |
+		| Parameter             | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
 Scenario Outline: Location read accept header
 	Given I get location "SIT1" id and save it as "location1"
@@ -101,7 +102,7 @@ Scenario Outline: Location read accept header
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
-		
+
 Scenario Outline: Location read accept header and _format
 	Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
@@ -113,11 +114,11 @@ Scenario Outline: Location read accept header and _format
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Location resource
 	Examples:
-        | Header                | Parameter             | BodyFormat |
-        | application/json+fhir | application/json+fhir | JSON       |
-        | application/json+fhir | application/xml+fhir  | XML        |
-        | application/xml+fhir  | application/json+fhir | JSON       |
-        | application/xml+fhir  | application/xml+fhir  | XML        |
+		| Header                | Parameter             | BodyFormat |
+		| application/json+fhir | application/json+fhir | JSON       |
+		| application/json+fhir | application/xml+fhir  | XML        |
+		| application/xml+fhir  | application/json+fhir | JSON       |
+		| application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario: Conformance profile supports the Location read operation
 	Given I am using the default server
@@ -128,7 +129,7 @@ Scenario: Conformance profile supports the Location read operation
 		And the conformance profile should contain the "Location" resource with a "read" interaction
 
 Scenario Outline: Location read resource conforms to GP-Connect specification
-    Given I get location "SIT1" id and save it as "location1"
+	Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 		And I set the Accept header to "<Header>"
@@ -187,7 +188,7 @@ Scenario: VRead location _history with current etag should return current locati
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Location resource
-		
+
 Scenario: VRead location _history with invalid etag should give a 404
 	Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server

@@ -19,7 +19,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("AccessRecord")]
-    [NUnit.Framework.CategoryAttribute("fhir")]
     [NUnit.Framework.CategoryAttribute("accessrecord")]
     public partial class AccessRecordFeature
     {
@@ -34,7 +33,6 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AccessRecord", null, ProgrammingLanguage.CSharp, new string[] {
-                        "fhir",
                         "accessrecord"});
             testRunner.OnFeatureStart(featureInfo);
         }

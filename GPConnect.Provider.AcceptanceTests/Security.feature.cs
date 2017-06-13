@@ -66,10 +66,10 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Security reject a  non ssl request")]
+        [NUnit.Framework.DescriptionAttribute("Security reject a non ssl request")]
         public virtual void SecurityRejectANonSslRequest()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Security reject a  non ssl request", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Security reject a non ssl request", ((string[])(null)));
 #line 4
 this.ScenarioSetup(scenarioInfo);
 #line 5

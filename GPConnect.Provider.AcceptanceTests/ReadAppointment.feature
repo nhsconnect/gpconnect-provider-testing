@@ -1,4 +1,5 @@
-﻿Feature: ReadAppointment
+﻿@appointment
+Feature: ReadAppointment
 
 Background:
 	Given I have the test patient codes
@@ -12,7 +13,7 @@ Scenario Outline: I perform a successful Read appointment
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-	Examples: 
+	Examples:
 		| PatientName |
 		| patient1    |
 		| patient2    |
@@ -56,43 +57,43 @@ Scenario Outline: Read appointment failure with incorrect interaction id
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-    Examples:
-      | interactionId                                                     |
-      | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
-      | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-      |                                                                   |
-      | null                                                              |
+	Examples:
+		| interactionId                                                     |
+		| urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
+		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		|                                                                   |
+		| null                                                              |
 
 Scenario Outline: Read appointment _format parameter only
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-        And I add the parameter "_format" with the value "<Parameter>"
+		And I add the parameter "_format" with the value "<Parameter>"
 	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-    Examples:
-        | Parameter             | BodyFormat |
-        | application/json+fhir | JSON       |
-        | application/xml+fhir  | XML        |
-        
+	Examples:
+		| Parameter             | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
+
 Scenario Outline: Read appointment accept header and _format parameter
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 		And I set the Accept header to "<Header>"
-        And I add the parameter "_format" with the value "<Parameter>"
+		And I add the parameter "_format" with the value "<Parameter>"
 	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-    Examples:
-        | Header                | Parameter             | BodyFormat |
-        | application/json+fhir | application/json+fhir | JSON       |
-        | application/json+fhir | application/xml+fhir  | XML        |
-        | application/xml+fhir  | application/json+fhir | JSON       |
-        | application/xml+fhir  | application/xml+fhir  | XML        |   
+	Examples:
+		| Header                | Parameter             | BodyFormat |
+		| application/json+fhir | application/json+fhir | JSON       |
+		| application/json+fhir | application/xml+fhir  | XML        |
+		| application/xml+fhir  | application/json+fhir | JSON       |
+		| application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario: Read appointment valid request shall include id and structure definition profile
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -118,13 +119,13 @@ Scenario Outline: Read appointment check response contains required elements
 		And the appointment response resource contains an end date
 		And the appointment response resource contains a slot reference
 		And the appointment response resource contains atleast 2 participants a practitioner and a patient
-    Examples:
-        | AppointmentStatus | Header                | BodyFormat |
-        | Booked            | application/json+fhir | JSON       |
-        | Booked            | application/xml+fhir  | XML        |
-        | Cancelled         | application/json+fhir | JSON       |
-        | Cancelled         | application/xml+fhir  | XML        |
-		
+	Examples:
+		| AppointmentStatus | Header                | BodyFormat |
+		| Booked            | application/json+fhir | JSON       |
+		| Booked            | application/xml+fhir  | XML        |
+		| Cancelled         | application/json+fhir | JSON       |
+		| Cancelled         | application/xml+fhir  | XML        |
+
 Scenario: Read appointment if resource contains identifier then the value is mandatory
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -178,11 +179,11 @@ Scenario Outline: Read appointment if extensions are included they should be val
 		And if the returned appointment contains appointmentContactMethod extension the value should be valid
 		And if the returned appointment contains appointmentCancellationReason extension the value should be valid
 	Examples:
-        | AppointmentStatus | Header                | BodyFormat |
-        | Booked            | application/json+fhir | JSON       |
-        | Booked            | application/xml+fhir  | XML        |
-        | Cancelled         | application/json+fhir | JSON       |
-        | Cancelled         | application/xml+fhir  | XML        |
+		| AppointmentStatus | Header                | BodyFormat |
+		| Booked            | application/json+fhir | JSON       |
+		| Booked            | application/xml+fhir  | XML        |
+		| Cancelled         | application/json+fhir | JSON       |
+		| Cancelled         | application/xml+fhir  | XML        |
 
 Scenario: Read appointment and response should contain an ETag header
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"

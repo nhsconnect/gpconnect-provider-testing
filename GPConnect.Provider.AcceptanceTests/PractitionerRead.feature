@@ -1,10 +1,10 @@
-﻿Feature: PractitionerRead
+﻿@practitioner
+Feature: PractitionerRead
 
 Background:
 	Given I have the test patient codes
 	Given I have the test practitioner codes
 	Given I have the test ods codes
-
 
 Scenario: Practitioner read successful request
 	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
@@ -23,8 +23,8 @@ Scenario Outline: Practitioner read successful request checking the correct SDS 
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
-		And the practitioner resource should contain a role id equal to role id "<roleId>" or role id "<roleId2>" or role id "<roleId3>" 
-		Examples:
+		And the practitioner resource should contain a role id equal to role id "<roleId>" or role id "<roleId2>" or role id "<roleId3>"
+	Examples:
 		# na = not applicable, some practitioner have only 1 role id and some have numerous possibilitys
 		| practitioner  | roleId | roleId2 | roleId3 |
 		| practitioner2 | PT1234 | na      | na      |
@@ -37,7 +37,7 @@ Scenario Outline: Practitioner read invalid request invalid id
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 	When I make a GET request for a practitioner using an invalid id of "<InvalidId>" and url "Practitioner"
 	Then the response status code should be "404"
-		Examples: 
+	Examples:
 		| InvalidId |
 		| ##        |
 		| 1@        |
@@ -50,12 +50,12 @@ Scenario Outline: Practitioner read invalid request invalid URL
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 	When I get practitioner "practitioner1Saved" and use the id to make a get request to the url "<InvalidURL>"
 	Then the response status code should be "404"
-		Examples: 
+	Examples:
 		| InvalidURL    |
 		| Practitioners |
 		| Practitioner! |
 		| Practitioner2 |
-		
+
 Scenario Outline: Practitioner read failure due to missing header
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
 	Given I am using the default server
@@ -65,7 +65,7 @@ Scenario Outline: Practitioner read failure due to missing header
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		Examples:
+	Examples:
 		| Header            |
 		| Ssp-TraceID       |
 		| Ssp-From          |
@@ -81,13 +81,13 @@ Scenario Outline: Practitioner read failure with incorrect interaction id
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		Examples:
-		  | interactionId                                                     |
-		  | urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3     |
-		  | urn:nhs:names:services:gpconnect:fhir:rest:read:practitioners     |
-		  | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		  |                                                                   |
-		  | null                                                              |
+	Examples:
+		| interactionId                                                     |
+		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3     |
+		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioners     |
+		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		|                                                                   |
+		| null                                                              |
 
 Scenario Outline: Practitioner read _format parameter only
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
@@ -98,10 +98,10 @@ Scenario Outline: Practitioner read _format parameter only
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Practitioner resource
-		Examples:
-        | Parameter             | BodyFormat |
-        | application/json+fhir | JSON       |
-        | application/xml+fhir  | XML        |
+	Examples:
+		| Parameter             | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
 Scenario Outline: Practitioner read accept header and _format
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
@@ -113,12 +113,12 @@ Scenario Outline: Practitioner read accept header and _format
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Practitioner resource
-		  Examples:
-        | Header                | Parameter             | BodyFormat |
-        | application/json+fhir | application/json+fhir | JSON       |
-        | application/json+fhir | application/xml+fhir  | XML        |
-        | application/xml+fhir  | application/json+fhir | JSON       |
-        | application/xml+fhir  | application/xml+fhir  | XML        |
+	Examples:
+		| Header                | Parameter             | BodyFormat |
+		| application/json+fhir | application/json+fhir | JSON       |
+		| application/json+fhir | application/xml+fhir  | XML        |
+		| application/xml+fhir  | application/json+fhir | JSON       |
+		| application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario: Conformance profile supports the Practitioner read operation
 	Given I am using the default server
@@ -137,12 +137,12 @@ Scenario Outline: Practitioner read check meta data profile and version id
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 		And the practitioner resource it should contain meta data profile and version id
-		Examples:
+	Examples:
 		| practitioner  |
-		| practitioner1 | 
-		| practitioner2 | 
-		| practitioner3 | 
-		| practitioner5 | 
+		| practitioner1 |
+		| practitioner2 |
+		| practitioner3 |
+		| practitioner5 |
 
 Scenario: Practitioner read practitioner contains single name element
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
@@ -194,12 +194,12 @@ Scenario Outline: Practitioner read practitioner returned does not contain eleme
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 		And the single practitioner resource should not contain unwanted fields
-		Examples:
+	Examples:
 		| practitioner  |
-		| practitioner1 | 
-		| practitioner2 | 
-		| practitioner3 | 
-		| practitioner5 | 
+		| practitioner1 |
+		| practitioner2 |
+		| practitioner3 |
+		| practitioner5 |
 
 Scenario: Practitioner read response should contain an ETag header
 	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
@@ -216,7 +216,7 @@ Scenario: Practitioner read VRead of current resource should return resource
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 	When I perform a vread for practitioner "practitionerSaved"
-		Then the response status code should indicate success
+	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 
@@ -225,7 +225,7 @@ Scenario: Practiotioner read VRead of non existant version should return error
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
 	When I perform an practitioner vread with version id "NotRealVersionId" for practitioner stored against key "practitionerSaved"
-		Then the response status code should be "404"
+	Then the response status code should be "404"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 
@@ -244,7 +244,7 @@ Scenario: If the provider supports active and inactive practitioners is this inf
 @Manual
 @ignore
 Scenario: Check that the optional fields are populated in the practitioner resource if they are available in the provider system
-		# telecom - Telecom information for the practitioner, can be multiple instances for different types.
-		# address - Address(s) for the Practitioner.
-		# gender -  Gender of the practitioner
-		# practitionerRole - The list of Roles/Organizations that the Practitioner is associated with
+	# telecom - Telecom information for the practitioner, can be multiple instances for different types.
+	# address - Address(s) for the Practitioner.
+	# gender - Gender of the practitioner
+	# practitionerRole - The list of Roles/Organizations that the Practitioner is associated with

@@ -1,4 +1,5 @@
-﻿Feature: AmendAppointment
+﻿@appointment
+Feature: AmendAppointment
 
 Background:
 	Given I have the test patient codes
@@ -41,7 +42,6 @@ Scenario: Amend appointment and update element which cannot be updated
 	When I amend "CustomAppointment1" by changing the priority to "1"
 	Then the response status code should indicate authentication failure
 		And the response should be a OperationOutcome resource
-		
 
 Scenario Outline: Amend appointment sending invalid URL
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
@@ -49,7 +49,7 @@ Scenario Outline: Amend appointment sending invalid URL
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 	When I set the URL to "<url>" and amend "CustomAppointment1" by changing the comment to "hello"
 	Then the response status code should indicate failure
-		Examples: 
+	Examples:
 		| url                 |
 		| /Appointment/!      |
 		| /APPointment/23     |
@@ -81,13 +81,13 @@ Scenario Outline: Amend appointment failure with incorrect interaction id
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-    Examples:
-	  | interactionId                                                     |
-	  | urn:nhs:names:services:gpconnect:fhir:rest:update:appointmentt    |
-	  | urn:nhs:names:services:gpconnect:fhir:rest:update:appointmenT     |
-	  | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-	  |                                                                   |
-	  | null                                                              |
+	Examples:
+		| interactionId                                                     |
+		| urn:nhs:names:services:gpconnect:fhir:rest:update:appointmentt    |
+		| urn:nhs:names:services:gpconnect:fhir:rest:update:appointmenT     |
+		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		|                                                                   |
+		| null                                                              |
 
 Scenario Outline: Amend appointment _format parameter only
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
@@ -95,14 +95,14 @@ Scenario Outline: Amend appointment _format parameter only
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I amend "CustomAppointment1" by changing the comment to "customComment"
-		Then the response status code should indicate success
+	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the appointment resource should contain a comment which equals "customComment"
-    Examples:
-        | Parameter             | BodyFormat |
-        | application/json+fhir | JSON       |
-        | application/xml+fhir  | XML        |
+	Examples:
+		| Parameter             | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
 Scenario Outline: Amend appointment accept header and _format parameter
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
@@ -111,16 +111,16 @@ Scenario Outline: Amend appointment accept header and _format parameter
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I amend "CustomAppointment1" by changing the comment to "customComment"
-		Then the response status code should indicate success
+	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the appointment resource should contain a comment which equals "customComment"
-	  Examples:
-        | Header                | Parameter             | BodyFormat |
-        | application/json+fhir | application/json+fhir | JSON       |
-        | application/json+fhir | application/xml+fhir  | XML        |
-        | application/xml+fhir  | application/json+fhir | JSON       |
-        | application/xml+fhir  | application/xml+fhir  | XML        |
+	Examples:
+		| Header                | Parameter             | BodyFormat |
+		| application/json+fhir | application/json+fhir | JSON       |
+		| application/json+fhir | application/xml+fhir  | XML        |
+		| application/xml+fhir  | application/json+fhir | JSON       |
+		| application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario: Amend appointment and check the returned appointment resource is a valid resource
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
@@ -137,7 +137,7 @@ Scenario: Amend appointment and check the returned appointment resource is a val
 		And the appointment response resource contains a slot reference
 		And the appointment response resource contains atleast 2 participants a practitioner and a patient
 		And the returned appointment resource should contain meta data profile and version id
-		
+
 Scenario: Amend appointment if resource contains identifier then the value is manadatory
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
 	Given I am using the default server
@@ -221,7 +221,7 @@ Scenario: Amend appointment send an update with an invalid if-match header
 	Then the response status code should be "409"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
-		
+
 Scenario: Amend appointment valid if-match header
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
 	Given I am using the default server
@@ -240,7 +240,7 @@ Scenario: Amend appointment valid if-match header
 		And the response should be an Appointment resource
 		And the appointment resource should contain a comment which equals "customComment"
 
-Scenario: Amend appointment and send an invalid bundle resource 
+Scenario: Amend appointment and send an invalid bundle resource
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
@@ -249,7 +249,7 @@ Scenario: Amend appointment and send an invalid bundle resource
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Amend appointment and send an invalid appointment resource 
+Scenario: Amend appointment and send an invalid appointment resource
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
@@ -257,12 +257,3 @@ Scenario: Amend appointment and send an invalid appointment resource
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	
-		
-	
-
-
-
-
-
-

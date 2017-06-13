@@ -1,4 +1,5 @@
-﻿Feature: RegisterPatient
+﻿@patient
+Feature: RegisterPatient
 
 Background:
 	Given I have the test patient codes
@@ -16,14 +17,14 @@ Scenario Outline: Register patient send request to incorrect URL
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
-	Examples: 
+	Examples:
 		| regStartDate | url                            |
 		| 2017-05-05   | /Patient/$gpc.registerpatien   |
 		| 2016-12-05   | /PAtient/$gpc.registerpatient  |
 		| 1999-01-22   | /Patient/$gpc.registerpati#ent |
 		| 2017-08-12   | /Patient                       |
 
-Scenario Outline: Register patient with invalid interactionIds 
+Scenario Outline: Register patient with invalid interactionIds
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
 		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
@@ -36,7 +37,7 @@ Scenario Outline: Register patient with invalid interactionIds
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples: 
+	Examples:
 		| interactionId                                                          |
 		| urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments |
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatsssient |
@@ -58,7 +59,7 @@ Scenario Outline: Register patient with missing header
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples: 
+	Examples:
 		| Header            |
 		| Ssp-TraceID       |
 		| Ssp-From          |
@@ -140,7 +141,7 @@ Scenario Outline: Register patient with an invalid NHS number
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_VALUE"
-	Examples: 
+	Examples:
 		| nhsNumber   |
 		| 34555##4    |
 		|             |
@@ -176,7 +177,7 @@ Scenario Outline: Register patient and check all elements conform to the gp conn
 		And the response bundle should contain a patient resource which contains exactly 1 given name matching the patient stored against key "registerPatient"
 		And the response bundle should contain a patient resource which contains exactly 1 gender element matching the patient stored against key "registerPatient"
 		And the response bundle should contain a patient resource which contains exactly 1 birthDate element matching the patient stored against key "registerPatient"
-	Examples: 
+	Examples:
 		| ContentType           | Format |
 		| application/xml+fhir  | XML    |
 		| application/json+fhir | JSON   |
@@ -205,7 +206,7 @@ Scenario Outline: Register patient checking that the format parameter works corr
 		And the response bundle should contain a patient resource which contains exactly 1 given name matching the patient stored against key "registerPatient"
 		And the response bundle should contain a patient resource which contains exactly 1 gender element matching the patient stored against key "registerPatient"
 		And the response bundle should contain a patient resource which contains exactly 1 birthDate element matching the patient stored against key "registerPatient"
-	Examples: 
+	Examples:
 		| ContentType           | Format |
 		| application/xml+fhir  | XML    |
 		| application/json+fhir | JSON   |
@@ -235,7 +236,7 @@ Scenario Outline: Register patient checking that the format parameter and accept
 		And the response bundle should contain a patient resource which contains exactly 1 given name matching the patient stored against key "registerPatient"
 		And the response bundle should contain a patient resource which contains exactly 1 gender element matching the patient stored against key "registerPatient"
 		And the response bundle should contain a patient resource which contains exactly 1 birthDate element matching the patient stored against key "registerPatient"
-	Examples: 
+	Examples:
 		| ContentType           | AcceptHeader          | FormatParam           | Format |
 		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML    |
 		| application/json+fhir | application/json+fhir | application/json+fhir | JSON   |
@@ -478,7 +479,7 @@ Scenario Outline: Register patient with invalid parameters name
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples: 
+	Examples:
 	| ParameterName        |
 	| invalidName          |
 	| registerPatient test |
@@ -569,7 +570,7 @@ Scenario: Register patient with Prefer header minimal response
 		And the response body should be empty
 		And the content-type should be equal to null
 		And the response location header should resolve to a patient resource with matching details to stored patient "registerPatient"
-		
+
 Scenario: Multiple family names
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server
@@ -643,7 +644,7 @@ Scenario Outline: Invalid registration period
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples: 
+	Examples:
 	| StartDate  | EndDate    |
 	| abc        | 2018-12-24 |
 	| 2017-08-24 | invalid    |
@@ -695,7 +696,7 @@ Scenario Outline: Invalid registration status
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples: 
+	Examples:
 	| Code     |
 	| Z        |
 	| Active   |
@@ -717,13 +718,13 @@ Scenario Outline: Invalid registration type
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples: 
-	| Code             |
-	| Fully Registered |
-	| Private          |
-	| Temp             |
-	| Private          |
-	|                  |
+	Examples:
+		| Code             |
+		| Fully Registered |
+		| Private          |
+		| Temp             |
+		| Private          |
+		|                  |
 
 Scenario Outline: Additional not allowed elements
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
@@ -739,21 +740,21 @@ Scenario Outline: Additional not allowed elements
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples: 
-	| ElementToAdd  |
-	| active        |
-	| telecom       |
-	| deceased      |
-	| address       |
-	| marital       |
-	| births        |
-	| photo         |
-	| contact       |
-	| animal        |
-	| communication |
-	| careprovider  |
-	| managingorg   |
-	| link          |
+	Examples:
+		| ElementToAdd  |
+		| active        |
+		| telecom       |
+		| deceased      |
+		| address       |
+		| marital       |
+		| births        |
+		| photo         |
+		| contact       |
+		| animal        |
+		| communication |
+		| careprovider  |
+		| managingorg   |
+		| link          |
 
 Scenario Outline: JWT matches patient patient type request
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
@@ -768,11 +769,11 @@ Scenario Outline: JWT matches patient patient type request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples: 
-	| JWTType              |
-	| patient/*.read       |
-	| organization/*.read  |
-	| organization/*.write |
+	Examples:
+		| JWTType              |
+		| patient/*.read       |
+		| organization/*.read  |
+		| organization/*.write |
 
 Scenario: JWT patient reference match payload patients nhs number
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
