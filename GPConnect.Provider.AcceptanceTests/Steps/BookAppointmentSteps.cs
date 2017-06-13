@@ -759,7 +759,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             foreach (Extension appointmentCancellationReason in appointment.ModifierExtension)
             {
-                if (appointmentCancellationReason.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0"))
+                if (appointmentCancellationReason.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1"))
                 {
                     appointmentCancellationReason.ShouldNotBeNull();
                     appointmentCancellationReason.Url.ShouldBeOfType<Uri>();

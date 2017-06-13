@@ -64,7 +64,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             storedAppointment.Status = AppointmentStatus.Cancelled;
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
-            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "Double booked"));
+            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", "Double booked"));
             storedAppointment.ModifierExtension.Add(extension);
             HttpSteps.RestRequest(RestSharp.Method.PUT, URL, FhirSerializer.SerializeToJson(storedAppointment));
         }
@@ -77,7 +77,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             string url = "Appointment/" + storedAppointment.Id;
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
-            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0", "Double booked"));
+            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", "Double booked"));
             storedAppointment.ModifierExtension.Add(extension);
             HttpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
         }
@@ -174,18 +174,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     break;
             }
         }
-        
+
         [When(@"I cancel the appointment and set the cancel extension to have url ""(.*)"" and reason ""(.*)"" called ""(.*)""")]
-        public void WhenICancelTheAppointmentAndSetTheCancelExtensionToHaveURLCodeAndDisplayCalled(string url, string reasonString ,string appointmentName)
+        public void WhenICancelTheAppointmentAndSetTheCancelExtensionToHaveURLCodeAndDisplayCalled(string url, string reasonString, string appointmentName)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             storedAppointment.Status = AppointmentStatus.Cancelled;
             string fullUrl = "Appointment/" + storedAppointment.Id;
             Extension extension = new Extension();
-            List<Extension> extensionList = new List<Extension>();
             extension = (buildAppointmentCancelExtension(extension, url, reasonString));
             storedAppointment.ModifierExtension.Add(extension);
             HttpSteps.RestRequest(RestSharp.Method.PUT, fullUrl, FhirSerializer.SerializeToJson(storedAppointment));
+        }
+
+        [When(@"I cancel the appointment and set the cancel extension to have url ""(.*)"" and missing reason called ""(.*)""")]
+        public void WhenICancelTheAppointmentAndSetTheCancelExtensionToHaveURLAndMissingReasonCalled(string url, string appointmentName)
+        {
+            WhenICancelTheAppointmentAndSetTheCancelExtensionToHaveURLCodeAndDisplayCalled(url, null, appointmentName);
         }
 
         [Then("the returned appointment resource status should be set to cancelled")]
@@ -201,7 +206,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             foreach (var extension in appointment.Extension)
             {
-                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1-0"))
+                if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1"))
                 {
                     extension.Value.ShouldNotBeNull("There should be a value element within the appointment CancellationReason extension");
                     var extensionValueString = (FhirString)extension.Value;
@@ -256,17 +261,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 storedExtensions.Add(extension);
             }
+
             returnedExtensions.Sort();
             storedExtensions.Sort();
 
-            returnedExtensions.Count.ShouldBe(storedExtensions.Count);
+            returnedExtensions.Count.ShouldBe(storedExtensions.Count, "Appointment extenstion count is not equal.");
            
             for (int i = 0; i < returnedExtensions.Count; i++)
             {
                 storedExtensions[i].Equals(returnedExtensions[i]);
                 storedExtensions[i].Url.ShouldBe(returnedExtensions[i].Url);
                 storedExtensions[i].Value.ToString().ShouldBe(returnedExtensions[i].Value.ToString());
-
             }
         }
 
@@ -277,8 +282,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
             storedAppointment.Description.ShouldBe(returnedAppointment.Description);
         }
-
-
+        
         [Then(@"the start and end date of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenTheStartAndEndDateOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
@@ -311,8 +315,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 storedSlotReferences.Add(slotReference);
                 storedSlotDisplay.Add(slotReference.Display);
-
-
             }
 
             Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
@@ -334,22 +336,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             for (int i = 0; i < returnedSlotReferences.Count; i++)
             {
                 storedSlotReferences[i].Reference.Equals(returnedSlotReferences[i].Reference);
-               
             }
+
             for (int i = 0; i < returnedSlotDisplay.Count; i++)
             {
-                if (storedSlotDisplay[i] == null && returnedSlotDisplay[i] == null)
+                if (storedSlotDisplay[i] != null && returnedSlotDisplay[i] != null)
                 {
-                    continue;
+                    storedSlotDisplay[i].Equals(returnedSlotDisplay[i]);
                 }
-                    storedSlotDisplay[i].Equals(returnedSlotDisplay[i]); 
-
             }
-
-          
         }
-
-
+        
         [Then(@"the participants of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenThePatientParticipantsOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
@@ -366,8 +363,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             returnedAppointment.Participant.ShouldNotBeNull();
             foreach (Appointment.ParticipantComponent participant in returnedAppointment.Participant)
             {
-               
-                    returnedResponseAppointmentParticipants.Add(participant);
+                returnedResponseAppointmentParticipants.Add(participant);
             }
 
             returnedResponseAppointmentParticipants.Count.ShouldBe(savedAppointmentParticipants.Count);
@@ -380,16 +376,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-
-
         [Then(@"the appointment participants of the appointment must conform to the gp connect specifications")]
         public void ThenTheAppointmentParticipantPractitionerReferenceMustBeAValidReference()
         {
-         
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             foreach (Appointment.ParticipantComponent participant in appointment.Participant)
             {
-            
                 if (participant.Actor.Reference.StartsWith("Practitioner/"))
                 {
                     var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", participant.Actor.Reference);
@@ -397,15 +389,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     returnedResource.GetType().ShouldBe(typeof(Practitioner));
                     verifyPractitioner(returnedResource);
                 }
-
-
+                
                 if (participant.Actor.Reference.StartsWith("Patient/"))
                 {
                     var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", participant.Actor.Reference);
                     returnedResource.ShouldNotBeNull("Practitioner reference returns a null patient");
                     returnedResource.GetType().ShouldBe(typeof(Patient));
                     verifyPatient(returnedResource);
-
                 }
 
                 if (participant.Actor.Reference.StartsWith("Location/"))
@@ -416,7 +406,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     verifyLocation(returnedResource);
                 }
             }
-
         }
 
         private void verifyLocation(Resource location)
@@ -426,18 +415,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ThenIfTheLocationResourceShouldContainSystemCodeAndDisplayIfTheTypeCodingIsIncludedInTheResource(location);
             ThenIfTheLocationResourceContainsValidSystemCodeAndDisplayIfThePhysicalTypeCodingIsIncludedInTheResource(location);
             ThenIfTheLocationResourceContainsPartOfElementTheReferenceShouldReferenceAResourceInTheResponseBundle(location);
-
-
-            }
-
-
-
+        }
+        
         private void verifyPatient(Resource patient)
         {
             ThenThePatientResourceShouldContainMetaDataProfileAndVersionId(patient);
             ThenThePatientResourceMustContainIdentifierWithValidSystemAndValue(patient);
         }
-
         
         private void verifyPractitioner(Resource practitioner)
         {
@@ -445,7 +429,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ThenThePractitionerResourceContainsAnIdentifierThenItIsValid(practitioner);
             ThenIfThePractitionerResourceContainsAPractitionerRoleItIsValid(practitioner);
             ThenIfThePractitionerResourceHasCommunicationElementsContainingACodingThenThereMustBeASystemCodeAndDisplayElement(practitioner);
-       }
+        }
 
         [Then(@"the comment of ""(.*)"" and the returned response should be equal")]
         public void ThenTheCommentOfAndTheReturnedResponseShouldBeEqual(string appointmentName)
@@ -454,8 +438,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
             storedAppointment.Comment.ShouldBe(returnedAppointment.Comment);
         }
-
-
+        
         [Then(@"the practitoner resource ""(.*)"" must contain name with a valid subset of elements")]
         public void ThenThePractitionerResourceMustContainNameWithAValidSubsetOfElements(Resource practitionerPassed)
         {
@@ -516,9 +499,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
                     codingCount.ShouldBeLessThanOrEqualTo(1);
                 }
-
             }
-
         }
         
         [Then(@"if the practitioner resource ""(.*)"" has communicaiton elemenets containing a coding then there must be a system, code and display element")]
@@ -531,8 +512,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 AccessRecordSteps.shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
             }
-        
-         }
+        }
 
         [Then(@"the patient resource ""(.*)"" must contain identifier with valid system and value")]
         public void ThenThePatientResourceMustContainIdentifierWithValidSystemAndValue(Resource patientName)
@@ -600,7 +580,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     coding.Code.ShouldNotBeNullOrEmpty();
                     coding.Display.ShouldNotBeNullOrEmpty();
                 }
-
             }
         }
 
@@ -694,7 +673,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             extension.Value = reason;
             return extension;
         }
-
-
     }
 }
