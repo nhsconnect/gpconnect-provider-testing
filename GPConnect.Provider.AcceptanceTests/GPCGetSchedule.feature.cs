@@ -25,7 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "SearchForFreeSlots.feature"
+#line 1 "GPCGetSchedule.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]

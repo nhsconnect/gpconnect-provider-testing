@@ -94,15 +94,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessRecord.feature</DependentUpon>
     </Compile>
-    <Compile Include="BookAppointment.feature.cs">
+    <Compile Include="AppointmentBook.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BookAppointment.feature</DependentUpon>
+      <DependentUpon>AppointmentBook.feature</DependentUpon>
     </Compile>
-    <Compile Include="CancelAppointment.feature.cs">
+    <Compile Include="AppointmentCancel.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CancelAppointment.feature</DependentUpon>
+      <DependentUpon>AppointmentCancel.feature</DependentUpon>
     </Compile>
     <Compile Include="Constants\SpineConst.cs" />
     <Compile Include="Constants\FhirConst.cs" />
@@ -119,8 +119,8 @@
     <Compile Include="Data\NHSNoMap.cs" />
     <Compile Include="Data\PDS.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
-    <Compile Include="FhirBase.feature.cs">
-      <DependentUpon>FhirBase.feature</DependentUpon>
+    <Compile Include="FHIR.feature.cs">
+      <DependentUpon>FHIR.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -130,15 +130,15 @@
     <Compile Include="Helpers\GlobalContextHelper.cs" />
     <Compile Include="Helpers\IGlobalContextHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
-    <Compile Include="Html.feature.cs">
+    <Compile Include="HTML.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Html.feature</DependentUpon>
+      <DependentUpon>HTML.feature</DependentUpon>
     </Compile>
-    <Compile Include="Http.feature.cs">
+    <Compile Include="HTTP.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Http.feature</DependentUpon>
+      <DependentUpon>HTTP.feature</DependentUpon>
     </Compile>
     <Compile Include="Importers\RegisterPatientsImporter.cs" />
     <Compile Include="Importers\PractitionerCodeMapConverter.cs" />
@@ -164,8 +164,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OrganizationRead.feature</DependentUpon>
     </Compile>
-    <Compile Include="Practitioner.feature.cs">
-      <DependentUpon>Practitioner.feature</DependentUpon>
+    <Compile Include="PractitionerSearch.feature.cs">
+      <DependentUpon>PractitionerSearch.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -181,45 +181,45 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Patient.feature.cs">
+    <Compile Include="PatientSearch.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Patient.feature</DependentUpon>
+      <DependentUpon>PatientSearch.feature</DependentUpon>
     </Compile>
-    <Compile Include="AppointmentRetrieve.feature.cs">
+    <Compile Include="AppointmentSearch.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AppointmentRetrieve.feature</DependentUpon>
+      <DependentUpon>AppointmentSearch.feature</DependentUpon>
     </Compile>
     <Compile Include="PractitionerRead.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PractitionerRead.feature</DependentUpon>
     </Compile>
-    <Compile Include="ReadPatients.feature.cs">
-      <DependentUpon>ReadPatients.feature</DependentUpon>
+    <Compile Include="PatientRead.feature.cs">
+      <DependentUpon>PatientRead.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ReadAppointment.feature.cs">
+    <Compile Include="AppointmentRead.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ReadAppointment.feature</DependentUpon>
+      <DependentUpon>AppointmentRead.feature</DependentUpon>
     </Compile>
-    <Compile Include="RegisterPatient.feature.cs">
+    <Compile Include="PatientRegister.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RegisterPatient.feature</DependentUpon>
+      <DependentUpon>PatientRegister.feature</DependentUpon>
     </Compile>
-    <Compile Include="SearchForFreeSlots.feature.cs">
+    <Compile Include="GPCGetSchedule.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SearchForFreeSlots.feature</DependentUpon>
+      <DependentUpon>GPCGetSchedule.feature</DependentUpon>
     </Compile>
-    <Compile Include="AmendAppointment.feature.cs">
+    <Compile Include="AppointmentAmend.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AmendAppointment.feature</DependentUpon>
+      <DependentUpon>AppointmentAmend.feature</DependentUpon>
     </Compile>
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
     <Compile Include="Steps\AppointmentReadSteps.cs" />
@@ -248,10 +248,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Security.feature</DependentUpon>
     </Compile>
-    <Compile Include="SpineSecurityProxy.feature.cs">
+    <Compile Include="SSP.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SpineSecurityProxy.feature</DependentUpon>
+      <DependentUpon>SSP.feature</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HttpHeaderHelper.cs" />
     <Compile Include="Helpers\HttpParameterHelper.cs" />
@@ -264,17 +264,17 @@
       <LastGenOutput>AccessRecord.feature.cs</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="BookAppointment.feature">
+    <None Include="AppointmentBook.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>BookAppointment.feature.cs</LastGenOutput>
+      <LastGenOutput>AppointmentBook.feature.cs</LastGenOutput>
     </None>
-    <None Include="CancelAppointment.feature">
+    <None Include="AppointmentCancel.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CancelAppointment.feature.cs</LastGenOutput>
+      <LastGenOutput>AppointmentCancel.feature.cs</LastGenOutput>
     </None>
-    <None Include="FhirBase.feature">
+    <None Include="FHIR.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FhirBase.feature.cs</LastGenOutput>
+      <LastGenOutput>FHIR.feature.cs</LastGenOutput>
     </None>
     <None Include="LocationRead.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -288,25 +288,25 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>OrganizationRead.feature.cs</LastGenOutput>
     </None>
-    <None Include="Practitioner.feature">
+    <None Include="PractitionerSearch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Practitioner.feature.cs</LastGenOutput>
+      <LastGenOutput>PractitionerSearch.feature.cs</LastGenOutput>
     </None>
     <None Include="OrganizationSearch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>OrganizationSearch.feature.cs</LastGenOutput>
     </None>
-    <None Include="Patient.feature">
+    <None Include="PatientSearch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Patient.feature.cs</LastGenOutput>
+      <LastGenOutput>PatientSearch.feature.cs</LastGenOutput>
     </None>
-    <None Include="Html.feature">
+    <None Include="HTML.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Html.feature.cs</LastGenOutput>
+      <LastGenOutput>HTML.feature.cs</LastGenOutput>
     </None>
-    <None Include="Http.feature">
+    <None Include="HTTP.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Http.feature.cs</LastGenOutput>
+      <LastGenOutput>HTTP.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="JWT.feature">
@@ -317,37 +317,37 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PractitionerRead.feature.cs</LastGenOutput>
     </None>
-    <None Include="ReadPatients.feature">
+    <None Include="PatientRead.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ReadPatients.feature.cs</LastGenOutput>
+      <LastGenOutput>PatientRead.feature.cs</LastGenOutput>
     </None>
-    <None Include="ReadAppointment.feature">
+    <None Include="AppointmentRead.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ReadAppointment.feature.cs</LastGenOutput>
+      <LastGenOutput>AppointmentRead.feature.cs</LastGenOutput>
     </None>
-    <None Include="RegisterPatient.feature">
+    <None Include="PatientRegister.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>RegisterPatient.feature.cs</LastGenOutput>
+      <LastGenOutput>PatientRegister.feature.cs</LastGenOutput>
     </None>
-    <None Include="SearchForFreeSlots.feature">
+    <None Include="GPCGetSchedule.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SearchForFreeSlots.feature.cs</LastGenOutput>
+      <LastGenOutput>GPCGetSchedule.feature.cs</LastGenOutput>
     </None>
     <None Include="Security.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Security.feature.cs</LastGenOutput>
     </None>
-    <None Include="AppointmentRetrieve.feature">
+    <None Include="AppointmentSearch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AppointmentRetrieve.feature.cs</LastGenOutput>
+      <LastGenOutput>AppointmentSearch.feature.cs</LastGenOutput>
     </None>
-    <None Include="AmendAppointment.feature">
+    <None Include="AppointmentAmend.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AmendAppointment.feature.cs</LastGenOutput>
+      <LastGenOutput>AppointmentAmend.feature.cs</LastGenOutput>
     </None>
-    <None Include="SpineSecurityProxy.feature">
+    <None Include="SSP.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SpineSecurityProxy.feature.cs</LastGenOutput>
+      <LastGenOutput>SSP.feature.cs</LastGenOutput>
     </None>
     <None Include="validation.xml.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

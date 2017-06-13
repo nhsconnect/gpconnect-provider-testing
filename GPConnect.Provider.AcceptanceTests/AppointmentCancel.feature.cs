@@ -25,7 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "CancelAppointment.feature"
+#line 1 "AppointmentCancel.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]

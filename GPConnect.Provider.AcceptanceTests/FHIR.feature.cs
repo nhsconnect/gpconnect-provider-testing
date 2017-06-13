@@ -25,7 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "FhirBase.feature"
+#line 1 "FHIR.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]

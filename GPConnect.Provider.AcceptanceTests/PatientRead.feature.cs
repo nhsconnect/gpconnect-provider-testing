@@ -25,7 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "ReadPatients.feature"
+#line 1 "PatientRead.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
