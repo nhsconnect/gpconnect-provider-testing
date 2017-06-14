@@ -1035,7 +1035,7 @@ Scenario Outline: invalid request parameter names and case
 		And I set a valid time period start and end date
 		And I replace the parameter name "<ParamName>" with "<NewParamName>"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "422"
+	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 	Examples:
