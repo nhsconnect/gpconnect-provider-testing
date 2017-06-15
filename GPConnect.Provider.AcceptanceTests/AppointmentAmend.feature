@@ -1,9 +1,6 @@
 ﻿@appointment
 Feature: AmendAppointment
 
-Background:
-	Given I have the test ods codes
-
 Scenario: I perform a successful amend appointment and change the comment to a custom message
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
 	Given I am using the default server

@@ -1,9 +1,6 @@
 ﻿@location
 Feature: LocationRead
 
-Background:
-	Given I have the test ods codes
-
 Scenario Outline: Location read successful request
 	Given I get location "<Location>" id and save it as "location1"
 	Given I am using the default server

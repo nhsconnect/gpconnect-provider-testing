@@ -1,9 +1,6 @@
 ﻿@practitioner
 Feature: PractitionerRead
 
-Background:
-	Given I have the test ods codes
-
 Scenario: Practitioner read successful request
 	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
 	Given I am using the default server

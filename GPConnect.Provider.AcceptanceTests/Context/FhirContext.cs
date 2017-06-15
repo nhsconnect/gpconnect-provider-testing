@@ -22,7 +22,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         private static class Context
         {
-            public const string kFhirOrganizations = "fhirOrganizations";
             public const string kFhirRequestParameters = "fhirRequestParameters";
             public const string kFhirResponseResource = "fhirResponseResource";
         }
@@ -30,13 +29,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public FhirContext(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
-            FhirOrganizations = new Dictionary<string, string>();
-        }
-
-        public Dictionary<string, string> FhirOrganizations
-        {
-            get { return _scenarioContext.Get<Dictionary<string, string>>(Context.kFhirOrganizations); }
-            set { _scenarioContext.Set(value, Context.kFhirOrganizations); }
         }
 
         // FHIR Request

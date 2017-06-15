@@ -1,9 +1,6 @@
 ﻿@appointment
 Feature: CancelAppointment
 
-Background:
-	Given I have the test ods codes
-
 Scenario Outline: I perform a successful cancel appointment
 	Given I find or create an appointment with status Booked for patient "<PatientName>" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server

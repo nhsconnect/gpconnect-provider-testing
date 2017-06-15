@@ -33,7 +33,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIGetLocationIdAndSaveItAs(string orgName, string savedOrg)
         {
             string system = "http://fhir.nhs.net/Id/ods-site-code";
-            string value = FhirContext.FhirOrganizations[orgName];
+            string value = GlobalContext.OdsCodeMap[orgName];
 
             Given("I am using the default server");
             Given($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:location"" interaction");
@@ -103,7 +103,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add the location identifier parameter with system ""(.*)"" and value ""(.*)""")]
         public void GivenIAddTheLocationIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
         {
-            Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + FhirContext.FhirOrganizations[valueParameter]}""");
+            Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + GlobalContext.OdsCodeMap[valueParameter]}""");
         }
 
         [Then(@"the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier")]

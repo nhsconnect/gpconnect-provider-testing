@@ -8,12 +8,12 @@ namespace GPConnect.Provider.AcceptanceTests.Importers
 {
     public static class ODSCodeMapImporter
     {
-        public static List<ODSCodeMap> LoadCsv(string filename)
+        public static Dictionary<string, string> LoadCsv(string filename)
         {
             using (var csv = new CsvReader(new StreamReader(filename)))
             {
                 csv.Configuration.RegisterClassMap<ODSCodeMapConverter>();
-                return csv.GetRecords<ODSCodeMap>().ToList();
+                return csv.GetRecords<ODSCodeMap>().ToDictionary(x => x.NativeODSCode, x => x.ProviderODSCode);
             }
         }
     }

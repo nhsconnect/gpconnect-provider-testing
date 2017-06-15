@@ -14,10 +14,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public const string kTraceDirectory = "traceDirectory";
             public const string kPatient = "patient";
             public const string kPDSData = "pdsData";
-            public const string kODSCodeMapData = "odsCodeMapData";
-            public const string kNHSNoMapData = "NHSNoMapData";
             public const string kRegisterPatientsData = "RegisterPatientsData";
-            public const string kPractitionerCodeMapData = "practitionerCodeMapData";
             public const string kFhirGenderValueSet = "fhirGenderValueSet";
             public const string kFhirMaritalStatusValueSet = "fhirMaritalStatusValueSet";
             public const string kFhirRelationshipValueSet = "fhirRelationshipValueSet";
@@ -45,12 +42,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             set { GlobalContextHelper.SaveValue(Context.kPDSData, value); }
         }
 
-        public static List<ODSCodeMap> ODSCodeMapData
-        {
-            get { return GlobalContextHelper.GetValue<List<ODSCodeMap>>(Context.kODSCodeMapData); }
-            set { GlobalContextHelper.SaveValue(Context.kODSCodeMapData, value); }
-        }
-
         public static List<RegisterPatient> RegisterPatientsData
         {
             get { return GlobalContextHelper.GetValue<List<RegisterPatient>>(Context.kRegisterPatientsData); }
@@ -60,6 +51,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public static Dictionary<string, string> PractionerCodeMap { get; set; }
         public static Dictionary<string, string> PatientNhsNumberMap { get; set; }
 
+        public static Dictionary<string, string> OdsCodeMap { get; set; }
         // FHIR
 
         public static ValueSet FhirGenderValueSet

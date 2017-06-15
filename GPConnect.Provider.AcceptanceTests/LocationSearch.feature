@@ -1,9 +1,6 @@
 ﻿@location
 Feature: LocationSearch
 
-Background:
-	Given I have the test ods codes
-
 @ignore
 Scenario: if location contains status elements
 # There is no need to check that the location resource status element value sets are correct if included as this is done by the parse of the response within scenario above.

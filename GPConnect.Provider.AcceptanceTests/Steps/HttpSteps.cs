@@ -234,7 +234,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 var result = parameterValue.LastIndexOf('|');
                 var siteCode = parameterValue.Substring(parameterValue.LastIndexOf('|') + 1);
-                string mappedSiteValue = FhirContext.FhirOrganizations[siteCode];
+                string mappedSiteValue = GlobalContext.OdsCodeMap[siteCode];
                 HttpContext.RequestParameters.AddParameter(parameterName, "http://fhir.nhs.net/Id/ods-site-code|" + mappedSiteValue);
                 return;
             }

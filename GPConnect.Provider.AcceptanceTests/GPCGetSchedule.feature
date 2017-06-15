@@ -1,9 +1,6 @@
 ﻿@getschedule
 Feature: SearchForFreeSlots
 	
-Background:
-	Given I have the test ods codes
-	
 Scenario Outline: I successfully perform a gpc.getschedule operation
 	Given I am using the default server
 		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"

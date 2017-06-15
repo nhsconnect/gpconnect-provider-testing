@@ -1,9 +1,6 @@
 ﻿@appointment
 Feature: AppointmentRetrieve
 
-Background:
-	Given I have the test ods codes
-
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
 	Given I am using the default server
 		And I perform a patient search for patient "patient12" and store the first returned resources against key "registerPatient"

@@ -1,9 +1,6 @@
 ﻿@organization
 Feature: OrganizationSearch
 
-Background:
-	Given I have the test ods codes
-	
 Scenario Outline: Organization search success
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction

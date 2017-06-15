@@ -1,9 +1,6 @@
 ﻿@organization
 Feature: OrganizationRead
 
-Background:
-	Given I have the test ods codes
-
 Scenario Outline: Organization Read successful request
 	Given I get organization "<Organization>" id and save it as "ORG1ID"
 	Given I am using the default server

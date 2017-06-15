@@ -30,23 +30,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
             HttpSteps = httpSteps;
         }
-
-        [Given(@"I have the test ods codes")]
-        public void GivenIHaveTheTestODSCodes()
-        {
-            FhirContext.FhirOrganizations.Clear();
-
-            foreach (ODSCodeMap odsMap in GlobalContext.ODSCodeMapData)
-            {
-                Log.WriteLine("Mapped test ODS code {0} to {1}", odsMap.NativeODSCode, odsMap.ProviderODSCode);
-                FhirContext.FhirOrganizations.Add(odsMap.NativeODSCode, odsMap.ProviderODSCode);
-            }
-        }
         
         [Given(@"I add the organization identifier parameter with system ""(.*)"" and value ""(.*)""")]
         public void GivenIAddTheOrganizationIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
         {
-            Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + FhirContext.FhirOrganizations[valueParameter]}""");
+            Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + GlobalContext.OdsCodeMap[valueParameter]}""");
         }
 
         [Then(@"the response should contain ods-([^""]*)-codes ""([^""]*)""")]
@@ -56,7 +44,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             foreach (var element in elementValues.Split(new char[] { '|' }))
             {
-                referenceValueList.Add(FhirContext.FhirOrganizations[element]);
+                referenceValueList.Add(GlobalContext.OdsCodeMap[element]);
             }
 
             string referenceValues = String.Join("|", referenceValueList);
@@ -103,7 +91,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
          
             string system = "http://fhir.nhs.net/Id/ods-organization-code";
-            string value = FhirContext.FhirOrganizations[orgName];
+            string value = GlobalContext.OdsCodeMap[orgName];
  
             Given("I am using the default server");
             Given($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:organization"" interaction");

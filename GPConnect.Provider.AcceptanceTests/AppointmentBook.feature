@@ -1,9 +1,6 @@
 ﻿@appointment
 Feature: BookAppointment
 
-Background:
-	Given I have the test ods codes
-
 Scenario: Book single appointment for patient
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
