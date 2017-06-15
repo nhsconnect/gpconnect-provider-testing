@@ -199,7 +199,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Slot slot = (Slot)entry.Resource;
                     slot.Schedule.Reference.ShouldNotBeNull("There must be a Schedule reference within all slots.");
                     slot.Schedule.Reference.ShouldNotBeEmpty("There must be a Schedule reference within all slots.");
-                    AccessRecordSteps.responseBundleContainsReferenceOfType(slot.Schedule.Reference, ResourceType.Schedule);
+                    AccessRecordSteps.ResponseBundleContainsReferenceOfType(slot.Schedule.Reference, ResourceType.Schedule);
                 }
             }
         }
@@ -237,7 +237,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     schedule.Actor.ShouldNotBeNull();
                     schedule.Actor.Reference.ShouldNotBeNull();
                     schedule.Actor.Reference.ShouldStartWith("Location/");
-                    AccessRecordSteps.responseBundleContainsReferenceOfType(schedule.Actor.Reference, ResourceType.Location);
+                    AccessRecordSteps.ResponseBundleContainsReferenceOfType(schedule.Actor.Reference, ResourceType.Location);
                 }
             }
         }
@@ -307,7 +307,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         var practitionerReference = ((ResourceReference)extension.Value).Reference;
                         practitionerReference.ShouldNotBeNull();
                         practitionerReference.ShouldStartWith("Practitioner/");
-                        AccessRecordSteps.responseBundleContainsReferenceOfType(practitionerReference, ResourceType.Practitioner);
+                        AccessRecordSteps.ResponseBundleContainsReferenceOfType(practitionerReference, ResourceType.Practitioner);
                     }
                 }
             }

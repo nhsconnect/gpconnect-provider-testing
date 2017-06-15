@@ -529,7 +529,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             //If the practitioner has a communicaiton elemenets containing a coding then there must be a system, code and display element. There must only be one coding per communication element.
             foreach (CodeableConcept codeableConcept in practitioner.Communication)
             {
-                AccessRecordSteps.shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
+                AccessRecordSteps.ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
             }
         
          }
@@ -628,7 +628,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (location.PartOf != null)
             {
                 location.PartOf.Reference.ShouldNotBeNullOrEmpty();
-                AccessRecordSteps.responseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
+                AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
             }
         }
 
@@ -639,7 +639,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (location.ManagingOrganization != null)
             {
                 location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
-                AccessRecordSteps.responseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
+                AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
             }
         }
 

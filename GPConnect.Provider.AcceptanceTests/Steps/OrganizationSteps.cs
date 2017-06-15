@@ -91,7 +91,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Organization organization = (Organization)entry.Resource;
                     if (organization.Type != null && organization.Type.Coding != null) {
                         organization.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
-                        AccessRecordSteps.shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirMaritalStatusValueSet, organization.Type.Coding);
+                        AccessRecordSteps.ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirMaritalStatusValueSet, organization.Type.Coding);
                         }
                 }
             }

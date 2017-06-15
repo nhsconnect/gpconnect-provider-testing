@@ -196,7 +196,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     if (location.PartOf != null)
                     {
                         location.PartOf.Reference.ShouldNotBeNullOrEmpty();
-                        AccessRecordSteps.responseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
+                        AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
                     }
                 }
             }
@@ -213,7 +213,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     if (location.ManagingOrganization != null)
                     {
                         location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
-                        AccessRecordSteps.responseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
+                        AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
                     }
                 }
             }
@@ -268,7 +268,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (location.ManagingOrganization != null)
             {
                 location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
-                AccessRecordSteps.responseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
+                AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
             }
         }
 
@@ -279,7 +279,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (location.PartOf != null)
             {
                 location.PartOf.Reference.ShouldNotBeNullOrEmpty();
-                AccessRecordSteps.responseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
+                AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
             }
         }
 

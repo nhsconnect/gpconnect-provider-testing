@@ -1,6 +1,5 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Data;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
@@ -8,7 +7,6 @@ using Hl7.Fhir.Serialization;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Shouldly;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
@@ -19,74 +17,74 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     [Binding]
     public sealed class AccessRecordSteps : TechTalk.SpecFlow.Steps
     {
-        private readonly FhirContext FhirContext;
-        private readonly HttpContext HttpContext;
-        private readonly HttpSteps HttpSteps;
+        private readonly FhirContext _fhirContext;
+        private readonly HttpContext _httpContext;
+        private readonly HttpSteps _httpSteps;
 
         public AccessRecordSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps)
         {
-            FhirContext = fhirContext;
-            HttpContext = httpContext;
-            HttpSteps = httpSteps;
+            _fhirContext = fhirContext;
+            _httpContext = httpContext;
+            _httpSteps = httpSteps;
         }
 
         [Given(@"I have the test patient codes")]
         public void GivenIHaveTheTestPatientCodes()
         {
-            FhirContext.FhirPatients.Clear();
+            _fhirContext.FhirPatients.Clear();
 
-            foreach (NHSNoMap nhsNoMap in GlobalContext.NHSNoMapData)
+            GlobalContext.NHSNoMapData.ForEach(nhsNoMap =>
             {
                 Log.WriteLine("Mapped test Practitioner code {0} to {1}", nhsNoMap.NativeNHSNumber, nhsNoMap.ProviderNHSNumber);
-                FhirContext.FhirPatients.Add(nhsNoMap.NativeNHSNumber, nhsNoMap.ProviderNHSNumber);
-            }
+                _fhirContext.FhirPatients.Add(nhsNoMap.NativeNHSNumber, nhsNoMap.ProviderNHSNumber);
+            });
         }
 
         [Given(@"I am requesting the record for config patient ""([^""]*)""")]
         public void GivenIAmRequestingTheRecordForConfigPatient(string patient)
         {
-            Given($@"I am requesting the record for patient with NHS Number ""{FhirContext.FhirPatients[patient]}""");
+            Given($@"I am requesting the record for patient with NHS Number ""{_fhirContext.FhirPatients[patient]}""");
         }
 
         [Given(@"I replace the parameter name ""([^""]*)"" with ""([^""]*)""")]
         public void GivenIReplaceTheParameterNameWith(string parameterName, string newParameterName)
         {
-            FhirContext.FhirRequestParameters.GetSingle(parameterName).Name = newParameterName;
+            _fhirContext.FhirRequestParameters.GetSingle(parameterName).Name = newParameterName;
         }
 
         [Given(@"I set the parameter patientNHSNumber with an empty value")]
         public void GivenISetThePatientNHSNumberParameterWithAnEmptyValue()
         {
-            var parameter = FhirContext.FhirRequestParameters.GetSingle("patientNHSNumber");
+            var parameter = _fhirContext.FhirRequestParameters.GetSingle("patientNHSNumber");
             ((Identifier)parameter.Value).Value = "";
         }
 
         [Given(@"I set the parameter patientNHSNumber with an empty system")]
         public void GivenISetThePatientNHSNumberParameterWithAnEmptySystem()
         {
-            var parameter = FhirContext.FhirRequestParameters.GetSingle("patientNHSNumber");
+            var parameter = _fhirContext.FhirRequestParameters.GetSingle("patientNHSNumber");
             ((Identifier)parameter.Value).System = "";
         }
 
         [Given(@"I set the parameter recordSection with an empty system")]
         public void GivenISetTheRecordSectionParameterWithAnEmptySystem()
         {
-            var parameter = FhirContext.FhirRequestParameters.GetSingle("recordSection");
+            var parameter = _fhirContext.FhirRequestParameters.GetSingle("recordSection");
             ((CodeableConcept)parameter.Value).Coding[0].System = "";
         }
 
         [Then(@"the response should be a Bundle resource of type ""([^""]*)""")]
         public void ThenTheResponseShouldBeABundleResourceOfType(string resourceType)
         {
-            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Bundle);
+            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Bundle);
 
             if ("document".Equals(resourceType))
             {
-                ((Bundle)FhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Document);
+                ((Bundle)_fhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Document);
             }
             else if ("searchset".Equals(resourceType))
             {
-                ((Bundle)FhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Searchset);
+                ((Bundle)_fhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Searchset);
             }
             else
             {
@@ -97,487 +95,327 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response should be a OperationOutcome resource")]
         public void ThenTheResponseShouldBeAOperationOutcomeResource()
         {
-            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
-            OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
-            if (operationOutcome.Meta != null)
-            {
-                foreach (string profile in operationOutcome.Meta.Profile)
-                {
-                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
-                }
-            }
-            else
-            {
-                operationOutcome.Meta.ShouldNotBeNull();
-            }
-
-            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue)
-            {
-                {
-                    if (issue.Details != null)
-                    {
-                        foreach (Coding coding in issue.Details.Coding)
-                        {
-                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
-                            coding.Code.ShouldNotBeNull();
-                            coding.Display.ShouldNotBeNull();
-                        }
-                    }
-                    else
-                    {
-                        issue.Details.ShouldNotBeNull();
-                    }
-                }
-            }
+            TestOperationOutcomeResource();
         }
 
         [Then(@"the response should be a OperationOutcome resource with error code ""([^""]*)""")]
         public void ThenTheResponseShouldBeAOperationOutcomeResourceWithErrorCode(string errorCode)
         {
-            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
-            List<string> errorCodes = new List<string>();
-            OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
+            TestOperationOutcomeResource(errorCode);
+        }
 
-            if (operationOutcome.Meta != null)
+        private void TestOperationOutcomeResource(string errorCode = null)
+        {
+            var resource = _fhirContext.FhirResponseResource;
+
+            resource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
+
+            var operationOutcome = (OperationOutcome)resource;
+
+            operationOutcome.Meta.ShouldNotBeNull();
+            operationOutcome.Meta.Profile.ShouldAllBe(profile => profile.Equals("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1"));
+
+            operationOutcome.Issue.ForEach(issue =>
             {
-                foreach (string profile in operationOutcome.Meta.Profile)
+                issue.Details.ShouldNotBeNull();
+                issue.Details.Coding.ForEach(coding =>
                 {
-                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
-                }
-            }
-            else
-            {
-                operationOutcome.Meta.ShouldNotBeNull();
-            }
+                    coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
+                    coding.Code.ShouldNotBeNull();
+                    coding.Display.ShouldNotBeNull();
+                });
 
-            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue)
-            {
+                if (!string.IsNullOrEmpty(errorCode))
                 {
-                    if (issue.Details != null)
-                    {
-                        foreach (Coding coding in issue.Details.Coding)
-                        {
-                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
-                            errorCodes.Add(coding.Code);
-                            coding.Display.ShouldNotBeNull();
-                        }
-                    }
-                    else
-                    {
-                        issue.Details.ShouldNotBeNull();
-                    }
+                    issue.Details.Coding.ShouldContain(x => x.Code.Equals(errorCode));
                 }
-
-                errorCodes.ShouldContain(errorCode);
-            }
+            });
         }
 
         [Then(@"the response bundle should contain a single Patient resource")]
         public void ThenTheResponseBundleShouldContainASinglePatientResource()
         {
-            int count = 0;
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Patient)) count++;
-            }
-            count.ShouldBe(1);
+            _fhirContext.Patients.Count.ShouldBe(1);
         }
+
         [Then(@"the response bundle should contain at least One Practitioner resource")]
         public void ThenTheResponseBundleShouldContainAtLeastOnePractitionerResource()
         {
-            int count = 0;
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner)) count++;
-            }
-            count.ShouldBeGreaterThan(0);
+            _fhirContext.Practitioners.Count.ShouldBeGreaterThan(0);
         }
 
         [Then(@"the response bundle should contain a single Composition resource")]
         public void ThenTheResponseBundleShouldContainASingleCompositionResource()
         {
-            int count = 0;
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition)) count++;
-            }
-            count.ShouldBe(1);
+            _fhirContext.Compositions.Count.ShouldBe(1);
         }
 
         [Then(@"the response bundle should contain the composition resource as the first entry")]
         public void ThenTheResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
         {
-            ((Bundle)FhirContext.FhirResponseResource).Entry[0].Resource.ResourceType.ShouldBe(ResourceType.Composition);
+            ((Bundle)_fhirContext.FhirResponseResource)
+                .Entry
+                .Select(entry => entry.Resource.ResourceType)
+                .First()
+                .ShouldBe(ResourceType.Composition);
         }
 
+        //Hayden: Never hit during AccessRecordFeature - should this be removed?
         [Then(@"the response bundle Patient entry should be a valid Patient resource")]
         public void ThenResponseBundlePatientEntryShouldBeAValidPatientResource()
         {
-            var fhirResource = HttpContext.ResponseJSON.SelectToken($"$.entry[?(@.resource.resourceType == 'Patient')].resource");
-            FhirJsonParser fhirJsonParser = new FhirJsonParser();
+            var fhirResource = _httpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == \'Patient\')].resource");
+            var fhirJsonParser = new FhirJsonParser();
             var patientResource = fhirJsonParser.Parse<Patient>(JsonConvert.SerializeObject(fhirResource));
             patientResource.ResourceType.ShouldBe(ResourceType.Patient);
         }
 
+
         [Then(@"the response bundle Patient entry should contain a valid NHS number identifier")]
         public void ThenResponseBundlePatientEntryShouldContainAValidNHSNumberIdentifier()
         {
-            var passed = false;
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+            _fhirContext.Patients.ForEach(patient =>
                 {
-                    Patient patient = (Patient)entry.Resource;
-                    foreach (var identifier in patient.Identifier)
-                    {
-                        if (FhirConst.IdentifierSystems.kNHSNumber.Equals(identifier.System) && FhirHelper.isValidNHSNumber(identifier.Value))
-                        {
-                            passed = true;
-                            break;
-                        }
-                    }
-                    passed.ShouldBeTrue();
-                }
-            }
+                    patient.Identifier.ShouldAllBe(identifier => 
+                        FhirConst.IdentifierSystems.kNHSNumber.Equals(identifier.System) && 
+                        FhirHelper.isValidNHSNumber(identifier.Value));
+                });
         }
 
         [Then(@"the response bundle Patient resource should optionally contain valid telecom information")]
         public void ThenResponseBundlePatientResourceShouldContainValidTelecomInfromation()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+            _fhirContext.Patients.ForEach(patient => 
                 {
-                    Patient patient = (Patient)entry.Resource;
-                    foreach (var telecom in patient.Telecom)
+                    patient.Telecom.ForEach(telecom =>
                     {
                         telecom.System.ShouldNotBeNull();
                         telecom.Value.ShouldNotBeNull();
-                    }
-                }
-            }
+                    });
+                });
         }
 
         [Then(@"if composition contains the resource type element the fields should match the fixed values of the specification")]
         public void ThenIfCompositionContainsTheResourceTypeElementTheFieldsShouldMatchTheFixedValuesOfTheSpecification()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                if (composition.Type != null)
                 {
-                    Composition composition = (Composition)entry.Resource;
-
-                    if (composition.Type == null)
+                    if (composition.Type.Coding != null)
                     {
-                        return;
-                    }
-                    else
-                    {
-                        if (composition.Type.Coding != null)
+                        composition.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                        composition.Type.Coding.ForEach(coding =>
                         {
-                            int codingCount = 0;
-                            foreach (Coding coding in composition.Type.Coding)
-                            {
-                                codingCount++;
-                                coding.System.ShouldBe("http://snomed.info/sct");
-                                coding.Code.ShouldBe("425173008");
-                                coding.Display.ShouldBe("record extract (record artifact)");
-                            }
-                            codingCount.ShouldBeLessThanOrEqualTo(1);
-                        }
+                            coding.System.ShouldBe("http://snomed.info/sct");
+                            coding.Code.ShouldBe("425173008");
+                            coding.Display.ShouldBe("record extract (record artifact)");
+                        });
+                    }
 
-                        if (composition.Type.Text != null)
-                        {
-                            composition.Type.Text.ShouldBe("record extract (record artifact)");
-                        }
-                    }
+                    composition.Type.Text?.ShouldBe("record extract (record artifact)");
                 }
-            }
+            });
         }
 
         [Then(@"if composition contains the resource class element the fields should match the fixed values of the specification")]
         public void ThenIfCompositionContainsTheResourceClassElementTheFieldsShouldMatchTheFixedValuesOfTheSpecification()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                if (composition.Class != null)
                 {
-                    Composition composition = (Composition)entry.Resource;
-
-                    if (composition.Class == null)
+                    if (composition.Class.Coding != null)
                     {
-                        return;
-                    }
-                    else
-                    {
-                        if (composition.Class.Coding != null)
+                        composition.Class.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                        composition.Class.Coding.ForEach(coding =>
                         {
-                            int codingCount = 0;
-                            foreach (Coding coding in composition.Class.Coding)
-                            {
-                                codingCount++;
-                                coding.System.ShouldBe("http://snomed.info/sct");
-                                coding.Code.ShouldBe("700232004");
-                                coding.Display.ShouldBe("general medical service (qualifier value)");
-                            }
-                            codingCount.ShouldBeLessThanOrEqualTo(1);
-                        }
+                            coding.System.ShouldBe("http://snomed.info/sct");
+                            coding.Code.ShouldBe("700232004");
+                            coding.Display.ShouldBe("general medical service (qualifier value)");
+                        });
+                    }
 
-                        if (composition.Class.Text != null)
-                        {
-                            composition.Class.Text.ShouldBe("general medical service (qualifier value)");
-                        }
-                    }
+                    composition.Class.Text?.ShouldBe("general medical service (qualifier value)");
                 }
-            }
+            });
         }
 
         [Then(@"if composition contains the patient resource maritalStatus fields matching the specification")]
         public void ThenIfCompositionContainsThePatientResourceMaritalStatusFieldsMatchingTheSpecification()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Patients.ForEach(patient =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                if (patient.MaritalStatus?.Coding != null)
                 {
-                    Patient patient = (Patient)entry.Resource;
-
-                    if (patient.MaritalStatus != null && patient.MaritalStatus.Coding != null)
-                    {
-                        shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirMaritalStatusValueSet, patient.MaritalStatus.Coding);
-                    }
+                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirMaritalStatusValueSet, patient.MaritalStatus.Coding);
                 }
-            }
+            });
         }
 
         [Then(@"if care record composition contains the patient resource contact the mandatory fields should matching the specification")]
         public void ThenIfCompositionContainsThePatientResourceContactTheMandatoryFieldsShouldMatchingTheSpecification()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Patients.ForEach(patient =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                patient.Contact.ForEach(contact =>
                 {
-                    Patient patient = (Patient)entry.Resource;
-                    foreach (Patient.ContactComponent contact in patient.Contact)
+                    // Contact Relationship Checks
+                    contact.Relationship.ForEach(relationship =>
                     {
-                        // Contact Relationship Checks
-                        foreach (CodeableConcept relationship in contact.Relationship)
-                        {
-                            shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
-                        }
+                        ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
+                    });
 
-                        // Contact Name Checks
-                        // Contact Telecom Checks
-                        // Contact Address Checks
-                        // Contact Gender Checks
-                        // No mandatory fields and value sets are standard so will be validated by parse of response to fhir resource
+                    // Contact Name Checks
+                    // Contact Telecom Checks
+                    // Contact Address Checks
+                    // Contact Gender Checks
+                    // No mandatory fields and value sets are standard so will be validated by parse of response to fhir resource
 
-                        // Contact Organization Checks
-                        if (contact.Organization != null && contact.Organization.Reference != null)
-                        {
-                            var referenceExistsInBundle = false;
-                            foreach (EntryComponent entryForOrganization in ((Bundle)FhirContext.FhirResponseResource).Entry)
-                            {
-                                if (entry.Resource.ResourceType.Equals(ResourceType.Organization) && entry.FullUrl.Equals(contact.Organization.Reference))
-                                {
-                                    referenceExistsInBundle = true;
-                                    break;
-                                }
-                            }
-                            referenceExistsInBundle.ShouldBeTrue();
-                        }
+                    // Contact Organization Checks
+                    if (contact.Organization?.Reference != null)
+                    {
+                        ((Bundle)_fhirContext.FhirResponseResource)
+                            .Entry
+                            .ShouldContain(entry => entry.Resource.ResourceType.Equals(ResourceType.Organization) && entry.FullUrl.Equals(contact.Organization.Reference));
+
+                        //Hayden: Code below uses entry rather than entryForOrganization... Is this correct?
+
+                        //var referenceExistsInBundle = false;
+                        //foreach (EntryComponent entryForOrganization in ((Bundle)FhirContext.FhirResponseResource).Entry)
+                        //{
+                        //    if (entry.Resource.ResourceType.Equals(ResourceType.Organization) && entry.FullUrl.Equals(contact.Organization.Reference))
+                        //    {
+                        //        referenceExistsInBundle = true;
+                        //        break;
+                        //    }
+                        //}
+                        //referenceExistsInBundle.ShouldBeTrue();
                     }
-                }
-            }
+                });
+            });
         }
 
         [Then(@"if composition contains the patient resource communication the mandatory fields should matching the specification")]
         public void ThenIfCompositionContainsThePatientResourceCommunicationTheMandatoryFieldsShouldMatchingTheSpecification()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Patients.ForEach(patient =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                patient.Communication?.ForEach(communication => 
                 {
-                    Patient patient = (Patient)entry.Resource;
-                    if (patient.Communication != null)
-                    {
-                        foreach (Patient.CommunicationComponent communicaiton in patient.Communication)
-                        {
-                            shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, communicaiton.Language.Coding);
-                        }
-                    }
-                }
-            }
+                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, communication.Language.Coding);
+                });
+            });
         }
 
         [Then(@"if Patient careProvider is included in the response the reference should reference a Practitioner within the bundle")]
         public void ThenIfPatientCareProviderIsIncludedInTheResponseTheReferenceShouldReferenceAPractitionerWithinTheBundle()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Patients.ForEach(patient =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                if (patient.CareProvider != null)
                 {
-                    Patient patient = (Patient)entry.Resource;
-                    if (patient.CareProvider != null)
+                    patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
+                    patient.CareProvider.ForEach(careProvider =>
                     {
-                        var count = 0;
-                        foreach (ResourceReference careProvider in patient.CareProvider)
-                        {
-                            count++;
-                            responseBundleContainsReferenceOfType(careProvider.Reference, ResourceType.Practitioner);
-                        }
-                        count.ShouldBeLessThanOrEqualTo(1);
-                    }
+                        ResponseBundleContainsReferenceOfType(careProvider.Reference, ResourceType.Practitioner);
+                    });
                 }
-            }
+            });
         }
 
         [Then(@"if Patient managingOrganization is included in the response the reference should reference an Organization within the bundle")]
         public void ThenIfPatientManagingOrganizationIsIncludedInTheResponseTheReferenceShouldReferenceAnOrganizationWithinTheBundle()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Patients.ForEach(patient =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                if (patient.ManagingOrganization != null)
                 {
-                    Patient patient = (Patient)entry.Resource;
-                    if (patient.ManagingOrganization != null)
-                    {
-                        responseBundleContainsReferenceOfType(patient.ManagingOrganization.Reference, ResourceType.Organization);
-                    }
+                    ResponseBundleContainsReferenceOfType(patient.ManagingOrganization.Reference, ResourceType.Organization);
                 }
-            }
+            });
         }
 
         [Then(@"patient resource should not contain the fhir fields photo animal or link")]
         public void ThenPatientResourceShouldNotContainTheFhirFieldsPhotoAnimalOrLink()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Patients.ForEach(patient =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
-                {
-                    Patient patient = (Patient)entry.Resource;
-                    (patient.Photo == null || patient.Photo.Count == 0).ShouldBeTrue("There should be no photo element in Patient Resource"); // C# API creates an empty list if no element is present
-                    patient.Animal.ShouldBeNull("There should be no Animal element in Patient Resource");
-                    (patient.Link == null || patient.Link.Count == 0).ShouldBeTrue("There should be no link element in Patient Resource");
-                }
-            }
+                // C# API creates an empty list if no element is present
+                patient.Photo?.Count.ShouldBe(0, "There should be no photo element in Patient Resource");
+                patient.Link?.Count.ShouldBe(0, "There should be no link element in Patient Resource");
+                patient.Animal.ShouldBeNull("There should be no Animal element in Patient Resource");
+            });
         }
 
         [Then(@"if the response bundle contains a ""([^""]*)"" resource")]
         public void ThenIfTheResponseBundleContainsAResource(string resourceType)
         {
-            var resourceFound = false;
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.ToString().Equals(resourceType))
-                {
-                    resourceFound = true;
-                    break;
-                }
-            }
-            if (resourceFound == false)
-            {
-                // If no resource is found then the test scenario passes
-                return;
-            }
+            ((Bundle)_fhirContext.FhirResponseResource)
+                .Entry
+                .ShouldContain(entry => entry.Resource.ResourceType.ToString().Equals(resourceType));
         }
 
         [Then(@"practitioner resources should contain a single name element")]
         public void ThenPractitionerResourcesShouldContainASingleNameElement()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Practitioners.ForEach(practitioner =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    practitioner.Name.ShouldNotBeNull();
-                }
-            }
+                practitioner.Name.ShouldNotBeNull();
+            });
         }
 
+        //Hayden: Not referenced in any test... should this be removed?
         [Then(@"practitioner family name should equal ""(.*)")]
-        public void FamilyNameShouldEqualVariable(String familyName)
+        public void FamilyNameShouldEqualVariable(string familyName)
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Practitioners.ForEach(practitioner =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    String name = practitioner.Name.Family.ToString();
-                    if (name != familyName)
-                    {
-                        Assert.Fail("Family name doesn't match");
-                    }
-                }
-            }
+                practitioner.Name.Family.ToList()[0].ShouldBe(familyName, "Family name doesn't match");
+            });
         }
 
         [Then(@"practitioner should only have one family name")]
         public void PractitionerShouldNotHaveMoreThenOneFamilyName()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Practitioners.ForEach(practitioner =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    var familyNameCount = 0;
-
-                    foreach (String name in practitioner.Name.Family)
-                    {
-                        familyNameCount++;
-                    }
-
-                    familyNameCount.ShouldBeLessThanOrEqualTo(1);
-                }
-
-            }
-
+                practitioner.Name.Family.Count().ShouldBeLessThanOrEqualTo(1);
+            });
         }
 
         [Then(@"practitioner resources should not contain the disallowed elements")]
         public void ThenPractitionerResourcesShouldNotContainTheDisallowedElements()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Practitioners.ForEach(practitioner =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    (practitioner.Photo == null || practitioner.Photo.Count == 0).ShouldBeTrue(); // C# API creates an empty list if no element is present
-                    (practitioner.Qualification == null || practitioner.Qualification.Count == 0).ShouldBeTrue();
-                }
-            }
+                // C# API creates an empty list if no element is present
+                (practitioner.Photo == null || practitioner.Photo.Count == 0).ShouldBeTrue(); 
+                (practitioner.Qualification == null || practitioner.Qualification.Count == 0).ShouldBeTrue();
+            });
         }
 
         [Then(@"practitioner resources must contain one user id and optional profile ids")]
         public int ThenPractitionerResourcesMustContainOneUserIdAndOptionalProfileIdsReturnSdsRoleProfileCount()
         {
-            var sdsRoleProfileCount = 0;
+            var sdsRoleProfileTotal = 0;
 
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Practitioners.ForEach(practitioner =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                var sdsUserIdCount = practitioner.Identifier.Count(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id"));
+                sdsUserIdCount.ShouldBe(1, "entry contains invalid http://fhir.nhs.net/Id/sds-user-id system quantity");
+
+                practitioner.Identifier.ForEach(identifier =>
                 {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
+                    identifier.Value.ShouldNotBeNull();
+                });
 
-                    var sdsUserIdCount = 0;
+                var roleProfileCount = practitioner.Identifier.Count(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id"));
 
-                    foreach (Identifier identifier in practitioner.Identifier)
-                    {
-                        if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id"))
-                        {
-                            sdsUserIdCount++;
-                            identifier.Value.ShouldNotBeNull();
-                        }
-                        else if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id"))
-                        {
-                            sdsRoleProfileCount++;
-                            identifier.Value.ShouldNotBeNull();
-                        }
-                    }
-                    sdsUserIdCount.ShouldBe(1, "entry contains invalid http://fhir.nhs.net/Id/sds-user-id system quantity");
-                }
-            }
+                sdsRoleProfileTotal = sdsRoleProfileTotal + roleProfileCount;
+            });
 
-            return sdsRoleProfileCount;
+            return sdsRoleProfileTotal;
         }
 
         [Then(@"practitioner resources must contain one user id and a total of ""([^""]*)"" profile ids")]
@@ -588,355 +426,258 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
         
         [Then(@"all practitioners contain SDS identifier for practitioner ""([^""]*)""")]
-        public void AllPractitionersContainSDSIdentifierForPractitioner(string practitionerId)
+        public void AllPractitionersContainSdsIdentifierForPractitioner(string practitionerId)
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            var customMessage = "No identifier with system http://fhir.nhs.net/Id/sds-user-id found";
+            _fhirContext.Practitioners.ForEach(practitioner =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    foreach (Identifier identifier in ((Practitioner)entry.Resource).Identifier)
-                    {
-                        if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id"))
-                        {
-                            identifier.Value.ShouldBe(FhirContext.FhirPractitioners[practitionerId]);
-                            return;
-                        }
-                    }
-
-                    Assert.Fail("No identifier with system http://fhir.nhs.net/Id/sds-user-id found");
-                }
-            }
+                practitioner.Identifier.ShouldAllBe(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id"), customMessage);
+            });
         }
 
         [Then(@"if practitionerRole has managingOrganization element then reference must exist")]
         public void ThenIfPractitionerRoleHasMangingOrganizationElementThenReferenceMustExist()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Practitioners.ForEach(practitioner =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                practitioner.PractitionerRole.ForEach(practitionerRole =>
                 {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
-                    {
-                        if (practitionerRole.ManagingOrganization != null)
-                        {
-                            practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull();
-                            practitionerRole.ManagingOrganization.Reference.ShouldStartWith("Organization/");
-                            var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", practitionerRole.ManagingOrganization.Reference);
-                            returnedResource.GetType().ShouldBe(typeof(Organization));
-                        }
-                    }
-                }
-            }
+                    practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull();
+                    practitionerRole.ManagingOrganization.Reference.ShouldStartWith("Organization/");
+                    var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", practitionerRole.ManagingOrganization.Reference);
+                    returnedResource.GetType().ShouldBe(typeof(Organization));
+                });
+            });
         }
 
         [Then(@"if practitionerRole has role element which contains a coding then the system, code and display must exist")]
         public void ThenIfPractitionerRoleHasRoleElementWhichContainsACodingThenTheSystemCodeAndDisplayMustExist()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Practitioners.ForEach(practitioner =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                practitioner.PractitionerRole.ForEach(practitionerRole =>
                 {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
+                    if (practitionerRole.Role?.Coding != null)
                     {
-                        if (practitionerRole.Role != null && practitionerRole.Role.Coding != null)
+                        practitionerRole.Role.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                        practitionerRole.Role.Coding.ForEach(coding =>
                         {
-                            var codingCount = 0;
-                            foreach (Coding coding in practitionerRole.Role.Coding)
-                            {
-                                codingCount++;
-                                coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
-                                coding.Code.ShouldNotBeNull();
-                                coding.Display.ShouldNotBeNull();
-                            }
-                            codingCount.ShouldBeLessThanOrEqualTo(1);
-                        }
+                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
+                            coding.Code.ShouldNotBeNull();
+                            coding.Display.ShouldNotBeNull();
+                        });
                     }
-                }
-            }
+                });
+            });
         }
 
         [Then(@"if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element")]
         public void ThenIfThePractitionerHasCommunicationElementsContainingACodingThenThereMustBeASystemCodeAndDisplayElement()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Practitioners.ForEach(practitioner =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                practitioner.Communication.ForEach(codeableConcept =>
                 {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    //If the practitioner has a communicaiton elemenets containing a coding then there must be a system, code and display element. There must only be one coding per communication element.
-                    foreach (CodeableConcept codeableConcept in practitioner.Communication)
-                    {
-                        shouldBeSingleCodingWhichIsInValuest(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
-                    }
-                }
-            }
+                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
+                });
+            });
         }
 
         [Then(@"if practitioner contains a managingOrganization the reference relates to an Organization within the response bundle")]
         public void ThenPractitionerContainsAManagingOrganizationTheReferenceRelatesToAnOrganizationWithinTheResponseBundle()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Practitioners.ForEach(practitioner =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
+                practitioner.PractitionerRole.ForEach(practitionerRole =>
                 {
-                    Practitioner practitioner = (Practitioner)entry.Resource;
-                    foreach (Practitioner.PractitionerRoleComponent practitionerRole in practitioner.PractitionerRole)
+                    if (practitionerRole.ManagingOrganization != null)
                     {
-                        if (practitionerRole.ManagingOrganization != null)
-                        {
-                            responseBundleContainsReferenceOfType(practitionerRole.ManagingOrganization.Reference, ResourceType.Organization);
-                        }
+                        ResponseBundleContainsReferenceOfType(practitionerRole.ManagingOrganization.Reference, ResourceType.Organization);
                     }
-                }
-            }
+                });
+            });
         }
 
         [Then(@"Organization resources identifiers must comply with specification identifier restricitions")]
         public void ThenOrganizationResourceIdentifiersMustComplyWithSpecificationIdentifierRestrictions()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Organizations.ForEach(organization =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                var odsOrganizationCodeCount = organization.Identifier.Count(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code"));
+                odsOrganizationCodeCount.ShouldBeLessThanOrEqualTo(1);
+
+                organization.Identifier.ForEach(identifier =>
                 {
-                    Organization organization = (Organization)entry.Resource;
-
-                    var odsOrganizationCodeCount = 0;
-
-                    foreach (Identifier identifier in organization.Identifier)
+                    if (identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code") || identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code"))
                     {
-                        if (identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code"))
-                        {
-                            odsOrganizationCodeCount++;
-                            identifier.Value.ShouldNotBeNull();
-                        }
-                        else if (identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code"))
-                        {
-                            identifier.Value.ShouldNotBeNull();
-                        }
+                        identifier.Value.ShouldNotBeNull();
                     }
-                    odsOrganizationCodeCount.ShouldBeLessThanOrEqualTo(1);
-                }
-            }
+                }); 
+            });
         }
 
         [Then(@"if Organization includes type coding the elements are mandatory")]
         public void ThenIfOrganizationIncludesTypeCodingTheElementsAreMandatory()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Organizations.ForEach(organization =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                if (organization.Type?.Coding != null)
                 {
-                    Organization organization = (Organization)entry.Resource;
-                    if (organization.Type != null && organization.Type.Coding != null)
+                    organization.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                    organization.Type.Coding.ForEach(coding =>
                     {
-                        var codingCount = 0;
-                        foreach (Coding coding in organization.Type.Coding)
-                        {
-                            codingCount++;
-                            coding.System.ShouldNotBeNull();
-                            coding.Code.ShouldNotBeNull();
-                            coding.Display.ShouldNotBeNull();
-                        }
-                        codingCount.ShouldBeLessThanOrEqualTo(1);
-                    }
+                        coding.System.ShouldNotBeNull();
+                        coding.Code.ShouldNotBeNull();
+                        coding.Display.ShouldNotBeNull();
+                    });
                 }
-            }
+            });
         }
 
         [Then(@"if Organization includes partOf it should reference a resource in the response bundle")]
         public void ThenIfOrganizationIncludesPartOfItShouldReferenceAResourceInTheResponseBundle()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Organizations.ForEach(organization =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                if (organization.PartOf != null)
                 {
-                    Organization organization = (Organization)entry.Resource;
-                    if (organization.PartOf != null && organization.PartOf.Reference != null)
-                    {
-                        responseBundleContainsReferenceOfType(organization.PartOf.Reference, ResourceType.Organization);
-                    }
+                    ResponseBundleContainsReferenceOfType(organization.PartOf?.Reference, ResourceType.Organization);
                 }
-            }
+            });
         }
 
         [Then(@"the Device resource should conform to cardinality set out in specificaiton")]
         public void ThenTheDeviceResourceShouldConformToCardinalitySetOutInSpecification()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Devices.ForEach(device =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Device))
+                device.Status.ShouldBeNull();
+                device.ManufactureDate.ShouldBeNull();
+                device.Expiry.ShouldBeNull();
+                device.Udi.ShouldBeNull();
+                device.LotNumber.ShouldBeNull();
+                device.Patient.ShouldBeNull();
+                (device.Contact == null || device.Contact.Count == 0).ShouldBeTrue();
+                device.Url.ShouldBeNull();
+
+                device.Identifier.Count.ShouldBeLessThanOrEqualTo(1);
+                device.Note.Count.ShouldBeLessThanOrEqualTo(1);
+
+                device.Identifier.ForEach(identifier =>
                 {
-                    Device device = (Device)entry.Resource;
-
-                    device.Status.ShouldBeNull();
-                    device.ManufactureDate.ShouldBeNull();
-                    device.Expiry.ShouldBeNull();
-                    device.Udi.ShouldBeNull();
-                    device.LotNumber.ShouldBeNull();
-                    device.Patient.ShouldBeNull();
-                    (device.Contact == null || device.Contact.Count == 0).ShouldBeTrue();
-                    device.Url.ShouldBeNull();
-
-                    var identifierCount = 0;
-                    foreach (Identifier identifier in device.Identifier)
-                    {
-                        identifierCount++;
-                        identifier.Value.ShouldNotBeNull();
-                    }
-                    identifierCount.ShouldBeLessThanOrEqualTo(1);
-
-                    device.Note.Count.ShouldBeLessThanOrEqualTo(1);
-                }
-            }
+                    identifier.Value.ShouldNotBeNull();
+                });
+            });
         }
 
         [Then(@"the Device resource type should match the fixed values from the specfication")]
         public void ThenTheDeviceResourceTypeShouldMatchTheFixedValuesFromTheSpecification()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Devices.ForEach(device =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Device))
+                device.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                device.Type.Coding.ForEach(coding =>
                 {
-                    Device device = (Device)entry.Resource;
-                    var codingCount = 0;
-                    foreach (Coding coding in device.Type.Coding)
-                    {
-                        codingCount++;
-                        coding.System.ShouldBe("http://snomed.info/sct");
-                        coding.Code.ShouldBe("462240000");
-                        coding.Display.ShouldBe("Patient health record information system (physical object)");
-                    }
-                    codingCount.ShouldBeLessThanOrEqualTo(1);
-                }
-            }
+                    coding.System.ShouldBe("http://snomed.info/sct");
+                    coding.Code.ShouldBe("462240000");
+                    coding.Display.ShouldBe("Patient health record information system (physical object)");
+                });
+            });
         }
 
         [Then(@"the HTML in the response matches the Regex check ""([^""]*)""")]
-        public void ThenTheHTMLInTheResponseMatchesTheRegexCheck(string regexPattern)
+        public void ThenTheHtmlInTheResponseMatchesTheRegexCheck(string regexPattern)
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                composition.Section.Count.ShouldBe(1);
+                composition.Section.ForEach(section =>
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    var sectionCount = 0;
-                    foreach (Composition.SectionComponent section in composition.Section)
-                    {
-                        sectionCount++;
-                        var HTML = section.Text.Div;
-                        HTML.ShouldMatch(regexPattern);
-                    }
-                    sectionCount.ShouldBe(1);
-                }
-            }
+                    section.Text.Div.ShouldMatch(regexPattern);
+                });
+            });
         }
 
         [Then(@"the composition resource in the bundle should contain meta data profile")]
         public void ThenTheCompositionResourceInTheBundleShouldContainMetaDataProfile()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            _fhirContext.Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                composition.Meta.ShouldNotBeNull();
+                composition.Meta.Profile.ToList().ForEach(profile =>
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    composition.Meta.ShouldNotBeNull();
-                    foreach (string profile in composition.Meta.Profile)
-                    {
-                        profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
-                    }
-                }
-            }
+                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
+                });
+            });
         }
 
         [Then(@"the patient resource in the bundle should contain meta data profile and version id")]
         public void ThenThePatientResourceInTheBundleShouldContainMetaDataProfileAndVersionId()
         {
-            checkForValidMetaDataInResource(ResourceType.Patient, "http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
+            CheckForValidMetaDataInResource(_fhirContext.Patients, "http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
         }
 
         [Then(@"if the response bundle contains an organization resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsAnOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            checkForValidMetaDataInResource(ResourceType.Organization, "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
+            CheckForValidMetaDataInResource(_fhirContext.Organizations, "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
         }
 
         [Then(@"if the response bundle contains a practitioner resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsAPractitionerResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            checkForValidMetaDataInResource(ResourceType.Practitioner, "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
+            CheckForValidMetaDataInResource(_fhirContext.Practitioners, "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
         }
 
         [Then(@"if the response bundle contains a device resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsADeviceResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            checkForValidMetaDataInResource(ResourceType.Device, "http://fhir.nhs.net/StructureDefinition/gpconnect-device-1");
+            CheckForValidMetaDataInResource(_fhirContext.Devices, "http://fhir.nhs.net/StructureDefinition/gpconnect-device-1");
         }
 
         [Then(@"if the response bundle contains a location resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsALocationResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            checkForValidMetaDataInResource(ResourceType.Location, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
+            CheckForValidMetaDataInResource(_fhirContext.Locations, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
         }
 
-        public void checkForValidMetaDataInResource(ResourceType resourceType, string profileId)
+        public void CheckForValidMetaDataInResource<T>(List<T> resources, string profileId) where T : Resource
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            resources.ForEach(resource =>
             {
-                if (entry.Resource.ResourceType.Equals(resourceType))
+                resource.Meta.ShouldNotBeNull();
+                resource.Meta.Profile.Count().ShouldBe(1);
+                resource.Meta.Profile.ToList().ForEach(profile =>
                 {
-                    var resource = entry.Resource;
-                    resource.Meta.ShouldNotBeNull();
-                    int metaProfileCount = 0;
-                    foreach (string profile in resource.Meta.Profile)
-                    {
-                        metaProfileCount++;
-                        profile.ShouldBe(profileId);
-                    }
-                    metaProfileCount.ShouldBe(1);
-                    resource.Meta.VersionId.ShouldNotBeNull();
-                }
-            }
+                    profile.ShouldBe(profileId);
+                });
+                resource.Meta.VersionId.ShouldNotBeNull();
+            });
         }
 
-        public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList)
+        public void ShouldBeSingleCodingWhichIsInValueSet(ValueSet valueSet, List<Coding> codingList)
         {
-            var codingCount = 0;
-            foreach (Coding coding in codingList)
+            codingList.Count.ShouldBeLessThanOrEqualTo(1);
+            codingList.ForEach(coding =>
             {
-                codingCount++;
-                valueSetContainsCodeAndDisplay(valueSet, coding);
-            }
-            codingCount.ShouldBeLessThanOrEqualTo(1);
+                ValueSetContainsCodeAndDisplay(valueSet, coding);
+            });
         }
 
-        public void valueSetContainsCodeAndDisplay(ValueSet valueset, Coding coding)
+        public void ValueSetContainsCodeAndDisplay(ValueSet valueSet, Coding coding)
         {
-            coding.System.ShouldBe(valueset.CodeSystem.System);
-            // Loop through valid codes to find if the one in the resource is valid
-            var pass = false;
-            foreach (ValueSet.ConceptDefinitionComponent valueSetConcept in valueset.CodeSystem.Concept)
-            {
-                if (valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display))
-                {
-                    pass = true;
-                }
-            }
-            pass.ShouldBeTrue();
+            coding.System.ShouldBe(valueSet.CodeSystem.System);
+
+            valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display));
         }
 
-        public void responseBundleContainsReferenceOfType(string reference, ResourceType resourceType)
+        public void ResponseBundleContainsReferenceOfType(string reference, ResourceType resourceType)
         {
-            var foundResourceInBundleByFullURLElement = false;
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (reference.Equals(entry.FullUrl) && entry.Resource.ResourceType == resourceType)
-                {
-                    foundResourceInBundleByFullURLElement = true;
-                }
-            }
-            foundResourceInBundleByFullURLElement.ShouldBeTrue("The reference from the resource was not found in the bundle by fullUrl resource element.");
+            const string customMessage = "The reference from the resource was not found in the bundle by fullUrl resource element.";
+
+            ((Bundle)_fhirContext.FhirResponseResource)
+                .Entry
+                .ShouldContain(entry => reference.Equals(entry.FullUrl) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
@@ -68,15 +69,23 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         }
 
         // FHIR Response
+        public List<Patient> Patients => GetResources<Patient>(ResourceType.Patient);
+        public List<Organization> Organizations => GetResources<Organization>(ResourceType.Organization);
+        public List<Composition> Compositions => GetResources<Composition>(ResourceType.Composition);
+        public List<Device> Devices => GetResources<Device>(ResourceType.Device);
+        public List<Practitioner> Practitioners => GetResources<Practitioner>(ResourceType.Practitioner);
+        public List<Location> Locations => GetResources<Location>(ResourceType.Location);
 
         public Resource FhirResponseResource
         {
-            get {
+            get
+            {
                 try
                 {
                     return _scenarioContext.Get<Resource>(Context.kFhirResponseResource);
                 }
-                catch (Exception) {
+                catch (Exception)
+                {
                     return null;
                 }
             }
@@ -100,6 +109,15 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 )
             );
             doc.Save(filename);
+        }
+
+        private List<T> GetResources<T>(ResourceType resourceType) where T : Resource
+        {
+            return ((Bundle)FhirResponseResource)
+                .Entry
+                .Where(entry => entry.Resource.ResourceType.Equals(resourceType))
+                .Select(entry => (T)entry.Resource)
+                .ToList();
         }
     }
 }
