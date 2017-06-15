@@ -2,7 +2,6 @@
 Feature: AmendAppointment
 
 Background:
-	Given I have the test patient codes
 	Given I have the test ods codes
 
 Scenario: I perform a successful amend appointment and change the comment to a custom message

@@ -125,20 +125,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I search for Patient ""([^""]*)"" with system ""([^""]*)""")]
         public void ISearchForPatientWithSystem(string patient, string identifierSystem)
         {
-            var parameterString = identifierSystem + "|" + FhirContext.FhirPatients[patient];
+            var parameterString = identifierSystem + "|" + GlobalContext.PatientNhsNumberMap[patient];
             ISearchForAPatientWithParameterNameAndParameterString("identifier", parameterString);
         }
 
         [When(@"I search for Patient ""([^""]*)"" without system in identifier parameter")]
         public void ISearchForPatientWithoutSystemInIdentifierParameter(string patient)
         {
-            ISearchForAPatientWithParameterNameAndParameterString("identifier", FhirContext.FhirPatients[patient]);
+            ISearchForAPatientWithParameterNameAndParameterString("identifier", GlobalContext.PatientNhsNumberMap[patient]);
         }
 
         [When(@"I search for Patient ""([^""]*)"" with parameter name ""([^""]*)"" and system ""([^""]*)""")]
         public void ISearchForPatientWithParameterNameAndSystem(string patient, string parameterName, string parameterSystem)
         {
-            var parameterString = parameterSystem + "|" + FhirContext.FhirPatients[patient];
+            var parameterString = parameterSystem + "|" + GlobalContext.PatientNhsNumberMap[patient];
             ISearchForAPatientWithParameterNameAndParameterString(parameterName, parameterString);
         }
 
@@ -159,7 +159,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 foreach (var identifier in patientResource.Identifier) {
                     if (identifier.System == FhirConst.IdentifierSystems.kNHSNumber) {
                         nhsNumberIdentifierCount++;
-                        identifier.Value.ShouldBe(FhirContext.FhirPatients[patient],"NHS Number does not match expected NHS Number.");
+                        identifier.Value.ShouldBe(GlobalContext.PatientNhsNumberMap[patient],"NHS Number does not match expected NHS Number.");
                     }
                 }
                 nhsNumberIdentifierCount.ShouldBe(1, "There was more or less than 1 NHS Number identifier.");
@@ -383,7 +383,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ((Patient)FhirContext.FhirResponseResource).Identifier.ShouldNotBeNull("Null Identifier");
             ((Patient)FhirContext.FhirResponseResource).Identifier.ShouldHaveSingleItem("Empty Identifier");
             ((Patient)FhirContext.FhirResponseResource).Identifier[0].System.ShouldBe("http://fhir.nhs.net/Id/nhs-number");
-            ((Patient)FhirContext.FhirResponseResource).Identifier[0].Value.ShouldBe(FhirContext.FhirPatients[patient]);
+            ((Patient)FhirContext.FhirResponseResource).Identifier[0].Value.ShouldBe(GlobalContext.PatientNhsNumberMap[patient]);
         }
 
         [Then(@"the patient resource should contain a valid careProvider Practitioner reference")]

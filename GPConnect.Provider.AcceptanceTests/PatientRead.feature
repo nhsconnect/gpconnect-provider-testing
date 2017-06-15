@@ -1,8 +1,5 @@
 ﻿@patient
 Feature: ReadPatient
-
-Background:
-	Given I have the test patient codes
 	
 Scenario Outline: Read patient 404 if patient not found
 	Given I am using the default server

@@ -1,9 +1,6 @@
 ﻿@accessrecord
 Feature: AccessRecord
 
-Background:
-	Given I have the test patient codes
-
 @ignore
 Scenario: patient is a valid fhir resource
 # There is no need to check that the patient resource and included value sets are correct if included as this is done by the parse of the response within scenario above.

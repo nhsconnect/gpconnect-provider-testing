@@ -245,7 +245,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add the parameter ""([^""]*)"" with system ""([^""]*)"" for patient ""([^""]*)""")]
         public void GivenIAddTheParameterWithSystemForPatient(string parameterName, string parameterSystem, string patient)
         {
-            HttpContext.RequestParameters.AddParameter(parameterName, parameterSystem + "|" + FhirContext.FhirPatients[patient]);
+            HttpContext.RequestParameters.AddParameter(parameterName, parameterSystem + "|" + GlobalContext.PatientNhsNumberMap[patient]);
         }
 
         [When(@"I make a GET request to ""(.*)""")]

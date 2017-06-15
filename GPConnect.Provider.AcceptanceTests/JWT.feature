@@ -1,9 +1,6 @@
 ﻿@jwt
 Feature: JWT
 
-Background:
-	Given I have the test patient codes
-
 Scenario: JWT expiry time greater than 300 seconds
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction

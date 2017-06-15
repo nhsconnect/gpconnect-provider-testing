@@ -1,9 +1,6 @@
 ﻿@fhir
 Feature: Fhir Base
 
-Background:
-	Given I have the test patient codes
-
 Scenario: Fhir Get MetaData
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction

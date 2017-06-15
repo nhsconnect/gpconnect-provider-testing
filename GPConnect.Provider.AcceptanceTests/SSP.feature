@@ -1,9 +1,6 @@
 ﻿@ssp
 Feature: SpineSecurityProxy
 
-Background:
-	Given I have the test patient codes
-
 Scenario Outline: header not included in metadata request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction

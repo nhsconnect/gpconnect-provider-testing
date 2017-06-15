@@ -11,7 +11,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 {
     public interface IFhirContext
     {
-        Dictionary<string, string> FhirPatients { get; set; }
         Parameters FhirRequestParameters { get; set; }
         Resource FhirResponseResource { get; set; }
     }
@@ -24,7 +23,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         private static class Context
         {
             public const string kFhirOrganizations = "fhirOrganizations";
-            public const string kFhirPatients = "fhirPatients";
             public const string kFhirPractitioners = "fhirPractitioners";
             public const string kFhirRequestParameters = "fhirRequestParameters";
             public const string kFhirResponseResource = "fhirResponseResource";
@@ -34,7 +32,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         {
             _scenarioContext = scenarioContext;
             FhirOrganizations = new Dictionary<string, string>();
-            FhirPatients = new Dictionary<string, string>();
             FhirPractitioners = new Dictionary<string, string>();
         }
 
@@ -42,12 +39,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         {
             get { return _scenarioContext.Get<Dictionary<string, string>>(Context.kFhirOrganizations); }
             set { _scenarioContext.Set(value, Context.kFhirOrganizations); }
-        }
-
-        public Dictionary<string, string> FhirPatients
-        {
-            get { return _scenarioContext.Get<Dictionary<string, string>>(Context.kFhirPatients); }
-            set { _scenarioContext.Set(value, Context.kFhirPatients); }
         }
 
         public Dictionary<string, string> FhirPractitioners

@@ -2,7 +2,6 @@
 Feature: ReadAppointment
 
 Background:
-	Given I have the test patient codes
 	Given I have the test ods codes
 
 Scenario Outline: I perform a successful Read appointment

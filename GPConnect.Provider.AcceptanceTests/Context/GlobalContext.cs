@@ -51,12 +51,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             set { GlobalContextHelper.SaveValue(Context.kODSCodeMapData, value); }
         }
 
-        public static List<NHSNoMap> NHSNoMapData
-        {
-            get { return GlobalContextHelper.GetValue<List<NHSNoMap>>(Context.kNHSNoMapData); }
-            set { GlobalContextHelper.SaveValue(Context.kNHSNoMapData, value); }
-        }
-
         public static List<RegisterPatient> RegisterPatientsData
         {
             get { return GlobalContextHelper.GetValue<List<RegisterPatient>>(Context.kRegisterPatientsData); }
@@ -68,7 +62,9 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             get { return GlobalContextHelper.GetValue<List<PractitionerCodeMap>>(Context.kPractitionerCodeMapData); }
             set { GlobalContextHelper.SaveValue(Context.kPractitionerCodeMapData, value); }
         }
-        
+
+        public static Dictionary<string, string> PatientNhsNumberMap { get; set; }
+
         // FHIR
 
         public static ValueSet FhirGenderValueSet

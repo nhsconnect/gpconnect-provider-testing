@@ -24,22 +24,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _bundleSteps = bundleSteps;
         }
 
-        [Given(@"I have the test patient codes")]
-        public void GivenIHaveTheTestPatientCodes()
-        {
-            _fhirContext.FhirPatients.Clear();
-
-            GlobalContext.NHSNoMapData.ForEach(nhsNoMap =>
-            {
-                Log.WriteLine("Mapped test Practitioner code {0} to {1}", nhsNoMap.NativeNHSNumber, nhsNoMap.ProviderNHSNumber);
-                _fhirContext.FhirPatients.Add(nhsNoMap.NativeNHSNumber, nhsNoMap.ProviderNHSNumber);
-            });
-        }
-
         [Given(@"I am requesting the record for config patient ""([^""]*)""")]
         public void GivenIAmRequestingTheRecordForConfigPatient(string patient)
         {
-            Given($@"I am requesting the record for patient with NHS Number ""{_fhirContext.FhirPatients[patient]}""");
+            Given($@"I am requesting the record for patient with NHS Number ""{GlobalContext.PatientNhsNumberMap[patient]}""");
         }
 
         [Given(@"I replace the parameter name ""([^""]*)"" with ""([^""]*)""")]

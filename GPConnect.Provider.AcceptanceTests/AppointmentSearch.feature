@@ -2,7 +2,6 @@
 Feature: AppointmentRetrieve
 
 Background:
-	Given I have the test patient codes
 	Given I have the test ods codes
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required

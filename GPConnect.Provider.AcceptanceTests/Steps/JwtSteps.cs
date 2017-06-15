@@ -293,7 +293,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the JWT requested record NHS number to config patient ""(.*)""")]
         public void ISetTheJWTRequestedRecordNHSnumberToConfigPatient(string patient)
         {
-            Jwt.RequestedPatientNHSNumber = FhirContext.FhirPatients[patient];
+            Jwt.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
             Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
         }
 

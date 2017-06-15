@@ -1,9 +1,6 @@
 ﻿@http
 Feature: Http
 
-Background:
-	Given I have the test patient codes
-
 Scenario: Http GET from invalid endpoint
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction

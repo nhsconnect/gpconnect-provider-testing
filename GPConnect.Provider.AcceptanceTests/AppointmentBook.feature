@@ -2,7 +2,6 @@
 Feature: BookAppointment
 
 Background:
-	Given I have the test patient codes
 	Given I have the test ods codes
 
 Scenario: Book single appointment for patient

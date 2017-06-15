@@ -17,11 +17,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class GenericSteps : TechTalk.SpecFlow.Steps
     {
         private readonly IObjectContainer _objectContainer;
+        private readonly FhirContext _fhirContext;
 
-        public GenericSteps(IObjectContainer objectContainer)
+        public GenericSteps(IObjectContainer objectContainer, FhirContext fhirContext)
         {
             Log.WriteLine("GenericSteps() Constructor");
             _objectContainer = objectContainer;
+            _fhirContext = fhirContext;
         }
 
         [BeforeTestRun(Order = 1)]
@@ -72,7 +74,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             var nhsNoMapCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"NHSNoMap.csv");
             Log.WriteLine("NHSNoMap CSV = '{0}'", nhsNoMapCSV);
-            GlobalContext.NHSNoMapData = NHSNoMapImporter.LoadCsv(nhsNoMapCSV);
+            GlobalContext.PatientNhsNumberMap = NHSNoMapImporter.LoadCsv(nhsNoMapCSV);
         }
 
         [BeforeTestRun(Order = 1)]

@@ -1,9 +1,6 @@
 ﻿@patient
 Feature: RegisterPatient
 
-Background:
-	Given I have the test patient codes
-
 Scenario Outline: Register patient send request to incorrect URL
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
 	Given I am using the default server

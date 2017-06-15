@@ -1,9 +1,6 @@
 ﻿@patient
 Feature: Patient
 
-Background:
-	Given I have the test patient codes
-
 @ignore
 Scenario: The provider system should accept the search parameter URL encoded
 	# The API being used in the test suite encodes the parameter string by default so no additional test needs to be performed.

@@ -1,9 +1,6 @@
 ﻿@html
 Feature: Html
 
-Background:
-	Given I have the test patient codes
-
 Scenario Outline: HTML should not contain disallowed elements
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction

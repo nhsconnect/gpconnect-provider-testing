@@ -8,12 +8,12 @@ namespace GPConnect.Provider.AcceptanceTests.Importers
 {
     public static class NHSNoMapImporter
     {
-        public static List<NHSNoMap> LoadCsv(string filename)
+        public static Dictionary<string, string> LoadCsv(string filename)
         {
             using (var csv = new CsvReader(new StreamReader(filename)))
             {
                 csv.Configuration.RegisterClassMap<NHSNoMapConverter>();
-                return csv.GetRecords<NHSNoMap>().ToList();
+                return csv.GetRecords<NHSNoMap>().ToDictionary(x => x.NativeNHSNumber, x => x.ProviderNHSNumber);
             }
         }
     }

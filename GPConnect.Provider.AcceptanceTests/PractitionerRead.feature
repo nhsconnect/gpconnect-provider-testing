@@ -2,7 +2,6 @@
 Feature: PractitionerRead
 
 Background:
-	Given I have the test patient codes
 	Given I have the test practitioner codes
 	Given I have the test ods codes
 
