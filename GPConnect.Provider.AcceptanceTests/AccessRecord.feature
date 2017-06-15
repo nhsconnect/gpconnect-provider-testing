@@ -775,7 +775,6 @@ Scenario Outline: practitioner resource contains mandatory fields and does not i
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if the response bundle contains a "Practitioner" resource
 		And practitioner resources should contain a single name element
 		And practitioner resources should not contain the disallowed elements
 	Examples:
@@ -801,7 +800,6 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if the response bundle contains a "Practitioner" resource
 		And practitioner resources must contain one user id and optional profile ids
 		And if practitionerRole has role element which contains a coding then the system, code and display must exist
 		And if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
@@ -828,7 +826,6 @@ Scenario Outline: if practitioner resource contains a managing organization it m
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if the response bundle contains a "Practitioner" resource
 		And if practitioner contains a managingOrganization the reference relates to an Organization within the response bundle
 	Examples:
 		| Code |
@@ -853,7 +850,6 @@ Scenario Outline: organization resource identifiers
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if the response bundle contains a "Organization" resource
 		And Organization resources identifiers must comply with specification identifier restricitions
 	Examples:
 		| Code |
@@ -878,7 +874,6 @@ Scenario Outline: organization resource element cardinality
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if the response bundle contains a "Organization" resource
 		And if Organization includes type coding the elements are mandatory
 	Examples:
 		| Code |
@@ -903,7 +898,6 @@ Scenario Outline: organization resource internal reference
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if the response bundle contains a "Organization" resource
 		And if Organization includes partOf it should reference a resource in the response bundle
 	Examples:
 		| Code |
@@ -928,7 +922,6 @@ Scenario Outline: device resource element cardinality conformance
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if the response bundle contains a "Device" resource
 		And the Device resource should conform to cardinality set out in specificaiton
 	Examples:
 		| Code |
@@ -953,7 +946,6 @@ Scenario Outline: device resource type element values match specification
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if the response bundle contains a "Device" resource
 		And the Device resource type should match the fixed values from the specfication
 	Examples:
 		| Code |
