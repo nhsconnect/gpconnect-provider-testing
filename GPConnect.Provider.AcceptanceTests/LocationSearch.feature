@@ -2,7 +2,6 @@
 Feature: LocationSearch
 
 Background:
-	Given I have the test practitioner codes
 	Given I have the test ods codes
 
 @ignore

@@ -1,9 +1,6 @@
 ﻿@practitioner
 Feature: Practitioner
 
-Background:
-	Given I have the test practitioner codes
-
 Scenario Outline: Practitioner search success
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction

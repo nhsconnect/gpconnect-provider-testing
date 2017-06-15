@@ -33,22 +33,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
 
-        [Given(@"I have the test practitioner codes")]
-        public void GivenIHaveTheTestPractitionerCodes()
-        {
-            FhirContext.FhirPractitioners.Clear();
-
-            foreach (PractitionerCodeMap practitionerCodeMap in GlobalContext.PractitionerMapData)
-            {
-                Log.WriteLine("Mapped test Practitioner code {0} to {1}", practitionerCodeMap.NativePractitionerCode, practitionerCodeMap.ProviderPractitionerCode);
-                FhirContext.FhirPractitioners.Add(practitionerCodeMap.NativePractitionerCode, practitionerCodeMap.ProviderPractitionerCode);
-            }
-        }
-
         [Given(@"I add the practitioner identifier parameter with system ""(.*)"" and value ""(.*)""")]
         public void GivenIAddThePractitionerIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
         {
-            Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + FhirContext.FhirPractitioners[valueParameter]}""");
+            Given($@"I add the parameter ""identifier"" with the value ""{systemParameter + '|' + GlobalContext.PractionerCodeMap[valueParameter]}""");
         }
 
         [Then(@"the interactionId ""(.*)"" should be valid")]
@@ -298,7 +286,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the identifier used to search for ""(.*)"" is the same as the identifier returned in practitioner read")]
         public void ThenTheIdentifierUsedToSearchForIsTheSameAsTheIdentifierReturnedInPractitionerRead(string practitionerKey)
         {
-            string practitionerIdentifier = FhirContext.FhirPractitioners[practitionerKey];
+            string practitionerIdentifier = GlobalContext.PractionerCodeMap[practitionerKey];
             Practitioner practitioner = (Practitioner)FhirContext.FhirResponseResource;
             Boolean identifierFound = false;
             foreach (Identifier identifier in practitioner.Identifier)

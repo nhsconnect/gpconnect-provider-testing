@@ -8,12 +8,12 @@ namespace GPConnect.Provider.AcceptanceTests.Importers
 {
     public static class PractitionerCodeMapImporter
     {
-        public static List<PractitionerCodeMap> LoadCsv(string filename)
+        public static Dictionary<string, string> LoadCsv(string filename)
         {
             using (var csv = new CsvReader(new StreamReader(filename)))
             {
                 csv.Configuration.RegisterClassMap<PractitionerCodeMapConverter>();
-                return csv.GetRecords<PractitionerCodeMap>().ToList();
+                return csv.GetRecords<PractitionerCodeMap>().ToDictionary(x => x.NativePractitionerCode, x => x.ProviderPractitionerCode);
             }
         }
     }

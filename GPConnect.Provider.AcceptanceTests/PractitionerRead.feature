@@ -2,7 +2,6 @@
 Feature: PractitionerRead
 
 Background:
-	Given I have the test practitioner codes
 	Given I have the test ods codes
 
 Scenario: Practitioner read successful request

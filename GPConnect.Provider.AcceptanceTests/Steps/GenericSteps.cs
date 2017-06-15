@@ -100,7 +100,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             var practitionerCodeMapCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"PractitionerCodeMap.csv");
             Log.WriteLine("practitionerCodeMap CSV = '{0}'", practitionerCodeMapCSV);
-            GlobalContext.PractitionerMapData = PractitionerCodeMapImporter.LoadCsv(practitionerCodeMapCSV);
+            GlobalContext.PractionerCodeMap = PractitionerCodeMapImporter.LoadCsv(practitionerCodeMapCSV);
         }
 
         [BeforeTestRun(Order = 2)]

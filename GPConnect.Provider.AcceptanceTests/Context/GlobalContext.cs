@@ -57,12 +57,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             set { GlobalContextHelper.SaveValue(Context.kRegisterPatientsData, value); }
         }
 
-        public static List<PractitionerCodeMap> PractitionerMapData
-        {
-            get { return GlobalContextHelper.GetValue<List<PractitionerCodeMap>>(Context.kPractitionerCodeMapData); }
-            set { GlobalContextHelper.SaveValue(Context.kPractitionerCodeMapData, value); }
-        }
-
+        public static Dictionary<string, string> PractionerCodeMap { get; set; }
         public static Dictionary<string, string> PatientNhsNumberMap { get; set; }
 
         // FHIR
