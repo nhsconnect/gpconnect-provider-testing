@@ -20,13 +20,12 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Fhir Base")]
     [NUnit.Framework.CategoryAttribute("fhir")]
-    [NUnit.Framework.CategoryAttribute("dstu2")]
     public partial class FhirBaseFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "FhirBase.feature"
+#line 1 "FHIR.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
@@ -34,8 +33,7 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Fhir Base", null, ProgrammingLanguage.CSharp, new string[] {
-                        "fhir",
-                        "dstu2"});
+                        "fhir"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

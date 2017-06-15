@@ -1,4 +1,5 @@
-﻿Feature: LocationSearch
+﻿@location
+Feature: LocationSearch
 
 Background:
 	Given I have the test practitioner codes
@@ -35,7 +36,7 @@ Scenario Outline: Location search success
 		And the response should be a Bundle resource of type "searchset"
 		And all search response entities in bundle should contain a logical identifier
 		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
-		Examples:
+	Examples:
 		| Value | EntrySize |
 		| SIT1  | 1         |
 		| SIT2  | 2         |
@@ -83,7 +84,7 @@ Scenario Outline: Location search failure due to invalid identifier name
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		Examples:
+	Examples:
 		| Identifier | ParameterValue                             |
 		| IDENTIFIER | http://fhir.nhs.net/Id/ods-site-code\|SIT1 |
 		| identiffer | http://fhir.nhs.net/Id/ods-site-code\|SIT1 |
@@ -98,7 +99,7 @@ Scenario Outline: Location search parameter order test
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
-		Examples:
+	Examples:
 		| Parameter1Name | Parameter2Name | Parameter1                                 | Parameter2                                 | BodyFormat |
 		| _format        | identifier     | application/json+fhir                      | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | JSON       |
 		| _format        | identifier     | application/xml+fhir                       | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | XML        |
@@ -120,7 +121,7 @@ Scenario Outline: Location search accept header
 		| application/xml+fhir  | XML        |
 
 Scenario Outline: Location search _format parameter only
-Given I am using the default server
+	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
 		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT2"
 		And I add the parameter "_format" with the value "<Parameter>"
@@ -133,7 +134,6 @@ Given I am using the default server
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
-
 Scenario Outline: Location search accept header and _format parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
@@ -144,7 +144,7 @@ Scenario Outline: Location search accept header and _format parameter
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
-		Examples:
+	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
 		| application/json+fhir | application/xml+fhir  | XML        |
@@ -200,7 +200,7 @@ Scenario Outline: Location search locations contain metadata and populated field
 		And the response bundle should contain "<EntrySize>" entries
 		And the response should be a Bundle resource of type "searchset"
 		And if the response bundle contains a location resource it should contain meta data profile and version id
-		Examples:
+	Examples:
 		| Value | EntrySize |
 		| SIT1  | 1         |
 		| SIT2  | 2         |
@@ -246,7 +246,6 @@ Scenario: Location search send invalid parameter
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-
 Scenario Outline: Location search response contains name element
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
@@ -256,7 +255,7 @@ Scenario Outline: Location search response contains name element
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle Location entries should contain a name element
-		Examples: 
+	Examples:
 		| siteCode |
 		| SIT1     |
 		| SIT2     |
@@ -271,7 +270,7 @@ Scenario Outline: Location search response contains correct coding if present
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle location entries should contain valid system code and display if the PhysicalType coding is included in the resource
-		Examples: 
+	Examples:
 		| siteCode |
 		| SIT1     |
 		| SIT2     |
@@ -286,7 +285,7 @@ Scenario Outline: Location search response contains correct managing organizatio
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if the response bundle location entries contain managingOrganization element the reference should reference a resource in the response bundle
-		Examples: 
+	Examples:
 		| siteCode |
 		| SIT1     |
 		| SIT2     |
@@ -301,7 +300,7 @@ Scenario Outline: Location search response contains correct partOf
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if the response bundle location entries contain partOf element the reference should reference a resource in the response bundle
-		Examples: 
+	Examples:
 		| siteCode |
 		| SIT1     |
 		| SIT2     |
@@ -316,7 +315,7 @@ Scenario Outline: Location search response contains correct type
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle location entries should contain system code and display if the Type coding is included in the resource
-		Examples: 
+	Examples:
 		| siteCode |
 		| SIT1     |
 		| SIT2     |

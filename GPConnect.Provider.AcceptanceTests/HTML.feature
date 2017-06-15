@@ -1,4 +1,4 @@
-﻿@http
+﻿@html
 Feature: Html
 
 Background:

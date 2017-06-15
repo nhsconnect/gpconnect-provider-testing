@@ -25,7 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "SpineSecurityProxy.feature"
+#line 1 "SSP.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]

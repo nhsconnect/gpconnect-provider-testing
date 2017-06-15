@@ -1,4 +1,4 @@
-﻿@fhir @dstu2
+﻿@fhir
 Feature: Fhir Base
 
 Background:
@@ -45,7 +45,7 @@ Scenario: Conformance profile supports the gpc.getcarerecord operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the conformance profile should contain the "gpc.getcarerecord" operation
-		
+
 Scenario: FHIR request content type XML but no accept header or _format sent with request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -283,7 +283,7 @@ Scenario: endpoint should support gzip compression for getCareRecord operation a
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		
+
 Scenario: endpoint should support chunking of data
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction

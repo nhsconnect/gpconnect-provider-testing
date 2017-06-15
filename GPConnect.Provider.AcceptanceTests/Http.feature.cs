@@ -25,7 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "Http.feature"
+#line 1 "HTTP.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]

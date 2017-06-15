@@ -19,13 +19,13 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("SearchForFreeSlots")]
-    [NUnit.Framework.CategoryAttribute("Appointment")]
+    [NUnit.Framework.CategoryAttribute("getschedule")]
     public partial class SearchForFreeSlotsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "SearchForFreeSlots.feature"
+#line 1 "GPCGetSchedule.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
@@ -33,7 +33,7 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SearchForFreeSlots", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Appointment"});
+                        "getschedule"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

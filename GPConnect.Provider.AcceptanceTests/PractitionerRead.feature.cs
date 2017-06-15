@@ -19,6 +19,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("PractitionerRead")]
+    [NUnit.Framework.CategoryAttribute("practitioner")]
     public partial class PractitionerReadFeature
     {
         
@@ -31,7 +32,8 @@ namespace GPConnect.Provider.AcceptanceTests
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PractitionerRead", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PractitionerRead", null, ProgrammingLanguage.CSharp, new string[] {
+                        "practitioner"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -65,12 +67,12 @@ namespace GPConnect.Provider.AcceptanceTests
         
         public virtual void FeatureBackground()
         {
-#line 3
 #line 4
- testRunner.Given("I have the test patient codes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 5
- testRunner.Given("I have the test practitioner codes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the test patient codes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 6
+ testRunner.Given("I have the test practitioner codes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 7
  testRunner.Given("I have the test ods codes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -82,7 +84,7 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read successful request", ((string[])(null)));
 #line 9
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 10
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitionerSaved\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -116,7 +118,7 @@ this.FeatureBackground();
                     "", exampleTags);
 #line 18
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 19
  testRunner.Given(string.Format("I find practitioner \"{0}\" and save it with the key \"practitionerSaved\"", practitioner), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -152,7 +154,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read invalid request invalid id", exampleTags);
 #line 34
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 35
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -181,7 +183,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read invalid request invalid URL", exampleTags);
 #line 47
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 48
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -212,7 +214,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read failure due to missing header", exampleTags);
 #line 59
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 60
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -249,7 +251,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read failure with incorrect interaction id", exampleTags);
 #line 76
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 77
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -280,7 +282,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read _format parameter only", exampleTags);
 #line 92
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 93
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -316,7 +318,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read accept header and _format", exampleTags);
 #line 106
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 107
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -350,7 +352,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Practitioner read operation", ((string[])(null)));
 #line 123
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 124
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -381,7 +383,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read check meta data profile and version id", exampleTags);
 #line 131
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 132
  testRunner.Given(string.Format("I find practitioner \"{0}\" and save it with the key \"practitioner1Saved\"", practitioner), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -412,7 +414,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read practitioner contains single name element", ((string[])(null)));
 #line 147
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 148
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -444,7 +446,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read practitioner contains identifier it is valid", ((string[])(null)));
 #line 157
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 158
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -479,7 +481,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read practitioner contains practitioner role it is valid", ((string[])(null)));
 #line 168
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 169
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -512,7 +514,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read practitioner contains communication which is valid", ((string[])(null)));
 #line 178
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 179
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -550,7 +552,7 @@ this.FeatureBackground();
                     "ification", exampleTags);
 #line 188
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 189
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitioner1Saved\"" +
@@ -582,7 +584,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read response should contain an ETag header", ((string[])(null)));
 #line 204
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 205
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitionerSaved\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -613,7 +615,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read VRead of current resource should return resource", ((string[])(null)));
 #line 214
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 215
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitionerSaved\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -625,7 +627,7 @@ this.FeatureBackground();
 #line 218
  testRunner.When("I perform a vread for practitioner \"practitionerSaved\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 219
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 220
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 221
@@ -641,7 +643,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practiotioner read VRead of non existant version should return error", ((string[])(null)));
 #line 223
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 224
  testRunner.Given("I find practitioner \"practitioner1\" and save it with the key \"practitionerSaved\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -654,7 +656,7 @@ this.FeatureBackground();
  testRunner.When("I perform an practitioner vread with version id \"NotRealVersionId\" for practition" +
                     "er stored against key \"practitionerSaved\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 228
-  testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 229
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 230
@@ -676,7 +678,7 @@ this.FeatureBackground();
                         "ignore"});
 #line 234
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
@@ -695,7 +697,7 @@ this.FeatureBackground();
                         "ignore"});
 #line 238
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
@@ -714,7 +716,7 @@ this.FeatureBackground();
                         "ignore"});
 #line 242
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
@@ -733,7 +735,7 @@ this.FeatureBackground();
                         "ignore"});
 #line 246
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();

@@ -19,7 +19,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("AccessRecord")]
-    [NUnit.Framework.CategoryAttribute("fhir")]
     [NUnit.Framework.CategoryAttribute("accessrecord")]
     public partial class AccessRecordFeature
     {
@@ -34,7 +33,6 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AccessRecord", null, ProgrammingLanguage.CSharp, new string[] {
-                        "fhir",
                         "accessrecord"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -2182,7 +2180,7 @@ this.FeatureBackground();
 #line 1037
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1038
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1039
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1040

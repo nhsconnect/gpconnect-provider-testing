@@ -121,7 +121,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-	Examples: 
+	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
 		| application/xml+fhir  | application/xml+fhir  | XML          |
 		| application/json+fhir | application/xml+fhir  | XML          |
@@ -141,7 +141,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-	Examples: 
+	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
 		| application/xml+fhir  | application/xml+fhir  | XML          |
 		| application/json+fhir | application/xml+fhir  | XML          |
@@ -161,7 +161,7 @@ Scenario Outline: Patient search failure due to invalid interactionId
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
 		| InvalidInteractionId                                              |
 		|                                                                   |
-		
+
 Scenario Outline: Patient search failure due to missing header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
@@ -179,7 +179,7 @@ Scenario Outline: Patient search failure due to missing header
 		| Ssp-To            |
 		| Ssp-InteractionId |
 		| Authorization     |
-		
+
 Scenario: Patient resource should contain meta data elements
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
@@ -204,7 +204,7 @@ Scenario Outline: Patient resource should contain NHS number identifier
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the response bundle Patient entries should contain a single NHS Number identifier for patient "<Patient>"
-	Examples: 
+	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
@@ -221,7 +221,7 @@ Scenario Outline: Patient resource should not contain disallowed fields in resou
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And patient resource should not contain the fhir fields photo animal or link
-	Examples: 
+	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
@@ -237,7 +237,7 @@ Scenario Outline: Check that if a care provider exists in the Patient resource i
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if Patient resource contains careProvider the reference must be valid
-	Examples: 
+	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
@@ -253,7 +253,7 @@ Scenario Outline: Check that if a managingOrganization exists in the Patient res
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if Patient resource contains a managing organization the reference must be valid
-	Examples: 
+	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
@@ -270,7 +270,7 @@ Scenario Outline: If patient contains telecom contacts the contact must contain 
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if patient resource contains telecom element the system and value must be populated
-	Examples: 
+	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
@@ -287,7 +287,7 @@ Scenario Outline: If patient deceased is present it should be a dateTime and not
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if patient resource contains deceased element it should be dateTime and not boolean
-	Examples: 
+	Examples:
 		| Patient   |
 		| patient1  |
 		| patient2  |
@@ -305,7 +305,7 @@ Scenario Outline: If patient contains marital status it must contain system code
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if composition contains the patient resource maritalStatus fields matching the specification
-	Examples: 
+	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
@@ -322,7 +322,7 @@ Scenario Outline: If patient contains multiple birth field it must be a boolean 
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if composition contains the patient resource and it contains the multiple birth field it should be a boolean value
-	Examples: 
+	Examples:
 		| Patient   |
 		| patient1  |
 		| patient2  |
@@ -339,7 +339,7 @@ Scenario Outline: If patient contains contact the relationship code display and 
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if composition contains the patient resource contact the mandatory fields should matching the specification
-	Examples: 
+	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
@@ -356,7 +356,7 @@ Scenario Outline: If patient contains communication element the system and value
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if composition contains the patient resource communication the mandatory fields should matching the specification
-	Examples: 
+	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
@@ -373,7 +373,7 @@ Scenario Outline: If patient contains care provider the reference should be vali
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if careProvider is present in patient resource the reference should be valid
-	Examples: 
+	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
@@ -390,7 +390,7 @@ Scenario Outline: If patient contains managing organization the reference should
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if managingOrganization is present in patient resource the reference should be valid
-	Examples: 
+	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
@@ -415,7 +415,7 @@ Scenario Outline: System should error if multiple parameters valid or invalid ar
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples: 
+	Examples:
 		| Identifier1      | PatientOne | Identifier2       | PatientTwo |
 		| identifier       | patient2   | identifier        | patient2   |
 		| identifier       | patient1   | identifier        | patient2   |

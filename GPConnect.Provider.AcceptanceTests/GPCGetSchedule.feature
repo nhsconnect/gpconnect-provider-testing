@@ -1,4 +1,4 @@
-﻿@Appointment
+﻿@getschedule
 Feature: SearchForFreeSlots
 	
 Background:
@@ -44,7 +44,7 @@ Scenario Outline: I send a request to the getSchedule operation with invalid org
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "ORGANISATION_NOT_FOUND"
-	Examples: 
+	Examples:
 		| LogicalIdentifier         |
 		|                           |
 		| InvalidLogicalID123456789 |
@@ -64,7 +64,7 @@ Scenario Outline: getSchedule failure due to invalid interactionId
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
 		| InvalidInteractionId                                              |
 		|                                                                   |
-		
+
 Scenario Outline: getSchedule failure due to missing header
 	Given I am using the default server
 		And I search for the organization "ORG2" on the providers system and save the first response to "ORG2"
@@ -138,7 +138,7 @@ Scenario Outline: I perform a getSchedule with invalid end date and or start dat
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
-	Examples: 
+	Examples:
 		| StartDate        | EndDate          |
 		| invalidStartDate | 2017-02-28       |
 		| 2017-02-26       | invalidEnddate   |
@@ -158,7 +158,7 @@ Scenario Outline: I perform a getSchedule with valid partial dateTime strings
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should include slot resources
-	Examples: 
+	Examples:
 		| StartDate                 | EndDate                   |
 		| 2017-02-26                | 2017-02-28                |
 		| 2017                      | 2017-01-03                |
@@ -261,7 +261,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should include slot resources
 		And the schedule reference within the slots resources should be resolvable in the response bundle
-	Examples: 
+	Examples:
 		| RequestContentType    | AcceptHeaderValue     | ResponseShouldBe |
 		| application/xml+fhir  | application/xml+fhir  | XML              |
 		| application/json+fhir | application/json+fhir | JSON             |
@@ -282,7 +282,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should include slot resources
 		And the schedule reference within the slots resources should be resolvable in the response bundle
-	Examples: 
+	Examples:
 		| RequestContentType    | FormatParameterValue  | ResponseShouldBe |
 		| application/xml+fhir  | application/xml+fhir  | XML              |
 		| application/json+fhir | application/json+fhir | JSON             |
@@ -304,7 +304,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should include slot resources
 		And the schedule reference within the slots resources should be resolvable in the response bundle
-	Examples: 
+	Examples:
 		| RequestContentType    | AcceptHeaderValue     | FormatParameterValue  | ResponseShouldBe |
 		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML              |
 		| application/json+fhir | application/json+fhir | application/json+fhir | JSON             |
@@ -444,4 +444,3 @@ Scenario: I successfully perform a gpc.getschedule operation where the end date 
 	When I perform the gpc.getSchedule operation
 	Then the response should be successful and return a FHIR Bundle
 	Then the slot which straddles the request parameter start date should appear in the response bundle.
-

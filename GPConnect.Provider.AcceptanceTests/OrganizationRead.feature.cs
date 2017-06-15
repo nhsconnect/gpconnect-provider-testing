@@ -19,6 +19,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("OrganizationRead")]
+    [NUnit.Framework.CategoryAttribute("organization")]
     public partial class OrganizationReadFeature
     {
         
@@ -31,7 +32,8 @@ namespace GPConnect.Provider.AcceptanceTests
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "OrganizationRead", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "OrganizationRead", null, ProgrammingLanguage.CSharp, new string[] {
+                        "organization"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -65,8 +67,8 @@ namespace GPConnect.Provider.AcceptanceTests
         
         public virtual void FeatureBackground()
         {
-#line 3
 #line 4
+#line 5
  testRunner.Given("I have the test ods codes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -81,7 +83,7 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization Read successful request", exampleTags);
 #line 7
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 8
  testRunner.Given(string.Format("I get organization \"{0}\" id and save it as \"ORG1ID\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -115,7 +117,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read invalid request invalid id", exampleTags);
 #line 22
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 23
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -142,7 +144,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read invalid request invalid URL", exampleTags);
 #line 34
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 35
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -172,7 +174,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read failure due to missing header", exampleTags);
 #line 46
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 47
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -208,7 +210,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read failure with incorrect interaction id", exampleTags);
 #line 63
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 64
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -238,7 +240,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read _format parameter only", exampleTags);
 #line 79
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 80
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -273,7 +275,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read accept header and _format", exampleTags);
 #line 93
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 94
  testRunner.Given("I get organization \"ORG2\" id and save it as \"ORG2ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -308,7 +310,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Organization read operation", ((string[])(null)));
 #line 111
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 112
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -335,7 +337,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read check meta data profile and version id", ((string[])(null)));
 #line 119
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 120
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -366,7 +368,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read organization contains identifier it is valid", ((string[])(null)));
 #line 129
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 130
  testRunner.Given("I get organization \"ORG3\" id and save it as \"ORG3ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -399,7 +401,7 @@ this.FeatureBackground();
                     "ce", ((string[])(null)));
 #line 139
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 140
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -432,7 +434,7 @@ this.FeatureBackground();
                     "ystem and display", ((string[])(null)));
 #line 149
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 150
  testRunner.Given("I get organization \"ORG2\" id and save it as \"ORG2ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -463,7 +465,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization read response should contain ETag header", ((string[])(null)));
 #line 159
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 160
  testRunner.Given("I get organization \"ORG1\" id and save it as \"ORG1ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -494,7 +496,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VRead of current resource should return resource", ((string[])(null)));
 #line 169
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 170
  testRunner.Given("I get organization \"ORG3\" id and save it as \"ORGID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -522,7 +524,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VRead of non existant version should return an error", ((string[])(null)));
 #line 178
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line 179
  testRunner.Given("I get organization \"ORG2\" id and save it as \"storedOrganization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -553,7 +555,7 @@ this.FeatureBackground();
                         "ignore"});
 #line 188
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
@@ -568,7 +570,7 @@ this.FeatureBackground();
                         "ignore"});
 #line 192
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
@@ -587,7 +589,7 @@ this.FeatureBackground();
                         "ignore"});
 #line 197
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
@@ -606,7 +608,7 @@ this.FeatureBackground();
                         "ignore"});
 #line 201
 this.ScenarioSetup(scenarioInfo);
-#line 3
+#line 4
 this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();

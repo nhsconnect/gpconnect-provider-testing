@@ -1,4 +1,5 @@
-﻿Feature: BookAppointment
+﻿@appointment
+Feature: BookAppointment
 
 Background:
 	Given I have the test patient codes
@@ -57,21 +58,21 @@ Scenario Outline: Book appointment accept header and _format parameter
 		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
-        And I set the Accept header to "<Header>"
-        And I add the parameter "_format" with the value "<Parameter>"
+		And I set the Accept header to "<Header>"
+		And I add the parameter "_format" with the value "<Parameter>"
 	When I book the appointment called "Appointment"
-    Then the response status code should indicate created
-        And the response body should be FHIR <BodyFormat>
+	Then the response status code should indicate created
+		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned resource shall contains a logical id
 		And the appointment resource should contain a status element
 		And the appointment response resource contains a slot reference
-    Examples:
-       | Header                | Parameter             | BodyFormat | 
-       | application/json+fhir | application/json+fhir | JSON       |
-       | application/json+fhir | application/xml+fhir  | XML        |
-       | application/xml+fhir  | application/json+fhir | JSON       |
-       | application/xml+fhir  | application/xml+fhir  | XML        |
+	Examples:
+		| Header                | Parameter             | BodyFormat |
+		| application/json+fhir | application/json+fhir | JSON       |
+		| application/json+fhir | application/xml+fhir  | XML        |
+		| application/xml+fhir  | application/json+fhir | JSON       |
+		| application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario Outline: Book appointment _format parameter only but varying request content types
 	Given I perform a patient search for patient "patient2" and store the first returned resources against key "storedPatient"
@@ -82,20 +83,20 @@ Scenario Outline: Book appointment _format parameter only but varying request co
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I set the request content type to "<ContentType>"
 		And I create an appointment for patient "storedPatient" called "Appointment" from schedule "getScheduleResponseBundle"
-        And I add the parameter "_format" with the value "<Parameter>"
+		And I add the parameter "_format" with the value "<Parameter>"
 	When I book the appointment called "Appointment"
-    Then the response status code should indicate created
-        And the response body should be FHIR <BodyFormat>
+	Then the response status code should indicate created
+		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned resource shall contains a logical id
 		And the appointment resource should contain a status element
 		And the appointment response resource contains a slot reference
-    Examples:
-        | ContentType           | Parameter             | BodyFormat |
-        | application/json+fhir | application/json+fhir | JSON       |
-        | application/json+fhir | application/xml+fhir  | XML        |
-        | application/xml+fhir  | application/json+fhir | JSON       |
-        | application/xml+fhir  | application/xml+fhir  | XML        |
+	Examples:
+		| ContentType           | Parameter             | BodyFormat |
+		| application/json+fhir | application/json+fhir | JSON       |
+		| application/json+fhir | application/xml+fhir  | XML        |
+		| application/xml+fhir  | application/json+fhir | JSON       |
+		| application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario Outline: Book appointment accept header variations
 	Given I perform a patient search for patient "patient3" and store the first returned resources against key "storedPatient"
@@ -105,18 +106,18 @@ Scenario Outline: Book appointment accept header variations
 		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient" called "Appointment" from schedule "getScheduleResponseBundle"
-        And I set the Accept header to "<Header>"
+		And I set the Accept header to "<Header>"
 	When I book the appointment called "Appointment"
-    Then the response status code should indicate created
-        And the response body should be FHIR <BodyFormat>
+	Then the response status code should indicate created
+		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned resource shall contains a logical id
 		And the appointment resource should contain a status element
 		And the appointment response resource contains a slot reference
 	Examples:
-		 | Header                | BodyFormat |
-		 | application/json+fhir | JSON       |
-		 | application/xml+fhir  | XML        |
+		| Header                | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
 Scenario: Book appointment prefer header set to representation
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
@@ -158,15 +159,15 @@ Scenario Outline: Book appointment with invalid interaction id
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 	When I book the appointment called "Appointment"
 	Then the response status code should be "400"
-        And the response body should be FHIR JSON
+		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-    Examples:
-       | interactionId                                                     |
-       | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
-       | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-       |                                                                   |
-       | null                                                              |
-                                                  
+	Examples:
+		| interactionId                                                     |
+		| urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
+		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		|                                                                   |
+		| null                                                              |
+
 Scenario: Book Appointment and check response returns the correct values
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
@@ -186,7 +187,7 @@ Scenario: Book Appointment and check response returns the correct values
 		And the appointment resource should contain at least one participant
 		And the appointment resource should contain at least one slot reference
 		And if the appointment resource contains a priority the value is valid
-  
+
 Scenario: Book Appointment and check returned appointment resource contains meta data
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
@@ -232,16 +233,16 @@ Scenario Outline: Book Appointment and check extensions are valid
 		And if the returned appointment booking element is present it is populated with the correct values
 		And if the returned appointment contact element is present it is populated with the correct values
 		And if the returned appointment cancellation reason element is present it is populated with the correct values
-	Examples: 
-	| AppointmentName |
-	| Appointment     |
-	| Appointment1    |
-	| Appointment2    |
-	| Appointment3    |
-	| Appointment4    |
-	| Appointment5    |
-	| Appointment6    |
-	| Appointment7    |
+	Examples:
+		| AppointmentName |
+		| Appointment     |
+		| Appointment1    |
+		| Appointment2    |
+		| Appointment3    |
+		| Appointment4    |
+		| Appointment5    |
+		| Appointment6    |
+		| Appointment7    |
 
 Scenario: Book Appointment without location participant
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
@@ -256,7 +257,7 @@ Scenario: Book Appointment without location participant
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		
+
 Scenario Outline: Book Appointment and remove manadatory resources from the appointment booking
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
@@ -427,7 +428,7 @@ Scenario: Book appointment with missing end element in appointment resource
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		
+
 Scenario: Book appointment with missing status element in appointment resource
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
@@ -454,7 +455,7 @@ Scenario: Book appointment with missing slot element in appointment resource
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		
+
 Scenario: Book Appointment and remove identifier value from the appointment booking
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
