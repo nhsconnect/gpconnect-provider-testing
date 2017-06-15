@@ -37,7 +37,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                     try
                     {
                         Log.WriteLine("Server Certificate recieved = " + cert);
-                        Log.WriteLine("Store Certificates = " + store.Certificates);
+                        foreach (var storedCert in store.Certificates)
+                        {
+                            Log.WriteLine("Store Certificate = " + storedCert);
+                        }
 
                         store.Open(OpenFlags.ReadOnly);
                         // TODO Fix The Validation Of The Server Certificate
