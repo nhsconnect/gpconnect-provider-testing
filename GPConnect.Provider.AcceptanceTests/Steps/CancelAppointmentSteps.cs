@@ -70,15 +70,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps.RestRequest(RestSharp.Method.PUT, URL, FhirSerializer.SerializeToJson(storedAppointment));
         }
 
-        [When(@"I cancel the appointment with the key ""(.*)"" and set the reason to double booked")]
-        public void WhenICancelTheAppointmentWithTheKeyAndSetTheReasonToDoubleBooked(string appointmentName)
+        [When(@"I cancel the appointment with the key ""(.*)"" and set the reason to ""(.*)""")]
+        public void WhenICancelTheAppointmentWithTheKeyAndSetTheReasonToDoubleBooked(string appointmentName, string reasonString)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             storedAppointment.Status = AppointmentStatus.Cancelled;
             string url = "Appointment/" + storedAppointment.Id;
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
-            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", "Double booked"));
+            extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", reasonString));
             storedAppointment.ModifierExtension.Add(extension);
             HttpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
         }
@@ -202,7 +202,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the cancellation reason in the returned appointment response should be equal to ""(.*)""")]
-        public void ThenTheCancellationReasonInTheReturnedAppointmentResponseShouldBeEqualToStrings(string display)
+        public void ThenTheCancellationReasonInTheReturnedAppointmentResponseShouldBeEqualTo(string display)
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             foreach (var extension in appointment.Extension)
