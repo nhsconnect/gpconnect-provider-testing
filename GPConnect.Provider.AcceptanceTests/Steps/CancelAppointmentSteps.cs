@@ -19,11 +19,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly AccessRecordSteps AccessRecordSteps;
         private readonly HttpSteps HttpSteps;
         private readonly HttpContext HttpContext;
-
+        private readonly BundleSteps _bundleSteps;
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
-        public CancelAppointmentSteps(HttpHeaderHelper headerHelper, AccessRecordSteps accessRecordSteps, FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext)
+        public CancelAppointmentSteps(HttpHeaderHelper headerHelper, AccessRecordSteps accessRecordSteps, FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps)
         {
             // Helpers
             FhirContext = fhirContext;
@@ -31,6 +31,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Headers = headerHelper;
             HttpSteps = httpSteps;
             HttpContext = httpContext;
+            _bundleSteps = bundleSteps;
         }
 
         [Given(@"I get the first appointment saved in the bundle of resources stored against key ""(.*)"" and call it ""(.*)""")]
@@ -607,7 +608,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (location.PartOf != null)
             {
                 location.PartOf.Reference.ShouldNotBeNullOrEmpty();
-                AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
+                _bundleSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
             }
         }
 
@@ -618,7 +619,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (location.ManagingOrganization != null)
             {
                 location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
-                AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
+                _bundleSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
             }
         }
 

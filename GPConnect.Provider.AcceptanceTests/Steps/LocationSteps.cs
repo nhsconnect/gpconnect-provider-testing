@@ -18,13 +18,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly HttpContext HttpContext;
         private readonly HttpSteps HttpSteps;
         private readonly AccessRecordSteps AccessRecordSteps;
+        private readonly BundleSteps _bundleSteps;
 
-        public LocationSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps)
+        public LocationSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps)
         {
             FhirContext = fhirContext;
             HttpContext = httpContext;
             HttpSteps = httpSteps;
             AccessRecordSteps = accessRecordSteps;
+            _bundleSteps = bundleSteps;
         }
 
         [Given(@"I get location ""(.*)"" id and save it as ""(.*)""")]
@@ -196,7 +198,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     if (location.PartOf != null)
                     {
                         location.PartOf.Reference.ShouldNotBeNullOrEmpty();
-                        AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
+                        _bundleSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
                     }
                 }
             }
@@ -213,7 +215,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     if (location.ManagingOrganization != null)
                     {
                         location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
-                        AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
+                        _bundleSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
                     }
                 }
             }
@@ -268,7 +270,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (location.ManagingOrganization != null)
             {
                 location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
-                AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
+                _bundleSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
             }
         }
 
@@ -279,7 +281,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (location.PartOf != null)
             {
                 location.PartOf.Reference.ShouldNotBeNullOrEmpty();
-                AccessRecordSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
+                _bundleSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
             }
         }
 

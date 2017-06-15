@@ -3,14 +3,10 @@ using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
-using Hl7.Fhir.Serialization;
-using Newtonsoft.Json;
-using NUnit.Framework;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
-using static Hl7.Fhir.Model.Bundle;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -18,14 +14,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public sealed class AccessRecordSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext _fhirContext;
-        private readonly HttpContext _httpContext;
         private readonly HttpSteps _httpSteps;
+        private readonly BundleSteps _bundleSteps;
 
-        public AccessRecordSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps)
+        public AccessRecordSteps(FhirContext fhirContext, HttpSteps httpSteps, BundleSteps bundleSteps)
         {
             _fhirContext = fhirContext;
-            _httpContext = httpContext;
             _httpSteps = httpSteps;
+            _bundleSteps = bundleSteps;
         }
 
         [Given(@"I have the test patient codes")]
@@ -72,105 +68,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var parameter = _fhirContext.FhirRequestParameters.GetSingle("recordSection");
             ((CodeableConcept)parameter.Value).Coding[0].System = "";
         }
-
-        [Then(@"the response should be a Bundle resource of type ""([^""]*)""")]
-        public void ThenTheResponseShouldBeABundleResourceOfType(string resourceType)
-        {
-            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Bundle);
-
-            if ("document".Equals(resourceType))
-            {
-                ((Bundle)_fhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Document);
-            }
-            else if ("searchset".Equals(resourceType))
-            {
-                ((Bundle)_fhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Searchset);
-            }
-            else
-            {
-                Assert.Fail("Invalid resourceType: " + resourceType);
-            }
-        }
-
-        [Then(@"the response should be a OperationOutcome resource")]
-        public void ThenTheResponseShouldBeAOperationOutcomeResource()
-        {
-            TestOperationOutcomeResource();
-        }
-
-        [Then(@"the response should be a OperationOutcome resource with error code ""([^""]*)""")]
-        public void ThenTheResponseShouldBeAOperationOutcomeResourceWithErrorCode(string errorCode)
-        {
-            TestOperationOutcomeResource(errorCode);
-        }
-
-        private void TestOperationOutcomeResource(string errorCode = null)
-        {
-            var resource = _fhirContext.FhirResponseResource;
-
-            resource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
-
-            var operationOutcome = (OperationOutcome)resource;
-
-            operationOutcome.Meta.ShouldNotBeNull();
-            operationOutcome.Meta.Profile.ShouldAllBe(profile => profile.Equals("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1"));
-
-            operationOutcome.Issue.ForEach(issue =>
-            {
-                issue.Details.ShouldNotBeNull();
-                issue.Details.Coding.ForEach(coding =>
-                {
-                    coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
-                    coding.Code.ShouldNotBeNull();
-                    coding.Display.ShouldNotBeNull();
-                });
-
-                if (!string.IsNullOrEmpty(errorCode))
-                {
-                    issue.Details.Coding.ShouldContain(x => x.Code.Equals(errorCode));
-                }
-            });
-        }
-
-        [Then(@"the response bundle should contain a single Patient resource")]
-        public void ThenTheResponseBundleShouldContainASinglePatientResource()
-        {
-            _fhirContext.Patients.Count.ShouldBe(1);
-        }
-
-        [Then(@"the response bundle should contain at least One Practitioner resource")]
-        public void ThenTheResponseBundleShouldContainAtLeastOnePractitionerResource()
-        {
-            _fhirContext.Practitioners.Count.ShouldBeGreaterThan(0);
-        }
-
-        [Then(@"the response bundle should contain a single Composition resource")]
-        public void ThenTheResponseBundleShouldContainASingleCompositionResource()
-        {
-            _fhirContext.Compositions.Count.ShouldBe(1);
-        }
-
-        [Then(@"the response bundle should contain the composition resource as the first entry")]
-        public void ThenTheResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
-        {
-            ((Bundle)_fhirContext.FhirResponseResource)
-                .Entry
-                .Select(entry => entry.Resource.ResourceType)
-                .First()
-                .ShouldBe(ResourceType.Composition);
-        }
-
-        //Hayden: Never hit during AccessRecordFeature - should this be removed?
-        [Then(@"the response bundle Patient entry should be a valid Patient resource")]
-        public void ThenResponseBundlePatientEntryShouldBeAValidPatientResource()
-        {
-            var fhirResource = _httpContext.ResponseJSON.SelectToken("$.entry[?(@.resource.resourceType == \'Patient\')].resource");
-            var fhirJsonParser = new FhirJsonParser();
-            var patientResource = fhirJsonParser.Parse<Patient>(JsonConvert.SerializeObject(fhirResource));
-            patientResource.ResourceType.ShouldBe(ResourceType.Patient);
-        }
-
-
+        
         [Then(@"the response bundle Patient entry should contain a valid NHS number identifier")]
         public void ThenResponseBundlePatientEntryShouldContainAValidNHSNumberIdentifier()
         {
@@ -275,22 +173,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     // Contact Organization Checks
                     if (contact.Organization?.Reference != null)
                     {
-                        ((Bundle)_fhirContext.FhirResponseResource)
-                            .Entry
-                            .ShouldContain(entry => entry.Resource.ResourceType.Equals(ResourceType.Organization) && entry.FullUrl.Equals(contact.Organization.Reference));
-
-                        //Hayden: Code below uses entry rather than entryForOrganization... Is this correct?
-
-                        //var referenceExistsInBundle = false;
-                        //foreach (EntryComponent entryForOrganization in ((Bundle)FhirContext.FhirResponseResource).Entry)
-                        //{
-                        //    if (entry.Resource.ResourceType.Equals(ResourceType.Organization) && entry.FullUrl.Equals(contact.Organization.Reference))
-                        //    {
-                        //        referenceExistsInBundle = true;
-                        //        break;
-                        //    }
-                        //}
-                        //referenceExistsInBundle.ShouldBeTrue();
+                        _fhirContext.Entries.ShouldContain(entry => 
+                            entry.Resource.ResourceType.Equals(ResourceType.Organization) && 
+                            entry.FullUrl.Equals(contact.Organization.Reference)
+                        );
                     }
                 });
             });
@@ -318,7 +204,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
                     patient.CareProvider.ForEach(careProvider =>
                     {
-                        ResponseBundleContainsReferenceOfType(careProvider.Reference, ResourceType.Practitioner);
+                        _bundleSteps.ResponseBundleContainsReferenceOfType(careProvider.Reference, ResourceType.Practitioner);
                     });
                 }
             });
@@ -331,7 +217,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 if (patient.ManagingOrganization != null)
                 {
-                    ResponseBundleContainsReferenceOfType(patient.ManagingOrganization.Reference, ResourceType.Organization);
+                    _bundleSteps.ResponseBundleContainsReferenceOfType(patient.ManagingOrganization.Reference, ResourceType.Organization);
                 }
             });
         }
@@ -346,14 +232,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 patient.Link?.Count.ShouldBe(0, "There should be no link element in Patient Resource");
                 patient.Animal.ShouldBeNull("There should be no Animal element in Patient Resource");
             });
-        }
-
-        [Then(@"if the response bundle contains a ""([^""]*)"" resource")]
-        public void ThenIfTheResponseBundleContainsAResource(string resourceType)
-        {
-            ((Bundle)_fhirContext.FhirResponseResource)
-                .Entry
-                .ShouldContain(entry => entry.Resource.ResourceType.ToString().Equals(resourceType));
         }
 
         [Then(@"practitioner resources should contain a single name element")]
@@ -492,7 +370,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     if (practitionerRole.ManagingOrganization != null)
                     {
-                        ResponseBundleContainsReferenceOfType(practitionerRole.ManagingOrganization.Reference, ResourceType.Organization);
+                        _bundleSteps.ResponseBundleContainsReferenceOfType(practitionerRole.ManagingOrganization.Reference, ResourceType.Organization);
                     }
                 });
             });
@@ -541,7 +419,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 if (organization.PartOf != null)
                 {
-                    ResponseBundleContainsReferenceOfType(organization.PartOf?.Reference, ResourceType.Organization);
+                    _bundleSteps.ResponseBundleContainsReferenceOfType(organization.PartOf?.Reference, ResourceType.Organization);
                 }
             });
         }
@@ -611,50 +489,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the patient resource in the bundle should contain meta data profile and version id")]
-        public void ThenThePatientResourceInTheBundleShouldContainMetaDataProfileAndVersionId()
-        {
-            CheckForValidMetaDataInResource(_fhirContext.Patients, "http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
-        }
-
-        [Then(@"if the response bundle contains an organization resource it should contain meta data profile and version id")]
-        public void ThenIfTheResponseBundleContainsAnOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
-        {
-            CheckForValidMetaDataInResource(_fhirContext.Organizations, "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
-        }
-
-        [Then(@"if the response bundle contains a practitioner resource it should contain meta data profile and version id")]
-        public void ThenIfTheResponseBundleContainsAPractitionerResourceItShouldContainMetaDataProfileAndVersionId()
-        {
-            CheckForValidMetaDataInResource(_fhirContext.Practitioners, "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
-        }
-
-        [Then(@"if the response bundle contains a device resource it should contain meta data profile and version id")]
-        public void ThenIfTheResponseBundleContainsADeviceResourceItShouldContainMetaDataProfileAndVersionId()
-        {
-            CheckForValidMetaDataInResource(_fhirContext.Devices, "http://fhir.nhs.net/StructureDefinition/gpconnect-device-1");
-        }
-
-        [Then(@"if the response bundle contains a location resource it should contain meta data profile and version id")]
-        public void ThenIfTheResponseBundleContainsALocationResourceItShouldContainMetaDataProfileAndVersionId()
-        {
-            CheckForValidMetaDataInResource(_fhirContext.Locations, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
-        }
-
-        public void CheckForValidMetaDataInResource<T>(List<T> resources, string profileId) where T : Resource
-        {
-            resources.ForEach(resource =>
-            {
-                resource.Meta.ShouldNotBeNull();
-                resource.Meta.Profile.Count().ShouldBe(1);
-                resource.Meta.Profile.ToList().ForEach(profile =>
-                {
-                    profile.ShouldBe(profileId);
-                });
-                resource.Meta.VersionId.ShouldNotBeNull();
-            });
-        }
-
         public void ShouldBeSingleCodingWhichIsInValueSet(ValueSet valueSet, List<Coding> codingList)
         {
             codingList.Count.ShouldBeLessThanOrEqualTo(1);
@@ -669,15 +503,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             coding.System.ShouldBe(valueSet.CodeSystem.System);
 
             valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display));
-        }
-
-        public void ResponseBundleContainsReferenceOfType(string reference, ResourceType resourceType)
-        {
-            const string customMessage = "The reference from the resource was not found in the bundle by fullUrl resource element.";
-
-            ((Bundle)_fhirContext.FhirResponseResource)
-                .Entry
-                .ShouldContain(entry => reference.Equals(entry.FullUrl) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
         }
     }
 }

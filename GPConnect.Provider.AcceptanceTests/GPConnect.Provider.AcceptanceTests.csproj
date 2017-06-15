@@ -227,6 +227,7 @@
     <Compile Include="Steps\AppointmentRetrieveSteps.cs" />
     <Compile Include="Steps\AppointmentsSteps.cs" />
     <Compile Include="Steps\BookAppointmentSteps.cs" />
+    <Compile Include="Steps\BundleSteps.cs" />
     <Compile Include="Steps\CancelAppointmentSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
     <Compile Include="Steps\GetScheduleSteps.cs" />

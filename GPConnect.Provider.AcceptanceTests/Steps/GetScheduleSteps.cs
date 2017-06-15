@@ -18,13 +18,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly HttpContext HttpContext;
         private readonly HttpSteps HttpSteps;
         private readonly AccessRecordSteps AccessRecordSteps;
+        private readonly BundleSteps _bundleSteps;
 
-        public GetScheduleSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps)
+        public GetScheduleSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps)
         {
             FhirContext = fhirContext;
             HttpContext = httpContext;
             HttpSteps = httpSteps;
             AccessRecordSteps = accessRecordSteps;
+            _bundleSteps = bundleSteps;
         }
 
         [Given(@"I search for the organization ""([^""]*)"" on the providers system and save the first response to ""([^""]*)""")]
@@ -199,7 +201,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Slot slot = (Slot)entry.Resource;
                     slot.Schedule.Reference.ShouldNotBeNull("There must be a Schedule reference within all slots.");
                     slot.Schedule.Reference.ShouldNotBeEmpty("There must be a Schedule reference within all slots.");
-                    AccessRecordSteps.ResponseBundleContainsReferenceOfType(slot.Schedule.Reference, ResourceType.Schedule);
+                    _bundleSteps.ResponseBundleContainsReferenceOfType(slot.Schedule.Reference, ResourceType.Schedule);
                 }
             }
         }
@@ -237,7 +239,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     schedule.Actor.ShouldNotBeNull();
                     schedule.Actor.Reference.ShouldNotBeNull();
                     schedule.Actor.Reference.ShouldStartWith("Location/");
-                    AccessRecordSteps.ResponseBundleContainsReferenceOfType(schedule.Actor.Reference, ResourceType.Location);
+                    _bundleSteps.ResponseBundleContainsReferenceOfType(schedule.Actor.Reference, ResourceType.Location);
                 }
             }
         }
@@ -307,7 +309,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         var practitionerReference = ((ResourceReference)extension.Value).Reference;
                         practitionerReference.ShouldNotBeNull();
                         practitionerReference.ShouldStartWith("Practitioner/");
-                        AccessRecordSteps.ResponseBundleContainsReferenceOfType(practitionerReference, ResourceType.Practitioner);
+                        _bundleSteps.ResponseBundleContainsReferenceOfType(practitionerReference, ResourceType.Practitioner);
                     }
                 }
             }

@@ -75,6 +75,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public List<Device> Devices => GetResources<Device>(ResourceType.Device);
         public List<Practitioner> Practitioners => GetResources<Practitioner>(ResourceType.Practitioner);
         public List<Location> Locations => GetResources<Location>(ResourceType.Location);
+        public List<Bundle.EntryComponent> Entries => ((Bundle) FhirResponseResource).Entry;
 
         public Resource FhirResponseResource
         {
