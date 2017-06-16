@@ -212,9 +212,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response should be an Appointment resource which is saved as ""([^""]*)""")]
         public void theResponseShouldBeAnAppointmentResource(string appointmentName)
         {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
-            HttpContext.StoredAppointment.Add("appointmentName", appointment);
-        }    
+            HttpContext.StoredAppointment.Remove(appointmentName);
+            HttpContext.StoredAppointment.Add(appointmentName, (Appointment)FhirContext.FhirResponseResource);
+        }
 
         [Then(@"the response should be a Location resource")]
         public void theResponseShouldBeAnLocationResource()

@@ -31,33 +31,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I store the schedule for ""(.*)"" called ""(.*)"" and create an appointment called ""(.*)"" for patient ""(.*)"" using the interaction id ""(.*)""")]
-       public void IstoreThescheduleForCalledAndCreateAnAppointmentCalledForPatientUsingTheInteractionId(string ORG1, string getScheduleResponseBundle, string appointment, string patient, string interactionId)
+        public void IstoreThescheduleForCalledAndCreateAnAppointmentCalledForPatientUsingTheInteractionId(string ORG1, string getScheduleResponseBundle, string appointment, string patient, string interactionId)
         {
             Given($@"I perform the getSchedule operation for organization ""{ORG1}"" and store the returned bundle resources against key ""{getScheduleResponseBundle}""");
             Given($@"I am using the default server");
             Given($@"I am performing the ""{interactionId}"" interaction");
+            Given($@"I set the JWT requested record patient NHS number to ""{patient}""");
+            Given(@"I set the JWT requested scope to ""patient/*.write""");
             Given($@"I create an appointment for patient ""{patient}"" called ""{appointment}"" from schedule ""{getScheduleResponseBundle}""");
             When($@"I book the appointment called ""{appointment}""");
             Then("the response status code should indicate created");
             And("the response body should be FHIR JSON");
-            And($@"the response should be an Appointment resource which is saved as ""savedFhirResource""");
+            And($@"the response should be an Appointment resource which is saved as ""{appointment}""");
         }
-
-
+        
         [When(@"I perform an appointment read for the appointment called ""(.*)""")]
         public void IPerformAnAppointmentReadForTheAppointmentCalled(string appointment)
         {
-            Appointment fhirApp = (Appointment)HttpContext.StoredFhirResources[appointment];
-            string url = "Appointment/" + fhirApp.Id;
+            string url = $"Appointment/{HttpContext.StoredAppointment[appointment].Id}";
             When($@"I make a GET request to ""{url}""");
-      
         }
 
         [When(@"I amend ""(.*)"" by changing the comment to ""(.*)""")]
         public void IAmendByChangingTheCommentToMessage(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment["appointmentName"];
+            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
             savedAppointment.Id = fhirApp.Id;
             savedAppointment.Comment = message;
             string appointmentId = "/Appointment/" + savedAppointment.Id;
@@ -68,19 +67,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAmendByChangingTheReasonTextToMessage(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment["appointmentName"];
-            savedAppointment.Id = fhirApp.Id;
-            savedAppointment.Reason.Text = message;
-            savedAppointment.Reason.TextElement.Value = message;
-            string appointmentId = "/Appointment/" + savedAppointment.Id;
+
+            savedAppointment.Id = HttpContext.StoredAppointment[appointment].Id;
+
+            if (null == savedAppointment.Reason)
+            {
+                savedAppointment.Reason = new CodeableConcept();
+                savedAppointment.Reason.Coding = new List<Coding>();
+            }
+
+            savedAppointment.Reason.Coding.Add(new Coding("http://snomed.info/sct", message, message));
+
+            string appointmentId = $"/Appointment/{savedAppointment.Id}";
+
             HttpSteps.RestRequest(RestSharp.Method.PUT, appointmentId, FhirSerializer.SerializeToJson(savedAppointment));
+
+            Then(@"the response body should be FHIR JSON");
+            Then($@"the response should be an Appointment resource which is saved as ""{appointment}""");
         }
 
         [When(@"I amend ""(.*)"" by changing the description text to ""(.*)""")]
         public void IAmendByChangingTheDescriptionTextToMessage(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment["appointmentName"];
+            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
             savedAppointment.Id = fhirApp.Id;
             savedAppointment.Description = message;
             string appointmentId = "/Appointment/" + savedAppointment.Id;
@@ -91,7 +101,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAmendByChangingTheTextToMessage(string appointment, int message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment["appointmentName"];
+            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
             savedAppointment.Id = fhirApp.Id;
             savedAppointment.Priority = message;
             string appointmentId = "/Appointment/" + savedAppointment.Id;
@@ -102,7 +112,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAmendByChangingTheCommentToMessageAndSendBundleInTheRequest(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment["appointmentName"];
+            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
             Bundle invalidBundle = new Bundle();
 
             savedAppointment.Id = fhirApp.Id;
@@ -116,7 +126,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAmendByChangingTheCommentToMessageAndSendInvalidAppointmentInResource(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment["appointmentName"];
+            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
             Appointment empty = new Appointment();
             
             savedAppointment.Id = fhirApp.Id;
@@ -125,9 +135,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             string appointmentId = "/Appointment/" + savedAppointment.Id;
             HttpSteps.RestRequest(RestSharp.Method.PUT, appointmentId, FhirSerializer.SerializeToJson(empty));
         }
-
         
-
         [When(@"I set the URL to ""(.*)"" and amend ""(.*)"" by changing the comment to ""(.*)""")]
         public void IAmendByChangingTheCommentToMessageSettingUrl(string URL,string appointment, string message)
         {
@@ -163,7 +171,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             string returnedETag = "";
             HttpContext.ResponseHeaders.TryGetValue("ETag", out returnedETag);
             HttpContext.resourceNameStored.Add(etagName, returnedETag);
-         
         }
     }
 }
