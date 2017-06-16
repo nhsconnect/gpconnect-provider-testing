@@ -40,10 +40,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 // Perform get schedule once to get available slots with which to create appointments
                 Given($@"I perform the getSchedule operation for organization ""{organizaitonName}"" and store the returned bundle resources against key ""getScheduleResponseBundle""");
-
                 for (int numberOfAppointmentsToCreate = numberOfRequiredAdditionalAppointments; numberOfAppointmentsToCreate > 0; numberOfAppointmentsToCreate--)
                 {
                     When($@"I book an appointment for patient ""{patient}"" on the provider system using a slot from the getSchedule response bundle stored against key ""getScheduleResponseBundle"" and store the appointment to ""storedAppointment""");
+        
                 }
 
                 // Search for appointments again to make sure that enough have been stored in the provider system and store them

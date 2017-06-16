@@ -39,7 +39,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void searchAndGetAppointmentsFromPatientListData(string patient)
         {
 
-            Patient patientResource = (Patient)HttpContext.StoredFhirResources["registerPatient"];
+            Patient patientResource = (Patient)HttpContext.StoredFhirResources[patient];
             string id = patientResource.Id.ToString();
             var url = "/Patient/"+ id+ "/Appointment";
             When($@"I make a GET request to ""{url}""");
