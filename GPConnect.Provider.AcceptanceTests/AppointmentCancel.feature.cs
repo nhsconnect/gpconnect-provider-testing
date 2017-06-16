@@ -815,7 +815,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 307
- testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
+ testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"Double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 308
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -849,7 +849,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 316
- testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
+ testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"Double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 317
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
