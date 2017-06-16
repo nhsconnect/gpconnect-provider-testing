@@ -271,7 +271,6 @@
     </None>
     <None Include="AppointmentCancel.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AppointmentCancel.feature.cs</LastGenOutput>
     </None>
     <None Include="FHIR.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

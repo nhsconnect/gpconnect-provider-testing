@@ -3,7 +3,7 @@ Feature: AppointmentRetrieve
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
 	Given I am using the default server
-		And I perform a patient search for patient "patient12" and store the first returned resources against key "registerPatient"
+		And I perform a patient search for patient "patientNoAppointments" and store the first returned resources against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
@@ -343,7 +343,6 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 		| 2014-05-01T11:08:32       | le     | 2044-05-01T11:08:32       | le      |
 		| 2015-10-23T11:08:32+00:00 | le     | 2044-10-23T11:08:32+00:00 | le      |
 
-@ignore
 Scenario Outline: Appointment retrieve send request with date variations and not equal to prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -363,7 +362,7 @@ Scenario Outline: Appointment retrieve send request with date variations and not
 		| 2013-05                   | ne     |
 		| 2013-05-01T11:08:32       | ne     |
 		| 2013-10-23T11:08:32+00:00 | ne     |
-@ignore
+
 Scenario Outline: Appointment retrieve send request with date variations and starts after to prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -383,7 +382,7 @@ Scenario Outline: Appointment retrieve send request with date variations and sta
 		| 2013-05                   | sa     |
 		| 2013-05-01T11:08:32       | sa     |
 		| 2013-10-23T11:08:32+00:00 | sa     |
-@ignore
+
 Scenario Outline: Appointment retrieve send request with date variations and ends before prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -403,7 +402,7 @@ Scenario Outline: Appointment retrieve send request with date variations and end
 		| 2013-05                   | eb     |
 		| 2013-05-01T11:08:32       | eb     |
 		| 2013-10-23T11:08:32+00:00 | eb     |
-@ignore
+
 Scenario Outline: Appointment retrieve send request with date variations and approximately prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
