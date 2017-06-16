@@ -12,9 +12,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         private static class Context
         {
             public const string kTraceDirectory = "traceDirectory";
-            public const string kPatient = "patient";
-            public const string kPDSData = "pdsData";
-            public const string kRegisterPatientsData = "RegisterPatientsData";
             public const string kFhirGenderValueSet = "fhirGenderValueSet";
             public const string kFhirMaritalStatusValueSet = "fhirMaritalStatusValueSet";
             public const string kFhirRelationshipValueSet = "fhirRelationshipValueSet";
@@ -26,34 +23,14 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             get { return GlobalContextHelper.GetValue<string>(Context.kTraceDirectory); }
             set { GlobalContextHelper.SaveValue(Context.kTraceDirectory, value); }
         }
-
-        public static Patient patient
-        {
-            get { return GlobalContextHelper.GetValue<Patient>(Context.kPatient); }
-            set { GlobalContextHelper.SaveValue(Context.kPatient, value); }
-        }
-
-
+        
         // Data
-
-        public static List<PDS> PDSData
-        {
-            get { return GlobalContextHelper.GetValue<List<PDS>>(Context.kPDSData); }
-            set { GlobalContextHelper.SaveValue(Context.kPDSData, value); }
-        }
-
-        public static List<RegisterPatient> RegisterPatientsData
-        {
-            get { return GlobalContextHelper.GetValue<List<RegisterPatient>>(Context.kRegisterPatientsData); }
-            set { GlobalContextHelper.SaveValue(Context.kRegisterPatientsData, value); }
-        }
-
+        public static List<RegisterPatient> RegisterPatients { get; set; }
         public static Dictionary<string, string> PractionerCodeMap { get; set; }
         public static Dictionary<string, string> PatientNhsNumberMap { get; set; }
-
         public static Dictionary<string, string> OdsCodeMap { get; set; }
-        // FHIR
 
+        // FHIR
         public static ValueSet FhirGenderValueSet
         {
             get { return GlobalContextHelper.GetValue<ValueSet>(Context.kFhirGenderValueSet); }

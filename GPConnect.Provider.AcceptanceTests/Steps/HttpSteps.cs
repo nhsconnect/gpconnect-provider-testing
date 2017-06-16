@@ -125,26 +125,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         [Given(@"I set ""(.*)"" request header to resource stored ""(.*)""")]
-        public void GivenISetRequestHeaderToResourceStored(string headerKey, string headerValue)
+        public void GivenISetRequestHeaderToResourceStored(string headerName, string kstoredValueKey)
         {
-
-            string value = HttpContext.resourceNameStored[headerValue];
-            HttpContext.RequestHeaders.ReplaceHeader(headerKey, value);
+            GivenISetRequestHeaderTo(headerName, HttpContext.resourceNameStored[kstoredValueKey]);
         }
 
         [Given(@"I set ""(.*)"" request header to ""(.*)""")]
-        public void GivenISetRequestHeaderTo(string headerKey, string headerValue)
+        public void GivenISetRequestHeaderTo(string headerName, string headerValue)
         {
-            HttpContext.RequestHeaders.ReplaceHeader(headerKey, headerValue);
-
+            HttpContext.RequestHeaders.ReplaceHeader(headerName, headerValue);
         }
 
         [Given(@"I set ""(.*)"" request header to ""(.*)"" version")]
         public void GivenISetRequestHeaderToVersion(string headerKey, string headerValue)
         {
-
-           Resource value = HttpContext.StoredFhirResources[headerValue];
-           HttpContext.RequestHeaders.ReplaceHeader(headerKey, "W/\""+ value.VersionId + "\"");
+            Resource value = HttpContext.StoredFhirResources[headerValue];
+            HttpContext.RequestHeaders.ReplaceHeader(headerKey, "W/\"" + value.VersionId + "\"");
         }
 
         [Given(@"I set If-Match request header to ""(.*)""")]
@@ -224,7 +220,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
         public void GivenIAddTheParameterWithTheValue(string parameterName, string parameterValue)
         {
-             HttpContext.RequestParameters.AddParameter(parameterName, parameterValue);
+            HttpContext.RequestParameters.AddParameter(parameterName, parameterValue);
         }
 
         [Given(@"I add the parameter ""(.*)"" with the value or sitecode ""(.*)""")]
@@ -284,7 +280,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             RestRequest(Method.OPTIONS, relativeUrl);
         }
 
-        public Resource getReturnedResourceForRelativeURL(string interactionID, string relativeUrl) {
+        public Resource getReturnedResourceForRelativeURL(string interactionID, string relativeUrl)
+        {
             // Store current state
             var preRequestHeaders = HttpContext.RequestHeaders.GetRequestHeaders();
             HttpContext.RequestHeaders.Clear();
@@ -305,13 +302,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseHeaders.Clear();
 
             JObject preResponseJSON = null;
-            try {
+            try
+            {
                 preResponseJSON = HttpContext.ResponseJSON;
-            } catch (Exception) { }
+            }
+            catch (Exception) { }
             XDocument preResponseXML = null;
-            try {
+            try
+            {
                 preResponseXML = HttpContext.ResponseXML;
-            } catch (Exception) { }
+            }
+            catch (Exception) { }
 
             var preFhirResponseResource = FhirContext.FhirResponseResource;
 
@@ -347,7 +348,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             return returnResource;
         }
-        
+
         // Rest Request Helper
 
         public void RestRequest(Method method, string relativeUrl, string body = null)
@@ -393,8 +394,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 requestParamString = requestParamString + HttpUtility.UrlEncode(parameter.Key, Encoding.UTF8) + "=" + HttpUtility.UrlEncode(parameter.Value, Encoding.UTF8) + "&";
             }
             requestParamString = requestParamString.Substring(0, requestParamString.Length - 1);
-            
-            var restRequest = new RestRequest(relativeUrl+requestParamString, method);
+
+            var restRequest = new RestRequest(relativeUrl + requestParamString, method);
 
             // Set the Content-Type header
             restRequest.AddParameter(HttpContext.RequestContentType, body, ParameterType.RequestBody);
@@ -406,7 +407,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
                 restRequest.AddHeader(header.Key, header.Value);
             }
-            
+
             // Execute The Request
             IRestResponse restResponse = null;
             try
@@ -478,7 +479,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 handler.Proxy = new WebProxy(new Uri(HttpContext.WebProxyAddress, UriKind.Absolute));
             }
-            
+
             var sspAddress = HttpContext.UseSpineProxy ? HttpContext.SpineProxyAddress + "/" : string.Empty;
             string baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + ":" + HttpContext.FhirServerPort + HttpContext.FhirServerFhirBase;
             // Move the forward slash or the HttpClient will remove everything after the port number
@@ -515,7 +516,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Log.WriteLine("Could not add header: " + header.Key + e);
                 }
             }
-            
+
             // Start The Performance Timer Running
             timer.Start();
 
@@ -578,7 +579,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpRequest(HttpMethod.Post, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), false);
         }
-        
+
         [When(@"I send a metadata request but not decompressed")]
         public void ISendAMetadataRequestButNotDecompressed()
         {

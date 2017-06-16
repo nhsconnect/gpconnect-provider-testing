@@ -53,7 +53,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIFindTheNextPatientToRegisterAndStoreThePatientResourceAgainstKey(string patientResourceKey)
         {
             Patient returnPatient = null;
-            List<RegisterPatient> registerPatients = GlobalContext.RegisterPatientsData;
+            List<RegisterPatient> registerPatients = GlobalContext.RegisterPatients;
             for (int index = 0; index < registerPatients.Count; index++) {
                 RegisterPatient registerPatient = registerPatients[index];
                 // Search for patient
