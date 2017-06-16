@@ -18,7 +18,7 @@ Scenario Outline: Appointment retrieve success valid id where single appointment
 	Given I create "1" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "<patient>"
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "StoredPatientKey"
 		And I set the JWT requested scope to "patient/*.read"
 	When I search for "<patient>" and make a get request for their appointments
 	Then the response status code should indicate success
@@ -65,7 +65,7 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "patient1" and make a get request for their appointments searching with the date "<startDate>"
+	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "eq"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
@@ -214,28 +214,7 @@ Scenario Outline: Appointment retrieve send request with lower start date boundr
 		| 2014-05                   | ge     | 2044-05                   | lt      |
 		| 2014-05-01T11:08:32       | ge     | 2044-05-01T11:08:32       | lt      |
 		| 2015-10-23T11:08:32+00:00 | ge     | 2044-10-23T11:08:32+00:00 | lt      |
-		| 2014                      | gt     | 2044                      | gt      |
-		| 2014-02                   | gt     | 2044-02                   | gt      |
-		| 2014-10-05                | gt     | 2044-10-05                | gt      |
-		| 2014-05                   | gt     | 2044-05                   | gt      |
-		| 2014-05-01T11:08:32       | gt     | 2044-05-01T11:08:32       | gt      |
-		| 2015-10-23T11:08:32+00:00 | gt     | 2044-10-23T11:08:32+00:00 | gt      |
-		| 2014                      | ge     | 2044                      | ge      |
-		| 2014-02                   | ge     | 2044-02                   | ge      |
-		| 2014-10-05                | ge     | 2044-10-05                | ge      |
-		| 2014-05                   | ge     | 2044-05                   | ge      |
-		| 2014-05-01T11:08:32       | ge     | 2044-05-01T11:08:32       | ge      |
-		| 2014                      | lt     | 2044                      | lt      |
-		| 2014-02                   | lt     | 2044-02                   | lt      |
-		| 2014-10-05                | lt     | 2044-10-05                | lt      |
-		| 2014-05                   | lt     | 2044-05                   | lt      |
-		| 2014-05-01T11:08:32       | lt     | 2044-05-01T11:08:32       | lt      |
-		| 2014                      | le     | 2044                      | le      |
-		| 2014-02                   | le     | 2044-02                   | le      |
-		| 2014-10-05                | le     | 2044-10-05                | le      |
-		| 2014-05                   | le     | 2044-05                   | le      |
-		| 2014-05-01T11:08:32       | le     | 2044-05-01T11:08:32       | le      |
-		| 2015-10-23T11:08:32+00:00 | le     | 2044-10-23T11:08:32+00:00 | le      |
+
 		
 Scenario Outline: Appointment retrieve send request with upper end date boundary and end prefix and lower start date boundry and start prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
@@ -321,7 +300,7 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 	When I search for "patient1" and make a get request for their appointments with lower start date boundry "<startDate>" with prefix "<prefix>" and upper end date boundary "<endDate>" with prefix "<prefix2>"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "400"
+		And the response should be a OperationOutcome resource
 	Examples:
 		| startDate                 | prefix | endDate                   | prefix2 |
 		| 2015                      | lf     | 2018                      | lt      |
@@ -330,8 +309,30 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 		| 2014-05                   | gt     | 2044-05-01T11:08:32       | g       |
 		| 2014-05-01T11:08:32       | tt     | 2018-05                   | lu      |
 		| 2015-10-23T11:08:32+00:00 | dd     | 2018-10-23T11:08:32+00:00 | zz      |
+		| 2014                      | gt     | 2044                      | gt      |
+		| 2014-02                   | gt     | 2044-02                   | gt      |
+		| 2014-10-05                | gt     | 2044-10-05                | gt      |
+		| 2014-05                   | gt     | 2044-05                   | gt      |
+		| 2014-05-01T11:08:32       | gt     | 2044-05-01T11:08:32       | gt      |
+		| 2015-10-23T11:08:32+00:00 | gt     | 2044-10-23T11:08:32+00:00 | gt      |
+		| 2014                      | ge     | 2044                      | ge      |
+		| 2014-02                   | ge     | 2044-02                   | ge      |
+		| 2014-10-05                | ge     | 2044-10-05                | ge      |
+		| 2014-05                   | ge     | 2044-05                   | ge      |
+		| 2014-05-01T11:08:32       | ge     | 2044-05-01T11:08:32       | ge      |
+		| 2014                      | lt     | 2044                      | lt      |
+		| 2014-02                   | lt     | 2044-02                   | lt      |
+		| 2014-10-05                | lt     | 2044-10-05                | lt      |
+		| 2014-05                   | lt     | 2044-05                   | lt      |
+		| 2014-05-01T11:08:32       | lt     | 2044-05-01T11:08:32       | lt      |
+		| 2014                      | le     | 2044                      | le      |
+		| 2014-02                   | le     | 2044-02                   | le      |
+		| 2014-10-05                | le     | 2044-10-05                | le      |
+		| 2014-05                   | le     | 2044-05                   | le      |
+		| 2014-05-01T11:08:32       | le     | 2044-05-01T11:08:32       | le      |
+		| 2015-10-23T11:08:32+00:00 | le     | 2044-10-23T11:08:32+00:00 | le      |
 
-
+@ignore
 Scenario Outline: Appointment retrieve send request with date variations and not equal to prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -349,7 +350,7 @@ Scenario Outline: Appointment retrieve send request with date variations and not
 		| 2013-05                   | ne     |
 		| 2013-05-01T11:08:32       | ne     |
 		| 2013-10-23T11:08:32+00:00 | ne     |
-
+@ignore
 Scenario Outline: Appointment retrieve send request with date variations and starts after to prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -367,7 +368,7 @@ Scenario Outline: Appointment retrieve send request with date variations and sta
 		| 2013-05                   | sa     |
 		| 2013-05-01T11:08:32       | sa     |
 		| 2013-10-23T11:08:32+00:00 | sa     |
-
+@ignore
 Scenario Outline: Appointment retrieve send request with date variations and ends before prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -385,7 +386,7 @@ Scenario Outline: Appointment retrieve send request with date variations and end
 		| 2013-05                   | eb     |
 		| 2013-05-01T11:08:32       | eb     |
 		| 2013-10-23T11:08:32+00:00 | eb     |
-
+@ignore
 Scenario Outline: Appointment retrieve send request with date variations and approximately prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -579,16 +580,16 @@ Scenario: Appointment retrieve JWT requesting scope claim should reflect the ope
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Appointment retrive book appointment and search for the appointment and compare the results
+Scenario: Appointment retrieve book appointment and search for the appointment and compare the results
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-		And I create an appointment for patient "patient1" called "Appointment3" from schedule "getScheduleResponseBundle" and set the key of the appointment to the name
+		And I create an appointment for patient "storedPatient1" called "Appointment3" from schedule "getScheduleResponseBundle"
 	When I book the appointment called "Appointment3"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for patient "patient1" and search for the most recently booked appointment "Appointment3" using the stored startDate from the last booked appointment as a search parameter
+	When I search for patient "storedPatient1" and search for the most recently booked appointment "Appointment3" using the stored startDate from the last booked appointment as a search parameter
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"

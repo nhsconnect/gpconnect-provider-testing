@@ -130,9 +130,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISearchForPatientAppointmentsAndSaveTheReturnedBundleOfAppointmentResourcesAgainstKey(string patient, string patientAppointmentSearchBundleKey)
         {
             // Search For Patient
-            Given($@"I perform a patient search for patient ""{patient}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
+            Given($@"I perform a patient search for patient ""{patient}"" and store the first returned resources against key ""{patient}""");
             // Search For Patients Appointments
-            Patient patientResource = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
+            Patient patientResource = (Patient)HttpContext.StoredFhirResources[patient];
             Given($@"I am using the default server");
             And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments"" interaction");
             When($@"I make a GET request to ""/Patient/{patientResource.Id}/Appointment""");

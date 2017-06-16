@@ -39,7 +39,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void searchAndGetAppointmentsFromPatientListData(string patient)
         {
 
-            Patient patientResource = (Patient)HttpContext.StoredFhirResources[patient];
+            Patient patientResource = (Patient)HttpContext.StoredFhirResources["registerPatient"];
             string id = patientResource.Id.ToString();
             var url = "/Patient/"+ id+ "/Appointment";
             When($@"I make a GET request to ""{url}""");
@@ -67,22 +67,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I search for ""([^""]*)"" and make a get request for their appointments with the date ""([^""]*)""")]
         public void searchAndGetAppointmentsWithCustomStartDate(string patient, string startBoundry)
         {
-            string time = HttpContext.StoredDate[startBoundry];
-            Resource patient1 = (Patient)HttpContext.StoredFhirResources[patient];
-            string id = patient1.Id.ToString();
-            var url = "/Patient/" + id + "/Appointment?start=" + time + "";
-            When($@"I make a GET request to ""{url}""");
-        }
-
-        [When(@"I search for ""([^""]*)"" and make a get request for their appointments searching with the date ""([^""]*)""")]
-        public void searchAndGetAppointmentsWithCustomStartDateSearcg(string patient, string startBoundry)
-        {
            
             Resource patient1 = (Patient)HttpContext.StoredFhirResources[patient];
+            int time = 1;
             string id = patient1.Id.ToString();
             var url = "/Patient/" + id + "/Appointment?start=" + startBoundry + "";
             When($@"I make a GET request to ""{url}""");
         }
+
+       
         [When(@"I search for ""([^""]*)"" and make a get request for their appointments with the saved slot start date ""([^""]*)"" and prefix ""([^""]*)""")]
         public void searchAndGetAppointmentsWithTheSavedSlotStartDateCustomStartDateandPrefix(string patient, string startBoundry, string prefix)
         {

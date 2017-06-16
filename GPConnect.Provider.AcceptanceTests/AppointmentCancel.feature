@@ -304,7 +304,7 @@ Scenario: Cancel appointment prefer header set to minimal
 	Given I am using the default server
 		And I set the Prefer header to "return=minimal"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
+	When I cancel the appointment with the key "patientApp" and set the reason to "Double booked"
 	Then the response status code should indicate success
 		And the response body should be empty
 		And the content-type should be equal to null
@@ -313,7 +313,7 @@ Scenario Outline: Cancel appointment check the version id of the cancelled resou
 	Given I find or create an appointment with status Booked for patient "<PatientName>" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
+	When I cancel the appointment with the key "patientApp" and set the reason to "Double booked"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
