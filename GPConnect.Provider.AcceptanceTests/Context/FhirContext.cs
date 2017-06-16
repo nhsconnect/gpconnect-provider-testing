@@ -44,14 +44,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         }
 
         // FHIR Response
-        public List<Patient> Patients => GetResources<Patient>(ResourceType.Patient);
-        public List<Organization> Organizations => GetResources<Organization>(ResourceType.Organization);
-        public List<Composition> Compositions => GetResources<Composition>(ResourceType.Composition);
-        public List<Device> Devices => GetResources<Device>(ResourceType.Device);
-        public List<Practitioner> Practitioners => GetResources<Practitioner>(ResourceType.Practitioner);
-        public List<Location> Locations => GetResources<Location>(ResourceType.Location);
-        public List<Bundle.EntryComponent> Entries => ((Bundle) FhirResponseResource).Entry;
-
         public Resource FhirResponseResource
         {
             get
@@ -72,6 +64,17 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             }
         }
 
+        //FHIR Entries
+        public List<Bundle.EntryComponent> Entries => ((Bundle)FhirResponseResource).Entry;
+
+        //FHIR Resources
+        public List<Patient> Patients => GetResources<Patient>();
+        public List<Organization> Organizations => GetResources<Organization>();
+        public List<Composition> Compositions => GetResources<Composition>();
+        public List<Device> Devices => GetResources<Device>();
+        public List<Practitioner> Practitioners => GetResources<Practitioner>();
+        public List<Location> Locations => GetResources<Location>();
+        
         public void SaveToDisk(string filename)
         {
             var doc = new XDocument(
@@ -87,13 +90,25 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             doc.Save(filename);
         }
 
-        private List<T> GetResources<T>(ResourceType resourceType) where T : Resource
+        private List<T> GetResources<T>() where T : Resource
         {
-            return ((Bundle)FhirResponseResource)
-                .Entry
-                .Where(entry => entry.Resource.ResourceType.Equals(resourceType))
+            //Need to consider cases where T isn't in ResourceTypeMap (and implementation!!)
+            var type = typeof(T);
+
+            return Entries
+                .Where(entry => entry.Resource.ResourceType.Equals(ResourceTypeMap[type]))
                 .Select(entry => (T)entry.Resource)
                 .ToList();
         }
+
+        private static Dictionary<Type, ResourceType> ResourceTypeMap => new Dictionary<Type, ResourceType>
+        {
+            {typeof(Patient), ResourceType.Patient},
+            {typeof(Organization), ResourceType.Organization},
+            {typeof(Composition), ResourceType.Composition},
+            {typeof(Device), ResourceType.Device},
+            {typeof(Practitioner), ResourceType.Practitioner},
+            {typeof(Location), ResourceType.Location}
+        };
     }
 }

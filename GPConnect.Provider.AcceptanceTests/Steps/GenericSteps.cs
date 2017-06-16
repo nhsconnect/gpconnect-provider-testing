@@ -39,19 +39,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [BeforeTestRun(Order = 1)]
-        public static void LoadPDSData()
-        {
-            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
-            {
-                Assert.Fail("Data Directory Not Found.");
-            }
-
-            var pdsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"PDS.csv");
-            Log.WriteLine("PDS CSV = '{0}'", pdsCSV);
-            GlobalContext.PDSData = PDSImporter.LoadCsv(pdsCSV);
-        }
-
-        [BeforeTestRun(Order = 1)]
         public static void LoadODSData()
         {
             if (!Directory.Exists(AppSettingsHelper.DataDirectory))
@@ -87,7 +74,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             var registerPatientsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"RegisterPatients.csv");
             Log.WriteLine("RegisterPatients CSV = '{0}'", registerPatientsCSV);
-            GlobalContext.RegisterPatientsData = RegisterPatientsImporter.LoadCsv(registerPatientsCSV);
+            GlobalContext.RegisterPatients = RegisterPatientsImporter.LoadCsv(registerPatientsCSV);
         }
 
         [BeforeTestRun(Order = 1)]
@@ -144,7 +131,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _objectContainer.RegisterTypeAs<SecurityContext, ISecurityContext>();
             _objectContainer.RegisterTypeAs<HttpContext, IHttpContext>();
             // HACK To Be Able To See What We've Loaded In The BeforeTestRun Phase
-            Log.WriteLine("{0} Patients Loaded From PDS CSV File.", GlobalContext.PDSData.ToList().Count);
             Log.WriteLine("{0} Organisations Loaded From ODS CSV File.", GlobalContext.OdsCodeMap.Count);
             Log.WriteLine("{0} Genders Loaded From FHIR ValueSet File.", GlobalContext.FhirGenderValueSet.CodeSystem.Concept.Count);
             Log.WriteLine("{0} MaritalStatus Loaded From FHIR ValueSet File.", GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept.Count);
