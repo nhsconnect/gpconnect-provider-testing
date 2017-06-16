@@ -1,29 +1,27 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
-using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using Shouldly;
-using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     [Binding]
-    public sealed class AccessRecordSteps : TechTalk.SpecFlow.Steps
+    public sealed class AccessRecordSteps : BaseSteps
     {
-        private readonly FhirContext _fhirContext;
-        private readonly HttpSteps _httpSteps;
         private readonly BundleSteps _bundleSteps;
 
-        public AccessRecordSteps(FhirContext fhirContext, HttpSteps httpSteps, BundleSteps bundleSteps)
+        public AccessRecordSteps(FhirContext fhirContext, HttpSteps httpSteps, BundleSteps bundleSteps) 
+            : base(fhirContext, httpSteps)
         {
-            _fhirContext = fhirContext;
-            _httpSteps = httpSteps;
             _bundleSteps = bundleSteps;
         }
 
+        #region Given
+
+        //Used elsewhere
         [Given(@"I am requesting the record for config patient ""([^""]*)""")]
         public void GivenIAmRequestingTheRecordForConfigPatient(string patient)
         {
@@ -56,7 +54,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var parameter = _fhirContext.FhirRequestParameters.GetSingle("recordSection");
             ((CodeableConcept)parameter.Value).Coding[0].System = "";
         }
-        
+
+        #endregion
+
         [Then(@"the response bundle Patient entry should contain a valid NHS number identifier")]
         public void ThenResponseBundlePatientEntryShouldContainAValidNHSNumberIdentifier()
         {
@@ -79,6 +79,127 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         telecom.Value.ShouldNotBeNull();
                     });
                 });
+        }
+
+        [Then(@"if composition contains the patient resource maritalStatus fields matching the specification")]
+        public void ThenIfCompositionContainsThePatientResourceMaritalStatusFieldsMatchingTheSpecification()
+        {
+            _fhirContext.Patients.ForEach(patient =>
+            {
+                if (patient.MaritalStatus?.Coding != null)
+                {
+                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirMaritalStatusValueSet, patient.MaritalStatus.Coding);
+                }
+            });
+        }
+
+        [Then(@"if composition contains the patient resource communication the mandatory fields should matching the specification")]
+        public void ThenIfCompositionContainsThePatientResourceCommunicationTheMandatoryFieldsShouldMatchingTheSpecification()
+        {
+            _fhirContext.Patients.ForEach(patient =>
+            {
+                patient.Communication?.ForEach(communication =>
+                {
+                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, communication.Language.Coding);
+                });
+            });
+        }
+
+        [Then(@"if Patient careProvider is included in the response the reference should reference a Practitioner within the bundle")]
+        public void ThenIfPatientCareProviderIsIncludedInTheResponseTheReferenceShouldReferenceAPractitionerWithinTheBundle()
+        {
+            _fhirContext.Patients.ForEach(patient =>
+            {
+                if (patient.CareProvider != null)
+                {
+                    patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
+                    patient.CareProvider.ForEach(careProvider =>
+                    {
+                        _bundleSteps.ResponseBundleContainsReferenceOfType(careProvider.Reference, ResourceType.Practitioner);
+                    });
+                }
+            });
+        }
+
+        [Then(@"if Patient managingOrganization is included in the response the reference should reference an Organization within the bundle")]
+        public void ThenIfPatientManagingOrganizationIsIncludedInTheResponseTheReferenceShouldReferenceAnOrganizationWithinTheBundle()
+        {
+            _fhirContext.Patients.ForEach(patient =>
+            {
+                if (patient.ManagingOrganization != null)
+                {
+                    _bundleSteps.ResponseBundleContainsReferenceOfType(patient.ManagingOrganization.Reference, ResourceType.Organization);
+                }
+            });
+        }
+
+        [Then(@"patient resource should not contain the fhir fields photo animal or link")]
+        public void ThenPatientResourceShouldNotContainTheFhirFieldsPhotoAnimalOrLink()
+        {
+            _fhirContext.Patients.ForEach(patient =>
+            {
+                // C# API creates an empty list if no element is present
+                patient.Photo?.Count.ShouldBe(0, "There should be no photo element in Patient Resource");
+                patient.Link?.Count.ShouldBe(0, "There should be no link element in Patient Resource");
+                patient.Animal.ShouldBeNull("There should be no Animal element in Patient Resource");
+            });
+        }
+
+        [Then(@"if care record composition contains the patient resource contact the mandatory fields should matching the specification")]
+        public void ThenIfCompositionContainsThePatientResourceContactTheMandatoryFieldsShouldMatchingTheSpecification()
+        {
+            _fhirContext.Patients.ForEach(patient =>
+            {
+                patient.Contact.ForEach(contact =>
+                {
+                    // Contact Relationship Checks
+                    contact.Relationship.ForEach(relationship =>
+                    {
+                        ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
+                    });
+
+                    // Contact Name Checks
+                    // Contact Telecom Checks
+                    // Contact Address Checks
+                    // Contact Gender Checks
+                    // No mandatory fields and value sets are standard so will be validated by parse of response to fhir resource
+
+                    // Contact Organization Checks
+                    if (contact.Organization?.Reference != null)
+                    {
+                        _fhirContext.Entries.ShouldContain(entry =>
+                            entry.Resource.ResourceType.Equals(ResourceType.Organization) &&
+                            entry.FullUrl.Equals(contact.Organization.Reference)
+                        );
+                    }
+                });
+            });
+        }
+
+        [Then(@"the HTML in the response matches the Regex check ""([^""]*)""")]
+        public void ThenTheHtmlInTheResponseMatchesTheRegexCheck(string regexPattern)
+        {
+            _fhirContext.Compositions.ForEach(composition =>
+            {
+                composition.Section.Count.ShouldBe(1);
+                composition.Section.ForEach(section =>
+                {
+                    section.Text.Div.ShouldMatch(regexPattern);
+                });
+            });
+        }
+
+        [Then(@"the composition resource in the bundle should contain meta data profile")]
+        public void ThenTheCompositionResourceInTheBundleShouldContainMetaDataProfile()
+        {
+            _fhirContext.Compositions.ForEach(composition =>
+            {
+                composition.Meta.ShouldNotBeNull();
+                composition.Meta.Profile.ToList().ForEach(profile =>
+                {
+                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
+                });
+            });
         }
 
         [Then(@"if composition contains the resource type element the fields should match the fixed values of the specification")]
@@ -124,101 +245,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     composition.Class.Text?.ShouldBe("general medical service (qualifier value)");
                 }
-            });
-        }
-
-        [Then(@"if composition contains the patient resource maritalStatus fields matching the specification")]
-        public void ThenIfCompositionContainsThePatientResourceMaritalStatusFieldsMatchingTheSpecification()
-        {
-            _fhirContext.Patients.ForEach(patient =>
-            {
-                if (patient.MaritalStatus?.Coding != null)
-                {
-                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirMaritalStatusValueSet, patient.MaritalStatus.Coding);
-                }
-            });
-        }
-
-        [Then(@"if care record composition contains the patient resource contact the mandatory fields should matching the specification")]
-        public void ThenIfCompositionContainsThePatientResourceContactTheMandatoryFieldsShouldMatchingTheSpecification()
-        {
-            _fhirContext.Patients.ForEach(patient =>
-            {
-                patient.Contact.ForEach(contact =>
-                {
-                    // Contact Relationship Checks
-                    contact.Relationship.ForEach(relationship =>
-                    {
-                        ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
-                    });
-
-                    // Contact Name Checks
-                    // Contact Telecom Checks
-                    // Contact Address Checks
-                    // Contact Gender Checks
-                    // No mandatory fields and value sets are standard so will be validated by parse of response to fhir resource
-
-                    // Contact Organization Checks
-                    if (contact.Organization?.Reference != null)
-                    {
-                        _fhirContext.Entries.ShouldContain(entry => 
-                            entry.Resource.ResourceType.Equals(ResourceType.Organization) && 
-                            entry.FullUrl.Equals(contact.Organization.Reference)
-                        );
-                    }
-                });
-            });
-        }
-
-        [Then(@"if composition contains the patient resource communication the mandatory fields should matching the specification")]
-        public void ThenIfCompositionContainsThePatientResourceCommunicationTheMandatoryFieldsShouldMatchingTheSpecification()
-        {
-            _fhirContext.Patients.ForEach(patient =>
-            {
-                patient.Communication?.ForEach(communication => 
-                {
-                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, communication.Language.Coding);
-                });
-            });
-        }
-
-        [Then(@"if Patient careProvider is included in the response the reference should reference a Practitioner within the bundle")]
-        public void ThenIfPatientCareProviderIsIncludedInTheResponseTheReferenceShouldReferenceAPractitionerWithinTheBundle()
-        {
-            _fhirContext.Patients.ForEach(patient =>
-            {
-                if (patient.CareProvider != null)
-                {
-                    patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
-                    patient.CareProvider.ForEach(careProvider =>
-                    {
-                        _bundleSteps.ResponseBundleContainsReferenceOfType(careProvider.Reference, ResourceType.Practitioner);
-                    });
-                }
-            });
-        }
-
-        [Then(@"if Patient managingOrganization is included in the response the reference should reference an Organization within the bundle")]
-        public void ThenIfPatientManagingOrganizationIsIncludedInTheResponseTheReferenceShouldReferenceAnOrganizationWithinTheBundle()
-        {
-            _fhirContext.Patients.ForEach(patient =>
-            {
-                if (patient.ManagingOrganization != null)
-                {
-                    _bundleSteps.ResponseBundleContainsReferenceOfType(patient.ManagingOrganization.Reference, ResourceType.Organization);
-                }
-            });
-        }
-
-        [Then(@"patient resource should not contain the fhir fields photo animal or link")]
-        public void ThenPatientResourceShouldNotContainTheFhirFieldsPhotoAnimalOrLink()
-        {
-            _fhirContext.Patients.ForEach(patient =>
-            {
-                // C# API creates an empty list if no element is present
-                patient.Photo?.Count.ShouldBe(0, "There should be no photo element in Patient Resource");
-                patient.Link?.Count.ShouldBe(0, "There should be no link element in Patient Resource");
-                patient.Animal.ShouldBeNull("There should be no Animal element in Patient Resource");
             });
         }
 
@@ -449,48 +475,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     coding.Display.ShouldBe("Patient health record information system (physical object)");
                 });
             });
-        }
-
-        [Then(@"the HTML in the response matches the Regex check ""([^""]*)""")]
-        public void ThenTheHtmlInTheResponseMatchesTheRegexCheck(string regexPattern)
-        {
-            _fhirContext.Compositions.ForEach(composition =>
-            {
-                composition.Section.Count.ShouldBe(1);
-                composition.Section.ForEach(section =>
-                {
-                    section.Text.Div.ShouldMatch(regexPattern);
-                });
-            });
-        }
-
-        [Then(@"the composition resource in the bundle should contain meta data profile")]
-        public void ThenTheCompositionResourceInTheBundleShouldContainMetaDataProfile()
-        {
-            _fhirContext.Compositions.ForEach(composition =>
-            {
-                composition.Meta.ShouldNotBeNull();
-                composition.Meta.Profile.ToList().ForEach(profile =>
-                {
-                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
-                });
-            });
-        }
-
-        public void ShouldBeSingleCodingWhichIsInValueSet(ValueSet valueSet, List<Coding> codingList)
-        {
-            codingList.Count.ShouldBeLessThanOrEqualTo(1);
-            codingList.ForEach(coding =>
-            {
-                ValueSetContainsCodeAndDisplay(valueSet, coding);
-            });
-        }
-
-        public void ValueSetContainsCodeAndDisplay(ValueSet valueSet, Coding coding)
-        {
-            coding.System.ShouldBe(valueSet.CodeSystem.System);
-
-            valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display));
         }
     }
 }

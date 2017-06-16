@@ -5,39 +5,34 @@ using Hl7.Fhir.Model;
 using Shouldly;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Appointment;
-using static Hl7.Fhir.Model.Bundle;
-using NUnit.Framework;
 using Hl7.Fhir.Serialization;
 using System;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     [Binding]
-    public class CancelAppointmentSteps : TechTalk.SpecFlow.Steps
+    public class CancelAppointmentSteps : BaseSteps
     {
-        private readonly FhirContext FhirContext;
-        private readonly AccessRecordSteps AccessRecordSteps;
-        private readonly HttpSteps HttpSteps;
-        private readonly HttpContext HttpContext;
+        private readonly AccessRecordSteps _accessRecordSteps;
+        private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
+
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
-        public CancelAppointmentSteps(HttpHeaderHelper headerHelper, AccessRecordSteps accessRecordSteps, FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps)
+        public CancelAppointmentSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpHeaderHelper headerHelper,
+            AccessRecordSteps accessRecordSteps, HttpContext httpContext, BundleSteps bundleSteps) : base(fhirContext, httpSteps)
         {
-            // Helpers
-            FhirContext = fhirContext;
-            AccessRecordSteps = accessRecordSteps;
-            Headers = headerHelper;
-            HttpSteps = httpSteps;
-            HttpContext = httpContext;
+            _accessRecordSteps = accessRecordSteps;
+            _httpContext = httpContext;
             _bundleSteps = bundleSteps;
+            Headers = headerHelper;
         }
 
         [Given(@"I get the first appointment saved in the bundle of resources stored against key ""(.*)"" and call it ""(.*)""")]
         public void GivenIGetTheFirstAppointmnetSavedInTheBundleOfResourcesStoredAgainstKeyAndCallIt(string bundleOfPatientAppointmentsKey, string appointmentName)
         {
-            Bundle patientAppointmentBundel = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentsKey];
+            Bundle patientAppointmentBundel = (Bundle)_httpContext.StoredFhirResources[bundleOfPatientAppointmentsKey];
             string appointmentLogicalId = patientAppointmentBundel.Entry[0].Resource.Id;
             When($@"I make a GET request to ""/Appointment/{appointmentLogicalId}""");
             Then("the response status code should indicate success");
@@ -61,32 +56,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I set the URL to ""(.*)"" and cancel appointment with key ""(.*)""")]
         public void WhenISetTheURLToAndCancelAppointmentWithKey(string URL, string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             storedAppointment.Status = AppointmentStatus.Cancelled;
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
             extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", "Double booked"));
             storedAppointment.ModifierExtension.Add(extension);
-            HttpSteps.RestRequest(RestSharp.Method.PUT, URL, FhirSerializer.SerializeToJson(storedAppointment));
+            _httpSteps.RestRequest(RestSharp.Method.PUT, URL, FhirSerializer.SerializeToJson(storedAppointment));
         }
 
         [When(@"I cancel the appointment with the key ""(.*)"" and set the reason to ""(.*)""")]
         public void WhenICancelTheAppointmentWithTheKeyAndSetTheReasonToDoubleBooked(string appointmentName, string reasonString)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             storedAppointment.Status = AppointmentStatus.Cancelled;
             string url = "Appointment/" + storedAppointment.Id;
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
             extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", reasonString));
             storedAppointment.ModifierExtension.Add(extension);
-            HttpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
+            _httpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
         }
 
         [Given(@"I add an extension to ""(.*)"" with url ""(.*)"" code ""(.*)"" and display ""(.*)""")]
         public void GivenIAddAnExtensionToWithUrlCodeAndDisplay(string appointmentName, string url, string code, string display)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             Extension extensionToAdd = new Extension();
             extensionToAdd = buildAppointmentOtherExtension(extensionToAdd,url, code , display);
             storedAppointment.ModifierExtension.Add(extensionToAdd);
@@ -95,35 +90,35 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the description to ""(.*)"" for appointment ""(.*)""")]
         public void GivenISetTheDescriptionToForAppointment(string description, string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             storedAppointment.Description = description;
         }
 
         [Given(@"I set the priority to ""(.*)"" for appointment ""(.*)""")]
         public void GivenISetThePriorityToForAppointment(int priority, string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             storedAppointment.Priority = priority;
         }
 
         [Given(@"I set the minutes to ""(.*)"" for appointment ""(.*)""")]
         public void GivenISetTheMinutesToForAppointment(int minutes, string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             storedAppointment.MinutesDuration = minutes;
         }
 
         [Given(@"I set the comment to ""(.*)"" for appointment ""(.*)""")]
         public void GivenISetTheCommentToForAppointment(string comment, string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             storedAppointment.Comment = comment;
         }
 
         [Given(@"I set the type text to ""(.*)"" for appointment ""(.*)""")]
         public void GivenISetTheTypeTextToForAppointment(string typeText, string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             storedAppointment.Type.Text = typeText;
 
         }
@@ -131,7 +126,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the identifier with system ""(.*)"" and value ""(.*)"" for the appointment ""(.*)""")]
         public void GivenISetTheIdentifierWithSystemAndValueForTheAppointment(string system,string value, string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             Identifier identifier = new Identifier();
             identifier.System = system;
             identifier.Value = value;
@@ -141,7 +136,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add participant ""(.*)"" with reference ""(.*)"" to appointment ""(.*)""")]
         public void GivenIAddParticipantWithReferenceToAppointment(string participant,string reference, string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             switch (participant)
             {
                 case "location":
@@ -179,13 +174,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I cancel the appointment and set the cancel extension to have url ""(.*)"" and reason ""(.*)"" called ""(.*)""")]
         public void WhenICancelTheAppointmentAndSetTheCancelExtensionToHaveURLCodeAndDisplayCalled(string url, string reasonString, string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             storedAppointment.Status = AppointmentStatus.Cancelled;
             string fullUrl = "Appointment/" + storedAppointment.Id;
             Extension extension = new Extension();
             extension = (buildAppointmentCancelExtension(extension, url, reasonString));
             storedAppointment.ModifierExtension.Add(extension);
-            HttpSteps.RestRequest(RestSharp.Method.PUT, fullUrl, FhirSerializer.SerializeToJson(storedAppointment));
+            _httpSteps.RestRequest(RestSharp.Method.PUT, fullUrl, FhirSerializer.SerializeToJson(storedAppointment));
         }
 
         [When(@"I cancel the appointment and set the cancel extension to have url ""(.*)"" and missing reason called ""(.*)""")]
@@ -197,14 +192,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then("the returned appointment resource status should be set to cancelled")]
         public void ThenTheReturnedAppointmentResourceStatusShouldBeCancelled()
         {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
             appointment.Status.ShouldBe(AppointmentStatus.Cancelled);
         }
 
         [Then(@"the cancellation reason in the returned appointment response should be equal to ""(.*)""")]
         public void ThenTheCancellationReasonInTheReturnedAppointmentResponseShouldBeEqualTo(string display)
         {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
             foreach (var extension in appointment.Extension)
             {
                 if (string.Equals(extension.Url, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1"))
@@ -220,24 +215,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the resource type of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenTheResponseTypeOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.ResourceType.ShouldBe(returnedAppointment.ResourceType);
         }
 
         [Then(@"the id of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenTheIdOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.Id.ShouldBe(returnedAppointment.Id);
         }
 
         [Then(@"the status of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenTheStatusOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             returnedAppointment.ShouldNotBeNull("The status is not allowed to be null");
             storedAppointment.Status.ShouldBe(returnedAppointment.Status);
         }
@@ -245,8 +240,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the extensions of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenTheExtensionOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             FhirString extensionValueString = new FhirString();
 
             List<Extension> returnedExtensions = new List<Extension>();
@@ -279,16 +274,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the description of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenTheDescriptionOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.Description.ShouldBe(returnedAppointment.Description);
         }
         
         [Then(@"the start and end date of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenTheStartAndEndDateOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             returnedAppointment.Start.ShouldNotBeNull("The start date is not allowed to be null");
             returnedAppointment.End.ShouldNotBeNull("The end date is not allowed to be null");
             storedAppointment.Start.ShouldBe(returnedAppointment.Start);
@@ -298,15 +293,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the reason of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenTheReasonOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.Reason.Text.ShouldBe(returnedAppointment.Reason.Text);
           }
 
         [Then(@"the slot display and reference of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenTheSlotDisplayAndReferenceOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             List <ResourceReference> storedSlotReferences = new List<ResourceReference>();
             List<ResourceReference> returnedSlotReferences = new List<ResourceReference>();
             List<String> storedSlotDisplay = new List<String>();
@@ -318,7 +313,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 storedSlotDisplay.Add(slotReference.Display);
             }
 
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             foreach (var slotReference in returnedAppointment.Slot)
             {
                 returnedSlotReferences.Add(slotReference);
@@ -351,7 +346,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the participants of the appointment with key ""(.*)"" and the returned response should be equal")]
         public void ThenThePatientParticipantsOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
-            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment savedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             List<ParticipantComponent> savedAppointmentParticipants = new List<ParticipantComponent>();
             List<ParticipantComponent> returnedResponseAppointmentParticipants = new List<ParticipantComponent>();
 
@@ -360,7 +355,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
               savedAppointmentParticipants.Add(participant);
             }
 
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             returnedAppointment.Participant.ShouldNotBeNull();
             foreach (Appointment.ParticipantComponent participant in returnedAppointment.Participant)
             {
@@ -380,12 +375,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the appointment participants of the appointment must conform to the gp connect specifications")]
         public void ThenTheAppointmentParticipantPractitionerReferenceMustBeAValidReference()
         {
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
             foreach (Appointment.ParticipantComponent participant in appointment.Participant)
             {
                 if (participant.Actor.Reference.StartsWith("Practitioner/"))
                 {
-                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", participant.Actor.Reference);
+                    var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", participant.Actor.Reference);
                     returnedResource.ShouldNotBeNull("Practitioner reference returns a null practitioner");
                     returnedResource.GetType().ShouldBe(typeof(Practitioner));
                     verifyPractitioner(returnedResource);
@@ -393,7 +388,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 
                 if (participant.Actor.Reference.StartsWith("Patient/"))
                 {
-                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", participant.Actor.Reference);
+                    var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", participant.Actor.Reference);
                     returnedResource.ShouldNotBeNull("Practitioner reference returns a null patient");
                     returnedResource.GetType().ShouldBe(typeof(Patient));
                     verifyPatient(returnedResource);
@@ -401,7 +396,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 if (participant.Actor.Reference.StartsWith("Location/"))
                 {
-                    var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", participant.Actor.Reference);
+                    var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", participant.Actor.Reference);
                     returnedResource.ShouldNotBeNull("Practitioner reference returns a null location");
                     returnedResource.GetType().ShouldBe(typeof(Location));
                     verifyLocation(returnedResource);
@@ -435,8 +430,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the comment of ""(.*)"" and the returned response should be equal")]
         public void ThenTheCommentOfAndTheReturnedResponseShouldBeEqual(string appointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.Comment.ShouldBe(returnedAppointment.Comment);
         }
         
@@ -483,7 +478,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 practitionerRole.HealthcareService.ShouldBeEmpty("Practitioner health care service should be empty but is not");
 
                 practitionerRole.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
-                var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", practitionerRole.ManagingOrganization.Reference);
+                var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", practitionerRole.ManagingOrganization.Reference);
                 returnedResource.ShouldNotBeNull("Practitioner reference returns a null patient");
                 returnedResource.GetType().ShouldBe(typeof(Organization));
 
@@ -511,7 +506,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             //If the practitioner has a communicaiton elemenets containing a coding then there must be a system, code and display element. There must only be one coding per communication element.
             foreach (CodeableConcept codeableConcept in practitioner.Communication)
             {
-                AccessRecordSteps.ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
+                _accessRecordSteps.ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
             }
         }
 
@@ -631,7 +626,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             When($@"I perform an appointment read for the appointment called ""{appointmentName}""");
             Then("the response status code should indicate success");
             And("the response body should be FHIR JSON");
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
             appointment.Status.ShouldNotBe(AppointmentStatus.Cancelled);
         }
 
@@ -643,15 +638,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             When($@"I perform an appointment read for the appointment called ""{appointmentName}""");
             Then("the response status code should indicate success");
             And("the response body should be FHIR JSON");
-            Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
             appointment.Status.ShouldBe(AppointmentStatus.Cancelled);
         }
 
         [Then(@"the response version id should be different to the version id stored in ""(.*)""")]
         public void ThenTheResponseVersionIdShouldBeDifferentToTheVersionIdStoredIn(string storedAppointmentName)
         {
-            Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[storedAppointmentName];
-            Appointment returnedAppointment = (Appointment)FhirContext.FhirResponseResource;
+            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[storedAppointmentName];
+            Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.VersionId.ToString().ShouldNotBe(returnedAppointment.VersionId.ToString());
         }
         
