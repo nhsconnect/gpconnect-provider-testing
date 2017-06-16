@@ -16,17 +16,15 @@ using static Hl7.Fhir.Model.Bundle;
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     [Binding]
-    public sealed class OrganizationSteps : TechTalk.SpecFlow.Steps
+    public sealed class OrganizationSteps : BaseSteps
     {
         private readonly FhirContext FhirContext;
-        private readonly AccessRecordSteps AccessRecordSteps;
         private readonly HttpContext HttpContext;
         private readonly HttpSteps HttpSteps;
 
-        public OrganizationSteps(FhirContext fhirContext, AccessRecordSteps accessRecordSteps, HttpContext httpContext, HttpSteps httpSteps)
+        public OrganizationSteps(FhirContext fhirContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, HttpContext httpContext) : base(fhirContext, httpSteps)
         {
             FhirContext = fhirContext;
-            AccessRecordSteps = accessRecordSteps;
             HttpContext = httpContext;
             HttpSteps = httpSteps;
         }
@@ -79,7 +77,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Organization organization = (Organization)entry.Resource;
                     if (organization.Type != null && organization.Type.Coding != null) {
                         organization.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
-                        AccessRecordSteps.ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirMaritalStatusValueSet, organization.Type.Coding);
+                        ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirMaritalStatusValueSet, organization.Type.Coding);
                         }
                 }
             }
