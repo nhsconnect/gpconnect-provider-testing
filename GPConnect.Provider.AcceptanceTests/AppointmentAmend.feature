@@ -1,6 +1,9 @@
 ﻿@appointment
 Feature: AmendAppointment
 
+Background:
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
+
 Scenario: I perform a successful amend appointment and change the comment to a custom message
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
 	Given I am using the default server
@@ -229,7 +232,7 @@ Scenario: Amend appointment valid if-match header
 		And the response should be an Appointment resource
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-		And I set "If-Match" request header to "etagAmend"
+		And I set "If-Match" request header to resource stored "etagAmend"
 	When I amend "CustomAppointment1" by changing the comment to "customComment"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
