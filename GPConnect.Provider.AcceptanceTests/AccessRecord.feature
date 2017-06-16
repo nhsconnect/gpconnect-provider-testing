@@ -414,16 +414,7 @@ Scenario Outline: composition contains generic mandatory fields
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And the response bundle entry "Composition" should contain element "resource.date"
-		And the response bundle entry "Composition" should contain element "resource.title" with value "Patient Care Record"
-		And the response bundle entry "Composition" should contain element "resource.status" with value "final"
-		And the response bundle entry "Composition" should contain element "resource.section[0].title" with value "<Title>"
-		And the response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].system" with value "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1"
-		And the response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].code" with value "<Code>"
-		And the response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].display" with value "<Display>"
-		And the response bundle entry "Composition" should contain element "resource.section[0].code.text"
-		And the response bundle entry "Composition" should contain element "resource.section[0].text.status"
-		And the response bundle entry "Composition" should contain element "resource.section[0].text.div"
+		And the composition is valid for "<Title>", "<Code>", "<Display>"
 	Examples:
 		| Patient  | Code     | Title                           | Display                         |
 		| patient1 | ADM      | Administrative Items            | Administrative Items            |
