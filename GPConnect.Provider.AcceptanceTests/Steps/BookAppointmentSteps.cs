@@ -199,6 +199,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             getScheduleResponseBundle.Entry.Remove(entryToRemove);
 
             // Store appointment
+            if (HttpContext.StoredFhirResources.ContainsKey(appointmentName)) HttpContext.StoredFhirResources.Remove(appointmentName);
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 

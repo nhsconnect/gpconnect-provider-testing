@@ -18,7 +18,7 @@ Scenario Outline: Appointment retrieve success valid id where single appointment
 	Given I create "1" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "StoredPatientKey"
+		And I set the JWT requested record NHS number to config patient "<patient>"
 		And I set the JWT requested scope to "patient/*.read"
 	When I search for "<patient>" and make a get request for their appointments
 	Then the response status code should indicate success
@@ -35,6 +35,7 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 	Given I find or create "<numberOfAppointments>" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "<patient>"
 		And I set the JWT requested scope to "patient/*.read"
 	When I search for "<patient>" and make a get request for their appointments
 	Then the response status code should indicate success
@@ -137,6 +138,8 @@ Scenario: Appointment retrieve send request and find request using equal to pref
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments with the saved slot start date "slotStartDate" and prefix "eq"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -147,6 +150,8 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -183,6 +188,8 @@ Scenario Outline: Appointment retrieve send request with lower start date boundr
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments with lower start date boundry "<startDate>" with prefix "<prefix>" and upper end date boundary "<endDate>" with prefix "<prefix2>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -220,6 +227,8 @@ Scenario Outline: Appointment retrieve send request with upper end date boundary
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments with lower start date boundry "<startDate>" with prefix "<prefix>" and upper end date boundary "<endDate>" with prefix "<prefix2>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -256,6 +265,8 @@ Scenario Outline: Appointment retrieve send request with different upper end dat
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments with lower start date boundry "<startDate>" with prefix "<prefix>" and upper end date boundary "<endDate>" with prefix "<prefix2>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -337,6 +348,8 @@ Scenario Outline: Appointment retrieve send request with date variations and not
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments with the date "startDate" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -355,6 +368,8 @@ Scenario Outline: Appointment retrieve send request with date variations and sta
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments with the date "startDate" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -373,6 +388,8 @@ Scenario Outline: Appointment retrieve send request with date variations and end
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments with the date "startDate" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -391,6 +408,8 @@ Scenario Outline: Appointment retrieve send request with date variations and app
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments with the date "startDate" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -442,6 +461,8 @@ Scenario Outline: Appointment retrieve accept header and _format parameter
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I search for "patient1" and make a get request for their appointments
@@ -460,6 +481,8 @@ Scenario Outline: Appointment retrieve accept header
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 		And I set the Accept header to "<Header>"
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
@@ -475,6 +498,8 @@ Scenario Outline: Appointment retrieve _format parameter only
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
@@ -490,6 +515,8 @@ Scenario: Appointment retrieve appointment which contains all mandatory resource
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -504,6 +531,8 @@ Scenario: Appointment retrieve bundle resource must contain participant with typ
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -514,6 +543,8 @@ Scenario: Appointment retrieve bundle valid resources returned in the response
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -525,6 +556,8 @@ Scenario: Appointment retrieve bundle contains appointment with identifer with c
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -534,6 +567,8 @@ Scenario: Appointment retrieve appointment response should contain meta data pro
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -543,6 +578,8 @@ Scenario: Appointment retrieve returned resources must contain coding with valid
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -552,6 +589,8 @@ Scenario: Appointment retrieve bundle contains appointment contact method
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -564,6 +603,8 @@ Scenario: Appointment retrieve bundle contains valid start and end dates
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "patient1" and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -580,25 +621,36 @@ Scenario: Appointment retrieve JWT requesting scope claim should reflect the ope
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Appointment retrieve book appointment and search for the appointment and compare the results
+Scenario Outline: Appointment retrieve book appointment and search for the appointment and compare the results
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-		And I create an appointment for patient "storedPatient1" called "Appointment3" from schedule "getScheduleResponseBundle"
-	When I book the appointment called "Appointment3"
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
+		And I create an appointment for patient "storedPatient1" called "<appointment>" from schedule "getScheduleResponseBundle"
+	When I book the appointment called "<appointment>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for patient "storedPatient1" and search for the most recently booked appointment "Appointment3" using the stored startDate from the last booked appointment as a search parameter
+	When I search for patient "storedPatient1" and search for the most recently booked appointment "<appointment>" using the stored startDate from the last booked appointment as a search parameter
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain atleast "1" appointment
-		And the returned appointment start date should match "Appointment3" start Date
-		And the returned appointment end date should match "Appointment3" end date
-		And the returned appointment patient reference should match "Appointment3" patient reference
-		And the returned appointment slot reference should match "Appointment3" slot reference
-		And the returned appointment participant status should match "Appointment3" participant status
+		And the returned appointment start date should match "<appointment>" start Date
+		And the returned appointment end date should match "<appointment>" end date
+		And the returned appointment patient reference should match "<appointment>" patient reference
+		And the returned appointment slot reference should match "<appointment>" slot reference
+		And the returned appointment participant status should match "<appointment>" participant status
+		Examples: 
+		| appointment  |
+		| Appointment1 |
+		| Appointment2 |
+		| Appointment3 |
+		| Appointment4 |
+		| Appointment5 |
+		| Appointment6 |
+		| Appointment7 |
 
 Scenario Outline: Appointment retrieve JWT patient type request invalid
 	Given I am using the default server
@@ -624,6 +676,8 @@ Scenario: Appointment retrieve JWT patient type request valid
 		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
 		And I set the JWT requested scope to "patient/*.read"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for "registerPatient" from the list of patients and make a get request for their appointments
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -644,6 +698,8 @@ Scenario: Appointment retrieve JWT patient reference must match payload patient 
 Scenario: Conformance profile supports the search appointment operation
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
