@@ -105,7 +105,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And(@"I am generating a random message trace identifier");
             And($@"I am accredited system ""{HttpContext.ConsumerASID}""");
             And($@"I am connecting to accredited system ""{HttpContext.ProviderASID}""");
-            And(@"I am generating an organization JWT header");
+            And(@"I set the default JWT");
         }
 
         [Given(@"I am connecting to server on port ""([^\s]*)""")]

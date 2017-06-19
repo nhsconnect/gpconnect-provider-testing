@@ -140,11 +140,12 @@ Scenario Outline: Cancel appointment accept header and _format parameter
 		| application/json+fhir | application/xml+fhir  | XML        |
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
-
+		
 Scenario Outline: Cancel appointment checking that the format parameter and accept header works correctly
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
+		And I set the request content type to "<ContentType>"
 		And I set the Accept header to "<AcceptHeader>"
 		And I add the parameter "_format" with the value "<FormatParam>"
 	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
@@ -153,13 +154,17 @@ Scenario Outline: Cancel appointment checking that the format parameter and acce
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
 	Examples:
-		| AcceptHeader          | FormatParam           | Format |
-		| application/xml+fhir  | application/xml+fhir  | XML    |
-		| application/json+fhir | application/json+fhir | JSON   |
-		| application/xml+fhir  | application/json+fhir | JSON   |
-		| application/json+fhir | application/xml+fhir  | XML    |
-		| application/json+fhir | application/xml+fhir  | XML    |
-		| application/xml+fhir  | application/json+fhir | JSON   |
+		| ContentType           | AcceptHeader          | FormatParam           | Format |
+		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML    |
+		| application/json+fhir | application/json+fhir | application/json+fhir | JSON   |
+		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON   |
+		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML    |
+		| application/xml+fhir  | application/json+fhir | application/json+fhir | JSON   |
+		| application/json+fhir | application/xml+fhir  | application/xml+fhir  | XML    |
+		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML    |
+		| application/json+fhir | application/json+fhir | application/json+fhir | JSON   |
+		| application/xml+fhir  | application/json+fhir | application/xml+fhir  | XML    |
+		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON   |
 
 Scenario Outline: Cancel appointment check cancellation reason is equal to the request cancellation reason
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"

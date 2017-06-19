@@ -67,6 +67,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (appointment.Status == AppointmentStatus.Booked)
                 {
                     appointmentResource = appointment;
+                    break;
                 }
             }
             if (appointmentResource == null)
@@ -118,7 +119,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     HttpContext.StoredFhirResources.Add("bookedAppointmentKey", bookedAppointmentResource);
                 }
                 // Cancel appointment
-                Given($@"I cancel appointment resource stored against key ""bookedAppointmentKey"" and store the returned appointment resource against key ""{patientAppointmentkey}""");
+                Given($@"I cancel appointment resource stored against key ""bookedAppointmentKey"" for patient ""{patient}"" and store the returned appointment resource against key ""{patientAppointmentkey}""");
             }
             else
             {
