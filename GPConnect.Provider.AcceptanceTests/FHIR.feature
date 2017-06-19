@@ -1,5 +1,5 @@
 ﻿@fhir
-Feature: Fhir Base
+Feature: FHIR
 
 Scenario: Fhir Get MetaData
 	Given I am using the default server

@@ -1,5 +1,5 @@
 ﻿@patient
-Feature: ReadPatient
+Feature: PatientRead
 	
 Scenario Outline: Read patient 404 if patient not found
 	Given I am using the default server

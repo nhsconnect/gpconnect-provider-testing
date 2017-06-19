@@ -1,5 +1,5 @@
 ﻿@patient
-Feature: Patient
+Feature: PatientSearch
 
 @ignore
 Scenario: The provider system should accept the search parameter URL encoded

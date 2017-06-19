@@ -1,5 +1,5 @@
 ﻿@appointment
-Feature: CancelAppointment
+Feature: AppointmentCancel
 
 Scenario Outline: I perform a successful cancel appointment
 	Given I find or create an appointment with status Booked for patient "<PatientName>" at organization "ORG1" and save the appointment resources to "patientApp"

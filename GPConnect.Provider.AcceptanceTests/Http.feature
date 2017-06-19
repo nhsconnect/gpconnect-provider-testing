@@ -1,5 +1,5 @@
 ﻿@http
-Feature: Http
+Feature: HTTP
 
 Scenario: Http GET from invalid endpoint
 	Given I am using the default server

@@ -1,5 +1,5 @@
 ﻿@appointment
-Feature: ReadAppointment
+Feature: AppointmentRead
 
 Scenario Outline: I perform a successful Read appointment
 	Given I find or create "1" appointments for patient "<PatientName>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
