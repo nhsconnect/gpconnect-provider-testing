@@ -349,7 +349,7 @@ Scenario Outline: Appointment retrieve send request with date variations and not
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I set the JWT requested record NHS number to config patient "patient1"
 		And I set the JWT requested scope to "patient/*.read"
-	When I search for "patient1" and make a get request for their appointments with the date "startDate" and prefix "<prefix>"
+	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -369,7 +369,7 @@ Scenario Outline: Appointment retrieve send request with date variations and sta
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I set the JWT requested record NHS number to config patient "patient1"
 		And I set the JWT requested scope to "patient/*.read"
-	When I search for "patient1" and make a get request for their appointments with the date "startDate" and prefix "<prefix>"
+	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -389,7 +389,7 @@ Scenario Outline: Appointment retrieve send request with date variations and end
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I set the JWT requested record NHS number to config patient "patient1"
 		And I set the JWT requested scope to "patient/*.read"
-	When I search for "patient1" and make a get request for their appointments with the date "startDate" and prefix "<prefix>"
+	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -409,7 +409,7 @@ Scenario Outline: Appointment retrieve send request with date variations and app
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I set the JWT requested record NHS number to config patient "patient1"
 		And I set the JWT requested scope to "patient/*.read"
-	When I search for "patient1" and make a get request for their appointments with the date "startDate" and prefix "<prefix>"
+	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"

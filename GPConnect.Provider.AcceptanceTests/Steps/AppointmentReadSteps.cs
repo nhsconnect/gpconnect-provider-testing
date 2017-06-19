@@ -67,6 +67,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (appointment.Status == AppointmentStatus.Booked)
                 {
                     appointmentResource = appointment;
+                    break;
                 }
             }
             if (appointmentResource == null)

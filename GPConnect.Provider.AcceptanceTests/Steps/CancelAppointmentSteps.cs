@@ -75,7 +75,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             List<Extension> extensionList = new List<Extension>();
             extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", reasonString));
             storedAppointment.ModifierExtension.Add(extension);
-            _httpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
+
+            if (_httpContext.RequestContentType.Contains("xml"))
+            {
+                _httpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToXml(storedAppointment));
+            }
+            else
+            {
+                _httpSteps.RestRequest(RestSharp.Method.PUT, url, FhirSerializer.SerializeToJson(storedAppointment));
+            }
         }
 
         [Given(@"I add an extension to ""(.*)"" with url ""(.*)"" code ""(.*)"" and display ""(.*)""")]
