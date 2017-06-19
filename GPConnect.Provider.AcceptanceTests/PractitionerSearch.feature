@@ -1,5 +1,5 @@
 ﻿@practitioner
-Feature: Practitioner
+Feature: PractitionerSearch
 
 Scenario Outline: Practitioner search success
 	Given I am using the default server

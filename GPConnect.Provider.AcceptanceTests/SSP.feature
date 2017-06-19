@@ -1,5 +1,5 @@
 ﻿@ssp
-Feature: SpineSecurityProxy
+Feature: SSP
 
 Scenario Outline: header not included in metadata request
 	Given I am using the default server
