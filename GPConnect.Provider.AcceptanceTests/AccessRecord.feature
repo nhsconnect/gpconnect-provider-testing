@@ -414,7 +414,8 @@ Scenario Outline: composition contains generic mandatory fields
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And the composition is valid for "<Title>", "<Code>", "<Display>"
+		And the Composition is valid
+		And the Composition Section is valid for "<Title>", "<Code>", "<Display>"
 	Examples:
 		| Patient  | Code     | Title                           | Display                         |
 		| patient1 | ADM      | Administrative Items            | Administrative Items            |

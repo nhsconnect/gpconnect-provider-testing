@@ -14,22 +14,80 @@
         {
         }
 
-        [Then(@"the composition is valid for ""([^""]*)"", ""([^""]*)"", ""([^""]*)""")]
-        public void TheCompositionIsValidFor(string title, string code, string display)
+        private Composition GetComposition()
         {
-            _fhirContext.Compositions.ForEach(composition =>
+            return _fhirContext.Compositions.First();
+        }
+
+        [Then("the Composition is valid")]
+        public void TheCompositionIsValid()
+        {
+            var composition = GetComposition();
+
+            composition.Date.ShouldNotBeNull();
+
+            TheCompositionTypeIsValid();
+
+            if (composition.Class != null)
             {
-                composition.Date.ShouldNotBeNull();
-                composition.Title.ShouldBe("Patient Care Record");
-                composition.Status.ShouldBe(Composition.CompositionStatus.Final);
-                composition.Section[0].Title.ShouldBe(title);
-                composition.Section[0].Code.Coding[0].System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-record-section-1");
-                composition.Section[0].Code.Coding[0].Code.ShouldBe(code);
-                composition.Section[0].Code.Coding[0].Display.ShouldBe(display);
-                composition.Section[0].Code.Text.ShouldNotBeNull();
-                composition.Section[0].Text.Status.ShouldNotBeNull();
-                composition.Section[0].Text.Div.ShouldNotBeNull();
-            });
+               TheCompositionClassIsValid();
+            }
+
+            composition.Title.ShouldBe("Patient Care Record");
+            composition.Status.ShouldBe(Composition.CompositionStatus.Final);
+
+            composition.Section.Count.ShouldBe(1);
+        }
+
+        [Then("the Composition Class is valid")]
+        private void TheCompositionClassIsValid()
+        {
+            var compositionClass = GetComposition().Class;
+
+            if (compositionClass.Coding != null)
+            {
+                compositionClass.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                compositionClass.Coding.ForEach(coding =>
+                {
+                    coding.System.ShouldBe("http://snomed.info/sct");
+                    coding.Code.ShouldBe("700232004");
+                    coding.Display.ShouldBe("general medical service (qualifier value)");
+                });
+            }
+
+            compositionClass.Text?.ShouldBe("general medical service (qualifier value)");
+        }
+
+        [Then("the Composition Type is valid")]
+        public void TheCompositionTypeIsValid()
+        {
+            var compositionType = GetComposition().Type;
+
+            compositionType.ShouldNotBeNull();
+            compositionType.Text?.ShouldBe("record extract (record artifact)");
+            if (compositionType.Coding != null)
+            {
+                var coding = compositionType.Coding.First();
+
+                coding.System.ShouldBe("http://snomed.info/sct");
+                coding.Code.ShouldBe("425173008");
+                coding.Display.ShouldBe("record extract (record artifact)");
+            }
+
+        }
+
+        [Then(@"the Composition Section is valid for ""([^""]*)"", ""([^""]*)"", ""([^""]*)""")]
+        public void TheCompositionSectionIsValidFor(string title, string code, string display)
+        {
+            var section = GetComposition().Section.First();
+
+            section.Title.ShouldBe(title);
+            section.Code.Coding[0].System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-record-section-1");
+            section.Code.Coding[0].Code.ShouldBe(code);
+            section.Code.Coding[0].Display.ShouldBe(display);
+            section.Code.Text.ShouldNotBeNull();
+            section.Text.Status.ShouldNotBeNull();
+            section.Text.Div.ShouldNotBeNull();
         }
 
         [Then(@"the HTML in the response matches the Regex check ""([^""]*)""")]

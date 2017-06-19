@@ -96,6 +96,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _fhirContext.Compositions.Count.ShouldBe(1);
         }
 
+        [Then(@"the response Bundle should contain a single Composition resource as the first Entry")]
+        public void ThenTheResponseBundleShouldContainASingleCompositionResourceAsTheFirstEntry()
+        {
+            _fhirContext.Compositions.Count.ShouldBe(1);
+
+            _fhirContext.Entries
+                .Select(entry => entry.Resource.ResourceType)
+                .First()
+                .ShouldBe(ResourceType.Composition);
+        }
+
         [Then(@"the response bundle should contain the composition resource as the first entry")]
         public void ThenTheResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
         {
