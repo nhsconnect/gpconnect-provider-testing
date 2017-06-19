@@ -444,11 +444,13 @@ Scenario: Book appointment with missing slot element in appointment resource
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
-	Then I set the appointment slot element to null for "Appointment"
+		And I remove the appointment slot element in appointment stored against key "Appointment"
 	When I book the appointment called "Appointment"
-	Then the response status code should indicate failure
+	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
