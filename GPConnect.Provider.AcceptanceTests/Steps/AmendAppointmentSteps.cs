@@ -31,7 +31,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I store the schedule for ""(.*)"" called ""(.*)"" and create an appointment called ""(.*)"" for patient ""(.*)"" using the interaction id ""(.*)""")]
-        public void IstoreThescheduleForCalledAndCreateAnAppointmentCalledForPatientUsingTheInteractionId(string ORG1, string getScheduleResponseBundle, string appointment, string patient, string interactionId)
+        public void GivenIstoreThescheduleForCalledAndCreateAnAppointmentCalledForPatientUsingTheInteractionId(string ORG1, string getScheduleResponseBundle, string appointment, string patient, string interactionId)
         {
             Given($@"I perform the getSchedule operation for organization ""{ORG1}"" and store the returned bundle resources against key ""{getScheduleResponseBundle}""");
             Given($@"I am using the default server");
@@ -46,14 +46,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
         
         [When(@"I perform an appointment read for the appointment called ""(.*)""")]
-        public void IPerformAnAppointmentReadForTheAppointmentCalled(string appointment)
+        public void WhenIPerformAnAppointmentReadForTheAppointmentCalled(string appointment)
         {
             string url = $"Appointment/{HttpContext.StoredFhirResources[appointment].Id}";
             When($@"I make a GET request to ""{url}""");
         }
 
         [When(@"I amend ""(.*)"" by changing the comment to ""(.*)""")]
-        public void IAmendByChangingTheCommentToMessage(string appointment, string message)
+        public void WhenIAmendByChangingTheCommentToMessage(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
             Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
@@ -64,7 +64,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I amend ""(.*)"" by changing the reason text to ""(.*)""")]
-        public void IAmendByChangingTheReasonTextToMessage(string appointment, string message)
+        public void WhenIAmendByChangingTheReasonTextToMessage(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
 
@@ -87,7 +87,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I amend ""(.*)"" by changing the description text to ""(.*)""")]
-        public void IAmendByChangingTheDescriptionTextToMessage(string appointment, string message)
+        public void WhenIAmendByChangingTheDescriptionTextToMessage(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
             Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
@@ -98,7 +98,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I amend ""(.*)"" by changing the priority to ""(.*)""")]
-        public void IAmendByChangingTheTextToMessage(string appointment, int message)
+        public void WhenIAmendByChangingThePriorityTo(string appointment, int message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
             Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
@@ -109,7 +109,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I amend ""(.*)"" by changing the comment to ""(.*)"" and send a bundle resource in the request")]
-        public void IAmendByChangingTheCommentToMessageAndSendBundleInTheRequest(string appointment, string message)
+        public void WhenIAmendByChangingTheCommentToMessageAndSendBundleABundleResourceInTheRequest(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
             Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
@@ -123,7 +123,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [When(@"I amend ""(.*)"" by changing the comment to ""(.*)"" and send an empty appointment resource")]
-        public void IAmendByChangingTheCommentToMessageAndSendInvalidAppointmentInResource(string appointment, string message)
+        public void WhenIAmendByChangingTheCommentToMessageAndSendAnEmptyAppointmentResource(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
             Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
@@ -137,7 +137,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
         
         [When(@"I set the URL to ""(.*)"" and amend ""(.*)"" by changing the comment to ""(.*)""")]
-        public void IAmendByChangingTheCommentToMessageSettingUrl(string URL,string appointment, string message)
+        public void WhenISetTheURLToAndAmendByChangingTheCommentTo(string URL,string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
             savedAppointment.Comment = message;
@@ -145,21 +145,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the appointment resource should contain a comment which equals ""(.*)""")]
-        public void TheAppointmentResourceShouldContainACommentWhichEquals(string message)
+        public void ThenTheAppointmentResourceShouldContainACommentWhichEquals(string message)
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Comment.ShouldBe(message);
         }
 
         [Then(@"the appointment resource should contain a reason text which equals ""(.*)""")]
-        public void TheAppointmentResourceShouldContainAReasonTextWhichEquals(string message)
+        public void ThenTheAppointmentResourceShouldContainAReasonTextWhichEquals(string message)
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Reason.Text.ShouldBe(message);
         }
 
         [Then(@"the appointment resource should contain description text which equals ""(.*)""")]
-        public void TheAppointmentResourceShouldContainDescriptionTextWhichEquals(string message)
+        public void ThenTheAppointmentResourceShouldContainDescriptionTextWhichEquals(string message)
         {
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Description.ShouldBe(message);
