@@ -28,14 +28,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext = httpContext;
         }
 
-        [Given(@"I cancel appointment resource stored against key ""([^""]*)""")]
-        public void ICancelAppointmentResourceStoredAgainstKey(string storedAppointmentKey)
+        [Given(@"I cancel appointment resource stored against key ""([^""]*)"" for patient ""([^""]*)""")]
+        public void ICancelAppointmentResourceStoredAgainstKey(string storedAppointmentKey, string patient)
         {
-            ICancelAppointmentResourceStoredAgainstKeyAndStoreTheReturnedAppointmentResourceAgainstKey(storedAppointmentKey);
+            ICancelAppointmentResourceStoredAgainstKeyForPatientAndStoreTheReturnedAppointmentResourceAgainstKey(storedAppointmentKey, patient);
         }
 
-        [Given(@"I cancel appointment resource stored against key ""([^""]*)"" and store the returned appointment resource against key ""([^""]*)""")]
-        public void ICancelAppointmentResourceStoredAgainstKeyAndStoreTheReturnedAppointmentResourceAgainstKey(string storedAppointmentKey, string appointmentStorageKey = null)
+        [Given(@"I cancel appointment resource stored against key ""([^""]*)"" for patient ""([^""]*)"" and store the returned appointment resource against key ""([^""]*)""")]
+        public void ICancelAppointmentResourceStoredAgainstKeyForPatientAndStoreTheReturnedAppointmentResourceAgainstKey(string storedAppointmentKey, string patient, string appointmentStorageKey = null)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[storedAppointmentKey];
             storedAppointment.Status = Appointment.AppointmentStatus.Cancelled;
@@ -44,7 +44,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             Given($@"I am using the default server");
             And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:update:appointment"" interaction");
-            
+            Given($@"I set the JWT requested record patient NHS number to ""{patient}""");
+            Given(@"I set the JWT requested scope to ""patient/*.write""");
+
             string relativeUrl = "/Appointment/" + storedAppointment.Id;
             HttpSteps.RestRequest(Method.PUT, relativeUrl, payloadString);
 
