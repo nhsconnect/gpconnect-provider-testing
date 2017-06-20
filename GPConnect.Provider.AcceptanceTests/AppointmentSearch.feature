@@ -1,5 +1,5 @@
 ﻿@appointment
-Feature: AppointmentRetrieve
+Feature: AppointmentSearch
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
 	Given I am using the default server

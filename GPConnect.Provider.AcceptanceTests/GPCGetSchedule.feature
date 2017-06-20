@@ -1,5 +1,5 @@
 ﻿@getschedule
-Feature: SearchForFreeSlots
+Feature: GPCGetSchedule
 	
 Scenario Outline: I successfully perform a gpc.getschedule operation
 	Given I am using the default server

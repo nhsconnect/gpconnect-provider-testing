@@ -1,5 +1,5 @@
 ﻿@appointment
-Feature: AmendAppointment
+Feature: AppointmentAmend
 
 Background:
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"

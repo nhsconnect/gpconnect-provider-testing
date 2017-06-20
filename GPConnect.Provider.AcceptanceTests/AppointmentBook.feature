@@ -1,5 +1,5 @@
 ﻿@appointment
-Feature: BookAppointment
+Feature: AppointmentBook
 
 Scenario: Book single appointment for patient
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"

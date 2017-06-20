@@ -33,7 +33,7 @@ Scenario Outline: Organization read invalid request invalid URL
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
 	When I get organization "ORG1ID" and use the id to make a get request to the url "<InvalidURL>"
-	Then the response status code should be "400"
+	Then the response status code should be "404"
 	Examples:
 		| InvalidURL    |
 		| Organizations |
@@ -73,7 +73,7 @@ Scenario Outline: Organization read failure with incorrect interaction id
 		|                                                                   |
 		| null                                                              |
 
-Scenario Outline: Organization read _format parameter only
+Scenario Outline: 2
 	Given I get organization "ORG1" id and save it as "ORG1ID"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction

@@ -90,6 +90,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestBody = null;
             FhirContext.FhirRequestParameters = new Parameters();
 
+            HttpContext.RequestParameters.ClearParameters();
+
             HttpContext.ResponseTimeInMilliseconds = -1;
             //HttpContext.ResponseStatusCode = null;
             HttpContext.ResponseContentType = null;

@@ -1,5 +1,5 @@
 ﻿@html
-Feature: Html
+Feature: HTML
 
 Scenario Outline: HTML should not contain disallowed elements
 	Given I am using the default server

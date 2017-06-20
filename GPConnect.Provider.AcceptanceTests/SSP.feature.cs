@@ -18,9 +18,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("SpineSecurityProxy")]
+    [NUnit.Framework.DescriptionAttribute("SSP")]
     [NUnit.Framework.CategoryAttribute("ssp")]
-    public partial class SpineSecurityProxyFeature
+    public partial class SSPFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -32,7 +32,7 @@ namespace GPConnect.Provider.AcceptanceTests
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SpineSecurityProxy", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SSP", null, ProgrammingLanguage.CSharp, new string[] {
                         "ssp"});
             testRunner.OnFeatureStart(featureInfo);
         }
