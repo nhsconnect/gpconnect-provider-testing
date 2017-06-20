@@ -388,7 +388,7 @@ Scenario Outline: request contain the structure definition in the meta fields
 		And the Composition Metadata should be valid
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And the Practitioner Metadata should be valid
 		And if the response bundle contains a device resource it should contain meta data profile and version id
 		And if the response bundle contains a location resource it should contain meta data profile and version id
 	Examples:
@@ -764,8 +764,8 @@ Scenario Outline: practitioner resource contains mandatory fields and does not i
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And practitioner resources should contain a single name element
-		And practitioner resources should not contain the disallowed elements
+		And the Practitioner Name should be valid
+		And the Practitioner Photo and Qualification should be excluded
 	Examples:
 		| Code |
 		| ADM  |
@@ -789,8 +789,8 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And practitioner resources must contain one user id and optional profile ids
-		And if practitionerRole has role element which contains a coding then the system, code and display must exist
+		And the Practitioner Identifiers should be valid
+		And the Practitioner PractitionerRoles Roles should be valid
 		And if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
 	Examples:
 		| Code |
