@@ -19,18 +19,18 @@
             return _fhirContext.Compositions.First();
         }
 
-        [Then("the Composition is valid")]
-        public void TheCompositionIsValid()
+        [Then("the Composition should be valid")]
+        public void TheCompositionShouldBeValid()
         {
             var composition = GetComposition();
 
             composition.Date.ShouldNotBeNull();
 
-            TheCompositionTypeIsValid();
+            TheCompositionTypeShouldBeValid();
 
             if (composition.Class != null)
             {
-               TheCompositionClassIsValid();
+               TheCompositionClassShouldBeValid();
             }
 
             composition.Title.ShouldBe("Patient Care Record");
@@ -39,8 +39,8 @@
             composition.Section.Count.ShouldBe(1);
         }
 
-        [Then("the Composition Class is valid")]
-        private void TheCompositionClassIsValid()
+        [Then("the Composition Class should be valid")]
+        private void TheCompositionClassShouldBeValid()
         {
             var compositionClass = GetComposition().Class;
 
@@ -58,8 +58,8 @@
             compositionClass.Text?.ShouldBe("general medical service (qualifier value)");
         }
 
-        [Then("the Composition Type is valid")]
-        public void TheCompositionTypeIsValid()
+        [Then("the Composition Type should be valid")]
+        public void TheCompositionTypeShouldBeValid()
         {
             var compositionType = GetComposition().Type;
 
@@ -73,11 +73,10 @@
                 coding.Code.ShouldBe("425173008");
                 coding.Display.ShouldBe("record extract (record artifact)");
             }
-
         }
 
-        [Then(@"the Composition Section is valid for ""([^""]*)"", ""([^""]*)"", ""([^""]*)""")]
-        public void TheCompositionSectionIsValidFor(string title, string code, string display)
+        [Then(@"the Composition Section should be valid for ""([^""]*)"", ""([^""]*)"", ""([^""]*)""")]
+        public void TheCompositionSectionShouldBeValidFor(string title, string code, string display)
         {
             var section = GetComposition().Section.First();
 
@@ -90,76 +89,13 @@
             section.Text.Div.ShouldNotBeNull();
         }
 
-        [Then(@"the HTML in the response matches the Regex check ""([^""]*)""")]
-        public void ThenTheHtmlInTheResponseMatchesTheRegexCheck(string regexPattern)
+        [Then(@"the Composition Metadata should be valid")]
+        public void TheCompositionMetadataShouldBeValid()
         {
-            _fhirContext.Compositions.ForEach(composition =>
-            {
-                composition.Section.Count.ShouldBe(1);
-                composition.Section.ForEach(section =>
-                {
-                    section.Text.Div.ShouldMatch(regexPattern);
-                });
-            });
-        }
+            var composition = GetComposition();
 
-        [Then(@"the composition resource in the bundle should contain meta data profile")]
-        public void ThenTheCompositionResourceInTheBundleShouldContainMetaDataProfile()
-        {
-            _fhirContext.Compositions.ForEach(composition =>
-            {
-                composition.Meta.ShouldNotBeNull();
-                composition.Meta.Profile.ToList().ForEach(profile =>
-                {
-                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
-                });
-            });
-        }
-
-        [Then(@"if composition contains the resource type element the fields should match the fixed values of the specification")]
-        public void ThenIfCompositionContainsTheResourceTypeElementTheFieldsShouldMatchTheFixedValuesOfTheSpecification()
-        {
-            _fhirContext.Compositions.ForEach(composition =>
-            {
-                if (composition.Type != null)
-                {
-                    if (composition.Type.Coding != null)
-                    {
-                        composition.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
-                        composition.Type.Coding.ForEach(coding =>
-                        {
-                            coding.System.ShouldBe("http://snomed.info/sct");
-                            coding.Code.ShouldBe("425173008");
-                            coding.Display.ShouldBe("record extract (record artifact)");
-                        });
-                    }
-
-                    composition.Type.Text?.ShouldBe("record extract (record artifact)");
-                }
-            });
-        }
-
-        [Then(@"if composition contains the resource class element the fields should match the fixed values of the specification")]
-        public void ThenIfCompositionContainsTheResourceClassElementTheFieldsShouldMatchTheFixedValuesOfTheSpecification()
-        {
-            _fhirContext.Compositions.ForEach(composition =>
-            {
-                if (composition.Class != null)
-                {
-                    if (composition.Class.Coding != null)
-                    {
-                        composition.Class.Coding.Count.ShouldBeLessThanOrEqualTo(1);
-                        composition.Class.Coding.ForEach(coding =>
-                        {
-                            coding.System.ShouldBe("http://snomed.info/sct");
-                            coding.Code.ShouldBe("700232004");
-                            coding.Display.ShouldBe("general medical service (qualifier value)");
-                        });
-                    }
-
-                    composition.Class.Text?.ShouldBe("general medical service (qualifier value)");
-                }
-            });
+            composition.Meta.ShouldNotBeNull();
+            composition.Meta.Profile.First().ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
         }
     }
 }

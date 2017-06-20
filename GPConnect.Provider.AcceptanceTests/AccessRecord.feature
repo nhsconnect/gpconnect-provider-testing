@@ -385,7 +385,7 @@ Scenario Outline: request contain the structure definition in the meta fields
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And the composition resource in the bundle should contain meta data profile
+		And the Composition Metadata should be valid
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
@@ -414,8 +414,8 @@ Scenario Outline: composition contains generic mandatory fields
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And the Composition is valid
-		And the Composition Section is valid for "<Title>", "<Code>", "<Display>"
+		And the Composition should be valid
+		And the Composition Section should be valid for "<Title>", "<Code>", "<Display>"
 	Examples:
 		| Patient  | Code     | Title                           | Display                         |
 		| patient1 | ADM      | Administrative Items            | Administrative Items            |
@@ -451,7 +451,7 @@ Scenario Outline: if composition contains type mandatory field fixed values shou
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if composition contains the resource type element the fields should match the fixed values of the specification
+		And the Composition Type should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -475,7 +475,7 @@ Scenario Outline: if composition contains class coding
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if composition contains the resource class element the fields should match the fixed values of the specification
+		And the Composition Class should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -960,7 +960,6 @@ Scenario Outline: check all dateTime format variations are allowed
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And the HTML in the response matches the Regex check "(.)*"
 	Examples:
 		| Code | StartDateTime             | EndDateTime               |
 		| ADM  | 2014                      | 2016                      |
