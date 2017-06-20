@@ -52,17 +52,16 @@ Scenario: Location search no entrys found
 Scenario Outline: Location search failure invalid system
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "<system>" and value "SIT1"
+		And I add the location identifier parameter with system "<System>" and value "SIT1"
 	When I make a GET request to "/Location"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
 	Examples:
-		| System                                     |
-		| http://fhir.nhs.net/Id/ods-site-code9      |
-		| http://fhir.nhs.net/Id/sds-role-profile-id |
-		| null                                       |
-		|                                            |
+		| System                                         |
+		| http://fhir.nhs.net/Id/ods-site-code9          |
+		| http://fhir.nhs.net/Id/sds-role-profile-id     |
+		| http://fhir.nh5555555555555555555/555555555555 |
 
 Scenario: Location search failure missing identifier
 	Given I am using the default server
@@ -120,7 +119,7 @@ Scenario Outline: Location search _format parameter only
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
 		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT2"
-		And I add the parameter "_format" with the value "<Parameter>"
+		And I add the parameter "_format" with the value "<Header>"
 	When I make a GET request to "/Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
@@ -173,10 +172,10 @@ Scenario Outline: Location search failure due to invalid interactionId
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| InteractionId                                              |
-		| urn:nhs:names:services:gpconnect:fhir:rest:search:location |
-		| InvalidInteractionId                                       |
-		|                                                            |
+		| InteractionId                                                    |
+		| urn:nhs:namet45t45s:services:gpconnect:fhir:rest:search:location |
+		| InvalidInteractionId                                             |
+		|                                                                  |
 
 Scenario: Conformance profile supports the Location search operation
 	Given I am using the default server
