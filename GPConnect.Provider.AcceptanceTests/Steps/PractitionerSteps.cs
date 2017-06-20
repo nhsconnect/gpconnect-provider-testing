@@ -465,7 +465,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             ThePractitionerSdsUserIdentifierShouldBeValid();
             ThePractitionerSdsRoleProfileIdentifierShouldBeValid();
-           
+            
+            GetPractitioner()
+                .Identifier
+                .ForEach(identifier => identifier.System.ShouldBeOneOf("http://fhir.nhs.net/Id/sds-user-id", "http://fhir.nhs.net/Id/sds-role-profile-id"));
         }
 
         [Then(@"the Practitioner SDS Role Profile Identifier should be valid")]
