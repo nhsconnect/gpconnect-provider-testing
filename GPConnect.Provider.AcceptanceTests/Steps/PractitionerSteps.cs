@@ -432,28 +432,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         //Hayden
-        private Practitioner GetPractitioner()
+        private List<Practitioner> GetPractitioners()
         {
-            return _fhirContext.Practitioners.FirstOrDefault();
+            return _fhirContext.Practitioners;
         }
 
         [Then(@"the Practitioner Metadata should be valid")]
         public void ThePractitionerMetadataShouldBeValid()
         {
-            var practitioner = GetPractitioner();
+            var practitioners = GetPractitioners();
 
-            if (practitioner != null)
+            practitioners.ForEach(practitioner =>
             {
-                CheckForValidMetaDataInResource(practitioner,
-                    "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
-            }
+                CheckForValidMetaDataInResource(practitioner, "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
+            });
         }
 
         [Then(@"the Practitioner should be valid")]
         public void ThePractitionerShouldBeValid()
         {
-            var practitioner = GetPractitioner();
-
             ThePractitionerIdentifiersShouldBeValid();
             ThePractitionerNameShouldBeValid();
             ThePractitionerPhotoAndQualificationShouldBeExcluded();
@@ -463,56 +460,80 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the Practitioner Identifiers should be valid")]
         public void ThePractitionerIdentifiersShouldBeValid()
         {
+            ThePractitionerIdentifiersShouldBeFixedValues();
             ThePractitionerSdsUserIdentifierShouldBeValid();
             ThePractitionerSdsRoleProfileIdentifierShouldBeValid();
-            
-            GetPractitioner()
-                .Identifier
-                .ForEach(identifier => identifier.System.ShouldBeOneOf("http://fhir.nhs.net/Id/sds-user-id", "http://fhir.nhs.net/Id/sds-role-profile-id"));
+        }
+
+        [Then(@"the Practitioner Identifiers should be fixed values")]
+        public void ThePractitionerIdentifiersShouldBeFixedValues()
+        {
+            var practitioners = GetPractitioners();
+
+            practitioners.ForEach(practitioner =>
+            {
+                practitioner.Identifier.ForEach(identifier =>
+                {
+                    identifier.System.ShouldBeOneOf("http://fhir.nhs.net/Id/sds-user-id", "http://fhir.nhs.net/Id/sds-role-profile-id");
+                });
+            });
         }
 
         [Then(@"the Practitioner SDS Role Profile Identifier should be valid")]
         private void ThePractitionerSdsRoleProfileIdentifierShouldBeValid()
         {
-            var practitioner = GetPractitioner();
+            var practitioners = GetPractitioners();
 
-            var sdsRoleProfileIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id")).ToList();
-
-            sdsRoleProfileIdentifiers.ForEach(identifier =>
+            practitioners.ForEach(practitioner =>
             {
-                identifier.Value.ShouldNotBeNull();
+                var sdsRoleProfileIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id")).ToList();
+
+                sdsRoleProfileIdentifiers.ForEach(identifier =>
+                {
+                    identifier.Value.ShouldNotBeNull();
+                });
             });
         }
 
         [Then(@"the Practitioner SDS User Identifier should be valid")]
         public void ThePractitionerSdsUserIdentifierShouldBeValid()
         {
-            var practitioner = GetPractitioner();
+            var practitioners = GetPractitioners();
 
-            var sdsUserIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id")).ToList();
-            sdsUserIdentifiers.Count.ShouldBeLessThanOrEqualTo(1);
-
-            sdsUserIdentifiers.ForEach(identifier =>
+            practitioners.ForEach(practitioner =>
             {
-                identifier.Value.ShouldNotBeNull();
+                var sdsUserIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id")).ToList();
+
+                sdsUserIdentifiers.Count.ShouldBeLessThanOrEqualTo(1);
+
+                sdsUserIdentifiers.ForEach(identifier =>
+                {
+                    identifier.Value.ShouldNotBeNull();
+                }); 
             });
         }
 
         [Then(@"the Practitioner Name should be valid")]
         public void ThePractitionerNameShouldBeValid()
         {
-            var practitioner = GetPractitioner();
+            var practitioners = GetPractitioners();
 
-            practitioner.Name.ShouldNotBeNull();
+            practitioners.ForEach(practitioner =>
+            {
+                practitioner.Name.ShouldNotBeNull();
+            });
         }
 
         [Then(@"the Practitioner Photo and Qualification should be excluded")]
         public void ThePractitionerPhotoAndQualificationShouldBeExcluded()
         {
-            var practitioner = GetPractitioner();
+            var practitioners = GetPractitioners();
 
-            practitioner.Photo?.Count.ShouldBe(0);
-            practitioner.Qualification?.Count.ShouldBe(0);
+            practitioners.ForEach(practitioner =>
+            {
+                practitioner.Photo?.Count.ShouldBe(0);
+                practitioner.Qualification?.Count.ShouldBe(0);
+            });
         }
 
         [Then(@"the Practitioner PractitionerRoles should be valid")]
@@ -524,23 +545,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the Practitioner PractitionerRoles Roles should be valid")]
         public void ThePractitionerPractionerRolesRolesShouldBeValid()
         {
-            var practitioner = GetPractitioner();
+            var practitioners = GetPractitioners();
 
-            practitioner.PractitionerRole.ForEach(practitionerRole =>
+            practitioners.ForEach(practitioner =>
             {
-                if (practitionerRole.Role?.Coding != null)
+
+                practitioner.PractitionerRole.ForEach(practitionerRole =>
                 {
-                    practitionerRole.Role.Coding.Count.ShouldBeLessThanOrEqualTo(1);
-                    practitionerRole.Role.Coding.ForEach(coding =>
+                    if (practitionerRole.Role?.Coding != null)
                     {
-                        coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
-                        coding.Code.ShouldNotBeNull();
-                        coding.Display.ShouldNotBeNull();
-                    });
-                }
+                        practitionerRole.Role.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                        practitionerRole.Role.Coding.ForEach(coding =>
+                        {
+                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
+                            coding.Code.ShouldNotBeNull();
+                            coding.Display.ShouldNotBeNull();
+                        });
+                    }
+                });
             });
         }
-
     }
 }
 
