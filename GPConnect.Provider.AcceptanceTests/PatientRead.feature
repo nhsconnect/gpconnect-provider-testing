@@ -2,8 +2,11 @@
 Feature: PatientRead
 	
 Scenario Outline: Read patient 404 if patient not found
+	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I make a GET request to "/Patient/<id>"
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
@@ -25,6 +28,8 @@ Scenario Outline: Read patient _format parameter only
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make a GET request for patient "patient1"
 	Then the response status code should indicate success
@@ -39,6 +44,8 @@ Scenario Outline: Read patient accept header and _format parameter
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make a GET request for patient "patient1"
@@ -73,6 +80,8 @@ Scenario: Read patient should contain correct logical identifier
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I make a GET request for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -83,6 +92,8 @@ Scenario: Read patient should contain ETag
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I make a GET request for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -93,6 +104,8 @@ Scenario: Read patient If-None-Match should return a 304 on match
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I make a GET request for patient "patient1" with If-None-Match header
 	Then the response status code should be "304"
 	
@@ -100,6 +113,8 @@ Scenario: Read patient If-None-Match should return full resource if no match
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 		And I set the If-None-Match header to "W/\"somethingincorrect\""
 	When I make a GET request for patient "patient1"
 	Then the response status code should indicate success
@@ -111,6 +126,8 @@ Scenario: VRead patient _history with current etag should return current patient
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I perform a patient vread for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -120,6 +137,8 @@ Scenario: VRead patient _history with invalid etag should give a 404
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I perform a patient vread for patient "patient1" with invalid ETag
 	Then the response status code should be "404"
 
@@ -127,6 +146,8 @@ Scenario Outline: Read patient with accept header should contain valid resource
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 		And I set the Accept header to "<Header>"
 	When I make a GET request for patient "patient1"
 	Then the response status code should indicate success
