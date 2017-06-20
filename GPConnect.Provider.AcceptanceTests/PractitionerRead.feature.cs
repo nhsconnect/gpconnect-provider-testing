@@ -591,10 +591,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Practiotioner read VRead of non existant version should return error")]
-        public virtual void PractiotionerReadVReadOfNonExistantVersionShouldReturnError()
+        [NUnit.Framework.DescriptionAttribute("Practitioner read VRead of non existant version should return error")]
+        public virtual void PractitionerReadVReadOfNonExistantVersionShouldReturnError()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practiotioner read VRead of non existant version should return error", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read VRead of non existant version should return error", ((string[])(null)));
 #line 218
 this.ScenarioSetup(scenarioInfo);
 #line 219
