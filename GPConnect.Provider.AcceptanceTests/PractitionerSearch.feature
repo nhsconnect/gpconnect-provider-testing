@@ -11,7 +11,7 @@ Scenario Outline: Practitioner search success
 		And the response bundle should contain "<EntrySize>" entries
 		And the response should be a Bundle resource of type "searchset"
 		And all search response entities in bundle should contain a logical identifier
-		And all practitioners contain SDS identifier for practitioner "<Value>"
+		And the Practitioner Identifiers should be valid
 		And practitioner resources must contain one user id and a total of "<RoleSize>" profile ids
 	Examples:
 		| Value         | EntrySize | RoleSize |

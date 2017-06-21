@@ -5,7 +5,7 @@ Scenario Outline: I perform a successful Read appointment
 	Given I find or create "1" appointments for patient "<PatientName>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "<PatientName>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
@@ -33,7 +33,7 @@ Scenario Outline: Read appointment failure due to missing header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 		And I do not send header "<Header>"
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -49,7 +49,7 @@ Scenario Outline: Read appointment failure with incorrect interaction id
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "<interactionId>" interaction
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -65,7 +65,7 @@ Scenario Outline: Read appointment _format parameter only
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 		And I add the parameter "_format" with the value "<Parameter>"
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
@@ -80,7 +80,7 @@ Scenario Outline: Read appointment accept header and _format parameter
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
@@ -95,7 +95,7 @@ Scenario: Read appointment valid request shall include id and structure definiti
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the returned resource shall contains a logical id
@@ -106,7 +106,7 @@ Scenario Outline: Read appointment check response contains required elements
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 		And I set the Accept header to "<Header>"
-	When I perform an appointment read appointment stored against key "<AppointmentStatus>Appointment<BodyFormat>"
+	When I perform an appointment read appointment stored against key "<AppointmentStatus>Appointment<BodyFormat>" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
@@ -126,7 +126,7 @@ Scenario: Read appointment if resource contains identifier then the value is man
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And if the appointment response resource contains any identifiers they must have a value
@@ -135,7 +135,7 @@ Scenario: Read appointment if reason is included in response check that it confo
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
@@ -145,7 +145,7 @@ Scenario: Read appointment containing a priority element and check that the prio
 	Given I create an appointment for patient "patient1" at organization "ORG1" with priority "0" and save appintment resources to "Patient1PriorityAppointment"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I perform an appointment read appointment stored against key "Patient1PriorityAppointment"
+	When I perform an appointment read appointment stored against key "Patient1PriorityAppointment" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
@@ -155,7 +155,7 @@ Scenario: Read appointment and all participants must have a type or actor elemen
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
@@ -166,7 +166,7 @@ Scenario Outline: Read appointment if extensions are included they should be val
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
 		And I set the Accept header to "<Header>"
-	When I perform an appointment read appointment stored against key "<AppointmentStatus>Appointment<BodyFormat>"
+	When I perform an appointment read appointment stored against key "<AppointmentStatus>Appointment<BodyFormat>" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
@@ -185,7 +185,7 @@ Scenario: Read appointment and response should contain an ETag header
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle"
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource

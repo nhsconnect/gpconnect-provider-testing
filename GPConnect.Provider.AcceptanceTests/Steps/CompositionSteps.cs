@@ -1,4 +1,6 @@
-﻿namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿using System;
+
+namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Linq;
     using Context;
@@ -94,8 +96,7 @@
         {
             var composition = GetComposition();
 
-            composition.Meta.ShouldNotBeNull();
-            composition.Meta.Profile.First().ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
+            CheckForValidMetaDataInResource(composition, "http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
         }
     }
 }

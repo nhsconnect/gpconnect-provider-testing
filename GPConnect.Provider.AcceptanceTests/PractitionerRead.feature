@@ -215,7 +215,7 @@ Scenario: Practitioner read VRead of current resource should return resource
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 
-Scenario: Practiotioner read VRead of non existant version should return error
+Scenario: Practitioner read VRead of non existant version should return error
 	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction

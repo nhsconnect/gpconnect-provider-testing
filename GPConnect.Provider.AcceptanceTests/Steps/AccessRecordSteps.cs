@@ -247,16 +247,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 .ShouldBe(profileIdCount, "Unexpected http://fhir.nhs.net/Id/sds-role-profile-id system quantity");
         }
         
-        [Then(@"all practitioners contain SDS identifier for practitioner ""([^""]*)""")]
-        public void AllPractitionersContainSdsIdentifierForPractitioner(string practitionerId)
-        {
-            var customMessage = "No identifier with system http://fhir.nhs.net/Id/sds-user-id found";
-            _fhirContext.Practitioners.ForEach(practitioner =>
-            {
-                practitioner.Identifier.ShouldAllBe(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id"), customMessage);
-            });
-        }
-
         [Then(@"if practitionerRole has managingOrganization element then reference must exist")]
         public void ThenIfPractitionerRoleHasMangingOrganizationElementThenReferenceMustExist()
         {

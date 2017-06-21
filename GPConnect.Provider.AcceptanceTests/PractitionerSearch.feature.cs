@@ -98,7 +98,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
   testRunner.And("all search response entities in bundle should contain a logical identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
-  testRunner.And(string.Format("all practitioners contain SDS identifier for practitioner \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
   testRunner.And(string.Format("practitioner resources must contain one user id and a total of \"{0}\" profile ids", roleSize), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
