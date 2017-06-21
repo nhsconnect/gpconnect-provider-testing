@@ -66,7 +66,7 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "eq"
+	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
@@ -133,19 +133,22 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		| 2016-08-                  | eq     |
 		| 2016-08-05 08:16:07       | eq     |
 
-
-Scenario: Appointment retrieve send request and find request using equal to prefix
+Scenario Outline: Appointment retrieve send request and find request using equal to prefix
 	Given I create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I set the JWT requested record NHS number to config patient "patient1"
 		And I set the JWT requested scope to "patient/*.read"
-	When I search for "patient1" and make a get request for their appointments with the saved slot start date "slotStartDate" and prefix "eq"
+	When I search for "patient1" and make a get request for their appointments with the saved slot start date "slotStartDate" and prefix "<prefix>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" appointment
-
+	Examples:
+		| prefix |
+		| eq     |
+		|        |
+		
 Scenario Outline: Appointment retrieve send request with date variations and greater than and less than prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -222,7 +225,6 @@ Scenario Outline: Appointment retrieve send request with lower start date boundr
 		| 2014-05-01T11:08:32       | ge     | 2044-05-01T11:08:32       | lt      |
 		| 2015-10-23T11:08:32+00:00 | ge     | 2044-10-23T11:08:32+00:00 | lt      |
 
-		
 Scenario Outline: Appointment retrieve send request with upper end date boundary and end prefix and lower start date boundry and start prefix
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -342,86 +344,6 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 		| 2014-05                   | le     | 2044-05                   | le      |
 		| 2014-05-01T11:08:32       | le     | 2044-05-01T11:08:32       | le      |
 		| 2015-10-23T11:08:32+00:00 | le     | 2044-10-23T11:08:32+00:00 | le      |
-
-Scenario Outline: Appointment retrieve send request with date variations and not equal to prefix
-	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
-	Examples:
-		| startDate                 | prefix |
-		| 2013                      | ne     |
-		| 2013-02                   | ne     |
-		| 2013-10-05                | ne     |
-		| 2013-05                   | ne     |
-		| 2013-05-01T11:08:32       | ne     |
-		| 2013-10-23T11:08:32+00:00 | ne     |
-
-Scenario Outline: Appointment retrieve send request with date variations and starts after to prefix
-	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
-	Examples:
-		| startDate                 | prefix |
-		| 2013                      | sa     |
-		| 2013-02                   | sa     |
-		| 2013-10-05                | sa     |
-		| 2013-05                   | sa     |
-		| 2013-05-01T11:08:32       | sa     |
-		| 2013-10-23T11:08:32+00:00 | sa     |
-
-Scenario Outline: Appointment retrieve send request with date variations and ends before prefix
-	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
-	Examples:
-		| startDate                 | prefix |
-		| 2013                      | eb     |
-		| 2013-02                   | eb     |
-		| 2013-10-05                | eb     |
-		| 2013-05                   | eb     |
-		| 2013-05-01T11:08:32       | eb     |
-		| 2013-10-23T11:08:32+00:00 | eb     |
-
-Scenario Outline: Appointment retrieve send request with date variations and approximately prefix
-	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for "patient1" and make a get request for their appointments with the date "<startDate>" and prefix "<prefix>"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
-	Examples:
-		| startDate                 | prefix |
-		| 2013                      | ap     |
-		| 2013-02                   | ap     |
-		| 2013-10-05                | ap     |
-		| 2013-05                   | ap     |
-		| 2013-05-01T11:08:32       | ap     |
-		| 2013-10-23T11:08:32+00:00 | ap     |
 
 Scenario Outline: Appointment retrieve failure due to missing header
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
