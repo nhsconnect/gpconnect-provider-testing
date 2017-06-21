@@ -136,6 +136,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Patient patientResource = (Patient)HttpContext.StoredFhirResources[patient];
             Given($@"I am using the default server");
             And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments"" interaction");
+            And($@"I set the JWT requested record NHS number to config patient ""{patient}""");
+            And(@"I set the JWT requested scope to ""patient/*.read""");
             When($@"I make a GET request to ""/Patient/{patientResource.Id}/Appointment""");
             Then($@"the response status code should indicate success");
             And($@"the response body should be FHIR JSON");
@@ -164,29 +166,33 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(getScheduleResponseBundleKey, returnedGetScheduleResponseBundle);
         }
 
-        [When(@"I perform an appointment read for the first appointment saved in the bundle of resources stored against key ""([^""]*)""")]
-        public void IPerformAnAppointmentReadForTheFirstAppointmentSavedInTheLBundleOfResorcesStoredAgainstKey(string bundleOfPatientAppointmentsKey)
+        [When(@"I perform an appointment read for the first appointment saved in the bundle of resources stored against key ""([^""]*)"" for patient ""([^""]*)""")]
+        public void IPerformAnAppointmentReadForTheFirstAppointmentSavedInTheLBundleOfResorcesStoredAgainstKey(string bundleOfPatientAppointmentsKey, string patient)
         {
-            When($@"I perform an appointment read appointment index ""0"" saved in the bundle of resources stored against key ""{bundleOfPatientAppointmentsKey}""");
+            When($@"I perform an appointment read appointment index ""0"" saved in the bundle of resources stored against key ""{bundleOfPatientAppointmentsKey}"" for patient ""{patient}""");
         }
 
-        [When(@"I perform an appointment read appointment index ""([^""]*)"" saved in the bundle of resources stored against key ""([^""]*)""")]
-        public void IPerformAnAppointmentReadForTheAppointmentIndexSavedInTheBundleOfResourcesStoredAgainstKey(int appointmentIndex, string bundleOfPatientAppointmentsKey)
+        [When(@"I perform an appointment read appointment index ""([^""]*)"" saved in the bundle of resources stored against key ""([^""]*)"" for patient ""([^""]*)""")]
+        public void IPerformAnAppointmentReadForTheAppointmentIndexSavedInTheBundleOfResourcesStoredAgainstKey(int appointmentIndex, string bundleOfPatientAppointmentsKey, string patient)
         {
-            Bundle patientAppointmentBundel = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentsKey];
-            When($@"I perform an appointment read for the appointment with logical id ""{patientAppointmentBundel.Entry[appointmentIndex].Resource.Id}"""); // Get the Id of the first appointment
+            var patientAppointmentBunde = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentsKey];
+            
+            // Get the Id of the first appointment
+            IPerformAnAppointmentReadForTheAppointmentForPatient(patientAppointmentBunde.Entry[appointmentIndex].Resource.Id, patient);
         }
         
-        [When(@"I perform an appointment read appointment stored against key ""([^""]*)""")]
-        public void IPerformAnAppointmentReadForAppointmentStoredAgainstKey(string storedAppointmentKey)
+        [When(@"I perform an appointment read appointment stored against key ""([^""]*)"" for patient ""([^""]*)""")]
+        public void IPerformAnAppointmentReadForAppointmentStoredAgainstKey(string storedAppointmentKey, string patient)
         {
             Appointment storedAppointment = (Appointment)HttpContext.StoredFhirResources[storedAppointmentKey];
-            When($@"I perform an appointment read for the appointment with logical id ""{storedAppointment.Id}""");
+            
+            IPerformAnAppointmentReadForTheAppointmentForPatient(storedAppointment.Id, patient);
         }
-
-        [When(@"I perform an appointment read for the appointment with logical id ""([^""]*)""")]
-        public void IPerformAnAppointmentReadForTheAppointment(string appointmentLogicalId)
+        
+        private void IPerformAnAppointmentReadForTheAppointmentForPatient(string appointmentLogicalId, string patient)
         {
+            Given($@"I set the JWT requested record NHS number to config patient ""{patient}""");
+            Given(@"I set the JWT requested scope to ""patient/*.read""");
             When($@"I make a GET request to ""/Appointment/{appointmentLogicalId}""");
         }
         

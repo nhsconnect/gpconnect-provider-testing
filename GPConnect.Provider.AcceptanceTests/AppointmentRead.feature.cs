@@ -84,8 +84,8 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:appointment\"" +
                     " interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 8
- testRunner.When("I perform an appointment read for the first appointment saved in the bundle of re" +
-                    "sources stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I perform an appointment read for the first appointment saved in the bundle of re" +
+                        "sources stored against key \"Patient1AppointmentsInBundle\" for patient \"{0}\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 10
@@ -148,7 +148,8 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
  testRunner.When("I perform an appointment read for the first appointment saved in the bundle of re" +
-                    "sources stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "sources stored against key \"Patient1AppointmentsInBundle\" for patient \"patient1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 37
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
@@ -179,7 +180,8 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
  testRunner.When("I perform an appointment read for the first appointment saved in the bundle of re" +
-                    "sources stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "sources stored against key \"Patient1AppointmentsInBundle\" for patient \"patient1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 53
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 54
@@ -211,7 +213,8 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
  testRunner.When("I perform an appointment read for the first appointment saved in the bundle of re" +
-                    "sources stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "sources stored against key \"Patient1AppointmentsInBundle\" for patient \"patient1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 69
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 70
@@ -247,7 +250,8 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
  testRunner.When("I perform an appointment read for the first appointment saved in the bundle of re" +
-                    "sources stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "sources stored against key \"Patient1AppointmentsInBundle\" for patient \"patient1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 84
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 85
@@ -275,7 +279,8 @@ this.ScenarioSetup(scenarioInfo);
                     " interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 98
  testRunner.When("I perform an appointment read for the first appointment saved in the bundle of re" +
-                    "sources stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "sources stored against key \"Patient1AppointmentsInBundle\" for patient \"patient1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 99
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 100
@@ -311,7 +316,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 108
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 109
- testRunner.When(string.Format("I perform an appointment read appointment stored against key \"{0}Appointment{1}\"", appointmentStatus, bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I perform an appointment read appointment stored against key \"{0}Appointment{1}\" " +
+                        "for patient \"patient1\"", appointmentStatus, bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 110
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 111
@@ -350,7 +356,8 @@ this.ScenarioSetup(scenarioInfo);
                     " interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
  testRunner.When("I perform an appointment read for the first appointment saved in the bundle of re" +
-                    "sources stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "sources stored against key \"Patient1AppointmentsInBundle\" for patient \"patient1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 130
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 131
@@ -381,7 +388,8 @@ this.ScenarioSetup(scenarioInfo);
                     " interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 138
  testRunner.When("I perform an appointment read for the first appointment saved in the bundle of re" +
-                    "sources stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "sources stored against key \"Patient1AppointmentsInBundle\" for patient \"patient1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 139
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 140
@@ -414,7 +422,7 @@ this.ScenarioSetup(scenarioInfo);
                     " interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
  testRunner.When("I perform an appointment read appointment stored against key \"Patient1PriorityApp" +
-                    "ointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "ointment\" for patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 149
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 150
@@ -444,7 +452,8 @@ this.ScenarioSetup(scenarioInfo);
                     " interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 158
  testRunner.When("I perform an appointment read for the first appointment saved in the bundle of re" +
-                    "sources stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "sources stored against key \"Patient1AppointmentsInBundle\" for patient \"patient1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 159
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 160
@@ -479,7 +488,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 168
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 169
- testRunner.When(string.Format("I perform an appointment read appointment stored against key \"{0}Appointment{1}\"", appointmentStatus, bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I perform an appointment read appointment stored against key \"{0}Appointment{1}\" " +
+                        "for patient \"patient1\"", appointmentStatus, bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 170
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 171
@@ -519,7 +529,8 @@ this.ScenarioSetup(scenarioInfo);
                     " interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 188
  testRunner.When("I perform an appointment read for the first appointment saved in the bundle of re" +
-                    "sources stored against key \"Patient1AppointmentsInBundle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "sources stored against key \"Patient1AppointmentsInBundle\" for patient \"patient1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 189
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 190
