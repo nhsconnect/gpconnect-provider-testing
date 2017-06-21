@@ -149,24 +149,38 @@ Scenario Outline: I perform a getSchedule with valid partial dateTime strings
 		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with start date "<StartDate>" and end date "<EndDate>"
+		And I add period request parameter with start date format "<StartDate>" and end date format "<EndDate>"
 	When I send a gpc.getschedule operation for the organization stored as "ORG1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should include slot resources
 	Examples:
-		| StartDate                 | EndDate                   |
-		| 2017-02-26                | 2017-02-28                |
-		| 2017                      | 2017-01-03                |
-		| 2017-12-28                | 2018                      |
-		| 2017-12-29T09:35:15+01:00 | 2017-12-29                |
-		| 2017-12-29T09:35:15+01:00 | 2018-01-02                |
-		| 2017-12-29                | 2017-12-29T14:55:34+01:00 |
-		| 2017-12-29T12:39:00+00:00 | 2017-12-29T12:41:00+00:00 |
-		| 2017-12-29T12:41:00+00:00 | 2017-12-29T18:00:00+00:00 |
-		| 2017-12-29T12:41:00+00:00 | 2017-12-29T12:42:00+00:00 |
+		| StartDate           | EndDate             |
+		| yyyy-MM-dd          | yyyy-MM-dd          |
+		| yyyy                | yyyy                |
+		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-ddTHH:mm:ss |
+		| yyyy-MM-dd          | yyyy-MM-ddTHH:mm:ss |
+		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-dd          |
+		| yyyy-MM             | yyyy-MM             |
 
+Scenario Outline: I perform a getSchedule with in-valid partial dateTime strings
+	Given I am using the default server
+		And I search for the organization "ORG1" on the providers system and save the first response to "ORG1"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
+		And I add period request parameter with start date format "<StartDate>" and end date format "<EndDate>"
+	When I send a gpc.getschedule operation for the organization stored as "ORG1"
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
+		Examples: 
+		| StartDate           | EndDate             |
+		| yyyy                | yyyy-MM-dd          |
+		| yyyy-MM-dd          | yyyy                |
+		| yyyy                | yyyy-MM             |
+		| yyyy-MM             | yyyy-MM-dd          |
+	
 Scenario: I try to getSchedule with multiple parameters of which some are invalid
 	Given I am using the default server
 		And I search for the organization "ORG2" on the providers system and save the first response to "ORG2"

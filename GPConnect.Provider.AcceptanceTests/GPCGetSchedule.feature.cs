@@ -407,15 +407,12 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I perform a getSchedule with valid partial dateTime strings")]
-        [NUnit.Framework.TestCaseAttribute("2017-02-26", "2017-02-28", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2017", "2017-01-03", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2017-12-28", "2018", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2017-12-29T09:35:15+01:00", "2017-12-29", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2017-12-29T09:35:15+01:00", "2018-01-02", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2017-12-29", "2017-12-29T14:55:34+01:00", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2017-12-29T12:39:00+00:00", "2017-12-29T12:41:00+00:00", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2017-12-29T12:41:00+00:00", "2017-12-29T18:00:00+00:00", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2017-12-29T12:41:00+00:00", "2017-12-29T12:42:00+00:00", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("yyyy-MM-dd", "yyyy-MM-dd", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("yyyy", "yyyy", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm:ss", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("yyyy-MM-ddTHH:mm:ss", "yyyy-MM-dd", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("yyyy-MM", "yyyy-MM", new string[0])]
         public virtual void IPerformAGetScheduleWithValidPartialDateTimeStrings(string startDate, string endDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I perform a getSchedule with valid partial dateTime strings", exampleTags);
@@ -432,7 +429,8 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 152
-  testRunner.And(string.Format("I add period request parameter with start date \"{0}\" and end date \"{1}\"", startDate, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add period request parameter with start date format \"{0}\" and end date format \"" +
+                        "{1}\"", startDate, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 153
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 154
@@ -448,34 +446,71 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("I perform a getSchedule with in-valid partial dateTime strings")]
+        [NUnit.Framework.TestCaseAttribute("yyyy", "yyyy-MM-dd", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("yyyy-MM-dd", "yyyy", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("yyyy", "yyyy-MM", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("yyyy-MM", "yyyy-MM-dd", new string[0])]
+        public virtual void IPerformAGetScheduleWithIn_ValidPartialDateTimeStrings(string startDate, string endDate, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I perform a getSchedule with in-valid partial dateTime strings", exampleTags);
+#line 167
+this.ScenarioSetup(scenarioInfo);
+#line 168
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 169
+  testRunner.And("I search for the organization \"ORG1\" on the providers system and save the first r" +
+                    "esponse to \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 170
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 171
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
+                    "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 172
+  testRunner.And(string.Format("I add period request parameter with start date format \"{0}\" and end date format \"" +
+                        "{1}\"", startDate, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 173
+ testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 174
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 175
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 176
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I try to getSchedule with multiple parameters of which some are invalid")]
         public virtual void ITryToGetScheduleWithMultipleParametersOfWhichSomeAreInvalid()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I try to getSchedule with multiple parameters of which some are invalid", ((string[])(null)));
-#line 170
+#line 184
 this.ScenarioSetup(scenarioInfo);
-#line 171
+#line 185
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 172
+#line 186
   testRunner.And("I search for the organization \"ORG2\" on the providers system and save the first r" +
                     "esponse to \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
+#line 187
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 174
+#line 188
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
+#line 189
   testRunner.And("I add period request parameter with a start date of today and an end date \"7\" day" +
                     "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 176
+#line 190
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
+#line 191
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
+#line 192
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 179
+#line 193
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
+#line 194
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -488,30 +523,30 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I try to getSchedule with multiple parameters of which some are invalid different" +
                     " order", ((string[])(null)));
-#line 182
+#line 196
 this.ScenarioSetup(scenarioInfo);
-#line 183
+#line 197
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 184
+#line 198
   testRunner.And("I search for the organization \"ORG2\" on the providers system and save the first r" +
                     "esponse to \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
+#line 199
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 186
+#line 200
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
+#line 201
   testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 188
+#line 202
   testRunner.And("I add period request parameter with a start date of today and an end date \"7\" day" +
                     "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 189
+#line 203
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 190
+#line 204
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 191
+#line 205
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
+#line 206
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -527,30 +562,30 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I successfully perform a gpc.getschedule operation and check the response bundle " +
                     "resources returned contains required meta data", exampleTags);
-#line 194
+#line 208
 this.ScenarioSetup(scenarioInfo);
-#line 195
+#line 209
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 196
+#line 210
   testRunner.And(string.Format("I search for the organization \"{0}\" on the providers system and save the first re" +
                         "sponse to \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 197
+#line 211
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 198
+#line 212
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
+#line 213
   testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
                         "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
+#line 214
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 201
+#line 215
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 202
+#line 216
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 203
+#line 217
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
+#line 218
   testRunner.And("the bundle resources should contain required meta data elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -565,36 +600,36 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I successfully perform a gpc.getschedule operation and check the slot resources r" +
                     "eturned are valid", exampleTags);
-#line 211
+#line 225
 this.ScenarioSetup(scenarioInfo);
-#line 212
+#line 226
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 213
+#line 227
   testRunner.And(string.Format("I search for the organization \"{0}\" on the providers system and save the first re" +
                         "sponse to \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
+#line 228
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 215
+#line 229
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
+#line 230
   testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
                         "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
+#line 231
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 218
+#line 232
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 219
+#line 233
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 220
+#line 234
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 221
+#line 235
   testRunner.And("the response bundle should include slot resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 222
+#line 236
   testRunner.And("the slots resources within the response bundle should be free", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 223
+#line 237
   testRunner.And("the slot resources in the response bundle should contain meta data information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
+#line 238
   testRunner.And("the slot resources can contain a maximum of one identifier with a populated value" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -610,32 +645,32 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I successfully perform a gpc.getschedule operation and check the slot references " +
                     "to schedule resource can be resolved in bundle", exampleTags);
-#line 230
+#line 244
 this.ScenarioSetup(scenarioInfo);
-#line 231
+#line 245
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 232
+#line 246
   testRunner.And(string.Format("I search for the organization \"{0}\" on the providers system and save the first re" +
                         "sponse to \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 233
+#line 247
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 234
+#line 248
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 235
+#line 249
   testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
                         "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 236
+#line 250
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 237
+#line 251
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 238
+#line 252
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 239
+#line 253
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 240
+#line 254
   testRunner.And("the response bundle should include slot resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 241
+#line 255
   testRunner.And("the schedule reference within the slots resources should be resolvable in the res" +
                     "ponse bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -653,36 +688,36 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I successfully perform a gpc.getschedule operation using various content types XM" +
                     "L and JSON in Accept header", exampleTags);
-#line 247
+#line 261
 this.ScenarioSetup(scenarioInfo);
-#line 248
+#line 262
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 249
+#line 263
   testRunner.And("I search for the organization \"ORG1\" on the providers system and save the first r" +
                     "esponse to \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 250
+#line 264
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 251
+#line 265
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 252
+#line 266
   testRunner.And(string.Format("I set the request content type to \"{0}\"", requestContentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 253
+#line 267
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeaderValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 254
+#line 268
   testRunner.And("I add period request parameter with a start date of today and an end date \"8\" day" +
                     "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 255
+#line 269
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 256
+#line 270
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 257
+#line 271
   testRunner.And(string.Format("the response body should be FHIR {0}", responseShouldBe), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 258
+#line 272
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 259
+#line 273
   testRunner.And("the response bundle should include slot resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 260
+#line 274
   testRunner.And("the schedule reference within the slots resources should be resolvable in the res" +
                     "ponse bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -700,36 +735,36 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I successfully perform a gpc.getschedule operation using various content types XM" +
                     "L and JSON in format parameter", exampleTags);
-#line 268
+#line 282
 this.ScenarioSetup(scenarioInfo);
-#line 269
+#line 283
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 270
+#line 284
   testRunner.And("I search for the organization \"ORG1\" on the providers system and save the first r" +
                     "esponse to \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 271
+#line 285
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 272
+#line 286
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 273
+#line 287
   testRunner.And(string.Format("I set the request content type to \"{0}\"", requestContentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 274
+#line 288
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", formatParameterValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 275
+#line 289
   testRunner.And("I add period request parameter with a start date of today and an end date \"8\" day" +
                     "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 276
+#line 290
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 277
+#line 291
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 278
+#line 292
   testRunner.And(string.Format("the response body should be FHIR {0}", responseShouldBe), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 279
+#line 293
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 280
+#line 294
   testRunner.And("the response bundle should include slot resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 281
+#line 295
   testRunner.And("the schedule reference within the slots resources should be resolvable in the res" +
                     "ponse bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -751,38 +786,38 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I successfully perform a gpc.getschedule operation using various content types XM" +
                     "L and JSON in the Accept Header and format parameter", exampleTags);
-#line 289
+#line 303
 this.ScenarioSetup(scenarioInfo);
-#line 290
+#line 304
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 291
+#line 305
   testRunner.And("I search for the organization \"ORG1\" on the providers system and save the first r" +
                     "esponse to \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 292
+#line 306
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 293
+#line 307
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 294
+#line 308
   testRunner.And(string.Format("I set the request content type to \"{0}\"", requestContentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 295
+#line 309
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeaderValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 296
+#line 310
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", formatParameterValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 297
+#line 311
   testRunner.And("I add period request parameter with a start date of today and an end date \"8\" day" +
                     "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 298
+#line 312
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 299
+#line 313
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 300
+#line 314
   testRunner.And(string.Format("the response body should be FHIR {0}", responseShouldBe), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 301
+#line 315
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 302
+#line 316
   testRunner.And("the response bundle should include slot resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 303
+#line 317
   testRunner.And("the schedule reference within the slots resources should be resolvable in the res" +
                     "ponse bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -794,29 +829,29 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendARequestToAnInvalidEndpointForTheGpc_GetscheduleOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send a request to an invalid endpoint for the gpc.getschedule operation", ((string[])(null)));
-#line 315
+#line 329
 this.ScenarioSetup(scenarioInfo);
-#line 316
+#line 330
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 317
+#line 331
   testRunner.And("I search for the organization \"ORG1\" on the providers system and save the first r" +
                     "esponse to \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 318
+#line 332
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 319
+#line 333
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 320
+#line 334
   testRunner.And("I add period request parameter with a start date of today and an end date \"8\" day" +
                     "s later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 321
+#line 335
  testRunner.When("I send a gpc.getschedule operation for the organization stored as \"ORG1\" to the w" +
                     "rong endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 322
+#line 336
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 323
+#line 337
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
+#line 338
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -831,46 +866,46 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I successfully perform a gpc.getschedule operation and check the included schedul" +
                     "e resources returned are valid", exampleTags);
-#line 326
+#line 340
 this.ScenarioSetup(scenarioInfo);
-#line 327
+#line 341
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 328
+#line 342
   testRunner.And(string.Format("I search for the organization \"{0}\" on the providers system and save the first re" +
                         "sponse to \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 329
+#line 343
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 330
+#line 344
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 331
+#line 345
   testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
                         "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 332
+#line 346
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 333
+#line 347
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 334
+#line 348
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 335
+#line 349
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 336
+#line 350
   testRunner.And("the response bundle should include slot resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 337
+#line 351
   testRunner.And("the schedule resources in the response bundle should contain meta data informatio" +
                     "n", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 338
+#line 352
   testRunner.And("the schedule resources in the response bundle should contain an actor which refer" +
                     "ences a location within the response bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 339
+#line 353
   testRunner.And("the schedule resources can contain a single identifier but must have a value if p" +
                     "resent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 340
+#line 354
   testRunner.And("the schedule resources can contain a planningHorizon but it must contain a valid " +
                     "start date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 341
+#line 355
   testRunner.And("the schedule resources can contain a single type element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 342
+#line 356
   testRunner.And("the schedule resources can contain extensions which references practitioner resou" +
                     "rces within the bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -886,52 +921,52 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I successfully perform a gpc.getschedule operation and check the included practit" +
                     "ioner resources returned are valid", exampleTags);
-#line 348
+#line 362
 this.ScenarioSetup(scenarioInfo);
-#line 349
+#line 363
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 350
+#line 364
   testRunner.And(string.Format("I search for the organization \"{0}\" on the providers system and save the first re" +
                         "sponse to \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 351
+#line 365
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 352
+#line 366
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 353
+#line 367
   testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
                         "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 354
+#line 368
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 355
+#line 369
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 356
+#line 370
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 357
+#line 371
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 358
+#line 372
   testRunner.And("the response bundle should include slot resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 359
+#line 373
   testRunner.And("if the response bundle contains a practitioner resource it should contain meta da" +
                     "ta profile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 360
+#line 374
   testRunner.And("the practitioner resources in the response bundle should contain no more than a s" +
                     "ingle SDS User Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 361
+#line 375
   testRunner.And("the practitioner resources in the response bundle should only contain an SDS user" +
                     " id or SDS role ids", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 362
+#line 376
   testRunner.And("practitioner resources should contain a single name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 363
+#line 377
   testRunner.And("practitioner should only have one family name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 364
+#line 378
   testRunner.And("if practitionerRole has role element which contains a coding then the system, cod" +
                     "e and display must exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 365
+#line 379
   testRunner.And("if practitionerRole has managingOrganization element then reference must exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 366
+#line 380
   testRunner.And("the practitioner resource should not contain unwanted fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 367
+#line 381
   testRunner.And("if the practitioner has communicaiton elemenets containing a coding then there mu" +
                     "st be a system, code and display element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -947,44 +982,44 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I successfully perform a gpc.getschedule operation and check the included organiz" +
                     "ation resources returned are valid", exampleTags);
-#line 373
+#line 387
 this.ScenarioSetup(scenarioInfo);
-#line 374
+#line 388
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 375
+#line 389
   testRunner.And(string.Format("I search for the organization \"{0}\" on the providers system and save the first re" +
                         "sponse to \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 376
+#line 390
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 377
+#line 391
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 378
+#line 392
   testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
                         "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 379
+#line 393
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 380
+#line 394
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 381
+#line 395
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 382
+#line 396
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 383
+#line 397
   testRunner.And("the response bundle should include slot resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 384
+#line 398
   testRunner.And("if the response bundle contains an organization resource it should contain meta d" +
                     "ata profile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 385
+#line 399
   testRunner.And("the response bundle Organization entries should contain a maximum of 1 http://fhi" +
                     "r.nhs.net/Id/ods-organization-code system identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 386
+#line 400
   testRunner.And("the response bundle Organization entries should only contain an ODS organization " +
                     "codes and ODS Site Codes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 387
+#line 401
   testRunner.And("the response bundle Organization entries should contain system code and display i" +
                     "f the type coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 388
+#line 402
   testRunner.And("if Organization includes partOf it should reference a resource in the response bu" +
                     "ndle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1000,49 +1035,49 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I successfully perform a gpc.getschedule operation and check the included locatio" +
                     "n resources returned are valid", exampleTags);
-#line 394
+#line 408
 this.ScenarioSetup(scenarioInfo);
-#line 395
+#line 409
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 396
+#line 410
   testRunner.And(string.Format("I search for the organization \"{0}\" on the providers system and save the first re" +
                         "sponse to \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 397
+#line 411
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 398
+#line 412
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getsched" +
                     "ule\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 399
+#line 413
   testRunner.And(string.Format("I add period request parameter with a start date of today and an end date \"{0}\" d" +
                         "ays later", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 400
+#line 414
  testRunner.When(string.Format("I send a gpc.getschedule operation for the organization stored as \"{0}\"", organization), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 401
+#line 415
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 402
+#line 416
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 403
+#line 417
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 404
+#line 418
   testRunner.And("the response bundle should include slot resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 405
+#line 419
   testRunner.And("if the response bundle contains a location resource it should contain meta data p" +
                     "rofile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 406
+#line 420
   testRunner.And("the response bundle Location entries should contain a maximum of one ODS Site Cod" +
                     "e and one other identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 407
+#line 421
   testRunner.And("the response bundle Location entries should contain a name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 408
+#line 422
   testRunner.And("the response bundle location entries should contain system code and display if th" +
                     "e Type coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 409
+#line 423
   testRunner.And("the response bundle location entries should contain valid system code and display" +
                     " if the PhysicalType coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 410
+#line 424
   testRunner.And("if the response bundle location entries contain partOf element the reference shou" +
                     "ld reference a resource in the response bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 411
+#line 425
   testRunner.And("if the response bundle location entries contain managingOrganization element the " +
                     "reference should reference a resource in the response bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1054,20 +1089,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConformanceProfileSupportsTheGpc_GetScheduleOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the gpc.getSchedule operation", ((string[])(null)));
-#line 417
+#line 431
 this.ScenarioSetup(scenarioInfo);
-#line 418
+#line 432
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 419
+#line 433
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 420
+#line 434
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 421
+#line 435
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 422
+#line 436
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 423
+#line 437
   testRunner.And("the conformance profile should contain the \"gpc.getschedule\" operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1084,19 +1119,19 @@ this.ScenarioSetup(scenarioInfo);
                     "quest is after the start date of a slot but before the end date of the slot", new string[] {
                         "Manual",
                         "ignore"});
-#line 428
+#line 442
 this.ScenarioSetup(scenarioInfo);
-#line 429
+#line 443
  testRunner.Given("I search for free slots at organization \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 430
+#line 444
   testRunner.And("I search for slots using a date range I know there is a free slot which has a sta" +
                     "rt date before the request parameter start date but the slot end date is after t" +
                     "he requeste parameter start date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 431
+#line 445
  testRunner.When("I perform the gpc.getSchedule operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 432
+#line 446
  testRunner.Then("the response should be successful and return a FHIR Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 433
+#line 447
  testRunner.Then("the slot which straddles the request parameter start date should appear in the re" +
                     "sponse bundle.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1116,19 +1151,19 @@ this.ScenarioSetup(scenarioInfo);
                     "lot", new string[] {
                         "Manual",
                         "ignore"});
-#line 438
+#line 452
 this.ScenarioSetup(scenarioInfo);
-#line 439
+#line 453
  testRunner.Given("I search for free slots at organization \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 440
+#line 454
   testRunner.And("I search for slots using a date range I know there is a free slot which has a sta" +
                     "rt date before the request parameter end date but the slot end date is after the" +
                     " requeste parameter end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 441
+#line 455
  testRunner.When("I perform the gpc.getSchedule operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 442
+#line 456
  testRunner.Then("the response should be successful and return a FHIR Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 443
+#line 457
  testRunner.Then("the slot which straddles the request parameter start date should appear in the re" +
                     "sponse bundle.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
