@@ -1,22 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GPConnect.Provider.AcceptanceTests.Context;
-using Hl7.Fhir.Model;
-using NUnit.Framework;
-using Shouldly;
-using TechTalk.SpecFlow;
-using static Hl7.Fhir.Model.Bundle;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-    [Binding]
-    public sealed class BundleSteps : TechTalk.SpecFlow.Steps
-    {
-        private readonly FhirContext _fhirContext;
+    using Context;
+    using Hl7.Fhir.Model;
+    using NUnit.Framework;
+    using Shouldly;
+    using System.Collections.Generic;
+    using System.Linq;
+    using TechTalk.SpecFlow;
+    using static Hl7.Fhir.Model.Bundle;
 
-        public BundleSteps(FhirContext fhirContext)
+    [Binding]
+    public sealed class BundleSteps : BaseSteps
+    {        
+        public BundleSteps(FhirContext fhirContext, HttpSteps httpSteps) : base(fhirContext, httpSteps)
         {
-            _fhirContext = fhirContext;
         }
 
         [Then(@"the response should be a Bundle resource of type ""([^""]*)""")]
@@ -61,19 +58,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             operationOutcome.Meta.ShouldNotBeNull();
             operationOutcome.Meta.Profile.ShouldAllBe(profile => profile.Equals("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1"));
 
+            operationOutcome.Issue?.Count.ShouldBeGreaterThanOrEqualTo(1);
+
             operationOutcome.Issue.ForEach(issue =>
             {
-                issue.Details.ShouldNotBeNull();
-                issue.Details.Coding.ForEach(coding =>
-                {
-                    coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
-                    coding.Code.ShouldNotBeNull();
-                    coding.Display.ShouldNotBeNull();
-                });
+                issue.Severity.ShouldNotBeNull();
+                issue.Code.ShouldNotBeNull();
+
+                issue.Details?.Coding?.Count.ShouldBe(1);
+                var coding = issue.Details.Coding[0];
+
+                coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
+                coding.Code.ShouldNotBeNull();
+                coding.Display.ShouldNotBeNull();
 
                 if (!string.IsNullOrEmpty(errorCode))
                 {
-                    issue.Details.Coding.ShouldContain(x => x.Code.Equals(errorCode));
+                    coding.Code.ShouldBe(errorCode);
                 }
             });
         }

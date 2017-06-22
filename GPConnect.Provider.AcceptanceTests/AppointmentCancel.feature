@@ -63,7 +63,7 @@ Scenario Outline: Cancel appointment sending invalid URL
 	Then the response status code should be "404"
 	Examples:
 		| url             |
-		| /appointment/!  |
+		| /appointmentqq/!  |
 		| /Appointments/# |
 
 Scenario Outline: Cancel appointment failure due to missing header
