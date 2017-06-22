@@ -7,6 +7,7 @@ using Shouldly;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
 using GPConnect.Provider.AcceptanceTests.Logger;
+using System.Collections.Generic;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -72,6 +73,44 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Period period = new Period();
             period.Start = startDate;
             period.End = endDate;
+            FhirContext.FhirRequestParameters.Add("timePeriod", period);
+        }
+
+        [Given(@"I add period request parameter with start date format ""([^""]*)"" and end date format ""([^""]*)""")]
+        public void GivenIAddPeriodRequestParameterWithStartDateFormatAndEndFormatDate(string startDate, string endDate)
+        {
+            List<string> startDateFormatEndDateFormat = new List<string>();
+            startDateFormatEndDateFormat.Add(startDate);
+            startDateFormatEndDateFormat.Add(endDate);
+            String currentDateTime;
+            for (int i = 0; i < startDateFormatEndDateFormat.Count; i++) {
+                switch (startDateFormatEndDateFormat[i])
+                {
+                    case "yyyy-MM-dd":
+                         currentDateTime = DateTime.Now.ToString("yyyy-MM-dd");
+                        startDateFormatEndDateFormat[i] = currentDateTime;
+                        break;
+
+                    case "yyyy":
+                         currentDateTime = DateTime.Now.ToString("yyyy");
+                        startDateFormatEndDateFormat[i] = currentDateTime;
+                        break;
+
+                    case "yyyy-MM":
+                        currentDateTime = DateTime.Now.ToString("yyyy-MM");
+                        startDateFormatEndDateFormat[i] = currentDateTime;
+                        break;
+                    case "yyyy-MM-ddTHH:mm:ss":
+                        currentDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+                        startDateFormatEndDateFormat[i] = currentDateTime;
+                        break;
+                }
+            }
+
+
+            Period period = new Period();
+            period.Start = startDateFormatEndDateFormat[0];
+            period.End = startDateFormatEndDateFormat[1];
             FhirContext.FhirRequestParameters.Add("timePeriod", period);
         }
 

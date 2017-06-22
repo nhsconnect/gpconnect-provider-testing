@@ -424,22 +424,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
-                    Appointment appointment = (Appointment)entry.Resource;
                     int extensionCount = 0;
 
-                    foreach (Extension appointmentCancellationReason in appointment.Extension)
+                    ((Appointment) entry.Resource).Extension?.ForEach(appointmentCancellationReason =>
                     {
                         if (appointmentCancellationReason.Url.Equals("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1"))
                         {
-                            appointmentCancellationReason.ShouldNotBeNull();
-                            appointmentCancellationReason.Url.ShouldBeOfType<Uri>();
-                            appointmentCancellationReason.Value.ShouldBeOfType<String>();
-
+                            appointmentCancellationReason.Value.ShouldBeOfType<FhirString>();
                             extensionCount++;
                         }
 
                         extensionCount.ShouldBe(1);
-                    }
+                    });
                 }
             }
         }

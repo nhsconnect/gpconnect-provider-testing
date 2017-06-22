@@ -656,8 +656,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Appointment appointment = (Appointment)entry.Resource;
                     appointment.Start.ShouldNotBeNull();
-                    appointment.Start.ShouldBeOfType<Instant>();
-
                 }
             }
         }
@@ -671,8 +669,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Appointment appointment = (Appointment)entry.Resource;
                     appointment.End.ShouldNotBeNull();
-                    appointment.End.ShouldBeOfType<Instant>();
-
                 }
             }
         }
@@ -690,7 +686,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         if (participant.Actor != null && participant.Actor.Reference != null)
                         {
-
                             string actor = participant.Actor.Reference.ToString();
 
                             if (actor.Contains("Practitioner"))
@@ -698,7 +693,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                 var practitioner = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", actor);
                                 practitioner.ShouldNotBeNull();
                                 countPractitioner++;
-                            } }
+                            }
+                        }
                     }
                     countPractitioner.ShouldBeGreaterThanOrEqualTo(1);
                 }
@@ -727,17 +723,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                 location.ShouldNotBeNull();
                                 countLocation++;
                             }
-
                         }
                     }
                     countLocation.ShouldBe(1);
                 }
-
             }
         }
-
-
-       [Then(@"the patient resource returned in the appointments bundle is present")]
+        
+        [Then(@"the patient resource returned in the appointments bundle is present")]
         public void actorPatientResourceValid()
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -758,7 +751,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                 var patient = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", actor);
                                 patient.ShouldNotBeNull();
                             }
-
                         }
                     }
                     countPatient.ShouldBeGreaterThanOrEqualTo(1);
@@ -780,11 +772,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             appointmentCount.ShouldBe<int>(numberOfAppointments);
         }
-
     }
 }
-
-
-
-    
-

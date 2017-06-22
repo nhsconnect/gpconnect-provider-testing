@@ -638,11 +638,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Status.ShouldNotBe(AppointmentStatus.Cancelled);
         }
 
-        [Then(@"I make a GET request for the appointment with key ""(.*)"" to ensure the status has been changed to cancelled")]
-        public void ThenIMakeAGetRequestForTheAppointmentWithKeyToEnsureTheStatusHasBeenChangedToCancelled(string appointmentName)
+        [Then(@"I make a GET request for the appointment with key ""(.*)"" for patient ""(.*)"" to ensure the status has been changed to cancelled")]
+        public void ThenIMakeAGetRequestForTheAppointmentWithKeyToEnsureTheStatusHasBeenChangedToCancelled(string appointmentName, string patient)
         {
             Given("I am using the default server");
             And(@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:read:appointment"" interaction");
+            And($@"I set the JWT requested record NHS number to config patient ""{patient}""");
+            And($@"I set the JWT requested scope to ""patient/*.read""");
             When($@"I perform an appointment read for the appointment called ""{appointmentName}""");
             Then("the response status code should indicate success");
             And("the response body should be FHIR JSON");

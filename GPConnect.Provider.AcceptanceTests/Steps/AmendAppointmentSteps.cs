@@ -48,7 +48,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I perform an appointment read for the appointment called ""(.*)""")]
         public void WhenIPerformAnAppointmentReadForTheAppointmentCalled(string appointment)
         {
-            string url = $"Appointment/{HttpContext.StoredFhirResources[appointment].Id}";
+            string id = HttpContext.StoredFhirResources[appointment].Id;
+            string url = "/Appointment/" + id;
+
             When($@"I make a GET request to ""{url}""");
         }
 
@@ -59,7 +61,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
             savedAppointment.Id = fhirApp.Id;
             savedAppointment.Comment = message;
-            string appointmentId = "/Appointment/" + savedAppointment.Id;
+            string appointmentId = "Appointment/" + savedAppointment.Id;
             HttpSteps.RestRequest(RestSharp.Method.PUT, appointmentId, FhirSerializer.SerializeToJson(savedAppointment));
         }
 
