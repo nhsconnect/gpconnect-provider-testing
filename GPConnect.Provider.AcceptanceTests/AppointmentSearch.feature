@@ -548,11 +548,13 @@ Scenario Outline: Appointment retrieve book appointment and search for the appoi
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
+		And I set the JWT requested scope to "patient/*.write"
 		And I create an appointment for patient "storedPatient1" called "<appointment>" from schedule "getScheduleResponseBundle"
 	When I book the appointment called "<appointment>"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I search for patient "storedPatient1" and search for the most recently booked appointment "<appointment>" using the stored startDate from the last booked appointment as a search parameter
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -563,7 +565,7 @@ Scenario Outline: Appointment retrieve book appointment and search for the appoi
 		And the returned appointment patient reference should match "<appointment>" patient reference
 		And the returned appointment slot reference should match "<appointment>" slot reference
 		And the returned appointment participant status should match "<appointment>" participant status
-		Examples: 
+	Examples: 
 		| appointment  |
 		| Appointment1 |
 		| Appointment2 |
