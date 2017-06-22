@@ -86,20 +86,24 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 8
+  testRunner.And(string.Format("I set the JWT requested record NHS number to config patient \"{0}\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 9
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 10
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 9
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 10
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 12
-  testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
+  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 14
+  testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
   testRunner.And("the cancellation reason in the returned appointment response should be equal to \"" +
                     "double booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 16
   testRunner.And("the returned appointment resource should contain meta data profile and version id" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -117,59 +121,63 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void IPerformCancelAppointmentAndUpdateAnElementWhichIsInvalid(string patientName, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I perform cancel appointment and update an element which is invalid", exampleTags);
-#line 23
+#line 25
 this.ScenarioSetup(scenarioInfo);
-#line 24
+#line 26
  testRunner.Given(string.Format("I find or create an appointment with status Booked for patient \"{0}\" at organizat" +
                         "ion \"ORG1\" and save the appointment resources to \"patientApp\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 25
+#line 27
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 26
+#line 28
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
+#line 29
+  testRunner.And(string.Format("I set the JWT requested record NHS number to config patient \"{0}\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 30
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
   testRunner.And("I add an extension to \"patientApp\" with url \"http://fhir.nhs.net/StructureDefinit" +
                     "ion/extension-gpconnect-appointment-category-1\" code \"CLI\" and display \"Clinical" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 32
   testRunner.And("I add an extension to \"patientApp\" with url \"http://fhir.nhs.net/StructureDefinit" +
                     "ion/extension-gpconnect-appointment-booking-method-1\" code \"ONL\" and display \"\tO" +
                     "nline\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 33
   testRunner.And("I add an extension to \"patientApp\" with url \"http://fhir.nhs.net/StructureDefinit" +
                     "ion/extension-gpconnect-appointment-contact-method-1\" code \"ONL\" and display \"\tO" +
                     "nline\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
-  testRunner.And("I set the description to \"RANDOM TEXT\" for appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
-  testRunner.And("I set the priority to \"3\" for appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
-  testRunner.And("I set the minutes to \"20\" for appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
-  testRunner.And("I set the comment to \"RANDOM COMMENT\" for appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
-  testRunner.And("I set the type text to \"RANDOM TYPE TEXT\" for appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the description to \"RANDOM TEXT\" for appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
+  testRunner.And("I set the priority to \"3\" for appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+  testRunner.And("I set the minutes to \"20\" for appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+  testRunner.And("I set the comment to \"RANDOM COMMENT\" for appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 38
+  testRunner.And("I set the type text to \"RANDOM TYPE TEXT\" for appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 39
   testRunner.And("I set the identifier with system \"http://fhir.nhs.net/Id/gpconnect-appointment-id" +
                     "entifier\" and value \"898976578\" for the appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 40
   testRunner.And("I set the identifier with system \"http://fhir.nhs.net/Id/gpconnect-appointment-id" +
                     "entifier\" and value \"898955578\" for the appointment \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 41
   testRunner.And("I add participant \"location\" with reference \"lacation/2\" to appointment \"patientA" +
                     "pp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 42
   testRunner.And("I add participant \"patient\" with reference \"patient/2\" to appointment \"patientApp" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
+#line 43
   testRunner.And("I add participant \"practitioner\" with reference \"practitioner/2\" to appointment \"" +
                     "patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
+#line 44
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 41
+#line 45
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 42
+#line 46
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -182,19 +190,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentSendingInvalidURL(string url, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment sending invalid URL", exampleTags);
-#line 52
+#line 56
 this.ScenarioSetup(scenarioInfo);
-#line 53
+#line 57
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 54
+#line 58
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 55
+#line 59
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 60
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 62
  testRunner.When(string.Format("I set the URL to \"{0}\" and cancel appointment with key \"patientApp\"", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
+#line 63
  testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -210,26 +222,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentFailureDueToMissingHeader(string header, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment failure due to missing header", exampleTags);
-#line 63
+#line 69
 this.ScenarioSetup(scenarioInfo);
-#line 64
+#line 70
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 65
+#line 71
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 66
+#line 72
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 67
+#line 73
   testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
+#line 74
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 69
+#line 75
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 70
+#line 76
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 77
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -245,23 +257,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentFailureWithIncorrectInteractionId(string interactionId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment failure with incorrect interaction id", exampleTags);
-#line 80
+#line 86
 this.ScenarioSetup(scenarioInfo);
-#line 81
+#line 87
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 88
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 83
+#line 89
   testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 90
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 85
+#line 91
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 86
+#line 92
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 93
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -274,28 +286,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointment_FormatParameterOnly(string parameter, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment _format parameter only", exampleTags);
-#line 96
+#line 102
 this.ScenarioSetup(scenarioInfo);
-#line 97
+#line 103
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 98
+#line 104
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 99
+#line 105
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 106
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 108
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
+#line 109
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 102
+#line 110
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 103
+#line 111
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 104
+#line 112
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 105
+#line 113
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -308,28 +324,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentAcceptHeaderOnly(string header, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment accept header only", exampleTags);
-#line 111
+#line 119
 this.ScenarioSetup(scenarioInfo);
-#line 112
+#line 120
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 113
+#line 121
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 114
+#line 122
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
+#line 123
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 124
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 125
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 126
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 117
+#line 127
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 118
+#line 128
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
+#line 129
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
+#line 130
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -344,30 +364,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentAcceptHeaderAnd_FormatParameter(string header, string parameter, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment accept header and _format parameter", exampleTags);
-#line 126
+#line 136
 this.ScenarioSetup(scenarioInfo);
-#line 127
+#line 137
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 128
+#line 138
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 129
+#line 139
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 130
+#line 140
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 141
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 142
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 131
+#line 143
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
+#line 144
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 133
+#line 145
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 134
+#line 146
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 135
+#line 147
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
+#line 148
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -382,40 +406,42 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("application/json+fhir", "application/json+fhir", "application/xml+fhir", "XML", new string[0])]
         [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "application/json+fhir", "application/json+fhir", "JSON", new string[0])]
         [NUnit.Framework.TestCaseAttribute("application/json+fhir", "application/xml+fhir", "application/xml+fhir", "XML", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "application/xml+fhir", "application/xml+fhir", "XML", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "application/json+fhir", "application/json+fhir", "JSON", new string[0])]
         [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "application/json+fhir", "application/xml+fhir", "XML", new string[0])]
         [NUnit.Framework.TestCaseAttribute("application/json+fhir", "application/xml+fhir", "application/json+fhir", "JSON", new string[0])]
         public virtual void CancelAppointmentCheckingThatTheFormatParameterAndAcceptHeaderWorksCorrectly(string contentType, string acceptHeader, string formatParam, string format, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment checking that the format parameter and accept header works cor" +
                     "rectly", exampleTags);
-#line 144
+#line 156
 this.ScenarioSetup(scenarioInfo);
-#line 145
+#line 157
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 146
+#line 158
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 147
+#line 159
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 160
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 161
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
   testRunner.And(string.Format("I set the request content type to \"{0}\"", contentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 163
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeader), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 164
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", formatParam), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 165
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 152
+#line 166
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 153
+#line 167
   testRunner.And(string.Format("the response body should be FHIR {0}", format), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
+#line 168
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 155
+#line 169
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -434,28 +460,32 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment check cancellation reason is equal to the request cancellation" +
                     " reason", exampleTags);
-#line 169
+#line 181
 this.ScenarioSetup(scenarioInfo);
-#line 170
+#line 182
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 171
+#line 183
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 172
+#line 184
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
+#line 185
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 186
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 187
  testRunner.When(string.Format("I cancel the appointment and set the cancel extension to have url \"{0}\" and reaso" +
                         "n \"{1}\" called \"patientApp\"", url, reason), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 174
+#line 188
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 175
+#line 189
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 176
+#line 190
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
+#line 191
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
+#line 192
   testRunner.And(string.Format("the cancellation reason in the returned appointment response should be equal to \"" +
                         "{0}\"", reason), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -472,34 +502,6 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentInvalidCancellationExtensionUrl(string url, string reason, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment invalid cancellation extension url", exampleTags);
-#line 185
-this.ScenarioSetup(scenarioInfo);
-#line 186
- testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
-                    "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 187
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 188
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
-                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 189
- testRunner.When(string.Format("I cancel the appointment and set the cancel extension to have url \"{0}\" and reaso" +
-                        "n \"{1}\" called \"patientApp\"", url, reason), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 190
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 191
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
-  testRunner.And("the response should be a OperationOutcome resource with error code \"500\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Cancel appointment missing cancellation extension reason")]
-        public virtual void CancelAppointmentMissingCancellationExtensionReason()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment missing cancellation extension reason", ((string[])(null)));
 #line 199
 this.ScenarioSetup(scenarioInfo);
 #line 200
@@ -511,15 +513,51 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 203
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 204
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 205
+ testRunner.When(string.Format("I cancel the appointment and set the cancel extension to have url \"{0}\" and reaso" +
+                        "n \"{1}\" called \"patientApp\"", url, reason), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 206
+ testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 207
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 208
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Cancel appointment missing cancellation extension reason")]
+        public virtual void CancelAppointmentMissingCancellationExtensionReason()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment missing cancellation extension reason", ((string[])(null)));
+#line 215
+this.ScenarioSetup(scenarioInfo);
+#line 216
+ testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
+                    "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 217
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 218
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
+                    "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 219
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 220
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 221
  testRunner.When("I cancel the appointment and set the cancel extension to have url \"http://fhir.nh" +
                     "s.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1\"" +
                     " and missing reason called \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 204
+#line 222
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 205
+#line 223
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 206
-  testRunner.And("the response should be a OperationOutcome resource with error code \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 224
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -529,20 +567,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConformanceProfileSupportsTheCancelAppointmentOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the cancel appointment operation", ((string[])(null)));
-#line 208
+#line 226
 this.ScenarioSetup(scenarioInfo);
-#line 209
+#line 227
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 210
+#line 228
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 211
+#line 229
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 212
+#line 230
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 213
+#line 231
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
+#line 232
   testRunner.And("the conformance profile should contain the \"Appointment\" resource with a \"update\"" +
                     " interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -556,32 +594,36 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment verify resource is updated when an valid ETag value is provide" +
                     "d", ((string[])(null)));
-#line 216
+#line 234
 this.ScenarioSetup(scenarioInfo);
-#line 217
+#line 235
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient4\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 218
+#line 236
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 219
+#line 237
   testRunner.And("I set \"If-Match\" request header to \"patientApp\" version", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 220
+#line 238
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 221
+#line 239
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 240
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 241
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 222
+#line 242
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 223
+#line 243
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
+#line 244
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
+#line 245
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
-  testRunner.And("I make a GET request for the appointment with key \"patientApp\" to ensure the stat" +
-                    "us has been changed to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 246
+  testRunner.And("I make a GET request for the appointment with key \"patientApp\" for patient \"patie" +
+                    "nt4\" to ensure the status has been changed to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -593,26 +635,30 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment verify resource is not updated when an out of date ETag value " +
                     "is provided", ((string[])(null)));
-#line 228
+#line 248
 this.ScenarioSetup(scenarioInfo);
-#line 229
+#line 249
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient3\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 230
+#line 250
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 231
+#line 251
   testRunner.And("I set If-Match request header to \"invalidEtag\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 232
+#line 252
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 233
+#line 253
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 254
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 255
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 234
+#line 256
  testRunner.Then("the response status code should be \"409\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 235
+#line 257
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 236
+#line 258
   testRunner.And("I make a GET request for the appointment with key \"patientApp\" to ensure the stat" +
                     "us has not been changed to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -624,52 +670,56 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentCompareValuesSendInRequestAndReturnedInTheResponse()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment compare values send in request and returned in the response", ((string[])(null)));
-#line 238
+#line 260
 this.ScenarioSetup(scenarioInfo);
-#line 239
+#line 261
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 240
+#line 262
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 241
+#line 263
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 242
+#line 264
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 265
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 266
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 243
+#line 267
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 244
+#line 268
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 245
+#line 269
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 246
+#line 270
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 247
+#line 271
   testRunner.And("the resource type of the appointment with key \"patientApp\" and the returned respo" +
                     "nse should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 248
+#line 272
   testRunner.And("the id of the appointment with key \"patientApp\" and the returned response should " +
                     "be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
+#line 273
   testRunner.And("the status of the appointment with key \"patientApp\" and the returned response sho" +
                     "uld be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 250
+#line 274
   testRunner.And("the extensions of the appointment with key \"patientApp\" and the returned response" +
                     " should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 251
+#line 275
   testRunner.And("the description of the appointment with key \"patientApp\" and the returned respons" +
                     "e should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 252
+#line 276
   testRunner.And("the start and end date of the appointment with key \"patientApp\" and the returned " +
                     "response should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 253
+#line 277
   testRunner.And("the slot display and reference of the appointment with key \"patientApp\" and the r" +
                     "eturned response should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 254
+#line 278
   testRunner.And("the reason of the appointment with key \"patientApp\" and the returned response sho" +
                     "uld be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 255
+#line 279
   testRunner.And("the participants of the appointment with key \"patientApp\" and the returned respon" +
                     "se should be equal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -681,28 +731,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentResponseBodyMustContainValidSlotReference()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment response body must contain valid slot reference", ((string[])(null)));
-#line 257
+#line 281
 this.ScenarioSetup(scenarioInfo);
-#line 258
+#line 282
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient3\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 259
+#line 283
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 260
+#line 284
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 261
+#line 285
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 286
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 287
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 262
+#line 288
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 263
+#line 289
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 264
+#line 290
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 265
+#line 291
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 266
+#line 292
   testRunner.And("the appointment response resource contains a slot reference", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -715,31 +769,35 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment response body must contain valid practitioner reference which " +
                     "conforms to the gp connect specification", ((string[])(null)));
-#line 268
+#line 294
 this.ScenarioSetup(scenarioInfo);
-#line 269
+#line 295
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient2\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 270
+#line 296
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 271
+#line 297
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 272
+#line 298
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 299
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 300
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 273
+#line 301
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 274
+#line 302
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 275
+#line 303
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 276
+#line 304
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 277
+#line 305
   testRunner.And("the appointment response resource contains atleast 2 participants a practitioner " +
                     "and a patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 278
+#line 306
   testRunner.And("the appointment participants of the appointment must conform to the gp connect sp" +
                     "ecifications", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -756,47 +814,51 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentPreferHeaderSetToRepresentation(string patientName, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment prefer header set to representation", exampleTags);
-#line 280
+#line 308
 this.ScenarioSetup(scenarioInfo);
-#line 281
+#line 309
  testRunner.Given(string.Format("I find or create an appointment with status Booked for patient \"{0}\" at organizat" +
                         "ion \"ORG1\" and save the appointment resources to \"patientApp\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 282
+#line 310
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 283
+#line 311
   testRunner.And("I set the Prefer header to \"return=representation\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 284
+#line 312
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 285
+#line 313
+  testRunner.And(string.Format("I set the JWT requested record NHS number to config patient \"{0}\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 314
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 315
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 286
+#line 316
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 287
+#line 317
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 288
+#line 318
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 289
+#line 319
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
+#line 320
   testRunner.And("the content-type should not be equal to null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 291
+#line 321
   testRunner.And("the content-length should not be equal to zero", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 292
+#line 322
   testRunner.And("the returned resource shall contains a logical id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 293
+#line 323
   testRunner.And("the appointment resource should contain a single start element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 294
+#line 324
   testRunner.And("the appointment resource should contain a single end element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 295
+#line 325
   testRunner.And("the appointment resource should contain at least one slot reference", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 296
+#line 326
   testRunner.And("the appointment resource should contain at least one participant", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 297
+#line 327
   testRunner.And("if the appointment response resource contains a reason element and coding the cod" +
                     "ings must be one of the three allowed with system code and display elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 298
+#line 328
   testRunner.And("the returned appointment resource should contain meta data profile and version id" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -808,26 +870,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentPreferHeaderSetToMinimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment prefer header set to minimal", ((string[])(null)));
-#line 307
+#line 337
 this.ScenarioSetup(scenarioInfo);
-#line 308
+#line 338
  testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
                     "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 309
+#line 339
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 310
+#line 340
   testRunner.And("I set the Prefer header to \"return=minimal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 311
+#line 341
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 312
+#line 342
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 343
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 344
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"Double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 313
+#line 345
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 314
+#line 346
   testRunner.And("the response body should be empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 315
+#line 347
   testRunner.And("the content-type should be equal to null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -844,31 +910,35 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelAppointmentCheckTheVersionIdOfTheCancelledResourceIsDifferent(string patientName, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment check the version id of the cancelled resource is different", exampleTags);
-#line 317
+#line 349
 this.ScenarioSetup(scenarioInfo);
-#line 318
+#line 350
  testRunner.Given(string.Format("I find or create an appointment with status Booked for patient \"{0}\" at organizat" +
                         "ion \"ORG1\" and save the appointment resources to \"patientApp\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 319
+#line 351
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 320
+#line 352
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:update:appointmen" +
                     "t\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 321
+#line 353
+  testRunner.And(string.Format("I set the JWT requested record NHS number to config patient \"{0}\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 354
+  testRunner.And("I set the JWT requested scope to \"patient/*.write\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 355
  testRunner.When("I cancel the appointment with the key \"patientApp\" and set the reason to \"Double " +
                     "booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 322
+#line 356
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 323
+#line 357
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
+#line 358
   testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 325
+#line 359
   testRunner.And("the returned appointment resource status should be set to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 326
+#line 360
   testRunner.And("the cancellation reason in the returned appointment response should be equal to \"" +
                     "Double booked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 327
+#line 361
   testRunner.And("the response version id should be different to the version id stored in \"patientA" +
                     "pp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
