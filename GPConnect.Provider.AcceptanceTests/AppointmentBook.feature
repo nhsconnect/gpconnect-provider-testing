@@ -266,8 +266,8 @@ Scenario Outline: Book Appointment and remove manadatory resources from the appo
 	When I book the appointment called "Appointment"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
 		| ParticipantToRemove |
 		| Patient             |
@@ -287,8 +287,8 @@ Scenario: Book Appointment and remove all participants
 	When I book the appointment called "Appointment"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment containing additional extension with only value populated
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
@@ -302,8 +302,8 @@ Scenario: Book appointment containing additional extension with only value popul
 	When I book the appointment called "Appointment"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment containing additional extensions with only the system populated
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
@@ -317,8 +317,8 @@ Scenario: Book appointment containing additional extensions with only the system
 	When I book the appointment called "Appointment"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book single appointment for patient and send additional extensions with url and value populated
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
@@ -347,7 +347,7 @@ Scenario: Book appointment for patient with id
 	When I book the appointment called "Appointment"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response status code should be "400"
+		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Book appointment for patient and send extra fields in the resource
@@ -359,9 +359,9 @@ Scenario: Book appointment for patient and send extra fields in the resource
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 	When I book the appointment called "Appointment" with an invalid field
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario Outline: Book appointment with invalid slot reference
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
@@ -373,9 +373,9 @@ Scenario Outline: Book appointment with invalid slot reference
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 		And I change the appointment slot reference to "<slotReference>" in the appointment stored against key "Appointment"
 	When I book the appointment called "Appointment"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
 		| slotReference    |
 		| Slot/44445555555 |
@@ -407,9 +407,9 @@ Scenario: Book appointment with missing start element in appointment resource
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 		And I remove the appointment start element in appointment stored against key "Appointment"
 	When I book the appointment called "Appointment"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment with missing end element in appointment resource
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
@@ -421,9 +421,9 @@ Scenario: Book appointment with missing end element in appointment resource
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 		And I remove the appointment end element in appointment stored against key "Appointment"
 	When I book the appointment called "Appointment"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment with missing status element in appointment resource
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
@@ -435,9 +435,9 @@ Scenario: Book appointment with missing status element in appointment resource
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 		And I remove the appointment status element in appointment stored against key "Appointment"
 	When I book the appointment called "Appointment"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 # Here
 Scenario: Book appointment with missing slot element in appointment resource
@@ -450,33 +450,37 @@ Scenario: Book appointment with missing slot element in appointment resource
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 		And I remove the appointment slot element in appointment stored against key "Appointment"
 	When I book the appointment called "Appointment"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book Appointment and remove identifier value from the appointment booking
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 	Then I set the appointment identifier value element to null for "Appointment"
 	When I book the appointment called "Appointment"
-	Then the response status code should indicate failure
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario Outline: Book Appointment and remove reason coding element from the appointment booking
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
 	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
 		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
 	Then I set the appointment reason coding <CodingElement> element to null for "Appointment"
 	When I book the appointment called "Appointment"
-	Then the response status code should indicate failure
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
 		| CodingElement |
 		| system        |
@@ -521,19 +525,21 @@ Scenario Outline: Book Appointment and remove participant type coding element fr
 		| Practitioner | display       |
 
 Scenario: Book appointment and send patient resource in the request
+	Given I create an appointment for patient "patient1" called "Appointment" using a patient resource
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	Then I create an appointment for patient "patient1" called "Appointment" using a patient resource
 	When I book the appointment called "Appointment"
-	Then the response status code should indicate failure
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Book appointment and send bundle resource in the request
+	Given I create a new bundle to contain an appointment for patient "patient1" called "Appointment"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-	Then I create a new bundle to contain an appointment for patient "patient1" called "Appointment"
 	When I book the appointment called "Appointment"
-	Then the response status code should indicate failure
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 @ignore

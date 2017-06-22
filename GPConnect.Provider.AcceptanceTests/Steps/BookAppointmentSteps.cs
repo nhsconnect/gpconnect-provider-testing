@@ -142,7 +142,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             Appointment appointment = new Appointment();
             appointment.Status = status;
-            
+
             // Appointment Patient Resource
             ParticipantComponent patient = new ParticipantComponent();
             ResourceReference patientReference = new ResourceReference();
@@ -206,16 +206,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         // Will be changing
-        [Then(@"I create an appointment for patient ""([^""]*)"" called ""([^""]*)"" using a patient resource")]
+        [Given(@"I create an appointment for patient ""([^""]*)"" called ""([^""]*)"" using a patient resource")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference2(string patientName, string appointmentName)
         {
             Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""AppointmentReadPatientResource""");
+        
             Patient patientResource = (Patient)HttpContext.StoredFhirResources["AppointmentReadPatientResource"];
             HttpContext.StoredFhirResources.Add(appointmentName, patientResource);
         }
         
         // Will be changing as it is not clear what it is doing
-        [Then(@"I create a new bundle to contain an appointment for patient ""([^""]*)"" called ""([^""]*)""")]
+        [Given(@"I create a new bundle to contain an appointment for patient ""([^""]*)"" called ""([^""]*)""")]
         public void GivenISearchForAnAppointmentOnTheProviderSystemAndBookAppointmentWithSlotReference3(string patientName, string appointmentName)
         {
             Bundle bundle = new Bundle();
@@ -301,8 +302,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpContext.StoredFhirResources.Remove(appointmentName);
-            appointment.Identifier.First().Value = null;
+
+            var identifiers = new List<Identifier>
+            {
+                new Identifier("http://fhir.nhs.net/Id/gpconnect-appointment-identifier", null)
+            };
+
+            appointment.Identifier = identifiers;
+            
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+        }
+
+        private CodeableConcept GetReason(string system, string code, string display)
+        {
+            return new CodeableConcept
+            {
+                Coding = new List<Coding>
+                {
+                    new Coding(system, code, display)
+                }
+            };
         }
 
         [Then(@"I set the appointment reason coding system element to null for ""([^""]*)""")]
@@ -310,7 +329,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpContext.StoredFhirResources.Remove(appointmentName);
-            appointment.Reason.Coding.First().System = null;
+
+            appointment.Reason = GetReason(null, "Code", "Display");
+
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
@@ -319,7 +340,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpContext.StoredFhirResources.Remove(appointmentName);
-            appointment.Reason.Coding.First().Code = null;
+
+            appointment.Reason = GetReason("http://snomed.info/sct", null, "Display");
+
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
@@ -328,7 +351,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
             HttpContext.StoredFhirResources.Remove(appointmentName);
-            appointment.Reason.Coding.First().Display = null;
+
+            appointment.Reason = GetReason("http://snomed.info/sct", "Code", null);
+
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
@@ -513,7 +538,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I book the appointment called ""([^""]*)""")]
         public void WhenIBookTheAppointmentCalledString(string appointmentName)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            var appointment = HttpContext.StoredFhirResources[appointmentName];
             if (HttpContext.RequestContentType.Contains("xml"))
             {
                 HttpSteps.RestRequest(Method.POST, "/Appointment", FhirSerializer.SerializeToXml(appointment));
