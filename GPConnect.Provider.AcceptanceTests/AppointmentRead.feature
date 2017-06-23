@@ -18,6 +18,8 @@ Scenario Outline: I perform a successful Read appointment
 Scenario Outline: Read appointment invalid appointment id
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+        And I set the JWT requested record NHS number to config patient "patient1"
+        And I set the JWT requested scope to "patient/*.read"
 	When I make a GET request to "/Appointment/<id>"
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
@@ -195,6 +197,8 @@ Scenario: VRead an appointment for a valid version of the patient appointment re
 	Given I create an appointment for patient "patient1" at organization "ORG1" with priority "0" and save appintment resources to "Patient1Appointment"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+        And I set the JWT requested record NHS number to config patient "patient1"
+        And I set the JWT requested scope to "patient/*.read"
 	When I perform an appointment vread with history for appointment stored against key "Patient1Appointment"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -204,6 +208,8 @@ Scenario: VRead an appointment for a invalid version of the patient appoint reso
 	Given I create an appointment for patient "patient1" at organization "ORG1" with priority "0" and save appintment resources to "Patient1Appointment"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+        And I set the JWT requested record NHS number to config patient "patient1"
+        And I set the JWT requested scope to "patient/*.read"
 	When I perform an appointment vread with version id "NotARealVersionId" for appointment stored against key "Patient1Appointment"
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON

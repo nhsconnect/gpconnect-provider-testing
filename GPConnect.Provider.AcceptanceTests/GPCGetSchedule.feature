@@ -110,9 +110,9 @@ Scenario: I try to getSchedule with a time period containing only a start date
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
 		And I add period request parameter with only a start date
 	When I send a gpc.getschedule operation for the organization stored as "ORG2"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 
 Scenario: I try to getSchedule with a time period containing only an end date
 	Given I am using the default server
@@ -121,9 +121,9 @@ Scenario: I try to getSchedule with a time period containing only an end date
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
 		And I add period request parameter with only an end date
 	When I send a gpc.getschedule operation for the organization stored as "ORG2"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 
 Scenario Outline: I perform a getSchedule with invalid end date and or start date parameters
 	Given I am using the default server
