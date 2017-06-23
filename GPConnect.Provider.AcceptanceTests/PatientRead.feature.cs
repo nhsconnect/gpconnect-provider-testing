@@ -481,7 +481,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("the patient resource should contain no more than one family name field for each c" +
                     "ontact", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 169
-  testRunner.And("the patient resource should not contain the fhir fields photo animal or link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Patient should exclude fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

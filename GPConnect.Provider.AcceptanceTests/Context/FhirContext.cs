@@ -95,10 +95,18 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             //Need to consider cases where T isn't in ResourceTypeMap (and implementation!!)
             var type = typeof(T);
 
-            return Entries
-                .Where(entry => entry.Resource.ResourceType.Equals(ResourceTypeMap[type]))
-                .Select(entry => (T)entry.Resource)
-                .ToList();
+            if (FhirResponseResource.ResourceType == ResourceType.Bundle)
+            {
+                return Entries
+                    .Where(entry => entry.Resource.ResourceType.Equals(ResourceTypeMap[type]))
+                    .Select(entry => (T) entry.Resource)
+                    .ToList();
+            }
+
+            return new List<T>
+            {
+                (T)FhirResponseResource
+            };
         }
 
         private static Dictionary<Type, ResourceType> ResourceTypeMap => new Dictionary<Type, ResourceType>

@@ -572,7 +572,7 @@ Scenario Outline: patient contains a valid identifiers
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the response bundle entry "Patient" should contain element "resource.id"
-		And the response bundle Patient entry should contain a valid NHS number identifier
+		And the Patient Identifiers should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -596,7 +596,7 @@ Scenario Outline: if patient contains telecom information
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And the response bundle Patient resource should optionally contain valid telecom information
+		And the Patient Telecom should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -620,7 +620,7 @@ Scenario Outline: if patient contains maritalStatus
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if composition contains the patient resource maritalStatus fields matching the specification
+		And the Patient MaritalStatus should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -644,7 +644,7 @@ Scenario Outline: if patient contains contact
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if care record composition contains the patient resource contact the mandatory fields should matching the specification
+		And the Patient Contact should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -668,7 +668,7 @@ Scenario Outline: if patient contins communicaiton
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if composition contains the patient resource communication the mandatory fields should matching the specification
+		And the Patient Communication should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -692,7 +692,7 @@ Scenario Outline: if patient contains practitioner as care provider
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if Patient careProvider is included in the response the reference should reference a Practitioner within the bundle
+		And the Patient CareProvider Practitioner should be referenced in the Bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -716,7 +716,7 @@ Scenario Outline: if patient contains managingOrganizaiton
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if Patient managingOrganization is included in the response the reference should reference an Organization within the bundle
+		And the Patient ManagingOrganization Organization should be referenced in the Bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -740,7 +740,7 @@ Scenario Outline: patient does not contain disallowed fields
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And patient resource should not contain the fhir fields photo animal or link
+		And the Patient should exclude fields
 	Examples:
 		| Code |
 		| ADM  |

@@ -169,15 +169,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 {
                     total = 0;
                 }
-                
-                if (total.Equals(checkNumber))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+
+                return total.Equals(checkNumber);
             }
             
         }

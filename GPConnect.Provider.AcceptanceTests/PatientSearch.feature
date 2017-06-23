@@ -217,7 +217,7 @@ Scenario Outline: Patient resource should not contain disallowed fields in resou
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And patient resource should not contain the fhir fields photo animal or link
+		And the Patient should exclude fields
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -301,7 +301,7 @@ Scenario Outline: If patient contains marital status it must contain system code
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And if composition contains the patient resource maritalStatus fields matching the specification
+		And the Patient MaritalStatus should be valid
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -352,7 +352,7 @@ Scenario Outline: If patient contains communication element the system and value
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And if composition contains the patient resource communication the mandatory fields should matching the specification
+		And the Patient Communication should be valid
 	Examples:
 		| Patient  |
 		| patient1 |

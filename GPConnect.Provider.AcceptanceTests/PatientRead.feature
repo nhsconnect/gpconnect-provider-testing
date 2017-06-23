@@ -166,7 +166,7 @@ Scenario Outline: Read patient with accept header should contain valid resource
 		And the patient resource should contain valid language coding fields for each communication
 		And the patient resource should contain no more than one family or given name
 		And the patient resource should contain no more than one family name field for each contact
-		And the patient resource should not contain the fhir fields photo animal or link
+		And the Patient should exclude fields
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
