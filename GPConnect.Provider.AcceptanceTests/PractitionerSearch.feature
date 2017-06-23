@@ -11,8 +11,9 @@ Scenario Outline: Practitioner search success
 		And the response bundle should contain "<EntrySize>" entries
 		And the response should be a Bundle resource of type "searchset"
 		And all search response entities in bundle should contain a logical identifier
-		And the Practitioner Identifiers should be valid
-		And practitioner resources must contain one user id and a total of "<RoleSize>" profile ids
+		And the Practitioner Identifiers should be fixed values
+		And the Practitioner SDS User Identifier should be valid for single User Identifier
+		And the Practitioner SDS Role Profile Identifier should be valid for "<RoleSize>" total Role Profile Identifiers
 	Examples:
 		| Value         | EntrySize | RoleSize |
 		| practitioner1 | 1         | 0        |
@@ -166,7 +167,7 @@ Scenario: Practitioner search returns back user with name element
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And practitioner resources should contain a single name element
+		And the Practitioner Name should be valid
 
 Scenario: Practitioner search returns user with only one family name
 	Given I am using the default server
@@ -176,7 +177,7 @@ Scenario: Practitioner search returns user with only one family name
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And practitioner should only have one family name
+		And the Practitioner Name FamilyName should be valid
 
 Scenario: Practitioner search returns practitioner role element with valid parameters
 	Given I am using the default server
@@ -186,8 +187,8 @@ Scenario: Practitioner search returns practitioner role element with valid param
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And if practitionerRole has role element which contains a coding then the system, code and display must exist
-		And if practitionerRole has managingOrganization element then reference must exist
+		And the Practitioner PractitionerRoles Roles should be valid
+		And the Practitioner PractitionerRoles ManagingOrganization should exist
 
 Scenario: Practitioner search should not contain photo or qualification information
 	Given I am using the default server
@@ -207,7 +208,7 @@ Scenario: Practitioner search contains communication element
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
+		And the Practitioner Communication should be valid
 
 Scenario: Practitioner search multiple identifier parameter failure
 	Given I am using the default server

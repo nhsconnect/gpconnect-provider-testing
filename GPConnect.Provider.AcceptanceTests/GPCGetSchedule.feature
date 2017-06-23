@@ -373,12 +373,12 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And the practitioner resources in the response bundle should contain no more than a single SDS User Id
 		And the practitioner resources in the response bundle should only contain an SDS user id or SDS role ids
-		And practitioner resources should contain a single name element
-		And practitioner should only have one family name
-		And if practitionerRole has role element which contains a coding then the system, code and display must exist
-		And if practitionerRole has managingOrganization element then reference must exist
+		And the Practitioner Name should be valid
+		And the Practitioner Name FamilyName should be valid
+		And the Practitioner PractitionerRoles Roles should be valid
+		And the Practitioner PractitionerRoles ManagingOrganization should exist
 		And the practitioner resource should not contain unwanted fields
-		And if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
+		And the Practitioner Communication should be valid
 	Examples:
 		| Organization | DaysRange |
 		| ORG1         | 10        |
