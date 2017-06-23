@@ -509,8 +509,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheReturnedAppointmentSlotReferenceShouldMatchSlotReference(string appointmentName)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            List<string> savedAppointmentSlotURLs = new List<string>();
-            List<string> returnedResponseAppointmentsSlotURL = new List<string>();
+            var savedAppointmentSlotURLs = new HashSet<string>();
+            var returnedResponseAppointmentsSlotURL = new HashSet<string>();
 
             foreach (ResourceReference slot in savedAppointment.Slot)
             {

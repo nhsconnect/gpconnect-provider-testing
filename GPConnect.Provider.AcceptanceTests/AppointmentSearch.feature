@@ -51,6 +51,8 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
+		And I set the JWT requested record NHS number to config patient "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I make a GET request to "/Patient/<id>/Appointment"
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
@@ -470,7 +472,7 @@ Scenario: Appointment retrieve bundle valid resources returned in the response
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the practitioner resource returned in the appointments bundle is present
-		And the location resource returned in the appointments bundle is present
+#		And the location resource returned in the appointments bundle is present -- No longr required
 		And the patient resource returned in the appointments bundle is present
 
 Scenario: Appointment retrieve bundle contains appointment with identifer with correct system and value
