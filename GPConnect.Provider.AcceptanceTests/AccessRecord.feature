@@ -911,7 +911,9 @@ Scenario Outline: device resource element cardinality conformance
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And the Device resource should conform to cardinality set out in specificaiton
+		And the Device should exclude fields
+		And the Device Note should be valid
+		And the Device Identifier should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -935,7 +937,7 @@ Scenario Outline: device resource type element values match specification
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And the Device resource type should match the fixed values from the specfication
+		And the Device Type should be valid
 	Examples:
 		| Code |
 		| ADM  |

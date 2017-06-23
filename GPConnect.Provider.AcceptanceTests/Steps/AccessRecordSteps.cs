@@ -224,44 +224,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             });
         }
-
-        [Then(@"the Device resource should conform to cardinality set out in specificaiton")]
-        public void ThenTheDeviceResourceShouldConformToCardinalitySetOutInSpecification()
-        {
-            _fhirContext.Devices.ForEach(device =>
-            {
-                device.Status.ShouldBeNull();
-                device.ManufactureDate.ShouldBeNull();
-                device.Expiry.ShouldBeNull();
-                device.Udi.ShouldBeNull();
-                device.LotNumber.ShouldBeNull();
-                device.Patient.ShouldBeNull();
-                (device.Contact == null || device.Contact.Count == 0).ShouldBeTrue();
-                device.Url.ShouldBeNull();
-
-                device.Identifier.Count.ShouldBeLessThanOrEqualTo(1);
-                device.Note.Count.ShouldBeLessThanOrEqualTo(1);
-
-                device.Identifier.ForEach(identifier =>
-                {
-                    identifier.Value.ShouldNotBeNull();
-                });
-            });
-        }
-
-        [Then(@"the Device resource type should match the fixed values from the specfication")]
-        public void ThenTheDeviceResourceTypeShouldMatchTheFixedValuesFromTheSpecification()
-        {
-            _fhirContext.Devices.ForEach(device =>
-            {
-                device.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
-                device.Type.Coding.ForEach(coding =>
-                {
-                    coding.System.ShouldBe("http://snomed.info/sct");
-                    coding.Code.ShouldBe("462240000");
-                    coding.Display.ShouldBe("Patient health record information system (physical object)");
-                });
-            });
-        }
     }
 }
