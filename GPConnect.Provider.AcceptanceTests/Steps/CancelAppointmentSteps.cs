@@ -61,7 +61,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
             extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", "Double booked"));
-            storedAppointment.ModifierExtension.Add(extension);
+            storedAppointment.Extension.Add(extension);
             _httpSteps.RestRequest(RestSharp.Method.PUT, URL, FhirSerializer.SerializeToJson(storedAppointment));
         }
 
@@ -74,7 +74,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Extension extension = new Extension();
             List<Extension> extensionList = new List<Extension>();
             extension = (buildAppointmentCancelExtension(extension, "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", reasonString));
-            storedAppointment.ModifierExtension.Add(extension);
+            storedAppointment.Extension.Add(extension);
 
             if (_httpContext.RequestContentType.Contains("xml"))
             {
@@ -92,7 +92,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             Extension extensionToAdd = new Extension();
             extensionToAdd = buildAppointmentOtherExtension(extensionToAdd,url, code , display);
-            storedAppointment.ModifierExtension.Add(extensionToAdd);
+            storedAppointment.Extension.Add(extensionToAdd);
         }
 
         [Given(@"I set the description to ""(.*)"" for appointment ""(.*)""")]
@@ -187,7 +187,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             string fullUrl = "Appointment/" + storedAppointment.Id;
             Extension extension = new Extension();
             extension = (buildAppointmentCancelExtension(extension, url, reasonString));
-            storedAppointment.ModifierExtension.Add(extension);
+            storedAppointment.Extension.Add(extension);
             _httpSteps.RestRequest(RestSharp.Method.PUT, fullUrl, FhirSerializer.SerializeToJson(storedAppointment));
         }
 
@@ -256,12 +256,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             List<Extension> storedExtensions = new List<Extension>();
 
             
-            foreach (var extension in returnedAppointment.ModifierExtension)
+            foreach (var extension in returnedAppointment.Extension)
             {
                 returnedExtensions.Add(extension);
             }
 
-            foreach (var extension in storedAppointment.ModifierExtension)
+            foreach (var extension in storedAppointment.Extension)
             {
                 storedExtensions.Add(extension);
             }

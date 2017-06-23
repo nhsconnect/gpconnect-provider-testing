@@ -185,7 +185,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Cancel appointment sending invalid URL")]
-        [NUnit.Framework.TestCaseAttribute("/appointment/!", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("/appointmentqq/!", new string[0])]
         [NUnit.Framework.TestCaseAttribute("/Appointments/#", new string[0])]
         public virtual void CancelAppointmentSendingInvalidURL(string url, string[] exampleTags)
         {

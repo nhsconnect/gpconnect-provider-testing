@@ -240,6 +240,8 @@ Scenario: Conformance profile supports the amend appointment operation
 Scenario: Amend appointment send an update with an invalid if-match header
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
 	Given I am using the default server
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "patient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I set If-Match request header to "hello"
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 	When I amend "CustomAppointment1" by changing the comment to "customComment"
@@ -251,6 +253,8 @@ Scenario: Amend appointment valid if-match header
 	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "patient1"
+		And I set the JWT requested scope to "patient/*.read"
 	When I perform an appointment read for the appointment called "CustomAppointment1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -258,6 +262,8 @@ Scenario: Amend appointment valid if-match header
 		And the response should be an Appointment resource
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
+		And I set the JWT requested record NHS number to the NHS number of patient stored against key "patient1"
+		And I set the JWT requested scope to "patient/*.write"
 		And I set "If-Match" request header to resource stored "etagAmend"
 	When I amend "CustomAppointment1" by changing the comment to "customComment"
 	Then the response status code should indicate success
