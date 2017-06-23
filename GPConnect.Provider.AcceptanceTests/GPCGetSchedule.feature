@@ -154,7 +154,6 @@ Scenario Outline: I perform a getSchedule with valid partial dateTime strings
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should include slot resources
 	Examples:
 		| StartDate           | EndDate             |
 		| yyyy-MM-dd          | yyyy-MM-dd          |
@@ -256,7 +255,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 	Examples:
 		| Organization | DaysRange |
 		| ORG1         | 14        |
-		| ORG2         | 13         |
+		| ORG2         | 13        |
 
 Scenario Outline: I successfully perform a gpc.getschedule operation using various content types XML and JSON in Accept header
 	Given I am using the default server
