@@ -17,15 +17,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class PractitionerSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
-
+        private readonly BundleSteps _bundleSteps;
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
         public PractitionerSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext, HttpContext httpContext,
-            HttpSteps httpSteps) : base(fhirContext, httpSteps)
+            HttpSteps httpSteps, BundleSteps bundleSteps) : base(fhirContext, httpSteps)
         {
             _httpContext = httpContext;
             Headers = headerHelper;
+            _bundleSteps = bundleSteps;
         }
 
         [Given(@"I add the practitioner identifier parameter with system ""(.*)"" and value ""(.*)""")]
@@ -455,6 +456,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ThePractitionerNameShouldBeValid();
             ThePractitionerPhotoAndQualificationShouldBeExcluded();
             ThePractitionerPractitionerRolesShouldBeValid();
+            ThenThePractitionerCommunicationShouldBeValid();
+            ThePractitionerPractitionerRolesManagingOrganizationShouldBeReferencedInTheBundle();
+            //ThePractitionerNameFamilyNameShouldBeValid();
         }
 
         [Then(@"the Practitioner Identifiers should be valid")]
@@ -480,23 +484,53 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the Practitioner SDS Role Profile Identifier should be valid")]
-        private void ThePractitionerSdsRoleProfileIdentifierShouldBeValid()
+        public void ThePractitionerSdsRoleProfileIdentifierShouldBeValid()
+        {
+            ThePractitionerSdsRoleProfileIdentifierShouldBeValid(null);
+        }
+
+        [Then(@"the Practitioner SDS Role Profile Identifier should be valid for ""([^""]*)"" total Role Profile Identifiers")]
+        public void ThePractitionerSdsRoleProfileIdentifierShouldBeValidForRoleProfileIdentifiers(int totalRoleProfileCount)
+        {
+            ThePractitionerSdsRoleProfileIdentifierShouldBeValid(totalRoleProfileCount);
+        }
+
+        private void ThePractitionerSdsRoleProfileIdentifierShouldBeValid(int? expectedTotalRoleProfileCount)
         {
             var practitioners = GetPractitioners();
+            var actualTotalRoleProfileCount = 0;
 
             practitioners.ForEach(practitioner =>
             {
                 var sdsRoleProfileIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id")).ToList();
+
+                if (expectedTotalRoleProfileCount != null)
+                {
+                    actualTotalRoleProfileCount = actualTotalRoleProfileCount + sdsRoleProfileIdentifiers.Count;
+                }
 
                 sdsRoleProfileIdentifiers.ForEach(identifier =>
                 {
                     identifier.Value.ShouldNotBeNull();
                 });
             });
+
+            actualTotalRoleProfileCount.ShouldBe(expectedTotalRoleProfileCount.GetValueOrDefault());
+        }
+        
+        [Then(@"the Practitioner SDS User Identifier should be valid for single User Identifier")]
+        public void ThePractitionerSdsUserIdentifierShouldBeValidForSingleUserIdentifier()
+        {
+            ThePractitionerSdsUserIdentifierShouldBeValid(true);
         }
 
         [Then(@"the Practitioner SDS User Identifier should be valid")]
         public void ThePractitionerSdsUserIdentifierShouldBeValid()
+        {
+            ThePractitionerSdsUserIdentifierShouldBeValid(false);
+        }
+
+        private void ThePractitionerSdsUserIdentifierShouldBeValid(bool shouldBeSingle)
         {
             var practitioners = GetPractitioners();
 
@@ -504,12 +538,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 var sdsUserIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id")).ToList();
 
-                sdsUserIdentifiers.Count.ShouldBeLessThanOrEqualTo(1);
+                if (shouldBeSingle)
+                {
+                    sdsUserIdentifiers.Count.ShouldBe(1);
+                }
+                else
+                {
+                    sdsUserIdentifiers.Count.ShouldBeLessThanOrEqualTo(1);
+                }
 
                 sdsUserIdentifiers.ForEach(identifier =>
                 {
                     identifier.Value.ShouldNotBeNull();
-                }); 
+                });
             });
         }
 
@@ -519,8 +560,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var practitioners = GetPractitioners();
 
             practitioners.ForEach(practitioner =>
-            {
+            { 
                 practitioner.Name.ShouldNotBeNull();
+            });
+
+            //ThePractitionerNameFamilyNameShouldBeValid();
+        }
+
+        [Then(@"the Practitioner Name FamilyName should be valid")]
+        public void ThePractitionerNameFamilyNameShouldBeValid()
+        {
+            var practitioners = GetPractitioners();
+
+            practitioners.ForEach(practitioner =>
+            {
+                practitioner.Name.Family?.Count().ShouldBeLessThanOrEqualTo(1);
             });
         }
 
@@ -562,6 +616,56 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             coding.Display.ShouldNotBeNull();
                         });
                     }
+                });
+            });
+        }
+
+        [Then(@"the Practitioner Communication should be valid")]
+        public void ThenThePractitionerCommunicationShouldBeValid()
+        {
+            var practitioners = GetPractitioners();
+
+            practitioners.ForEach(practitioner =>
+            {
+                practitioner.Communication.ForEach(codeableConcept =>
+                {
+                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
+                });
+            });
+        }
+
+        [Then(@"the Practitioner PractitionerRoles ManagingOrganization should be referenced in the Bundle")]
+        public void ThePractitionerPractitionerRolesManagingOrganizationShouldBeReferencedInTheBundle()
+        {
+            var practitioners = GetPractitioners();
+
+            practitioners.ForEach(practitioner =>
+            {
+                practitioner.PractitionerRole.ForEach(practitionerRole =>
+                {
+                    if (practitionerRole.ManagingOrganization != null)
+                    {
+                        _bundleSteps.ResponseBundleContainsReferenceOfType(practitionerRole.ManagingOrganization.Reference, ResourceType.Organization);
+                    }
+                });
+            });
+        }
+
+        [Then(@"the Practitioner PractitionerRoles ManagingOrganization should exist")]
+        public void ThePractitionerPractitionerRolesManagingOrganizationShouldExist()
+        {
+            var practitioners = GetPractitioners();
+
+            practitioners.ForEach(practitioner =>
+            {
+                practitioner.PractitionerRole.ForEach(practitionerRole =>
+                {
+                    practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull();
+                    practitionerRole.ManagingOrganization.Reference.ShouldStartWith("Organization/");
+
+                    var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", practitionerRole.ManagingOrganization.Reference);
+
+                    returnedResource.GetType().ShouldBe(typeof(Organization));
                 });
             });
         }

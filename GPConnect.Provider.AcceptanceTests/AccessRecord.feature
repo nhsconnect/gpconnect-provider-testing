@@ -791,7 +791,7 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 		And the response should be a Bundle resource of type "document"
 		And the Practitioner Identifiers should be valid
 		And the Practitioner PractitionerRoles Roles should be valid
-		And if the practitioner has communicaiton elemenets containing a coding then there must be a system, code and display element
+		And the Practitioner Communication should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -815,7 +815,7 @@ Scenario Outline: if practitioner resource contains a managing organization it m
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if practitioner contains a managingOrganization the reference relates to an Organization within the response bundle
+		And the Practitioner PractitionerRoles ManagingOrganization should be referenced in the Bundle
 	Examples:
 		| Code |
 		| ADM  |
