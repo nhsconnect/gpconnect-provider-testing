@@ -1,32 +1,24 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Data;
-using GPConnect.Provider.AcceptanceTests.Helpers;
-using GPConnect.Provider.AcceptanceTests.Logger;
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Serialization;
-using Newtonsoft.Json;
-using NUnit.Framework;
-using Shouldly;
-using System;
-using System.Collections.Generic;
-using TechTalk.SpecFlow;
-using static Hl7.Fhir.Model.Bundle;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using Context;
+    using Hl7.Fhir.Model;
+    using Shouldly;
+    using System.Linq;
+    using TechTalk.SpecFlow;
+    using System;
+    using System.Collections.Generic;
+    using static Hl7.Fhir.Model.Bundle;
+
     [Binding]
     public sealed class OrganizationSteps : BaseSteps
-    {
-        private readonly FhirContext FhirContext;
+    { 
         private readonly HttpContext HttpContext;
-        private readonly HttpSteps HttpSteps;
+        private readonly BundleSteps _bundleSteps;
 
-        public OrganizationSteps(FhirContext fhirContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, HttpContext httpContext) : base(fhirContext, httpSteps)
+        public OrganizationSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps) : base(fhirContext, httpSteps)
         {
-            FhirContext = fhirContext;
             HttpContext = httpContext;
-            HttpSteps = httpSteps;
+            _bundleSteps = bundleSteps;
         }
         
         [Given(@"I add the organization identifier parameter with system ""(.*)"" and value ""(.*)""")]
@@ -53,7 +45,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response bundle Organization entries should only contain an ODS organization codes and ODS Site Codes")]
         public void TheResponseBundleOrganizationEntriesShouldOnlyContainAnOdsOrganizationCodesAndOdsSiteCodes()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {
@@ -70,7 +62,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response bundle Organization entries should contain system code and display if the type coding is included in the resource")]
         public void ThenTheResponseBundleOrganizationEntriesShouldContainSystemCodeAndDisplayIfTheTypeCodingIsIncludedInTheResource()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {
@@ -101,7 +93,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Then($@"the response bundle should contain ""1"" entries");
 
             Organization organization = new Organization();
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {
@@ -149,7 +141,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response should be an Organization resource")]
         public void ThenTheResponseShouldBeAnOrganizationResource()
         {
-            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Organization);
+            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Organization);
         }
 
         [When(@"I make a GET request for a organization using an invalid id of ""(.*)""")]
@@ -163,7 +155,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
         {
 
-            Organization organization = (Organization)FhirContext.FhirResponseResource;
+            Organization organization = (Organization)_fhirContext.FhirResponseResource;
             organization.Meta.VersionId.ShouldNotBeNull();
             organization.Meta.Profile.ShouldNotBeNull();
 
@@ -177,7 +169,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"if the organization resource contains an identifier it is valid")]
         public void ThenIfTheOrganizationResourcesContainAnIdentifierItIsValid()
         {
-            Organization organization = (Organization)FhirContext.FhirResponseResource;
+            Organization organization = (Organization)_fhirContext.FhirResponseResource;
             foreach (Identifier identifier in organization.Identifier)
             {
                 identifier.System.ShouldNotBeNullOrEmpty();
@@ -190,7 +182,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"if the organization resource contains type it is valid")]
         public void ThenIfTheOrganizationResourceContainsTypeItIsValis()
         {
-            Organization organization = (Organization)FhirContext.FhirResponseResource;
+            Organization organization = (Organization)_fhirContext.FhirResponseResource;
             if (organization.Type != null && organization.Type.Coding != null)
             {
                 organization.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
@@ -205,16 +197,68 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"if the organization resource contains a partOf reference it is valid")]
         public void ThenIfTheOrganizationResourceContainsAPartOfReferenceItIsValid()
         {
-            Organization organization = (Organization)FhirContext.FhirResponseResource;
+            Organization organization = (Organization)_fhirContext.FhirResponseResource;
             if (organization.PartOf != null)
             {
                 organization.PartOf.Reference.ShouldNotBeNull();
                 string reference = organization.PartOf.Reference;
                 reference.ShouldStartWith("Organization/");
-                var returnedResource = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", reference);
+                var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", reference);
                 returnedResource.GetType().ShouldBe(typeof(Organization));
 
             }
         }
-     }
+
+        //Hayden
+        private List<Organization> Organizations => _fhirContext.Organizations;
+
+        [Then(@"the Organization Identifiers should be valid")]
+        public void TheOrganizationIdentifiersShouldBeValid()
+        {
+            Organizations.ForEach(organization =>
+            {
+                if (organization.Identifier != null)
+                {
+                    var odsOrganizationCodeCount = organization.Identifier.Count(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code"));
+                    odsOrganizationCodeCount.ShouldBeLessThanOrEqualTo(1);
+
+                    organization.Identifier.ForEach(identifier => 
+                    {
+                        identifier.System.ShouldBeOneOf("http://fhir.nhs.net/Id/ods-organization-code", "http://fhir.nhs.net/Id/ods-site-code");
+                        identifier.Value.ShouldNotBeNull();
+                    });
+                }
+            });
+        }
+
+        [Then(@"the Organization Type should be valid")]
+        public void TheOrganizationTypeShouldBeValid()
+        {
+            Organizations.ForEach(organization =>
+            {
+                if (organization.Type?.Coding != null)
+                {
+                    organization.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+
+                    var coding = organization.Type.Coding.First();
+
+                    coding.System.ShouldNotBeNull();
+                    coding.Code.ShouldNotBeNull();
+                    coding.Display.ShouldNotBeNull();
+                }
+            });
+        }
+
+        [Then(@"the Organization PartOf Organization should be referenced in the Bundle")]
+        public void TheOrganizationPartOfOrganizationShouldBeReferencedInTheBundle()
+        {
+            _fhirContext.Organizations.ForEach(organization =>
+            {
+                if (organization.PartOf != null)
+                {
+                    _bundleSteps.ResponseBundleContainsReferenceOfType(organization.PartOf.Reference, ResourceType.Organization);
+                }
+            });
+        }
+    }
 }

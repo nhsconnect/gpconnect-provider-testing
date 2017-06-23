@@ -1,13 +1,13 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Helpers;
-using Hl7.Fhir.Model;
-using Shouldly;
-using System.Linq;
-using TechTalk.SpecFlow;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using Constants;
+    using Context;
+    using Helpers;
+    using Hl7.Fhir.Model;
+    using Shouldly;
+    using System.Linq;
+    using TechTalk.SpecFlow;
+
     [Binding]
     public sealed class AccessRecordSteps : BaseSteps
     {
@@ -173,55 +173,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         );
                     }
                 });
-            });
-        }
-        
-
-        [Then(@"Organization resources identifiers must comply with specification identifier restricitions")]
-        public void ThenOrganizationResourceIdentifiersMustComplyWithSpecificationIdentifierRestrictions()
-        {
-            _fhirContext.Organizations.ForEach(organization =>
-            {
-                var odsOrganizationCodeCount = organization.Identifier.Count(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code"));
-                odsOrganizationCodeCount.ShouldBeLessThanOrEqualTo(1);
-
-                organization.Identifier.ForEach(identifier =>
-                {
-                    if (identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code") || identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code"))
-                    {
-                        identifier.Value.ShouldNotBeNull();
-                    }
-                }); 
-            });
-        }
-
-        [Then(@"if Organization includes type coding the elements are mandatory")]
-        public void ThenIfOrganizationIncludesTypeCodingTheElementsAreMandatory()
-        {
-            _fhirContext.Organizations.ForEach(organization =>
-            {
-                if (organization.Type?.Coding != null)
-                {
-                    organization.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
-                    organization.Type.Coding.ForEach(coding =>
-                    {
-                        coding.System.ShouldNotBeNull();
-                        coding.Code.ShouldNotBeNull();
-                        coding.Display.ShouldNotBeNull();
-                    });
-                }
-            });
-        }
-
-        [Then(@"if Organization includes partOf it should reference a resource in the response bundle")]
-        public void ThenIfOrganizationIncludesPartOfItShouldReferenceAResourceInTheResponseBundle()
-        {
-            _fhirContext.Organizations.ForEach(organization =>
-            {
-                if (organization.PartOf != null)
-                {
-                    _bundleSteps.ResponseBundleContainsReferenceOfType(organization.PartOf?.Reference, ResourceType.Organization);
-                }
             });
         }
     }

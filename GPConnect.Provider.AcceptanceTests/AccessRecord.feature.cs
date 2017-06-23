@@ -1745,8 +1745,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 841
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 842
-  testRunner.And("Organization resources identifiers must comply with specification identifier rest" +
-                    "ricitions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Organization Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1785,7 +1784,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 865
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 866
-  testRunner.And("if Organization includes type coding the elements are mandatory", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Organization Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1824,8 +1823,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 889
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 890
-  testRunner.And("if Organization includes partOf it should reference a resource in the response bu" +
-                    "ndle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Organization PartOf Organization should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

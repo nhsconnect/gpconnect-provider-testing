@@ -839,7 +839,7 @@ Scenario Outline: organization resource identifiers
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And Organization resources identifiers must comply with specification identifier restricitions
+		And the Organization Identifiers should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -863,7 +863,7 @@ Scenario Outline: organization resource element cardinality
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if Organization includes type coding the elements are mandatory
+		And the Organization Type should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -887,7 +887,7 @@ Scenario Outline: organization resource internal reference
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
-		And if Organization includes partOf it should reference a resource in the response bundle
+		And the Organization PartOf Organization should be referenced in the Bundle
 	Examples:
 		| Code |
 		| ADM  |

@@ -1020,8 +1020,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("the response bundle Organization entries should contain system code and display i" +
                     "f the type coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 402
-  testRunner.And("if Organization includes partOf it should reference a resource in the response bu" +
-                    "ndle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Organization PartOf Organization should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

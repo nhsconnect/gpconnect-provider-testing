@@ -399,7 +399,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the response bundle Organization entries should contain a maximum of 1 http://fhir.nhs.net/Id/ods-organization-code system identifier
 		And the response bundle Organization entries should only contain an ODS organization codes and ODS Site Codes
 		And the response bundle Organization entries should contain system code and display if the type coding is included in the resource
-		And if Organization includes partOf it should reference a resource in the response bundle
+		And the Organization PartOf Organization should be referenced in the Bundle
 	Examples:
 		| Organization | DaysRange |
 		| ORG1         | 13        |
