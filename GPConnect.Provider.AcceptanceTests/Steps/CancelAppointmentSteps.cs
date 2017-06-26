@@ -303,7 +303,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
             Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
-            storedAppointment.Reason.Text.ShouldBe(returnedAppointment.Reason.Text);
+            storedAppointment.Reason?.Text.ShouldBe(returnedAppointment.Reason?.Text);
           }
 
         [Then(@"the slot display and reference of the appointment with key ""(.*)"" and the returned response should be equal")]
@@ -383,6 +383,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the appointment participants of the appointment must conform to the gp connect specifications")]
         public void ThenTheAppointmentParticipantPractitionerReferenceMustBeAValidReference()
         {
+          
             Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
             foreach (Appointment.ParticipantComponent participant in appointment.Participant)
             {
