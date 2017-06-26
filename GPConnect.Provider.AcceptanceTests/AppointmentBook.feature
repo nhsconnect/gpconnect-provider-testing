@@ -332,8 +332,8 @@ Scenario: Book single appointment for patient and send additional extensions wit
 	When I book the appointment called "Appointment2"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment for patient with id
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
