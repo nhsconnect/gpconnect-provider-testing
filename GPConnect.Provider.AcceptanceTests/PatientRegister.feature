@@ -19,7 +19,6 @@ Scenario Outline: Register patient send request to incorrect URL
 		| 2017-05-05   | /Patient/$gpc.registerpatien   |
 		| 2016-12-05   | /PAtient/$gpc.registerpatient  |
 		| 1999-01-22   | /Patient/$gpc.registerpati#ent |
-		| 2017-08-12   | /Patient                       |
 
 Scenario Outline: Register patient with invalid interactionIds
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
@@ -638,9 +637,9 @@ Scenario Outline: Invalid registration period
 		And I add the registration type with code "T" to "registerPatient"
 		And I add the registration period with start date "<StartDate>" and end date "<EndDate>" to "registerPatient"
 	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
 	| StartDate  | EndDate    |
 	| abc        | 2018-12-24 |
