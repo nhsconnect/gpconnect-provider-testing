@@ -23,7 +23,6 @@ Scenario Outline: Read appointment invalid appointment id
 	When I make a GET request to "/Appointment/<id>"
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "RESOURCE_NOT_FOUND"
 	Examples:
 		| id          |
 		| Invalid4321 |
