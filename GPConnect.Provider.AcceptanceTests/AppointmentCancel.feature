@@ -255,7 +255,7 @@ Scenario: Cancel appointment verify resource is not updated when an out of date 
 	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
 	Then the response status code should be "409"
 		And the response body should be FHIR JSON
-		And I make a GET request for the appointment with key "patientApp" to ensure the status has not been changed to cancelled
+		And I make a GET request for the appointment with key "patientApp" for patient "patient3" to ensure the status has not been changed to cancelled
 
 Scenario: Cancel appointment compare values send in request and returned in the response
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"

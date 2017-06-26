@@ -660,8 +660,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 257
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258
-  testRunner.And("I make a GET request for the appointment with key \"patientApp\" to ensure the stat" +
-                    "us has not been changed to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I make a GET request for the appointment with key \"patientApp\" for patient \"patie" +
+                    "nt3\" to ensure the status has not been changed to cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
