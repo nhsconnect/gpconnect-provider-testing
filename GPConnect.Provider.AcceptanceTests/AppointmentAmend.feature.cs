@@ -779,9 +779,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line 253
- testRunner.Given("I store the schedule for \"ORG1\" called \"getScheduleResponseBundle\" and create an " +
-                    "appointment called \"CustomAppointment1\" for patient \"patient1\" using the interac" +
-                    "tion id \"urn:nhs:names:services:gpconnect:fhir:rest:create:appointment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I find or create an appointment with status Booked for patient \"patient1\" at orga" +
+                    "nization \"ORG1\" and save the appointment resources to \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 254
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 255
@@ -793,7 +792,7 @@ this.FeatureBackground();
 #line 257
   testRunner.And("I set the JWT requested scope to \"patient/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258
- testRunner.When("I perform an appointment read for the appointment called \"CustomAppointment1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I perform an appointment read for the appointment called \"patientApp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 259
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 260
@@ -815,7 +814,7 @@ this.FeatureBackground();
 #line 267
   testRunner.And("I set \"If-Match\" request header to resource stored \"etagAmend\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 268
- testRunner.When("I amend \"CustomAppointment1\" by changing the comment to \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I amend \"patientApp\" by changing the comment to \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 269
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 270
