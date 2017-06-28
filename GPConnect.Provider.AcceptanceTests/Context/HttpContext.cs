@@ -1,16 +1,17 @@
-﻿using System.Net;
-using System.Xml.Linq;
-using GPConnect.Provider.AcceptanceTests.Helpers;
-using GPConnect.Provider.AcceptanceTests.Logger;
-using Newtonsoft.Json.Linq;
-using TechTalk.SpecFlow;
-using System;
-using System.Collections.Generic;
-using Hl7.Fhir.Model;
-// ReSharper disable ClassNeverInstantiated.Global
-
-namespace GPConnect.Provider.AcceptanceTests.Context
+﻿namespace GPConnect.Provider.AcceptanceTests.Context
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+    using System.Xml.Linq;
+    using Constants;
+    using Helpers;
+    using Hl7.Fhir.Model;
+    using Logger;
+    using Newtonsoft.Json.Linq;
+    using TechTalk.SpecFlow;
+
     // ReSharper disable once ClassNeverInstantiated.Global
     public interface IHttpContext
     {
@@ -87,6 +88,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             Jwt = jwtHelper;
             SecurityContext = securityContext;
             RequestParameters = requestParametersHelper;
+            BodyParameters = new Parameters();
         }
 
         private static class Context
@@ -697,5 +699,48 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 ));
             doc.Save(filename);
         }
+
+        public void SetDefaults()
+        {
+            RequestHeaders.Clear();
+            RequestUrl = "";
+            RequestParameters.ClearParameters();
+            RequestBody = null;
+            ResponseStatusCode = default(HttpStatusCode);
+            ResponseTimeInMilliseconds = -1;
+            ResponseContentType = null;
+            ResponseBody = null;
+            ResponseHeaders.Clear();
+        }
+
+        public void SetDefaultHeaders()
+        {
+            RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTraceId, Guid.NewGuid().ToString());
+            RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspFrom, ConsumerASID);
+            RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTo, ProviderASID);
+
+            RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, FhirConst.ContentTypes.kJsonFhir);
+            RequestContentType = FhirConst.ContentTypes.kJsonFhir;
+        }
+
+        private string GetBaseUrl()
+        {
+            var sspAddress = UseSpineProxy ? SpineProxyAddress + "/" : string.Empty;
+
+            var baseUrl = sspAddress + Protocol + FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase;
+
+            if (baseUrl[baseUrl.Length - 1] != '/')
+            {
+                baseUrl = baseUrl + "/";
+            }
+
+            return baseUrl;
+        }
+
+        public string BaseUrl => GetBaseUrl();
+
+        public Parameters BodyParameters { get; set; }
+
+        public HttpMethod HttpMethod { get; set; }
     }
 }
