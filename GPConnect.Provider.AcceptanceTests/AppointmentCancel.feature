@@ -42,7 +42,8 @@ Scenario Outline: I perform cancel appointment and update an element which is in
 		And I add participant "patient" with reference "patient/2" to appointment "patientApp"
 		And I add participant "practitioner" with reference "practitioner/2" to appointment "patientApp"
 	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
-	Then the response status code should be "400"
+	Then the response status code should be "403"
+		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| PatientName |

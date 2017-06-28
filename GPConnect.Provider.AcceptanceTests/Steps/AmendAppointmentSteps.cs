@@ -48,7 +48,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I perform an appointment read for the appointment called ""(.*)""")]
         public void WhenIPerformAnAppointmentReadForTheAppointmentCalled(string appointment)
         {
-            string url = $"/Appointment/{HttpContext.StoredFhirResources[appointment].Id}";
+            string appointmentId = HttpContext.StoredFhirResources[appointment].Id;
+            string url = "Appointment/" + appointmentId;
 
             When($@"I make a GET request to ""{url}""");
         }
@@ -57,7 +58,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void WhenIAmendByChangingTheCommentToMessage(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
+            Appointment fhirApp = (Appointment)HttpContext.StoredFhirResources[appointment];
             savedAppointment.Id = fhirApp.Id;
             savedAppointment.Comment = message;
             string appointmentId = "Appointment/" + savedAppointment.Id;
@@ -69,7 +70,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
 
-            savedAppointment.Id = HttpContext.StoredAppointment[appointment].Id;
+            savedAppointment.Id = HttpContext.StoredFhirResources[appointment].Id;
 
             if (null == savedAppointment.Reason)
             {
@@ -91,7 +92,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void WhenIAmendByChangingTheDescriptionTextToMessage(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
+            Appointment fhirApp = (Appointment)HttpContext.StoredFhirResources[appointment];
             savedAppointment.Id = fhirApp.Id;
             savedAppointment.Description = message;
             string appointmentId = "/Appointment/" + savedAppointment.Id;
@@ -102,7 +103,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void WhenIAmendByChangingTheCommentToMessageAndSendBundleABundleResourceInTheRequest(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
+            Appointment fhirApp = (Appointment)HttpContext.StoredFhirResources[appointment];
             Bundle invalidBundle = new Bundle();
 
             savedAppointment.Id = fhirApp.Id;
@@ -116,7 +117,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void WhenIAmendByChangingTheCommentToMessageAndSendAnEmptyAppointmentResource(string appointment, string message)
         {
             Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
+            Appointment fhirApp = (Appointment)HttpContext.StoredFhirResources[appointment];
             Appointment empty = new Appointment();
             
             savedAppointment.Id = fhirApp.Id;
