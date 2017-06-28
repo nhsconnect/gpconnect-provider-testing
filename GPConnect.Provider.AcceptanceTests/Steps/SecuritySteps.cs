@@ -95,7 +95,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I configure server certificate and ssl")]
-        public void IConfigureServerCertificatesAndSsl()
+        public void ConfigureServerCertificatesAndSsl()
         {
             // Setup The Client Certificate
             if (SecurityContext.SendClientCert)

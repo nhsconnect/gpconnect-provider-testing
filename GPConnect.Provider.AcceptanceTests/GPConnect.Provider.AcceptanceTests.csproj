@@ -117,7 +117,11 @@
     <Compile Include="Data\ODSCodeMap.cs" />
     <Compile Include="Data\NHSNoMap.cs" />
     <Compile Include="Data\PDS.cs" />
+    <Compile Include="Enum\GpConnectInteraction.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
+    <Compile Include="Factories\HttpContextFactory.cs" />
+    <Compile Include="Factories\JwtFactory.cs" />
+    <Compile Include="Factories\RequestFactory.cs" />
     <Compile Include="FHIR.feature.cs">
       <DependentUpon>FHIR.feature</DependentUpon>
       <AutoGen>True</AutoGen>

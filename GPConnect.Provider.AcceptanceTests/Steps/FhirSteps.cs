@@ -27,7 +27,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly FhirContext FhirContext;
         private readonly SecurityContext SecurityContext;
         private readonly HttpContext HttpContext;
-        
+
         // Constructor
 
         public FhirSteps(SecurityContext securityContext, HttpContext httpContext, FhirContext fhirContext)
@@ -76,6 +76,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given($@"I set the JWT requested scope to ""{JwtConst.Scope.kPatientRead}""");
             And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
             FhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
+        }
+
+        [Given(@"I add an NHS Number parameter for ""(.*)""")]
+        public void IAddAnNhsParameterFor(string patient)
+        {
+            var nhsNumber = GlobalContext.PatientNhsNumberMap[patient];
+            HttpContext.BodyParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, FhirHelper.GetNHSNumberIdentifier(nhsNumber));
+        }
+
+        [Given(@"I add a Record Section parameter for ""(.*)""")]
+        public void GivenIAddAPatientNhsParameterFor(string recordSection)
+        {
+            HttpContext.BodyParameters.Add(FhirConst.GetCareRecordParams.kRecordSection, FhirHelper.GetRecordSectionCodeableConcept(recordSection));
         }
 
         [Then(@"I request the record for patient with NHS Number ""(.*)""")]

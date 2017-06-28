@@ -22,19 +22,25 @@ using RestSharp.Extensions.MonoHttp;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using Enum;
+    using Factories;
+
     [Binding]
     public class HttpSteps : TechTalk.SpecFlow.Steps
     {
         private readonly HttpContext HttpContext;
         private readonly FhirContext FhirContext;
-
+        private readonly JwtHelper JwtHelper;
+        private readonly SecuritySteps _securitySteps;
         // Constructor
 
-        public HttpSteps(HttpContext httpContext, FhirContext fhirContext)
+        public HttpSteps(HttpContext httpContext, FhirContext fhirContext, JwtHelper jwtHelper, SecuritySteps securitySteps)
         {
             Log.WriteLine("HttpSteps() Constructor");
             HttpContext = httpContext;
             FhirContext = fhirContext;
+            JwtHelper = jwtHelper;
+            _securitySteps = securitySteps;
         }
 
         internal void HttpRequest(object post, string v1, object p, bool v2)
@@ -679,6 +685,134 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Directory.CreateDirectory(scenarioDirectory);
             Log.WriteLine(scenarioDirectory);
             HttpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
+        }
+
+        [Given(@"I configure the default ""(.*)"" request")]
+        public void ConfigureRequest(GpConnectInteraction interaction)
+        {
+            var httpContextFactory = new HttpContextFactory(interaction);
+
+            httpContextFactory.ConfigureHttpContext(HttpContext);
+            httpContextFactory.ConfigureFhirContext(FhirContext);
+
+            var jwtFactory = new JwtFactory(interaction);
+
+            jwtFactory.ConfigureJwt(JwtHelper, HttpContext);
+
+            _securitySteps.ConfigureServerCertificatesAndSsl();
+        }
+
+        [When(@"I make the ""(.*)"" request")]
+        public void MakeRequest(GpConnectInteraction interaction)
+        {
+            var requestFactory = new RequestFactory(interaction);
+
+            requestFactory.ConfigureBody(HttpContext);
+
+            HttpRequest();
+        }
+
+        private void HttpRequest(bool decompressGzip = false)
+        {
+            //TODO: Think about where this should be.
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, JwtHelper.GetBearerToken());
+
+            var timer = new System.Diagnostics.Stopwatch();
+
+            var handler = ConfigureHandler(decompressGzip);
+
+            var httpClient = new HttpClient(handler)
+            {
+                BaseAddress = new Uri(HttpContext.BaseUrl)
+            };
+
+            var requestMessage = new HttpRequestMessage(HttpContext.HttpMethod, HttpContext.RequestUrl);
+            if (HttpContext.RequestBody != null)
+            {
+                requestMessage.Content = new StringContent(HttpContext.RequestBody, Encoding.UTF8, HttpContext.RequestContentType);
+            }
+
+            // Add The Headers
+            HttpContext.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, HttpContext.RequestContentType);
+            foreach (var header in HttpContext.RequestHeaders.GetRequestHeaders())
+            {
+                try
+                {
+                    Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
+                    requestMessage.Headers.Add(header.Key, header.Value);
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLine("Could not add header: " + header.Key + e);
+                }
+            }
+
+            // Start The Performance Timer Running
+            timer.Start();
+
+            // Perform The Http Request
+            var result = httpClient.SendAsync(requestMessage).ConfigureAwait(false).GetAwaiter().GetResult();
+
+            // Always Stop The Performance Timer Running
+            timer.Stop();
+
+            // Save The Time Taken To Perform The Request
+            HttpContext.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
+
+            // Save The Response Details
+            HttpContext.ResponseStatusCode = result.StatusCode;
+            HttpContext.ResponseContentType = result.Content.Headers.ContentType.MediaType;
+            using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
+            {
+                HttpContext.ResponseBody = reader.ReadToEnd();
+            }
+
+            // Add headers
+            foreach (var headerKey in result.Headers)
+            {
+                foreach (var headerKeyValues in headerKey.Value)
+                {
+                    HttpContext.ResponseHeaders.Add(headerKey.Key, headerKeyValues);
+                    Log.WriteLine("Header - " + headerKey.Key + " : " + headerKeyValues);
+                }
+            }
+
+            foreach (var header in result.Content.Headers)
+            {
+                foreach (var headerValues in header.Value)
+                {
+                    HttpContext.ResponseHeaders.Add(header.Key, headerValues);
+                    Log.WriteLine("Header - " + header.Key + " : " + headerValues);
+                }
+            }
+
+            if (decompressGzip)
+            {
+                LogToDisk();
+            }
+        }
+
+        private WebRequestHandler ConfigureHandler(bool decompressGzip)
+        {
+            var handler = new WebRequestHandler();
+
+            if (decompressGzip)
+            {
+                handler.AutomaticDecompression = DecompressionMethods.GZip;
+            }
+
+            if (HttpContext.SecurityContext.SendClientCert)
+            {
+                var clientCert = HttpContext.SecurityContext.ClientCert;
+                handler.ClientCertificates.Add(clientCert);
+            }
+
+            if (HttpContext.UseWebProxy)
+            {
+                handler.Proxy = new WebProxy(new Uri(HttpContext.WebProxyAddress, UriKind.Absolute));
+            }
+
+            return handler;
         }
     }
 }

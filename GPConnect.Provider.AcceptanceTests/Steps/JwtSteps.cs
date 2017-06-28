@@ -297,6 +297,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
         }
 
+        [Given(@"I set the JWT Requested Record to the NHS Number for ""(.*)""")]
+        public void ISetTheJwtRequestedRecordToTheNhsNumberFor(string patient)
+        {
+            Jwt.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
+        }
+
         [Given(@"I set the JWT requested record NHS number to the NHS number of patient stored against key ""([^""]*)""")]
         public void ISetTheJWTRequestRecordNHSNumberToTheNHSNumberOfPatientSotredAgainstKey(string storedPatientKey)
         {
