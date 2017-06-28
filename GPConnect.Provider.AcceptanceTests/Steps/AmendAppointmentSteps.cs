@@ -98,17 +98,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpSteps.RestRequest(RestSharp.Method.PUT, appointmentId, FhirSerializer.SerializeToJson(savedAppointment));
         }
 
-        [When(@"I amend ""(.*)"" by changing the priority to ""(.*)""")]
-        public void WhenIAmendByChangingThePriorityTo(string appointment, int message)
-        {
-            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointment];
-            Appointment fhirApp = (Appointment)HttpContext.StoredAppointment[appointment];
-            savedAppointment.Id = fhirApp.Id;
-            savedAppointment.Priority = message;
-            string appointmentId = "/Appointment/" + savedAppointment.Id;
-            HttpSteps.RestRequest(RestSharp.Method.PUT, appointmentId, FhirSerializer.SerializeToJson(savedAppointment));
-        }
-
         [When(@"I amend ""(.*)"" by changing the comment to ""(.*)"" and send a bundle resource in the request")]
         public void WhenIAmendByChangingTheCommentToMessageAndSendBundleABundleResourceInTheRequest(string appointment, string message)
         {
