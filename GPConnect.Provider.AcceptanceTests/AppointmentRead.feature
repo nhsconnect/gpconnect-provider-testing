@@ -29,7 +29,7 @@ Scenario Outline: Read appointment invalid appointment id
 		| 8888888888  |
 		|             |
 
-Scenario Outline: Read appointment failure due to missing header
+Scenario Outline: Read appointment failure due to missing Ssp header
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
@@ -44,7 +44,15 @@ Scenario Outline: Read appointment failure due to missing header
 		| Ssp-From          |
 		| Ssp-To            |
 		| Ssp-InteractionId |
-		| Authorization     |
+
+Scenario: Read appointment failure due to missing Authoriztion header
+	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
+	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" without the Authorization header
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario Outline: Read appointment failure with incorrect interaction id
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
