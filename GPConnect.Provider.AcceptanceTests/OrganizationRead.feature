@@ -1,6 +1,12 @@
 ﻿@organization
 Feature: OrganizationRead
 
+#Set JWT for all tests in the organization tests
+#Combine bottom tests into 1 and use scenario outline to test all organizations
+#Given I get organization "<Organization>" id and save it as "ORG1ID" is not correct and should be replaced to represent what it does
+#Refactor When I get organization "ORG1ID" and use the id to make a get request to the url "Organization" to make its fucntion more clear
+#Change URL to have a slash so its clear it a URL
+
 Scenario Outline: Organization Read successful request
 	Given I get organization "<Organization>" id and save it as "ORG1ID"
 	Given I am using the default server
@@ -10,13 +16,17 @@ Scenario Outline: Organization Read successful request
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
 		And the returned resource shall contains a logical id
+		#Match id requested with
+		#Match buisness identifiers that searched with
 	Examples:
 		| Organization |
 		| ORG1         |
 		| ORG2         |
 		| ORG3         |
-	
+
+#Change the name of the test to be more clear	
 Scenario Outline: Organization read invalid request invalid id
+	#Remove first step
 	Given I get organization "ORG1" id and save it as "ORG1ID"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
@@ -73,6 +83,7 @@ Scenario Outline: Organization read failure with incorrect interaction id
 		|                                                                   |
 		| null                                                              |
 
+#Change scenario name, not descriptive enough
 Scenario Outline: 2
 	Given I get organization "ORG1" id and save it as "ORG1ID"
 	Given I am using the default server
@@ -82,11 +93,13 @@ Scenario Outline: 2
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Organization resource
+		#Check for ids and mandatory fields of returned resource
 	Examples:
 		| Parameter             | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+#Test name requires more detail
 Scenario Outline: Organization read accept header and _format
 	Given I get organization "ORG2" id and save it as "ORG2ID"
 	Given I am using the default server
@@ -98,13 +111,15 @@ Scenario Outline: Organization read accept header and _format
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Organization resource
 		And the returned resource shall contains a logical id
+		#Check for ids and mandatory fields of returned resource
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
 		| application/json+fhir | application/xml+fhir  | XML        |
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
-	
+
+#Add test for just accept header	
 Scenario: Conformance profile supports the Organization read operation
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -132,6 +147,7 @@ Scenario: Organization read organization contains identifier it is valid
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
 		And if the organization resource contains an identifier it is valid
+		#Check for ids and mandatory fields of returned resource and valid site / ORG code
 
 Scenario: Organization read organization contains valid partOf element with a valid reference
 	Given I get organization "ORG1" id and save it as "ORG1ID"
@@ -141,6 +157,7 @@ Scenario: Organization read organization contains valid partOf element with a va
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
+		#Make step name clearer to show it will resolve url if included
 		And if the organization resource contains a partOf reference it is valid
 
 Scenario: Organization read organization contains valid Type element it must contain code system and display
@@ -151,6 +168,7 @@ Scenario: Organization read organization contains valid Type element it must con
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
+		#Change step name to include further detail
 		And if the organization resource contains type it is valid
 
 Scenario: Organization read response should contain ETag header
@@ -163,6 +181,7 @@ Scenario: Organization read response should contain ETag header
 		And the response should be an Organization resource
 		And the response should contain the ETag header matching the resource version
 
+#Potentially out of scope, needs verifiying
 Scenario: VRead of current resource should return resource
 	Given I get organization "ORG3" id and save it as "ORGID"
 	Given I am using the default server
