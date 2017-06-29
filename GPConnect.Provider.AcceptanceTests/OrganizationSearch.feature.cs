@@ -66,7 +66,7 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Organization search successs")]
+        [NUnit.Framework.DescriptionAttribute("Organization search success")]
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-organization-code", "unknownORG", "0", "0", "0", new string[0])]
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-organization-code", "ORG1", "1", "1", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-organization-code", "ORG2", "1", "1", "2", new string[0])]
@@ -75,9 +75,9 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-site-code", "SIT1", "1", "1", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-site-code", "SIT2", "1", "1", "2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-site-code", "SIT3", "2", "2", "3", new string[0])]
-        public virtual void OrganizationSearchSuccesss(string system, string value, string entries, string orgCodeQuantity, string siteCodeQuantity, string[] exampleTags)
+        public virtual void OrganizationSearchSuccess(string system, string value, string entries, string orgCodeQuantity, string siteCodeQuantity, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search successs", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search success", exampleTags);
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9

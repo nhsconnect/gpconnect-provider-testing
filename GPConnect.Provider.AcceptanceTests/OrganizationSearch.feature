@@ -5,7 +5,7 @@ Feature: OrganizationSearch
 #Add JWT organization currently uses default hardcoded value
 #Come up with standard error param names and values
 
-Scenario Outline: Organization search successs
+Scenario Outline: Organization search success
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
 		And I add the organization identifier parameter with system "<System>" and value "<Value>"
