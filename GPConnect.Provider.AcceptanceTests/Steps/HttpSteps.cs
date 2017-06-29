@@ -709,14 +709,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             requestFactory.ConfigureBody(HttpContext);
 
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, JwtHelper.GetBearerToken());
+            HttpRequest();
+        }
+
+        [When(@"I make the ""(.*)"" request with invalid Resource type")]
+        public void MakeRequestWithInvalidResourceType(GpConnectInteraction interaction)
+        {
+            var requestFactory = new RequestFactory(interaction);
+
+            requestFactory.ConfigureBody(HttpContext);
+            requestFactory.ConfigureInvalidResourceType(HttpContext);
+
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, JwtHelper.GetBearerToken());
             HttpRequest();
         }
 
         private void HttpRequest(bool decompressGzip = false)
         {
-            //TODO: Think about where this should be.
-            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, JwtHelper.GetBearerToken());
-
             var timer = new System.Diagnostics.Stopwatch();
 
             var handler = ConfigureHandler(decompressGzip);
@@ -767,6 +777,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 HttpContext.ResponseBody = reader.ReadToEnd();
             }
 
+            ParseResponse();
+
             // Add headers
             foreach (var headerKey in result.Headers)
             {
@@ -789,6 +801,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (decompressGzip)
             {
                 LogToDisk();
+            }
+        }
+
+        private void ParseResponse()
+        {
+            switch (HttpContext.ResponseContentType)
+            {
+                case FhirConst.ContentTypes.kJsonFhir:
+                    HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
+                    var jsonParser = new FhirJsonParser();
+                    FhirContext.FhirResponseResource = jsonParser.Parse<Resource>(HttpContext.ResponseBody);
+                    break;
+                case FhirConst.ContentTypes.kXmlFhir:
+                    HttpContext.ResponseXML = XDocument.Parse(HttpContext.ResponseBody);
+                    var xmlParser = new FhirXmlParser();
+                    FhirContext.FhirResponseResource = xmlParser.Parse<Resource>(HttpContext.ResponseBody);
+                    break;
             }
         }
 

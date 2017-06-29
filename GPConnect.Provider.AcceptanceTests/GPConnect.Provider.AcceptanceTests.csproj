@@ -132,7 +132,10 @@
     <Compile Include="Helpers\FhirHelper.cs" />
     <Compile Include="Helpers\GlobalContextHelper.cs" />
     <Compile Include="Helpers\IGlobalContextHelper.cs" />
+    <Compile Include="Helpers\NhsNumberHelper.cs" />
+    <Compile Include="Helpers\RecordSectionHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
+    <Compile Include="Helpers\TimePeriodHelper.cs" />
     <Compile Include="HTML.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

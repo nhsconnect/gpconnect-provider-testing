@@ -60,7 +60,7 @@
 
             operationOutcome.Issue?.Count.ShouldBeGreaterThanOrEqualTo(1);
 
-            operationOutcome.Issue.ForEach(issue =>
+            operationOutcome.Issue?.ForEach(issue =>
             {
                 issue.Severity.ShouldNotBeNull();
                 issue.Code.ShouldNotBeNull();

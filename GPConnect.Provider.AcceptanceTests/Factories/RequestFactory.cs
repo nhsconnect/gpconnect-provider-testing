@@ -1,10 +1,15 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Factories
 {
     using System;
+    using Constants;
     using Context;
     using Enum;
+    using Helpers;
     using Hl7.Fhir.Serialization;
 
+    //TODO: Consider XML requests and whether we need each interaction to have its own "configure" method.
+    //There will be 2 types of serialization (JSON & XML) and 2 body types (Parameters & Resource)
+    //Request body could be computed field as all info will be in HttpConext.
     public class RequestFactory
     {
         private readonly GpConnectInteraction _gpConnectInteraction;
@@ -21,6 +26,9 @@
                 case GpConnectInteraction.GpcGetCareRecord:
                     ConfigureGpcGetCareRecordBody(httpContext);
                     break;
+                case GpConnectInteraction.OrganizationSearch:
+                    ConfigureOrganizationSearchBody(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -29,6 +37,16 @@
         private static void ConfigureGpcGetCareRecordBody(HttpContext httpContext)
         {
             httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
+        }
+
+        private static void ConfigureOrganizationSearchBody(HttpContext httpContext)
+        {
+            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
+        }
+
+        public void ConfigureInvalidResourceType(HttpContext httpContext)
+        {
+            httpContext.RequestBody = FhirHelper.ChangeResourceTypeString(httpContext.RequestBody, FhirConst.Resources.kInvalidResourceType);
         }
     }
 }

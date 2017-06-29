@@ -1,4 +1,4 @@
-﻿@accessrecord
+﻿@accessrecordthe Patient Identifiers should b
 Feature: AccessRecord
 
 @ignore
@@ -28,7 +28,6 @@ Scenario Outline: Retrieve the care record sections for a patient
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 	Examples:
 		| Code |
@@ -46,153 +45,139 @@ Scenario Outline: Retrieve the care record sections for a patient
 		| SUM |
 
 Scenario: Empty request
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-	When I make a POST request to "/Patient/$gpc.getcarerecord"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I set the JWT Requested Record to the NHS Number for "patient2"	
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 
 Scenario: No record section requested
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 
 Scenario: Invalid record section requested
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "ZZZ" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter with invalid Code
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "422"		
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Multiple record sections requested
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section
-		And I am requesting the "ALL" care record section
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+		And I add a Record Section parameter for "ALL"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 
 Scenario: Multiple duplication record sections in request
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section
-		And I am requesting the "SUM" care record section
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 
 Scenario: Record section with invalid system for codable concept
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section with system "http://GPConnectTest.nhs.net/ValueSet/record-section"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM" with invalid System
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 
 Scenario: Request record sections with String type rather than CodableConcept
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section with a string parameter
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM" using an invalid parameter type
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 
 Scenario: No patient NHS number supplied
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the "SUM" care record section
-		And I set the JWT header for getcarerecord with config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 
 Scenario: Invalid NHS number supplied
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for patient with NHS Number "1234567891"
-		And I am requesting the "SUM" care record section
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for an invalid NHS Number		
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
 
 Scenario: Invalid identifier system for patient NHS number
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2" of system "http://GPConnectTest.nhs.net/Id/identifierSystem"
-		And I am requesting the "SUM" care record section
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2" with an invalid Identifier System	
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
 
 Scenario: Multiple different NHS number parameters in request
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the record for config patient "patient3"
-		And I am requesting the "SUM" care record section
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add an NHS Number parameter for "patient3"		
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 
 Scenario: Duplicate NHS number parameters in request
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "SUM" care record section
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 
 Scenario: No patient found with NHS number
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "patientNotInSystem"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "404"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patientNotInSystem"			
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patientNotInSystem"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "404"		
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
 Scenario: Request care record section with patientNHSNumber using String type value
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2" using a fhir string parameter
-		And I am requesting the "SUM" care record section
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2" using an invalid parameter type 		
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 
 Scenario Outline: Time period specified for a care record section that can be filtered
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "<Code>" care record section
-		And I set a valid time period start and end date
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I add a valid Time Period parameter
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 	Examples:
 		| Code |
@@ -207,14 +192,13 @@ Scenario Outline: Time period specified for a care record section that can be fi
 		| REF |
 
 Scenario Outline: Time period specified for a care record section that must not be filtered
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "<Code>" care record section
-		And I set a valid time period start and end date
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I add a valid Time Period parameter
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 	Examples:
 		| Code |
@@ -223,12 +207,12 @@ Scenario Outline: Time period specified for a care record section that must not 
 		| SUM |
 
 Scenario Outline: Access blocked to care record as no patient consent
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient15"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "403"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient15"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient15"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "403"		
 		And the response should be a OperationOutcome resource with error code "NO_PATIENT_CONSENT"
 	Examples:
 		| Code |
@@ -246,14 +230,13 @@ Scenario Outline: Access blocked to care record as no patient consent
 		| SUM  |
 
 Scenario Outline: Request patient summary with parameters in oposite order to other tests
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I set a valid time period start and end date
-		And I am requesting the "<Code>" care record section
-		And I am requesting the record for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request	
+		And I add a valid Time Period parameter	
+		And I add a Record Section parameter for "<Code>"
+		And I add an NHS Number parameter for "patient2"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 	Examples:
 		| Code |
@@ -265,76 +248,72 @@ Scenario Outline: Request patient summary with parameters in oposite order to ot
 		| REF  |
 
 Scenario: Request care record where request resource type is something other than Parameters
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "patient2"
-	When I send a gpc.getcarerecord operation request with invalid resource type payload
+		Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request with invalid Resource type
 	Then the response status code should be "422"
-		And the response body should be FHIR JSON
+		
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Invalid start date parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "ENC" care record section
-		And I set a time period parameter start date to "abcd" and end date to "2016"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "ENC"
+		And I add a Time Period parameter with invalid Start Date
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "422"		
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Invalid end date parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "ENC" care record section
-		And I set a time period parameter start date to "2014" and end date to "abcd"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "ENC"
+		And I add a Time Period parameter with invalid End Date
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "422"		
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-
+	
 Scenario: Time period where start date parameter is after end date parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "ENC" care record section
-		And I set a time period parameter start date to "2016" and end date to "2014"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "ENC"
+		And I add a Time Period parameter with Start Date after End Date
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "422"		
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Time period with only start date parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "ENC" care record section
-		And I set a time period parameter with start date "2012"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "ENC"
+		And I add a Time Period parameter with Start Date only
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 
 Scenario: Time period with only end date parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I am requesting the record for config patient "patient2"
-		And I am requesting the "ENC" care record section
-		And I set a time period parameter with end date "2016"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "ENC"
+		And I add a Time Period parameter with End Date only
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-
+	
 Scenario Outline: response should be bundle containing all mandatory elements
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the response bundle should contain a single Composition resource
 		And the response bundle should contain a single Patient resource
@@ -354,12 +333,12 @@ Scenario Outline: response should be bundle containing all mandatory elements
 		| SUM |
 
 Scenario Outline: response bundle should contain composition as the first entry
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the response bundle should contain the composition resource as the first entry
 	Examples:
@@ -378,12 +357,12 @@ Scenario Outline: response bundle should contain composition as the first entry
 		| SUM |
 
 Scenario Outline: request contain the structure definition in the meta fields
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Composition Metadata should be valid
 		And the patient resource in the bundle should contain meta data profile and version id
@@ -407,12 +386,12 @@ Scenario Outline: request contain the structure definition in the meta fields
 		| SUM |
 
 Scenario Outline: composition contains generic mandatory fields
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "<Patient>"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "<Patient>"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Composition should be valid
 		And the Composition Section should be valid for "<Title>", "<Code>", "<Display>"
@@ -444,12 +423,12 @@ Scenario Outline: composition contains generic mandatory fields
 		| patient2 | SUM      | Summary                         | Summary                         |
 
 Scenario Outline: if composition contains type mandatory field fixed values should be correct
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Composition Type should be valid
 	Examples:
@@ -468,12 +447,12 @@ Scenario Outline: if composition contains type mandatory field fixed values shou
 		| SUM  |
 
 Scenario Outline: if composition contains class coding
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Composition Class should be valid
 	Examples:
@@ -492,12 +471,12 @@ Scenario Outline: if composition contains class coding
 		| SUM  |
 
 Scenario Outline: composition contains subject referencing a patient resource in the bundle
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the response bundle entry "Composition" should optionally contain element "resource.subject.reference" and that element should reference a resource in the bundle
 	Examples:
@@ -516,12 +495,12 @@ Scenario Outline: composition contains subject referencing a patient resource in
 		| SUM  |
 
 Scenario Outline: if composition contains author, the device reference can be found in the bundle
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the response bundle entry "Composition" should optionally contain element "resource.author[0].reference" and that element should reference a resource in the bundle
 	Examples:
@@ -540,12 +519,12 @@ Scenario Outline: if composition contains author, the device reference can be fo
 		| SUM  |
 
 Scenario Outline: if composition contains custodian reference
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the response bundle entry "Composition" should optionally contain element "resource.custodian.reference" and that element should reference a resource in the bundle
 	Examples:
@@ -564,12 +543,12 @@ Scenario Outline: if composition contains custodian reference
 		| SUM  |
 
 Scenario Outline: patient contains a valid identifiers
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the response bundle entry "Patient" should contain element "resource.id"
 		And the Patient Identifiers should be valid
@@ -589,12 +568,12 @@ Scenario Outline: patient contains a valid identifiers
 		| SUM  |
 
 Scenario Outline: if patient contains telecom information
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Patient Telecom should be valid
 	Examples:
@@ -613,12 +592,12 @@ Scenario Outline: if patient contains telecom information
 		| SUM  |
 
 Scenario Outline: if patient contains maritalStatus
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Patient MaritalStatus should be valid
 	Examples:
@@ -637,12 +616,12 @@ Scenario Outline: if patient contains maritalStatus
 		| SUM  |
 
 Scenario Outline: if patient contains contact
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Patient Contact should be valid
 	Examples:
@@ -661,12 +640,12 @@ Scenario Outline: if patient contains contact
 		| SUM  |
 
 Scenario Outline: if patient contins communicaiton
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Patient Communication should be valid
 	Examples:
@@ -685,12 +664,12 @@ Scenario Outline: if patient contins communicaiton
 		| SUM  |
 
 Scenario Outline: if patient contains practitioner as care provider
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Patient CareProvider Practitioner should be referenced in the Bundle
 	Examples:
@@ -709,12 +688,12 @@ Scenario Outline: if patient contains practitioner as care provider
 		| SUM  |
 
 Scenario Outline: if patient contains managingOrganizaiton
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Patient ManagingOrganization Organization should be referenced in the Bundle
 	Examples:
@@ -733,12 +712,12 @@ Scenario Outline: if patient contains managingOrganizaiton
 		| SUM  |
 
 Scenario Outline: patient does not contain disallowed fields
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Patient should exclude fields
 	Examples:
@@ -761,8 +740,7 @@ Scenario Outline: practitioner resource contains mandatory fields and does not i
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "patient2"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Practitioner Name should be valid
 		And the Practitioner Photo and Qualification should be excluded
@@ -782,12 +760,12 @@ Scenario Outline: practitioner resource contains mandatory fields and does not i
 		| SUM  |
 
 Scenario Outline: practitioner resource contains mandatory fields within optional elements
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Practitioner Identifiers should be valid
 		And the Practitioner PractitionerRoles Roles should be valid
@@ -808,12 +786,12 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 		| SUM  |
 
 Scenario Outline: if practitioner resource contains a managing organization it must reference an organization within the response bundle
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Practitioner PractitionerRoles ManagingOrganization should be referenced in the Bundle
 	Examples:
@@ -832,12 +810,12 @@ Scenario Outline: if practitioner resource contains a managing organization it m
 		| SUM  |
 
 Scenario Outline: organization resource identifiers
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Organization Identifiers should be valid
 	Examples:
@@ -856,12 +834,12 @@ Scenario Outline: organization resource identifiers
 		| SUM  |
 
 Scenario Outline: organization resource element cardinality
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Organization Type should be valid
 	Examples:
@@ -880,12 +858,12 @@ Scenario Outline: organization resource element cardinality
 		| SUM  |
 
 Scenario Outline: organization resource internal reference
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success	
 		And the response should be a Bundle resource of type "document"
 		And the Organization PartOf Organization should be referenced in the Bundle
 	Examples:
@@ -904,12 +882,12 @@ Scenario Outline: organization resource internal reference
 		| SUM  |
 
 Scenario Outline: device resource element cardinality conformance
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Device should exclude fields
 		And the Device Note should be valid
@@ -930,12 +908,12 @@ Scenario Outline: device resource element cardinality conformance
 		| SUM  |
 
 Scenario Outline: device resource type element values match specification
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Device Type should be valid
 	Examples:
@@ -954,13 +932,13 @@ Scenario Outline: device resource type element values match specification
 		| SUM  |
 
 Scenario Outline: check all dateTime format variations are allowed
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-		And I set a time period parameter start date to "<StartDateTime>" and end date to "<EndDateTime>"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I add a Time Period parameter with "<StartDateTime>" and "<EndDateTime>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 	Examples:
 		| Code | StartDateTime             | EndDateTime               |
@@ -1011,73 +989,70 @@ Scenario Outline: check all dateTime format variations are allowed
 #		 | PAT  |                           |                           |
 
 Scenario Outline: invalid request parameter names and case
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "ENC" care record section for config patient "patient2"
-		And I set a valid time period start and end date
-		And I replace the parameter name "<ParamName>" with "<NewParamName>"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "ENC"
+		And I add a valid Time Period parameter
+		And I set the Parameter name "<ParameterName>" to "<InvalidParameterName>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource
 	Examples:
-		| ParamName        | NewParamName      |
-		| patientNHSNumber | patientsNHSNumber |
-		| patientNHSNumber | patientnhsnumber  |
-		| patientNHSNumber | PATIENTNHSNUMBER  |
-		| recordSection    | recordSections    |
-		| recordSection    | RecordSection     |
-		| recordSection    | RECORDSECTION     |
-		| timePeriod       | time              |
-		| timePeriod       | TimePeriod        |
-		| timePeriod       | TIMEPERIOD        |
-
+		| ParameterName    | InvalidParameterName	|
+		| patientNHSNumber | patientsNHSNumber		|
+		| patientNHSNumber | patientnhsnumber		|
+		| patientNHSNumber | PATIENTNHSNUMBER		|
+		| recordSection    | recordSections			|
+		| recordSection    | RecordSection			|
+		| recordSection    | RECORDSECTION			|
+		| timePeriod       | time					|
+		| timePeriod       | TimePeriod				|
+		| timePeriod       | TIMEPERIOD				|
+##
 Scenario: Request parameter patientNHSNumber values is empty
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "patient2"
-		And I set the parameter patientNHSNumber with an empty value
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter with an empty NHS Number	
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
 
 Scenario: Request parameter patientNHSNumber system is empty
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "patient2"
-		And I set the parameter patientNHSNumber with an empty system
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2" with an empty Identifier System	
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
 		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
 
 Scenario: Request parameter recordSection values is empty
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter with empty Code
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "422"		
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Request parameter recordSection system is empty
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "patient2"
-		And I set the parameter recordSection with an empty system
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM" with empty System
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "422"		
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario Outline: Requested section code incorrect parameter case
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "422"		
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
 		| Code |
@@ -1113,12 +1088,12 @@ Scenario Outline: Requested section code incorrect parameter case
 		| sUm |
 
 Scenario Outline: A patient is requested which is not on Spine but is on provider system
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient14"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should be "404"
-		And the response body should be FHIR JSON
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient14"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient14"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "404"		
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 	Examples:
 		| Code |

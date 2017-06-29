@@ -25,10 +25,15 @@
                 case GpConnectInteraction.GpcGetCareRecord:
                     ConfigureGpcGetCareRecordContext(httpContext);
                     break;
+                case GpConnectInteraction.OrganizationSearch:
+                    ConfigureOrganizationSearchContext(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_gpConnectInteraction), _gpConnectInteraction, null);
             }
         }
+
+     
 
         private static void SetHttpContextDefaults(HttpContext httpContext)
         {
@@ -41,7 +46,14 @@
         {
             httpContext.HttpMethod = HttpMethod.Post;
             httpContext.RequestUrl = "Patient/$gpc.getcarerecord";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.kFhirOperationGetCareRecord);
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetCareRecord);
+        }
+
+        private static void ConfigureOrganizationSearchContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Get;
+            httpContext.RequestUrl = "Organization";
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.OrganizationSearch);
         }
 
         //TODO: Remove fhirContext dependencies

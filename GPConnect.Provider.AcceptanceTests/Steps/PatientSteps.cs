@@ -544,7 +544,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 var identifier = patient.Identifier.First();
 
                 FhirConst.IdentifierSystems.kNHSNumber.Equals(identifier.System).ShouldBeTrue();
-                FhirHelper.isValidNHSNumber(identifier.Value).ShouldBeTrue();
+                NhsNumberHelper.IsNhsNumberValid(identifier.Value).ShouldBeTrue();
             });
         }
 
