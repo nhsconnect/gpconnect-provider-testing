@@ -145,7 +145,8 @@ Scenario Outline: Appointment retrieve send request and find request using equal
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain "1" appointment
+		And the response bundle should contain atleast "1" appointment
+		And all appointments must have a start element which is populated with a date that equals "slotStartDate"
 	Examples:
 		| prefix |
 		| eq     |
