@@ -166,6 +166,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(getScheduleResponseBundleKey, returnedGetScheduleResponseBundle);
         }
 
+        [When(@"I perform an appointment read for the first appointment saved in the bundle of resources stored against key ""([^""]*)"" without the Authorization header")]
+        public void IPerformAnAppointmentReadForTheFirstAppointmentSavedInTheLBundleOfResorcesStoredAgainstKeyWithoutAuthorizationHeader(string bundleOfPatientAppointmentsKey)
+        {
+            var patientAppointmentBunde = (Bundle)HttpContext.StoredFhirResources[bundleOfPatientAppointmentsKey];
+            var appointmentLogicalId = patientAppointmentBunde.Entry[0].Resource.Id;
+            When($@"I make a GET request to ""/Appointment/{appointmentLogicalId}""");
+        }
+
         [When(@"I perform an appointment read for the first appointment saved in the bundle of resources stored against key ""([^""]*)"" for patient ""([^""]*)""")]
         public void IPerformAnAppointmentReadForTheFirstAppointmentSavedInTheLBundleOfResorcesStoredAgainstKey(string bundleOfPatientAppointmentsKey, string patient)
         {
@@ -219,8 +227,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response should be an Appointment resource which is saved as ""([^""]*)""")]
         public void theResponseShouldBeAnAppointmentResource(string appointmentName)
         {
-            HttpContext.StoredAppointment.Remove(appointmentName);
-            HttpContext.StoredAppointment.Add(appointmentName, (Appointment)FhirContext.FhirResponseResource);
+            HttpContext.StoredFhirResources.Remove(appointmentName);
+            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)FhirContext.FhirResponseResource);
         }
 
         [Then(@"the response should be a Location resource")]

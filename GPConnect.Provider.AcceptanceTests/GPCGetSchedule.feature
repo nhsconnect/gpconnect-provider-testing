@@ -332,9 +332,9 @@ Scenario: Send a request to an invalid endpoint for the gpc.getschedule operatio
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
 		And I add period request parameter with a start date of today and an end date "8" days later
 	When I send a gpc.getschedule operation for the organization stored as "ORG1" to the wrong endpoint
-	Then the response status code should be "400"
+	Then the response status code should be "404"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
 
 Scenario Outline: I successfully perform a gpc.getschedule operation and check the included schedule resources returned are valid
 	Given I am using the default server

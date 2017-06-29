@@ -660,6 +660,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"all appointments must have a start element which is populated with a date that equals ""([^""]*)""")]
+        public void appointmentPopulatedWithAStartDateEquals(string startBoundry)
+        {
+            //string time = HttpContext.StoredDate[startBoundry];
+            DateTimeOffset time = DateTimeOffset.Parse(HttpContext.StoredDate[startBoundry]);
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
+                {
+                    Appointment appointment = (Appointment)entry.Resource;
+                    appointment.StartElement.Value.ShouldBe(time);
+                }
+            }
+        }
+        
         [Then(@"all appointments must have an end element which is populated vith a valid date")]
         public void appointmentPopulatedWithAValidEndDate()
         {

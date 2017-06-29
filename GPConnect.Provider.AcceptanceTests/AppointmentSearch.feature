@@ -3,7 +3,7 @@ Feature: AppointmentSearch
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
 	Given I am using the default server
-		And I perform a patient search for patient "patientNoAppointments" and store the first returned resources against key "registerPatient"
+		And I perform a patient search for patient "patient15" and store the first returned resources against key "registerPatient"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
 		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
@@ -145,7 +145,8 @@ Scenario Outline: Appointment retrieve send request and find request using equal
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain "1" appointment
+		And the response bundle should contain atleast "1" appointment
+		And all appointments must have a start element which is populated with a date that equals "slotStartDate"
 	Examples:
 		| prefix |
 		| eq     |
@@ -472,7 +473,6 @@ Scenario: Appointment retrieve bundle valid resources returned in the response
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the practitioner resource returned in the appointments bundle is present
-#		And the location resource returned in the appointments bundle is present -- No longr required
 		And the patient resource returned in the appointments bundle is present
 
 Scenario: Appointment retrieve bundle contains appointment with identifer with correct system and value

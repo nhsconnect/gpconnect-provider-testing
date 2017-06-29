@@ -326,9 +326,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // Setup configuration
             Given($@"I am using the default server");
+
             And($@"I set the default JWT");
             And($@"I am performing the ""{interactionID}"" interaction");
-
+            if (relativeUrl.Contains("Patient"))
+            {
+               string removedSlash = relativeUrl.Replace(@"/", "");
+                string patientName = removedSlash.ToLower();
+                And($@"I set the JWT requested record NHS number to config patient ""{patientName}""");
+                And($@"I set the JWT requested scope to ""patient/*.read""");
+            }
             // Make Call
             RestRequest(Method.GET, relativeUrl);
 

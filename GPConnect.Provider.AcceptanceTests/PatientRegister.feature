@@ -136,7 +136,7 @@ Scenario Outline: Register patient with an invalid NHS number
 	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_VALUE"
+		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
 	Examples:
 		| nhsNumber   |
 		| 34555##4    |
@@ -474,7 +474,7 @@ Scenario Outline: Register patient with invalid parameters name
 	When I send a gpc.registerpatient to create patient
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
 	| ParameterName        |
 	| invalidName          |
