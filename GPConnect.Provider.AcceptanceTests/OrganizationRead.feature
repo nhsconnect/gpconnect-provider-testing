@@ -193,6 +193,7 @@ Scenario: VRead of current resource should return resource
 		And the response body should be FHIR JSON
 		And the response should be an Organization resource
 
+#Potentially out of scope, needs verifiying
 Scenario: VRead of non existant version should return an error
 	Given I get organization "ORG2" id and save it as "storedOrganization"
 	Given I am using the default server
