@@ -2,12 +2,10 @@
 Feature: PractitionerSearch
 
 Scenario Outline: Practitioner search success
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner" interaction
-		And I add the practitioner identifier parameter with system "http://fhir.nhs.net/Id/sds-user-id" and value "<Value>"
-	When I make a GET request to "/Practitioner"
+	Given I configure the default "PractitionerSearch" request		
+		And I add an Practitioner Identifier parameter with System "http://fhir.nhs.net/Id/sds-user-id" and Value "<Value>"
+	When I make the "PractitionerSearch" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response bundle should contain "<EntrySize>" entries
 		And the response should be a Bundle resource of type "searchset"
 		And all search response entities in bundle should contain a logical identifier

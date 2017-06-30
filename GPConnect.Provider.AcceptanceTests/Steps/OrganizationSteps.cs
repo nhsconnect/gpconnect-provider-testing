@@ -263,7 +263,7 @@
             });
         }
 
-        [Given(@"I add an Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
+        [Given(@"I add an Organization Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithSystemAndValue(string system, string value)
         {
             HttpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.OdsCodeMap[value]);

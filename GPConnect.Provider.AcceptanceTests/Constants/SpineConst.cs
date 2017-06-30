@@ -1,5 +1,4 @@
-﻿// ReSharper disable ClassNeverInstantiated.Global
-namespace GPConnect.Provider.AcceptanceTests.Constants
+﻿namespace GPConnect.Provider.AcceptanceTests.Constants
 {
     internal static class SpineConst
     {
@@ -11,6 +10,9 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
 
             public const string OrganizationSearch = BaseInteraction + "rest:search:organization";
             public const string OrganizationRead = BaseInteraction + "rest:read:organization";
+
+            public const string PractitionerSearch = BaseInteraction + "rest:search:practitioner";
+            public const string PractitionerRead = BaseInteraction + "rest:read:practitioner";
 
             public const string kFhirRestReadMetadata = "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata";
             public const string kFhirPractitioner = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";

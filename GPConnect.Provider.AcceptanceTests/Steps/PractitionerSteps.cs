@@ -669,6 +669,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 });
             });
         }
+
+        [Given(@"I add an Practitioner Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
+        public void AddAnIdentifierParameterWithSystemAndValue(string system, string value)
+        {
+            _httpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.PractionerCodeMap[value]);
+        }
     }
 }
 

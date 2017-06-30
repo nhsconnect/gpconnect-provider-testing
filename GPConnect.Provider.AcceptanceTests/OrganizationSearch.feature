@@ -7,7 +7,7 @@ Feature: OrganizationSearch
 
 Scenario Outline: Organization search success
 	Given I configure the default "OrganizationSearch" request
-		And I add an Identifier parameter with System "<System>" and Value "<Value>"
+		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 	When I make the "OrganizationSearch" request	
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
