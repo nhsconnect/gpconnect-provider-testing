@@ -7,6 +7,8 @@
     using TechTalk.SpecFlow;
     using System;
     using System.Collections.Generic;
+    using Constants;
+    using Enum;
     using static Hl7.Fhir.Model.Bundle;
 
     [Binding]
@@ -265,6 +267,24 @@
         public void AddAnIdentifierParameterWithSystemAndValue(string system, string value)
         {
             HttpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.OdsCodeMap[value]);
+        }
+
+        [Given(@"I get the Organization for Organization Code ""([^""]*)""")]
+        public void GetTheOrganizationIdForOrganizationCode(string code)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationSearch);
+
+            AddAnIdentifierParameterWithSystemAndValue("http://fhir.nhs.net/Id/ods-organization-code", code);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.OrganizationSearch);
+        }
+
+        [Given(@"I store the Organization Id")]
+        public void StoreTheOrganizationId()
+        {
+            var organization = _fhirContext.Organizations.FirstOrDefault();
+            if (organization != null)
+                HttpContext.GetRequestId = organization.Id;
         }
     }
 }

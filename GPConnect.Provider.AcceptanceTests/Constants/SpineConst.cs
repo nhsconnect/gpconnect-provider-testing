@@ -5,12 +5,16 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
     {
         internal static class InteractionIds
         {
-            public const string GpcGetCareRecord = "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord";
+            private const string BaseInteraction = "urn:nhs:names:services:gpconnect:fhir:";
 
-            public const string OrganizationSearch = "urn:nhs:names:services:gpconnect:fhir:rest:search:organization";
+            public const string GpcGetCareRecord = BaseInteraction + "operation:gpc.getcarerecord";
+
+            public const string OrganizationSearch = BaseInteraction + "rest:search:organization";
+            public const string OrganizationRead = BaseInteraction + "rest:read:organization";
 
             public const string kFhirRestReadMetadata = "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata";
             public const string kFhirPractitioner = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";
+
         }        
     }
 }

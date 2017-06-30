@@ -28,6 +28,9 @@
                 case GpConnectInteraction.OrganizationSearch:
                     ConfigureOrganizationSearchContext(httpContext);
                     break;
+                case GpConnectInteraction.OrganizationRead:
+                    ConfigureOrganizationReadContext(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_gpConnectInteraction), _gpConnectInteraction, null);
             }
@@ -52,6 +55,13 @@
             httpContext.HttpMethod = HttpMethod.Get;
             httpContext.RequestUrl = "Organization";
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.OrganizationSearch);
+        }
+
+        private static void ConfigureOrganizationReadContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Get;
+            httpContext.RequestUrl = "Organization/" + httpContext.RequestId;
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.OrganizationRead);
         }
 
         //TODO: Remove fhirContext dependencies

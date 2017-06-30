@@ -8,12 +8,12 @@ Feature: OrganizationRead
 #Change URL to have a slash so its clear it a URL
 
 Scenario Outline: Organization Read successful request
-	Given I get organization "<Organization>" id and save it as "ORG1ID"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
-	When I get organization "ORG1ID" and use the id to make a get request to the url "Organization"
+	Given I get the Organization for Organization Code "<Organization>"
+		And I store the Organization Id
+		#Set RR on JWT to <Organization> ???
+	Given I configure the default "OrganizationRead" request
+	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be an Organization resource
 		And the returned resource shall contains a logical id
 		#Match id requested with

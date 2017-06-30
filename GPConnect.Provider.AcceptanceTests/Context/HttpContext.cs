@@ -742,5 +742,8 @@
         public Parameters BodyParameters { get; set; }
 
         public HttpMethod HttpMethod { get; set; }
+
+        //TODO: Think about how this will be used elsewhere and in multi GET request scenarios
+        public string GetRequestId { get; set; }
     }
 }
