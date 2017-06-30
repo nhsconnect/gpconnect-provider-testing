@@ -1,6 +1,13 @@
 ﻿@practitioner
 Feature: PractitionerRead
 
+# Common
+# JWT uses hard coded organization ODS Code we need to confirm what it should be
+# Merge validation tests for a successful request into one big test
+# Step "Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"" name is slightly unclear
+# Step "When I get practitioner "practitionerSaved" and use the id to make a get request to the url "Practitioner"" name is not clear about what it is doing.
+
+# Name should reflect that it just tests the resource type field
 Scenario: Practitioner read successful request
 	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
 	Given I am using the default server
@@ -8,8 +15,10 @@ Scenario: Practitioner read successful request
 	When I get practitioner "practitionerSaved" and use the id to make a get request to the url "Practitioner"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
+		# The check that the resource type is a practitioner resource only checks the type element, it should probably also check the resource is a valid practitioner resource by parsing the resource.
 		And the response should be an Practitioner resource
 
+# Test is invalid and when updated the name should be changed to match the changed test
 Scenario Outline: Practitioner read successful request checking the correct SDS role id is returned
 	Given I find practitioner "<practitioner>" and save it with the key "practitionerSaved"
 	Given I am using the default server
@@ -18,6 +27,7 @@ Scenario Outline: Practitioner read successful request checking the correct SDS 
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
+		# The practitioner roles are those from the demonstrator, we can not check to this level as we have not specified in the test pre-requisits the requirements to that level of detail. The test should be more generic as to check there is the correct number of role ids included.
 		And the practitioner resource should contain a role id equal to role id "<roleId>" or role id "<roleId2>" or role id "<roleId3>"
 	Examples:
 		# na = not applicable, some practitioner have only 1 role id and some have numerous possibilitys
@@ -26,7 +36,9 @@ Scenario Outline: Practitioner read successful request checking the correct SDS 
 		| practitioner3 | PT1122 | PT1234  | na      |
 		| practitioner5 | PT3333 | PT2222  | PT4444  |
 
+# Test name does not match test exactly, the id's are not invalid they are just not found on the provider system
 Scenario Outline: Practitioner read invalid request invalid id
+	# The practitioner search is un-nessersary if we are just using hard coded practitioner id's in the request
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
@@ -39,6 +51,7 @@ Scenario Outline: Practitioner read invalid request invalid id
 		| 9i        |
 		| 40-9      |
 
+# Test name is a not clear
 Scenario Outline: Practitioner read invalid request invalid URL
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
 	Given I am using the default server
@@ -50,6 +63,7 @@ Scenario Outline: Practitioner read invalid request invalid URL
 		| Practitioners |
 		| Practitioner! |
 		| Practitioner2 |
+		# Should also include "practitioners" as to cover off startsWith() check by providers
 
 Scenario Outline: Practitioner read failure due to missing header
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
@@ -84,6 +98,7 @@ Scenario Outline: Practitioner read failure with incorrect interaction id
 		|                                                                   |
 		| null                                                              |
 
+# Test name not clear
 Scenario Outline: Practitioner read _format parameter only
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
 	Given I am using the default server
@@ -93,11 +108,13 @@ Scenario Outline: Practitioner read _format parameter only
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Practitioner resource
+		# We should check more in the response to make sure the resources are valid and atleast contain the identifier used to search for the practitioner
 	Examples:
 		| Parameter             | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+# Test name not clear
 Scenario Outline: Practitioner read accept header and _format
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
 	Given I am using the default server
@@ -108,12 +125,15 @@ Scenario Outline: Practitioner read accept header and _format
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Practitioner resource
+		# We should check more in the response to make sure the resources are valid and atleast contain the identifier used to search for the practitioner
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
 		| application/json+fhir | application/xml+fhir  | XML        |
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
+
+# We should add another test to check the _format parameter and identifier parameter in different orders
 
 Scenario: Conformance profile supports the Practitioner read operation
 	Given I am using the default server
@@ -147,6 +167,7 @@ Scenario: Practitioner read practitioner contains single name element
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
+		# The following step also checks there is a maximum of 1 family name but this is not clear from the step name. The underlying code does not output a meaningful error for failures.
 		And the practitioner resource should contain a single name element
 
 Scenario: Practitioner read practitioner contains identifier it is valid
@@ -157,8 +178,10 @@ Scenario: Practitioner read practitioner contains identifier it is valid
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
+		# The following step only checks the system of any identifiers is valid, but the name indicates it does more
 		And if the practitioner resource contains an identifier it is valid
 		And the identifier used to search for "practitioner1" is the same as the identifier returned in practitioner read
+		# We should probably also check that the logical id is the same in the search returned practitioner as it is in the read practitioner
 
 Scenario: Practitioner read practitioner contains practitioner role it is valid
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"

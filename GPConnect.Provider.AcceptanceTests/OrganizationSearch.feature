@@ -130,6 +130,7 @@ Scenario: Organization search by site code success multiple results contains cor
 		And the response bundle Organization entries should contain "3" "http://fhir.nhs.net/Id/ods-site-code" system identifiers
 		And the response should contain ods-organization-codes "ORG2|ORG3"
 		And the response should contain ods-site-codes "SIT2|SIT3"
+
 #Map identifier value to site code
 #Add organization codes to the test variables 
 Scenario Outline: Organization search failure due to invalid identifier
@@ -146,6 +147,7 @@ Scenario Outline: Organization search failure due to invalid identifier
 		| http://fhir.nhs.net/Id/ods-site-code   |
 		| http://fhir.nhs.net/Id/ods-site-code\| |
 		| \|GPC001                               |
+
 #Merge value with above test, remove test scenario as error code is invalid
 Scenario: Organization search failure due to invalid system
 	Given I am using the default server
@@ -278,3 +280,7 @@ Scenario: Conformance profile supports the Organization search operation
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Organization" resource with a "search-type" interaction
+
+
+# Add a test validating that all organizations resources should contain a logical identifier
+# Should add test where we change the order of the identifier parameter and the _format parameter

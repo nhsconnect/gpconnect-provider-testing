@@ -7,6 +7,8 @@ Feature: OrganizationRead
 #Refactor When I get organization "ORG1ID" and use the id to make a get request to the url "Organization" to make its fucntion more clear
 #Change URL to have a slash so its clear it a URL
 
+# Add a test validating that all organizations resources should contain a logical identifier
+
 Scenario Outline: Organization Read successful request
 	Given I get the Organization for Organization Code "<Organization>"
 		And I store the Organization Id
