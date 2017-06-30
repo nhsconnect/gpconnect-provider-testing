@@ -33,8 +33,6 @@
             }
         }
 
-     
-
         private static void SetHttpContextDefaults(HttpContext httpContext)
         {
             httpContext.SetDefaults();

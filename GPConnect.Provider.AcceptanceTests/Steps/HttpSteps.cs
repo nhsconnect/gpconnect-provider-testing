@@ -22,6 +22,7 @@ using RestSharp.Extensions.MonoHttp;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System.Linq;
     using Enum;
     using Factories;
 
@@ -734,41 +735,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private void HttpRequest(bool decompressGzip = false)
         {
+            var httpClient = GetHttpClient(decompressGzip);
+
+            var requestMessage = GetHttpRequestMessage();
+
             var timer = new System.Diagnostics.Stopwatch();
-
-            var handler = ConfigureHandler(decompressGzip);
-
-            var httpClient = new HttpClient(handler)
-            {
-                BaseAddress = new Uri(HttpContext.BaseUrl)
-            };
-
-            var requestMessage = new HttpRequestMessage(HttpContext.HttpMethod, HttpContext.RequestUrl);
-            if (HttpContext.RequestBody != null)
-            {
-                requestMessage.Content = new StringContent(HttpContext.RequestBody, Encoding.UTF8, HttpContext.RequestContentType);
-            }
-
-            // Add The Headers
-            HttpContext.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, HttpContext.RequestContentType);
-            foreach (var header in HttpContext.RequestHeaders.GetRequestHeaders())
-            {
-                try
-                {
-                    Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
-                    requestMessage.Headers.Add(header.Key, header.Value);
-                }
-                catch (Exception e)
-                {
-                    Log.WriteLine("Could not add header: " + header.Key + e);
-                }
-            }
 
             // Start The Performance Timer Running
             timer.Start();
 
             // Perform The Http Request
-            var result = httpClient.SendAsync(requestMessage).ConfigureAwait(false).GetAwaiter().GetResult();
+            var result = httpClient.SendAsync(requestMessage).Result;
 
             // Always Stop The Performance Timer Running
             timer.Stop();
@@ -811,6 +788,52 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        private HttpRequestMessage GetHttpRequestMessage()
+        {
+            var queryStringParameters = GetQueryStringParameters();
+
+            var requestMessage = new HttpRequestMessage(HttpContext.HttpMethod, HttpContext.RequestUrl + queryStringParameters);
+            if (HttpContext.RequestBody != null)
+            {
+                requestMessage.Content = new StringContent(HttpContext.RequestBody, Encoding.UTF8, HttpContext.RequestContentType);
+            }
+
+            // Add The Headers
+            HttpContext.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, HttpContext.RequestContentType);
+            foreach (var header in HttpContext.RequestHeaders.GetRequestHeaders())
+            {
+                try
+                {
+                    Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
+                    requestMessage.Headers.Add(header.Key, header.Value);
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLine("Could not add header: " + header.Key + e);
+                }
+            }
+
+            return requestMessage;
+        }
+
+        private string GetQueryStringParameters()
+        {
+            if (!HttpContext.RequestParameters.GetRequestParameters().Any())
+            {
+                return string.Empty;
+            }
+
+            var requestParamString = "?";
+
+            foreach (var parameter in HttpContext.RequestParameters.GetRequestParameters())
+            {
+                Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
+                requestParamString = requestParamString + HttpUtility.UrlEncode(parameter.Key, Encoding.UTF8) + "=" + HttpUtility.UrlEncode(parameter.Value, Encoding.UTF8) + "&";
+            }
+
+            return requestParamString.Substring(0, requestParamString.Length - 1);
+        }
+
         private void ParseResponse()
         {
             switch (HttpContext.ResponseContentType)
@@ -849,6 +872,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
 
             return handler;
+        }
+
+        private HttpClient GetHttpClient(bool decompressGzip)
+        {
+            var handler = ConfigureHandler(decompressGzip);
+
+            return new HttpClient(handler)
+            {
+                BaseAddress = new Uri(HttpContext.BaseUrl)
+            };
         }
     }
 }

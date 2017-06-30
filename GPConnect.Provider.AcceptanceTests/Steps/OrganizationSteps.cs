@@ -20,7 +20,7 @@
             HttpContext = httpContext;
             _bundleSteps = bundleSteps;
         }
-        
+
         [Given(@"I add the organization identifier parameter with system ""(.*)"" and value ""(.*)""")]
         public void GivenIAddTheOrganizationIdentifierParameterWithTheSystemAndValue(string systemParameter, string valueParameter)
         {
@@ -259,6 +259,12 @@
                     _bundleSteps.ResponseBundleContainsReferenceOfType(organization.PartOf.Reference, ResourceType.Organization);
                 }
             });
+        }
+
+        [Given(@"I add an Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
+        public void AddAnIdentifierParameterWithSystemAndValue(string system, string value)
+        {
+            HttpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.OdsCodeMap[value]);
         }
     }
 }

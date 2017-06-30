@@ -22,26 +22,26 @@
             switch (_gpConnectInteraction)
             {
                 case GpConnectInteraction.GpcGetCareRecord:
-                    ConfigureGpcGetCareRecordJwt(jwtHelper, httpContext);
+                    ConfigureGpcGetCareRecordJwt(jwtHelper);
                     break;
                 case GpConnectInteraction.OrganizationSearch:
-                    ConfigureOrganizationSearchJwt(jwtHelper, httpContext);
+                    ConfigureOrganizationSearchJwt(jwtHelper);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
         }
 
-        private static void ConfigureGpcGetCareRecordJwt(JwtHelper jwtHelper, HttpContext httpContext)
+        private static void ConfigureGpcGetCareRecordJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
         }
 
-        private static void ConfigureOrganizationSearchJwt(JwtHelper jwtHelper, HttpContext httpContext)
+        private static void ConfigureOrganizationSearchJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
         }
     }
 }

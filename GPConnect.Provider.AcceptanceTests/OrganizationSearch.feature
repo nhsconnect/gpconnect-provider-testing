@@ -6,12 +6,10 @@ Feature: OrganizationSearch
 #Come up with standard error param names and values
 
 Scenario Outline: Organization search success
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:organization" interaction
-		And I add the organization identifier parameter with system "<System>" and value "<Value>"
-	When I make a GET request to "/Organization"
+	Given I configure the default "OrganizationSearch" request
+		And I add an Identifier parameter with System "<System>" and Value "<Value>"
+	When I make the "OrganizationSearch" request	
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<Entries>" entries
 		And the response bundle Organization entries should contain a maximum of 1 http://fhir.nhs.net/Id/ods-organization-code system identifier

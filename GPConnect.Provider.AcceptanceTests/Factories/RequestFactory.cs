@@ -1,6 +1,5 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Factories
 {
-    using System;
     using Constants;
     using Context;
     using Enum;
@@ -26,20 +25,10 @@
                 case GpConnectInteraction.GpcGetCareRecord:
                     ConfigureGpcGetCareRecordBody(httpContext);
                     break;
-                case GpConnectInteraction.OrganizationSearch:
-                    ConfigureOrganizationSearchBody(httpContext);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 
         private static void ConfigureGpcGetCareRecordBody(HttpContext httpContext)
-        {
-            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
-        }
-
-        private static void ConfigureOrganizationSearchBody(HttpContext httpContext)
         {
             httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
         }

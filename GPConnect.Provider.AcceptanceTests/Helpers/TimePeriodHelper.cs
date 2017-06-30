@@ -41,7 +41,7 @@
 
         public static Period GetTimePeriodEndDateOnly()
         {
-            return new Period(DefaultStartDate, null);
+            return new Period(null, DefaultEndDate);
         }
     }
 }
