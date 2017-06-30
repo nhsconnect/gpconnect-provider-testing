@@ -10,6 +10,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using System;
     using Shouldly;
     using System.Collections.Generic;
+    using Enum;
     using TechTalk.SpecFlow;
     using static Hl7.Fhir.Model.Bundle;
 
@@ -674,6 +675,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void AddAnIdentifierParameterWithSystemAndValue(string system, string value)
         {
             _httpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.PractionerCodeMap[value]);
+        }
+
+        [Given(@"I get the Practitioner for Practitioner Code ""([^""]*)""")]
+        public void GetTheOrganizationIdForOrganizationCode(string code)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.PractitionerSearch);
+
+            AddAnIdentifierParameterWithSystemAndValue("http://fhir.nhs.net/Id/sds-user-id", code);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.PractitionerSearch);
+        }
+
+        [Given(@"I store the Practitioner Id")]
+        public void StoreTheOrganizationId()
+        {
+            var practitioner = _fhirContext.Practitioners.FirstOrDefault();
+            if (practitioner != null)
+                _httpContext.GetRequestId = practitioner.Id;
         }
     }
 }

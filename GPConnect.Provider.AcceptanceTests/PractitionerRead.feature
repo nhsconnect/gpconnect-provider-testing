@@ -9,12 +9,11 @@ Feature: PractitionerRead
 
 # Name should reflect that it just tests the resource type field
 Scenario: Practitioner read successful request
-	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get practitioner "practitionerSaved" and use the id to make a get request to the url "Practitioner"
+	Given I get the Practitioner for Practitioner Code "practitioner1"
+		And I store the Practitioner Id
+	Given I configure the default "PractitionerRead" request
+	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		# The check that the resource type is a practitioner resource only checks the type element, it should probably also check the resource is a valid practitioner resource by parsing the resource.
 		And the response should be an Practitioner resource
 

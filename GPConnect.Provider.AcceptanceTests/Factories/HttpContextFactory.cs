@@ -34,6 +34,9 @@
                 case GpConnectInteraction.PractitionerSearch:
                     ConfigurePractitionerSearchContext(httpContext);
                     break;
+                case GpConnectInteraction.PractitionerRead:
+                    ConfigurePractitionerReadContext(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_gpConnectInteraction), _gpConnectInteraction, null);
             }
@@ -72,6 +75,13 @@
             httpContext.HttpMethod = HttpMethod.Get;
             httpContext.RequestUrl = "Practitioner";
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PractitionerSearch);
+        }
+
+        private static void ConfigurePractitionerReadContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Get;
+            httpContext.RequestUrl = "Practitioner/" + httpContext.GetRequestId;
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PractitionerRead);
         }
 
         //TODO: Remove fhirContext dependencies
