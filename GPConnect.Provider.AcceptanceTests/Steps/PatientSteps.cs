@@ -15,6 +15,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Linq;
     using Data;
+    using Enum;
     using Helpers;
 
     [Binding]
@@ -22,12 +23,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     {
         private readonly HttpContext HttpContext;
         private readonly BundleSteps _bundleSteps;
+        private readonly JwtSteps _jwtSteps;
 
-        public PatientSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps) : base(fhirContext, httpSteps)
+        public PatientSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, JwtSteps jwtSteps) : base(fhirContext, httpSteps)
         {
             Log.WriteLine("PatientSteps() Constructor");
             HttpContext = httpContext;
             _bundleSteps = bundleSteps;
+            _jwtSteps = jwtSteps;
         }
 
         // Patient Steps
@@ -672,6 +675,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void AddAPatientIdentifierParameterWithDefaultSystemAndValue(string value)
         {
             AddAPatientIdentifierParameterWithSystemAndValue(FhirConst.IdentifierSystems.kNHSNumber, value);
+        }
+
+        [Given(@"I get the Patient for Patient Value ""([^""]*)""")]
+        public void GetThePatientForPatientValue(string value)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.PatientSearch);
+
+            AddAPatientIdentifierParameterWithDefaultSystemAndValue(value);
+
+            _jwtSteps.ISetTheJwtRequestedRecordToTheNhsNumberFor(value);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
+        }
+
+        [Given(@"I store the Patient Id")]
+        public void StoreThePatientId()
+        {
+            var patient = _fhirContext.Patients.FirstOrDefault();
+
+            if (patient != null)
+            {
+                HttpContext.GetRequestId = patient.Id;
+            }
         }
     }
 }

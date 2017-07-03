@@ -710,6 +710,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _securitySteps.ConfigureServerCertificatesAndSsl();
         }
 
+        [Given(@"I set the GET request Id to ""([^""]*)""")]
+        public void SetTheGetRequestIdTo(string id)
+        {
+            HttpContext.GetRequestId = id;
+        }
+
         [When(@"I make the ""(.*)"" request")]
         public void MakeRequest(GpConnectInteraction interaction)
         {
