@@ -286,5 +286,66 @@
             if (organization != null)
                 HttpContext.GetRequestId = organization.Id;
         }
+
+        [Then(@"the ""([^""]*)"" organization returned in the bundle is saved and given the name ""([^""]*)""")]
+        public void ThenTheOrganizationReturnedInTheBundleIsSavedAndGivenTheName(string organizationPosition, string name)
+        {
+            Organization organization = new Organization();
+            int count = 0;
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+
+                    if (count == 0 && organizationPosition == "First")
+                    {
+                        organization = (Organization)entry.Resource;
+                        HttpContext.StoredFhirResources.Add(name, organization);
+                        break;
+                    }
+
+
+                    if (count == 1 && organizationPosition == "Second")
+                    {
+                        organization = (Organization)entry.Resource;
+                        HttpContext.StoredFhirResources.Add(name, organization);
+                        break;
+                    }
+                    else
+                    {
+                        count++;
+                        continue;
+                    }
+                }
+            }
+        }
+
+      
+        [Then(@"the stored organization ""([^""]*)"" contains ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)"" code ""([^""]*)""")]
+        public void ThenTheStoredOrganizationContainsSystemIdentifierWithSiteCode(string organizationName, int Number, string System,string searchMethod ,string Code)
+        {
+            int count = 0;
+            Organization organization = (Organization)HttpContext.StoredFhirResources[organizationName];
+            foreach (var identifier in organization.Identifier)
+            {
+
+                if (identifier.System == System)
+                {
+
+                    List<string> referenceValueLists = new List<string>();
+
+                    foreach (var element in Code.Split(new char[] { '|' }))
+                    {
+                        referenceValueLists.Add(GlobalContext.OdsCodeMap[element]);
+                    }
+
+                    string referenceValues = String.Join("|", referenceValueLists);
+                    count++;
+                    referenceValueLists.ShouldContain(identifier.Value);
+
+                }
+            }
+            count.ShouldBe(Number);
+        }
     }
 }
