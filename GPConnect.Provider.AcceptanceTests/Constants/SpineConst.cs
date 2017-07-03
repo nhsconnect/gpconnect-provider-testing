@@ -20,6 +20,8 @@
             public const string LocationSearch = BaseInteraction + "rest:search:location";
             public const string LocationRead = BaseInteraction + "rest:read:location";
 
+            public static string RegisterPatient = BaseInteraction + "operation:gpc.registerpatient";
+
             public const string kFhirRestReadMetadata = "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata";
             public const string kFhirPractitioner = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";
 

@@ -746,6 +746,6 @@
         //TODO: Think about how this will be used elsewhere and in multi GET request scenarios
         public string GetRequestId { get; set; }
 
-        public Resource SavedResource { get; set; }
+        public Patient SavedPatient { get; set; }
     }
 }

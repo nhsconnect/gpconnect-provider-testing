@@ -716,6 +716,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.GetRequestId = id;
         }
 
+        [Given(@"I set the request URL to ""([^""]*)""")]
+        public void SetTheRequestUrlTo(string url)
+        {
+            HttpContext.RequestUrl = url;
+        }
+
         [When(@"I make the ""(.*)"" request")]
         public void MakeRequest(GpConnectInteraction interaction)
         {

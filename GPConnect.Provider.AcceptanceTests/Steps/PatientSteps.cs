@@ -677,6 +677,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             AddAPatientIdentifierParameterWithSystemAndValue(FhirConst.IdentifierSystems.kNHSNumber, value);
         }
 
+        [Given(@"I add a Patient Identifier parameter with default System and NHS number ""([^""]*)""")]
+        public void AddAPatientIdentifierParameterWithDefaultSystemAndNhsNumber(string nhsNumber)
+        {
+            HttpContext.RequestParameters.AddParameter("identifier", FhirConst.IdentifierSystems.kNHSNumber + '|' + nhsNumber);
+        }
+
         [Given(@"I get the Patient for Patient Value ""([^""]*)""")]
         public void GetThePatientForPatientValue(string value)
         {
@@ -685,6 +691,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             AddAPatientIdentifierParameterWithDefaultSystemAndValue(value);
 
             _jwtSteps.ISetTheJwtRequestedRecordToTheNhsNumberFor(value);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
+        }
+
+        [Given(@"I get the Patient for Patient NHS number ""([^""]*)""")]
+        public void GetThePatientForPatientNhsNumber(string nhsNumber)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.PatientSearch);
+
+            AddAPatientIdentifierParameterWithDefaultSystemAndNhsNumber(nhsNumber);
+
+            _jwtSteps.ISetTheJwtRequestedRecordToTheNhsNumber(nhsNumber);
 
             _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
         }
