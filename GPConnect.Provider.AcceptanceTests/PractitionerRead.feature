@@ -182,6 +182,7 @@ Scenario: Practitioner read practitioner contains identifier it is valid
 		And the identifier used to search for "practitioner1" is the same as the identifier returned in practitioner read
 		# We should probably also check that the logical id is the same in the search returned practitioner as it is in the read practitioner
 
+# Test name not clear
 Scenario: Practitioner read practitioner contains practitioner role it is valid
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
 	Given I am using the default server
@@ -190,8 +191,11 @@ Scenario: Practitioner read practitioner contains practitioner role it is valid
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
+		# Assursions in step have no meaningful output message so failure reasons might not be clear.
 		And if the practitioner resource contains a practitioner role it has a valid coding and system
+		# Should probably be testing managingOrganiztion as well
 
+# Name is not clear what the expectation is
 Scenario: Practitioner read practitioner contains communication which is valid
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
 	Given I am using the default server
@@ -202,6 +206,7 @@ Scenario: Practitioner read practitioner contains communication which is valid
 		And the response should be an Practitioner resource
 		And the returned practitioner resource contains a communication element
 
+# test name could be more clear
 Scenario Outline: Practitioner read practitioner returned does not contain elements not in the specification
 	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
 	Given I am using the default server
@@ -210,6 +215,7 @@ Scenario Outline: Practitioner read practitioner returned does not contain eleme
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
+		# Step name could be more clear to highlight that it is checking for diss allowed elements
 		And the single practitioner resource should not contain unwanted fields
 	Examples:
 		| practitioner  |
@@ -218,6 +224,8 @@ Scenario Outline: Practitioner read practitioner returned does not contain eleme
 		| practitioner3 |
 		| practitioner5 |
 
+
+#Potentially out of scope, needs verifiying
 Scenario: Practitioner read response should contain an ETag header
 	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
 	Given I am using the default server
@@ -228,6 +236,7 @@ Scenario: Practitioner read response should contain an ETag header
 		And the response should be an Practitioner resource
 		And the response should contain the ETag header matching the resource version
 
+#Potentially out of scope, needs verifiying
 Scenario: Practitioner read VRead of current resource should return resource
 	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
 	Given I am using the default server
@@ -237,6 +246,7 @@ Scenario: Practitioner read VRead of current resource should return resource
 		And the response body should be FHIR JSON
 		And the response should be an Practitioner resource
 
+#Potentially out of scope, needs verifiying
 Scenario: Practitioner read VRead of non existant version should return error
 	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
 	Given I am using the default server
