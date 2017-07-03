@@ -14,6 +14,7 @@ using NUnit.Framework;
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Linq;
+    using Data;
     using Helpers;
 
     [Binding]
@@ -660,5 +661,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         #endregion
+
+        [Given(@"I add a Patient Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
+        public void AddAPatientIdentifierParameterWithSystemAndValue(string system, string value)
+        {
+            HttpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.PatientNhsNumberMap[value]);
+        }
+
+        [Given(@"I add a Patient Identifier parameter with default System and Value ""([^""]*)""")]
+        public void AddAPatientIdentifierParameterWithDefaultSystemAndValue(string value)
+        {
+            AddAPatientIdentifierParameterWithSystemAndValue(FhirConst.IdentifierSystems.kNHSNumber, value);
+        }
     }
 }

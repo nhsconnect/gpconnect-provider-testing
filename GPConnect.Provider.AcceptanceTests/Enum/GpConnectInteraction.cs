@@ -10,17 +10,20 @@
         PractitionerSearch = 4,
         PractitionerRead = 5,
 
-        LocationSearch = 6,
-        LocationRead = 7,
+        PatientSearch = 6,
+        PatientRead = 7,
 
-        RegisterPatient = 8,
+        LocationSearch = 8,
+        LocationRead = 9,
 
-        GpcGetSchedule = 9,
+        RegisterPatient = 10,
 
-        AppointmentCreate = 10,
-        AppointmentRetrieve = 11,
-        AppointmentAmend = 12,
-        AppointmentCancel = 13,
-        AppointmentRead = 14
+        GpcGetSchedule = 11,
+
+        AppointmentCreate = 12,
+        AppointmentRetrieve = 13,
+        AppointmentAmend = 14,
+        AppointmentCancel = 15,
+        AppointmentRead = 16
     }
 }

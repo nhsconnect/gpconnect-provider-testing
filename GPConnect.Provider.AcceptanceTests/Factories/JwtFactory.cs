@@ -36,6 +36,9 @@
                 case GpConnectInteraction.PractitionerRead:
                     ConfigurePractitionerReadJwt(jwtHelper);
                     break;
+                case GpConnectInteraction.PatientSearch:
+                    ConfigurePatientSearch(jwtHelper);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -61,6 +64,11 @@
         private static void ConfigurePractitionerSearchJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
+        }
+
+        private static void ConfigurePatientSearch(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
         }
 
         private static void ConfigurePractitionerReadJwt(JwtHelper jwtHelper)

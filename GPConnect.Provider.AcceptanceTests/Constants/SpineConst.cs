@@ -14,6 +14,8 @@
             public const string PractitionerSearch = BaseInteraction + "rest:search:practitioner";
             public const string PractitionerRead = BaseInteraction + "rest:read:practitioner";
 
+            public const string PatientSearch = BaseInteraction + "rest:search:patient";
+
             public const string kFhirRestReadMetadata = "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata";
             public const string kFhirPractitioner = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";
 
