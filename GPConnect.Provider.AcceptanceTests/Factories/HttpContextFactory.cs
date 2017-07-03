@@ -37,6 +37,21 @@
                 case GpConnectInteraction.PractitionerRead:
                     ConfigurePractitionerReadContext(httpContext);
                     break;
+                case GpConnectInteraction.PatientSearch:
+                    ConfigurePatientSearchContext(httpContext);
+                    break;
+                case GpConnectInteraction.PatientRead:
+                    ConfigurePatientReadContext(httpContext);
+                    break;
+                case GpConnectInteraction.LocationSearch:
+                    ConfigureLocationSearchContext(httpContext);
+                    break;
+                case GpConnectInteraction.LocationRead:
+                    ConfigureLocationReadContext(httpContext);
+                    break;
+                case GpConnectInteraction.RegisterPatient:
+                    ConfigureRegisterPatientContext(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_gpConnectInteraction), _gpConnectInteraction, null);
             }
@@ -82,6 +97,42 @@
             httpContext.HttpMethod = HttpMethod.Get;
             httpContext.RequestUrl = "Practitioner/" + httpContext.GetRequestId;
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PractitionerRead);
+        }
+
+        private static void ConfigurePatientSearchContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Get;
+            httpContext.RequestUrl = "Patient";
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientSearch);
+        }
+
+        private static void ConfigurePatientReadContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Get;
+            httpContext.RequestUrl = "Patient/" + httpContext.GetRequestId; 
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientRead);
+        }
+
+        private static void ConfigureLocationSearchContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Get;
+            httpContext.RequestUrl = "Location";
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationSearch);
+
+        }
+
+        private static void ConfigureLocationReadContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Get;
+            httpContext.RequestUrl = "Location/" + httpContext.GetRequestId; 
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationRead);
+        }
+
+        private static void ConfigureRegisterPatientContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Post;
+            httpContext.RequestUrl = "Patient/$gpc.registerpatient";
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.RegisterPatient);
         }
 
         //TODO: Remove fhirContext dependencies

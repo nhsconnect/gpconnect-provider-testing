@@ -36,12 +36,28 @@
                 case GpConnectInteraction.PractitionerRead:
                     ConfigurePractitionerReadJwt(jwtHelper);
                     break;
+                case GpConnectInteraction.PatientSearch:
+                    ConfigurePatientSearchJwt(jwtHelper);
+                    break;
+                case GpConnectInteraction.PatientRead:
+                    ConfigurePatientReadJwt(jwtHelper);
+                    break;
+                case GpConnectInteraction.LocationSearch:
+                    ConfigureLocationSearchJwt(jwtHelper);
+                    break;
+                case GpConnectInteraction.LocationRead:
+                    ConfigureLocationReadJwt(jwtHelper);
+                    break;
+                case GpConnectInteraction.RegisterPatient:
+                    ConfigureRegisterPatientJwt(jwtHelper);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
         }
+
 
         private static void ConfigureGpcGetCareRecordJwt(JwtHelper jwtHelper)
         {
@@ -63,9 +79,34 @@
             jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
         }
 
+        private static void ConfigurePatientSearchJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
+        }
+
         private static void ConfigurePractitionerReadJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
+        }
+
+        private static void ConfigurePatientReadJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
+        }
+
+        private static void ConfigureLocationSearchJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
+        }
+
+        private static void ConfigureLocationReadJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
+        }
+
+        private static void ConfigureRegisterPatientJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kPatientWrite;
         }
     }
 }

@@ -2,14 +2,13 @@
 Feature: LocationRead
 
 Scenario Outline: Location read successful request
-	Given I get location "<Location>" id and save it as "location1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
-	When I get location "location1" and use the id to make a get request to the url "Location"
+	Given I get the Location for Location Value "<Location>"
+		And I store the Location Id
+	Given I configure the default "LocationRead" request
+	When I make the "LocationRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Location resource
-		And the response resource logical identifier should match that of stored resource "location1"
+		And the Location Id should match the GET request Id
 	Examples:
 		| Location |
 		| SIT1     |

@@ -12,13 +12,11 @@ Scenario: The response resources must be valid FHIR JSON or XML
 	# test scenarios so no specific test needs to be implemented.
 
 Scenario: Returned patients should contain a logical identifier
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for Patient "patient2"
+	Given I configure the default "PatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "PatientSearch" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And all search response entities in bundle should contain a logical identifier

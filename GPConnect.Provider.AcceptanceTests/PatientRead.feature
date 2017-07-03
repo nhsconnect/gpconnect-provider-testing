@@ -2,14 +2,13 @@
 Feature: PatientRead
 	
 Scenario Outline: Read patient 404 if patient not found
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
-	When I make a GET request to "/Patient/<id>"
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient Id
+	Given I configure the default "PatientRead" request
+		And I set the JWT Requested Record to the NHS Number for "patient1"
+		And I set the GET request Id to "<id>"
+	When I make the "PatientRead" request
 	Then the response status code should be "404"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 	Examples:
 		| id                                                         |

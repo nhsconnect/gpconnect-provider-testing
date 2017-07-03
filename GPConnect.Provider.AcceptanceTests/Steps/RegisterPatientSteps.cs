@@ -14,23 +14,26 @@ using NUnit.Framework;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System.Linq;
+
     [Binding]
     public class RegisterPatientSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext FhirContext;
         private readonly HttpSteps HttpSteps;
         private readonly HttpContext HttpContext;
- 
+        private readonly PatientSteps _patientSteps;
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
 
-        public RegisterPatientSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext)
+        public RegisterPatientSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, PatientSteps patientSteps)
         {
             // Helpers
             FhirContext = fhirContext;
             Headers = headerHelper;
             HttpSteps = httpSteps;
             HttpContext = httpContext;
+            _patientSteps = patientSteps;
         }
 
         [Given(@"I create a patient to register which does not exist on PDS and store the Patient Resource against key ""([^""]*)""")]
@@ -712,6 +715,115 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             returnedResource.BirthDate.ShouldBe(storedPatient.BirthDate);
             // Check Gender matches
             returnedResource.Gender.ShouldBe(storedPatient.Gender);
+        }
+
+        [Given(@"I get the next Patient to register and store it")]
+        public void GetTheNextPatientToRegisterAndStoreIt()
+        {
+            var registerPatients = GlobalContext.RegisterPatients;
+
+            foreach (var registerPatient in registerPatients)
+            {
+                _patientSteps.GetThePatientForPatientNhsNumber(registerPatient.SPINE_NHS_NUMBER);
+
+                var entries = FhirContext.Entries;
+
+                if (!entries.Any())
+                {
+                    var name = new HumanName
+                    {
+                        FamilyElement = new List<FhirString> {new FhirString(registerPatient.NAME_FAMILY)},
+                        GivenElement = new List<FhirString> {new FhirString(registerPatient.NAME_GIVEN)}
+                    };
+
+                    var patientToRegister = new Patient
+                    {
+                        BirthDateElement = new Date(registerPatient.DOB),
+                        Name = new List<HumanName>
+                        {
+                            name
+                        },
+                        Identifier = new List<Identifier>
+                        {
+                            new Identifier(FhirConst.IdentifierSystems.kNHSNumber, registerPatient.SPINE_NHS_NUMBER)
+                        }
+                    };
+
+                    switch (registerPatient.GENDER)
+                    {
+                        case "MALE":
+                            patientToRegister.Gender = AdministrativeGender.Male;
+                            break;
+                        case "FEMALE":
+                            patientToRegister.Gender = AdministrativeGender.Female;
+                            break;
+                        case "OTHER":
+                            patientToRegister.Gender = AdministrativeGender.Other;
+                            break;
+                        case "UNKNOWN":
+                            patientToRegister.Gender = AdministrativeGender.Unknown;
+                            break;
+                    }
+
+
+                    HttpContext.SavedPatient = patientToRegister;
+
+                    return;
+                }
+            }
+        }
+
+        [Given(@"I set the stored Patient Registration Period to ""([^""]*)""")]
+        public void SetTheStorePatientRegistrationPeriodTo(string startDate)
+        {
+            var registrationPeriod = new Extension
+            {
+                Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1",
+                Value = new Period {Start = startDate }
+                
+            };
+
+            HttpContext.SavedPatient.Extension.Add(registrationPeriod);
+        }
+
+        [Given(@"I set the stored Patient Registration Status to ""([^""]*)""")]
+        public void SetTheStorePatientRegistrationStatusTo(string code)
+        {
+            var codableConcept = new CodeableConcept
+            {
+                Coding = new List<Coding>
+                {
+                    new Coding { Code = code }
+                }
+            };
+
+            var registrationStatus = new Extension
+            {
+                Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-status-1",
+                Value = codableConcept
+            };
+
+            HttpContext.SavedPatient.Extension.Add(registrationStatus);
+        }
+
+        [Given(@"I set the stored Patient Registration Type to ""([^""]*)""")]
+        public void SetTheStorePatientRegistrationTypeTo(string code)
+        {
+            var codableConcept = new CodeableConcept
+            {
+                Coding = new List<Coding>
+                {
+                    new Coding { Code = code }
+                }
+            };
+
+            var registrationType = new Extension
+            {
+                Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-type-1",
+                Value = codableConcept
+            };
+
+            HttpContext.SavedPatient.Extension.Add(registrationType);
         }
     }
 }

@@ -22,12 +22,10 @@ Scenario: if location contains telecom
 # The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
 
 Scenario Outline: Location search success
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "<Value>"
-	When I make a GET request to "/Location"
+	Given I configure the default "LocationSearch" request
+		And I add a Location Identifier parameter with default System and Value "<Value>"
+	When I make the "LocationSearch" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response bundle should contain "<EntrySize>" entries
 		And the response should be a Bundle resource of type "searchset"
 		And all search response entities in bundle should contain a logical identifier

@@ -1,24 +1,22 @@
 ﻿@patient
-Feature: PatientRegister
+Feature: PatientRegister`
 
 Scenario Outline: Register patient send request to incorrect URL
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration period with start date "<regStartDate>" to "registerPatient"
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-	When I register patient stored against key "registerPatient" with url "<url>"
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the stored Patient Registration Period to "<StartDate>"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the request URL to "<url>"
+	When I make the "RegisterPatient" request
 	Then the response status code should be "404"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
 	Examples:
-		| regStartDate | url                            |
-		| 2017-05-05   | /Patient/$gpc.registerpatien   |
-		| 2016-12-05   | /PAtient/$gpc.registerpatient  |
-		| 1999-01-22   | /Patient/$gpc.registerpati#ent |
+		| StartDate		| url                            |
+		| 2017-05-05	| Patient/$gpc.registerpatien    |
+		| 2016-12-05	| PAtient/$gpc.registerpatient   |
+		| 1999-01-22	| Patient/$gpc.registerpati#ent  |
 
 Scenario Outline: Register patient with invalid interactionIds
 	Given I find the next patient to register and store the Patient Resource against key "registerPatient"

@@ -10,6 +10,8 @@ using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System.Linq;
+
     [Binding]
     public class JwtSteps : TechTalk.SpecFlow.Steps
     {
@@ -301,6 +303,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ISetTheJwtRequestedRecordToTheNhsNumberFor(string patient)
         {
             Jwt.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
+        }
+
+        [Given(@"I set the JWT Requested Record to the NHS Number ""(.*)""")]
+        public void ISetTheJwtRequestedRecordToTheNhsNumber(string nhsNumber)
+        {
+            Jwt.RequestedPatientNHSNumber = nhsNumber;
+        }
+
+        [Given(@"I set the JWT Requested Record to the NHS Number of the stored Patient")]
+        public void ISetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient()
+        {
+            var patient = HttpContext.SavedPatient;
+
+            var identifier = patient.Identifier.FirstOrDefault(x => x.System == FhirConst.IdentifierSystems.kNHSNumber);
+       
+            Jwt.RequestedPatientNHSNumber = identifier?.Value;
         }
 
         [Given(@"I set the JWT requested record NHS number to the NHS number of patient stored against key ""([^""]*)""")]

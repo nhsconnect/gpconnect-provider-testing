@@ -25,11 +25,20 @@
                 case GpConnectInteraction.GpcGetCareRecord:
                     ConfigureGpcGetCareRecordBody(httpContext);
                     break;
+                case GpConnectInteraction.RegisterPatient:
+                    ConfigureRegisterPatientBody(httpContext);
+                    break;
             }
         }
 
         private static void ConfigureGpcGetCareRecordBody(HttpContext httpContext)
         {
+            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
+        }
+
+        private static void ConfigureRegisterPatientBody(HttpContext httpContext)
+        {
+            httpContext.BodyParameters.Add("registerPatient", httpContext.SavedPatient);
             httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
         }
 
