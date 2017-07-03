@@ -1,31 +1,29 @@
-﻿using System;
-using GPConnect.Provider.AcceptanceTests.Context;
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Serialization;
-using RestSharp;
-using Shouldly;
-using TechTalk.SpecFlow;
-using static Hl7.Fhir.Model.Bundle;
-using System.Collections.Generic;
-using GPConnect.Provider.AcceptanceTests.Constants;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Constants;
+    using Context;
+    using Enum;
+    using Hl7.Fhir.Model;
+    using Shouldly;
+    using TechTalk.SpecFlow;
+    using static Hl7.Fhir.Model.Bundle;
+
     [Binding]
     class LocationSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext FhirContext;
         private readonly HttpContext HttpContext;
-        private readonly HttpSteps HttpSteps;
-        private readonly AccessRecordSteps AccessRecordSteps;
+        private readonly HttpSteps _httpSteps;
         private readonly BundleSteps _bundleSteps;
 
         public LocationSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps)
         {
             FhirContext = fhirContext;
             HttpContext = httpContext;
-            HttpSteps = httpSteps;
-            AccessRecordSteps = accessRecordSteps;
+            _httpSteps = httpSteps;
             _bundleSteps = bundleSteps;
         }
 
@@ -343,16 +341,44 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I add a Location Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
-        public void AddALocationerIdentifierParameterWithSystemAndValue(string system, string value)
+        public void AddALocationIdentifierParameterWithSystemAndValue(string system, string value)
         {
             HttpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.OdsCodeMap[value]);
         }
 
         [Given(@"I add a Location Identifier parameter with default System and Value ""([^""]*)""")]
-        public void AddALocationerIdentifierParameterWithDefaultSystemAndValue(string value)
+        public void AddALocationIdentifierParameterWithDefaultSystemAndValue(string value)
         {
-            AddALocationerIdentifierParameterWithSystemAndValue("http://fhir.nhs.net/Id/ods-site-code", value);
+            AddALocationIdentifierParameterWithSystemAndValue("http://fhir.nhs.net/Id/ods-site-code", value);
 
+        }
+
+        [Given(@"I get the Location for Location Value ""([^""]*)""")]
+        public void GetThePatientForPatientValue(string value)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.LocationSearch);
+
+            AddALocationIdentifierParameterWithDefaultSystemAndValue(value);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.LocationSearch);
+        }
+
+        [Given(@"I store the Location Id")]
+        public void StoreTheLocationId()
+        {
+            var location = FhirContext.Locations.FirstOrDefault();
+
+            if (location != null)
+                HttpContext.GetRequestId = location.Id;
+        }
+
+        [Then(@"the Location Id should match the GET request Id")]
+        public void TheLocationIdShouldMarchTheGetRequestId()
+        {
+            var location = FhirContext.Locations.FirstOrDefault();
+
+            location.ShouldNotBeNull();
+            location.Id.ShouldBe(HttpContext.GetRequestId);
         }
     }
 }
