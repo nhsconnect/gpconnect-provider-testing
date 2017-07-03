@@ -341,5 +341,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             odsSystemCount.ShouldBeLessThanOrEqualTo(1, "Too many ods-site-code systems.");
         }
+
+        [Given(@"I add a Location Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
+        public void AddALocationerIdentifierParameterWithSystemAndValue(string system, string value)
+        {
+            HttpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.OdsCodeMap[value]);
+        }
+
+        [Given(@"I add a Location Identifier parameter with default System and Value ""([^""]*)""")]
+        public void AddALocationerIdentifierParameterWithDefaultSystemAndValue(string value)
+        {
+            AddALocationerIdentifierParameterWithSystemAndValue("http://fhir.nhs.net/Id/ods-site-code", value);
+
+        }
     }
 }

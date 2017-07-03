@@ -42,6 +42,9 @@
                 case GpConnectInteraction.PatientRead:
                     ConfigurePatientReadJwt(jwtHelper);
                     break;
+                case GpConnectInteraction.LocationSearch:
+                    ConfigureLocationSearchJwt(jwtHelper);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -82,6 +85,11 @@
         private static void ConfigurePatientReadJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
+        }
+
+        private static void ConfigureLocationSearchJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
         }
     }
 }

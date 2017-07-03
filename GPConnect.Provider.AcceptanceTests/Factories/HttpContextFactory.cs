@@ -43,11 +43,14 @@
                 case GpConnectInteraction.PatientRead:
                     ConfigurePatientReadContext(httpContext);
                     break;
+                case GpConnectInteraction.LocationSearch:
+                    ConfigureLocationSearchContext(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_gpConnectInteraction), _gpConnectInteraction, null);
             }
         }
-        
+
         private static void SetHttpContextDefaults(HttpContext httpContext)
         {
             httpContext.SetDefaults();
@@ -102,6 +105,14 @@
             httpContext.HttpMethod = HttpMethod.Get;
             httpContext.RequestUrl = "Patient/";
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientRead);
+        }
+
+        private static void ConfigureLocationSearchContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Get;
+            httpContext.RequestUrl = "Location";
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationRead);
+
         }
 
         //TODO: Remove fhirContext dependencies
