@@ -294,26 +294,16 @@ Scenario: Conformance profile supports the Organization search operation
 
 Scenario Outline: Organization search check organization response contains logical identifier
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "<ORGCode>"
+		And I add the organization identifier parameter with system "<System>" and value "<ORGCode>"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Organization Identifiers should be valid
 		Examples:
-		| ORGCode |
-		| ORG1    |
-		| ORG2    |
-		| ORG3    |
-
-Scenario Outline: Organization search check organization response contains logical identifier searched with site code
-	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "<ORGCode>"
-	When I make the "OrganizationSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Organization Identifiers should be valid
-		Examples:
-		| ORGCode |
-		| SIT1    |
-		| SIT1    |
-		| SIT1    |
+		| System                                       | ORGCode |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG1    |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG2    |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG3    |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT1    |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT1    |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT1    |
