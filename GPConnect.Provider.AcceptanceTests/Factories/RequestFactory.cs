@@ -31,7 +31,15 @@
                 case GpConnectInteraction.GpcGetSchedule:
                     ConfigureGpcGetSchedule(httpContext);
                     break;
+                case GpConnectInteraction.AppointmentCreate:
+                    ConfigureAppointmentCreateBody(httpContext);
+                    break;
             }
+        }
+
+        private static void ConfigureAppointmentCreateBody(HttpContext httpContext)
+        {
+            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.CreatedAppointment);
         }
 
         private static void ConfigureGpcGetCareRecordBody(HttpContext httpContext)

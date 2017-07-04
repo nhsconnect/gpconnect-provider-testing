@@ -54,6 +54,9 @@
                 case GpConnectInteraction.GpcGetSchedule:
                     ConfigureGpcGetScheduleJwt(jwtHelper);
                     break;
+                case GpConnectInteraction.AppointmentCreate:
+                    ConfigureAppointmentCreateJwt(jwtHelper);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -114,6 +117,11 @@
         private static void ConfigureGpcGetScheduleJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
+        }
+
+        private static void ConfigureAppointmentCreateJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kPatientWrite;
         }
     }
 }

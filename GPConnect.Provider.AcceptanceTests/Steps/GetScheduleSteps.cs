@@ -11,6 +11,9 @@ using System.Collections.Generic;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System.Linq;
+    using Enum;
+
     [Binding]
     class GetScheduleSteps : TechTalk.SpecFlow.Steps
     {
@@ -20,14 +23,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly HttpSteps HttpSteps;
         private readonly AccessRecordSteps AccessRecordSteps;
         private readonly BundleSteps _bundleSteps;
+        private readonly OrganizationSteps _organizationSteps;
 
-        public GetScheduleSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps)
+
+        public GetScheduleSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps)
         {
             FhirContext = fhirContext;
             HttpContext = httpContext;
             HttpSteps = httpSteps;
             AccessRecordSteps = accessRecordSteps;
             _bundleSteps = bundleSteps;
+            _organizationSteps = organizationSteps;
         }
 
         [Given(@"I search for the organization ""([^""]*)"" on the providers system and save the first response to ""([^""]*)""")]
@@ -354,5 +360,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Given(@"I get the Schedule for Organization Code ""([^""]*)""")]
+        public void GetTheScheduleForOrganizationCode(string code)
+        {
+            _organizationSteps.GetTheOrganizationIdForOrganizationCode(code);
+            _organizationSteps.StoreTheOrganization();
+
+            HttpSteps.ConfigureRequest(GpConnectInteraction.GpcGetSchedule);
+
+            AccessRecordSteps.AddATimePeriodParameterWithStartDateTodayAndEndDateInDays(13);
+
+            HttpSteps.MakeRequest(GpConnectInteraction.GpcGetSchedule);
+        }
+
+        [Given(@"I store the Schedule")]
+        public void StoreTheSchedule()
+        {
+            var schedule = FhirContext.Bundle;
+
+            if (schedule != null)
+            {
+                HttpContext.StoredBundle = schedule;
+            }
+        }
     }
 }

@@ -2,16 +2,15 @@
 Feature: AppointmentBook
 
 Scenario: Book single appointment for patient
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
-	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "storedPatient1"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-		And I create an appointment for patient "storedPatient1" called "Appointment" from schedule "getScheduleResponseBundle"
-	When I book the appointment called "Appointment"
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 
 Scenario: Book Appointment with invalid url for booking appointment
