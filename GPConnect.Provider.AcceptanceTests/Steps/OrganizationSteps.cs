@@ -168,22 +168,60 @@
             }
 
         }
-
-        [Then(@"if the organization resource contains an identifier it is valid")]
+        [Then(@"the returned organization resource identifiers should be of a valid type and cardinality")]
         public void ThenIfTheOrganizationResourcesContainAnIdentifierItIsValid()
         {
             Organization organization = (Organization)_fhirContext.FhirResponseResource;
+            int organizationIdentiferCount = 0;
             foreach (Identifier identifier in organization.Identifier)
             {
-                identifier.System.ShouldNotBeNullOrEmpty();
+                identifier.System.ShouldNotBeNullOrEmpty("The included identifier should have a system in it is included in the response.");
                 var validSystems = new string[2] { "http://fhir.nhs.net/Id/ods-organization-code", "http://fhir.nhs.net/Id/ods-site-code" };
-                identifier.System.ShouldBeOneOf(validSystems, "The identifier System can only be one of the valid value");
-                identifier.Value.ShouldNotBeNullOrEmpty();
+                identifier.System.ShouldBeOneOf(validSystems, "The identifier System can only be one of the two valid systems");
+                identifier.Value.ShouldNotBeNullOrEmpty("The included identifier should have a value.");
+                if (identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code"))
+                {
+                    organizationIdentiferCount++;
+                }
+            }
+            organizationIdentiferCount.ShouldBeLessThanOrEqualTo(1, "There may only be one organization identifier within the returned Organization resource.");
+        }
+
+        [Then(@"if the organization resource contains type element it shall contain the system code and display elements")]
+        public void ThenIfTheOrganizationResourceContainsTypeElemetnItShallContainTheSystemCodeAndDisplayElements()
+        {
+            Organization organization = (Organization)_fhirContext.FhirResponseResource;
+            if (organization.Type != null && organization.Type.Coding != null)
+            {
+                organization.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1, "The should only be one coding element within the type element.");
+                foreach (var coding in organization.Type.Coding)
+                {
+                    coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/organisation-type-1", "Returned Organization Type Coding should contain a valid system element.");
+                    coding.Code.ShouldNotBeNullOrEmpty("Returned Organization Type Coding should contain a Code element");
+                    coding.Display.ShouldNotBeNullOrEmpty("Returned Organization Type Coding should contain a Display element");
+                }
             }
         }
 
+        [Then(@"if the organization resource contains a partOf reference it is valid and resolvable")]
+        public void ThenIfTheOrganizationResourceContainsAPartOfReferenceItIsValidAndResolvable()
+        {
+            Organization organization = (Organization)_fhirContext.FhirResponseResource;
+            if (organization.PartOf != null)
+            {
+                organization.PartOf.Reference.ShouldNotBeNull();
+                string reference = organization.PartOf.Reference;
+                reference.ShouldStartWith("Organization/");
+                var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", reference);
+                returnedResource.GetType().ShouldBe(typeof(Organization));
+
+            }
+        }
+
+   
+
         [Then(@"if the organization resource contains type it is valid")]
-        public void ThenIfTheOrganizationResourceContainsTypeItIsValis()
+        public void ThenIfTheOrganizationResourceContainsTypeItIsValid()
         {
             Organization organization = (Organization)_fhirContext.FhirResponseResource;
             if (organization.Type != null && organization.Type.Coding != null)
@@ -233,6 +271,15 @@
                     });
                 }
             });
+        }
+
+
+        [Then(@"the returned resource shall contain the business identifier for Organization ""([^""]*)""")]
+        public void ThenTheReturnedResourceShallContainTheBusinessIdentifierForOrganization(string organizationName)
+        {
+            Organization organization = (Organization)_fhirContext.FhirResponseResource;
+            organization.Identifier.ShouldNotBeNull("The organization should contain an organization identifier as the business identifier was used to find the organization for this test.");
+            organization.Identifier.Find(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code")).Value.ShouldBe(GlobalContext.OdsCodeMap[organizationName], "Organization business identifier does not match the expected business identifier.");
         }
 
         [Then(@"the Organization Type should be valid")]

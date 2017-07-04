@@ -364,7 +364,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GetTheScheduleForOrganizationCode(string code)
         {
             _organizationSteps.GetTheOrganizationForOrganizationCode(code);
-            _organizationSteps.StoreTheOrganization();
+            _organizationSteps.StoreTheOrganizationId();
 
             HttpSteps.ConfigureRequest(GpConnectInteraction.GpcGetSchedule);
 
