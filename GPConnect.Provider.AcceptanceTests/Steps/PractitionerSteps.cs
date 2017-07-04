@@ -240,24 +240,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             count.ShouldBeLessThanOrEqualTo(1);
 
         }
-
-        [Then(
-            @"the practitioner resource should contain a role id equal to role id ""(.*)"" or role id ""(.*)"" or role id ""(.*)"""
-        )]
-        public void ThenThePractitionerResourceShouldContainARoleIdEqualTo(string roleId, string roleId2, string roleId3)
+        
+        [Then(@"the returned Practitioner resource should contain ""([^""]*)"" role identifiers")]
+        public void ThenTheReturnedPractitionerResourceShouldContainRoleIdentidfiers(int numberOfRoleIdentifiers)
         {
-            List<String> roleIds = new List<string>();
-            roleIds = addRoleIdsToList(roleIds, roleId, roleId2, roleId3);
-
-            Practitioner practitioner = (Practitioner) _fhirContext.FhirResponseResource;
-            foreach (Identifier identifier in practitioner.Identifier)
-            {
-                if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id"))
-                {
-                    roleIds.ShouldContain(identifier.Value.ToString());
-                }
-
-            }
+            Practitioner practitioner = (Practitioner)_fhirContext.FhirResponseResource;
+            practitioner.Identifier.Count(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id")).ShouldBe(numberOfRoleIdentifiers,"The number of role identifiers within the practitioner resource was not the number expected.");
         }
 
         private List<string> addRoleIdsToList(List<string> roleIdList, string roleId, string roleId2, string roleId3)
