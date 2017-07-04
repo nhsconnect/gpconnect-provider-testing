@@ -9,6 +9,8 @@ using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Context
 {
+    using Hl7.Fhir.Specification.Navigation;
+
     public interface IFhirContext
     {
         Parameters FhirRequestParameters { get; set; }
@@ -74,7 +76,9 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public List<Device> Devices => GetResources<Device>();
         public List<Practitioner> Practitioners => GetResources<Practitioner>();
         public List<Location> Locations => GetResources<Location>();
-        
+        public Bundle Bundle => (Bundle) FhirResponseResource;
+        public List<Slot> Slots => GetResources<Slot>();
+
         public void SaveToDisk(string filename)
         {
             var doc = new XDocument(
@@ -111,12 +115,14 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         private static Dictionary<Type, ResourceType> ResourceTypeMap => new Dictionary<Type, ResourceType>
         {
+
             {typeof(Patient), ResourceType.Patient},
             {typeof(Organization), ResourceType.Organization},
             {typeof(Composition), ResourceType.Composition},
             {typeof(Device), ResourceType.Device},
             {typeof(Practitioner), ResourceType.Practitioner},
-            {typeof(Location), ResourceType.Location}
+            {typeof(Location), ResourceType.Location},
+            {typeof(Slot), ResourceType.Slot}
         };
     }
 }

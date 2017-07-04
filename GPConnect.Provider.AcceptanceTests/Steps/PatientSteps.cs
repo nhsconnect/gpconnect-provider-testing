@@ -707,6 +707,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
         }
 
+        [Given(@"I store the Patient")]
+        public void StoreThePatient()
+        {
+            var patient = _fhirContext.Patients.FirstOrDefault();
+
+            if (patient != null)
+            {
+                HttpContext.StoredPatient = patient;
+            }
+        }
+
         [Given(@"I store the Patient Id")]
         public void StoreThePatientId()
         {

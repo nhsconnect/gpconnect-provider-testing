@@ -17,13 +17,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class GenericSteps : TechTalk.SpecFlow.Steps
     {
         private readonly IObjectContainer _objectContainer;
+        private readonly HttpContext _httpContext;
         private readonly FhirContext _fhirContext;
 
-        public GenericSteps(IObjectContainer objectContainer, FhirContext fhirContext)
+        public GenericSteps(IObjectContainer objectContainer, FhirContext fhirContext, HttpContext httpContext)
         {
             Log.WriteLine("GenericSteps() Constructor");
             _objectContainer = objectContainer;
             _fhirContext = fhirContext;
+            _httpContext = httpContext;
         }
 
         [BeforeTestRun(Order = 1)]
@@ -145,6 +147,33 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine(FeatureContext.Current.FeatureInfo.Description);
             Log.WriteLine("");
             Log.WriteLine("Scenario: " + ScenarioContext.Current.ScenarioInfo.Title);
+        }
+
+        [AfterScenario]
+        public void SaveLogOfOutput()
+        {
+            var traceDirectory = GlobalContext.TraceDirectory;
+            if (!Directory.Exists(traceDirectory)) return;
+            var scenarioDirectory = Path.Combine(traceDirectory, _httpContext.ScenarioContext.ScenarioInfo.Title);
+            int fileIndex = 1;
+            while (Directory.Exists(scenarioDirectory + "-" + fileIndex)) fileIndex++;
+            scenarioDirectory = scenarioDirectory + "-" + fileIndex;
+            Directory.CreateDirectory(scenarioDirectory);
+            Log.WriteLine(scenarioDirectory);
+            try
+            {
+                _httpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
+            }
+            catch (Exception e) {
+                Log.WriteLine("Exception writing HttpContext to Output File");
+            }
+            try
+            {
+                _fhirContext.SaveToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
+            }
+            catch (Exception e) {
+                Log.WriteLine("Exception writing FhirContext to Output File");
+            }
         }
     }
 }

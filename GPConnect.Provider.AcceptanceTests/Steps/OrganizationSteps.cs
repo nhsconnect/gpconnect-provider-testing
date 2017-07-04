@@ -154,8 +154,8 @@
             When($@"I make a GET request to ""{URL}""");
         }
 
-        [Then(@"the organization resource it should contain meta data profile and version id")]
-        public void ThenTheOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
+        [Then(@"the organization resource shall contain meta data profile and version id")]
+        public void ThenTheOrganizationResourceShallContainMetaDataProfileAndVersionId()
         {
 
             Organization organization = (Organization)_fhirContext.FhirResponseResource;

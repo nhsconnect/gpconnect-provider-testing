@@ -749,5 +749,9 @@
         public Patient StoredPatient { get; set; }
 
         public Organization StoredOrganization { get; set; }
+
+        public Bundle StoredBundle { get; set; }
+
+        public Appointment CreatedAppointment { get; set; }
     }
 }

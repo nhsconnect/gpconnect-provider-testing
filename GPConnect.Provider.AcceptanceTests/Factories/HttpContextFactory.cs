@@ -55,6 +55,9 @@
                 case GpConnectInteraction.GpcGetSchedule:
                     ConfigureGpcGetScheduleContext(httpContext);
                     break;
+                case GpConnectInteraction.AppointmentCreate:
+                    ConfigureAppointmentCreate(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_gpConnectInteraction), _gpConnectInteraction, null);
             }
@@ -142,6 +145,13 @@
             httpContext.HttpMethod = HttpMethod.Post;
             httpContext.RequestUrl = "Organization/" + httpContext.StoredOrganization.Id + "/$gpc.getschedule";
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetSchedule);
+        }
+
+        private static void ConfigureAppointmentCreate(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Post;
+            httpContext.RequestUrl = "Appointment";
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentCreate);
         }
 
         //TODO: Remove fhirContext dependencies
