@@ -12,7 +12,7 @@ Scenario Outline: Organization Read successful request validate all of response
 		And the returned resource shall contain a logical id matching the requested read logical identifier
 		And the returned organization resource identifiers should be of a valid type and cardinality
 		And the returned resource shall contain the business identifier for Organization "<Organization>"
-		And the organization resource it should contain meta data profile and version id
+		And the organization resource shall contain meta data profile and version id
 		And if the organization resource contains a partOf reference it is valid and resolvable
 		And if the organization resource contains type element it shall contain the system code and display elements
 		And the response should contain the ETag header matching the resource version
@@ -22,16 +22,19 @@ Scenario Outline: Organization Read successful request validate all of response
 		| ORG2         |
 		| ORG3         |
 
-Scenario Outline: Organization Read withing valid identifier which does not exist on providers system
+Scenario Outline: Organization Read with valid identifier which does not exist on providers system
 	Given I configure the default "OrganizationRead" request
 		And I set the Read Operation logical identifier used in the request to "<LogicalId>"
 	When I make the "OrganizationRead" request
 	Then the response status code should be "404"
 	Examples:
-		| LogicalId |
-		| 1@        |
-		| 9i        |
-		| 40-9      |
+		| LogicalId      |
+		| ddBm           |
+		| 1Zcr4          |
+		| z.as.e         |
+		| 1.1445.23      |
+		| 40-9223        |
+		| nc-sfem.mks--s |
 
 Scenario Outline: Organization Read with invalid resource path in URL
 	Given I get the Organization for Organization Code "ORG1"
