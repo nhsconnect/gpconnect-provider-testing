@@ -1,77 +1,56 @@
 ﻿@practitioner
 Feature: PractitionerRead
 
-# Common
-# JWT uses hard coded organization ODS Code we need to confirm what it should be
-# Merge validation tests for a successful request into one big test
-# Step "Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"" name is slightly unclear
-# Step "When I get practitioner "practitionerSaved" and use the id to make a get request to the url "Practitioner"" name is not clear about what it is doing.
-
-# Name should reflect that it just tests the resource type field
-Scenario: Practitioner read successful request
-	Given I get the Practitioner for Practitioner Code "practitioner1"
+Scenario Outline: Practitioner read successful request validate all of response
+	Given I get the Practitioner for Practitioner Code "<practitioner>"
 		And I store the Practitioner Id
 	Given I configure the default "PractitionerRead" request
 	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
-		# The check that the resource type is a practitioner resource only checks the type element, it should probably also check the resource is a valid practitioner resource by parsing the resource.
+		And the response should be the format FHIR JSON
 		And the response should be an Practitioner resource
+		And the returned Practitioner resource should contain "<numberOfRoleIdentifiers>" role identifiers
+	Examples: 
+		| practitioner  | numberOfRoleIdentifiers |
+		| practitioner1 | 0                       |
+		| practitioner2 | 1                       |
+		| practitioner3 | 2                       |
 
-# Test is invalid and when updated the name should be changed to match the changed test
-Scenario Outline: Practitioner read successful request checking the correct SDS role id is returned
-	Given I find practitioner "<practitioner>" and save it with the key "practitionerSaved"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get practitioner "practitionerSaved" and use the id to make a get request to the url "Practitioner"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be an Practitioner resource
-		# The practitioner roles are those from the demonstrator, we can not check to this level as we have not specified in the test pre-requisits the requirements to that level of detail. The test should be more generic as to check there is the correct number of role ids included.
-		And the practitioner resource should contain a role id equal to role id "<roleId>" or role id "<roleId2>" or role id "<roleId3>"
-	Examples:
-		# na = not applicable, some practitioner have only 1 role id and some have numerous possibilitys
-		| practitioner  | roleId | roleId2 | roleId3 |
-		| practitioner2 | PT1234 | na      | na      |
-		| practitioner3 | PT1122 | PT1234  | na      |
-		| practitioner5 | PT3333 | PT2222  | PT4444  |
-
-# Test name does not match test exactly, the id's are not invalid they are just not found on the provider system
-Scenario Outline: Practitioner read invalid request invalid id
-	# The practitioner search is un-nessersary if we are just using hard coded practitioner id's in the request
-	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I make a GET request for a practitioner using an invalid id of "<InvalidId>" and url "Practitioner"
+Scenario Outline: Practitioner Read with valid identifier which does not exist on providers system
+	Given I configure the default "PractitionerRead" request
+		And I set the Read Operation logical identifier used in the request to "<LogicalId>"
+	When I make the "PractitionerRead" request
 	Then the response status code should be "404"
 	Examples:
-		| InvalidId |
-		| ##        |
-		| 1@        |
-		| 9i        |
-		| 40-9      |
+		| LogicalId      |
+		| aaBA           |
+		| 1ZEc2          |
+		| z.as.dd        |
+		| 1.1.22         |
+		| 40-9           |
+		| nd-skdm.mks--s |
 
-# Test name is a not clear
-Scenario Outline: Practitioner read invalid request invalid URL
-	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get practitioner "practitioner1Saved" and use the id to make a get request to the url "<InvalidURL>"
+Scenario Outline: Practitioner Read with invalid resource path in URL
+	Given I get the Practitioner for Practitioner Code "practitioner1"
+		And I store the Practitioner Id
+	Given I configure the default "PractitionerRead" request
+		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
+	When I make the "PractitionerRead" request
 	Then the response status code should be "404"
 	Examples:
-		| InvalidURL    |
+		| RelativePath  |
 		| Practitioners |
 		| Practitioner! |
 		| Practitioner2 |
-		# Should also include "practitioners" as to cover off startsWith() check by providers
+		| practitioners |
 
-Scenario Outline: Practitioner read failure due to missing header
-	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-		And I do not send header "<Header>"
-	When I get practitioner "practitioner1Saved" and use the id to make a get request to the url "Practitioner"
+Scenario Outline: Practitioner Read with missing mandatory header
+	Given I get the Practitioner for Practitioner Code "practitioner1"
+		And I store the Practitioner Id
+	Given I configure the default "PractitionerRead" request
+			And I do not send header "<Header>"
+	When I make the "PractitionerRead" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| Header            |
@@ -81,13 +60,13 @@ Scenario Outline: Practitioner read failure due to missing header
 		| Ssp-InteractionId |
 		| Authorization     |
 
-Scenario Outline: Practitioner read failure with incorrect interaction id
-	Given I find practitioner "practitioner1" and save it with the key "practitioner1Saved"
-	Given I am using the default server
+Scenario Outline: Practitioner Read with incorrect interaction id
+	Given I get the Practitioner for Practitioner Code "practitioner1"
+		And I store the Practitioner Id
+	Given I configure the default "PractitionerRead" request
 		And I am performing the "<interactionId>" interaction
-	When I get practitioner "practitioner1Saved" and use the id to make a get request to the url "Practitioner"
+	When I make the "PractitionerRead" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| interactionId                                                     |
