@@ -722,6 +722,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestUrl = url;
         }
 
+        [Given(@"I set the Read Operation logical identifier used in the request to ""([^""]*)""")]
+        public void SetTheReadOperationLogicalIdentifierUsedInTheRequestTo(string logicalId)
+        {
+            HttpContext.GetRequestId = logicalId;
+            HttpContext.RequestUrl = "Organization/" + HttpContext.GetRequestId;
+        }
+        
+        [Given(@"I set the Read Operation relative path to ""([^""]*)"" and append the resource logical identifier")]
+        public void SetTheReadOperationRelativePathToAndAppendTheResourceLogicalIdentifier(string relativePath)
+        {
+            HttpContext.RequestUrl = relativePath + "/" + HttpContext.GetRequestId;
+        }
+
         [When(@"I make the ""(.*)"" request")]
         public void MakeRequest(GpConnectInteraction interaction)
         {

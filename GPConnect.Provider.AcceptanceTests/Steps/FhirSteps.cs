@@ -362,6 +362,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext.FhirResponseResource = fhirJsonParser.Parse<Resource>(HttpContext.ResponseBody);
         }
 
+        [Then(@"the response should be the format FHIR JSON")]
+        public void TheResponseShouldBeTheFormatFHIRJSON()
+        {
+            HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.kJsonFhir);
+        }
+
+        [Then(@"the response should be the format FHIR XML")]
+        public void TheResponseShouldBeTheFormatXMLJSON()
+        {
+            HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.kXmlFhir);
+        }
+
         [Then(@"the response body should be empty")]
         public void ThenTheResponseBodyShouldBeEmpty()
         {
@@ -612,6 +624,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheReturnedResourceShallContainALogicalId()
         {
             FhirContext.FhirResponseResource.Id.ShouldNotBeNullOrEmpty("The returned resource should contain a logical Id but does not.");
+        }
+
+        [Then(@"the returned resource shall contain a logical id matching the requested read logical identifier")]
+        public void ThenTheReturnedResourceShallContainALogicalIdMatchingTheRequestedReadLogicalIdentifier()
+        {
+            FhirContext.FhirResponseResource.Id.ShouldNotBeNullOrEmpty("The returned resource should contain a logical Id but does not.");
+            FhirContext.FhirResponseResource.Id.ShouldBe(HttpContext.GetRequestId, "The returned resource logical id did not match the requested id");
         }
 
         private void LogToDisk()
