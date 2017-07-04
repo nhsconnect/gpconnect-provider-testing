@@ -248,10 +248,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Grab The Response Body
             HttpContext.ResponseBody = fhirClient.LastBodyAsText;
             FhirContext.FhirResponseResource = fhirClient.LastBodyAsResource;
-
-            // TODO Parse The XML or JSON For Easier Processing
-
-            LogToDisk();
+            
         }
 
         [When(@"I request the FHIR ""(.*)"" Patient Type operation")]
@@ -344,10 +341,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Grab The Response Body
             HttpContext.ResponseBody = fhirClient.LastBodyAsText;
             FhirContext.FhirResponseResource = fhirClient.LastBodyAsResource;
-
-            // TODO Parse The XML or JSON For Easier Processing
-
-            LogToDisk();
+            
         }
 
         // Response Validation Steps
@@ -631,20 +625,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             FhirContext.FhirResponseResource.Id.ShouldNotBeNullOrEmpty("The returned resource should contain a logical Id but does not.");
             FhirContext.FhirResponseResource.Id.ShouldBe(HttpContext.GetRequestId, "The returned resource logical id did not match the requested id");
-        }
-
-        private void LogToDisk()
-        {
-            var traceDirectory = GlobalContext.TraceDirectory;
-            if (!Directory.Exists(traceDirectory)) return;
-            var scenarioDirectory = Path.Combine(traceDirectory, HttpContext.ScenarioContext.ScenarioInfo.Title);
-            int fileIndex = 1;
-            while (Directory.Exists(scenarioDirectory + "-" + fileIndex)) fileIndex++;
-            scenarioDirectory = scenarioDirectory + "-" + fileIndex;
-            Directory.CreateDirectory(scenarioDirectory);
-            Log.WriteLine(scenarioDirectory);
-            HttpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
-            FhirContext.SaveToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
         }
 
         [Then(@"the response resource logical identifier should match that of stored resource ""([^""]*)""")]

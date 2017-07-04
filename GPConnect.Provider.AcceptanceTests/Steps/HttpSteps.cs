@@ -461,10 +461,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 HttpContext.ResponseHeaders.Add(parameter.Name, (string)parameter.Value);
             }
-
-            // TODO Parse The XML or JSON For Easier Processing
-
-            LogToDisk();
+            
         }
 
         private void HttpRequest(HttpMethod method, string relativeUrl, string body = null, bool decompressGzip = false)
@@ -570,11 +567,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Log.WriteLine("Header - " + header.Key + " : " + headerValues);
                 }
             }
-
-            if (decompressGzip)
-            {
-                LogToDisk();
-            }
+            
         }
 
         [When(@"I send a gpc.getcarerecord operation request with invalid resource type payload")]
@@ -679,20 +672,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
             chunkedHeaderFound.ShouldBeTrue();
-        }
-
-        // Logger
-        private void LogToDisk()
-        {
-            var traceDirectory = GlobalContext.TraceDirectory;
-            if (!Directory.Exists(traceDirectory)) return;
-            var scenarioDirectory = Path.Combine(traceDirectory, HttpContext.ScenarioContext.ScenarioInfo.Title);
-            int fileIndex = 1;
-            while (Directory.Exists(scenarioDirectory + "-" + fileIndex)) fileIndex++;
-            scenarioDirectory = scenarioDirectory + "-" + fileIndex;
-            Directory.CreateDirectory(scenarioDirectory);
-            Log.WriteLine(scenarioDirectory);
-            HttpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
         }
 
         [Given(@"I configure the default ""(.*)"" request")]
@@ -805,11 +784,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     HttpContext.ResponseHeaders.Add(header.Key, headerValues);
                     Log.WriteLine("Header - " + header.Key + " : " + headerValues);
                 }
-            }
-
-            if (decompressGzip)
-            {
-                LogToDisk();
             }
         }
 
