@@ -705,7 +705,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void SetTheReadOperationLogicalIdentifierUsedInTheRequestTo(string logicalId)
         {
             HttpContext.GetRequestId = logicalId;
-            HttpContext.RequestUrl = "Organization/" + HttpContext.GetRequestId;
+            HttpContext.RequestUrl = HttpContext.RequestUrl.Substring(0, HttpContext.RequestUrl.LastIndexOf('/') + 1) + HttpContext.GetRequestId;
         }
         
         [Given(@"I set the Read Operation relative path to ""([^""]*)"" and append the resource logical identifier")]
