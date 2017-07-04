@@ -312,7 +312,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I set the JWT Requested Record to the NHS Number of the stored Patient")]
-        public void ISetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient()
+        public void SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient()
         {
             var patient = HttpContext.StoredPatient;
 

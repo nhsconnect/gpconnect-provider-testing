@@ -15,7 +15,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using Enum;
 
     [Binding]
-    class GetScheduleSteps : TechTalk.SpecFlow.Steps
+    public class GetScheduleSteps : TechTalk.SpecFlow.Steps
     {
 
         private readonly FhirContext FhirContext;
@@ -363,7 +363,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I get the Schedule for Organization Code ""([^""]*)""")]
         public void GetTheScheduleForOrganizationCode(string code)
         {
-            _organizationSteps.GetTheOrganizationIdForOrganizationCode(code);
+            _organizationSteps.GetTheOrganizationForOrganizationCode(code);
             _organizationSteps.StoreTheOrganization();
 
             HttpSteps.ConfigureRequest(GpConnectInteraction.GpcGetSchedule);

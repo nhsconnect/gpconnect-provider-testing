@@ -57,13 +57,16 @@
                 case GpConnectInteraction.AppointmentCreate:
                     ConfigureAppointmentCreateJwt(jwtHelper);
                     break;
+                case GpConnectInteraction.AppointmentSearch:
+                    ConfigureAppointmentSearchJwt(jwtHelper);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
         }
-
+        
         private static void ConfigureGpcGetCareRecordJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
@@ -123,5 +126,11 @@
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kPatientWrite;
         }
+
+        private void ConfigureAppointmentSearchJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
+        }
+
     }
 }

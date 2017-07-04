@@ -1,19 +1,14 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Extensions;
 using GPConnect.Provider.AcceptanceTests.Helpers;
-using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using NUnit.Framework;
 using System;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
-using System.Globalization;
 using static Hl7.Fhir.Model.Appointment;
 using Hl7.Fhir.Serialization;
 using RestSharp;
@@ -21,19 +16,27 @@ using Newtonsoft.Json.Linq;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using Enum;
+
     [Binding]
     public class AppointmentsSteps : TechTalk.SpecFlow.Steps
     {
         private readonly FhirContext FhirContext;
         private readonly HttpSteps HttpSteps;
         private readonly HttpContext HttpContext;
-        
-        public AppointmentsSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext)
+        private readonly JwtSteps _jwtSteps;
+        private readonly PatientSteps _patientSteps;
+        private readonly GetScheduleSteps _getScheduleSteps;
+
+        public AppointmentsSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, JwtSteps jwtSteps, PatientSteps patientSteps, GetScheduleSteps getScheduleSteps)
         {
             FhirContext = fhirContext;
             HttpSteps = httpSteps;
             HttpContext = httpContext;
-    }
+            _jwtSteps = jwtSteps;
+            _patientSteps = patientSteps;
+            _getScheduleSteps = getScheduleSteps;
+        }
 
         [When(@"I search for ""([^""]*)"" from the list of patients and make a get request for their appointments")]
         public void searchAndGetAppointmentsFromPatientListData(string patient)
@@ -789,6 +792,35 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointmentCount.ShouldBe<int>(numberOfAppointments);
         }
 
+        [Given(@"I create ""([^""]*)"" Appointments for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
+        public void CreateAppointmentsForPatientAndOrganizationCode(int appointments, string patient, string code)
+        {
+            while (appointments != 0)
+            {
+                CreateAnAppointmentForPatientAndOrganizationCode(patient, code);
+                appointments--;
+            }
+        }
+
+
+        [Given(@"I create an Appointment for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
+        public void CreateAnAppointmentForPatientAndOrganizationCode(string patient, string code)
+        {
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _getScheduleSteps.GetTheScheduleForOrganizationCode(code);
+            _getScheduleSteps.StoreTheSchedule();
+
+            HttpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+
+            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient();
+
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            HttpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+        }
+     
 
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
         public void CreateAnAppointmentFromTheStoredPatientAndStoredSchedule()

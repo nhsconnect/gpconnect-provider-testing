@@ -1,5 +1,7 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Constants
 {
+    using Enum;
+
     internal static class SpineConst
     {
         internal static class InteractionIds
@@ -23,7 +25,9 @@
             public static string RegisterPatient = BaseInteraction + "operation:gpc.registerpatient";
 
             public static string GpcGetSchedule = BaseInteraction + "operation:gpc.getschedule";
+
             public static string AppointmentCreate => BaseInteraction + "rest:create:appointment";
+            public static string AppointmentSearch => BaseInteraction + "rest:search:patient_appointments";
 
 
             public const string kFhirRestReadMetadata = "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata";

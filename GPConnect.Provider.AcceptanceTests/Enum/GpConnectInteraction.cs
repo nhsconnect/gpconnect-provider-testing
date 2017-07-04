@@ -21,7 +21,7 @@
         GpcGetSchedule = 11,
 
         AppointmentCreate = 12,
-        AppointmentRetrieve = 13,
+        AppointmentSearch = 13,
         AppointmentAmend = 14,
         AppointmentCancel = 15,
         AppointmentRead = 16

@@ -2,27 +2,21 @@
 Feature: AppointmentSearch
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
-	Given I am using the default server
-		And I perform a patient search for patient "patient15" and store the first returned resources against key "registerPatient"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for "registerPatient" from the list of patients and make a get request for their appointments
+	Given I get the Patient for Patient Value "patient15"
+		And I store the Patient
+	Given I configure the default "AppointmentSearch" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And there are zero appointment resources
 
 Scenario Outline: Appointment retrieve success valid id where single appointment resource should be returned
-	Given I create "1" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to config patient "<patient>"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for "<patient>" and make a get request for their appointments
+	Given I create an Appointment for Patient "<patient>" and Organization Code "ORG1"
+	Given I configure the default "AppointmentSearch" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain atleast "1" appointment
 	Examples:
@@ -32,14 +26,11 @@ Scenario Outline: Appointment retrieve success valid id where single appointment
 		| patient3 |
 
 Scenario Outline: Appointment retrieve multiple appointment retrived
-	Given I find or create "<numberOfAppointments>" appointments for patient "<patient>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to config patient "<patient>"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for "<patient>" and make a get request for their appointments
+	Given I create "<numberOfAppointments>" Appointments for Patient "<patient>" and Organization Code "ORG1"
+	Given I configure the default "AppointmentSearch" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain atleast "<numberOfAppointments>" appointment
 	Examples:

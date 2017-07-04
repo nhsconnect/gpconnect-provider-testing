@@ -711,6 +711,7 @@
             ResponseContentType = null;
             ResponseBody = null;
             ResponseHeaders.Clear();
+            BodyParameters = new Parameters();
         }
 
         public void SetDefaultHeaders()

@@ -284,7 +284,7 @@
         }
 
         [Given(@"I get the Organization for Organization Code ""([^""]*)""")]
-        public void GetTheOrganizationIdForOrganizationCode(string code)
+        public void GetTheOrganizationForOrganizationCode(string code)
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationSearch);
 
