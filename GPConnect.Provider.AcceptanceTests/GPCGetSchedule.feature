@@ -2,20 +2,18 @@
 Feature: GPCGetSchedule
 	
 Scenario Outline: I successfully perform a gpc.getschedule operation
-	Given I am using the default server
-		And I search for the organization "<Organization>" on the providers system and save the first response to "<Organization>"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getschedule" interaction
-		And I add period request parameter with a start date of today and an end date "<DaysRange>" days later
-	When I send a gpc.getschedule operation for the organization stored as "<Organization>"
+	Given I get the Organization for Organization Code "<Organization>"
+		And I store the Organization
+	Given I configure the default "GpcGetSchedule" request
+		And I add a Time Period parameter with Start Date today and End Date in "<Days>" days
+	When I make the "GpcGetSchedule" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| Organization | DaysRange |
-		| ORG1         | 14        |
-		| ORG2         | 0         |
-		| ORG3         | 8         |
+		| Organization | Days |
+		| ORG1         | 14   |
+		| ORG2         | 0    |
+		| ORG3         | 8    |
 
 Scenario Outline: I send an invalid date range to the getSchedule operation and should get an error
 	Given I am using the default server

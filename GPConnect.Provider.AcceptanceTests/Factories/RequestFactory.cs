@@ -28,6 +28,9 @@
                 case GpConnectInteraction.RegisterPatient:
                     ConfigureRegisterPatientBody(httpContext);
                     break;
+                case GpConnectInteraction.GpcGetSchedule:
+                    ConfigureGpcGetSchedule(httpContext);
+                    break;
             }
         }
 
@@ -38,7 +41,12 @@
 
         private static void ConfigureRegisterPatientBody(HttpContext httpContext)
         {
-            httpContext.BodyParameters.Add("registerPatient", httpContext.SavedPatient);
+            httpContext.BodyParameters.Add("registerPatient", httpContext.StoredPatient);
+            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
+        }
+
+        private static void ConfigureGpcGetSchedule(HttpContext httpContext)
+        {
             httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
         }
 

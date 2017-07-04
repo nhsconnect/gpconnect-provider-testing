@@ -314,7 +314,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the JWT Requested Record to the NHS Number of the stored Patient")]
         public void ISetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient()
         {
-            var patient = HttpContext.SavedPatient;
+            var patient = HttpContext.StoredPatient;
 
             var identifier = patient.Identifier.FirstOrDefault(x => x.System == FhirConst.IdentifierSystems.kNHSNumber);
        

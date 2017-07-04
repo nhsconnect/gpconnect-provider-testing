@@ -51,13 +51,15 @@
                 case GpConnectInteraction.RegisterPatient:
                     ConfigureRegisterPatientJwt(jwtHelper);
                     break;
+                case GpConnectInteraction.GpcGetSchedule:
+                    ConfigureGpcGetScheduleJwt(jwtHelper);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
         }
-
 
         private static void ConfigureGpcGetCareRecordJwt(JwtHelper jwtHelper)
         {
@@ -107,6 +109,11 @@
         private static void ConfigureRegisterPatientJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kPatientWrite;
+        }
+
+        private static void ConfigureGpcGetScheduleJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
         }
     }
 }

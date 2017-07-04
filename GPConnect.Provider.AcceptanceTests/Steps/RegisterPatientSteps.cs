@@ -766,7 +766,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
 
 
-                    HttpContext.SavedPatient = patientToRegister;
+                    HttpContext.StoredPatient = patientToRegister;
 
                     return;
                 }
@@ -783,7 +783,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 
             };
 
-            HttpContext.SavedPatient.Extension.Add(registrationPeriod);
+            HttpContext.StoredPatient.Extension.Add(registrationPeriod);
         }
 
         [Given(@"I set the stored Patient Registration Status to ""([^""]*)""")]
@@ -803,7 +803,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Value = codableConcept
             };
 
-            HttpContext.SavedPatient.Extension.Add(registrationStatus);
+            HttpContext.StoredPatient.Extension.Add(registrationStatus);
         }
 
         [Given(@"I set the stored Patient Registration Type to ""([^""]*)""")]
@@ -823,7 +823,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Value = codableConcept
             };
 
-            HttpContext.SavedPatient.Extension.Add(registrationType);
+            HttpContext.StoredPatient.Extension.Add(registrationType);
         }
     }
 }

@@ -52,6 +52,9 @@
                 case GpConnectInteraction.RegisterPatient:
                     ConfigureRegisterPatientContext(httpContext);
                     break;
+                case GpConnectInteraction.GpcGetSchedule:
+                    ConfigureGpcGetScheduleContext(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_gpConnectInteraction), _gpConnectInteraction, null);
             }
@@ -118,7 +121,6 @@
             httpContext.HttpMethod = HttpMethod.Get;
             httpContext.RequestUrl = "Location";
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationSearch);
-
         }
 
         private static void ConfigureLocationReadContext(HttpContext httpContext)
@@ -133,6 +135,13 @@
             httpContext.HttpMethod = HttpMethod.Post;
             httpContext.RequestUrl = "Patient/$gpc.registerpatient";
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.RegisterPatient);
+        }
+
+        private static void ConfigureGpcGetScheduleContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Post;
+            httpContext.RequestUrl = "Organization/" + httpContext.StoredOrganization.Id + "/$gpc.getschedule";
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetSchedule);
         }
 
         //TODO: Remove fhirContext dependencies

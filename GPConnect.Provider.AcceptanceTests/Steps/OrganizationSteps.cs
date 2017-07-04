@@ -279,6 +279,15 @@
             _httpSteps.MakeRequest(GpConnectInteraction.OrganizationSearch);
         }
 
+        [Given(@"I store the Organization")]
+        public void StoreTheOrganization()
+        {
+            var organization = _fhirContext.Organizations.FirstOrDefault();
+
+            if (organization != null)
+                HttpContext.StoredOrganization = organization;
+        }
+
         [Given(@"I store the Organization Id")]
         public void StoreTheOrganizationId()
         {

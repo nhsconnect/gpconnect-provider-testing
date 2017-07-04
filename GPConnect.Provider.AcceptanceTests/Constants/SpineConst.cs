@@ -22,6 +22,9 @@
 
             public static string RegisterPatient = BaseInteraction + "operation:gpc.registerpatient";
 
+            public static string GpcGetSchedule = BaseInteraction + "operation:gpc.getschedule";
+
+
             public const string kFhirRestReadMetadata = "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata";
             public const string kFhirPractitioner = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";
 

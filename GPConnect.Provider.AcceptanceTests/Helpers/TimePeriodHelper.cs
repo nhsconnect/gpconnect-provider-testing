@@ -43,5 +43,11 @@
         {
             return new Period(null, DefaultEndDate);
         }
+
+        public static Period GetTimePeriodStartDateTodayEndDateDays(int days)
+        {
+            var date = DateTime.UtcNow.Date;
+            return new Period(new FhirDateTime(date), new FhirDateTime(date.AddDays(days)));
+        }
     }
 }

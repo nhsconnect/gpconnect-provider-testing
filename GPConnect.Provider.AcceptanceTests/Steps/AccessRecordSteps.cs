@@ -109,7 +109,7 @@
 
         #region Time Period Parameter
 
-            [Given(@"I add a valid Time Period parameter")]
+        [Given(@"I add a valid Time Period parameter")]
         public void AddAValidTimePeriodParameter()
         {
             _httpContext.BodyParameters.Add(FhirConst.GetCareRecordParams.kTimePeriod, TimePeriodHelper.GetDefaultTimePeriod());
@@ -149,6 +149,12 @@
         public void AddATimePeriodParameterWithStartDateAndEndDate(string startDate, string endDate)
         {
             _httpContext.BodyParameters.Add(FhirConst.GetCareRecordParams.kTimePeriod, TimePeriodHelper.GetTimePeriod(startDate, endDate));
+        }
+
+        [Given(@"I add a Time Period parameter with Start Date today and End Date in ""(.*)"" days")]
+        public void AddATimePeriodParameterWithStartDateTodayAndEndDateInDays(int days)
+        {
+            _httpContext.BodyParameters.Add(FhirConst.GetCareRecordParams.kTimePeriod, TimePeriodHelper.GetTimePeriodStartDateTodayEndDateDays(days));
         }
 
         #endregion
