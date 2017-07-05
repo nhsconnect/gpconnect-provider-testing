@@ -458,7 +458,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ThePractitionerSdsRoleProfileIdentifierShouldBeValid();
         }
 
-        [Then(@"the Practitioner Identifiers should be fixed values")]
+        [Then(@"the Practitioner system identifiers should be valid fixed values")]
         public void ThePractitionerIdentifiersShouldBeFixedValues()
         {
             var practitioners = GetPractitioners();
@@ -478,8 +478,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ThePractitionerSdsRoleProfileIdentifierShouldBeValid(null);
         }
 
-        [Then(@"the Practitioner SDS Role Profile Identifier should be valid for ""([^""]*)"" total Role Profile Identifiers")]
-        public void ThePractitionerSdsRoleProfileIdentifierShouldBeValidForRoleProfileIdentifiers(int totalRoleProfileCount)
+        [Then(@"the Practitioner SDS Role Profile Identifier should be populated and valid for ""([^""]*)"" total Role Profile Identifiers")]
+        public void ThePractitionerSdsRoleProfileIdentifierShouldBePopulatedAndValidForRoleProfileIdentifiers(int totalRoleProfileCount)
         {
             ThePractitionerSdsRoleProfileIdentifierShouldBeValid(totalRoleProfileCount);
         }
@@ -506,12 +506,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             actualTotalRoleProfileCount.ShouldBe(expectedTotalRoleProfileCount.GetValueOrDefault());
         }
-        
-        [Then(@"the Practitioner SDS User Identifier should be valid for single User Identifier")]
-        public void ThePractitionerSdsUserIdentifierShouldBeValidForSingleUserIdentifier()
+
+        [Then(@"the Practitioner SDS User Identifier should be valid for User Identifier with system ""([^""]*)"" and value ""([^""]*)""")]
+        public void ThePractitionerSdsUserIdentifierShouldBeValidForSingleUserIdentifierWithSystemAndValue(string system, string value)
         {
-            ThePractitionerSdsUserIdentifierShouldBeValid(true);
+            var practitioners = GetPractitioners();
+            practitioners.ForEach(practitioner =>
+            {
+                var sdsUserIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals(system) && identifier.Value.Equals(GlobalContext.PractionerCodeMap[value])).ToList();
+                sdsUserIdentifiers.Count.ShouldBe(1);
+            });
         }
+
+
+
+
+
+        
 
         [Then(@"the Practitioner SDS User Identifier should be valid")]
         public void ThePractitionerSdsUserIdentifierShouldBeValid()
@@ -553,7 +564,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 practitioner.Name.ShouldNotBeNull();
             });
 
-            //ThePractitionerNameFamilyNameShouldBeValid();
+            ThePractitionerNameFamilyNameShouldBeValid();
         }
 
         [Then(@"the Practitioner Name FamilyName should be valid")]
@@ -663,6 +674,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void AddAnIdentifierParameterWithSystemAndValue(string system, string value)
         {
             _httpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.PractionerCodeMap[value]);
+        }
+
+        [Given(@"I add an Practitioner ""([^""]*)"" parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
+        public void IAddAnPractitionerParameterWithSystemAndValue(string identifier , string system, string value)
+        {
+            _httpContext.RequestParameters.AddParameter(identifier, system + '|' + GlobalContext.PractionerCodeMap[value]);
         }
 
         [Given(@"I get the Practitioner for Practitioner Code ""([^""]*)""")]
