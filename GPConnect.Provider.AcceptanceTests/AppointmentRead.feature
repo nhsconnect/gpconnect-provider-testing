@@ -2,12 +2,12 @@
 Feature: AppointmentRead
 
 Scenario Outline: I perform a successful Read appointment
-	Given I find or create "1" appointments for patient "<PatientName>" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "<PatientName>"
+	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentRead" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 	Examples:
 		| PatientName |

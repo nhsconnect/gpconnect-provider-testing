@@ -66,13 +66,16 @@
                 case GpConnectInteraction.AppointmentCancel:
                     ConfigureAppointmentCancelJwt(jwtHelper);
                     break;
+                case GpConnectInteraction.AppointmentRead:
+                    ConfigureAppointmentReadJwt(jwtHelper);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
         }
-        
+
         private static void ConfigureGpcGetCareRecordJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
@@ -146,6 +149,11 @@
         private static void ConfigureAppointmentCancelJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kPatientWrite;
+        }
+
+        private static void ConfigureAppointmentReadJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
         }
     }
 }
