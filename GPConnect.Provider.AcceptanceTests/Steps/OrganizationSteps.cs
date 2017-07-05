@@ -400,7 +400,7 @@
         [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)"" and ""([^""]*)"" ""([^""]*)"" system identifier with site code ""([^""]*)""")]
         public void ThenAnOrganizationReturnedInTheBundleHasSystemIdentifierWithAndSystemIdentifierWithSiteCode(int orgCount, string orgSystem, string orgCode, int siteCount, string siteSystem, string siteCode)
         {
-            int identifierCount, orgLoopCounter, siteLoopCounter;
+            int orgLoopCounter, siteLoopCounter;
             bool organizationIdentifierCountCorrect = false;
             bool allOrganizationsFound = false;
             foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
