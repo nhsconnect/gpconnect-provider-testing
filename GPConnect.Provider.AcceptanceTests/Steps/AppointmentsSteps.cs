@@ -71,8 +71,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void searchAndGetAppointmentsWithCustomStartDate(string patient, string startBoundry)
         {
            
-            Resource patient1 = (Patient)HttpContext.StoredFhirResources[patient];
-            int time = 1;
+            Resource patient1 = (Patient)HttpContext.StoredFhirResources[patient];    
             string id = patient1.Id.ToString();
             var url = "/Patient/" + id + "/Appointment?start=" + startBoundry + "";
             When($@"I make a GET request to ""{url}""");
