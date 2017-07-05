@@ -336,6 +336,14 @@
                 HttpContext.GetRequestId = organization.Id;
         }
 
+        [Given(@"I store the Organization")]
+        public void StoreTheOrganization()
+        {
+            var organization = _fhirContext.Organizations.FirstOrDefault();
+            if (organization != null)
+                HttpContext.StoredOrganization = organization;
+        }
+
         [Then(@"the ""([^""]*)"" organization returned in the bundle is saved and given the name ""([^""]*)""")]
         public void ThenTheOrganizationReturnedInTheBundleIsSavedAndGivenTheName(string organizationPosition, string name)
         {

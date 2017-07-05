@@ -819,6 +819,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             HttpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
         }
+
+        [Given(@"I store the created Appointment")]
+        public void StoreTheCreatedAppointment()
+        {
+            var appointment = FhirContext.Appointments.FirstOrDefault();
+
+            if (appointment != null)
+                HttpContext.CreatedAppointment = appointment;
+        }
      
 
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
@@ -927,6 +936,34 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
                 })
                 .ToList();
+        }
+
+        [Given(@"I set the created Appointment Comment to ""([^""]*)""")]
+        public void SetTheCreatedAppointmentComment(string comment)
+        {
+            HttpContext.CreatedAppointment.Comment = comment;
+        }
+
+        [Given(@"I set the created Appointment to Cancelled with Reason ""([^""]*)""")]
+        public void SetTheCreatedAppointmentToCancelledWithReason(string reason)
+        {
+            var extension = GetCancellationReasonExtension(reason);
+
+            if (HttpContext.CreatedAppointment.Extension == null)
+                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+
+            HttpContext.CreatedAppointment.Extension.Add(extension);
+            HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
+        }
+        
+        private static Extension GetCancellationReasonExtension(string reason)
+        {
+            return new Extension
+            {
+                Url = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1",
+                Value = new FhirString(reason)
+            };
+
         }
     }
 }

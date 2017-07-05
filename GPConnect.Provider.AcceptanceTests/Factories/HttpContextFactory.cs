@@ -61,11 +61,17 @@
                 case GpConnectInteraction.AppointmentSearch:
                     ConfigureAppointmentSearchContext(httpContext);
                     break;
+                case GpConnectInteraction.AppointmentAmend:
+                    ConfigureAppointmentAmendContext(httpContext);
+                    break;
+                case GpConnectInteraction.AppointmentCancel:
+                    ConfigureAppointmentCancelContext(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_gpConnectInteraction), _gpConnectInteraction, null);
             }
         }
-
+        
         private static void SetHttpContextDefaults(HttpContext httpContext)
         {
             httpContext.SetDefaults();
@@ -163,6 +169,20 @@
             httpContext.RequestUrl = "Patient/" + httpContext.StoredPatient.Id + "/Appointment";
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentSearch);
         }
+        private static void ConfigureAppointmentAmendContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Put; ;
+            httpContext.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentAmend);
+        }
+
+        private static void ConfigureAppointmentCancelContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Put; 
+            httpContext.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentCancel);
+        }
+
 
         //TODO: Remove fhirContext dependencies
         public void ConfigureFhirContext(FhirContext fhirContext)
