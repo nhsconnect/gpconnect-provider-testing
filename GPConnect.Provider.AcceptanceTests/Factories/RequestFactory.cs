@@ -34,9 +34,13 @@
                 case GpConnectInteraction.AppointmentCreate:
                     ConfigureAppointmentCreateBody(httpContext);
                     break;
+                case GpConnectInteraction.AppointmentAmend:
+                    ConfigureAppointmentAmendBody(httpContext);
+                    break;
             }
         }
 
+ 
         private static void ConfigureAppointmentCreateBody(HttpContext httpContext)
         {
             httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.CreatedAppointment);
@@ -56,6 +60,11 @@
         private static void ConfigureGpcGetSchedule(HttpContext httpContext)
         {
             httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
+        }
+
+        private static void ConfigureAppointmentAmendBody(HttpContext httpContext)
+        {
+            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.CreatedAppointment);
         }
 
         public void ConfigureInvalidResourceType(HttpContext httpContext)

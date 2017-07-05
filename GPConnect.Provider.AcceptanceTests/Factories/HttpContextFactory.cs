@@ -61,6 +61,9 @@
                 case GpConnectInteraction.AppointmentSearch:
                     ConfigureAppointmentSearchContext(httpContext);
                     break;
+                case GpConnectInteraction.AppointmentAmend:
+                    ConfigureAppointmentAmendContext(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_gpConnectInteraction), _gpConnectInteraction, null);
             }
@@ -162,6 +165,12 @@
             httpContext.HttpMethod = HttpMethod.Get;;
             httpContext.RequestUrl = "Patient/" + httpContext.StoredPatient.Id + "/Appointment";
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentSearch);
+        }
+        private static void ConfigureAppointmentAmendContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Put; ;
+            httpContext.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentAmend);
         }
 
         //TODO: Remove fhirContext dependencies

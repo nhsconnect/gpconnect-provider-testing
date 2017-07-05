@@ -820,6 +820,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             HttpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
         }
+
+        [Given(@"I store the created Appointment")]
+        public void StoreTheCreatedAppointment()
+        {
+            var appointment = FhirContext.Appointments.FirstOrDefault();
+
+            if (appointment != null)
+                HttpContext.CreatedAppointment = appointment;
+        }
      
 
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
@@ -928,6 +937,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
                 })
                 .ToList();
+        }
+
+        [Given(@"I set the created Appointment Comment to ""([^""]*)""")]
+        public void SetTheCreatedAppointmentComment(string comment)
+        {
+            HttpContext.CreatedAppointment.Comment = comment;
         }
     }
 }

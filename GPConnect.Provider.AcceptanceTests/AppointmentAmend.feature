@@ -5,14 +5,13 @@ Background:
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 
 Scenario: I perform a successful amend appointment and change the comment to a custom message
-	Given I store the schedule for "ORG1" called "getScheduleResponseBundle" and create an appointment called "CustomAppointment1" for patient "patient1" using the interaction id "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "patient1"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-	When I amend "CustomAppointment1" by changing the comment to "customComment"
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the created Appointment Comment to "customComment"
+	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the appointment resource should contain a comment which equals "customComment"
 

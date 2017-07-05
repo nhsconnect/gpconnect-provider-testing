@@ -28,6 +28,7 @@
 
             public static string AppointmentCreate => BaseInteraction + "rest:create:appointment";
             public static string AppointmentSearch => BaseInteraction + "rest:search:patient_appointments";
+            public static string AppointmentAmend => BaseInteraction + "rest:update:appointment";
 
 
             public const string kFhirRestReadMetadata = "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata";
