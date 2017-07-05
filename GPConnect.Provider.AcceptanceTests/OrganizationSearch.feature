@@ -76,8 +76,7 @@ Scenario: Organization search by organization code successfully returns single r
 		And the response bundle "Organization" entries should contain element "fullUrl"
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the "First" organization returned in the bundle is saved and given the name "organization1"
-		And the stored organization "organization1" contains "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "organization" code "ORG1"
-		And the stored organization "organization1" contains "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with "site" code "SIT1"
+		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG1" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT1"
 	
 Scenario: Organization search by organization code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request
@@ -90,8 +89,7 @@ Scenario: Organization search by organization code successfully returns multiple
 		And the response bundle "Organization" entries should contain element "fullUrl"
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the "First" organization returned in the bundle is saved and given the name "organization1"
-		And the stored organization "organization1" contains "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "organization" code "ORG2"
-		And the stored organization "organization1" contains "2" "http://fhir.nhs.net/Id/ods-site-code" system identifier with "site" code "SIT2|SIT3"
+			And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG2|ORG3" and "2" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT2|SIT3"
 
 		
 Scenario: Organization search by site code successfully returns single result containing the correct fields
@@ -104,9 +102,7 @@ Scenario: Organization search by site code successfully returns single result co
 		And the response bundle should contain "1" entries
 		And the response bundle "Organization" entries should contain element "fullUrl"
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the "First" organization returned in the bundle is saved and given the name "organization1"
-		And the stored organization "organization1" contains "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "organization" code "ORG1"
-		And the stored organization "organization1" contains "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with "site" code "SIT1"
+		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG1" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT1"
 
 Scenario: Organization search by site code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request
