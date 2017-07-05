@@ -2,14 +2,13 @@
 Feature: AppointmentCancel
 
 Scenario Outline: I perform a successful cancel appointment
-	Given I find or create an appointment with status Booked for patient "<PatientName>" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-		And I set the JWT requested record NHS number to config patient "<PatientName>"
-		And I set the JWT requested scope to "patient/*.write"
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
+	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the created Appointment to Cancelled with Reason "double booked"
+	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
 		And the cancellation reason in the returned appointment response should be equal to "double booked"

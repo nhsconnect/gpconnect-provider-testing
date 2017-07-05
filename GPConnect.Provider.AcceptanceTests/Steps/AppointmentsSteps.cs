@@ -944,5 +944,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.CreatedAppointment.Comment = comment;
         }
+
+        [Given(@"I set the created Appointment to Cancelled with Reason ""([^""]*)""")]
+        public void SetTheCreatedAppointmentToCancelledWithReason(string reason)
+        {
+            var extension = GetCancellationReasonExtension(reason);
+
+            if (HttpContext.CreatedAppointment.Extension == null)
+                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+
+            HttpContext.CreatedAppointment.Extension.Add(extension);
+            HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
+        }
+        
+        private static Extension GetCancellationReasonExtension(string reason)
+        {
+            return new Extension
+            {
+                Url = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1",
+                Value = new FhirString(reason)
+            };
+
+        }
     }
 }

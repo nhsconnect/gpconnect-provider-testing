@@ -37,6 +37,9 @@
                 case GpConnectInteraction.AppointmentAmend:
                     ConfigureAppointmentAmendBody(httpContext);
                     break;
+                case GpConnectInteraction.AppointmentCancel:
+                    ConfigureAppointmentCancelBody(httpContext);
+                    break;
             }
         }
 
@@ -63,6 +66,11 @@
         }
 
         private static void ConfigureAppointmentAmendBody(HttpContext httpContext)
+        {
+            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.CreatedAppointment);
+        }
+
+        private static void ConfigureAppointmentCancelBody(HttpContext httpContext)
         {
             httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.CreatedAppointment);
         }
