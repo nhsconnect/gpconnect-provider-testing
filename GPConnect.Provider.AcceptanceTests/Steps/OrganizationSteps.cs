@@ -398,7 +398,7 @@
         }
 
         [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)"" and ""([^""]*)"" ""([^""]*)"" system identifier with site code ""([^""]*)""")]
-        public void checklthisworks(int orgCount, string orgSystem, string orgCode, int siteCount, string siteSystem, string siteCode)
+        public void ThenAnOrganizationReturnedInTheBundleHasSystemIdentifierWithAndSystemIdentifierWithSiteCode(int orgCount, string orgSystem, string orgCode, int siteCount, string siteSystem, string siteCode)
         {
             int identifierCount, orgLoopCounter, siteLoopCounter;
             bool organizationIdentifierCountCorrect = false;
@@ -407,15 +407,11 @@
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {
-                    identifierCount = 0;
+             
                     Organization organization = (Organization)(Organization)entry.Resource;
                     siteLoopCounter = 0;
-                    orgLoopCounter = 0;
-                    foreach (var identifier in organization.Identifier)
-                    {
-                        identifierCount++;
-                    }
-                    organizationIdentifierCountCorrect = (identifierCount == (orgCount + siteCount));
+                    orgLoopCounter = 0;          
+                    organizationIdentifierCountCorrect = (organization.Identifier.Count == (orgCount + siteCount));
 
                     foreach (var identifier in organization.Identifier)
                     {
@@ -437,10 +433,6 @@
                     {
                         allOrganizationsFound = true;
                         break;
-                    }
-                    else
-                    {
-                        continue;
                     }
                 }
             }
