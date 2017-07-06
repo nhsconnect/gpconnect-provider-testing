@@ -24,6 +24,8 @@
         AppointmentSearch = 13,
         AppointmentAmend = 14,
         AppointmentCancel = 15,
-        AppointmentRead = 16
+        AppointmentRead = 16,
+
+        MetadataRead = 17
     }
 }

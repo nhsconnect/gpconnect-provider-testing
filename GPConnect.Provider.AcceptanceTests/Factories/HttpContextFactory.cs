@@ -70,11 +70,14 @@
                 case GpConnectInteraction.AppointmentRead:
                     ConfigureAppointmentReadContext(httpContext);
                     break;
+                case GpConnectInteraction.MetadataRead:
+                    ConfigureMetadataReadContext(httpContext);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_gpConnectInteraction), _gpConnectInteraction, null);
             }
         }
-        
+
         private static void SetHttpContextDefaults(HttpContext httpContext)
         {
             httpContext.SetDefaults();
@@ -191,6 +194,13 @@
             httpContext.HttpMethod = HttpMethod.Get;
             httpContext.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentRead);
+        }
+
+        private static void ConfigureMetadataReadContext(HttpContext httpContext)
+        {
+            httpContext.HttpMethod = HttpMethod.Get;
+            httpContext.RequestUrl = "metadata";
+            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.MetadataRead);
         }
 
         //TODO: Remove fhirContext dependencies

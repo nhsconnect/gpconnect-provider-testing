@@ -69,6 +69,9 @@
                 case GpConnectInteraction.AppointmentRead:
                     ConfigureAppointmentReadJwt(jwtHelper);
                     break;
+                case GpConnectInteraction.MetadataRead:
+                    ConfigureMetadataReadJwt(jwtHelper);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -154,6 +157,11 @@
         private static void ConfigureAppointmentReadJwt(JwtHelper jwtHelper)
         {
             jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
+        }
+
+        private static void ConfigureMetadataReadJwt(JwtHelper jwtHelper)
+        {
+            jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
         }
     }
 }
