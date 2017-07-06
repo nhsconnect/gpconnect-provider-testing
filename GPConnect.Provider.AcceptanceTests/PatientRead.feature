@@ -1,7 +1,12 @@
 ﻿@patient
 Feature: PatientRead
+
+#COMMON
+#Steps should be replaced to use the code hayden has written which does set up behind the scenes, eg setting interaction id etc
+#Patient1 used throughout, mabye think about using some of the other patients
 	
 Scenario Outline: Read patient 404 if patient not found
+#Step name isnt very clear, could be improved to flow better
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient Id
 	Given I configure the default "PatientRead" request
@@ -23,6 +28,7 @@ Scenario: Read patient 404 if patient id not sent
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
+#Make test name clearer
 Scenario Outline: Read patient _format parameter only
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
@@ -39,6 +45,7 @@ Scenario Outline: Read patient _format parameter only
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+#Make test name clearer
 Scenario Outline: Read patient accept header and _format parameter
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
@@ -50,6 +57,7 @@ Scenario Outline: Read patient accept header and _format parameter
 	When I make a GET request for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
+		#Add further validation to ensure the response is for patient1
 		And the response should be a Patient resource
 	Examples:
 		| Header                | Parameter             | BodyFormat |
@@ -87,6 +95,7 @@ Scenario: Read patient should contain correct logical identifier
 		And the response should be a Patient resource
 		And the response patient logical identifier should match that of stored patient "patient1"
 
+#test name could include further information, ie about matching resource version
 Scenario: Read patient should contain ETag
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
 	Given I am using the default server
@@ -97,6 +106,7 @@ Scenario: Read patient should contain ETag
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Patient resource
+		#Further validation should be done to check the response is for patient1
 		And the response should contain the ETag header matching the resource version
 
 Scenario: Read patient If-None-Match should return a 304 on match
@@ -119,6 +129,7 @@ Scenario: Read patient If-None-Match should return full resource if no match
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Patient resource
+		# We should check more in the response to make sure the resource is valid 
 		And the response should contain the ETag header matching the resource version
 
 Scenario: VRead patient _history with current etag should return current patient
@@ -131,6 +142,7 @@ Scenario: VRead patient _history with current etag should return current patient
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Patient resource
+		# We should check more in the response to make sure the resources are valid 
 
 Scenario: VRead patient _history with invalid etag should give a 404
 	Given I perform a patient search for patient "patient1" and store the first returned resources against key "patient1"
@@ -165,8 +177,12 @@ Scenario Outline: Read patient with accept header should contain valid resource
 		And the patient resource should contain valid language coding fields for each communication
 		And the patient resource should contain no more than one family or given name
 		And the patient resource should contain no more than one family name field for each contact
+		#step name is not clear, what fields??
 		And the Patient should exclude fields
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
+
+
+#Manual tests need adding 
