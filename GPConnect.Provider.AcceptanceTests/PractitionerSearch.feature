@@ -48,8 +48,7 @@ Scenario: Practitioner search without the identifier parameter
 
 Scenario Outline: Practitioner search where identifier contains the incorrect case or spelling
 	Given I configure the default "PractitionerSearch" request
-	When I make the "PractitionerSearch" request
-		And I add an Practitioner "<ParameterName>" parameter with System "http://fhir.nhs.net/Id/sds-user-id" and Value "practitioner2"
+		And I add a Practitioner "<ParameterName>" parameter with System "http://fhir.nhs.net/Id/sds-user-id" and Value "practitioner2"
 	When I make a GET request to "/Practitioner"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
