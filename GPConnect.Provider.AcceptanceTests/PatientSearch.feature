@@ -11,6 +11,13 @@ Scenario: The response resources must be valid FHIR JSON or XML
 	# This validation is done impliciitly by the parsing of the response XML or JSON into the FHIR resource used in most of the
 	# test scenarios so no specific test needs to be implemented.
 
+#COMMON
+#Some of the test names done mention patient search. May not be needed given tests are in the patient search feature file
+#Merging some of the successful testS might be sensible if they are related 
+#Some of the tests require further validation to ensure the response is correct
+#Might want to think about testing a greater range of patients from 1 to 18
+
+
 Scenario: Returned patients should contain a logical identifier
 	Given I configure the default "PatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
@@ -62,6 +69,7 @@ Scenario: Patient search should fail if no identifier parameter is include
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+##Add further testing for incorrect spelling of identifier and identifiers 
 Scenario: The identifier parameter should be rejected if the case is incorrect
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient2"
@@ -82,13 +90,16 @@ Scenario: The response should be an error if no value is sent in the identifier 
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/nhs-number|"
-	When I search for Patient "patientNotInSystem"
+	When I search for Patient "patient2"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
+#Test just accept header and just format header
+
+#Test needs to use haydens new steps for setting the JWT and pre test set up
 Scenario Outline: The patient search endpoint should accept the format parameter after the identifier parameter
-	    Given I am using the default server
+	   Given I am using the default server
         And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
         And I set the JWT requested record NHS number to config patient "patient2"
         And I set the JWT requested scope to "patient/*.read"
@@ -100,13 +111,15 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
 		| application/xml+fhir  | application/xml+fhir  | XML          |
 		| application/json+fhir | application/xml+fhir  | XML          |
 		| application/json+fhir | application/json+fhir | JSON         |
 		| application/xml+fhir  | application/json+fhir | JSON         |
-	
+
+#Test needs to use haydens new steps for setting the JWT and pre test set up
 Scenario Outline: The patient search endpoint should accept the format parameter before the identifier parameter
 	 Given I am using the default server
         And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
@@ -120,6 +133,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
 		| application/xml+fhir  | application/xml+fhir  | XML          |
@@ -169,6 +183,7 @@ Scenario: Patient resource should contain meta data elements
 		And the response bundle should contain "1" entries
 		And the patient resource in the bundle should contain meta data profile and version id
 
+#Test is looking for XML, should this not be included in the test title
 Scenario Outline: Patient resource should contain NHS number identifier
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
@@ -179,6 +194,7 @@ Scenario Outline: Patient resource should contain NHS number identifier
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the response bundle Patient entries should contain a single NHS Number identifier for patient "<Patient>"
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -194,6 +210,7 @@ Scenario Outline: Patient resource should not contain disallowed fields in resou
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the Patient should exclude fields
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -208,6 +225,7 @@ Scenario Outline: Check that if a care provider exists in the Patient resource i
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if Patient resource contains careProvider the reference must be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -222,6 +240,7 @@ Scenario Outline: Check that if a managingOrganization exists in the Patient res
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if Patient resource contains a managing organization the reference must be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -237,6 +256,7 @@ Scenario Outline: If patient contains telecom contacts the contact must contain 
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if patient resource contains telecom element the system and value must be populated
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -252,6 +272,7 @@ Scenario Outline: If patient deceased is present it should be a dateTime and not
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if patient resource contains deceased element it should be dateTime and not boolean
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient   |
 		| patient1  |
@@ -268,6 +289,7 @@ Scenario Outline: If patient contains marital status it must contain system code
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the Patient MaritalStatus should be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -283,6 +305,7 @@ Scenario Outline: If patient contains multiple birth field it must be a boolean 
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if composition contains the patient resource and it contains the multiple birth field it should be a boolean value
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient   |
 		| patient1  |
@@ -298,6 +321,7 @@ Scenario Outline: If patient contains contact the relationship code display and 
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if composition contains the patient resource contact the mandatory fields should matching the specification
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -313,6 +337,7 @@ Scenario Outline: If patient contains communication element the system and value
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the Patient Communication should be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -328,6 +353,7 @@ Scenario Outline: If patient contains care provider the reference should be vali
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if careProvider is present in patient resource the reference should be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -343,6 +369,7 @@ Scenario Outline: If patient contains managing organization the reference should
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if managingOrganization is present in patient resource the reference should be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -357,6 +384,7 @@ Scenario: Conformance profile supports the Patient search operation
 		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Patient" resource with a "search-type" interaction
 
+#Needs to be changed to fit with haydens new steps
 Scenario Outline: System should error if multiple parameters valid or invalid are sent
 	    Given I am using the default server
         And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
@@ -375,7 +403,8 @@ Scenario Outline: System should error if multiple parameters valid or invalid ar
 		| identifier       | patient2   | identifier        | patient1   |
 		| identifier       | patient2   | invalidIdentifier | patient2   |
 		| randomIdentifier | patient2   | identifier        | patient2   |
-	
+
+
 Scenario: JWT requesting scope claim should reflect the operation being performed
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
