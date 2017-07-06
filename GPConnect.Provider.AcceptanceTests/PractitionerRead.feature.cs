@@ -104,8 +104,8 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("the practitioner resource should contain a single name element with a maximum of " +
                     "one family name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
-  testRunner.And("if the practitioner resource contains a practitioner it should have a valid syste" +
-                    "m code and display", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("if the practitioner resource contains a practitionerRole it should have a valid s" +
+                    "ystem code and display", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
   testRunner.And("if the returned practitioner resource contains a communication element it must ma" +
                     "tch the specified valueset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
