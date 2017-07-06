@@ -21,6 +21,10 @@ Scenario: if location contains telecom
 # There is no need to check that the location telecom value sets are valid as this is done by the parse of the response within scenario above.
 # The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
 
+#COMMON
+#Refactor code to use haydens steps moving setup behind the scenes
+#The last 4 tests could be merged, although if a problem occurs the cause of the issue will be less clear
+
 Scenario Outline: Location search success
 	Given I configure the default "LocationSearch" request
 		And I add a Location Identifier parameter with default System and Value "<Value>"
@@ -77,6 +81,7 @@ Scenario Outline: Location search failure due to invalid identifier name
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	#Add identifiers into the test
 	Examples:
 		| Identifier | ParameterValue                             |
 		| IDENTIFIER | http://fhir.nhs.net/Id/ods-site-code\|SIT1 |
@@ -93,12 +98,14 @@ Scenario Outline: Location search parameter order test
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
 	Examples:
+	# for consistency change the table order to Parameter1Name , Parameter1 , Parameter2Name, Parameter2
 		| Parameter1Name | Parameter2Name | Parameter1                                 | Parameter2                                 | BodyFormat |
 		| _format        | identifier     | application/json+fhir                      | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | JSON       |
 		| _format        | identifier     | application/xml+fhir                       | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | XML        |
 		| identifier     | _format        | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | application/json+fhir                      | JSON       |
 		| identifier     | _format        | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | application/xml+fhir                       | XML        |
 
+#Test name needs to be more descriptive
 Scenario Outline: Location search accept header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
@@ -108,11 +115,13 @@ Scenario Outline: Location search accept header
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
+		#The response needs to be validated further to ensure it is correct
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+#Test name needs to be more descriptive
 Scenario Outline: Location search _format parameter only
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
@@ -122,11 +131,13 @@ Scenario Outline: Location search _format parameter only
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
+		#The response needs to be validated further to ensure it is correct
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+#Test name needs to be more descriptive
 Scenario Outline: Location search accept header and _format parameter
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
@@ -137,6 +148,7 @@ Scenario Outline: Location search accept header and _format parameter
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
+		#The response needs to be validated further to ensure it is correct
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -228,6 +240,8 @@ Scenario: Location search send organization identifier in the request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+#Add a test with only an organization identifier
 
 Scenario: Location search send invalid parameter
 	Given I am using the default server
