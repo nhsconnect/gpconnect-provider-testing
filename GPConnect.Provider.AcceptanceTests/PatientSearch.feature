@@ -11,51 +11,50 @@ Scenario: The response resources must be valid FHIR JSON or XML
 	# This validation is done impliciitly by the parsing of the response XML or JSON into the FHIR resource used in most of the
 	# test scenarios so no specific test needs to be implemented.
 
+#COMMON
+#Some of the test names done mention patient search. May not be needed given tests are in the patient search feature file
+#Merging some of the successful testS might be sensible if they are related 
+#Some of the tests require further validation to ensure the response is correct
+#Might want to think about testing a greater range of patients from 1 to 18
+
+
 Scenario: Returned patients should contain a logical identifier
 	Given I configure the default "PatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-	When I make the "PatientSearch" request
+	When I search for Patient "patient2"
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And all search response entities in bundle should contain a logical identifier
 
 Scenario: Provider should return an error when an invalid system is supplied in the identifier parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I search for Patient "patient1" with system "http://test.net/types/internalIdentifier"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
 
 Scenario: Provider should return an error when no system is supplied in the identifier parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I search for Patient "patient1" without system in identifier parameter
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Provider should return an error when a blank system is supplied in the identifier parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I search for Patient "patient1" with system ""
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: When a patient is not found on the provider system an empty bundle should be returned
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patientNotInSystem"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patientNotInSystem"
 	When I search for Patient "patientNotInSystem"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -63,51 +62,47 @@ Scenario: When a patient is not found on the provider system an empty bundle sho
 		And the response bundle should contain "0" entries
 
 Scenario: Patient search should fail if no identifier parameter is include
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.read"
-	When I make a GET request to "/Patient"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I search for Patient "patient2"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+##Add further testing for incorrect spelling of identifier and identifiers 
 Scenario: The identifier parameter should be rejected if the case is incorrect
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I search for Patient "patient2" with parameter name "IdentIfier" and system "http://fhir.nhs.net/Id/nhs-number"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: The response should be an error if parameter is not identifier
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I search for Patient "patient2" with parameter name "nhsNumberParam" and system "http://fhir.nhs.net/Id/nhs-number"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: The response should be an error if no value is sent in the identifier parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/nhs-number|"
-	When I make a GET request to "/Patient"
+	When I search for Patient "patient2"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
+#Test just accept header and just format header
+
+#Test needs to use haydens new steps for setting the JWT and pre test set up
 Scenario Outline: The patient search endpoint should accept the format parameter after the identifier parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.read"
+	   Given I am using the default server
+        And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+        And I set the JWT requested record NHS number to config patient "patient2"
+        And I set the JWT requested scope to "patient/*.read"
 		And I set the Accept header to "<AcceptHeader>"
 		And I add the parameter "identifier" with system "http://fhir.nhs.net/Id/nhs-number" for patient "patient2"
 		And I add the parameter "_format" with the value "<FormatParam>"
@@ -116,18 +111,20 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
 		| application/xml+fhir  | application/xml+fhir  | XML          |
 		| application/json+fhir | application/xml+fhir  | XML          |
 		| application/json+fhir | application/json+fhir | JSON         |
 		| application/xml+fhir  | application/json+fhir | JSON         |
-	
+
+#Test needs to use haydens new steps for setting the JWT and pre test set up
 Scenario Outline: The patient search endpoint should accept the format parameter before the identifier parameter
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.read"
+	 Given I am using the default server
+        And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+        And I set the JWT requested record NHS number to config patient "patient2"
+        And I set the JWT requested scope to "patient/*.read"
 		And I set the Accept header to "<AcceptHeader>"
 		And I add the parameter "_format" with the value "<FormatParam>"
 		And I add the parameter "identifier" with system "http://fhir.nhs.net/Id/nhs-number" for patient "patient2"
@@ -136,6 +133,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
 		| application/xml+fhir  | application/xml+fhir  | XML          |
@@ -144,9 +142,10 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		| application/xml+fhir  | application/json+fhir | JSON         |
 
 Scenario Outline: Patient search failure due to invalid interactionId
-	Given I am using the default server
+	Given I configure the default "PatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I am performing the "<InteractionId>" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
 	When I search for Patient "patient2"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -158,10 +157,9 @@ Scenario Outline: Patient search failure due to invalid interactionId
 		|                                                                   |
 
 Scenario Outline: Patient search failure due to missing header
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I do not send header "<Header>"
 	When I search for Patient "patient2"
 	Then the response status code should be "400"
@@ -176,22 +174,19 @@ Scenario Outline: Patient search failure due to missing header
 		| Authorization     |
 
 Scenario: Patient resource should contain meta data elements
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for Patient "patient1"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I search for Patient "patient2"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the patient resource in the bundle should contain meta data profile and version id
 
+#Test is looking for XML, should this not be included in the test title
 Scenario Outline: Patient resource should contain NHS number identifier
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I set the Accept header to "application/xml+fhir"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
@@ -199,6 +194,7 @@ Scenario Outline: Patient resource should contain NHS number identifier
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the response bundle Patient entries should contain a single NHS Number identifier for patient "<Patient>"
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -206,16 +202,15 @@ Scenario Outline: Patient resource should contain NHS number identifier
 		| patient3 |
 
 Scenario Outline: Patient resource should not contain disallowed fields in resource
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the Patient should exclude fields
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -223,15 +218,14 @@ Scenario Outline: Patient resource should not contain disallowed fields in resou
 		| patient3 |
 
 Scenario Outline: Check that if a care provider exists in the Patient resource it is valid and there is only one
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if Patient resource contains careProvider the reference must be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -239,15 +233,14 @@ Scenario Outline: Check that if a care provider exists in the Patient resource i
 		| patient3 |
 
 Scenario Outline: Check that if a managingOrganization exists in the Patient resource that it is a valid reference
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And if Patient resource contains a managing organization the reference must be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -255,16 +248,15 @@ Scenario Outline: Check that if a managingOrganization exists in the Patient res
 		| patient3 |
 
 Scenario Outline: If patient contains telecom contacts the contact must contain mandatory fields
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if patient resource contains telecom element the system and value must be populated
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -272,16 +264,15 @@ Scenario Outline: If patient contains telecom contacts the contact must contain 
 		| patient3 |
 
 Scenario Outline: If patient deceased is present it should be a dateTime and not a boolean
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if patient resource contains deceased element it should be dateTime and not boolean
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient   |
 		| patient1  |
@@ -290,16 +281,15 @@ Scenario Outline: If patient deceased is present it should be a dateTime and not
 		| patient17 |
 
 Scenario Outline: If patient contains marital status it must contain system code and display elements
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the Patient MaritalStatus should be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -307,16 +297,15 @@ Scenario Outline: If patient contains marital status it must contain system code
 		| patient3 |
 
 Scenario Outline: If patient contains multiple birth field it must be a boolean type field
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if composition contains the patient resource and it contains the multiple birth field it should be a boolean value
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient   |
 		| patient1  |
@@ -324,16 +313,15 @@ Scenario Outline: If patient contains multiple birth field it must be a boolean 
 		| patient17 |
 
 Scenario Outline: If patient contains contact the relationship code display and system should be valid
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if composition contains the patient resource contact the mandatory fields should matching the specification
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -341,16 +329,15 @@ Scenario Outline: If patient contains contact the relationship code display and 
 		| patient3 |
 
 Scenario Outline: If patient contains communication element the system and values should be valid
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the Patient Communication should be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -358,16 +345,15 @@ Scenario Outline: If patient contains communication element the system and value
 		| patient3 |
 
 Scenario Outline: If patient contains care provider the reference should be valid
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if careProvider is present in patient resource the reference should be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -375,16 +361,15 @@ Scenario Outline: If patient contains care provider the reference should be vali
 		| patient3 |
 
 Scenario Outline: If patient contains managing organization the reference should be valid
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "<Patient>"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I search for Patient "<Patient>"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if managingOrganization is present in patient resource the reference should be valid
+		#further validation is required to ensure the response matches what was searched for
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -399,11 +384,12 @@ Scenario: Conformance profile supports the Patient search operation
 		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Patient" resource with a "search-type" interaction
 
+#Needs to be changed to fit with haydens new steps
 Scenario Outline: System should error if multiple parameters valid or invalid are sent
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.read"
+	    Given I am using the default server
+        And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
+        And I set the JWT requested record NHS number to config patient "patient2"
+        And I set the JWT requested scope to "patient/*.read"
 		And I add the parameter "<Identifier1>" with system "http://fhir.nhs.net/Id/nhs-number" for patient "<PatientOne>"
 		And I add the parameter "<Identifier2>" with system "http://fhir.nhs.net/Id/nhs-number" for patient "<PatientTwo>"
 	When I make a GET request to "/Patient"
@@ -417,11 +403,11 @@ Scenario Outline: System should error if multiple parameters valid or invalid ar
 		| identifier       | patient2   | identifier        | patient1   |
 		| identifier       | patient2   | invalidIdentifier | patient2   |
 		| randomIdentifier | patient2   | identifier        | patient2   |
-	
+
+
 Scenario: JWT requesting scope claim should reflect the operation being performed
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I set the JWT requested scope to "organization/*.read"
 	When I search for Patient "patient1"
 	Then the response status code should be "400"
@@ -429,10 +415,8 @@ Scenario: JWT requesting scope claim should reflect the operation being performe
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: JWT patient claim should reflect the patient being searched for
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
+	Given I configure the default "PatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient1"
 	When I search for Patient "patient2"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON

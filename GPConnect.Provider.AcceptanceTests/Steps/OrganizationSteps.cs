@@ -398,24 +398,20 @@
         }
 
         [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)"" and ""([^""]*)"" ""([^""]*)"" system identifier with site code ""([^""]*)""")]
-        public void checklthisworks(int orgCount, string orgSystem, string orgCode, int siteCount, string siteSystem, string siteCode)
+        public void ThenAnOrganizationReturnedInTheBundleHasSystemIdentifierWithAndSystemIdentifierWithSiteCode(int orgCount, string orgSystem, string orgCode, int siteCount, string siteSystem, string siteCode)
         {
-            int identifierCount, orgLoopCounter, siteLoopCounter;
+            int orgLoopCounter, siteLoopCounter;
             bool organizationIdentifierCountCorrect = false;
             bool allOrganizationsFound = false;
             foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {
-                    identifierCount = 0;
+             
                     Organization organization = (Organization)(Organization)entry.Resource;
                     siteLoopCounter = 0;
-                    orgLoopCounter = 0;
-                    foreach (var identifier in organization.Identifier)
-                    {
-                        identifierCount++;
-                    }
-                    organizationIdentifierCountCorrect = (identifierCount == (orgCount + siteCount));
+                    orgLoopCounter = 0;          
+                    organizationIdentifierCountCorrect = (organization.Identifier.Count == (orgCount + siteCount));
 
                     foreach (var identifier in organization.Identifier)
                     {
@@ -438,13 +434,23 @@
                         allOrganizationsFound = true;
                         break;
                     }
-                    else
-                    {
-                        continue;
-                    }
                 }
             }
             allOrganizationsFound.ShouldBe(true, "The number of organizations or site codes are invalid");
+        }
+
+        [Then(@"the returned organization contains identifiers of type ""([^""]*)"" with values ""([^""]*)""")]
+        public void ThenTheReturnedOrgainzationContainsIdentifiersOfTypeWithValues(string identifierSystem, string identifierValueCSV)
+        {
+            Organization organization = (Organization)_fhirContext.FhirResponseResource;
+            organization.Identifier.ShouldNotBeNull("The organization should contain an organization identifier as the business identifier was used to find the organization for this test.");
+
+            foreach (var identifierValue in identifierValueCSV.Split(','))
+            {
+                Identifier identifierFound = organization.Identifier.Find(identifier => identifier.System.Equals(identifierSystem) && identifier.Value.Equals(GlobalContext.OdsCodeMap[identifierValue]));
+                identifierFound.ShouldNotBeNull($"The expected identifier was not found in the returned organization resource, expected value {GlobalContext.OdsCodeMap[identifierValue]}");
+            }
+
         }
 
         private List<string> getIdentifiersInList(string code)
