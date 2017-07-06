@@ -1,6 +1,11 @@
 ﻿@location
 Feature: LocationRead
 
+#COMMON
+#Refactor steps to use haydens code which moves set up code behind the scenes
+#Put slash before URL to make it clearer it is a path
+#SIT1 used throughout, think about using other sites
+
 Scenario Outline: Location read successful request
 	Given I get the Location for Location Value "<Location>"
 		And I store the Location Id
@@ -14,7 +19,7 @@ Scenario Outline: Location read successful request
 		| SIT1     |
 		| SIT2     |
 		| SIT3     |
-
+#Make test name more clear
 Scenario Outline: Location read invalid id
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
@@ -43,6 +48,7 @@ Scenario Outline: Location read failure due to missing header
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 		And I do not send header "<Header>"
+		#Put slash before URL to make it clearer it is a path
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -59,6 +65,7 @@ Scenario Outline: Location read failure with incorrect interaction id
 	Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "<interactionId>" interaction
+		#Put slash before URL to make it clearer it is a path
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
@@ -70,45 +77,53 @@ Scenario Outline: Location read failure with incorrect interaction id
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
 		|                                                                   |
 		| null                                                              |
-
+#Make test name clearer
 Scenario Outline: Location read _format parameter only
 	Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 		And I add the parameter "_format" with the value "<Parameter>"
+		#add slash before URL
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Location resource
+		# We should check more in the response to make sure the resource is valid
 	Examples:
 		| Parameter             | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+#Make test name clearer
 Scenario Outline: Location read accept header
 	Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 		And I set the Accept header to "<Header>"
+		#add slash before URL
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Location resource
+		# We should check more in the response to make sure the resource is valid
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+#Make test name clearer
 Scenario Outline: Location read accept header and _format
 	Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
+		#add slash before URL
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Location resource
+		# We should check more in the response to make sure the resource is valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -129,6 +144,7 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
 		And I set the Accept header to "<Header>"
+	#add slash before URL
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
@@ -148,10 +164,12 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+#Include further detail in the test name, eg matching resource version
 Scenario: Read location should contain ETag
 	Given I get location "SIT1" id and save it as "location1"
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
+		#add slash before URL
 	When I get location "location1" and use the id to make a get request to the url "Location"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -184,6 +202,7 @@ Scenario: VRead location _history with current etag should return current locati
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Location resource
+		#Further validation to ensure the returned resource is correct
 
 Scenario: VRead location _history with invalid etag should give a 404
 	Given I get location "SIT1" id and save it as "location1"
