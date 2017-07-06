@@ -14,7 +14,7 @@ Scenario Outline: Practitioner read successful request validate all of response
 		And if the practitioner resource contains any identifiera they should contain a valid system element
 		And the returned resource shall contain the business identifier for Practitioner "practitioner1"
 		And the practitioner resource should contain a single name element with a maximum of one family name
-		And if the practitioner resource contains a practitioner it should have a valid system code and display
+		And if the practitioner resource contains a practitionerRole it should have a valid system code and display
 		And if the returned practitioner resource contains a communication element it must match the specified valueset
 		And the single practitioner resource should not contain dissallowed fields
 		And the returned Practitioner resource should contain "<numberOfRoleIdentifiers>" role identifiers

@@ -285,8 +285,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             practitioner.Identifier.Find(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id")).Value.ShouldBe(GlobalContext.PractionerCodeMap[practitionerName], "Practitioner business identifier does not match the expected business identifier.");
         }
 
-        [Then(@"if the practitioner resource contains a practitioner it should have a valid system code and display")]
-        public void ThenIfThePractitionerResourceContainsAPractitionerItShouldHaveAValidSystemCodeAndDisplay()
+        [Then(@"if the practitioner resource contains a practitionerRole it should have a valid system code and display")]
+        public void ThenIfThePractitionerResourceContainsAPractitionerRoleItShouldHaveAValidSystemCodeAndDisplay()
         {
 
             Practitioner practitioner = (Practitioner) _fhirContext.FhirResponseResource;
