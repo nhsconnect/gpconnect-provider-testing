@@ -661,7 +661,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.PractionerCodeMap[value]);
         }
 
-        [Given(@"I add an Practitioner ""([^""]*)"" parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
+        [Given(@"I add a Practitioner ""([^""]*)"" parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
         public void IAddAnPractitionerParameterWithSystemAndValue(string identifier , string system, string value)
         {
             _httpContext.RequestParameters.AddParameter(identifier, system + '|' + GlobalContext.PractionerCodeMap[value]);
