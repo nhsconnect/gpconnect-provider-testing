@@ -690,7 +690,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             AddAPatientIdentifierParameterWithDefaultSystemAndValue(value);
 
-            _jwtSteps.ISetTheJwtRequestedRecordToTheNhsNumberFor(value);
+            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberFor(value);
 
             _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
         }
@@ -702,7 +702,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             AddAPatientIdentifierParameterWithDefaultSystemAndNhsNumber(nhsNumber);
 
-            _jwtSteps.ISetTheJwtRequestedRecordToTheNhsNumber(nhsNumber);
+            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumber(nhsNumber);
 
             _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
         }

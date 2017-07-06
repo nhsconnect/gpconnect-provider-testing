@@ -725,6 +725,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpRequest();
         }
 
+        [When(@"I make the ""(.*)"" request with an unencoded JWT Bearer Token")]
+        public void MakeRequestWithAnUnencodedJwtBearerToken(GpConnectInteraction interaction)
+        {
+            var requestFactory = new RequestFactory(interaction);
+
+            requestFactory.ConfigureBody(HttpContext);
+
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, JwtHelper.GetBearerTokenWithoutEncoding());
+            HttpRequest();
+        }
+
         [When(@"I make the ""(.*)"" request with invalid Resource type")]
         public void MakeRequestWithInvalidResourceType(GpConnectInteraction interaction)
         {
