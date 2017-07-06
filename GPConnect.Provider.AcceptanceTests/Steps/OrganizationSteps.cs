@@ -439,6 +439,20 @@
             allOrganizationsFound.ShouldBe(true, "The number of organizations or site codes are invalid");
         }
 
+        [Then(@"the returned organization contains identifiers of type ""([^""]*)"" with values ""([^""]*)""")]
+        public void ThenTheReturnedOrgainzationContainsIdentifiersOfTypeWithValues(string identifierSystem, string identifierValueCSV)
+        {
+            Organization organization = (Organization)_fhirContext.FhirResponseResource;
+            organization.Identifier.ShouldNotBeNull("The organization should contain an organization identifier as the business identifier was used to find the organization for this test.");
+
+            foreach (var identifierValue in identifierValueCSV.Split(','))
+            {
+                Identifier identifierFound = organization.Identifier.Find(identifier => identifier.System.Equals(identifierSystem) && identifier.Value.Equals(GlobalContext.OdsCodeMap[identifierValue]));
+                identifierFound.ShouldNotBeNull($"The expected identifier was not found in the returned organization resource, expected value {GlobalContext.OdsCodeMap[identifierValue]}");
+            }
+
+        }
+
         private List<string> getIdentifiersInList(string code)
         {
             List<string> referenceValueLists = new List<string>();
