@@ -539,27 +539,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the Practitioner Name should be valid")]
+        [Then(@"the Practitioner resources shall include the Name element which can include a maximum of one family name")]
         public void ThePractitionerNameShouldBeValid()
         {
             var practitioners = GetPractitioners();
-
             practitioners.ForEach(practitioner =>
             { 
-                practitioner.Name.ShouldNotBeNull();
-            });
-
-            ThePractitionerNameFamilyNameShouldBeValid();
-        }
-
-        [Then(@"the Practitioner Name FamilyName should be valid")]
-        public void ThePractitionerNameFamilyNameShouldBeValid()
-        {
-            var practitioners = GetPractitioners();
-
-            practitioners.ForEach(practitioner =>
-            {
-                practitioner.Name.Family?.Count().ShouldBeLessThanOrEqualTo(1);
+                practitioner.Name.ShouldNotBeNull("Practitioner resources must contain a name element");
+                practitioner.Name.Family?.Count().ShouldBeLessThanOrEqualTo(1, "There must be a maximum of 1 family name in the practitioner name.");
             });
         }
 
@@ -664,7 +651,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add a Practitioner ""([^""]*)"" parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
         public void IAddAnPractitionerParameterWithSystemAndValue(string identifier , string system, string value)
         {
-            _httpContext.RequestParameters.AddParameter(identifier, system + '|' + GlobalContext.PractionerCodeMap[value]);
+            var valueMapped = value != "" ? GlobalContext.PractionerCodeMap[value] : "";
+            _httpContext.RequestParameters.AddParameter(identifier, system + '|' + valueMapped);
         }
 
         [Given(@"I get the Practitioner for Practitioner Code ""([^""]*)""")]
