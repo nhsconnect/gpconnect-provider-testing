@@ -230,13 +230,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Remove(appointmentName);
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)FhirContext.FhirResponseResource);
         }
-
-        [Then(@"the response should be a Location resource")]
-        public void theResponseShouldBeAnLocationResource()
-        {
-            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
-        }
-
+        
         [Then(@"the returned appointment resource should contain meta data profile and version id")]
         public void ThenTheReturnedAppointmentResourceShouldContainMetaDataProfileAndVersionId()
         {
