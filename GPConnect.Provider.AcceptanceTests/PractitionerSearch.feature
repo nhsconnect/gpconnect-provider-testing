@@ -70,7 +70,7 @@ Scenario Outline: Practitioner search testing paramater validity and order sent 
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner system identifiers should be valid fixed values
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should exist
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 		And the Practitioner resources shall include the Name element which can include a maximum of one family name
 		And the practitioner resource should not contain unwanted fields
 		And the Practitioner Communication should be valid
@@ -89,9 +89,9 @@ Scenario Outline: Practitioner search add accept header to request and check for
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
-	And the Practitioner system identifiers should be valid fixed values
+		And the Practitioner system identifiers should be valid fixed values
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should exist
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 		And the Practitioner resources shall include the Name element which can include a maximum of one family name
 		And the practitioner resource should not contain unwanted fields
 		And the Practitioner Communication should be valid
@@ -111,7 +111,7 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner system identifiers should be valid fixed values
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should exist
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 		And the Practitioner resources shall include the Name element which can include a maximum of one family name
 		And the practitioner resource should not contain unwanted fields
 		And the Practitioner Communication should be valid
@@ -178,7 +178,7 @@ Scenario: Practitioner search returns practitioner role element with valid param
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should exist
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 
 Scenario: Practitioner search should not contain photo or qualification information
 	Given I configure the default "PractitionerSearch" request

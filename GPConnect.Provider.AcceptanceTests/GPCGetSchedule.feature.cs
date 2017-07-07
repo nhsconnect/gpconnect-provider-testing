@@ -955,7 +955,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 374
   testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 375
-  testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be valid and resol" +
+                    "vable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 376
   testRunner.And("the practitioner resource should not contain unwanted fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 377

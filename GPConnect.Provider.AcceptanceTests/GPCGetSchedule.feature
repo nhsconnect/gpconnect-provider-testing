@@ -372,7 +372,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the practitioner resources in the response bundle should only contain an SDS user id or SDS role ids
 		And the Practitioner resources shall include the Name element which can include a maximum of one family name
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should exist
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 		And the practitioner resource should not contain unwanted fields
 		And the Practitioner Communication should be valid
 	Examples:

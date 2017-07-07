@@ -212,7 +212,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 72
   testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
-  testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be valid and resol" +
+                    "vable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
   testRunner.And("the Practitioner resources shall include the Name element which can include a max" +
                     "imum of one family name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -251,11 +252,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 91
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
- testRunner.And("the Practitioner system identifiers should be valid fixed values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner system identifiers should be valid fixed values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 93
   testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 94
-  testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be valid and resol" +
+                    "vable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 95
   testRunner.And("the Practitioner resources shall include the Name element which can include a max" +
                     "imum of one family name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -302,7 +304,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 113
   testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 114
-  testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be valid and resol" +
+                    "vable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 115
   testRunner.And("the Practitioner resources shall include the Name element which can include a max" +
                     "imum of one family name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -453,7 +456,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 180
   testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 181
-  testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be valid and resol" +
+                    "vable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

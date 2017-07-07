@@ -623,8 +623,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the Practitioner PractitionerRoles ManagingOrganization should exist")]
-        public void ThePractitionerPractitionerRolesManagingOrganizationShouldExist()
+        [Then(@"the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable")]
+        public void ThePractitionerPractitionerRolesManagingOrganizationShouldBeValidAndResolvable()
         {
             var practitioners = GetPractitioners();
 
@@ -632,12 +632,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 practitioner.PractitionerRole.ForEach(practitionerRole =>
                 {
-                    practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull();
-                    practitionerRole.ManagingOrganization.Reference.ShouldStartWith("Organization/");
+                    if (practitionerRole.ManagingOrganization != null)
+                    {
+                        practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull("If a practitioner has a managing organizaiton it must have a reference");
+                        practitionerRole.ManagingOrganization.Reference.ShouldStartWith("Organization/");
 
-                    var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", practitionerRole.ManagingOrganization.Reference);
+                        var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", practitionerRole.ManagingOrganization.Reference);
 
-                    returnedResource.GetType().ShouldBe(typeof(Organization));
+                        returnedResource.GetType().ShouldBe(typeof(Organization));
+                    }
                 });
             });
         }
