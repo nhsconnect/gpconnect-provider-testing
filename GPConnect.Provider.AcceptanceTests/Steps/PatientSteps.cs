@@ -237,7 +237,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Patient patient = (Patient)entry.Resource;
                     if (patient.Deceased != null)
                     {
-                        patient.Deceased.GetType().ShouldBe(typeof(FhirDateTime));
+                        patient.Deceased.GetType().ShouldBe(typeof(FhirDateTime), "Deceased element in patient should be of type date time.");
                     }
                 }
             }
@@ -253,7 +253,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Patient patient = (Patient)entry.Resource;
                     if (patient.MultipleBirth != null)
                     {
-                        patient.MultipleBirth.GetType().ShouldBe(typeof(FhirBoolean));
+                        patient.MultipleBirth.GetType().ShouldBe(typeof(FhirBoolean),"Multiple Birth element should be a boolean value.");
                     }
                 }
             }
@@ -276,9 +276,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         }
 
                         // Contact Name Checks
-                        foreach (var name in patient.Name)
-                        {
-                            name.FamilyElement.Count.ShouldBeLessThanOrEqualTo(1,"There are too many family names within the contact element.");
+                        if (contact.Name != null) {
+                            contact.Name.FamilyElement.Count.ShouldBeLessThanOrEqualTo(1, "There are too many family names within the contact element.");
                         }
                         
                         // Contact Organization Checks
@@ -542,7 +541,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Patients.ForEach(patient =>
             {
-                patient.Identifier.ShouldNotBeNull();
+                patient.Identifier.ShouldNotBeNull("The patient identifier should not be null");
                 patient.Identifier.Count.ShouldBe(1);
 
                 var identifier = patient.Identifier.First();
@@ -559,8 +558,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 patient.Telecom.ForEach(telecom =>
                 {
-                    telecom.System.ShouldNotBeNull();
-                    telecom.Value.ShouldNotBeNull();
+                    telecom.System.ShouldNotBeNull("The telecom system should not be null");
+                    telecom.Value.ShouldNotBeNull("The telecom value element should not be null");
                 });
             });
         }
@@ -577,14 +576,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the Patient Communication should be valid")]
-        public void ThenIfCompositionContainsThePatientResourceCommunicationTheMandatoryFieldsShouldMatchingTheSpecification()
+        [Then(@"If composition contains the patient resource communication the mandatory fields should match the specification")]
+        public void ThenIfCompositionContainsThePatientResourceCommunicationTheMandatoryFieldsShouldMatchTheSpecification()
         {
             Patients.ForEach(patient =>
             {
                 patient.Communication?.ForEach(communication =>
                 {
-                    communication.Language.ShouldNotBeNull();
+                    communication.Language.ShouldNotBeNull("The communication language element should not be null");
                     ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, communication.Language.Coding);
                 });
             });
@@ -620,7 +619,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the Patient should exclude fields")]
+        [Then(@"the Patient should exclude fields which are not permitted by the specification")]
         public void ThePatientShouldExcludeFields()
         {
             Patients.ForEach(patient =>

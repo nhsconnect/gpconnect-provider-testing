@@ -178,7 +178,7 @@ Scenario Outline: Read patient with accept header should contain valid resource
 		And the patient resource should contain no more than one family or given name
 		And the patient resource should contain no more than one family name field for each contact
 		#step name is not clear, what fields??
-		And the Patient should exclude fields
+		And the Patient should exclude fields which are not permitted by the specification
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |

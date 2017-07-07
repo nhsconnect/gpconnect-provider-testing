@@ -647,7 +647,7 @@ Scenario Outline: if patient contins communicaiton
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the Patient Communication should be valid
+		And If composition contains the patient resource communication the mandatory fields should match the specification
 	Examples:
 		| Code |
 		| ADM  |
@@ -719,7 +719,7 @@ Scenario Outline: patient does not contain disallowed fields
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the Patient should exclude fields
+		And the Patient should exclude fields which are not permitted by the specification
 	Examples:
 		| Code |
 		| ADM  |
@@ -742,7 +742,7 @@ Scenario Outline: practitioner resource contains mandatory fields and does not i
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the Practitioner Name should be valid
+		And the Practitioner resources shall include the Name element which can include a maximum of one family name
 		And the Practitioner Photo and Qualification should be excluded
 	Examples:
 		| Code |
