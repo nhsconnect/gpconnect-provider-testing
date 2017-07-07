@@ -26,7 +26,7 @@ Scenario Outline: Practitioner search success and validate the practitioner iden
 
 Scenario Outline: Practitioner search with failure due to invalid identifier
 	Given I configure the default "PractitionerSearch" request
-		And I add the parameter "identifier" with the value "<System>|<Value>"
+		And I add a Practitioner "identifier" parameter with System "<System>" and Value "<Value>"
 	When I make the "PractitionerSearch" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -70,9 +70,8 @@ Scenario Outline: Practitioner search testing paramater validity and order sent 
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner system identifiers should be valid fixed values
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should exist
-		And the Practitioner Name should be valid
-		And the Practitioner Name FamilyName should be valid
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
+		And the Practitioner resources shall include the Name element which can include a maximum of one family name
 		And the practitioner resource should not contain unwanted fields
 		And the Practitioner Communication should be valid
 	Examples:
@@ -90,11 +89,10 @@ Scenario Outline: Practitioner search add accept header to request and check for
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
-	And the Practitioner system identifiers should be valid fixed values
+		And the Practitioner system identifiers should be valid fixed values
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should exist
-		And the Practitioner Name should be valid
-		And the Practitioner Name FamilyName should be valid
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
+		And the Practitioner resources shall include the Name element which can include a maximum of one family name
 		And the practitioner resource should not contain unwanted fields
 		And the Practitioner Communication should be valid
 	Examples:
@@ -113,9 +111,8 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner system identifiers should be valid fixed values
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should exist
-		And the Practitioner Name should be valid
-		And the Practitioner Name FamilyName should be valid
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
+		And the Practitioner resources shall include the Name element which can include a maximum of one family name
 		And the practitioner resource should not contain unwanted fields
 		And the Practitioner Communication should be valid
 	Examples:
@@ -171,8 +168,7 @@ Scenario: Practitioner search returns back user with name element
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the Practitioner Name should be valid
-		And the Practitioner Name FamilyName should be valid
+		And the Practitioner resources shall include the Name element which can include a maximum of one family name
 
 Scenario: Practitioner search returns practitioner role element with valid parameters
 	Given I configure the default "PractitionerSearch" request
@@ -182,7 +178,7 @@ Scenario: Practitioner search returns practitioner role element with valid param
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should exist
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 
 Scenario: Practitioner search should not contain photo or qualification information
 	Given I configure the default "PractitionerSearch" request

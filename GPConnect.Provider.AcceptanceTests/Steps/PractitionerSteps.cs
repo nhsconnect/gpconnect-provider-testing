@@ -539,27 +539,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the Practitioner Name should be valid")]
+        [Then(@"the Practitioner resources shall include the Name element which can include a maximum of one family name")]
         public void ThePractitionerNameShouldBeValid()
         {
             var practitioners = GetPractitioners();
-
             practitioners.ForEach(practitioner =>
             { 
-                practitioner.Name.ShouldNotBeNull();
-            });
-
-            ThePractitionerNameFamilyNameShouldBeValid();
-        }
-
-        [Then(@"the Practitioner Name FamilyName should be valid")]
-        public void ThePractitionerNameFamilyNameShouldBeValid()
-        {
-            var practitioners = GetPractitioners();
-
-            practitioners.ForEach(practitioner =>
-            {
-                practitioner.Name.Family?.Count().ShouldBeLessThanOrEqualTo(1);
+                practitioner.Name.ShouldNotBeNull("Practitioner resources must contain a name element");
+                practitioner.Name.Family?.Count().ShouldBeLessThanOrEqualTo(1, "There must be a maximum of 1 family name in the practitioner name.");
             });
         }
 
@@ -593,12 +580,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     if (practitionerRole.Role?.Coding != null)
                     {
-                        practitionerRole.Role.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                        practitionerRole.Role.Coding.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one practitioner role coding in each practitioner role.");
                         practitionerRole.Role.Coding.ForEach(coding =>
                         {
                             coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
-                            coding.Code.ShouldNotBeNull();
-                            coding.Display.ShouldNotBeNull();
+                            coding.Code.ShouldNotBeNull("The practitioner role code element should not be null");
+                            coding.Display.ShouldNotBeNull("The practitioner role display elemenet should not be null");
                         });
                     }
                 });
@@ -636,8 +623,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the Practitioner PractitionerRoles ManagingOrganization should exist")]
-        public void ThePractitionerPractitionerRolesManagingOrganizationShouldExist()
+        [Then(@"the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable")]
+        public void ThePractitionerPractitionerRolesManagingOrganizationShouldBeValidAndResolvable()
         {
             var practitioners = GetPractitioners();
 
@@ -645,12 +632,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 practitioner.PractitionerRole.ForEach(practitionerRole =>
                 {
-                    practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull();
-                    practitionerRole.ManagingOrganization.Reference.ShouldStartWith("Organization/");
+                    if (practitionerRole.ManagingOrganization != null)
+                    {
+                        practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull("If a practitioner has a managing organizaiton it must have a reference");
+                        practitionerRole.ManagingOrganization.Reference.ShouldStartWith("Organization/");
 
-                    var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", practitionerRole.ManagingOrganization.Reference);
+                        var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", practitionerRole.ManagingOrganization.Reference);
 
-                    returnedResource.GetType().ShouldBe(typeof(Organization));
+                        returnedResource.GetType().ShouldBe(typeof(Organization));
+                    }
                 });
             });
         }
@@ -664,7 +654,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add a Practitioner ""([^""]*)"" parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
         public void IAddAnPractitionerParameterWithSystemAndValue(string identifier , string system, string value)
         {
-            _httpContext.RequestParameters.AddParameter(identifier, system + '|' + GlobalContext.PractionerCodeMap[value]);
+            var valueMapped = value != "" ? GlobalContext.PractionerCodeMap[value] : "";
+            _httpContext.RequestParameters.AddParameter(identifier, system + '|' + valueMapped);
         }
 
         [Given(@"I get the Practitioner for Practitioner Code ""([^""]*)""")]

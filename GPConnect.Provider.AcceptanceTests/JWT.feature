@@ -156,7 +156,7 @@ Scenario: JWT - Requesting Practitioner - invalid
 
 Scenario: JWT - Requesting Practitioner - Resource Type - invalid
 	Given I configure the default "MetadataRead" request
-		And I change the JWT requesting practitioner resource type to InvalidResourceType
+		And I set the JWT Requesting Practitioner Resource Type as an invalid Resource Type
 	When I make the "MetadataRead" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource
