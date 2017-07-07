@@ -580,12 +580,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     if (practitionerRole.Role?.Coding != null)
                     {
-                        practitionerRole.Role.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                        practitionerRole.Role.Coding.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one practitioner role coding in each practitioner role.");
                         practitionerRole.Role.Coding.ForEach(coding =>
                         {
                             coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
-                            coding.Code.ShouldNotBeNull();
-                            coding.Display.ShouldNotBeNull();
+                            coding.Code.ShouldNotBeNull("The practitioner role code element should not be null");
+                            coding.Display.ShouldNotBeNull("The practitioner role display elemenet should not be null");
                         });
                     }
                 });
