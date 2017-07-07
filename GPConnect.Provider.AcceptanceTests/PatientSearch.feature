@@ -246,8 +246,7 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And if Patient resource contains a managing organization the reference must be valid
 		And if Patient resource contains careProvider the reference must be valid
 		And if managingOrganization is present in patient resource the reference should be valid
-		And the Patient should exclude fields
-	
+		And the Patient should exclude fields which are not permitted by the specification
 	Examples:
 		| Patient  |
 		| patient1 |

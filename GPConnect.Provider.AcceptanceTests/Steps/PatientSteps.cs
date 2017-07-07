@@ -237,7 +237,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Patient patient = (Patient)entry.Resource;
                     if (patient.Deceased != null)
                     {
-                        patient.Deceased.GetType().ShouldBe(typeof(FhirDateTime));
+                        patient.Deceased.GetType().ShouldBe(typeof(FhirDateTime), "Deceased element in patient should be of type date time.");
                     }
                 }
             }
@@ -253,7 +253,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Patient patient = (Patient)entry.Resource;
                     if (patient.MultipleBirth != null)
                     {
-                        patient.MultipleBirth.GetType().ShouldBe(typeof(FhirBoolean));
+                        patient.MultipleBirth.GetType().ShouldBe(typeof(FhirBoolean),"Multiple Birth element should be a boolean value.");
                     }
                 }
             }
@@ -276,9 +276,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         }
 
                         // Contact Name Checks
-                        foreach (var name in patient.Name)
-                        {
-                            name.FamilyElement.Count.ShouldBeLessThanOrEqualTo(1,"There are too many family names within the contact element.");
+                        if (contact.Name != null) {
+                            contact.Name.FamilyElement.Count.ShouldBeLessThanOrEqualTo(1, "There are too many family names within the contact element.");
                         }
                         
                         // Contact Organization Checks
@@ -620,7 +619,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the Patient should exclude fields")]
+        [Then(@"the Patient should exclude fields which are not permitted by the specification")]
         public void ThePatientShouldExcludeFields()
         {
             Patients.ForEach(patient =>

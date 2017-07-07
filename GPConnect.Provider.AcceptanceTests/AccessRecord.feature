@@ -719,7 +719,7 @@ Scenario Outline: patient does not contain disallowed fields
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the Patient should exclude fields
+		And the Patient should exclude fields which are not permitted by the specification
 	Examples:
 		| Code |
 		| ADM  |
