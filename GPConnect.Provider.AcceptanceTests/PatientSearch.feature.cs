@@ -575,13 +575,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Patient resource should contain NHS number identifier returned as xml")]
+        [NUnit.Framework.DescriptionAttribute("Patient resource should contain NHS number identifier returned as XML")]
         [NUnit.Framework.TestCaseAttribute("patient1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient3", new string[0])]
-        public virtual void PatientResourceShouldContainNHSNumberIdentifierReturnedAsXml(string patient, string[] exampleTags)
+        public virtual void PatientResourceShouldContainNHSNumberIdentifierReturnedAsXML(string patient, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient resource should contain NHS number identifier returned as xml", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient resource should contain NHS number identifier returned as XML", exampleTags);
 #line 213
 this.ScenarioSetup(scenarioInfo);
 #line 214
@@ -641,7 +641,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 239
   testRunner.And("if careProvider is present in patient resource the reference should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 240
-  testRunner.And("the Patient Communication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("If composition contains the patient resource communication the mandatory fields s" +
+                    "hould match the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 241
   testRunner.And("if composition contains the patient resource contact the mandatory fields should " +
                     "matching the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -661,10 +662,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 247
   testRunner.And("if Patient resource contains careProvider the reference must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 248
-  testRunner.And("the Patient should exclude fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
   testRunner.And("if managingOrganization is present in patient resource the reference should be va" +
                     "lid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 249
+  testRunner.And("the Patient should exclude fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -674,20 +675,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConformanceProfileSupportsThePatientSearchOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Patient search operation", ((string[])(null)));
-#line 259
-this.ScenarioSetup(scenarioInfo);
 #line 260
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 261
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 262
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 262
- testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 263
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 264
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 265
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 266
   testRunner.And("the conformance profile should contain the \"Patient\" resource with a \"search-type" +
                     "\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -705,25 +706,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SystemShouldErrorIfMultipleParametersValidOrInvalidAreSent(string identifier1, string patientOne, string identifier2, string patientTwo, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("System should error if multiple parameters valid or invalid are sent", exampleTags);
-#line 267
-this.ScenarioSetup(scenarioInfo);
 #line 268
-  testRunner.Given("I configure the default \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 269
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I configure the default \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 270
-  testRunner.And(string.Format("I add the parameter \"{0}\" with system \"http://fhir.nhs.net/Id/nhs-number\" for pat" +
-                        "ient \"{1}\"", identifier1, patientOne), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 271
   testRunner.And(string.Format("I add the parameter \"{0}\" with system \"http://fhir.nhs.net/Id/nhs-number\" for pat" +
-                        "ient \"{1}\"", identifier2, patientTwo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "ient \"{1}\"", identifier1, patientOne), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 272
- testRunner.When("I make the \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I add the parameter \"{0}\" with system \"http://fhir.nhs.net/Id/nhs-number\" for pat" +
+                        "ient \"{1}\"", identifier2, patientTwo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 273
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 274
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 275
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 276
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -734,21 +735,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void JWTRequestingScopeClaimShouldReflectTheOperationBeingPerformed()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting scope claim should reflect the operation being performed", ((string[])(null)));
-#line 285
-this.ScenarioSetup(scenarioInfo);
 #line 286
-  testRunner.Given("I configure the default \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 287
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I configure the default \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 288
-  testRunner.And("I set the JWT requested scope to \"organization/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 289
- testRunner.When("I make the \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 290
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the JWT requested scope to \"organization/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 291
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 292
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 293
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 294
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -759,21 +762,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void JWTPatientClaimShouldReflectThePatientBeingSearchedFor()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT patient claim should reflect the patient being searched for", ((string[])(null)));
-#line 294
-this.ScenarioSetup(scenarioInfo);
-#line 295
- testRunner.Given("I configure the default \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 296
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 297
-  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 298
- testRunner.When("I make the \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 299
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 300
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 301
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 302
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 303
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -790,7 +793,7 @@ this.ScenarioSetup(scenarioInfo);
                     "tient resource with a boolean element only", new string[] {
                         "Manual",
                         "ignore"});
-#line 305
+#line 307
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -809,7 +812,7 @@ this.ScenarioSetup(scenarioInfo);
                     " resource.", new string[] {
                         "Manual",
                         "ignore"});
-#line 309
+#line 311
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();

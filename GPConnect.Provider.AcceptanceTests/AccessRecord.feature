@@ -647,7 +647,7 @@ Scenario Outline: if patient contins communicaiton
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the Patient Communication should be valid
+		And If composition contains the patient resource communication the mandatory fields should match the specification
 	Examples:
 		| Code |
 		| ADM  |

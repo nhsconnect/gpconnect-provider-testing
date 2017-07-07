@@ -210,7 +210,7 @@ Scenario: Patient resource should contain meta data elements
 		And the response bundle should contain "1" entries
 		And the patient resource in the bundle should contain meta data profile and version id
 
-Scenario Outline: Patient resource should contain NHS number identifier returned as xml
+Scenario Outline: Patient resource should contain NHS number identifier returned as XML
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I set the Accept header to "application/xml+fhir"
@@ -237,7 +237,7 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if careProvider is present in patient resource the reference should be valid
-		And the Patient Communication should be valid
+		And If composition contains the patient resource communication the mandatory fields should match the specification
 		And if composition contains the patient resource contact the mandatory fields should matching the specification
 		And if composition contains the patient resource and it contains the multiple birth field it should be a boolean value
 		And the Patient MaritalStatus should be valid
@@ -245,8 +245,9 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And if patient resource contains telecom element the system and value must be populated
 		And if Patient resource contains a managing organization the reference must be valid
 		And if Patient resource contains careProvider the reference must be valid
-		And the Patient should exclude fields
 		And if managingOrganization is present in patient resource the reference should be valid
+		And the Patient should exclude fields
+	
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -285,6 +286,7 @@ Scenario Outline: System should error if multiple parameters valid or invalid ar
 Scenario: JWT requesting scope claim should reflect the operation being performed
 	 Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add a Patient Identifier parameter with default System and Value "patient2"
 		And I set the JWT requested scope to "organization/*.read"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
