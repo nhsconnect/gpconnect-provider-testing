@@ -592,8 +592,8 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 238
-  testRunner.And("I add the organization identifier parameter with system \"http://fhir.nhs.net/Id/o" +
-                    "ds-organization-code\" and value \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an Organization Identifier parameter with Organization Code System and Valu" +
+                    "e \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 239
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 240

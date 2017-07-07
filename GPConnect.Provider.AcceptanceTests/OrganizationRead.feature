@@ -10,11 +10,10 @@ Scenario Outline: Organization Read successful request validate all of response
 		And the response should be the format FHIR JSON
 		And the response should be an Organization resource
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And the returned organization resource identifiers should be of a valid type and cardinality
-		And the returned resource shall contain the business identifier for Organization "<Organization>"
-		And the organization resource shall contain meta data profile and version id
-		And if the organization resource contains a partOf reference it is valid and resolvable
-		And if the organization resource contains type element it shall contain the system code and display elements
+		And the Organization Identifiers should be valid for Organization "<Organization>"
+		And the Organization Metadata should be valid
+		And the Organization PartOf Organization should be resolvable
+		And the Organization Type should be valid
 		And the response should contain the ETag header matching the resource version
 	Examples:
 		| Organization |
@@ -105,7 +104,7 @@ Scenario Outline: Organization Read using the _format parameter to request respo
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be an Organization resource
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And the returned resource shall contain the business identifier for Organization "ORG1"
+		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
 		| Parameter             | ResponseFormat |
 		| application/json+fhir | JSON           |
@@ -121,7 +120,7 @@ Scenario Outline: Organization Read using the Accept header to request response 
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be an Organization resource
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And the returned resource shall contain the business identifier for Organization "ORG1"
+		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
 		| Header                | ResponseFormat |
 		| application/json+fhir | JSON           |
@@ -138,7 +137,7 @@ Scenario Outline: Organization Read sending the Accept header and _format parame
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be an Organization resource
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And the returned resource shall contain the business identifier for Organization "ORG1"
+		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
 		| Header                | Parameter             | ResponseFormat |
 		| application/json+fhir | application/json+fhir | JSON       |

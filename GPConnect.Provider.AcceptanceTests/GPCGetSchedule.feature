@@ -394,8 +394,8 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the response bundle should include slot resources
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the response bundle Organization entries should contain a maximum of 1 http://fhir.nhs.net/Id/ods-organization-code system identifier
-		And the response bundle Organization entries should only contain an ODS organization codes and ODS Site Codes
-		And the response bundle Organization entries should contain system code and display if the type coding is included in the resource
+		And the Organization Identifiers should be valid
+		And the Organization Type should be valid
 		And the Organization PartOf Organization should be referenced in the Bundle
 	Examples:
 		| Organization | DaysRange |

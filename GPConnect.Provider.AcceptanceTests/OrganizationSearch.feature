@@ -26,7 +26,7 @@ Scenario Outline: Organization search success
 Scenario: Organization search failure with two invalid parameters sent in the request
 	Given I configure the default "OrganizationSearch" request
 		And I add the parameter "incorrectParameter" with the value "incorrectParameter"
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
 		And I add the parameter "invalidParameter" with the value "invalidParameter"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
@@ -35,14 +35,14 @@ Scenario: Organization search failure with two invalid parameters sent in the re
 Scenario: Organization search failure with invalid parameter before the identifier sent in the request
 	Given I configure the default "OrganizationSearch" request
 		And I add the parameter "incorrectParameter" with the value "incorrectParameter"
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Organization search failure with invalid parameter after the identifier sent in the request
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
 		And I add the parameter "invalidParameter" with the value "invalidParameter"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
@@ -50,8 +50,8 @@ Scenario: Organization search failure with invalid parameter after the identifie
 
 Scenario Outline: Organization search sending multiple identifiers resulting in failure
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "<System1>" and value "<Value1>"
-		And I add the organization identifier parameter with system "<System2>" and value "<Value2>"
+		And I add an Organization Identifier parameter with System "<System1>" and Value "<Value1>"
+		And I add an Organization Identifier parameter with System "<System2>" and Value "<Value2>"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -67,7 +67,7 @@ Scenario Outline: Organization search sending multiple identifiers resulting in 
 
 Scenario: Organization search by organization code successfully returns single result containing the correct fields
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -77,9 +77,37 @@ Scenario: Organization search by organization code successfully returns single r
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG1" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT1"
 	
+Scenario Outline: Organization - Identifier - have correct Organization Codes and Site Codes when searching by Organization Code
+	Given I configure the default "OrganizationSearch" request
+		And I add an Organization Identifier parameter with Organization Code System and Value "<OrganizationCode>"
+	When I make the "OrganizationSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Organization Identifiers should have "<OrganizationCodeIdentifiers>" Organization Code Identifiers with "<OrganizationCode>" Organization Codes
+		And the Organization Identifiers should have "<SiteCodeIdentifiers>" Site Code Identifiers with "<SiteCodes>" Site Codes
+	Examples: 
+		| OrganizationCode | OrganizationCodeIdentifiers | SiteCodeIdentifiers | SiteCodes	|
+		| ORG1             | 1                           | 1                   | SIT1		|
+		| ORG2             | 1                           | 2                   | SIT2, SIT3 |
+		| ORG3             | 1                           | 1                   | SIT3		|
+
+Scenario Outline: Organization - Identifier - have correct Organization Codes and Site Codes when searching by Site Code
+	Given I configure the default "OrganizationSearch" request
+		And I add an Organization Identifier parameter with Site Code System and Value "<SiteCode>"
+	When I make the "OrganizationSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Organization Identifiers should have "<OrganizationCodeIdentifiers>" Organization Code Identifiers with "<OrganizationCodes>" Organization Codes
+		And the Organization Identifiers should have "<SiteCodeIdentifiers>" Site Code Identifiers with "<SiteCodes>" Site Codes
+	Examples: 
+		| SiteCode | OrganizationCodeIdentifiers | OrganizationCodes | SiteCodeIdentifiers | SiteCodes  |
+		| SIT1	   | 1                           | ORG1              | 1                   | SIT1	    |
+		| SIT2	   | 1                           | ORG2              | 2                   | SIT2	    |
+		| SIT3	   | 2                           | ORG2, ORG3		 | 3                   | SIT2, SIT3	|
+
 Scenario: Organization search by organization code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -87,12 +115,12 @@ Scenario: Organization search by organization code successfully returns multiple
 		And the response bundle should contain "1" entries
 		And the response bundle "Organization" entries should contain element "fullUrl"
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And test "Hayden, Natalie"
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG2|ORG3" and "2" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT2|SIT3"
-
 		
 Scenario: Organization search by site code successfully returns single result containing the correct fields
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
+		And I add an Organization Identifier parameter with Site Code System and Value "SIT1"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -104,7 +132,7 @@ Scenario: Organization search by site code successfully returns single result co
 
 Scenario: Organization search by site code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT3"
+		And I add an Organization Identifier parameter with Site Code System and Value "SIT3"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -158,7 +186,7 @@ Scenario Outline: Organization search failure due to invalid identifier paramete
 Scenario Outline: Organization search failure due to invalid interactionId
 	Given I configure the default "OrganizationSearch" request
 		And I am performing the "<InteractionId>" interaction
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -170,7 +198,7 @@ Scenario Outline: Organization search failure due to invalid interactionId
 
 Scenario Outline: Organization search failure due to missing header
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG1"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 		And I do not send header "<Header>"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
@@ -186,7 +214,7 @@ Scenario Outline: Organization search failure due to missing header
 
 Scenario Outline: Organization search add accept header to request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "<System>" and value "<Value>"
+		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 		And I set the Accept header to "<Header>"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
@@ -202,7 +230,7 @@ Scenario Outline: Organization search add accept header to request and check for
 
 Scenario Outline: Organization search add _format parameter to request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "<System>" and value "<Value>"
+		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 		And I do not send header "Accept"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make a GET request to "/Organization"
@@ -219,7 +247,7 @@ Scenario Outline: Organization search add _format parameter to request and check
 
 Scenario Outline: Organization search add accept header and _format parameter to the request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "<System>" and value "<Value>"
+		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make a GET request to "/Organization"
@@ -238,7 +266,7 @@ Scenario Outline: Organization search add accept header and _format parameter to
 Scenario Outline: Organization search add _format parameter to request before the identifer and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
 		And I add the parameter "_format" with the value "<Parameter>"
-		And I add the organization identifier parameter with system "<System>" and value "<Value>"
+		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
@@ -253,7 +281,7 @@ Scenario Outline: Organization search add _format parameter to request before th
 
 Scenario Outline: Organization search add _format parameter to request after the identifer and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "<System>" and value "<Value>"
+		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make a GET request to "/Organization"
 	Then the response status code should indicate success
@@ -276,16 +304,16 @@ Scenario: Conformance profile supports the Organization search operation
 
 Scenario Outline: Organization search check organization response contains logical identifier
 	Given I configure the default "OrganizationSearch" request
-		And I add the organization identifier parameter with system "<System>" and value "<ORGCode>"
+		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Organization Identifiers should be valid
 		Examples:
-		| System                                       | ORGCode |
-		| http://fhir.nhs.net/Id/ods-organization-code | ORG1    |
-		| http://fhir.nhs.net/Id/ods-organization-code | ORG2    |
-		| http://fhir.nhs.net/Id/ods-organization-code | ORG3    |
-		| http://fhir.nhs.net/Id/ods-site-code         | SIT1    |
-		| http://fhir.nhs.net/Id/ods-site-code         | SIT1    |
-		| http://fhir.nhs.net/Id/ods-site-code         | SIT1    |
+		| System                                       | Value |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG2  |
+		| http://fhir.nhs.net/Id/ods-organization-code | ORG3  |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
+		| http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
