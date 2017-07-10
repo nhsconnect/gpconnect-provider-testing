@@ -226,6 +226,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfNoneMatch, ifNoneMatchHeaderContent);
         }
 
+        [Given(@"I set the If-None-Match header with the version from the stored ""([^""]*)"" Resource")]
+        public void GivenISetTheIfNoneMatchHeaderWithTheVersionFromTheStoredResource(string resourceName)
+        {
+            Resource resource = null;
+            HttpContext.StoredFhirResources.TryGetValue(resourceName, out resource);
+            if(resource != null && resource.Id != null) {
+                HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfNoneMatch, "W/\""+resource.Id+"\"");
+            }
+        }
+
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
         public void GivenIAddTheParameterWithTheValue(string parameterName, string parameterValue)
         {
