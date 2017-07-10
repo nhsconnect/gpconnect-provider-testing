@@ -102,16 +102,8 @@
                 if (entry.Resource.ResourceType.Equals(ResourceType.Location))
                 {
                     Location location = (Location)entry.Resource;
-                    int odsSiteCodeIdentifierCount = 0;
-                    foreach (var identifier in location.Identifier)
-                    {
-                        if (string.Equals(identifier.System, "http://fhir.nhs.net/Id/ods-site-code"))
-                        {
-                            odsSiteCodeIdentifierCount++;
-                        }
-                    }
-                    odsSiteCodeIdentifierCount.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one ODS Site Code within the Location resource.");
-                    location.Identifier.Count.ShouldBeLessThanOrEqualTo(2, "There should be no more than one ODS Site Code and One other identifier, there is more than 2 identifiers in the Location resource.");
+                    location.Identifier.Count(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code")).ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one ods site code in the location resource");
+                    location.Identifier.Count(identifier => !identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code")).ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one other identifier that can be included along with the ods site code in the location resource");
                 }
             }
         }
@@ -319,6 +311,12 @@
         public void AddALocationIdentifierParameterWithSystemAndValue(string system, string value)
         {
             HttpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.OdsCodeMap[value]);
+        }
+
+        [Given(@"I add a Location Identifier parameter with parameter name ""([^""]*)"" and Value ""([^""]*)""")]
+        public void AddALocationIdentifierParameterWithParameterNameAndValue(string parameterName, string value)
+        {
+            HttpContext.RequestParameters.AddParameter(parameterName, "http://fhir.nhs.net/Id/ods-site-code" + '|' + GlobalContext.OdsCodeMap[value]);
         }
 
         [Given(@"I add a Location Identifier parameter with default System and Value ""([^""]*)""")]

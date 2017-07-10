@@ -125,23 +125,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchSuccess(string value, string entrySize, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search success", exampleTags);
-#line 28
+#line 25
 this.ScenarioSetup(scenarioInfo);
-#line 29
+#line 26
  testRunner.Given("I configure the default \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
+#line 27
   testRunner.And(string.Format("I add a Location Identifier parameter with default System and Value \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 28
  testRunner.When("I make the \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 32
+#line 29
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 33
+#line 30
+   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
   testRunner.And(string.Format("the response bundle should contain \"{0}\" entries", entrySize), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
+#line 32
   testRunner.And("all search response entities in bundle should contain a logical identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 33
   testRunner.And("the response bundle Location entries should contain a maximum of one ODS Site Cod" +
                     "e and one other identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -153,28 +153,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchNoEntrysFound()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search no entrys found", ((string[])(null)));
-#line 43
+#line 40
 this.ScenarioSetup(scenarioInfo);
+#line 41
+ testRunner.Given("I configure the default \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 42
+  testRunner.And("I add a Location Identifier parameter with default System and Value \"SIT4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 43
+ testRunner.When("I make the \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 44
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 45
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
-                    "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
-  testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
-                    "ite-code\" and value \"SIT4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
- testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 49
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
-  testRunner.And("the response bundle should contain \"0\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 45
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
-  testRunner.And("all search response entities in bundle should contain a logical identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+  testRunner.And("the response bundle should contain \"0\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -187,22 +179,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchFailureInvalidSystem(string system, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search failure invalid system", exampleTags);
-#line 54
+#line 48
 this.ScenarioSetup(scenarioInfo);
-#line 55
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
-                    "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
-  testRunner.And(string.Format("I add the location identifier parameter with system \"{0}\" and value \"SIT1\"", system), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
- testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 59
+#line 49
+ testRunner.Given("I configure the default \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 50
+  testRunner.And(string.Format("I add a Location Identifier parameter with System \"{0}\" and Value \"SIT1\"", system), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 51
+ testRunner.When("I make the \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 52
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 60
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 53
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_IDENT" +
                     "IFIER_SYSTEM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -214,20 +201,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchFailureMissingIdentifier()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search failure missing identifier", ((string[])(null)));
-#line 68
+#line 60
 this.ScenarioSetup(scenarioInfo);
-#line 69
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 70
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
-                    "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
- testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 72
+#line 61
+ testRunner.Given("I configure the default \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 62
+ testRunner.When("I make the \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 63
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 73
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 64
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -235,27 +217,23 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Location search failure due to invalid identifier name")]
-        [NUnit.Framework.TestCaseAttribute("IDENTIFIER", "http://fhir.nhs.net/Id/ods-site-code|SIT1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("identiffer", "http://fhir.nhs.net/Id/ods-site-code|SIT1", new string[0])]
-        public virtual void LocationSearchFailureDueToInvalidIdentifierName(string identifier, string parameterValue, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("IDENTIFIER", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("identiffer", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("identifiers", new string[0])]
+        public virtual void LocationSearchFailureDueToInvalidIdentifierName(string identifier, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search failure due to invalid identifier name", exampleTags);
-#line 76
+#line 66
 this.ScenarioSetup(scenarioInfo);
-#line 77
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 78
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
-                    "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
-  testRunner.And(string.Format("I add the parameter \"{0}\" with the value or sitecode \"{1}\"", identifier, parameterValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
- testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 81
+#line 67
+ testRunner.Given("I configure the default \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 68
+  testRunner.And(string.Format("I add a Location Identifier parameter with parameter name \"{0}\" and Value \"SIT1\"", identifier), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+ testRunner.When("I make the \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 70
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 82
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 71
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -270,26 +248,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchParameterOrderTest(string parameter1Name, string parameter2Name, string parameter1, string parameter2, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search parameter order test", exampleTags);
-#line 90
+#line 78
 this.ScenarioSetup(scenarioInfo);
-#line 91
+#line 79
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 92
+#line 80
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
+#line 81
   testRunner.And(string.Format("I add the parameter \"{0}\" with the value or sitecode \"{1}\"", parameter1Name, parameter1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 94
+#line 82
   testRunner.And(string.Format("I add the parameter \"{0}\" with the value or sitecode \"{1}\"", parameter2Name, parameter2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 95
+#line 83
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 96
+#line 84
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 97
+#line 85
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 86
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 87
   testRunner.And("the response bundle Location entries should contain a maximum of one ODS Site Cod" +
                     "e and one other identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -303,25 +281,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchAcceptHeader(string header, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search accept header", exampleTags);
-#line 109
+#line 97
 this.ScenarioSetup(scenarioInfo);
-#line 110
+#line 98
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 111
+#line 99
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
+#line 100
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
+#line 101
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 102
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 115
+#line 103
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 116
+#line 104
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 105
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -334,25 +312,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearch_FormatParameterOnly(string header, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search _format parameter only", exampleTags);
-#line 125
+#line 113
 this.ScenarioSetup(scenarioInfo);
-#line 126
+#line 114
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 127
+#line 115
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 116
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
+#line 117
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 130
+#line 118
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 131
+#line 119
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 132
+#line 120
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 121
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -367,27 +345,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchAcceptHeaderAnd_FormatParameter(string header, string parameter, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search accept header and _format parameter", exampleTags);
-#line 141
+#line 129
 this.ScenarioSetup(scenarioInfo);
-#line 142
+#line 130
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 143
+#line 131
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 144
+#line 132
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 145
+#line 133
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
+#line 134
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 135
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 148
+#line 136
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 149
+#line 137
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 138
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -403,25 +381,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchFailureDueToMissingHeader(string header, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search failure due to missing header", exampleTags);
-#line 159
+#line 147
 this.ScenarioSetup(scenarioInfo);
-#line 160
+#line 148
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 161
+#line 149
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 162
+#line 150
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 163
+#line 151
   testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 164
+#line 152
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 165
+#line 153
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 166
+#line 154
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 167
+#line 155
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -435,22 +413,22 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchFailureDueToInvalidInteractionId(string interactionId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search failure due to invalid interactionId", exampleTags);
-#line 176
+#line 164
 this.ScenarioSetup(scenarioInfo);
-#line 177
+#line 165
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 178
+#line 166
   testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
+#line 167
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
+#line 168
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 181
+#line 169
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 182
+#line 170
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
+#line 171
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -461,20 +439,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConformanceProfileSupportsTheLocationSearchOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Location search operation", ((string[])(null)));
-#line 190
+#line 178
 this.ScenarioSetup(scenarioInfo);
-#line 191
+#line 179
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 192
+#line 180
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 193
+#line 181
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 194
+#line 182
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 195
+#line 183
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 196
+#line 184
   testRunner.And("the conformance profile should contain the \"Location\" resource with a \"search-typ" +
                     "e\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -489,27 +467,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchLocationsContainMetadataAndPopulatedFields(string value, string entrySize, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search locations contain metadata and populated fields", exampleTags);
-#line 198
+#line 186
 this.ScenarioSetup(scenarioInfo);
-#line 199
+#line 187
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 200
+#line 188
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
+#line 189
   testRunner.And(string.Format("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                         "ite-code\" and value \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 190
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 203
+#line 191
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 204
+#line 192
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 205
+#line 193
   testRunner.And(string.Format("the response bundle should contain \"{0}\" entries", entrySize), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 206
+#line 194
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 207
+#line 195
   testRunner.And("if the response bundle contains a location resource it should contain meta data p" +
                     "rofile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -521,26 +499,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchSendMultipleIdentifiersInTheRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search send multiple identifiers in the request", ((string[])(null)));
-#line 214
+#line 202
 this.ScenarioSetup(scenarioInfo);
-#line 215
+#line 203
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 216
+#line 204
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
+#line 205
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 218
+#line 206
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 219
+#line 207
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 220
+#line 208
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 221
+#line 209
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 222
+#line 210
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -551,26 +529,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchSendDuplicateSiteCodesInTheRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search send duplicate siteCodes in the request", ((string[])(null)));
-#line 224
+#line 212
 this.ScenarioSetup(scenarioInfo);
-#line 225
+#line 213
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 226
+#line 214
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
+#line 215
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 228
+#line 216
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 229
+#line 217
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 230
+#line 218
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 231
+#line 219
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 232
+#line 220
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -581,6 +559,36 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchSendOrganizationIdentifierInTheRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search send organization identifier in the request", ((string[])(null)));
+#line 222
+this.ScenarioSetup(scenarioInfo);
+#line 223
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 224
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
+                    "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 225
+  testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
+                    "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 226
+  testRunner.And("I add an Organization Identifier parameter with Organization Code System and Valu" +
+                    "e \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 227
+ testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 228
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 229
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 230
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Location search send invalid parameter")]
+        public virtual void LocationSearchSendInvalidParameter()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search send invalid parameter", ((string[])(null)));
 #line 234
 this.ScenarioSetup(scenarioInfo);
 #line 235
@@ -592,8 +600,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                     "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 238
-  testRunner.And("I add an Organization Identifier parameter with Organization Code System and Valu" +
-                    "e \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"additionalParam\" with the value \"invalidParameter\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 239
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 240
@@ -607,35 +614,6 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Location search send invalid parameter")]
-        public virtual void LocationSearchSendInvalidParameter()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search send invalid parameter", ((string[])(null)));
-#line 246
-this.ScenarioSetup(scenarioInfo);
-#line 247
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 248
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
-                    "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
-  testRunner.And("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
-                    "ite-code\" and value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 250
-  testRunner.And("I add the parameter \"additionalParam\" with the value \"invalidParameter\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 251
- testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 252
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 253
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 254
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Location search response contains name element")]
         [NUnit.Framework.TestCaseAttribute("SIT1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SIT2", new string[0])]
@@ -643,25 +621,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchResponseContainsNameElement(string siteCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search response contains name element", exampleTags);
-#line 256
+#line 244
 this.ScenarioSetup(scenarioInfo);
-#line 257
+#line 245
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 258
+#line 246
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 259
+#line 247
   testRunner.And(string.Format("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                         "ite-code\" and value \"{0}\"", siteCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 260
+#line 248
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 261
+#line 249
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 262
+#line 250
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 263
+#line 251
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 264
+#line 252
   testRunner.And("the response bundle Location entries should contain a name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -675,25 +653,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchResponseContainsCorrectCodingIfPresent(string siteCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search response contains correct coding if present", exampleTags);
-#line 271
+#line 259
 this.ScenarioSetup(scenarioInfo);
-#line 272
+#line 260
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 273
+#line 261
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 274
+#line 262
   testRunner.And(string.Format("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                         "ite-code\" and value \"{0}\"", siteCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 275
+#line 263
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 276
+#line 264
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 277
+#line 265
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 278
+#line 266
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 279
+#line 267
   testRunner.And("the response bundle location entries should contain valid system code and display" +
                     " if the PhysicalType coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -708,25 +686,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchResponseContainsCorrectManagingOrganization(string siteCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search response contains correct managing organization", exampleTags);
-#line 286
+#line 274
 this.ScenarioSetup(scenarioInfo);
-#line 287
+#line 275
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 288
+#line 276
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 289
+#line 277
   testRunner.And(string.Format("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                         "ite-code\" and value \"{0}\"", siteCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
+#line 278
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 291
+#line 279
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 292
+#line 280
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 293
+#line 281
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 294
+#line 282
   testRunner.And("if the response bundle location entries contain managingOrganization element the " +
                     "reference should reference a resource in the response bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -741,25 +719,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchResponseContainsCorrectPartOf(string siteCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search response contains correct partOf", exampleTags);
-#line 301
+#line 289
 this.ScenarioSetup(scenarioInfo);
-#line 302
+#line 290
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 303
+#line 291
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 304
+#line 292
   testRunner.And(string.Format("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                         "ite-code\" and value \"{0}\"", siteCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 305
+#line 293
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 306
+#line 294
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 307
+#line 295
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 308
+#line 296
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 309
+#line 297
   testRunner.And("if the response bundle location entries contain partOf element the reference shou" +
                     "ld reference a resource in the response bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -774,25 +752,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LocationSearchResponseContainsCorrectType(string siteCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search response contains correct type", exampleTags);
-#line 316
+#line 304
 this.ScenarioSetup(scenarioInfo);
-#line 317
+#line 305
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 318
+#line 306
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:search:location\" " +
                     "interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 319
+#line 307
   testRunner.And(string.Format("I add the location identifier parameter with system \"http://fhir.nhs.net/Id/ods-s" +
                         "ite-code\" and value \"{0}\"", siteCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 320
+#line 308
  testRunner.When("I make a GET request to \"/Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 321
+#line 309
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 322
+#line 310
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 323
+#line 311
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
+#line 312
   testRunner.And("the response bundle location entries should contain system code and display if th" +
                     "e Type coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -808,7 +786,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure out of date site codes are no longer returning any resource", new string[] {
                         "ignore",
                         "Manual"});
-#line 333
+#line 321
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -825,7 +803,7 @@ this.ScenarioSetup(scenarioInfo);
                     " available in the provider system", new string[] {
                         "Manual",
                         "ignore"});
-#line 338
+#line 326
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
