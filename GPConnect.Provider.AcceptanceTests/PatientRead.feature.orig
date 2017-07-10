@@ -195,14 +195,16 @@ Scenario: Read patient resurned should conform to the GPconnect specification
 		And if the patient resource contains language coding fields for each communication they are valid
 		And the patient resource should contain no more than one family or given name
 		And the patient resource should contain no more than one family name field for each contact
+<<<<<<< HEAD
+		And the Patient should exclude photo and link and animal fields
+=======
+		#step name is not clear, what fields??
 		And the Patient should exclude fields which are not permitted by the specification
+	Examples:
+		| Header                | BodyFormat |
+		| application/json+fhir | JSON       |
+		| application/xml+fhir  | XML        |
 
-Scenario: Conformance profile supports the Patient read operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the conformance profile should contain the "Patient" resource with a "read" interaction
 
 #Manual tests need adding 
+>>>>>>> ee041a7f24fed6843420a0b78e20f8bbf8d4c74e

@@ -641,9 +641,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 239
   testRunner.And("if careProvider is present in patient resource the reference should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 240
-  testRunner.And("the patient resource should contain no more than one family or given name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the patient bundle should contain no more than one family or given name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 241
-  testRunner.And("If composition contains the patient resource communication the mandatory fields s" +
+  testRunner.And("if composition contains the patient resource communication the mandatory fields s" +
                     "hould match the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 242
   testRunner.And("if composition contains the patient resource contact the mandatory fields should " +

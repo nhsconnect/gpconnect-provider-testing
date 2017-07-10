@@ -71,16 +71,6 @@
             When($@"I make a GET request to ""{URL}""");
         }
 
-        [When(@"I make a GET request for location ""([^""]*)"" with If-None-Match header")]
-        public void IMakeAGETRequestForLocationWithIf_None_MatchHeader(string location)
-        {
-            var locationResource = HttpContext.StoredFhirResources[location];
-            var etag = "W/\"" + locationResource.Meta.VersionId + "\"";
-
-            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfNoneMatch, etag);
-            WhenIMakeAGetRequestForALocationWithId(locationResource.Id);
-        }
-
         [When(@"I perform a location vread for location ""([^""]*)""")]
         public void IPerformALocationVReadForLocation(string location)
         {
@@ -223,18 +213,17 @@
         public void ThenTheLocationResourceShouldContainMetaDataProfileAndVersionId()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
-            location.Meta.VersionId.ShouldNotBeNull();
-            location.Meta.Profile.ShouldNotBeNull();
+            location.Meta.VersionId.ShouldNotBeNull("The meta data element should contain a version id element");
+            location.Meta.Profile.ShouldNotBeNull("The meta data element should contain a profile element");
 
             var count = 0;
 
             foreach (string profile in location.Meta.Profile)
             {
-                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
+                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-location-1", "The meta data profile element is not valid");
                 count++;
             }
-
-            count.ShouldBe(1);
+            count.ShouldBe(1, "There should only be one meta data profile within the meta data element.");
         }
         
         [Then(@"the response Location entry should contain a name element")]
@@ -243,9 +232,9 @@
             Location location = (Location)FhirContext.FhirResponseResource;
             location.Name.ShouldNotBeNullOrEmpty();
         }
-        
-        [Then(@"the location response should contain valid system code and display if the PhysicalType coding is included in the resource")]
-        public void ThenTheLocationResponseShouldContainValidSystemCodeAndDisplayIfThePhysicalTypecodingIsIncludedInTheResource()
+
+        [Then(@"if the location response contains a PhysicalType coding it should contain system code and display elements")]
+        public void ThenIfTheLocationResponseContainsAPhysicalTypeCodingItShouldCOntainSystemCodeAndDisplayElments()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
             if (location.PhysicalType != null && location.PhysicalType.Coding != null)
@@ -261,30 +250,30 @@
             }
         }
 
-        [Then(@"if the location response contains a managing organization it contains a valid reference")]
-        public void ThenIfTheLocationResponseContainsAManagingOrganizationItContainsAValidReference()
+        [Then(@"if the location response contains a managing organization it contains a reference")]
+        public void ThenIfTheLocationResponseContainsAManagingOrganizationItContainsAReference()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
             if (location.ManagingOrganization != null)
             {
-                location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
-                _bundleSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
+                location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty("If a ManagingOrganization is included in the location resource the reference should be populated.");
+                location.ManagingOrganization.Reference.ShouldStartWith("Organization/", "The ManagingOrganization reference should be a relative url for an Organization.");
             }
         }
-
+        
         [Then(@"if the location response contains a partOf element its reference is valid")]
         public void ThenIfTheLocationResponseContainsAPartOfElementItsReferenceIsValid()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
             if (location.PartOf != null)
             {
-                location.PartOf.Reference.ShouldNotBeNullOrEmpty();
-                _bundleSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
+                location.PartOf.Reference.ShouldNotBeNullOrEmpty("If a PartOf element is included in the Location it should contain a reference element.");
+                location.PartOf.Reference.ShouldStartWith("Location/", "The reference element within the PartOf element of the Location resource should contain a relative Location reference.");
             }
         }
 
-        [Then(@"if the location response contains a type element it is valid")]
-        public void ThenIfTheLocationResponseContainsATypeElementItIsValid()
+        [Then(@"if the location response contains a type element coding it should contain system code and display elements")]
+        public void ThenIfTheLocationResponseContainsATypeElementCodingItShouldContainSystemCodeAndDisplayElements()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
 
@@ -321,23 +310,9 @@
         [Then(@"if the location response resource contains an identifier it is valid")]
         public void ThenIfTheLocationResponseResourceContainsAnIdentifierItIsValid()
         {
-            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
             Location location = (Location)FhirContext.FhirResponseResource;
-
-            location.Identifier.Count.ShouldBeLessThanOrEqualTo(2, "Too many location identifiers.");
-
-            var odsSystemCount = 0;
-
-            foreach (Identifier identifier in location.Identifier)
-            {
-                if ("http://fhir.nhs.net/Id/ods-site-code".Equals(identifier.System))
-                {
-                    identifier.Value.ShouldNotBeNullOrEmpty();
-                    odsSystemCount++;
-                }
-            }
-
-            odsSystemCount.ShouldBeLessThanOrEqualTo(1, "Too many ods-site-code systems.");
+            location.Identifier.Count(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code")).ShouldBeLessThanOrEqualTo(1,"There should be a maximum of one ods site code in the location resource");
+            location.Identifier.Count(identifier => !identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code")).ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one other identifier that can be included along with the ods site code in the location resource");
         }
 
         [Given(@"I add a Location Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -372,6 +347,14 @@
                 HttpContext.GetRequestId = location.Id;
         }
 
+        [Given(@"I store the Location Resource")]
+        public void StoreTheLocationResource()
+        {
+            var location = FhirContext.Locations.FirstOrDefault();
+
+            HttpContext.StoredFhirResources.Add("Location", location);
+        }
+
         [Then(@"the Location Id should match the GET request Id")]
         public void TheLocationIdShouldMarchTheGetRequestId()
         {
@@ -379,6 +362,20 @@
 
             location.ShouldNotBeNull();
             location.Id.ShouldBe(HttpContext.GetRequestId);
+        }
+
+        [Then(@"the returned Location resource shall contain the business identifier for Location ""([^""]*)""")]
+        public void ThenTheReturnedLocationResourceShallContainTheBusinessIdentifierForLocation(string locationName)
+        {
+            var location = (Location)FhirContext.FhirResponseResource;
+            location.Identifier.ShouldNotBeNull("The location should contain a site identifier as the business identifier was used to find the location for this test.");
+            location.Identifier.Find(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code")).Value.ShouldBe(GlobalContext.OdsCodeMap[locationName], "Location business identifier does not match the expected business identifier.");
+        }
+        
+        [Then(@"the response should be a Location resource")]
+        public void theResponseShouldBeAnLocationResource()
+        {
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
         }
     }
 }
