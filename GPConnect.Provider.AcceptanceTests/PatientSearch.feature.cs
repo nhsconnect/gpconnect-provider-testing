@@ -641,7 +641,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 239
   testRunner.And("if careProvider is present in patient resource the reference should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 240
-  testRunner.And("If composition contains the patient resource communication the mandatory fields s" +
+  testRunner.And("if composition contains the patient resource communication the mandatory fields s" +
                     "hould match the specification", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 241
   testRunner.And("if composition contains the patient resource contact the mandatory fields should " +
@@ -665,7 +665,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("if managingOrganization is present in patient resource the reference should be va" +
                     "lid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 249
-  testRunner.And("the Patient should exclude fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Patient should exclude photo and link and animal fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

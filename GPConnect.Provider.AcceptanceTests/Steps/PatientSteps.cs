@@ -386,8 +386,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ((Patient)_fhirContext.FhirResponseResource).Identifier[0].Value.ShouldBe(GlobalContext.PatientNhsNumberMap[patient]);
         }
 
-        [Then(@"the patient resource should contain a valid careProvider Practitioner reference")]
-        public void ThenThePatientResourceShouldContainAValidCareProviderPractitionerReference()
+        [Then(@"if the patient resource contains a careProvider Practitioner reference it is valid")]
+        public void ThenIfThePatientResourceContainsACareProviderPractitionerReferenceItIsValid()
         {
             var CareProvider = ((Patient)_fhirContext.FhirResponseResource).CareProvider;
 
@@ -407,8 +407,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the patient resource should contain a valid managingOrganization Organization reference")]
-        public void ThenThePatientResourceShouldContainAValidManagingOrganizationOrganizationReference()
+        [Then(@"if the patient resource contains a managingOrganization Organization reference it is valid")]
+        public void ThenIfThePatientResourceContainsAManagingOrganizationReferenceItIsValid()
         {
             var ManagingOrganization = ((Patient)_fhirContext.FhirResponseResource).ManagingOrganization;
 
@@ -423,8 +423,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the patient resource should contain a valid deceased dateTime field")]
-        public void ThenThePatientResourceShouldContainAValidDeceasedDateTimeField()
+        [Then(@"if the patient resource contains a deceased dateTime field it is valid")]
+        public void ThenIfThePatientResourceContainsADeceasedDateTimeFieldItIsValid()
         {
             var Deceased = ((Patient)_fhirContext.FhirResponseResource).Deceased;
 
@@ -434,7 +434,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the patient resource should contain a valid multipleBirth boolean field")]
+        [Then(@"if the patient resource contains a multipleBirth boolean field it is valid")]
         public void ThenThePatientResourceShouldContainAValidMultipleBirthBooleanField()
         {
             var MultipleBirth = ((Patient)_fhirContext.FhirResponseResource).MultipleBirth;
@@ -445,7 +445,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the patient resource should contain valid telecom fields")]
+        [Then(@"if the patient resource contains telecom fields they are valid")]
         public void ThenThePatientResourceShouldContainValidTelecomFields()
         {
             foreach (var contactPoint in ((Patient)_fhirContext.FhirResponseResource).Telecom)
@@ -455,7 +455,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the patient resource should contain valid relationship coding fields")]
+        [Then(@"if the patient resource contains relationship coding fields they are valid")]
         public void ThenThePatientResourceShouldContainValidRelationshipCodingFields()
         {
             foreach (var contact in ((Patient)_fhirContext.FhirResponseResource).Contact)
@@ -467,7 +467,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the patient resource should contain valid maritalStatus coding fields")]
+        [Then(@"if the patient resource contains maritalStatus coding fields they are valid")]
         public void ThenThePatientResourceShouldContainValidMaritalStatusCodingFields()
         {
             var maritalStatus = ((Patient)_fhirContext.FhirResponseResource).MaritalStatus;
@@ -478,7 +478,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the patient resource should contain valid language coding fields for each communication")]
+        [Then(@"if the patient resource contains language coding fields for each communication they are valid")]
         public void ThenThePatientResourceShouldContainValidLanguageCodingFieldsForEachCommunication()
         {
             foreach (var communication in ((Patient)_fhirContext.FhirResponseResource).Communication)
@@ -577,7 +577,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"If composition contains the patient resource communication the mandatory fields should match the specification")]
+        [Then(@"if composition contains the patient resource communication the mandatory fields should match the specification")]
         public void ThenIfCompositionContainsThePatientResourceCommunicationTheMandatoryFieldsShouldMatchTheSpecification()
         {
             Patients.ForEach(patient =>
@@ -620,8 +620,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the Patient should exclude fields")]
-        public void ThePatientShouldExcludeFields()
+        [Then(@"the Patient should exclude photo and link and animal fields")]
+        public void ThePatientShouldExcludePhotoAndLinkAndAnimalFields()
         {
             Patients.ForEach(patient =>
             {

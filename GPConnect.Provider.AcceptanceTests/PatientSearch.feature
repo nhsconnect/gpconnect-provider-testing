@@ -237,7 +237,7 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And if careProvider is present in patient resource the reference should be valid
-		And If composition contains the patient resource communication the mandatory fields should match the specification
+		And if composition contains the patient resource communication the mandatory fields should match the specification
 		And if composition contains the patient resource contact the mandatory fields should matching the specification
 		And if composition contains the patient resource and it contains the multiple birth field it should be a boolean value
 		And the Patient MaritalStatus should be valid
@@ -246,7 +246,7 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And if Patient resource contains a managing organization the reference must be valid
 		And if Patient resource contains careProvider the reference must be valid
 		And if managingOrganization is present in patient resource the reference should be valid
-		And the Patient should exclude fields
+		And the Patient should exclude photo and link and animal fields
 	
 	Examples:
 		| Patient  |
