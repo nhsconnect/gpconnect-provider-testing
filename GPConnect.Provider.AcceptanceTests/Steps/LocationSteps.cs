@@ -71,16 +71,6 @@
             When($@"I make a GET request to ""{URL}""");
         }
 
-        [When(@"I make a GET request for location ""([^""]*)"" with If-None-Match header")]
-        public void IMakeAGETRequestForLocationWithIf_None_MatchHeader(string location)
-        {
-            var locationResource = HttpContext.StoredFhirResources[location];
-            var etag = "W/\"" + locationResource.Meta.VersionId + "\"";
-
-            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfNoneMatch, etag);
-            WhenIMakeAGetRequestForALocationWithId(locationResource.Id);
-        }
-
         [When(@"I perform a location vread for location ""([^""]*)""")]
         public void IPerformALocationVReadForLocation(string location)
         {
@@ -242,9 +232,9 @@
             Location location = (Location)FhirContext.FhirResponseResource;
             location.Name.ShouldNotBeNullOrEmpty();
         }
-        
-        [Then(@"the location response should contain valid system code and display if the PhysicalType coding is included in the resource")]
-        public void ThenTheLocationResponseShouldContainValidSystemCodeAndDisplayIfThePhysicalTypecodingIsIncludedInTheResource()
+
+        [Then(@"if the location response contains a PhysicalType coding it should contain system code and display elements")]
+        public void ThenIfTheLocationResponseContainsAPhysicalTypeCodingItShouldCOntainSystemCodeAndDisplayElments()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
             if (location.PhysicalType != null && location.PhysicalType.Coding != null)
@@ -260,30 +250,30 @@
             }
         }
 
-        [Then(@"if the location response contains a managing organization it contains a valid reference")]
-        public void ThenIfTheLocationResponseContainsAManagingOrganizationItContainsAValidReference()
+        [Then(@"if the location response contains a managing organization it contains a reference")]
+        public void ThenIfTheLocationResponseContainsAManagingOrganizationItContainsAReference()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
             if (location.ManagingOrganization != null)
             {
-                location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
-                _bundleSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
+                location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty("If a ManagingOrganization is included in the location resource the reference should be populated.");
+                location.ManagingOrganization.Reference.ShouldStartWith("Organization/", "The ManagingOrganization reference should be a relative url for an Organization.");
             }
         }
-
+        
         [Then(@"if the location response contains a partOf element its reference is valid")]
         public void ThenIfTheLocationResponseContainsAPartOfElementItsReferenceIsValid()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
             if (location.PartOf != null)
             {
-                location.PartOf.Reference.ShouldNotBeNullOrEmpty();
-                _bundleSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
+                location.PartOf.Reference.ShouldNotBeNullOrEmpty("If a PartOf element is included in the Location it should contain a reference element.");
+                location.PartOf.Reference.ShouldStartWith("Location/", "The reference element within the PartOf element of the Location resource should contain a relative Location reference.");
             }
         }
 
-        [Then(@"if the location response contains a type element it is valid")]
-        public void ThenIfTheLocationResponseContainsATypeElementItIsValid()
+        [Then(@"if the location response contains a type element coding it should contain system code and display elements")]
+        public void ThenIfTheLocationResponseContainsATypeElementCodingItShouldContainSystemCodeAndDisplayElements()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
 
@@ -355,6 +345,14 @@
 
             if (location != null)
                 HttpContext.GetRequestId = location.Id;
+        }
+
+        [Given(@"I store the Location Resource")]
+        public void StoreTheLocationResource()
+        {
+            var location = FhirContext.Locations.FirstOrDefault();
+
+            HttpContext.StoredFhirResources.Add("Location", location);
         }
 
         [Then(@"the Location Id should match the GET request Id")]

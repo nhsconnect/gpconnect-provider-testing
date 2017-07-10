@@ -132,59 +132,51 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 		And if the location response resource contains an identifier it is valid
 #		status // This is checked by the FHIR .NET library
 		And the response Location entry should contain a name element
-		And if the location response contains a type element it is valid
+		And if the location response contains a type element coding it should contain system code and display elements
 		And if the location response contains any telecom elements they are valid
 #		address // This is checked by the FHIR .NET library
-		And the location response should contain valid system code and display if the PhysicalType coding is included in the resource
-		And if the location response contains a managing organization it contains a valid reference
+		And if the location response contains a PhysicalType coding it should contain system code and display elements
+		And if the location response contains a managing organization it contains a reference
 		And if the location response contains a partOf element its reference is valid
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
-#Include further detail in the test name, eg matching resource version
 Scenario: Read location should contain ETag
-	Given I get location "SIT1" id and save it as "location1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
-	When I get location "location1" and use the id to make a get request to the url "Location"
+	Given I get the Location for Location Value "SIT1"
+		And I store the Location Id
+	Given I configure the default "LocationRead" request
+	When I make the "LocationRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Location resource
 		And the response should contain the ETag header matching the resource version
 
+# Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 Scenario: Read location If-None-Match should return a 304 on match
-	Given I get location "SIT1" id and save it as "location1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
-	When I make a GET request for location "location1" with If-None-Match header
+	Given I get the Location for Location Value "SIT1"
+		And I store the Location Id
+		And I store the Location Resource
+	Given I configure the default "LocationRead" request
+		And I set the If-None-Match header with the version from the stored "Location" Resource
+	When I make the "LocationRead" request
 	Then the response status code should be "304"
 	
+# Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 Scenario: Read location If-None-Match should return full resource if no match
-	Given I get location "SIT1" id and save it as "location1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
+	Given I get the Location for Location Value "SIT1"
+		And I store the Location Id
+	Given I configure the default "LocationRead" request
 		And I set the If-None-Match header to "W/\"somethingincorrect\""
-	When I get location "location1" and use the id to make a get request to the url "Location"
+	When I make the "LocationRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Location resource
 		And the response should contain the ETag header matching the resource version
 
+# Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
+@ignore
 Scenario: VRead location _history with current etag should return current location
-	Given I get location "SIT1" id and save it as "location1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
-	When I perform a location vread for location "location1"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Location resource
-		#Further validation to ensure the returned resource is correct
 
+# Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
+@ignore
 Scenario: VRead location _history with invalid etag should give a 404
-	Given I get location "SIT1" id and save it as "location1"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:location" interaction
-	When I perform a location vread for location "location1" with invalid ETag
-	Then the response status code should be "404"
