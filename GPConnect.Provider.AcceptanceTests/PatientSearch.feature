@@ -24,7 +24,8 @@ Scenario: Returned patients should contain a logical identifier
 Scenario: Provider should return an error when an invalid system is supplied in the identifier parameter
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
-	When I search for Patient "patient1" with system "http://test.net/types/internalIdentifier"
+		And I add a Patient Identifier parameter with System "http://test.net/types/internalIdentifier" and Value "patient2"
+	When I make the "PatientSearch" request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
@@ -40,7 +41,8 @@ Scenario: Provider should return an error when no system is supplied in the iden
 Scenario: Provider should return an error when a blank system is supplied in the identifier parameter
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
-	When I search for Patient "patient1" with system ""
+		And I add a Patient Identifier parameter with System "" and Value "patient2"
+	When I make the "PatientSearch" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
@@ -48,7 +50,8 @@ Scenario: Provider should return an error when a blank system is supplied in the
 Scenario: When a patient is not found on the provider system an empty bundle should be returned
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patientNotInSystem"
-	When I search for Patient "patientNotInSystem"
+		And I add a Patient Identifier parameter with default System and Value "patientNotInSystem"
+	When I make the "PatientSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -65,7 +68,8 @@ Scenario: Patient search should fail if no identifier parameter is include
 Scenario Outline: The identifier parameter should be rejected if the case is incorrect
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-	When I search for Patient "patient2" with parameter name "<ParameterName>" and system "http://fhir.nhs.net/Id/nhs-number"
+		And I add a Patient Identifier parameter with identifier name "<ParameterName>" default System and Value "patient2"
+	When I make the "PatientSearch" request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -79,7 +83,8 @@ Scenario Outline: The identifier parameter should be rejected if the case is inc
 Scenario: The response should be an error if parameter is not identifier
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-	When I search for Patient "patient2" with parameter name "nhsNumberParam" and system "http://fhir.nhs.net/Id/nhs-number"
+		And I add a Patient Identifier parameter with identifier name "nhsNumberParam" default System and Value "patient2"
+	When I make the "PatientSearch" request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

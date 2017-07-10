@@ -21,17 +21,14 @@ Scenario: if location contains telecom
 # There is no need to check that the location telecom value sets are valid as this is done by the parse of the response within scenario above.
 # The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
 
-#COMMON
-#Refactor code to use haydens steps moving setup behind the scenes
-#The last 4 tests could be merged, although if a problem occurs the cause of the issue will be less clear
 
 Scenario Outline: Location search success
 	Given I configure the default "LocationSearch" request
 		And I add a Location Identifier parameter with default System and Value "<Value>"
 	When I make the "LocationSearch" request
 	Then the response status code should indicate success
+			And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<EntrySize>" entries
-		And the response should be a Bundle resource of type "searchset"
 		And all search response entities in bundle should contain a logical identifier
 		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
 	Examples:
@@ -41,23 +38,18 @@ Scenario Outline: Location search success
 		| SIT3  | 8         |
 
 Scenario: Location search no entrys found
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT4"
-	When I make a GET request to "/Location"
+	Given I configure the default "LocationSearch" request
+		And I add a Location Identifier parameter with default System and Value "SIT4"
+	When I make the "LocationSearch" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response bundle should contain "0" entries
 		And the response should be a Bundle resource of type "searchset"
-		And all search response entities in bundle should contain a logical identifier
+		And the response bundle should contain "0" entries
 	
 Scenario Outline: Location search failure invalid system
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the location identifier parameter with system "<System>" and value "SIT1"
-	When I make a GET request to "/Location"
+	Given I configure the default "LocationSearch" request
+		And I add a Location Identifier parameter with System "<System>" and Value "SIT1"
+	When I make the "LocationSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
 	Examples:
 		| System                                         |
@@ -66,26 +58,22 @@ Scenario Outline: Location search failure invalid system
 		| http://fhir.nh5555555555555555555/555555555555 |
 
 Scenario: Location search failure missing identifier
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-	When I make a GET request to "/Location"
+	Given I configure the default "LocationSearch" request
+	When I make the "LocationSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario Outline: Location search failure due to invalid identifier name
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
-		And I add the parameter "<Identifier>" with the value or sitecode "<ParameterValue>"
-	When I make a GET request to "/Location"
+	Given I configure the default "LocationSearch" request
+		And I add a Location Identifier parameter with parameter name "<Identifier>" and Value "SIT1"
+	When I make the "LocationSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	#Add identifiers into the test
 	Examples:
-		| Identifier | ParameterValue                             |
-		| IDENTIFIER | http://fhir.nhs.net/Id/ods-site-code\|SIT1 |
-		| identiffer | http://fhir.nhs.net/Id/ods-site-code\|SIT1 |
+		| Identifier  |
+		| IDENTIFIER  |
+		| identiffer  |
+		| identifiers |
 
 Scenario Outline: Location search parameter order test
 	Given I am using the default server

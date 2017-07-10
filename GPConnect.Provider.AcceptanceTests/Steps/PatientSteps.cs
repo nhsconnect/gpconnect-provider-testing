@@ -711,6 +711,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             AddAPatientIdentifierParameterWithSystemAndValue(FhirConst.IdentifierSystems.kNHSNumber, value);
         }
 
+        [Given(@"I add a Patient Identifier parameter with identifier name ""([^""]*)"" default System and Value ""([^""]*)""")]
+        public void AddAPatientIdentifierParameterWithIdentifierNameDefaultSystemAndValue(string identifierName, string value)
+        {
+            HttpContext.RequestParameters.AddParameter(identifierName, FhirConst.IdentifierSystems.kNHSNumber + '|' + GlobalContext.PatientNhsNumberMap[value]);
+        }
+
         [Given(@"I add a Patient Identifier parameter with default System and NHS number ""([^""]*)""")]
         public void AddAPatientIdentifierParameterWithDefaultSystemAndNhsNumber(string nhsNumber)
         {
