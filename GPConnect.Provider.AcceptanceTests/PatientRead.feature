@@ -195,12 +195,6 @@ Scenario: Read patient resurned should conform to the GPconnect specification
 		And if the patient resource contains language coding fields for each communication they are valid
 		And the patient resource should contain no more than one family or given name
 		And the patient resource should contain no more than one family name field for each contact
-		And the Patient should exclude photo and link and animal fields
 		And the Patient should exclude fields which are not permitted by the specification
-	Examples:
-		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
-
 
 #Manual tests need adding 
