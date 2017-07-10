@@ -227,6 +227,41 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the patient bundle should contain no more than one family or given name")]
+        public void TheThePatientBundleShouldContainNoMoreThenOneFamilyOrGivenName()
+        {
+
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+
+                    foreach (var name in patient.Name)
+                    {
+                        int familynamecount = 0;
+
+                        foreach (var familyname in name.Family)
+                        {
+                            familynamecount++;
+                        }
+
+                        familynamecount.ShouldBeLessThanOrEqualTo(1);
+
+                        int givennamecount = 0;
+
+                        foreach (var givenname in name.Given)
+                        {
+                            givennamecount++;
+                        }
+
+                        givennamecount.ShouldBeLessThanOrEqualTo(1);
+                    }
+                }
+            }
+        }
+    
+
         [Then(@"if patient resource contains deceased element it should be dateTime and not boolean")]
         public void ThenIfPatientResourceContainsDeceasedElementItShouldBeDateTimeAndNotBoolean()
         {
