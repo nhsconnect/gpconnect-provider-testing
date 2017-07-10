@@ -235,7 +235,7 @@ Scenario: Location search send organization identifier in the request
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:location" interaction
 		And I add the location identifier parameter with system "http://fhir.nhs.net/Id/ods-site-code" and value "SIT1"
-		And I add the organization identifier parameter with system "http://fhir.nhs.net/Id/ods-organization-code" and value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
 	When I make a GET request to "/Location"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON

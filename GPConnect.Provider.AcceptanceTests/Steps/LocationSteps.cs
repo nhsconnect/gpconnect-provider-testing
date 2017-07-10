@@ -223,18 +223,17 @@
         public void ThenTheLocationResourceShouldContainMetaDataProfileAndVersionId()
         {
             Location location = (Location)FhirContext.FhirResponseResource;
-            location.Meta.VersionId.ShouldNotBeNull();
-            location.Meta.Profile.ShouldNotBeNull();
+            location.Meta.VersionId.ShouldNotBeNull("The meta data element should contain a version id element");
+            location.Meta.Profile.ShouldNotBeNull("The meta data element should contain a profile element");
 
             var count = 0;
 
             foreach (string profile in location.Meta.Profile)
             {
-                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
+                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-location-1", "The meta data profile element is not valid");
                 count++;
             }
-
-            count.ShouldBe(1);
+            count.ShouldBe(1, "There should only be one meta data profile within the meta data element.");
         }
         
         [Then(@"the response Location entry should contain a name element")]
@@ -321,23 +320,9 @@
         [Then(@"if the location response resource contains an identifier it is valid")]
         public void ThenIfTheLocationResponseResourceContainsAnIdentifierItIsValid()
         {
-            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
             Location location = (Location)FhirContext.FhirResponseResource;
-
-            location.Identifier.Count.ShouldBeLessThanOrEqualTo(2, "Too many location identifiers.");
-
-            var odsSystemCount = 0;
-
-            foreach (Identifier identifier in location.Identifier)
-            {
-                if ("http://fhir.nhs.net/Id/ods-site-code".Equals(identifier.System))
-                {
-                    identifier.Value.ShouldNotBeNullOrEmpty();
-                    odsSystemCount++;
-                }
-            }
-
-            odsSystemCount.ShouldBeLessThanOrEqualTo(1, "Too many ods-site-code systems.");
+            location.Identifier.Count(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code")).ShouldBeLessThanOrEqualTo(1,"There should be a maximum of one ods site code in the location resource");
+            location.Identifier.Count(identifier => !identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code")).ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one other identifier that can be included along with the ods site code in the location resource");
         }
 
         [Given(@"I add a Location Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -379,6 +364,20 @@
 
             location.ShouldNotBeNull();
             location.Id.ShouldBe(HttpContext.GetRequestId);
+        }
+
+        [Then(@"the returned Location resource shall contain the business identifier for Location ""([^""]*)""")]
+        public void ThenTheReturnedLocationResourceShallContainTheBusinessIdentifierForLocation(string locationName)
+        {
+            var location = (Location)FhirContext.FhirResponseResource;
+            location.Identifier.ShouldNotBeNull("The location should contain a site identifier as the business identifier was used to find the location for this test.");
+            location.Identifier.Find(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code")).Value.ShouldBe(GlobalContext.OdsCodeMap[locationName], "Location business identifier does not match the expected business identifier.");
+        }
+        
+        [Then(@"the response should be a Location resource")]
+        public void theResponseShouldBeAnLocationResource()
+        {
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
         }
     }
 }

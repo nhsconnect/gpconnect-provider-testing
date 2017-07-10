@@ -619,8 +619,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the Patient should exclude fields which are not permitted by the specification")]
-        public void ThePatientShouldExcludeFields()
+        [Then(@"the Patient should exclude photo and link and animal fields")]
+        public void ThePatientShouldExcludePhotoAndLinkAndAnimalFields()
         {
             Patients.ForEach(patient =>
             {
