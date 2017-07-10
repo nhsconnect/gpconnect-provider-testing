@@ -83,13 +83,12 @@ Scenario Outline: Organization - Identifier - have correct Organization Codes an
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the Organization Identifiers should have "<OrganizationCodeIdentifiers>" Organization Code Identifiers with "<OrganizationCode>" Organization Codes
-		And the Organization Identifiers should have "<SiteCodeIdentifiers>" Site Code Identifiers with "<SiteCodes>" Site Codes
+		And the Organization Identifiers are correct for Organization Code "<OrganizationCode>"
 	Examples: 
-		| OrganizationCode | OrganizationCodeIdentifiers | SiteCodeIdentifiers | SiteCodes	|
-		| ORG1             | 1                           | 1                   | SIT1		|
-		| ORG2             | 1                           | 2                   | SIT2, SIT3 |
-		| ORG3             | 1                           | 1                   | SIT3		|
+		| OrganizationCode |
+		| ORG1             |
+		| ORG2             |
+		| ORG3             |
 
 Scenario Outline: Organization - Identifier - have correct Organization Codes and Site Codes when searching by Site Code
 	Given I configure the default "OrganizationSearch" request
@@ -97,13 +96,12 @@ Scenario Outline: Organization - Identifier - have correct Organization Codes an
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the Organization Identifiers should have "<OrganizationCodeIdentifiers>" Organization Code Identifiers with "<OrganizationCodes>" Organization Codes
-		And the Organization Identifiers should have "<SiteCodeIdentifiers>" Site Code Identifiers with "<SiteCodes>" Site Codes
+		And the Organization Identifiers are correct for Site Code "<SiteCode>"
 	Examples: 
-		| SiteCode | OrganizationCodeIdentifiers | OrganizationCodes | SiteCodeIdentifiers | SiteCodes  |
-		| SIT1	   | 1                           | ORG1              | 1                   | SIT1	    |
-		| SIT2	   | 1                           | ORG2              | 2                   | SIT2	    |
-		| SIT3	   | 2                           | ORG2, ORG3		 | 3                   | SIT2, SIT3	|
+		| SiteCode | 
+		| SIT1	   | 
+		| SIT2	   | 
+		| SIT3	   | 
 
 Scenario: Organization search by organization code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request

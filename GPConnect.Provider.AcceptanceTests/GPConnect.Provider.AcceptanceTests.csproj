@@ -112,6 +112,7 @@
     <Compile Include="Context\FhirContext.cs" />
     <Compile Include="Context\HttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
+    <Compile Include="Data\OrganizationSiteCodeMap.cs" />
     <Compile Include="Data\RegisterPatient.cs" />
     <Compile Include="Data\PractitionerCodeMap.cs" />
     <Compile Include="Data\ODSCodeMap.cs" />
@@ -146,6 +147,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HTTP.feature</DependentUpon>
     </Compile>
+    <Compile Include="Importers\OrganizationSiteCodeClassMap.cs" />
+    <Compile Include="Importers\OrganizationSiteCodeMapImporter.cs" />
     <Compile Include="Importers\RegisterPatientsImporter.cs" />
     <Compile Include="Importers\PractitionerCodeMapConverter.cs" />
     <Compile Include="Importers\PractitionerCodeMapImporter.cs" />

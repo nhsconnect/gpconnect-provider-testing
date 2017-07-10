@@ -92,6 +92,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             GlobalContext.PractionerCodeMap = PractitionerCodeMapImporter.LoadCsv(practitionerCodeMapCSV);
         }
 
+        [BeforeTestRun(Order = 1)]
+        public static void LoadOrganizationSiteCodeMapData()
+        {
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
+                Assert.Fail("Data Directory Not Found.");
+            }
+
+            var organizationSiteCodeMapCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"OrganizationSiteCodeMap.csv");
+            Log.WriteLine("organizationSiteCodeMap CSV = '{0}'", organizationSiteCodeMapCSV);
+            GlobalContext.OrganizationSiteCodeMap = OrganizationSiteCodeMapImporter.LoadCsv(organizationSiteCodeMapCSV);
+        }
+
         [BeforeTestRun(Order = 2)]
         public static void LoadFhirDefinitions()
         {

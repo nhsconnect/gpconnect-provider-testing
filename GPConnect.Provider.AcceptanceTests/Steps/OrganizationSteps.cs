@@ -1,5 +1,6 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Context;
@@ -272,58 +273,97 @@
             allOrganizationsFound.ShouldBe(true, "The number of organizations or site codes are invalid");
         }
 
-        [Then(@"the Organization Identifiers should have ""([^""]*)"" Organization Code Identifiers with ""([^""]*)"" Organization Codes")]
-        public void OrganizationIdentifiersShouldHaveOrganizationCodeIdentifiersWithOrganizationCodes(int organiztionCodeIdentifiers, List<string> organizationCodes)
+
+        [Then(@"the Organization Identifiers are correct for Organization Code ""([^""]*)""")]
+        public void OrganizationIdentifiersAreCorrectForOrganizationCode(string organizationCode)
         {
-            var identifiers = Organizations
-                .SelectMany(x => x.Identifier)
-                .Where(x => x.System == "http://fhir.nhs.net/Id/ods-organization-code")
+            foreach (var organization in Organizations)
+            {
+                //Check if Organization Code Identifiers are valid.
+                OrganizationCodeIdentifiersAreValid(organizationCode, organization);
+
+                //Check if Site Code Identifiers are valid
+                SiteCodeIdentifiersAreValid(organizationCode, organization);
+            }
+        }
+
+        [Then(@"the Organization Identifiers are correct for Site Code ""([^""]*)""")]
+        public void OrganizationIdentifiersAreCorrectForSiteCode(string siteCode)
+        {
+            //Get Organization Codes for Site Code
+            var organizationSiteCodeMap = GlobalContext.OrganizationSiteCodeMap[siteCode];
+
+            foreach (var organization in Organizations)
+            {
+                foreach (var organizationCode in organizationSiteCodeMap)
+                {
+                    //Check if Organization in Bundle contains Identifier for Organization Code
+                    var oganizationContainsIdentifier = organization.Identifier
+                        .Select(identifier => identifier.Value)
+                        .Contains(GlobalContext.OdsCodeMap[organizationCode]);
+
+                    if (oganizationContainsIdentifier)
+                    {
+                        //Check if Organization Code Identifiers are valid.
+                        OrganizationCodeIdentifiersAreValid(organizationCode, organization);
+
+                        //Check if Site Code Identifiers are valid
+                        SiteCodeIdentifiersAreValid(organizationCode, organization);
+                    }
+                }
+            }
+
+        }
+
+        private static void SiteCodeIdentifiersAreValid(string organizationCode, Organization organization)
+        {
+            //Get Site Codes for Organization Code
+            var siteCodesForOrganization = GlobalContext.OrganizationSiteCodeMap[organizationCode]
+                .Select(x => GlobalContext.OdsCodeMap[x])
                 .ToList();
 
-            identifiers.Count.ShouldBe(organiztionCodeIdentifiers, $"There should be a total of {organiztionCodeIdentifiers} Organization Code Identifiers");
-
-            var organizations = organizationCodes
-                .OrderBy(organizationCode => organizationCode)
-                .Select(organizationCode => GlobalContext.OdsCodeMap[organizationCode])
-                .Distinct();
-
-            identifiers
-                .OrderBy(identifier => identifier.Value)
-                .Select(identifer => identifer.Value)
-                .Distinct()
-                .ShouldBe(organizations);
-        }
-
-        [Then(@"the Organization Identifiers should have ""([^""]*)"" Site Code Identifiers with ""([^""]*)"" Site Codes")]
-        public void OrganizationIdentifiersShouldHaveSiteCodeIdentifiersWithSiteCodes(int siteCodeIdentifiers, List<string> siteCodes)
-        {
-            var identifiers = Organizations
-                .SelectMany(x => x.Identifier)
-                .Where(x => x.System == "http://fhir.nhs.net/Id/ods-site-code")
+            //Get Site Code Identifier Values for Organization
+            var siteCodeIdentifierValues = organization.Identifier
+                .Where(identifier => identifier.System == "http://fhir.nhs.net/Id/ods-site-code")
+                .Select(identifier => identifier.Value)
                 .ToList();
 
-            identifiers.Count.ShouldBe(siteCodeIdentifiers, $"There should be a total of {siteCodeIdentifiers} Site Code Identifiers");
+            //Check there are the correct amount of Site Code Identifiers
+            siteCodeIdentifierValues.Count.ShouldBe(siteCodesForOrganization.Count, $"There should be a total of {siteCodesForOrganization.Count} Site Code Identifiers for {organizationCode}");
 
-            var organizations = siteCodes
-                .OrderBy(siteCode => siteCode)
-                .Select(siteCode => GlobalContext.OdsCodeMap[siteCode])
-                .Distinct();
+            //Check there are no duplicate Site Code Identifier Values
+            siteCodeIdentifierValues.Count.ShouldBe(siteCodeIdentifierValues.Distinct().Count(), $"There are duplicate Site Code Identifiers for {organizationCode}");
 
-            identifiers
-                .OrderBy(identifier => identifier.Value)
-                .Select(identifer => identifer.Value)
-                .Distinct()
-
-                .ShouldBe(organizations);
+            foreach (var siteCodeIdentifierValue in siteCodeIdentifierValues)
+            {
+                //Check each Site Code Identifier Value is in the expected Site Codes for Organization
+                siteCodesForOrganization.ShouldContain(siteCodeIdentifierValue, $"The Site Code {siteCodeIdentifierValue} was not expected for {organizationCode}");
+            }
         }
 
-
-        [StepArgumentTransformation]
-        public List<string> CommaSeperatedStringTransform(string list)
+        private static void OrganizationCodeIdentifiersAreValid(string organizationCode, Organization organization)
         {
-            return list.Split(',').Select(x => x.Trim()).ToList();
-        }
+            //Get Organization Codes for Organization
+            var organizationCodes = new List<string> { GlobalContext.OdsCodeMap[organizationCode]};
 
+            //Get Organization Code Identifier values
+            var organizationCodeIdentifierValues = organization.Identifier
+                .Where(identifier => identifier.System == "http://fhir.nhs.net/Id/ods-organization-code")
+                .Select(identifier => identifier.Value)
+                .ToList();
+
+            //Check there are the correct amount of Organization Code Identifiers
+            organizationCodeIdentifierValues.Count.ShouldBe(organizationCodes.Count, $"There should be a total of {organizationCodes.Count} Organization Code Identifiers for {organizationCode}");
+
+            //Check there are no duplicate Organization Code Identifier Values
+            organizationCodeIdentifierValues.Count.ShouldBe(organizationCodeIdentifierValues.Distinct().Count(), $"There are duplicate Organization Code Identifiers for {organizationCode}");
+
+            foreach (var organizationCodeIdentifierValue in organizationCodeIdentifierValues)
+            {
+                //Check each Organization Code Identifier Value is in the expected Organization Codes for Organization
+                organizationCodes.ShouldContain(organizationCodeIdentifierValue, $"The Organization Code {organizationCodeIdentifierValue} was not expected for {organizationCode}");
+            }
+        }
 
         [Then(@"the returned organization contains identifiers of type ""([^""]*)"" with values ""([^""]*)""")]
         public void ThenTheReturnedOrgainzationContainsIdentifiersOfTypeWithValues(string identifierSystem, string identifierValueCSV)
