@@ -491,7 +491,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Resource resource = FhirContext.FhirResponseResource;
             string returnedETag = "";
             HttpContext.ResponseHeaders.TryGetValue("ETag", out returnedETag);
-            returnedETag.ShouldStartWith("W/\"", "The WTag header should start with W/\"");
+            returnedETag.ShouldStartWith("W/\"", "The Tag header should start with W/\"");
             returnedETag.ShouldEndWith(resource.Meta.VersionId + "\"", "The ETag header should contain the resource version enclosed within speech marks");
             returnedETag.ShouldBe("W/\"" + resource.Meta.VersionId + "\"", "The ETag header contains invalid characters");
         }

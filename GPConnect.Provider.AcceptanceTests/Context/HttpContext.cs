@@ -747,6 +747,8 @@
         //TODO: Think about how this will be used elsewhere and in multi GET request scenarios
         public string GetRequestId { get; set; }
 
+        public string GetRequestVersionId { get; set; }
+
         public Patient StoredPatient { get; set; }
 
         public Organization StoredOrganization { get; set; }

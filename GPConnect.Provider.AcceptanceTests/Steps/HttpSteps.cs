@@ -684,6 +684,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             chunkedHeaderFound.ShouldBeTrue();
         }
 
+        //Hayden
         [Given(@"I configure the default ""(.*)"" request")]
         public void ConfigureRequest(GpConnectInteraction interaction)
         {
@@ -705,10 +706,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.GetRequestId = id;
         }
 
+        [Given(@"I set the GET request Version Id to ""([^""]*)""")]
+        public void SetTheGetRequestVersionIdTo(string versionId)
+        {
+            HttpContext.GetRequestVersionId = versionId;
+        }
+
         [Given(@"I set the request URL to ""([^""]*)""")]
         public void SetTheRequestUrlTo(string url)
         {
             HttpContext.RequestUrl = url;
+        }
+
+        [Given(@"I set the Interaction Id header to ""([^""]*)""")]
+        public void SetTheInteractionIdHeaderTo(string interactionId)
+        {
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, interactionId);
         }
 
         [Given(@"I set the Read Operation logical identifier used in the request to ""([^""]*)""")]
@@ -731,7 +744,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             requestFactory.ConfigureBody(HttpContext);
 
-            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, JwtHelper.GetBearerToken());
+            if (!string.IsNullOrEmpty(HttpContext.RequestHeaders.GetHeaderValue(HttpConst.Headers.kAuthorization)))
+            {
+                HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, JwtHelper.GetBearerToken());
+            }
+
             HttpRequest();
         }
 
@@ -902,6 +919,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 BaseAddress = new Uri(HttpContext.BaseUrl)
             };
+        }
+
+        [Then(@"the Response should contain the ETag header matching the Resource Version Id")]
+        public void TheResponseShouldContainTheETagHeaderMatchingTheResourceVersionId()
+        {
+            var versionId = FhirContext.FhirResponseResource.VersionId;
+
+            string eTag;
+            HttpContext.ResponseHeaders.TryGetValue("ETag", out eTag);
+
+            eTag.ShouldStartWith("W/\"", "The ETag header should start with W/\"");
+
+            eTag.ShouldEndWith(versionId + "\"", "The ETag header should contain the resource version enclosed within speech marks");
+
+            eTag.ShouldBe("W/\"" + versionId + "\"", "The ETag header contains invalid characters");
         }
     }
 }

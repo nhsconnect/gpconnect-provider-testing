@@ -7,14 +7,13 @@ Scenario Outline: Organization Read successful request validate all of response
 	Given I configure the default "OrganizationRead" request
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
-		And the response should be the format FHIR JSON
-		And the response should be an Organization resource
+		And the Response should contain the ETag header matching the Resource Version Id
 		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Response Resource should be an Organization
 		And the Organization Identifiers should be valid for Organization "<Organization>"
 		And the Organization Metadata should be valid
 		And the Organization PartOf Organization should be resolvable
 		And the Organization Type should be valid
-		And the response should contain the ETag header matching the resource version
 	Examples:
 		| Organization |
 		| ORG1         |
@@ -102,7 +101,7 @@ Scenario Outline: Organization Read using the _format parameter to request respo
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
-		And the response should be an Organization resource
+		And the Response Resource should be an Organization
 		And the returned resource shall contain a logical id matching the requested read logical identifier
 		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
@@ -118,7 +117,7 @@ Scenario Outline: Organization Read using the Accept header to request response 
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
-		And the response should be an Organization resource
+		And the Response Resource should be an Organization
 		And the returned resource shall contain a logical id matching the requested read logical identifier
 		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
@@ -135,7 +134,7 @@ Scenario Outline: Organization Read sending the Accept header and _format parame
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
-		And the response should be an Organization resource
+		And the Response Resource should be an Organization
 		And the returned resource shall contain a logical id matching the requested read logical identifier
 		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
@@ -146,31 +145,29 @@ Scenario Outline: Organization Read sending the Accept header and _format parame
 		| application/xml+fhir  | application/xml+fhir  | XML        |
 
 Scenario: Conformance profile supports the Organization read operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Organization" resource with a "read" interaction
 
 #Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 Scenario: VRead of current resource should return resource
-	Given I get organization "ORG3" id and save it as "ORGID"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
-	When I perform a vread for organizaiton "ORGID"
+	Given I get the Organization for Organization Code "ORG3"
+		And I store the Organization Id
+		And I store the Organization Version Id
+	Given I configure the default "OrganizationRead" request
+	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be an Organization resource
+		And the Response Resource should be an Organization
 
 #Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 Scenario: VRead of non existant version should return an error
-	Given I get organization "ORG2" id and save it as "storedOrganization"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:organization" interaction
-	When I perform an organization vread with version "NotARealVersionId" for organization stored against key "storedOrganization"
+	Given I get the Organization for Organization Code "ORG2"
+		And I store the Organization Id
+		And I set the GET request Version Id to "NotARealVersionId"
+	Given I configure the default "OrganizationRead" request
+	When I make the "OrganizationRead" request
 	Then the response status code should be "404"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 
 @ignore

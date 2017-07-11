@@ -68,9 +68,8 @@ Scenario Outline: Organization search sending multiple identifiers resulting in 
 Scenario: Organization search by organization code successfully returns single result containing the correct fields
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
-	When I make a GET request to "/Organization"
+	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the response bundle "Organization" entries should contain element "fullUrl"
@@ -143,7 +142,7 @@ Scenario: Organization search by site code successfully returns multiple results
 
 Scenario Outline: Organization search failure due to invalid identifier
 	Given I configure the default "OrganizationSearch" request
-		And I add the parameter "identifier" with the value "<Identifier>"
+		And I add an Identifier parameter with the Value "<Identifier>"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
@@ -166,12 +165,12 @@ Scenario: Organization search failure due to no identifier parameter
 
 Scenario Outline: Organization search failure due to invalid identifier parameter name
 	Given I configure the default "OrganizationSearch" request
-		And I add the parameter "<Identifier>" with the value "<value>"
+		And I add a "<Parameter>" parameter with the Value "<Value>"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| Identifier    | value                                              |
+		| Parameter     | Value                                              |
 		| idenddstifier | http://fhir.nhs.net/Id/ods-organization-code\|ORG1 |
 		| Idenddstifier | http://fhir.nhs.net/Id/ods-organization-code\|ORG1 |
 		| Identifier    | http://fhir.nhs.net/Id/ods-organization-code\|ORG1 |
@@ -183,8 +182,8 @@ Scenario Outline: Organization search failure due to invalid identifier paramete
 
 Scenario Outline: Organization search failure due to invalid interactionId
 	Given I configure the default "OrganizationSearch" request
-		And I am performing the "<InteractionId>" interaction
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
+		And I set the Interaction Id header to "<InteractionId>"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -214,7 +213,7 @@ Scenario Outline: Organization search add accept header to request and check for
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 		And I set the Accept header to "<Header>"
-	When I make a GET request to "/Organization"
+	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
@@ -230,32 +229,32 @@ Scenario Outline: Organization search add _format parameter to request and check
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 		And I do not send header "Accept"
-		And I add the parameter "_format" with the value "<Parameter>"
-	When I make a GET request to "/Organization"
+		And I add a Format parameter with the Value "<Format>"
+	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 	And the response should be a Bundle resource of type "searchset"
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG1" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT1"
 	Examples:
-		| Header                | Parameter             | BodyFormat | System                                       | Value |
-		| application/json+fhir | application/json+fhir | JSON       | http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
-		| application/json+fhir | application/xml+fhir  | XML        | http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
-		| application/xml+fhir  | application/json+fhir | JSON       | http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
-		| application/xml+fhir  | application/xml+fhir  | XML        | http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
+		| Format                | BodyFormat | System                                       | Value |
+		| application/json+fhir | JSON       | http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
+		| application/xml+fhir  | XML        | http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
+		| application/json+fhir | JSON       | http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
+		| application/xml+fhir  | XML        | http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
 
 Scenario Outline: Organization search add accept header and _format parameter to the request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 		And I set the Accept header to "<Header>"
-		And I add the parameter "_format" with the value "<Parameter>"
-	When I make a GET request to "/Organization"
+		And I add a Format parameter with the Value "<Format>"
+	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG1" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT1"
 	Examples:
-		| Header                | Parameter             | BodyFormat | System                                       | Value |
+		| Header                | Format                | BodyFormat | System                                       | Value |
 		| application/json+fhir | application/json+fhir | JSON       | http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
 		| application/json+fhir | application/xml+fhir  | XML        | http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
 		| application/xml+fhir  | application/json+fhir | JSON       | http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
@@ -263,15 +262,15 @@ Scenario Outline: Organization search add accept header and _format parameter to
 
 Scenario Outline: Organization search add _format parameter to request before the identifer and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
-		And I add the parameter "_format" with the value "<Parameter>"
+		And I add a Format parameter with the Value "<Format>"
 		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
-	When I make a GET request to "/Organization"
+	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG1" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT1"
 	Examples:
-		| Parameter             | BodyFormat | System                                       | Value |
+		| Format	            | BodyFormat | System                                       | Value |
 		| application/json+fhir | JSON       | http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
 		| application/xml+fhir  | XML        | http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
 		| application/json+fhir | JSON       | http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
@@ -280,24 +279,22 @@ Scenario Outline: Organization search add _format parameter to request before th
 Scenario Outline: Organization search add _format parameter to request after the identifer and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
-		And I add the parameter "_format" with the value "<Parameter>"
-	When I make a GET request to "/Organization"
+		And I add a Format parameter with the Value "<Format>"
+	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| Parameter             | BodyFormat | System                                       | Value |
+		| Format                | BodyFormat | System                                       | Value |
 		| application/json+fhir | JSON       | http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
 		| application/xml+fhir  | XML        | http://fhir.nhs.net/Id/ods-organization-code | ORG1  |
 		| application/json+fhir | JSON       | http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
 		| application/xml+fhir  | XML        | http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
 
 Scenario: Conformance profile supports the Organization search operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Organization" resource with a "search-type" interaction
 
 Scenario Outline: Organization search check organization response contains logical identifier

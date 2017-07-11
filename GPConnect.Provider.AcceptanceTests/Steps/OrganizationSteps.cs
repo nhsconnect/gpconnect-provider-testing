@@ -1,6 +1,5 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Context;
@@ -8,13 +7,13 @@
     using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
-    using static Hl7.Fhir.Model.Bundle;
 
     [Binding]
     public sealed class OrganizationSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
+        private List<Organization> Organizations => _fhirContext.Organizations;
 
         public OrganizationSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps) : base(fhirContext, httpSteps)
         {
@@ -22,64 +21,18 @@
             _bundleSteps = bundleSteps;
         }
 
-        [Given(@"I get organization ""(.*)"" id and save it as ""(.*)""")]
-        public void GivenIGetOrganizationIdAndSaveItAs(string orgName, string savedOrg)
-        {
-
-            string value = GlobalContext.OdsCodeMap[orgName];
-
-            Given("I am using the default server");
-            Given($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:organization"" interaction");
-            Given($@"I add an Organization Identifier parameter with Organization Code System and value ""{orgName}""");
-            When($@"I make a GET request to ""/Organization""");
-            Then($@"the response status code should indicate success");
-            Then($@"the response body should be FHIR JSON");
-            Then($@"the response should be a Bundle resource of type ""searchset""");
-            Then($@"the response bundle should contain ""1"" entries");
-
-            Organization organization = new Organization();
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
-                {
-                    organization = (Organization)entry.Resource;
-
-                }
-            }
-            _httpContext.StoredFhirResources.Add(savedOrg, organization);
-        }
-        
-        [When(@"I perform a vread for organizaiton ""([^""]*)""")]
-        public void WhenIPerformAVreadForOrganizaiton(string storedOrganizationKey)
-        {
-            Organization organization = (Organization)_httpContext.StoredFhirResources[storedOrganizationKey];
-            When($@"I make a GET request to ""/Organization/{organization.Id}/_history/{organization.Meta.VersionId}""");
-        }
-
-        [When(@"I perform an organization vread with version ""([^""]*)"" for organization stored against key ""([^""]*)""")]
-        public void WhenIPerformAnOrganizationVreadWithVersionForOrganizationStoredAgainstKey(string version, string storedOrganizationKey)
-        {
-            Organization organizationValue = (Organization)_httpContext.StoredFhirResources[storedOrganizationKey];
-
-            When($@"I make a GET request to ""/Organization/{organizationValue.Id}/_history/{version}""");
-        }
-
-        [Then(@"the response should be an Organization resource")]
-        public void TheResponseShouldBeAnOrganizationResource()
+        [Then(@"the Response Resource should be an Organization")]
+        public void TheResponseResourceShouldBeAnOrganization()
         {
             _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Organization);
         }
-
-        //Hayden
-        private List<Organization> Organizations => _fhirContext.Organizations;
 
         [Then(@"the Organization Identifiers should be valid")]
         public void TheOrganizationIdentifiersShouldBeValid()
         {
             OrganizationIdentifiersShouldBeValid();
         }
-
-
+        
         [Then(@"the Organization Identifiers should be valid for Organization ""([^""]*)""")]
         public void TheOrganizationIdentifiersShouldBeValidForOrganization(string organizationName)
         {
@@ -152,7 +105,7 @@
         [Then(@"the Organization PartOf Organization should be referenced in the Bundle")]
         public void TheOrganizationPartOfOrganizationShouldBeReferencedInTheBundle()
         {
-            _fhirContext.Organizations.ForEach(organization =>
+            Organizations.ForEach(organization =>
             {
                 if (organization.PartOf != null)
                 {
@@ -160,7 +113,6 @@
                 }
             });
         }
-
 
         [Then(@"the Organization PartOf Organization should be resolvable")]
         public void TheOrganizationPartOfOrganizationResolvable()
@@ -186,7 +138,6 @@
             });
         }
 
-
         [Given(@"I add an Organization Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithSystemAndValue(string system, string value)
         {
@@ -205,6 +156,24 @@
             _httpContext.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/ods-site-code" + '|' + GlobalContext.OdsCodeMap[value]);
         }
 
+        [Given(@"I add an Identifier parameter with the Value ""([^""]*)""")]
+        public void AddAnIdentifierParameterWithTheValue(string value)
+        {
+            _httpContext.RequestParameters.AddParameter("identifier", value);
+        }
+
+        [Given(@"I add a ""([^""]*)"" parameter with the Value ""([^""]*)""")]
+        public void AddAnIdentifierParameterWithTheValue(string parameterName, string value)
+        {
+            _httpContext.RequestParameters.AddParameter(parameterName, value);
+        }
+
+        [Given(@"I add a Format parameter with the Value ""([^""]*)""")]
+        public void AddAFormatParameterWithTheValue(string value)
+        {
+            _httpContext.RequestParameters.AddParameter("_format", value);
+        }
+
         [Given(@"I get the Organization for Organization Code ""([^""]*)""")]
         public void GetTheOrganizationForOrganizationCode(string code)
         {
@@ -218,73 +187,38 @@
         [Given(@"I store the Organization Id")]
         public void StoreTheOrganizationId()
         {
-            var organization = _fhirContext.Organizations.FirstOrDefault();
+            var organization = Organizations.FirstOrDefault();
             if (organization != null)
                 _httpContext.GetRequestId = organization.Id;
+        }
+
+        [Given(@"I store the Organization Version Id")]
+        public void StoreTheOrganizationVersionId()
+        {
+            var organization = Organizations.FirstOrDefault();
+            if (organization != null)
+                _httpContext.GetRequestVersionId = organization.VersionId;
         }
 
         [Given(@"I store the Organization")]
         public void StoreTheOrganization()
         {
-            var organization = _fhirContext.Organizations.FirstOrDefault();
+            var organization = Organizations.FirstOrDefault();
             if (organization != null)
                 _httpContext.StoredOrganization = organization;
         }
 
-        [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)"" and ""([^""]*)"" ""([^""]*)"" system identifier with site code ""([^""]*)""")]
-        public void ThenAnOrganizationReturnedInTheBundleHasSystemIdentifierWithAndSystemIdentifierWithSiteCode(int orgCount, string orgSystem, string orgCode, int siteCount, string siteSystem, string siteCode)
-        {
-            int orgLoopCounter, siteLoopCounter;
-            bool organizationIdentifierCountCorrect = false;
-            bool allOrganizationsFound = false;
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
-                {
-             
-                    Organization organization = (Organization)(Organization)entry.Resource;
-                    siteLoopCounter = 0;
-                    orgLoopCounter = 0;          
-                    organizationIdentifierCountCorrect = (organization.Identifier.Count == (orgCount + siteCount));
-
-                    foreach (var identifier in organization.Identifier)
-                    {
-                        if (identifier.System == orgSystem)
-                        {
-                            List<string> referenceValueLists = getIdentifiersInList(orgCode);
-                            referenceValueLists.ShouldContain(identifier.Value);
-                            orgLoopCounter++;
-                        }
-                        if (identifier.System == siteSystem)
-                        {
-                            List<string> referenceValueLists = getIdentifiersInList(siteCode);
-                            referenceValueLists.ShouldContain(identifier.Value);
-                            siteLoopCounter++;
-                        }
-                    }
-
-                    if ((orgLoopCounter == orgCount) && (siteLoopCounter == siteCount) && (organizationIdentifierCountCorrect))
-                    {
-                        allOrganizationsFound = true;
-                        break;
-                    }
-                }
-            }
-            allOrganizationsFound.ShouldBe(true, "The number of organizations or site codes are invalid");
-        }
-
-
         [Then(@"the Organization Identifiers are correct for Organization Code ""([^""]*)""")]
         public void OrganizationIdentifiersAreCorrectForOrganizationCode(string organizationCode)
         {
-            foreach (var organization in Organizations)
+            Organizations.ForEach(organization =>
             {
                 //Check if Organization Code Identifiers are valid.
                 OrganizationCodeIdentifiersAreValid(organizationCode, organization);
 
                 //Check if Site Code Identifiers are valid
                 SiteCodeIdentifiersAreValid(organizationCode, organization);
-            }
+            });
         }
 
         [Then(@"the Organization Identifiers are correct for Site Code ""([^""]*)""")]
@@ -293,9 +227,9 @@
             //Get Organization Codes for Site Code
             var organizationSiteCodeMap = GlobalContext.OrganizationSiteCodeMap[siteCode];
 
-            foreach (var organization in Organizations)
+            Organizations.ForEach(organization =>
             {
-                foreach (var organizationCode in organizationSiteCodeMap)
+                organizationSiteCodeMap.ForEach(organizationCode =>
                 {
                     //Check if Organization in Bundle contains Identifier for Organization Code
                     var oganizationContainsIdentifier = organization.Identifier
@@ -310,9 +244,8 @@
                         //Check if Site Code Identifiers are valid
                         SiteCodeIdentifiersAreValid(organizationCode, organization);
                     }
-                }
-            }
-
+                });
+            });
         }
 
         private static void SiteCodeIdentifiersAreValid(string organizationCode, Organization organization)
@@ -368,28 +301,57 @@
         [Then(@"the returned organization contains identifiers of type ""([^""]*)"" with values ""([^""]*)""")]
         public void ThenTheReturnedOrgainzationContainsIdentifiersOfTypeWithValues(string identifierSystem, string identifierValueCSV)
         {
-            Organization organization = (Organization)_fhirContext.FhirResponseResource;
+            var organization = (Organization)_fhirContext.FhirResponseResource;
             organization.Identifier.ShouldNotBeNull("The organization should contain an organization identifier as the business identifier was used to find the organization for this test.");
 
             foreach (var identifierValue in identifierValueCSV.Split(','))
             {
-                Identifier identifierFound = organization.Identifier.Find(identifier => identifier.System.Equals(identifierSystem) && identifier.Value.Equals(GlobalContext.OdsCodeMap[identifierValue]));
+                var identifierFound = organization.Identifier.Find(identifier => identifier.System.Equals(identifierSystem) && identifier.Value.Equals(GlobalContext.OdsCodeMap[identifierValue]));
                 identifierFound.ShouldNotBeNull($"The expected identifier was not found in the returned organization resource, expected value {GlobalContext.OdsCodeMap[identifierValue]}");
             }
 
         }
 
-        private List<string> getIdentifiersInList(string code)
+        [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)"" and ""([^""]*)"" ""([^""]*)"" system identifier with site code ""([^""]*)""")]
+        public void ThenAnOrganizationReturnedInTheBundleHasSystemIdentifierWithAndSystemIdentifierWithSiteCode(int orgCount, string orgSystem, string orgCode, int siteCount, string siteSystem, string siteCode)
         {
-            List<string> referenceValueLists = new List<string>();
-            foreach (var element in code.Split(new char[] { '|' }))
-            {
-                referenceValueLists.Add(GlobalContext.OdsCodeMap[element]);
-            }
+            var allOrganizationsFound = false;
 
-            return referenceValueLists;
+            Organizations.ForEach(organization =>
+            {
+                var siteLoopCounter = 0;
+                var orgLoopCounter = 0;
+                var organizationIdentifierCountCorrect = (organization.Identifier.Count == (orgCount + siteCount));
+
+                foreach (var identifier in organization.Identifier)
+                {
+                    if (identifier.System == orgSystem)
+                    {
+                        var referenceValueLists = getIdentifiersInList(orgCode);
+                        referenceValueLists.ShouldContain(identifier.Value);
+                        orgLoopCounter++;
+                    }
+                    if (identifier.System == siteSystem)
+                    {
+                        var referenceValueLists = getIdentifiersInList(siteCode);
+                        referenceValueLists.ShouldContain(identifier.Value);
+                        siteLoopCounter++;
+                    }
+                }
+
+                if ((orgLoopCounter == orgCount) && (siteLoopCounter == siteCount) && (organizationIdentifierCountCorrect))
+                {
+                    allOrganizationsFound = true;
+                }
+            });
+
+            allOrganizationsFound.ShouldBe(true, "The number of organizations or site codes are invalid");
         }
 
+        private List<string> getIdentifiersInList(string code)
+        {
+            return code.Split('|').Select(element => GlobalContext.OdsCodeMap[element]).ToList();
+        }
     }
 }
 

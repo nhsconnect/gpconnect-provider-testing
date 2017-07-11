@@ -586,7 +586,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             passed.ShouldBeTrue();
         }
 
-        [Then(@"the conformance profile should contain the ""([^""]*)"" resource with a ""([^""]*)"" interaction")]
+       [Then(@"the conformance profile should contain the ""([^""]*)"" resource with a ""([^""]*)"" interaction")]
         public void ThenTheConformanceProfileShouldContainTheResourceWithInteraction(string resourceName, string interaction)
         {
             Log.WriteLine("Conformance profile should contain resource = {0} with interaction = {1}", resourceName, interaction);
