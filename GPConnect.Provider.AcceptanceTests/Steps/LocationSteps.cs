@@ -116,7 +116,7 @@
                 if (entry.Resource.ResourceType.Equals(ResourceType.Location))
                 {
                     Location location = (Location)entry.Resource;
-                    location.Name.ShouldNotBeNullOrEmpty();
+                    location.Name.ShouldNotBeNullOrEmpty("Location name element should not be null or empty");
                 }
             }
         }
@@ -131,13 +131,13 @@
                     Location location = (Location)entry.Resource;
                     if (location.Type != null && location.Type.Coding != null)
                     {
-                        location.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                        location.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1, "There should only be one location type coding within the Location Type element.");
                         foreach (var coding in location.Type.Coding)
                         {
                             // Need to pull in valueset from URL and validate against that
-                            coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType");
-                            coding.Code.ShouldNotBeNullOrEmpty();
-                            coding.Display.ShouldNotBeNullOrEmpty();
+                            coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType", "The location type valueset is not valid.");
+                            coding.Code.ShouldNotBeNullOrEmpty("The Location Resource Type element coding should contain a Code element.");
+                            coding.Display.ShouldNotBeNullOrEmpty("The Location Resource Type element coding should contain a Display element.");
                         }
                     }
                 }
@@ -154,14 +154,30 @@
                     Location location = (Location)entry.Resource;
                     if (location.PhysicalType != null && location.PhysicalType.Coding != null)
                     {
-                        location.PhysicalType.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                        location.PhysicalType.Coding.Count.ShouldBeLessThanOrEqualTo(1, "There should only be one coding in the physical type element");
                         foreach (var coding in location.PhysicalType.Coding)
                         {
                             var validSystems = new String[] { "http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3" };
-                            coding.System.ShouldBeOneOf(validSystems);
-                            coding.Code.ShouldNotBeNullOrEmpty();
-                            coding.Display.ShouldNotBeNullOrEmpty();
+                            coding.System.ShouldBeOneOf(validSystems, "The physical type coding system element is not valid as per the spec.");
+                            coding.Code.ShouldNotBeNullOrEmpty("The physical type coding element must contain a code element.");
+                            coding.Display.ShouldNotBeNullOrEmpty("The physical type coding element must contain a display element.");
                         }
+                    }
+                }
+            }
+        }
+
+        [Then(@"if the response bundle location entries contain partOf element the reference should exist")]
+        public void ThenIfTheResponseBundleLocationEntriesContainPartOfElementTheReferenceShouldExist()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Location))
+                {
+                    Location location = (Location)entry.Resource;
+                    if (location.PartOf != null)
+                    {
+                        location.PartOf.Reference.ShouldNotBeNullOrEmpty("The PartOf element within the location resource should contain a reference element.");
                     }
                 }
             }
@@ -177,8 +193,24 @@
                     Location location = (Location)entry.Resource;
                     if (location.PartOf != null)
                     {
-                        location.PartOf.Reference.ShouldNotBeNullOrEmpty();
+                        location.PartOf.Reference.ShouldNotBeNullOrEmpty("The PartOf element within the location resource should contain a reference element.");
                         _bundleSteps.ResponseBundleContainsReferenceOfType(location.PartOf.Reference, ResourceType.Location);
+                    }
+                }
+            }
+        }
+
+        [Then(@"if the response bundle location entries contain managingOrganization element the reference should exist")]
+        public void ThenIfTheResponseBundleLocationEntriesContainManagingOrganizationElementTheReferenceExist()
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Location))
+                {
+                    Location location = (Location)entry.Resource;
+                    if (location.ManagingOrganization != null)
+                    {
+                        location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty("If a managing organization element is included in the location resource it should have a reference element.");
                     }
                 }
             }
@@ -194,7 +226,7 @@
                     Location location = (Location)entry.Resource;
                     if (location.ManagingOrganization != null)
                     {
-                        location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
+                        location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty("If a managing organization element is included in the location resource it should have a reference element.");
                         _bundleSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
                     }
                 }
