@@ -7,17 +7,16 @@ Scenario Outline: Practitioner read successful request validate all of response
 	Given I configure the default "PractitionerRead" request
 	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
-		And the response should be the format FHIR JSON
-		And the response should be an Practitioner resource
-		And the practitioner resource shall contain meta data profile and version id
+		And the Response Resource should be a Practitioner
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And if the practitioner resource contains any identifiera they should contain a valid system element
-		And the returned resource shall contain the business identifier for Practitioner "practitioner1"
-		And the practitioner resource should contain a single name element with a maximum of one family name
-		And if the practitioner resource contains a practitionerRole it should have a valid system code and display
-		And if the returned practitioner resource contains a communication element it must match the specified valueset
-		And the single practitioner resource should not contain dissallowed fields
-		And the returned Practitioner resource should contain "<numberOfRoleIdentifiers>" role identifiers
+		And the Practitioner Metadata should be valid
+		And the Practitioner Identifiers should be valid
+		And the Practitioner Name should be valid
+		And the Practitioner PractitionerRoles Roles should be valid
+		And the Practitioner Communication should be valid
+		And the Practitioner should exclude disallowed elements
+		And the Practitioner SDS Role Profile Identifier should be valid for "<numberOfRoleIdentifiers>" Role Profile Identifiers
+		And the Practitioner SDS User Identifier should be valid for Value "<practitioner>"
 	Examples: 
 		| practitioner  | numberOfRoleIdentifiers |
 		| practitioner1 | 0                       |
@@ -56,7 +55,7 @@ Scenario Outline: Practitioner Read with missing mandatory header
 	Given I get the Practitioner for Practitioner Code "practitioner1"
 		And I store the Practitioner Id
 	Given I configure the default "PractitionerRead" request
-			And I do not send header "<Header>"
+		And I do not send header "<Header>"
 	When I make the "PractitionerRead" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -72,12 +71,12 @@ Scenario Outline: Practitioner Read with incorrect interaction id
 	Given I get the Practitioner for Practitioner Code "practitioner1"
 		And I store the Practitioner Id
 	Given I configure the default "PractitionerRead" request
-		And I am performing the "<interactionId>" interaction
+		And I set the Interaction Id header to "<InteractionId>"
 	When I make the "PractitionerRead" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| interactionId                                                     |
+		| InteractionId                                                     |
 		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3     |
 		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioners     |
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
@@ -88,13 +87,13 @@ Scenario Outline: Practitioner Read using the _format parameter to request respo
 	Given I get the Practitioner for Practitioner Code "practitioner1"
 		And I store the Practitioner Id
 	Given I configure the default "PractitionerRead" request
-		And I add the parameter "_format" with the value "<Parameter>"
+		And I add a Format parameter with the Value "<Parameter>"
 	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
-		And the response should be an Practitioner resource
+		And the Response Resource should be a Practitioner
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And the returned resource shall contain the business identifier for Practitioner "practitioner1"
+		And the Practitioner SDS User Identifier should be valid for Value "practitioner1"
 	Examples:
 		| Parameter             | ResponseFormat |
 		| application/json+fhir | JSON           |
@@ -108,9 +107,9 @@ Scenario Outline: Practitioner Read using the Accept header to request response 
 	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
-		And the response should be an Practitioner resource
+		And the Response Resource should be a Practitioner
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And the returned resource shall contain the business identifier for Practitioner "practitioner1"
+		And the Practitioner SDS User Identifier should be valid for Value "practitioner1"
 	Examples:
 		| Header                | ResponseFormat |
 		| application/json+fhir | JSON           |
@@ -121,13 +120,13 @@ Scenario Outline: Practitioner Read sending the Accept header and _format parame
 		And I store the Practitioner Id
 	Given I configure the default "PractitionerRead" request
 		And I set the Accept header to "<Header>"
-		And I add the parameter "_format" with the value "<Parameter>"
+		And I add a Format parameter with the Value "<Parameter>"
 	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
-		And the response should be an Practitioner resource
+		And the Response Resource should be a Practitioner
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And the returned resource shall contain the business identifier for Practitioner "practitioner2"
+		And the Practitioner SDS User Identifier should be valid for Value "practitioner2"
 	Examples:
 		| Header                | Parameter             | ResponseFormat |
 		| application/json+fhir | application/json+fhir | JSON           |
@@ -136,42 +135,39 @@ Scenario Outline: Practitioner Read sending the Accept header and _format parame
 		| application/xml+fhir  | application/xml+fhir  | XML            |
 
 Scenario: Conformance profile supports the Practitioner read operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Practitioner" resource with a "read" interaction
 
 #Potentially out of scope, needs verifiying
 Scenario: Practitioner read response should contain an ETag header
-	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I get practitioner "practitionerSaved" and use the id to make a get request to the url "Practitioner"
+	Given I get the Practitioner for Practitioner Code "practitioner1"
+		And I store the Practitioner Id
+	Given I configure the default "PractitionerRead" request
+	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be an Practitioner resource
+		And the Response Resource should be a Practitioner
 		And the response should contain the ETag header matching the resource version
 
 #Potentially out of scope, needs verifiying
 Scenario: Practitioner read VRead of current resource should return resource
-	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I perform a vread for practitioner "practitionerSaved"
+	Given I get the Practitioner for Practitioner Code "practitioner1"
+		And I store the Practitioner Id
+		And I store the Practitioner Version Id
+	Given I configure the default "PractitionerRead" request
+	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be an Practitioner resource
+		And the Response Resource should be a Practitioner
 
 #Potentially out of scope, needs verifiying
 Scenario: Practitioner read VRead of non existant version should return error
-	Given I find practitioner "practitioner1" and save it with the key "practitionerSaved"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner" interaction
-	When I perform an practitioner vread with version id "NotRealVersionId" for practitioner stored against key "practitionerSaved"
+	Given I get the Practitioner for Practitioner Code "practitioner1"
+		And I store the Practitioner Id
+		And I set the GET request Version Id to "NotARealVersionId"
+	Given I configure the default "PractitionerRead" request
+	When I make the "PractitionerRead" request
 	Then the response status code should be "404"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 
 @Manual

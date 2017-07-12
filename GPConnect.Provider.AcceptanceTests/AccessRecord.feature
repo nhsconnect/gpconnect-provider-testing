@@ -742,8 +742,8 @@ Scenario Outline: practitioner resource contains mandatory fields and does not i
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the Practitioner resources shall include the Name element which can include a maximum of one family name
-		And the Practitioner Photo and Qualification should be excluded
+		And the Practitioner Name should be valid
+		And the Practitioner should exclude disallowed elements
 	Examples:
 		| Code |
 		| ADM  |
