@@ -367,13 +367,13 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should include slot resources
-		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
-		And the practitioner resources in the response bundle should contain no more than a single SDS User Id
-		And the practitioner resources in the response bundle should only contain an SDS user id or SDS role ids
-		And the Practitioner resources shall include the Name element which can include a maximum of one family name
+		And the Practitioner Metadata should be valid
+		And the Practitioner SDS User Identifier should be valid
+		And the Practitioner Identifiers should be valid fixed values
+		And the Practitioner Name should be valid
 		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
-		And the practitioner resource should not contain unwanted fields
+		And the Practitioner should exclude disallowed elements
 		And the Practitioner Communication should be valid
 	Examples:
 		| Organization | DaysRange |

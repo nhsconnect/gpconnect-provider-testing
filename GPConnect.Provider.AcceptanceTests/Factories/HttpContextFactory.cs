@@ -123,6 +123,12 @@
         {
             httpContext.HttpMethod = HttpMethod.Get;
             httpContext.RequestUrl = "Practitioner/" + httpContext.GetRequestId;
+
+            if (!string.IsNullOrEmpty(httpContext.GetRequestVersionId))
+            {
+                httpContext.RequestUrl = httpContext.RequestUrl + "/_history/" + httpContext.GetRequestVersionId;
+            }
+
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PractitionerRead);
         }
 
