@@ -107,114 +107,59 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.registerPatient.Add(storedPatientKey, (Patient)HttpContext.StoredFhirResources[storedPatientKey]);
         }
         
-        [Given(@"I remove the patients identifiers from the patient stored against key ""([^""]*)""")]
-        public void GivenIRemoveThePatientsIdentifiersFromThePatientStoredAgainstKey(string storedPatientKey)
+        [Given(@"I remove the patients identifiers from the stored patient")]
+        public void GivenIRemoveThePatientsIdentifiersFromTheStoredPatient()
         {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
-            patient.Identifier = null;
-            HttpContext.StoredFhirResources.Remove(storedPatientKey);
-            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
-        }
-        
-        [Given(@"I remove the name element from the patient stored against key ""([^""]*)""")]
-        public void GivenIRemoveTheNameElementFromThePatientStoredAgainstKey(string storedPatientKey)
-        {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
-            patient.Name = null;
-            HttpContext.StoredFhirResources.Remove(storedPatientKey);
-            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
+            HttpContext.StoredPatient.Identifier = null;
         }
 
-        [Given(@"I remove the gender element from the patient stored against key ""([^""]*)""")]
-        public void GivenIRemoveTheGenderElementFromThePatientStoredAgainstKey(string storedPatientKey)
+        [Given(@"I remove the name element from the stored patient")]
+        public void GivenIRemoveTheNameElementFromTheStoredPatient()
         {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
-            patient.Gender = null;
-            HttpContext.StoredFhirResources.Remove(storedPatientKey);
-            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
+            HttpContext.StoredPatient.Name = null;
         }
 
-        [Given(@"I remove the DOB element from the patient stored against key ""([^""]*)""")]
-        public void GivenIRemoveTheDOBElementFromThePatientStoredAgainstKey(string storedPatientKey)
+        [Given(@"I remove the gender element from the stored patient")]
+        public void GivenIRemoveTheGenderElementFromTheStoredPatient()
         {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
-            patient.BirthDate = null;
-            HttpContext.StoredFhirResources.Remove(storedPatientKey);
-            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
+            HttpContext.StoredPatient.Gender = null;
         }
 
-        [Given(@"I clear exisiting identifiers in the patient stored against key ""([^""]*)"" and add an NHS number identifier ""([^""]*)""")]
-        public void GivenIClearExisitingIdentifiersInThePatientStoredAgainstKey(string storedPatientKey, string nhsNumber)
+        [Given(@"I remove the DOB element from the stored patient")]
+        public void GivenIRemoveTheDOBElementFromTheStoredPatient()
         {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
-            patient.Identifier.Clear();
-            patient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber));
-            HttpContext.StoredFhirResources.Remove(storedPatientKey);
-            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
+            HttpContext.StoredPatient.BirthDate = null;
         }
 
-        [Given(@"I add the registration period with start date ""([^""]*)"" to ""([^""]*)""")]
-        public void GivenIAddTheRegistrationPeriodWithStartDateTo(string regStartDate, string storedPatientKey)
+        [Given(@"I add the NHS Number identifier ""([^""]*)"" to the stored patient")]
+        public void GivenIAddTheNHSNumberIdentifierToTheStoredPatient(string nhsNumber)
         {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            HttpContext.StoredPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber));
+        }
+
+        [Given(@"I add the registration period with start date ""([^""]*)""")]
+        public void GivenIAddTheRegistrationPeriodWithStartDateTo(string regStartDate)
+        {
             Extension registrationPeriod = new Extension();
             registrationPeriod.Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1";
             Period period = new Period();
             period.Start = regStartDate;
             registrationPeriod.Value = period;
-            patient.Extension.Add(registrationPeriod);
-            HttpContext.StoredFhirResources.Remove(storedPatientKey);
-            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
+            HttpContext.StoredPatient.Extension.Add(registrationPeriod);
         }
 
-        [Given(@"I add the registration period with start date ""([^""]*)"" and end date ""([^""]*)"" to ""([^""]*)""")]
-        public void GivenIAddTheRegistrationPeriodWithStartDateAndEndDateTo(string regStartDate, string regEndDate, string storedPatientKey)
+        [Given(@"I set the stored Patient registration period with start date ""([^""]*)"" and end date ""([^""]*)""")]
+        public void GivenISetTheStoredPatientRegistrationPeriodWithStartDateAndEndDateTo(string regStartDate, string regEndDate)
         {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
             Extension registrationPeriod = new Extension();
             registrationPeriod.Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1";
             Period period = new Period();
             if (!string.IsNullOrEmpty(regStartDate)) { period.Start = regStartDate; }
             if (!string.IsNullOrEmpty(regEndDate)) { period.End = regEndDate; }
             registrationPeriod.Value = period;
-            patient.Extension.Add(registrationPeriod);
-            HttpContext.StoredFhirResources.Remove(storedPatientKey);
-            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
+            HttpContext.StoredPatient.Extension.Add(registrationPeriod);
         }
-
-        [Given(@"I add the registration status with code ""([^""]*)"" to ""([^""]*)""")]
-        public void GivenIAddRegistrationStatusWithCodeTo(string code, string storedPatientKey)
-        {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
-            Extension registrationStatus = new Extension();
-            registrationStatus.Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-status-1";
-            CodeableConcept codableConcept = new CodeableConcept();
-            Coding code1 = new Coding();
-            code1.Code = code;
-            codableConcept.Coding.Add(code1);
-            registrationStatus.Value = codableConcept;
-            patient.Extension.Add(registrationStatus);
-            HttpContext.StoredFhirResources.Remove(storedPatientKey);
-            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
-
-        }
-
-        [Given(@"I add the registration type with code ""([^""]*)"" to ""([^""]*)""")]
-        public void GivenIAddRegistrationTypeWithCodeTo(string code, string storedPatientKey)
-        {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
-            Extension registrationType = new Extension();
-            registrationType.Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-type-1";
-            CodeableConcept codableConcepts = new CodeableConcept();
-            Coding code2 = new Coding();
-            code2.Code = code;
-            codableConcepts.Coding.Add(code2);
-            registrationType.Value = codableConcepts;
-            patient.Extension.Add(registrationType);
-            HttpContext.StoredFhirResources.Remove(storedPatientKey);
-            HttpContext.StoredFhirResources.Add(storedPatientKey, patient);
-        }
-
+        
         [Given(@"I add the resource stored against key ""([^""]*)"" as a parameter named ""([^""]*)"" to the request")]
         public void GivenIAddTheResourceStoredAgainstKeyAsAParameternamedToTheRequest(string storedPatientKey, string parameterName)
         {
