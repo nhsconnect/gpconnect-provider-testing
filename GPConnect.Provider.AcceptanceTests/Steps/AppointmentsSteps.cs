@@ -827,8 +827,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             if (appointment != null)
                 HttpContext.CreatedAppointment = appointment;
+       
         }
-     
+
+
+        [Given(@"I create a bundle resource and add it to the request")]
+        public void ICreateaBundleResourceAndAddItToTheRequest()
+        {
+            var bundle = new Bundle();
+            HttpContext.StoredBundle = bundle;
+        }
+
+        
+
 
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
         public void CreateAnAppointmentFromTheStoredPatientAndStoredSchedule()
@@ -942,6 +953,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void SetTheCreatedAppointmentComment(string comment)
         {
             HttpContext.CreatedAppointment.Comment = comment;
+        }
+
+        [Given(@"I set the created Appointment reason to ""([^""]*)""")]
+        public void SetTheCreatedAppointmentReasonTo(string reason)
+        {
+            HttpContext.CreatedAppointment.Reason = new CodeableConcept();
+            HttpContext.CreatedAppointment.Reason.Coding = new List<Coding>();
+            HttpContext.CreatedAppointment.Reason.Coding.Add(new Coding("http://snomed.info/sct", reason, reason));
+        }
+
+        [Given(@"I set the created Appointment description to ""([^""]*)""")]
+        public void SetTheCreatedAppointmentDescriptionTo(string description)
+        {
+            HttpContext.CreatedAppointment.Description = description;
+      
         }
 
         [Given(@"I set the created Appointment to Cancelled with Reason ""([^""]*)""")]

@@ -59,13 +59,13 @@ Scenario Outline: I perform cancel appointment and update an element which is in
 		| patient11   |
 		| patient12   |
 #Is sending the correct word, mabye change to make a request to an invalid URL
-Scenario Outline: Cancel appointment sending invalid URL
-	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.write"
-	When I set the URL to "<url>" and cancel appointment with key "patientApp"
+Scenario Outline: Cancel appointment making a request to an invalid URL
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the created Appointment to Cancelled with Reason "double booked"
+	When I make a PUT request to "<url>"
 	Then the response status code should be "404"
 	Examples:
 		| url              |
@@ -73,11 +73,13 @@ Scenario Outline: Cancel appointment sending invalid URL
 		| /Appointments/#  |
 
 Scenario Outline: Cancel appointment failure due to missing header
-	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I do not send header "<Header>"
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
+	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -90,10 +92,13 @@ Scenario Outline: Cancel appointment failure due to missing header
 		| Authorization     |
 
 Scenario Outline: Cancel appointment failure with incorrect interaction id
-	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I am performing the "<interactionId>" interaction
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
+	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -104,59 +109,60 @@ Scenario Outline: Cancel appointment failure with incorrect interaction id
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
 		|                                                                   |
 		| null                                                              |
-#Make name clearer
-Scenario Outline: Cancel appointment _format parameter only
-	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.write"
+
+Scenario Outline: Cancel appointment using the _format parameter to request response format
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I add the parameter "_format" with the value "<Parameter>"
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
+	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
-		#add further validation to the test checking the response is the same appointment
+		And the cancellation reason in the returned appointment response should be equal to "double booked"
+		And the returned appointment resource should contain meta data profile and version id
 	Examples:
 		| Parameter             | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
-#Make name clearer
-Scenario Outline: Cancel appointment accept header only
-	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.write"
+Scenario Outline: Cancel appointment using the accept header to request response format
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I set the Accept header to "<Header>"
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
+	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
-		#add further validation to the test checking the response is the same appointment
+		And the cancellation reason in the returned appointment response should be equal to "double booked"
+		And the returned appointment resource should contain meta data profile and version id
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
-#Make name clearer
-Scenario Outline: Cancel appointment accept header and _format parameter
-	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.write"
+Scenario Outline: Cancel appointment using the accept header and _format parameter to request response format
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
+	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
-		#add further validation to the test checking the response is the same appointment
+		And the cancellation reason in the returned appointment response should be equal to "double booked"
+		And the returned appointment resource should contain meta data profile and version id
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -164,22 +170,23 @@ Scenario Outline: Cancel appointment accept header and _format parameter
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
 
-#What is the difference with this test and the previous, mention checking content type		
-Scenario Outline: Cancel appointment checking that the format parameter and accept header works correctly
-	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.write"
+		
+Scenario Outline: Cancel appointment using the accept header and _format parameter and content-type to request response format
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I set the request content type to "<ContentType>"
 		And I set the Accept header to "<AcceptHeader>"
 		And I add the parameter "_format" with the value "<FormatParam>"
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
+	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <Format>
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
-		#Further validation required
+		And the cancellation reason in the returned appointment response should be equal to "double booked"
+		And the returned appointment resource should contain meta data profile and version id
 	Examples:
 		| ContentType           | AcceptHeader          | FormatParam           | Format |
 		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML    |
@@ -294,29 +301,18 @@ Scenario: Cancel appointment compare values send in request and returned in the 
 		And the participants of the appointment with key "patientApp" and the returned response should be equal
 
 Scenario: Cancel appointment response body must contain valid slot reference
-	Given I find or create an appointment with status Booked for patient "patient3" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.write"
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the created Appointment to Cancelled with Reason "double booked"
+	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
+		And the cancellation reason in the returned appointment response should be equal to "double booked"
 		And the returned appointment resource status should be set to cancelled
 		And the appointment response resource contains a slot reference
-
-Scenario: Cancel appointment response body must contain valid practitioner reference which conforms to the gp connect specification
-	Given I find or create an appointment with status Booked for patient "patient2" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-		And I set the JWT requested record NHS number to config patient "patient2"
-		And I set the JWT requested scope to "patient/*.write"
-	When I cancel the appointment with the key "patientApp" and set the reason to "double booked"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
 		And the appointment response resource contains atleast 2 participants a practitioner and a patient
 		And the appointment participants of the appointment must conform to the gp connect specifications
 
