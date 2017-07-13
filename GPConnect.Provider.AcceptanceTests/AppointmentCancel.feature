@@ -1,6 +1,10 @@
 ﻿@appointment
 Feature: AppointmentCancel
 
+#COMMON
+#Refactor steps to use the steps hayden implemented which moves set up code behind the scenes
+#Think about merging some successful tests together to reduce number of tests needed
+
 Scenario Outline: I perform a successful cancel appointment
 	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the created Appointment
@@ -21,6 +25,8 @@ Scenario Outline: I perform a successful cancel appointment
 		| patient8    |
 		| patient9    |
 
+#Test title should be changed, all elements updated are invalid
+#Potentially split this up, only one of the steps could fair the test and the rest could result in a pass ?? May be false postive
 Scenario Outline: I perform cancel appointment and update an element which is invalid
 	Given I find or create an appointment with status Booked for patient "<PatientName>" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
@@ -52,7 +58,7 @@ Scenario Outline: I perform cancel appointment and update an element which is in
 		| patient10   |
 		| patient11   |
 		| patient12   |
-
+#Is sending the correct word, mabye change to make a request to an invalid URL
 Scenario Outline: Cancel appointment sending invalid URL
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
@@ -62,9 +68,9 @@ Scenario Outline: Cancel appointment sending invalid URL
 	When I set the URL to "<url>" and cancel appointment with key "patientApp"
 	Then the response status code should be "404"
 	Examples:
-		| url             |
-		| /appointmentqq/!  |
-		| /Appointments/# |
+		| url              |
+		| /appointmentqq/! |
+		| /Appointments/#  |
 
 Scenario Outline: Cancel appointment failure due to missing header
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
@@ -98,7 +104,7 @@ Scenario Outline: Cancel appointment failure with incorrect interaction id
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
 		|                                                                   |
 		| null                                                              |
-
+#Make name clearer
 Scenario Outline: Cancel appointment _format parameter only
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
@@ -111,11 +117,13 @@ Scenario Outline: Cancel appointment _format parameter only
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
+		#add further validation to the test checking the response is the same appointment
 	Examples:
 		| Parameter             | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+#Make name clearer
 Scenario Outline: Cancel appointment accept header only
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
@@ -128,11 +136,13 @@ Scenario Outline: Cancel appointment accept header only
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
+		#add further validation to the test checking the response is the same appointment
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+#Make name clearer
 Scenario Outline: Cancel appointment accept header and _format parameter
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
@@ -146,13 +156,15 @@ Scenario Outline: Cancel appointment accept header and _format parameter
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
+		#add further validation to the test checking the response is the same appointment
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
 		| application/json+fhir | application/xml+fhir  | XML        |
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
-		
+
+#What is the difference with this test and the previous, mention checking content type		
 Scenario Outline: Cancel appointment checking that the format parameter and accept header works correctly
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
@@ -167,6 +179,7 @@ Scenario Outline: Cancel appointment checking that the format parameter and acce
 		And the response body should be FHIR <Format>
 		And the response should be an Appointment resource
 		And the returned appointment resource status should be set to cancelled
+		#Further validation required
 	Examples:
 		| ContentType           | AcceptHeader          | FormatParam           | Format |
 		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML    |
@@ -218,6 +231,7 @@ Scenario: Cancel appointment missing cancellation extension reason
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
 		And I set the JWT requested record NHS number to config patient "patient1"
 		And I set the JWT requested scope to "patient/*.write"
+		#This step isnt very clear
 	When I cancel the appointment and set the cancel extension to have url "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1" and missing reason called "patientApp"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -257,6 +271,7 @@ Scenario: Cancel appointment verify resource is not updated when an out of date 
 		And the response body should be FHIR JSON
 		And I make a GET request for the appointment with key "patientApp" for patient "patient3" to ensure the status has not been changed to cancelled
 
+#Scenario name should be improved
 Scenario: Cancel appointment compare values send in request and returned in the response
 	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
 	Given I am using the default server
