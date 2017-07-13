@@ -775,6 +775,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpRequest();
         }
 
+        [When(@"I make the ""(.*)"" request with invalid parameter Resource type")]
+        public void MakeRequestWithInvalidParameterResourceType(GpConnectInteraction interaction)
+        {
+            var requestFactory = new RequestFactory(interaction);
+            requestFactory.ConfigureBody(HttpContext);
+            requestFactory.ConfigureInvalidParameterResourceType(HttpContext);
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, JwtHelper.GetBearerToken());
+            HttpRequest();
+        }
+
+        [When(@"I make the ""(.*)"" request with additional field in parameter Resource")]
+        public void MakeRequestWithAdditionalFieldInParameterResource(GpConnectInteraction interaction)
+        {
+            var requestFactory = new RequestFactory(interaction);
+            requestFactory.ConfigureBody(HttpContext);
+            requestFactory.ConfigureParameterResourceWithAdditionalField(HttpContext);
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, JwtHelper.GetBearerToken());
+            HttpRequest();
+        }
+
         private void HttpRequest(bool decompressGzip = false)
         {
             var httpClient = GetHttpClient(decompressGzip);

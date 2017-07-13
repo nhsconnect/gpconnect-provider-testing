@@ -120,6 +120,29 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             return JsonConvert.SerializeObject(dynamicDeviceObj);
         }
 
+        public static string ChangeParameterResourceTypeString(string jsonResource, string newResourceType)
+        {
+            Log.WriteLine("Incomming Json Object = " + jsonResource);
+            dynamic dynamicDeviceObj = JsonConvert.DeserializeObject<ExpandoObject>(jsonResource);
+            foreach (var parameter in dynamicDeviceObj.parameter) {
+                parameter.resource.resourceType = newResourceType;
+            }
+            Log.WriteLine("Converted Type Json Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
+            return JsonConvert.SerializeObject(dynamicDeviceObj);
+        }
+
+        public static string AddFieldToParameterResource(string jsonResource, string newResourceType)
+        {
+            Log.WriteLine("Incomming Json Object = " + jsonResource);
+            dynamic dynamicDeviceObj = JsonConvert.DeserializeObject<ExpandoObject>(jsonResource);
+            foreach (var parameter in dynamicDeviceObj.parameter)
+            {
+                parameter.resource.invalidField = "Assurance Testing Invalid Field";
+            }
+            Log.WriteLine("Converted Type Json Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
+            return JsonConvert.SerializeObject(dynamicDeviceObj);
+        }
+
         public static Period GetDefaultTimePeriodForGetCareRecord() {
             return new Period(new FhirDateTime(DateTime.Now.AddYears(-2)), new FhirDateTime(DateTime.Now));
         }

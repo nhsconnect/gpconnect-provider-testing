@@ -57,7 +57,7 @@
         private static void ConfigureRegisterPatientBody(HttpContext httpContext)
         {
             httpContext.BodyParameters.Add("registerPatient", httpContext.StoredPatient);
-            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
+            httpContext.RequestBody = httpContext.RequestContentType.Contains("xml") ? FhirSerializer.SerializeToXml(httpContext.BodyParameters) : FhirSerializer.SerializeToJson(httpContext.BodyParameters);
         }
 
         private static void ConfigureGpcGetSchedule(HttpContext httpContext)
@@ -78,6 +78,16 @@
         public void ConfigureInvalidResourceType(HttpContext httpContext)
         {
             httpContext.RequestBody = FhirHelper.ChangeResourceTypeString(httpContext.RequestBody, FhirConst.Resources.kInvalidResourceType);
+        }
+
+        public void ConfigureInvalidParameterResourceType(HttpContext httpContext)
+        {
+            httpContext.RequestBody = FhirHelper.ChangeParameterResourceTypeString(httpContext.RequestBody, FhirConst.Resources.kInvalidResourceType);
+        }
+
+        public void ConfigureParameterResourceWithAdditionalField(HttpContext httpContext)
+        {
+            httpContext.RequestBody = FhirHelper.AddFieldToParameterResource(httpContext.RequestBody, FhirConst.Resources.kInvalidResourceType);
         }
     }
 }
