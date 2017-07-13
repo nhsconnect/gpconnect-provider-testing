@@ -756,5 +756,6 @@
         public Bundle StoredBundle { get; set; }
 
         public Appointment CreatedAppointment { get; set; }
+        public Location StoredLocation { get; set; }
     }
 }

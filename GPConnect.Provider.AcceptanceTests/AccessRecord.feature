@@ -369,7 +369,7 @@ Scenario Outline: request contain the structure definition in the meta fields
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Practitioner Metadata should be valid
 		And if the response bundle contains a device resource it should contain meta data profile and version id
-		And if the response bundle contains a location resource it should contain meta data profile and version id
+		And the Location Metadata should be valid
 	Examples:
 		| Code |
 		| ADM |

@@ -249,7 +249,6 @@
         {
             Practitioners.ForEach(practitioner =>
             {
-
                 practitioner.PractitionerRole.ForEach(practitionerRole =>
                 {
                     if (practitionerRole.Role?.Coding != null)

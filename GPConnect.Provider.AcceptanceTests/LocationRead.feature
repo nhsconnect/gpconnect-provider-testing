@@ -7,7 +7,7 @@ Scenario Outline: Location read successful request validate the response contain
 	Given I configure the default "LocationRead" request
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
-		And the response should be a Location resource
+		And the Response Resource should be a Location
 		And the Location Id should match the GET request Id
 	Examples:
 		| Location |
@@ -63,7 +63,7 @@ Scenario Outline: Location Read with incorrect interaction id
 	Given I get the Location for Location Value "SIT1"
 		And I store the Location Id
 	Given I configure the default "LocationRead" request
-		And I am performing the "<interactionId>" interaction
+		And I set the Interaction Id header to "<interactionId>"
 	When I make the "LocationRead" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -79,15 +79,15 @@ Scenario Outline: Location Read using the _format parameter to request response 
 	Given I get the Location for Location Value "SIT1"
 		And I store the Location Id
 	Given I configure the default "LocationRead" request
-		And I add the parameter "_format" with the value "<Parameter>"
+		And I add a Format parameter with the Value "<Format>"
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
-		And the response should be a Location resource
+		And the Response Resource should be a Location
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And the returned Location resource shall contain the business identifier for Location "SIT1"
+		And the Location Identifier should be valid for Value "SIT1"
 	Examples:
-		| Parameter             | ResponseFormat |
+		| Format	            | ResponseFormat |
 		| application/json+fhir | JSON           |
 		| application/xml+fhir  | XML            |
 
@@ -96,25 +96,24 @@ Scenario Outline: Location Read sending the Accept header and _format parameter 
 		And I store the Location Id
 	Given I configure the default "LocationRead" request
 		And I set the Accept header to "<Header>"
-		And I add the parameter "_format" with the value "<Parameter>"
+		And I add a Format parameter with the Value "<Format>"
+	When I make the "LocationRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
-		And the response should be a Location resource
+		And the Response Resource should be a Location
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And the returned Location resource shall contain the business identifier for Location "SIT3"
+		And the Location Identifier should be valid for Value "SIT3"
 	Examples:
-		| Header                | Parameter             | ResponseFormat |
+		| Header                | Format                | ResponseFormat |
 		| application/json+fhir | application/json+fhir | JSON           |
 		| application/json+fhir | application/xml+fhir  | XML            |
 		| application/xml+fhir  | application/json+fhir | JSON           |
 		| application/xml+fhir  | application/xml+fhir  | XML            |
 
 Scenario: Conformance profile supports the Location read operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+	Given I configure the default "Metaread" request
+	When I make the "Metadata" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Location" resource with a "read" interaction
 
 Scenario Outline: Location read resource conforms to GP-Connect specification
@@ -125,19 +124,18 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
-		And the response should be a Location resource
+		And the Response Resource should be a Location
 		And the returned resource shall contain a logical id matching the requested read logical identifier
-		And the returned Location resource shall contain the business identifier for Location "SIT2"
-		And the location resource should contain meta data profile and version id
-		And if the location response resource contains an identifier it is valid
+		And the Location Identifier should be valid for Value "SIT2"
+		And the Location Metadata should be valid
 #		status // This is checked by the FHIR .NET library
-		And the response Location entry should contain a name element
-		And if the location response contains a type element coding it should contain system code and display elements
-		And if the location response contains any telecom elements they are valid
+		And the Location Name should be valid
+		And the Location Type should be valid
+		And the Location Telecom should be valid
 #		address // This is checked by the FHIR .NET library
-		And if the location response contains a PhysicalType coding it should contain system code and display elements
-		And if the location response contains a managing organization it contains a reference
-		And if the location response contains a partOf element its reference is valid
+		And the Location Physical Type should be valid
+		And the Location Managing Organization should be valid
+		And the Location PartOf Location should be valid
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -149,15 +147,16 @@ Scenario: Read location should contain ETag
 	Given I configure the default "LocationRead" request
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
-		And the response should contain the ETag header matching the resource version
+		And the Response should contain the ETag header matching the Resource Version Id
 
 # Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 Scenario: Read location If-None-Match should return a 304 on match
 	Given I get the Location for Location Value "SIT1"
 		And I store the Location Id
-		And I store the Location Resource
+		And I store the Location
 	Given I configure the default "LocationRead" request
-		And I set the If-None-Match header with the version from the stored "Location" Resource
+		#And I set the If-None-Match header with the version from the stored "Location" Resource
+		And I set the If-None-Match header to the stored Location Id
 	When I make the "LocationRead" request
 	Then the response status code should be "304"
 	
@@ -169,9 +168,8 @@ Scenario: Read location If-None-Match should return full resource if no match
 		And I set the If-None-Match header to "W/\"somethingincorrect\""
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Location resource
-		And the response should contain the ETag header matching the resource version
+		And the Response Resource should be a Location
+		And the Response should contain the ETag header matching the Resource Version Id
 
 # Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 @ignore

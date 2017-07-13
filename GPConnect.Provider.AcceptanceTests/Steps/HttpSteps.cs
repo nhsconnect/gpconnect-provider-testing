@@ -797,14 +797,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // Save The Response Details
             HttpContext.ResponseStatusCode = result.StatusCode;
-            HttpContext.ResponseContentType = result.Content.Headers.ContentType.MediaType;
+
+            // Some HTTP responses will have no content e.g. 304
+            if (result.Content.Headers.ContentType != null)
+            {
+                HttpContext.ResponseContentType = result.Content.Headers.ContentType.MediaType;
+            }
+
             using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
             {
                 HttpContext.ResponseBody = reader.ReadToEnd();
             }
 
             ParseResponse();
-
+           
             // Add headers
             foreach (var headerKey in result.Headers)
             {

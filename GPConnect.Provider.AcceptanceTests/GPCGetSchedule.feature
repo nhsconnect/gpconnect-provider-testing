@@ -412,13 +412,13 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should include slot resources
-		And if the response bundle contains a location resource it should contain meta data profile and version id
-		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
-		And the response bundle Location entries should contain a name element
-		And the response bundle location entries should contain system code and display if the Type coding is included in the resource
-		And the response bundle location entries should contain valid system code and display if the PhysicalType coding is included in the resource
-		And if the response bundle location entries contain partOf element the reference should reference a resource in the response bundle
-		And if the response bundle location entries contain managingOrganization element the reference should reference a resource in the response bundle
+		And the Location Metadata should be valid
+		And the Location Identifier should be valid
+		And the Location Name should be valid
+		And the Location Type should be valid
+		And the Location Physical Type should be valid
+		And the Location PartOf Location should be valid
+		And the Location Managing Organization should be valid
 	Examples:
 		| Organization | DaysRange |
 		| ORG1         | 13        |

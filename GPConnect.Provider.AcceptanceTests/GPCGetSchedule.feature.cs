@@ -1046,25 +1046,19 @@ this.ScenarioSetup(scenarioInfo);
 #line 414
   testRunner.And("the response bundle should include slot resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 415
-  testRunner.And("if the response bundle contains a location resource it should contain meta data p" +
-                    "rofile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 416
-  testRunner.And("the response bundle Location entries should contain a maximum of one ODS Site Cod" +
-                    "e and one other identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Identifier should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 417
-  testRunner.And("the response bundle Location entries should contain a name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 418
-  testRunner.And("the response bundle location entries should contain system code and display if th" +
-                    "e Type coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 419
-  testRunner.And("the response bundle location entries should contain valid system code and display" +
-                    " if the PhysicalType coding is included in the resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Physical Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 420
-  testRunner.And("if the response bundle location entries contain partOf element the reference shou" +
-                    "ld reference a resource in the response bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location PartOf Location should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 421
-  testRunner.And("if the response bundle location entries contain managingOrganization element the " +
-                    "reference should reference a resource in the response bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Managing Organization should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
