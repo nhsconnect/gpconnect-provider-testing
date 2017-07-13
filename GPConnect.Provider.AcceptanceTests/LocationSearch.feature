@@ -31,13 +31,13 @@ Scenario Outline: Location search success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<EntrySize>" entries
 		And all search response entities in bundle should contain a logical identifier
-		And if the response bundle contains a location resource it should contain meta data profile and version id
-		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
-		And the response bundle Location entries should contain a name element
-		And the response bundle location entries should contain valid system code and display if the PhysicalType coding is included in the resource
-		And if the response bundle location entries contain managingOrganization element the reference should exist
-		And if the response bundle location entries contain partOf element the reference should exist
-		And the response bundle location entries should contain system code and display if the Type coding is included in the resource
+		And the Location Identifier should be valid
+		And the Location Metadata should be valid
+		And the Location Name should be valid
+		And the Location Physical Type should be valid
+		And the Location Managing Organization should be valid
+		And the Location PartOf Location should be valid
+		And the Location Type should be valid
 	Examples:
 		| Value | EntrySize |
 		| SIT1  | 1         |
@@ -72,7 +72,7 @@ Scenario: Location search failure missing identifier
 
 Scenario Outline: Location search failure due to invalid identifier name
 	Given I configure the default "LocationSearch" request
-		And I add a Location Identifier parameter with parameter name "<Identifier>" and Value "SIT1"
+		And I add a Location "<Identifier>" parameter with default System and Value "SIT1"
 	When I make the "LocationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -90,7 +90,7 @@ Scenario Outline: Location search parameter order test
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
+		And the Location Identifier should be valid
 	Examples:
 		| Parameter1Name | Parameter1                                 | Parameter2Name | Parameter2                                 | ResponseFormat |
 		| _format        | application/json+fhir                      | identifier     | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | JSON           |
@@ -106,11 +106,11 @@ Scenario Outline: Location Search using the accept header to request response fo
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
-		And all search response entities in bundle should contain a logical identifier
-		And if the response bundle contains a location resource it should contain meta data profile and version id
-		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
-		And the response bundle Location entries should contain a name element
 		And the response bundle should contain "8" entries
+		And all search response entities in bundle should contain a logical identifier
+		And the Location Metadata should be valid
+		And the Location Identifier should be valid
+		And the Location Name should be valid
 	Examples:
 		| Header                | ResponseFormat |
 		| application/json+fhir | JSON           |
@@ -119,18 +119,18 @@ Scenario Outline: Location Search using the accept header to request response fo
 Scenario Outline: Location Search using the _format parameter to request response format
 	Given I configure the default "LocationSearch" request
 		And I add a Location Identifier parameter with default System and Value "SIT2"
-		And I add the parameter "_format" with the value "<parameter>"
+		And I add a Format parameter with the Value "<Format>"
 	When I make the "LocationSearch" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
-		And all search response entities in bundle should contain a logical identifier
-		And if the response bundle contains a location resource it should contain meta data profile and version id
-		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
-		And the response bundle Location entries should contain a name element
 		And the response bundle should contain "2" entries
+		And all search response entities in bundle should contain a logical identifier
+		And the Location Metadata should be valid
+		And the Location Identifier should be valid
+		And the Location Name should be valid
 	Examples:
-		| parameter             | ResponseFormat |
+		| Format                | ResponseFormat |
 		| application/json+fhir | JSON           |
 		| application/xml+fhir  | XML            |
 
@@ -138,18 +138,18 @@ Scenario Outline: Location Search using the accept header and _format parameter 
 	Given I configure the default "LocationSearch" request
 		And I add a Location Identifier parameter with default System and Value "SIT3"
 		And I set the Accept header to "<Header>"
-		And I add the parameter "_format" with the value "<Parameter>"
+		And I add a Format parameter with the Value "<Format>"
 	When I make the "LocationSearch" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
-		And all search response entities in bundle should contain a logical identifier
-		And if the response bundle contains a location resource it should contain meta data profile and version id
-		And the response bundle Location entries should contain a maximum of one ODS Site Code and one other identifier
-		And the response bundle Location entries should contain a name element
 		And the response bundle should contain "8" entries
+		And all search response entities in bundle should contain a logical identifier
+		And the Location Metadata should be valid
+		And the Location Identifier should be valid
+		And the Location Name should be valid
 	Examples:
-		| Header                | Parameter             | ResponseFormat |
+		| Header                | Format                | ResponseFormat |
 		| application/json+fhir | application/json+fhir | JSON           |
 		| application/json+fhir | application/xml+fhir  | XML            |
 		| application/xml+fhir  | application/json+fhir | JSON           |
@@ -173,7 +173,7 @@ Scenario Outline: Location search failure due to missing header
 Scenario Outline: Location search failure due to invalid interactionId
 	Given I configure the default "LocationSearch" request
 		And I add a Location Identifier parameter with default System and Value "SIT1"
-		And I am performing the "<InteractionId>" interaction
+		And I set the Interaction Id header to "<InteractionId>"
 	When I make the "LocationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -184,11 +184,9 @@ Scenario Outline: Location search failure due to invalid interactionId
 		|                                                                  |
 
 Scenario: Conformance profile supports the Location search operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Location" resource with a "search-type" interaction
 
 Scenario: Location search send multiple identifiers in the request
