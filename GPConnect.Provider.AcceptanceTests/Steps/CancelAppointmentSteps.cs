@@ -86,65 +86,65 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Given(@"I add an extension to ""(.*)"" with url ""(.*)"" code ""(.*)"" and display ""(.*)""")]
-        public void GivenIAddAnExtensionToWithUrlCodeAndDisplay(string appointmentName, string url, string code, string display)
+        [Given(@"I add an extension to created appointment with url ""(.*)"" code ""(.*)"" and display ""(.*)""")]
+        public void GivenIAddAnExtensionToWithUrlCodeAndDisplay( string url, string code, string display)
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             Extension extensionToAdd = new Extension();
             extensionToAdd = buildAppointmentOtherExtension(extensionToAdd,url, code , display);
             storedAppointment.Extension.Add(extensionToAdd);
         }
 
-        [Given(@"I set the description to ""(.*)"" for appointment ""(.*)""")]
-        public void GivenISetTheDescriptionToForAppointment(string description, string appointmentName)
+        [Given(@"I set the description to ""(.*)"" for created appointment")]
+        public void GivenISetTheDescriptionToForAppointment(string description)
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             storedAppointment.Description = description;
         }
 
-        [Given(@"I set the priority to ""(.*)"" for appointment ""(.*)""")]
-        public void GivenISetThePriorityToForAppointment(int priority, string appointmentName)
+        [Given(@"I set the priority to ""(.*)"" for created appointment")]
+        public void GivenISetThePriorityToForAppointment(int priority)
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             storedAppointment.Priority = priority;
         }
 
-        [Given(@"I set the minutes to ""(.*)"" for appointment ""(.*)""")]
-        public void GivenISetTheMinutesToForAppointment(int minutes, string appointmentName)
+        [Given(@"I set the minutes to ""(.*)"" for created appointment")]
+        public void GivenISetTheMinutesToForAppointment(int minutes)
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             storedAppointment.MinutesDuration = minutes;
         }
 
-        [Given(@"I set the comment to ""(.*)"" for appointment ""(.*)""")]
-        public void GivenISetTheCommentToForAppointment(string comment, string appointmentName)
+        [Given(@"I set the comment to ""(.*)"" for created appointment")]
+        public void GivenISetTheCommentToForAppointment(string comment)
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             storedAppointment.Comment = comment;
         }
 
-        [Given(@"I set the type text to ""(.*)"" for appointment ""(.*)""")]
-        public void GivenISetTheTypeTextToForAppointment(string typeText, string appointmentName)
+        [Given(@"I set the type text to ""(.*)"" for created appointment")]
+        public void GivenISetTheTypeTextToForAppointment(string typeText)
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             storedAppointment.Type.Text = typeText;
 
         }
 
-        [Given(@"I set the identifier with system ""(.*)"" and value ""(.*)"" for the appointment ""(.*)""")]
-        public void GivenISetTheIdentifierWithSystemAndValueForTheAppointment(string system,string value, string appointmentName)
+        [Given(@"I set the identifier with system ""(.*)"" and value ""(.*)"" for the created appointment")]
+        public void GivenISetTheIdentifierWithSystemAndValueForTheAppointment(string system,string value)
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             Identifier identifier = new Identifier();
             identifier.System = system;
             identifier.Value = value;
             storedAppointment.Identifier.Add(identifier);
         }
 
-        [Given(@"I add participant ""(.*)"" with reference ""(.*)"" to appointment ""(.*)""")]
-        public void GivenIAddParticipantWithReferenceToAppointment(string participant,string reference, string appointmentName)
+        [Given(@"I add participant ""(.*)"" with reference ""(.*)"" for the created appointment")]
+        public void GivenIAddParticipantWithReferenceToAppointment(string participant,string reference)
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             switch (participant)
             {
                 case "location":
@@ -220,35 +220,35 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
-        [Then(@"the resource type of the appointment with key ""(.*)"" and the returned response should be equal")]
-        public void ThenTheResponseTypeOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        [Then(@"the resource type of the request appointment and the returned response should be equal")]
+        public void ThenTheResponseTypeOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual()
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.ResourceType.ShouldBe(returnedAppointment.ResourceType);
         }
 
-        [Then(@"the id of the appointment with key ""(.*)"" and the returned response should be equal")]
-        public void ThenTheIdOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        [Then(@"the id of the request appointment and the returned response should be equal")]
+        public void ThenTheIdOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual()
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.Id.ShouldBe(returnedAppointment.Id);
         }
 
-        [Then(@"the status of the appointment with key ""(.*)"" and the returned response should be equal")]
-        public void ThenTheStatusOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        [Then(@"the status of the request appointment and the returned response should be equal")]
+        public void ThenTheStatusOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual()
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             returnedAppointment.ShouldNotBeNull("The status is not allowed to be null");
             storedAppointment.Status.ShouldBe(returnedAppointment.Status);
         }
 
-        [Then(@"the extensions of the appointment with key ""(.*)"" and the returned response should be equal")]
-        public void ThenTheExtensionOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        [Then(@"the extensions of the request appointment and the returned response should be equal")]
+        public void ThenTheExtensionOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual()
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             FhirString extensionValueString = new FhirString();
 
@@ -279,18 +279,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the description of the appointment with key ""(.*)"" and the returned response should be equal")]
-        public void ThenTheDescriptionOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        [Then(@"the description of the request appointment and the returned response should be equal")]
+        public void ThenTheDescriptionOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual()
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.Description.ShouldBe(returnedAppointment.Description);
         }
         
-        [Then(@"the start and end date of the appointment with key ""(.*)"" and the returned response should be equal")]
-        public void ThenTheStartAndEndDateOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        [Then(@"the start and end date of the request appointment and the returned response should be equal")]
+        public void ThenTheStartAndEndDateOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual()
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             returnedAppointment.Start.ShouldNotBeNull("The start date is not allowed to be null");
             returnedAppointment.End.ShouldNotBeNull("The end date is not allowed to be null");
@@ -298,18 +298,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             storedAppointment.End.ShouldBe(returnedAppointment.End);
         }
 
-        [Then(@"the reason of the appointment with key ""(.*)"" and the returned response should be equal")]
-        public void ThenTheReasonOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        [Then(@"the reason of the request appointment and the returned response should be equal")]
+        public void ThenTheReasonOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual()
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.Reason?.Text.ShouldBe(returnedAppointment.Reason?.Text);
           }
 
-        [Then(@"the slot display and reference of the appointment with key ""(.*)"" and the returned response should be equal")]
-        public void ThenTheSlotDisplayAndReferenceOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        [Then(@"the slot display and reference of the request appointment and the returned response should be equal")]
+        public void ThenTheSlotDisplayAndReferenceOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual()
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             List <ResourceReference> storedSlotReferences = new List<ResourceReference>();
             List<ResourceReference> returnedSlotReferences = new List<ResourceReference>();
             List<String> storedSlotDisplay = new List<String>();
@@ -351,10 +351,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
         
-        [Then(@"the participants of the appointment with key ""(.*)"" and the returned response should be equal")]
-        public void ThenThePatientParticipantsOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual(string appointmentName)
+        [Then(@"the participants of the request appointment and the returned response should be equal")]
+        public void ThenThePatientParticipantsOfTheAppointmentWithKeyAndTheReturnedResponseShouldBeEqual()
         {
-            Appointment savedAppointment = (Appointment)_httpContext.StoredFhirResources[appointmentName];
+            Appointment savedAppointment = (Appointment)_httpContext.CreatedAppointment;
             List<ParticipantComponent> savedAppointmentParticipants = new List<ParticipantComponent>();
             List<ParticipantComponent> returnedResponseAppointmentParticipants = new List<ParticipantComponent>();
 
@@ -655,10 +655,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             appointment.Status.ShouldBe(AppointmentStatus.Cancelled);
         }
 
-        [Then(@"the response version id should be different to the version id stored in ""(.*)""")]
-        public void ThenTheResponseVersionIdShouldBeDifferentToTheVersionIdStoredIn(string storedAppointmentName)
+        [Then(@"the response version id should be different to the version id stored in the requesting appointment")]
+        public void ThenTheResponseVersionIdShouldBeDifferentToTheVersionIdStoredIn()
         {
-            Appointment storedAppointment = (Appointment)_httpContext.StoredFhirResources[storedAppointmentName];
+            Appointment storedAppointment = (Appointment)_httpContext.CreatedAppointment;
             Appointment returnedAppointment = (Appointment)_fhirContext.FhirResponseResource;
             storedAppointment.VersionId.ToString().ShouldNotBe(returnedAppointment.VersionId.ToString());
         }

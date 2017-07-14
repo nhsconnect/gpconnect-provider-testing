@@ -970,6 +970,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
       
         }
 
+
+
         [Given(@"I set the created Appointment to Cancelled with Reason ""([^""]*)""")]
         public void SetTheCreatedAppointmentToCancelledWithReason(string reason)
         {
@@ -981,7 +983,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.CreatedAppointment.Extension.Add(extension);
             HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
         }
-        
+
+        [Given(@"I set the created Appointment to Cancelled with URL ""([^""]*)"" and Reason ""([^""]*)""")]
+        public void SetTheCreatedAppointmentToCancelledWithURLAndReason(string URL, string reason)
+        {
+            var extension = GetCancellationReasonExtensionWithURL(URL, reason);
+
+            if (HttpContext.CreatedAppointment.Extension == null)
+                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+
+            HttpContext.CreatedAppointment.Extension.Add(extension);
+            HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
+        }
+
+        private static Extension GetCancellationReasonExtensionWithURL(string URL, string reason)
+        {
+            return new Extension
+            {
+                Url = URL,
+                Value = new FhirString(reason)
+            };
+
+        }
+
+
         private static Extension GetCancellationReasonExtension(string reason)
         {
             return new Extension

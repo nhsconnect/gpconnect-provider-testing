@@ -145,17 +145,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestHeaders.ReplaceHeader(headerName, headerValue);
         }
 
-        [Given(@"I set ""(.*)"" request header to ""(.*)"" version")]
-        public void GivenISetRequestHeaderToVersion(string headerKey, string headerValue)
+        [Given(@"I set ""(.*)"" request header to created appointment version")]
+        public void GivenISetRequestHeaderToVersion(string headerKey)
         {
-            Resource value = HttpContext.StoredFhirResources[headerValue];
+            Resource value = HttpContext.CreatedAppointment;
             HttpContext.RequestHeaders.ReplaceHeader(headerKey, "W/\"" + value.VersionId + "\"");
         }
 
         [Given(@"I set If-Match request header to ""(.*)""")]
         public void GivenISetRequestHeaderToNotStored(string headerValue)
         {
-            HttpContext.RequestHeaders.ReplaceHeader("If-Match", headerValue);
+            HttpContext.RequestHeaders.ReplaceHeader("If-Match", "W/\"" + headerValue + "\"");
         }
 
         [Given(@"I am accredited system ""(.*)""")]
