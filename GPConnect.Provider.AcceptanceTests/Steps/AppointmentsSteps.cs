@@ -831,14 +831,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
-        [Given(@"I create a bundle resource and add it to the request")]
-        public void ICreateaBundleResourceAndAddItToTheRequest()
-        {
-            var bundle = new Bundle();
-            HttpContext.StoredBundle = bundle;
-        }
-
-        
 
 
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
@@ -953,6 +945,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void SetTheCreatedAppointmentComment(string comment)
         {
             HttpContext.CreatedAppointment.Comment = comment;
+      
         }
 
         [Given(@"I set the created Appointment reason to ""([^""]*)""")]
@@ -995,6 +988,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.CreatedAppointment.Extension.Add(extension);
             HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
         }
+
+
+        [Given("I set created appointment to a new appointment resource")]
+        public void ISetTheAppointmentResourceToANewAppointmentResource()
+        {
+            HttpContext.CreatedAppointment = new Appointment();
+        }
+
+
 
         private static Extension GetCancellationReasonExtensionWithURL(string URL, string reason)
         {
