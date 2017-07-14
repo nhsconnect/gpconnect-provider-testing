@@ -50,7 +50,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             returnPatient.BirthDateElement = new Date("2017-05-05");
             HttpContext.StoredPatient = returnPatient;
         }
-        
+
+        [Given(@"I update the stored patient details to not match the NHS number")]
+        public void GivenIUpdateTheStoredPatientDetailsToNotMatchTheNHSNumber()
+        {
+            HumanName name = new HumanName();
+            name.FamilyElement.Add(new FhirString("GPConnectFamilyName"));
+            name.GivenElement.Add(new FhirString("GPConnectGivenName"));
+            HttpContext.StoredPatient.Name = new List<HumanName>();
+            HttpContext.StoredPatient.Name.Add(name);
+            HttpContext.StoredPatient.Gender = AdministrativeGender.Other;
+            HttpContext.StoredPatient.BirthDateElement = new Date("2017-05-05");
+        }
+
         [Given(@"I find the next patient to register and store the Patient Resource against key ""([^""]*)""")]
         public void GivenIFindTheNextPatientToRegisterAndStoreThePatientResourceAgainstKey(string patientResourceKey)
         {
@@ -116,6 +128,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIRemoveTheNameElementFromTheStoredPatient()
         {
             HttpContext.StoredPatient.Name = null;
+        }
+
+        [Given(@"I remove the family name element from the stored patient")]
+        public void GivenIRemoveTheFamilyNameElementFromTheStoredPatient()
+        {
+            HttpContext.StoredPatient.Name[0].Family = null;
+        }
+
+        [Given(@"I remove the given name element from the stored patient")]
+        public void GivenIRemoveTheGivenNameElementFromTheStoredPatient()
+        {
+            HttpContext.StoredPatient.Name[0].Given = null;
         }
 
         [Given(@"I remove the gender element from the stored patient")]

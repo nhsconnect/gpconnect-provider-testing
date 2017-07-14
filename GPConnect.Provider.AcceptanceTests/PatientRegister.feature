@@ -11,8 +11,8 @@ Scenario Outline: Register patient send request to incorrect URL
 		And I set the request URL to "<url>"
 		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
+	Then the response status code should be "501"
+		And the response should be a OperationOutcome resource with error code "NOT_IMPLEMENTED"
 	Examples:
 		| StartDate		| url                            |
 		| 2017-05-05	| Patient/$gpc.registerpatien    |
@@ -466,6 +466,32 @@ Scenario: Register patient which is not the Spine
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+Scenario: Register patient with demographics which do not match spine PDS trace
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I update the stored patient details to not match the NHS number
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient no family names
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I remove the family name element from the stored patient
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
 Scenario: Register patient with multiple family names
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -474,6 +500,19 @@ Scenario: Register patient with multiple family names
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
 		And I add the family name "AddedFamilyName" to the store patient
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient no given names
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I remove the given name element from the stored patient
 		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
