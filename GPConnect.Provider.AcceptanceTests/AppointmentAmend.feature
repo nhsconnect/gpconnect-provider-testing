@@ -1,11 +1,7 @@
 ﻿@appointment
 Feature: AppointmentAmend
-
-#Common
-#Patient 1 used throughout, may want to think about using different patients
 #Specification is unclear as to what can be updated
-
-Scenario: I perform a successful amend appointment and change the comment to a custom message
+Scenario Outline: I perform a successful amend appointment and change the comment to a custom message
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentAmend" request
@@ -16,7 +12,18 @@ Scenario: I perform a successful amend appointment and change the comment to a c
 		And the response should be an Appointment resource
 		And the appointment resource should contain a comment which equals "customComment"
 		And the returned appointment resource should contain meta data profile and version id
-	
+	Examples:
+		| Patient  |
+		| patient1 |
+		| patient2 |
+		| patient3 |
+		| patient4 |
+		| patient5 |
+		| patient6 |
+		| patient7 |
+		| patient8 |
+		| patient8 |
+
 Scenario: I perform a successful amend appointment and change the reason text to a custom message
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
@@ -248,7 +255,6 @@ Scenario: Amend appointment set etag and check etag is the same in the returned 
 		And the response should be an Appointment resource
 		And the appointment resource should contain a comment which equals "customComment"
 
-#Investigate further
 Scenario: Amend appointment and send an invalid bundle resource
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment	
@@ -256,9 +262,9 @@ Scenario: Amend appointment and send an invalid bundle resource
 		And I set the JWT Requested Record to the NHS Number of the stored Patient
 		And I set the created Appointment Comment to "customComment"
 	When I make the "AppointmentAmend" request with invalid Resource type
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Amend appointment and send an invalid appointment resource
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
