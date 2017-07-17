@@ -142,7 +142,13 @@
         private static void ConfigurePatientReadContext(HttpContext httpContext)
         {
             httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "Patient/" + httpContext.GetRequestId; 
+            httpContext.RequestUrl = "Patient/" + httpContext.GetRequestId;
+
+            if (!string.IsNullOrEmpty(httpContext.GetRequestVersionId))
+            {
+                httpContext.RequestUrl = httpContext.RequestUrl + "/_history/" + httpContext.GetRequestVersionId;
+            }
+
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientRead);
         }
 
