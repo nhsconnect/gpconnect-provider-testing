@@ -27,15 +27,14 @@ Scenario: Provider should return an error when an invalid system is supplied in 
 		And I add a Patient Identifier parameter with System "http://test.net/types/internalIdentifier" and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
 
 Scenario: Provider should return an error when no system is supplied in the identifier parameter
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
-	When I search for Patient "patient1" without system in identifier parameter
+		And I add a Patient Identifier parameter with no System and Value "patient1"
+	When I make the "PatientSearch" request
 	Then the response status code should be "422"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Provider should return an error when a blank system is supplied in the identifier parameter
@@ -44,7 +43,6 @@ Scenario: Provider should return an error when a blank system is supplied in the
 		And I add a Patient Identifier parameter with System "" and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should be "422"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: When a patient is not found on the provider system an empty bundle should be returned
@@ -53,7 +51,6 @@ Scenario: When a patient is not found on the provider system an empty bundle sho
 		And I add a Patient Identifier parameter with default System and Value "patientNotInSystem"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "0" entries
 
@@ -62,7 +59,6 @@ Scenario: Patient search should fail if no identifier parameter is include
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario Outline: The identifier parameter should be rejected if the case is incorrect
@@ -71,7 +67,6 @@ Scenario Outline: The identifier parameter should be rejected if the case is inc
 		And I add a Patient Identifier parameter with identifier name "<ParameterName>" default System and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		Examples:
 		| ParameterName |
@@ -86,7 +81,6 @@ Scenario: The response should be an error if parameter is not identifier
 		And I add a Patient Identifier parameter with identifier name "nhsNumberParam" default System and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: The response should be an error if no value is sent in the identifier parameter
@@ -95,7 +89,6 @@ Scenario: The response should be an error if no value is sent in the identifier 
 		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/nhs-number|"
 	When I make the "PatientSearch" request
 	Then the response status code should be "422"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario Outline: The patient search endpoint should accept the accept header
@@ -109,7 +102,7 @@ Scenario Outline: The patient search endpoint should accept the accept header
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And all search response entities in bundle should contain a logical identifier
-		And the response bundle Patient entries should contain a single NHS Number identifier for patient "patient2"
+		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | ResultFormat |
 		| application/xml+fhir  | XML          |
@@ -126,7 +119,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And all search response entities in bundle should contain a logical identifier
-		And the response bundle Patient entries should contain a single NHS Number identifier for patient "patient2"
+		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| FormatParam           | ResultFormat |
 		| application/xml+fhir  | XML          |
@@ -144,7 +137,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And all search response entities in bundle should contain a logical identifier
-		And the response bundle Patient entries should contain a single NHS Number identifier for patient "patient2"
+		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
 		| application/xml+fhir  | application/xml+fhir  | XML          |
@@ -164,7 +157,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And all search response entities in bundle should contain a logical identifier
-		And the response bundle Patient entries should contain a single NHS Number identifier for patient "patient2"
+		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
 		| application/xml+fhir  | application/xml+fhir  | XML          |
@@ -179,7 +172,6 @@ Scenario Outline: Patient search failure due to invalid interactionId
 		And I am performing the "<InteractionId>" interaction
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| InteractionId                                                     |
@@ -194,7 +186,6 @@ Scenario Outline: Patient search failure due to missing header
 		And I do not send header "<Header>"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| Header            |
@@ -210,7 +201,6 @@ Scenario: Patient resource should contain meta data elements
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the patient resource in the bundle should contain meta data profile and version id
@@ -225,7 +215,7 @@ Scenario Outline: Patient resource should contain NHS number identifier returned
 		And the response body should be FHIR XML
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And the response bundle Patient entries should contain a single NHS Number identifier for patient "<Patient>"
+		And the Patient Identifiers should be valid for Patient "<Patient>"
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -241,18 +231,17 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And if careProvider is present in patient resource the reference should be valid
-		And the patient bundle should contain no more than one family or given name
-		And if composition contains the patient resource communication the mandatory fields should match the specification
-		And if composition contains the patient resource contact the mandatory fields should matching the specification
-		And if composition contains the patient resource and it contains the multiple birth field it should be a boolean value
+		And the Patient CareProvider Practitioner should be valid and resolvable
+		And the Patient Name should be valid
+		And the Patient Communication should be valid
+		And the Patient Contact should be valid
+		And the Patient MultipleBirth should be valid
 		And the Patient MaritalStatus should be valid
-		And if patient resource contains deceased element it should be dateTime and not boolean
-		And if patient resource contains telecom element the system and value must be populated
-		And if Patient resource contains a managing organization the reference must be valid
-		And if Patient resource contains careProvider the reference must be valid
-		And if managingOrganization is present in patient resource the reference should be valid
-		And the Patient should exclude fields which are not permitted by the specification	
+		And the Patient Deceased should be valid
+		And the Patient Telecom should be valid
+		And the Patient ManagingOrganization Organization should be valid and resolvable
+		And the Patient CareProvider Practitioner should be valid and resolvable
+		And the Patient should exclude disallowed fields
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -263,11 +252,9 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		| patient6 |
 
 Scenario: Conformance profile supports the Patient search operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the conformance profile should contain the "Patient" resource with a "search-type" interaction
 
 Scenario Outline: System should error if multiple parameters valid or invalid are sent
@@ -277,7 +264,6 @@ Scenario Outline: System should error if multiple parameters valid or invalid ar
 		And I add the parameter "<Identifier2>" with system "http://fhir.nhs.net/Id/nhs-number" for patient "<PatientTwo>"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| Identifier1      | PatientOne | Identifier2       | PatientTwo |
@@ -295,7 +281,6 @@ Scenario: JWT requesting scope claim should reflect the operation being performe
 		And I set the JWT requested scope to "organization/*.read"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: JWT patient claim should reflect the patient being searched for
@@ -304,7 +289,6 @@ Scenario: JWT patient claim should reflect the patient being searched for
 		And I add a Patient Identifier parameter with default System and Value "patient1"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 @Manual

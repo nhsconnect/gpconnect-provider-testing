@@ -19,9 +19,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     [Binding]
     public class RegisterPatientSteps : TechTalk.SpecFlow.Steps
     {
-        private readonly FhirContext FhirContext;
-        private readonly HttpSteps HttpSteps;
-        private readonly HttpContext HttpContext;
+        private readonly FhirContext _fhirContext;
+        private readonly HttpSteps _httpSteps;
+        private readonly HttpContext _httpContext;
         private readonly PatientSteps _patientSteps;
         // Headers Helper
         public HttpHeaderHelper Headers { get; }
@@ -29,10 +29,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public RegisterPatientSteps(HttpHeaderHelper headerHelper, FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, PatientSteps patientSteps)
         {
             // Helpers
-            FhirContext = fhirContext;
+            _fhirContext = fhirContext;
             Headers = headerHelper;
-            HttpSteps = httpSteps;
-            HttpContext = httpContext;
+            _httpSteps = httpSteps;
+            _httpContext = httpContext;
             _patientSteps = patientSteps;
         }
 
@@ -48,7 +48,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             returnPatient.Name.Add(name);
             returnPatient.Gender = AdministrativeGender.Other;
             returnPatient.BirthDateElement = new Date("2017-05-05");
-            HttpContext.StoredPatient = returnPatient;
+            _httpContext.StoredPatient = returnPatient;
         }
 
         [Given(@"I update the stored patient details to not match the NHS number")]
@@ -57,10 +57,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HumanName name = new HumanName();
             name.FamilyElement.Add(new FhirString("GPConnectFamilyName"));
             name.GivenElement.Add(new FhirString("GPConnectGivenName"));
-            HttpContext.StoredPatient.Name = new List<HumanName>();
-            HttpContext.StoredPatient.Name.Add(name);
-            HttpContext.StoredPatient.Gender = AdministrativeGender.Other;
-            HttpContext.StoredPatient.BirthDateElement = new Date("2017-05-05");
+            _httpContext.StoredPatient.Name = new List<HumanName>();
+            _httpContext.StoredPatient.Name.Add(name);
+            _httpContext.StoredPatient.Gender = AdministrativeGender.Other;
+            _httpContext.StoredPatient.BirthDateElement = new Date("2017-05-05");
         }
 
         [Given(@"I find the next patient to register and store the Patient Resource against key ""([^""]*)""")]
@@ -73,7 +73,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 // Search for patient
                 Given($@"I perform a patient search for patient with NHSNumber ""{registerPatient.SPINE_NHS_NUMBER}"" and store the response bundle against key ""registerPatient""");
                 // See if number of returned patients is > zero, ie patient already registered, else use patient
-                Bundle patientSearchBundle = (Bundle)HttpContext.StoredFhirResources["registerPatient"];
+                Bundle patientSearchBundle = (Bundle)_httpContext.StoredFhirResources["registerPatient"];
                 if (patientSearchBundle.Entry.Count == 0) {
                     // Patient not registered yet
                     returnPatient = new Patient();
@@ -104,8 +104,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (returnPatient != null)
             {
                 // Store the created patient
-                if (HttpContext.StoredFhirResources.ContainsKey(patientResourceKey)) HttpContext.StoredFhirResources.Remove(patientResourceKey);
-                HttpContext.StoredFhirResources.Add(patientResourceKey, returnPatient);
+                if (_httpContext.StoredFhirResources.ContainsKey(patientResourceKey)) _httpContext.StoredFhirResources.Remove(patientResourceKey);
+                _httpContext.StoredFhirResources.Add(patientResourceKey, returnPatient);
             }
             else {
                 Assert.Fail("No patients left to register patient with");
@@ -115,49 +115,49 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I build the register patient from stored patient resource against key ""(.*)""")]
         public void GivenIBuildTheRegisterPatientFromStoredPatientResourceAgainstKey(string storedPatientKey)
         {
-            HttpContext.registerPatient.Add(storedPatientKey, (Patient)HttpContext.StoredFhirResources[storedPatientKey]);
+            _httpContext.registerPatient.Add(storedPatientKey, (Patient)_httpContext.StoredFhirResources[storedPatientKey]);
         }
         
         [Given(@"I remove the patients identifiers from the stored patient")]
         public void GivenIRemoveThePatientsIdentifiersFromTheStoredPatient()
         {
-            HttpContext.StoredPatient.Identifier = null;
+            _httpContext.StoredPatient.Identifier = null;
         }
 
         [Given(@"I remove the name element from the stored patient")]
         public void GivenIRemoveTheNameElementFromTheStoredPatient()
         {
-            HttpContext.StoredPatient.Name = null;
+            _httpContext.StoredPatient.Name = null;
         }
 
         [Given(@"I remove the family name element from the stored patient")]
         public void GivenIRemoveTheFamilyNameElementFromTheStoredPatient()
         {
-            HttpContext.StoredPatient.Name[0].Family = null;
+            _httpContext.StoredPatient.Name[0].Family = null;
         }
 
         [Given(@"I remove the given name element from the stored patient")]
         public void GivenIRemoveTheGivenNameElementFromTheStoredPatient()
         {
-            HttpContext.StoredPatient.Name[0].Given = null;
+            _httpContext.StoredPatient.Name[0].Given = null;
         }
 
         [Given(@"I remove the gender element from the stored patient")]
         public void GivenIRemoveTheGenderElementFromTheStoredPatient()
         {
-            HttpContext.StoredPatient.Gender = null;
+            _httpContext.StoredPatient.Gender = null;
         }
 
         [Given(@"I remove the DOB element from the stored patient")]
         public void GivenIRemoveTheDOBElementFromTheStoredPatient()
         {
-            HttpContext.StoredPatient.BirthDate = null;
+            _httpContext.StoredPatient.BirthDate = null;
         }
 
         [Given(@"I add the NHS Number identifier ""([^""]*)"" to the stored patient")]
         public void GivenIAddTheNHSNumberIdentifierToTheStoredPatient(string nhsNumber)
         {
-            HttpContext.StoredPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber));
+            _httpContext.StoredPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber));
         }
 
         [Given(@"I add the registration period with start date ""([^""]*)""")]
@@ -168,7 +168,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Period period = new Period();
             period.Start = regStartDate;
             registrationPeriod.Value = period;
-            HttpContext.StoredPatient.Extension.Add(registrationPeriod);
+            _httpContext.StoredPatient.Extension.Add(registrationPeriod);
         }
 
         [Given(@"I set the stored Patient registration period with start date ""([^""]*)"" and end date ""([^""]*)""")]
@@ -180,25 +180,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (!string.IsNullOrEmpty(regStartDate)) { period.Start = regStartDate; }
             if (!string.IsNullOrEmpty(regEndDate)) { period.End = regEndDate; }
             registrationPeriod.Value = period;
-            HttpContext.StoredPatient.Extension.Add(registrationPeriod);
+            _httpContext.StoredPatient.Extension.Add(registrationPeriod);
         }
         
         [Given(@"I add the stored patient as a parameter")]
         public void GivenIAddTheStoredPatientAsAParameter()
         {
-            HttpContext.BodyParameters.Add("registerPatient", HttpContext.StoredPatient);
+            _httpContext.BodyParameters.Add("registerPatient", _httpContext.StoredPatient);
         }
 
         [Given(@"I add the stored patient as a parameter with name ""([^""]*)""")]
         public void GivenIAddTheStoredPatientAsAParameterWithName(string parameterName)
         {
-            HttpContext.BodyParameters.Add(parameterName, HttpContext.StoredPatient);
+            _httpContext.BodyParameters.Add(parameterName, _httpContext.StoredPatient);
         }
 
         [Then(@"the patient resources within the bundle should contain a registration type")]
         public void ThenThePatientResourcesWithinTheBundleShouldContainARegistrationType()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient)) {
                     Patient patient = (Patient)entry.Resource;
@@ -222,7 +222,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I convert patient stored in ""([^""]*)"" to a register temporary patient against key ""([^""]*)""")]
         public void GivenIConvertPatientStoredInToARegisterTemporaryPatientAgainsKey(string storedPatientKey, string returnPatientKey)
         {
-            Patient storedPatient = (Patient) HttpContext.StoredFhirResources[storedPatientKey];
+            Patient storedPatient = (Patient) _httpContext.StoredFhirResources[storedPatientKey];
             Patient returnPatient = new Patient();
 
             foreach(var identifier in storedPatient.Identifier) {
@@ -257,14 +257,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             returnPatient.Gender = storedPatient.Gender != null ? storedPatient.Gender : AdministrativeGender.Unknown;
             returnPatient.BirthDateElement = storedPatient.BirthDateElement != null ? storedPatient.BirthDateElement : new Date();
             
-            if (HttpContext.StoredFhirResources.ContainsKey(returnPatientKey)) HttpContext.StoredFhirResources.Remove(returnPatientKey);
-            HttpContext.StoredFhirResources.Add(returnPatientKey, returnPatient);
+            if (_httpContext.StoredFhirResources.ContainsKey(returnPatientKey)) _httpContext.StoredFhirResources.Remove(returnPatientKey);
+            _httpContext.StoredFhirResources.Add(returnPatientKey, returnPatient);
         }
 
         [Given(@"I add the family name ""([^""]*)"" to the store patient")]
         public void GivenIAddTheFamilyNameToTheStoredPatient(string familyName)
         {
-            foreach (var name in HttpContext.StoredPatient.Name) {
+            foreach (var name in _httpContext.StoredPatient.Name) {
                 name.FamilyElement.Add(new FhirString(familyName));
             }
         }
@@ -272,7 +272,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add the given name ""([^""]*)"" to the stored patient")]
         public void GivenIAddTheGivenNameToTheStoredPatient(string givenName)
         {
-            foreach (var name in HttpContext.StoredPatient.Name)
+            foreach (var name in _httpContext.StoredPatient.Name)
             {
                 name.GivenElement.Add(new FhirString(givenName));
             }
@@ -284,7 +284,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var name = new HumanName();
             name.GivenElement.Add(new FhirString(givenName));
             name.FamilyElement.Add(new FhirString(familyName));
-            HttpContext.StoredPatient.Name.Add(name);
+            _httpContext.StoredPatient.Name.Add(name);
         }
 
         [Given(@"I add an identifier with no system element to stored patient")]
@@ -292,7 +292,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var identifier = new Identifier();
             identifier.Value = "NewIdentifierNoSystem";
-            HttpContext.StoredPatient.Identifier.Add(identifier);
+            _httpContext.StoredPatient.Identifier.Add(identifier);
         }
         
         [Given(@"I add a generic identifier to stored patient")]
@@ -301,13 +301,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var identifier = new Identifier();
             identifier.Value = "GenericIdentifierValue";
             identifier.System = "GenericIdentifierSystem";
-            HttpContext.StoredPatient.Identifier.Add(identifier);
+            _httpContext.StoredPatient.Identifier.Add(identifier);
         }
 
         [Given(@"I add a telecom element to stored patient")]
         public void GivenIAddATelecomElementToStoredPatient()
         {
-            HttpContext.StoredPatient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+            _httpContext.StoredPatient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
         }
 
         [Given(@"I add a address element to stored patient")]
@@ -318,31 +318,31 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             address.LineElement.Add(new FhirString("Boar Lane"));
             address.CityElement = new FhirString("Leeds");
             address.PostalCode = "LS1 6AE";
-            HttpContext.StoredPatient.Address.Add(address);
+            _httpContext.StoredPatient.Address.Add(address);
         }
 
         [Given(@"I add a active element to stored patient")]
         public void GivenIAddAActiveElementToStoredPatient()
         {
-            HttpContext.StoredPatient.Active = true;
+            _httpContext.StoredPatient.Active = true;
         }
 
         [Given(@"I add a deceased element to stored patient")]
         public void GivenIAddADeceasedElementToStoredPatient()
         {
-            HttpContext.StoredPatient.Deceased = new FhirBoolean(false);
+            _httpContext.StoredPatient.Deceased = new FhirBoolean(false);
         }
         
         [Given(@"I add a marital element to stored patient")]
         public void GivenIAddAMaritalElementToStoredPatient()
         {
-            HttpContext.StoredPatient.MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "M");
+            _httpContext.StoredPatient.MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "M");
         }
 
         [Given(@"I add a births element to stored patient")]
         public void GivenIAddABirthsElementToStoredPatient()
         {
-            HttpContext.StoredPatient.MultipleBirth = new FhirBoolean(true);
+            _httpContext.StoredPatient.MultipleBirth = new FhirBoolean(true);
         }
         
         [Given(@"I add a photo element to stored patient")]
@@ -350,7 +350,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var attachment = new Attachment();
             attachment.Url = "Test Photo Element";
-            HttpContext.StoredPatient.Photo.Add(attachment);
+            _httpContext.StoredPatient.Photo.Add(attachment);
         }
 
         [Given(@"I add a contact element to stored patient")]
@@ -360,14 +360,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             contact.Name = new HumanName();
             contact.Name.GivenElement.Add(new FhirString("TestGiven"));
             contact.Name.FamilyElement.Add(new FhirString("TestFamily"));
-            HttpContext.StoredPatient.Contact.Add(contact);
+            _httpContext.StoredPatient.Contact.Add(contact);
         }
 
         [Given(@"I add a animal element to stored patient")]
         public void GivenIAddAAnimalElementToStoredPatient()
         {
-            HttpContext.StoredPatient.Animal = new Patient.AnimalComponent();
-            HttpContext.StoredPatient.Animal.Species = new CodeableConcept("AllSpecies", "Human");
+            _httpContext.StoredPatient.Animal = new Patient.AnimalComponent();
+            _httpContext.StoredPatient.Animal.Species = new CodeableConcept("AllSpecies", "Human");
         }
 
         [Given(@"I add a communication element to stored patient")]
@@ -375,7 +375,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var com = new Patient.CommunicationComponent();
             com.Language = new CodeableConcept("https://tools.ietf.org/html/bcp47", "en");
-            HttpContext.StoredPatient.Communication.Add(com);
+            _httpContext.StoredPatient.Communication.Add(com);
         }
         
         [Given(@"I add a careprovider element to stored patient")]
@@ -383,7 +383,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var reference = new ResourceReference();
             reference.Display = "Test Care Provider";
-            HttpContext.StoredPatient.CareProvider.Add(reference);
+            _httpContext.StoredPatient.CareProvider.Add(reference);
         }
 
         [Given(@"I add a managingorg element to stored patient")]
@@ -391,7 +391,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var reference = new ResourceReference();
             reference.Display = "Test Managing Org";
-            HttpContext.StoredPatient.ManagingOrganization = reference;
+            _httpContext.StoredPatient.ManagingOrganization = reference;
         }
 
         [Given(@"I add a link element to stored patient")]
@@ -402,13 +402,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var link = new Patient.LinkComponent();
             link.Other = reference;
             link.Type = Patient.LinkType.Refer;
-            HttpContext.StoredPatient.Link.Add(link);
+            _httpContext.StoredPatient.Link.Add(link);
         }
 
         [Then(@"the patient resources within the bundle should contain a registration status")]
         public void ThenThePatientResourcesWithinTheBundleShouldContainARegistrationStatus()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
@@ -432,7 +432,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the patient resources within the bundle should contain a registration period")]
         public void ThenThePatientResourcesWithinBundleShouldContainARegistrationPeriod()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
@@ -458,28 +458,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             // Get Stored Patient NHS Number Identifier
             string storedPatientNHSNumber = null;
-            foreach (Identifier identifier in HttpContext.StoredPatient.Identifier) {
+            foreach (Identifier identifier in _httpContext.StoredPatient.Identifier) {
                 if (identifier.System != null && string.Equals(identifier.System, FhirConst.IdentifierSystems.kNHSNumber)) {
                     storedPatientNHSNumber = identifier.Value;
                 }
             }
             
             // Check the content of the returned patients matches the sent stored patient
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
                 {
                     Patient patient = (Patient)entry.Resource;
                     patient.BirthDate.ShouldNotBeNull("The returned patient resource should contain a birthDate element.");
-                    patient.BirthDate.ShouldBe(HttpContext.StoredPatient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
+                    patient.BirthDate.ShouldBe(_httpContext.StoredPatient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
 
                     patient.Gender.ShouldNotBeNull("The patient resource should contain a gender element");
-                    patient.Gender.ShouldBe(HttpContext.StoredPatient.Gender, "The returned patient gender does not match the creted patient gender");
+                    patient.Gender.ShouldBe(_httpContext.StoredPatient.Gender, "The returned patient gender does not match the creted patient gender");
                     
                     patient.Name.Count.ShouldBe(1, "There should be a single name element within the returned patient resource");
                     
-                    var storedGivenName = HttpContext.StoredPatient.Name.First().Given.First();
-                    var storedFamilyName = HttpContext.StoredPatient.Name.First().Family.First();
+                    var storedGivenName = _httpContext.StoredPatient.Name.First().Given.First();
+                    var storedFamilyName = _httpContext.StoredPatient.Name.First().Family.First();
 
                     foreach (HumanName name in patient.Name)
                     {
@@ -528,8 +528,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I register patient stored against key ""(.*)"" with url ""(.*)""")]
         public void IRegisterPatientStoredAgainstKeyWithURL(string storedPatientKey, string url)
         {
-            Patient patient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
-            FhirContext.FhirRequestParameters.Add("registerPatient", patient);
+            Patient patient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
+            _fhirContext.FhirRequestParameters.Add("registerPatient", patient);
             IRegisterPatientWithURL(url);
         }
 
@@ -543,25 +543,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IRegisterPatientWithURL(string url)
         {
             string body = null;
-            if (HttpContext.RequestContentType.Contains("xml"))
+            if (_httpContext.RequestContentType.Contains("xml"))
             {
-                body = FhirSerializer.SerializeToXml(FhirContext.FhirRequestParameters);
+                body = FhirSerializer.SerializeToXml(_fhirContext.FhirRequestParameters);
             }
             else
             {
-                body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
+                body = FhirSerializer.SerializeToJson(_fhirContext.FhirRequestParameters);
             }
-            HttpSteps.RestRequest(Method.POST, url, body);
+            _httpSteps.RestRequest(Method.POST, url, body);
         }
 
         [Then(@"the response location header should resolve to a patient resource with matching details to stored patient ""([^""]*)""")]
         public void ThenTheResponseLocationHeaderShouldResolveToAPatientResourceWithMatchingDetailsToStoredPatient(string storedPatientKey)
         {
-            string patientResourceLocationHeader = HttpContext.RequestHeaders.GetHeaderValue(HttpConst.Headers.kLocation);
+            string patientResourceLocationHeader = _httpContext.RequestHeaders.GetHeaderValue(HttpConst.Headers.kLocation);
             patientResourceLocationHeader.ShouldNotBeNullOrEmpty();
-            Patient returnedResource = (Patient)HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", patientResourceLocationHeader);
+            Patient returnedResource = (Patient)_httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:patient", patientResourceLocationHeader);
             returnedResource.GetType().ShouldBe(typeof(Patient));
-            Patient storedPatient = (Patient)HttpContext.StoredFhirResources[storedPatientKey];
+            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
             returnedResource.Name.Count.ShouldBe(storedPatient.Name.Count);
             // Check names match in resources
             foreach (var returnedName in returnedResource.Name)
@@ -593,7 +593,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 _patientSteps.GetThePatientForPatientNhsNumber(registerPatient.SPINE_NHS_NUMBER);
 
-                var entries = FhirContext.Entries;
+                var entries = _fhirContext.Entries;
 
                 if (!entries.Any())
                 {
@@ -633,7 +633,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     }
 
 
-                    HttpContext.StoredPatient = patientToRegister;
+                    _httpContext.StoredPatient = patientToRegister;
 
                     return;
                 }
@@ -643,8 +643,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I store the patient in the register patient resource format")]
         public void GivenIStoreThePatientInTheRegisterPatientResourceFormat()
         {
-            ((Bundle)FhirContext.FhirResponseResource).Entry.Count.ShouldBeGreaterThanOrEqualTo(1, "No patients were returned for the patient search.");
-            var foundPatient = (Patient)((Bundle)FhirContext.FhirResponseResource).Entry[0].Resource;
+            ((Bundle)_fhirContext.FhirResponseResource).Entry.Count.ShouldBeGreaterThanOrEqualTo(1, "No patients were returned for the patient search.");
+            var foundPatient = (Patient)((Bundle)_fhirContext.FhirResponseResource).Entry[0].Resource;
             
             Patient storePatient = new Patient();
 
@@ -679,7 +679,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             storePatient.Gender = foundPatient.Gender != null ? foundPatient.Gender : AdministrativeGender.Unknown;
             storePatient.BirthDateElement = foundPatient.BirthDateElement != null ? foundPatient.BirthDateElement : new Date();
 
-            HttpContext.StoredPatient = storePatient;
+            _httpContext.StoredPatient = storePatient;
         }
 
         [Given(@"I set the stored Patient Registration Period to ""([^""]*)""")]
@@ -692,7 +692,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 
             };
 
-            HttpContext.StoredPatient.Extension.Add(registrationPeriod);
+            _httpContext.StoredPatient.Extension.Add(registrationPeriod);
         }
 
         [Given(@"I set the stored Patient Registration Status to ""([^""]*)""")]
@@ -712,7 +712,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Value = codableConcept
             };
 
-            HttpContext.StoredPatient.Extension.Add(registrationStatus);
+            _httpContext.StoredPatient.Extension.Add(registrationStatus);
         }
 
         [Given(@"I set the stored Patient Registration Type to ""([^""]*)""")]
@@ -732,7 +732,58 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Value = codableConcept
             };
 
-            HttpContext.StoredPatient.Extension.Add(registrationType);
+            _httpContext.StoredPatient.Extension.Add(registrationType);
+        }
+
+
+        // Patient Steps
+        [Given(@"I perform a patient search for patient ""([^""]*)"" and store the first returned resources against key ""([^""]*)""")]
+        public void IPerformAPatientSearchForPatientAndStoreTheFirstReturnedResourceAgainstKey(string patient, string patientResourceKey)
+        {
+            Given($@"I am using the default server");
+            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient"" interaction");
+            And($@"I set the JWT requested record NHS number to config patient ""{patient}""");
+            And($@"I set the JWT requested scope to ""patient/*.read""");
+            When($@"I search for Patient ""{patient}""");
+            Then($@"the response status code should indicate success");
+            And($@"the response body should be FHIR JSON");
+            And($@"the response should be a Bundle resource of type ""searchset""");
+            And($@"the response bundle should contain ""1"" entries");
+
+            var returnedFirstResource = (Patient)((Bundle)_fhirContext.FhirResponseResource).Entry[0].Resource;
+            returnedFirstResource.GetType().ShouldBe(typeof(Patient));
+            if (_httpContext.StoredFhirResources.ContainsKey(patientResourceKey)) _httpContext.StoredFhirResources.Remove(patientResourceKey);
+            _httpContext.StoredFhirResources.Add(patientResourceKey, returnedFirstResource);
+        }
+
+        [Given(@"I perform a patient search for patient with NHSNumber ""([^""]*)"" and store the response bundle against key ""([^""]*)""")]
+        public void IPerformAPatientSearchForPatientWithNHSNumberAndStoreTheResponseBundleAgainstKey(string nhsNumber, string patientSearchResponseBundleKey)
+        {
+            Given($@"I am using the default server");
+            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient"" interaction");
+            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
+            And($@"I set the JWT requested scope to ""patient/*.read""");
+            When($@"I search for Patient with NHS Number ""{nhsNumber}""");
+            Then($@"the response status code should indicate success");
+            And($@"the response body should be FHIR JSON");
+            And($@"the response should be a Bundle resource of type ""searchset""");
+            if (_httpContext.StoredFhirResources.ContainsKey(patientSearchResponseBundleKey)) _httpContext.StoredFhirResources.Remove(patientSearchResponseBundleKey);
+            _httpContext.StoredFhirResources.Add(patientSearchResponseBundleKey, (Bundle)_fhirContext.FhirResponseResource);
+        }
+
+        [When(@"I search for Patient with NHS Number ""([^""]*)""")]
+        public void ISearchForPatientWithNHSNumber(string nhsNumber)
+        {
+            var parameterString = FhirConst.IdentifierSystems.kNHSNumber + "|" + nhsNumber;
+            ISearchForAPatientWithParameterNameAndParameterString("identifier", parameterString);
+        }
+
+
+        [When(@"I search for a Patient with patameter name ""([^""]*)"" and parameter string ""([^""]*)""")]
+        public void ISearchForAPatientWithParameterNameAndParameterString(string parameterName, string parameterString)
+        {
+            Given($@"I add the parameter ""{parameterName}"" with the value ""{parameterString}""");
+            When($@"I make a GET request to ""/Patient""");
         }
     }
 }

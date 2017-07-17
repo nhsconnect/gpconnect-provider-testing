@@ -647,7 +647,7 @@ Scenario Outline: if patient contins communicaiton
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And If composition contains the patient resource communication the mandatory fields should match the specification
+		And the Patient Communication should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -719,7 +719,7 @@ Scenario Outline: patient does not contain disallowed fields
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the Patient should exclude fields which are not permitted by the specification
+		And the Patient should exclude disallowed fields
 	Examples:
 		| Code |
 		| ADM  |
