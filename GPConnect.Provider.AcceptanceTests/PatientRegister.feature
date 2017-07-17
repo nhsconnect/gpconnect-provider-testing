@@ -1,5 +1,5 @@
 ﻿@patient
-Feature: PatientRegister`
+Feature: PatientRegister
 
 Scenario Outline: Register patient send request to incorrect URL
 	Given I get the next Patient to register and store it
