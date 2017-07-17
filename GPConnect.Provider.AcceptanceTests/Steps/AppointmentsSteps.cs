@@ -827,8 +827,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             if (appointment != null)
                 HttpContext.CreatedAppointment = appointment;
+       
         }
-     
+
+
+        [Given(@"I create a bundle resource and add it to the request")]
+        public void ICreateaBundleResourceAndAddItToTheRequest()
+        {
+            var bundle = new Bundle();
+            HttpContext.StoredBundle = bundle;
+        }
+
+        
+
 
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
         public void CreateAnAppointmentFromTheStoredPatientAndStoredSchedule()
@@ -944,6 +955,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.CreatedAppointment.Comment = comment;
         }
 
+        [Given(@"I set the created Appointment reason to ""([^""]*)""")]
+        public void SetTheCreatedAppointmentReasonTo(string reason)
+        {
+            HttpContext.CreatedAppointment.Reason = new CodeableConcept();
+            HttpContext.CreatedAppointment.Reason.Coding = new List<Coding>();
+            HttpContext.CreatedAppointment.Reason.Coding.Add(new Coding("http://snomed.info/sct", reason, reason));
+        }
+
+        [Given(@"I set the created Appointment description to ""([^""]*)""")]
+        public void SetTheCreatedAppointmentDescriptionTo(string description)
+        {
+            HttpContext.CreatedAppointment.Description = description;
+      
+        }
+
+
+
         [Given(@"I set the created Appointment to Cancelled with Reason ""([^""]*)""")]
         public void SetTheCreatedAppointmentToCancelledWithReason(string reason)
         {
@@ -955,7 +983,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.CreatedAppointment.Extension.Add(extension);
             HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
         }
-        
+
+        [Given(@"I set the created Appointment to Cancelled with URL ""([^""]*)"" and Reason ""([^""]*)""")]
+        public void SetTheCreatedAppointmentToCancelledWithURLAndReason(string URL, string reason)
+        {
+            var extension = GetCancellationReasonExtensionWithURL(URL, reason);
+
+            if (HttpContext.CreatedAppointment.Extension == null)
+                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+
+            HttpContext.CreatedAppointment.Extension.Add(extension);
+            HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
+        }
+
+        private static Extension GetCancellationReasonExtensionWithURL(string URL, string reason)
+        {
+            return new Extension
+            {
+                Url = URL,
+                Value = new FhirString(reason)
+            };
+
+        }
+
+
         private static Extension GetCancellationReasonExtension(string reason)
         {
             return new Extension

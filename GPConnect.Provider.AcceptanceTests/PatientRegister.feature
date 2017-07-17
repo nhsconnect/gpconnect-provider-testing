@@ -9,9 +9,10 @@ Scenario Outline: Register patient send request to incorrect URL
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
 		And I set the request URL to "<url>"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
+	Then the response status code should be "501"
+		And the response should be a OperationOutcome resource with error code "NOT_IMPLEMENTED"
 	Examples:
 		| StartDate		| url                            |
 		| 2017-05-05	| Patient/$gpc.registerpatien    |
@@ -25,6 +26,7 @@ Scenario Outline: Register patient with invalid interactionIds
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
 		And I am performing the "<interactionId>" interaction
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -44,6 +46,7 @@ Scenario Outline: Register patient with missing header
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
 		And I do not send header "<Header>"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -63,6 +66,7 @@ Scenario: Register patient without sending identifier within patient
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
 		And I remove the patients identifiers from the stored patient
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
@@ -75,6 +79,7 @@ Scenario: Register patient without name element
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
 		And I remove the name element from the stored patient
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -87,6 +92,7 @@ Scenario: Register patient without gender element
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
 		And I remove the gender element from the stored patient
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -99,6 +105,7 @@ Scenario: Register patient without date of birth element
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
 		And I remove the DOB element from the stored patient
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -112,6 +119,7 @@ Scenario Outline: Register patient with an invalid NHS number
 		And I set the stored Patient Registration Type to "T"
 		And I remove the patients identifiers from the stored patient
 		And I add the NHS Number identifier "<nhsNumber>" to the stored patient
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
@@ -135,6 +143,7 @@ Scenario Outline: Register Patient and use the Accept Header to request response
 		And I set the stored Patient Registration Type to "T"
 		And I set the request content type to "<ContentType>"
 		And I set the Accept header to "<ContentType>"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
@@ -159,6 +168,7 @@ Scenario Outline: Register Patient and use the _format parameter to request the 
 		And I set the stored Patient Registration Type to "T"
 		And I set the request content type to "<ContentType>"
 		And I add the parameter "_format" with the value "<ContentType>"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
@@ -181,9 +191,11 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
+		And I add a generic identifier to stored patient
 		And I set the request content type to "<ContentType>"
 		And I set the Accept header to "<AcceptHeader>"
 		And I add the parameter "_format" with the value "<FormatParam>"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
@@ -214,6 +226,7 @@ Scenario: Register patient and check all elements conform to the gp connect prof
 		And I set the stored Patient Registration Type to "T"
 		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
 		And I set the stored Patient Registration Status to "A"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -230,6 +243,7 @@ Scenario: Register patient without registration period element
 		And I set the JWT Requested Record to the NHS Number of the stored Patient
 		And I set the stored Patient Registration Type to "T"
 		And I set the stored Patient Registration Status to "A"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -240,6 +254,7 @@ Scenario: Register patient without registration status code element
 		And I set the JWT Requested Record to the NHS Number of the stored Patient
 		And I set the stored Patient Registration Type to "T"
 		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -250,6 +265,7 @@ Scenario: Register patient without registration type element
 		And I set the JWT Requested Record to the NHS Number of the stored Patient
 		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
 		And I set the stored Patient Registration Status to "A"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -259,6 +275,7 @@ Scenario: Register patient without registration period or type code elements
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the stored Patient
 		And I set the stored Patient Registration Status to "A"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -268,6 +285,7 @@ Scenario: Register patient without registration status code or registration type
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the stored Patient
 		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -276,6 +294,7 @@ Scenario: Register patient without any extension elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -288,6 +307,7 @@ Scenario: Register patient with duplicate extension
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
 		And I set the stored Patient Registration Status to "A"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -299,6 +319,7 @@ Scenario: Register patient with duplicate extension and missing extension
 		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
 		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
 		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -310,6 +331,7 @@ Scenario: Register patient with invalid bundle resource type
 		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request with invalid Resource type
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -321,6 +343,7 @@ Scenario: Register patient with invalid patient resource type
 		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request with invalid parameter Resource type
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -332,72 +355,62 @@ Scenario: Register patient with invalid patient resource with additional element
 		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
 		And I set the stored Patient Registration Status to "A"
 		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
 	When I make the "RegisterPatient" request with additional field in parameter Resource
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Register patient with duplicate patient resource parameters
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
-		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
-	When I send a gpc.registerpatient to create patient
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient with duplicate parameters valid first
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
+Scenario: Register patient with additional parameters but the valid patient parameter first
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
 		And I am requesting the "SUM" care record section
-	When I send a gpc.registerpatient to create patient
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Register patient with duplicate parameters invalid first
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
 		And I am requesting the "SUM" care record section
-		And I add the resource stored against key "registerPatient" as a parameter named "registerPatient" to the request
-	When I send a gpc.registerpatient to create patient
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario Outline: Register patient with invalid parameters name
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-		And I add the resource stored against key "registerPatient" as a parameter named "<ParameterName>" to the request
-	When I send a gpc.registerpatient to create patient
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I am requesting the "SUM" care record section
+		And I add the stored patient as a parameter with name "<ParameterName>"
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 	| ParameterName        |
 	| invalidName          |
@@ -406,236 +419,226 @@ Scenario Outline: Register patient with invalid parameters name
 	| null                 |
 
 Scenario: Register patient which alread exists on the system as a normal patient
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "registerPatient"
-	Given I convert patient stored in "registerPatient" to a register temporary patient against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Given I get the Patient for Patient Value "patient1"
+		And I store the patient in the register patient resource format
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
 
 Scenario: Register patient which alread exists on the system as a temporary patient
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"		
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-05-11" and end date "2018-12-12"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient which is not on PDS
-	Given I create a patient to register which does not exist on PDS and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario: Register patient which is not the Spine
+	Given I create a patient to register which does not exist on PDS and store the Patient
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient with Prefer header representation response
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I set the Prefer header to "return=representation"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain a single Patient resource
-		And the content-type should not be equal to null
-		And the content-length should not be equal to zero
-		And the response location header should resolve to a patient resource with matching details to stored patient "registerPatient"
-
-Scenario: Register patient with Prefer header minimal response
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration period with start date "2017-05-05" and end date "2018-09-12" to "registerPatient"
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I set the Prefer header to "return=minimal"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
-	Then the response status code should indicate success
-		And the response body should be empty
-		And the content-type should be equal to null
-		And the response location header should resolve to a patient resource with matching details to stored patient "registerPatient"
-
-Scenario: Multiple family names
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-		And I add the family name "AddFamilyName" to the patient stored against key "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario: Register patient with demographics which do not match spine PDS trace
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I update the stored patient details to not match the NHS number
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Multiple given names
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-		And I add the given name "AddGivenName" to the patient stored against key "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario: Register patient no family names
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I remove the family name element from the stored patient
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Multiple Names
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-		And I add a name with given name "NewGivenName" and family name "NewFamilyName" to the patient stored against key "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario: Register patient with multiple family names
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the family name "AddedFamilyName" to the store patient
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Identifier without mandatory system elements
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-		And I add an identifier with no system element to stored patient "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario: Register patient no given names
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I remove the given name element from the stored patient
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario Outline: Invalid registration period
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "<StartDate>" and end date "<EndDate>" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario: Register patient with multiple given names
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the given name "AddedGivenName" to the stored patient
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	
+Scenario: Register patient with multiple name elements
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add a name with given name "NewGivenName" and family name "NewFamilyName" to the stored patient
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient containing identifier without mandatory system elements
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add an identifier with no system element to stored patient
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario Outline: Register patient with invalid registration period extension
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "<StartDate>" and end date "<EndDate>"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "422"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
-	| StartDate  | EndDate    |
-	| abc        | 2018-12-24 |
-	| 2017-08-24 | invalid    |
-	| noEnd      |            |
-	|            | noStart    |
+		| StartDate  | EndDate    |
+		| abc        | 2018-12-24 |
+		| 2017-08-24 | invalid    |
+		| noEnd      |            |
+		|            | noStart    |
 
-Scenario: Registration period with only end date
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "" and end date "2018-12-24" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario: Register patient with a registration period only containing an end date
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "" and end date "2018-12-24"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
-		And the bundle should contain a registration period
+		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resources within the bundle should contain a registration period
+		And the patient resources within the bundle should contain a registration status
+		And the patient resources within the bundle should contain a registration type
 
-Scenario: Registration period with only start date
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2016-09-24" and end date "" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario: Register patient with a registration period only containing a start date
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-07-14" and end date ""
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
-		And the bundle should contain a registration period
+		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resources within the bundle should contain a registration period
+		And the patient resources within the bundle should contain a registration status
+		And the patient resources within the bundle should contain a registration type
 
-Scenario Outline: Invalid registration status
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "<Code>" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario Outline: Register patient with invalid registration status
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-07-14" and end date "2018-11-23"
+		And I set the stored Patient Registration Status to "<Code>"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-	| Code     |
-	| Z        |
-	| Active   |
-	| Inactive |
-	| AA       |
-	| OK       |
-	|          |
+		| Code     |
+		| Z        |
+		| Active   |
+		| Inactive |
+		| AA       |
+		| OK       |
+		|          |
 
-Scenario Outline: Invalid registration type
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "<Code>" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario Outline: Register patient with invalid registration type
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-07-14" and end date "2018-11-28"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "<Code>"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| Code             |
@@ -645,19 +648,17 @@ Scenario Outline: Invalid registration type
 		| Private          |
 		|                  |
 
-Scenario Outline: Additional not allowed elements
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-		And I add a <ElementToAdd> element to patient stored against "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario Outline: Register patient with additional not allowed elements
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the stored Patient registration period with start date "2017-07-14" and end date "2018-11-28"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+		And I add a <ElementToAdd> element to stored patient
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| ElementToAdd  |
@@ -675,18 +676,17 @@ Scenario Outline: Additional not allowed elements
 		| managingorg   |
 		| link          |
 
-Scenario Outline: JWT matches patient patient type request
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "registerPatient"
+Scenario Outline: Register patient setting JWT request type to invalid type
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the stored Patient
 		And I set the JWT requested scope to "<JWTType>"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+		And I set the stored Patient registration period with start date "2017-07-14" and end date "2018-11-28"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| JWTType              |
@@ -694,16 +694,14 @@ Scenario Outline: JWT matches patient patient type request
 		| organization/*.read  |
 		| organization/*.write |
 
-Scenario: JWT patient reference match payload patients nhs number
-	Given I find the next patient to register and store the Patient Resource against key "registerPatient"
-	Given I am using the default server
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.write"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatient" interaction
-		And I add the registration status with code "A" to "registerPatient"
-		And I add the registration type with code "T" to "registerPatient"
-		And I add the registration period with start date "2017-04-12" and end date "2018-12-24" to "registerPatient"
-	When I send a gpc.registerpatient to create patient stored against key "registerPatient"
+Scenario: Register patient setting JWT patient reference so it does not match payload patient
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number "9999999999"
+		And I set the stored Patient registration period with start date "2017-07-14" and end date "2018-11-28"
+		And I set the stored Patient Registration Status to "A"
+		And I set the stored Patient Registration Type to "T"
+		And I add the stored patient as a parameter
+	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

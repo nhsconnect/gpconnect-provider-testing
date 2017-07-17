@@ -36,8 +36,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _patientSteps = patientSteps;
         }
 
-        [Given(@"I create a patient to register which does not exist on PDS and store the Patient Resource against key ""([^""]*)""")]
-        public void GivenICreateAPatientToRegisterWhichDoesNoteExistOnPDSAndStoreThePatientResourceAgainstKey(string patientResourceKey)
+        [Given(@"I create a patient to register which does not exist on PDS and store the Patient")]
+        public void GivenICreateAPatientToRegisterWhichDoesNoteExistOnPDSAndStoreThePatient()
         {
             Patient returnPatient = new Patient();
             returnPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, "9019546082"));
@@ -48,10 +48,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             returnPatient.Name.Add(name);
             returnPatient.Gender = AdministrativeGender.Other;
             returnPatient.BirthDateElement = new Date("2017-05-05");
-            if (_httpContext.StoredFhirResources.ContainsKey(patientResourceKey)) _httpContext.StoredFhirResources.Remove(patientResourceKey);
-            _httpContext.StoredFhirResources.Add(patientResourceKey, returnPatient);
+            HttpContext.StoredPatient = returnPatient;
         }
-        
+
+        [Given(@"I update the stored patient details to not match the NHS number")]
+        public void GivenIUpdateTheStoredPatientDetailsToNotMatchTheNHSNumber()
+        {
+            HumanName name = new HumanName();
+            name.FamilyElement.Add(new FhirString("GPConnectFamilyName"));
+            name.GivenElement.Add(new FhirString("GPConnectGivenName"));
+            HttpContext.StoredPatient.Name = new List<HumanName>();
+            HttpContext.StoredPatient.Name.Add(name);
+            HttpContext.StoredPatient.Gender = AdministrativeGender.Other;
+            HttpContext.StoredPatient.BirthDateElement = new Date("2017-05-05");
+        }
+
         [Given(@"I find the next patient to register and store the Patient Resource against key ""([^""]*)""")]
         public void GivenIFindTheNextPatientToRegisterAndStoreThePatientResourceAgainstKey(string patientResourceKey)
         {
@@ -119,6 +130,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.StoredPatient.Name = null;
         }
 
+        [Given(@"I remove the family name element from the stored patient")]
+        public void GivenIRemoveTheFamilyNameElementFromTheStoredPatient()
+        {
+            HttpContext.StoredPatient.Name[0].Family = null;
+        }
+
+        [Given(@"I remove the given name element from the stored patient")]
+        public void GivenIRemoveTheGivenNameElementFromTheStoredPatient()
+        {
+            HttpContext.StoredPatient.Name[0].Given = null;
+        }
+
         [Given(@"I remove the gender element from the stored patient")]
         public void GivenIRemoveTheGenderElementFromTheStoredPatient()
         {
@@ -160,10 +183,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.StoredPatient.Extension.Add(registrationPeriod);
         }
         
-        [Given(@"I add the resource stored against key ""([^""]*)"" as a parameter named ""([^""]*)"" to the request")]
-        public void GivenIAddTheResourceStoredAgainstKeyAsAParameternamedToTheRequest(string storedPatientKey, string parameterName)
+        [Given(@"I add the stored patient as a parameter")]
+        public void GivenIAddTheStoredPatientAsAParameter()
         {
-            _fhirContext.FhirRequestParameters.Add(parameterName, _httpContext.StoredFhirResources[storedPatientKey]);
+            HttpContext.BodyParameters.Add("registerPatient", HttpContext.StoredPatient);
+        }
+
+        [Given(@"I add the stored patient as a parameter with name ""([^""]*)""")]
+        public void GivenIAddTheStoredPatientAsAParameterWithName(string parameterName)
+        {
+            HttpContext.BodyParameters.Add(parameterName, HttpContext.StoredPatient);
         }
 
         [Then(@"the patient resources within the bundle should contain a registration type")]
@@ -232,157 +261,148 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.StoredFhirResources.Add(returnPatientKey, returnPatient);
         }
 
-        [Given(@"I add the family name ""([^""]*)"" to the patient stored against key ""([^""]*)""")]
-        public void GivenIAddTheFamilyNameToThePatientStoredAgainstKey(string familyName, string storedPatientKey)
+        [Given(@"I add the family name ""([^""]*)"" to the store patient")]
+        public void GivenIAddTheFamilyNameToTheStoredPatient(string familyName)
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
-            foreach (var name in storedPatient.Name) {
+            foreach (var name in HttpContext.StoredPatient.Name) {
                 name.FamilyElement.Add(new FhirString(familyName));
             }
-
         }
 
-        [Given(@"I add the given name ""([^""]*)"" to the patient stored against key ""([^""]*)""")]
-        public void GivenIAddTheGivenNameToThePatientStoredAgainstKey(string givenName, string storedPatientKey)
+        [Given(@"I add the given name ""([^""]*)"" to the stored patient")]
+        public void GivenIAddTheGivenNameToTheStoredPatient(string givenName)
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
-            foreach (var name in storedPatient.Name)
+            foreach (var name in HttpContext.StoredPatient.Name)
             {
                 name.GivenElement.Add(new FhirString(givenName));
             }
         }
 
-        [Given(@"I add a name with given name ""([^""]*)"" and family name ""([^""]*)"" to the patient stored against key ""([^""]*)""")]
-        public void GivenIAddTheGivenNameAndFamilyNameToThePatientStoredAgainstKey(string givenName, string familyName, string storedPatientKey)
+        [Given(@"I add a name with given name ""([^""]*)"" and family name ""([^""]*)"" to the stored patient")]
+        public void GivenIAddTheGivenNameAndFamilyNameToThePatientStoredAgainstKey(string givenName, string familyName)
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
             var name = new HumanName();
             name.GivenElement.Add(new FhirString(givenName));
             name.FamilyElement.Add(new FhirString(familyName));
-            storedPatient.Name.Add(name);
+            HttpContext.StoredPatient.Name.Add(name);
         }
 
-        [Given(@"I add an identifier with no system element to stored patient ""([^""]*)""")]
-        public void GivenIAddAnIdentifierWithNoSystemElementToStoredPatient(string storedPatientKey)
+        [Given(@"I add an identifier with no system element to stored patient")]
+        public void GivenIAddAnIdentifierWithNoSystemElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
             var identifier = new Identifier();
             identifier.Value = "NewIdentifierNoSystem";
-            storedPatient.Identifier.Add(identifier);
+            HttpContext.StoredPatient.Identifier.Add(identifier);
+        }
+        
+        [Given(@"I add a generic identifier to stored patient")]
+        public void GivenIAddAGenericIdentifierToStoredPatient()
+        {
+            var identifier = new Identifier();
+            identifier.Value = "GenericIdentifierValue";
+            identifier.System = "GenericIdentifierSystem";
+            HttpContext.StoredPatient.Identifier.Add(identifier);
         }
 
-        [Given(@"I add a telecom element to patient stored against ""([^""]*)""")]
-        public void GivenIAddATelecomElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a telecom element to stored patient")]
+        public void GivenIAddATelecomElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
-            storedPatient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+            HttpContext.StoredPatient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
         }
 
-        [Given(@"I add a address element to patient stored against ""([^""]*)""")]
-        public void GivenIAddAAddressElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a address element to stored patient")]
+        public void GivenIAddAAddressElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
             var address = new Address();
             address.LineElement.Add(new FhirString("1 Trevelyan Square"));
             address.LineElement.Add(new FhirString("Boar Lane"));
             address.CityElement = new FhirString("Leeds");
             address.PostalCode = "LS1 6AE";
-            storedPatient.Address.Add(address);
+            HttpContext.StoredPatient.Address.Add(address);
         }
 
-        [Given(@"I add a active element to patient stored against ""([^""]*)""")]
-        public void GivenIAddAActiveElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a active element to stored patient")]
+        public void GivenIAddAActiveElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
-            storedPatient.Active = true;
+            HttpContext.StoredPatient.Active = true;
         }
 
-        [Given(@"I add a deceased element to patient stored against ""([^""]*)""")]
-        public void GivenIAddADeceasedElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a deceased element to stored patient")]
+        public void GivenIAddADeceasedElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
-            storedPatient.Deceased = new FhirBoolean(false);
+            HttpContext.StoredPatient.Deceased = new FhirBoolean(false);
         }
         
-        [Given(@"I add a marital element to patient stored against ""([^""]*)""")]
-        public void GivenIAddAMaritalElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a marital element to stored patient")]
+        public void GivenIAddAMaritalElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
-            storedPatient.MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "M");
+            HttpContext.StoredPatient.MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "M");
         }
 
-        [Given(@"I add a births element to patient stored against ""([^""]*)""")]
-        public void GivenIAddABirthsElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a births element to stored patient")]
+        public void GivenIAddABirthsElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
-            storedPatient.MultipleBirth = new FhirBoolean(true);
+            HttpContext.StoredPatient.MultipleBirth = new FhirBoolean(true);
         }
         
-        [Given(@"I add a photo element to patient stored against ""([^""]*)""")]
-        public void GivenIAddAPhotoElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a photo element to stored patient")]
+        public void GivenIAddAPhotoElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
             var attachment = new Attachment();
             attachment.Url = "Test Photo Element";
-            storedPatient.Photo.Add(attachment);
+            HttpContext.StoredPatient.Photo.Add(attachment);
         }
 
-        [Given(@"I add a contact element to patient stored against ""([^""]*)""")]
-        public void GivenIAddAContactElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a contact element to stored patient")]
+        public void GivenIAddAContactElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
             var contact = new Patient.ContactComponent();
             contact.Name = new HumanName();
             contact.Name.GivenElement.Add(new FhirString("TestGiven"));
             contact.Name.FamilyElement.Add(new FhirString("TestFamily"));
-            storedPatient.Contact.Add(contact);
+            HttpContext.StoredPatient.Contact.Add(contact);
         }
 
-        [Given(@"I add a animal element to patient stored against ""([^""]*)""")]
-        public void GivenIAddAAnimalElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a animal element to stored patient")]
+        public void GivenIAddAAnimalElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
-            storedPatient.Animal = new Patient.AnimalComponent();
-            storedPatient.Animal.Species = new CodeableConcept("AllSpecies", "Human");
+            HttpContext.StoredPatient.Animal = new Patient.AnimalComponent();
+            HttpContext.StoredPatient.Animal.Species = new CodeableConcept("AllSpecies", "Human");
         }
 
-        [Given(@"I add a communication element to patient stored against ""([^""]*)""")]
-        public void GivenIAddACommunicationElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a communication element to stored patient")]
+        public void GivenIAddACommunicationElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
             var com = new Patient.CommunicationComponent();
             com.Language = new CodeableConcept("https://tools.ietf.org/html/bcp47", "en");
-            storedPatient.Communication.Add(com);
+            HttpContext.StoredPatient.Communication.Add(com);
         }
         
-        [Given(@"I add a careprovider element to patient stored against ""([^""]*)""")]
-        public void GivenIAddACareProviderElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a careprovider element to stored patient")]
+        public void GivenIAddACareProviderElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
             var reference = new ResourceReference();
             reference.Display = "Test Care Provider";
-            storedPatient.CareProvider.Add(reference);
+            HttpContext.StoredPatient.CareProvider.Add(reference);
         }
 
-        [Given(@"I add a managingorg element to patient stored against ""([^""]*)""")]
-        public void GivenIAddAManagingOrgElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a managingorg element to stored patient")]
+        public void GivenIAddAManagingOrgElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
             var reference = new ResourceReference();
             reference.Display = "Test Managing Org";
-            storedPatient.ManagingOrganization = reference;
+            HttpContext.StoredPatient.ManagingOrganization = reference;
         }
 
-        [Given(@"I add a link element to patient stored against ""([^""]*)""")]
-        public void GivenIAddALinkElementToPatientStoredAgainst(string storedPatientKey)
+        [Given(@"I add a link element to stored patient")]
+        public void GivenIAddALinkElementToStoredPatient()
         {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
             var reference = new ResourceReference();
             reference.Display = "Test Care Provider";
             var link = new Patient.LinkComponent();
             link.Other = reference;
             link.Type = Patient.LinkType.Refer;
-            storedPatient.Link.Add(link);
+            HttpContext.StoredPatient.Link.Add(link);
         }
 
         [Then(@"the patient resources within the bundle should contain a registration status")]
@@ -618,6 +638,48 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     return;
                 }
             }
+        }
+
+        [Given(@"I store the patient in the register patient resource format")]
+        public void GivenIStoreThePatientInTheRegisterPatientResourceFormat()
+        {
+            ((Bundle)FhirContext.FhirResponseResource).Entry.Count.ShouldBeGreaterThanOrEqualTo(1, "No patients were returned for the patient search.");
+            var foundPatient = (Patient)((Bundle)FhirContext.FhirResponseResource).Entry[0].Resource;
+            
+            Patient storePatient = new Patient();
+
+            foreach (var identifier in foundPatient.Identifier)
+            {
+                if (string.Equals(identifier.System, FhirConst.IdentifierSystems.kNHSNumber))
+                {
+                    storePatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, identifier.Value));
+                    break;
+                }
+            }
+            string familyName = "GPConnectFamilyName";
+            string givenName = "GPConnectGivenName";
+            foreach (var foundPatientName in foundPatient.Name)
+            {
+                foreach (var foundPatientFamilyName in foundPatientName.Family)
+                {
+                    familyName = foundPatientFamilyName;
+                    break;
+                }
+                foreach (var foundPatientGivenName in foundPatientName.Given)
+                {
+                    givenName = foundPatientGivenName;
+                    break;
+                }
+            }
+            HumanName name = new HumanName();
+            name.FamilyElement.Add(new FhirString(familyName));
+            name.GivenElement.Add(new FhirString(givenName));
+            storePatient.Name = new List<HumanName>();
+            storePatient.Name.Add(name);
+            storePatient.Gender = foundPatient.Gender != null ? foundPatient.Gender : AdministrativeGender.Unknown;
+            storePatient.BirthDateElement = foundPatient.BirthDateElement != null ? foundPatient.BirthDateElement : new Date();
+
+            HttpContext.StoredPatient = storePatient;
         }
 
         [Given(@"I set the stored Patient Registration Period to ""([^""]*)""")]

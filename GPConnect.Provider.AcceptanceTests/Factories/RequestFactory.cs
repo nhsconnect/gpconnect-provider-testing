@@ -56,7 +56,6 @@
 
         private static void ConfigureRegisterPatientBody(HttpContext httpContext)
         {
-            httpContext.BodyParameters.Add("registerPatient", httpContext.StoredPatient);
             httpContext.RequestBody = httpContext.RequestContentType.Contains("xml") ? FhirSerializer.SerializeToXml(httpContext.BodyParameters) : FhirSerializer.SerializeToJson(httpContext.BodyParameters);
         }
 

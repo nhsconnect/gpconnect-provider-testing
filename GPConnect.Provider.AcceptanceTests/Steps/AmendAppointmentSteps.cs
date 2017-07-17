@@ -141,6 +141,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointment appointment = (Appointment)FhirContext.FhirResponseResource;
             appointment.Comment.ShouldBe(message);
         }
+    
 
         [Then(@"the appointment resource should contain a reason text which equals ""(.*)""")]
         public void ThenTheAppointmentResourceShouldContainAReasonTextWhichEquals(string message)
