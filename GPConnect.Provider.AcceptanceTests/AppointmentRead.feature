@@ -76,7 +76,7 @@ Scenario Outline: Read appointment failure with incorrect interaction id
 		|                                                                   |
 		| null                                                              |
 
-`#Make name more descriptive
+#Make name more descriptive
 Scenario Outline: Read appointment _format parameter only
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
