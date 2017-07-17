@@ -48,7 +48,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             returnPatient.Name.Add(name);
             returnPatient.Gender = AdministrativeGender.Other;
             returnPatient.BirthDateElement = new Date("2017-05-05");
-            HttpContext.StoredPatient = returnPatient;
+            _httpContext.StoredPatient = returnPatient;
         }
 
         [Given(@"I update the stored patient details to not match the NHS number")]
@@ -57,10 +57,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HumanName name = new HumanName();
             name.FamilyElement.Add(new FhirString("GPConnectFamilyName"));
             name.GivenElement.Add(new FhirString("GPConnectGivenName"));
-            HttpContext.StoredPatient.Name = new List<HumanName>();
-            HttpContext.StoredPatient.Name.Add(name);
-            HttpContext.StoredPatient.Gender = AdministrativeGender.Other;
-            HttpContext.StoredPatient.BirthDateElement = new Date("2017-05-05");
+            _httpContext.StoredPatient.Name = new List<HumanName>();
+            _httpContext.StoredPatient.Name.Add(name);
+            _httpContext.StoredPatient.Gender = AdministrativeGender.Other;
+            _httpContext.StoredPatient.BirthDateElement = new Date("2017-05-05");
         }
 
         [Given(@"I find the next patient to register and store the Patient Resource against key ""([^""]*)""")]
@@ -133,13 +133,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I remove the family name element from the stored patient")]
         public void GivenIRemoveTheFamilyNameElementFromTheStoredPatient()
         {
-            HttpContext.StoredPatient.Name[0].Family = null;
+            _httpContext.StoredPatient.Name[0].Family = null;
         }
 
         [Given(@"I remove the given name element from the stored patient")]
         public void GivenIRemoveTheGivenNameElementFromTheStoredPatient()
         {
-            HttpContext.StoredPatient.Name[0].Given = null;
+            _httpContext.StoredPatient.Name[0].Given = null;
         }
 
         [Given(@"I remove the gender element from the stored patient")]
@@ -186,13 +186,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add the stored patient as a parameter")]
         public void GivenIAddTheStoredPatientAsAParameter()
         {
-            HttpContext.BodyParameters.Add("registerPatient", HttpContext.StoredPatient);
+            _httpContext.BodyParameters.Add("registerPatient", _httpContext.StoredPatient);
         }
 
         [Given(@"I add the stored patient as a parameter with name ""([^""]*)""")]
         public void GivenIAddTheStoredPatientAsAParameterWithName(string parameterName)
         {
-            HttpContext.BodyParameters.Add(parameterName, HttpContext.StoredPatient);
+            _httpContext.BodyParameters.Add(parameterName, _httpContext.StoredPatient);
         }
 
         [Then(@"the patient resources within the bundle should contain a registration type")]
@@ -264,7 +264,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add the family name ""([^""]*)"" to the store patient")]
         public void GivenIAddTheFamilyNameToTheStoredPatient(string familyName)
         {
-            foreach (var name in HttpContext.StoredPatient.Name) {
+            foreach (var name in _httpContext.StoredPatient.Name) {
                 name.FamilyElement.Add(new FhirString(familyName));
             }
         }
@@ -272,7 +272,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add the given name ""([^""]*)"" to the stored patient")]
         public void GivenIAddTheGivenNameToTheStoredPatient(string givenName)
         {
-            foreach (var name in HttpContext.StoredPatient.Name)
+            foreach (var name in _httpContext.StoredPatient.Name)
             {
                 name.GivenElement.Add(new FhirString(givenName));
             }
@@ -284,7 +284,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var name = new HumanName();
             name.GivenElement.Add(new FhirString(givenName));
             name.FamilyElement.Add(new FhirString(familyName));
-            HttpContext.StoredPatient.Name.Add(name);
+            _httpContext.StoredPatient.Name.Add(name);
         }
 
         [Given(@"I add an identifier with no system element to stored patient")]
@@ -292,7 +292,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var identifier = new Identifier();
             identifier.Value = "NewIdentifierNoSystem";
-            HttpContext.StoredPatient.Identifier.Add(identifier);
+            _httpContext.StoredPatient.Identifier.Add(identifier);
         }
         
         [Given(@"I add a generic identifier to stored patient")]
@@ -301,13 +301,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var identifier = new Identifier();
             identifier.Value = "GenericIdentifierValue";
             identifier.System = "GenericIdentifierSystem";
-            HttpContext.StoredPatient.Identifier.Add(identifier);
+            _httpContext.StoredPatient.Identifier.Add(identifier);
         }
 
         [Given(@"I add a telecom element to stored patient")]
         public void GivenIAddATelecomElementToStoredPatient()
         {
-            HttpContext.StoredPatient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+            _httpContext.StoredPatient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
         }
 
         [Given(@"I add a address element to stored patient")]
@@ -318,31 +318,31 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             address.LineElement.Add(new FhirString("Boar Lane"));
             address.CityElement = new FhirString("Leeds");
             address.PostalCode = "LS1 6AE";
-            HttpContext.StoredPatient.Address.Add(address);
+            _httpContext.StoredPatient.Address.Add(address);
         }
 
         [Given(@"I add a active element to stored patient")]
         public void GivenIAddAActiveElementToStoredPatient()
         {
-            HttpContext.StoredPatient.Active = true;
+            _httpContext.StoredPatient.Active = true;
         }
 
         [Given(@"I add a deceased element to stored patient")]
         public void GivenIAddADeceasedElementToStoredPatient()
         {
-            HttpContext.StoredPatient.Deceased = new FhirBoolean(false);
+            _httpContext.StoredPatient.Deceased = new FhirBoolean(false);
         }
         
         [Given(@"I add a marital element to stored patient")]
         public void GivenIAddAMaritalElementToStoredPatient()
         {
-            HttpContext.StoredPatient.MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "M");
+            _httpContext.StoredPatient.MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "M");
         }
 
         [Given(@"I add a births element to stored patient")]
         public void GivenIAddABirthsElementToStoredPatient()
         {
-            HttpContext.StoredPatient.MultipleBirth = new FhirBoolean(true);
+            _httpContext.StoredPatient.MultipleBirth = new FhirBoolean(true);
         }
         
         [Given(@"I add a photo element to stored patient")]
@@ -350,7 +350,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var attachment = new Attachment();
             attachment.Url = "Test Photo Element";
-            HttpContext.StoredPatient.Photo.Add(attachment);
+            _httpContext.StoredPatient.Photo.Add(attachment);
         }
 
         [Given(@"I add a contact element to stored patient")]
@@ -360,14 +360,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             contact.Name = new HumanName();
             contact.Name.GivenElement.Add(new FhirString("TestGiven"));
             contact.Name.FamilyElement.Add(new FhirString("TestFamily"));
-            HttpContext.StoredPatient.Contact.Add(contact);
+            _httpContext.StoredPatient.Contact.Add(contact);
         }
 
         [Given(@"I add a animal element to stored patient")]
         public void GivenIAddAAnimalElementToStoredPatient()
         {
-            HttpContext.StoredPatient.Animal = new Patient.AnimalComponent();
-            HttpContext.StoredPatient.Animal.Species = new CodeableConcept("AllSpecies", "Human");
+            _httpContext.StoredPatient.Animal = new Patient.AnimalComponent();
+            _httpContext.StoredPatient.Animal.Species = new CodeableConcept("AllSpecies", "Human");
         }
 
         [Given(@"I add a communication element to stored patient")]
@@ -375,7 +375,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var com = new Patient.CommunicationComponent();
             com.Language = new CodeableConcept("https://tools.ietf.org/html/bcp47", "en");
-            HttpContext.StoredPatient.Communication.Add(com);
+            _httpContext.StoredPatient.Communication.Add(com);
         }
         
         [Given(@"I add a careprovider element to stored patient")]
@@ -383,7 +383,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var reference = new ResourceReference();
             reference.Display = "Test Care Provider";
-            HttpContext.StoredPatient.CareProvider.Add(reference);
+            _httpContext.StoredPatient.CareProvider.Add(reference);
         }
 
         [Given(@"I add a managingorg element to stored patient")]
@@ -391,7 +391,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var reference = new ResourceReference();
             reference.Display = "Test Managing Org";
-            HttpContext.StoredPatient.ManagingOrganization = reference;
+            _httpContext.StoredPatient.ManagingOrganization = reference;
         }
 
         [Given(@"I add a link element to stored patient")]
@@ -402,7 +402,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var link = new Patient.LinkComponent();
             link.Other = reference;
             link.Type = Patient.LinkType.Refer;
-            HttpContext.StoredPatient.Link.Add(link);
+            _httpContext.StoredPatient.Link.Add(link);
         }
 
         [Then(@"the patient resources within the bundle should contain a registration status")]
@@ -643,8 +643,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I store the patient in the register patient resource format")]
         public void GivenIStoreThePatientInTheRegisterPatientResourceFormat()
         {
-            ((Bundle)FhirContext.FhirResponseResource).Entry.Count.ShouldBeGreaterThanOrEqualTo(1, "No patients were returned for the patient search.");
-            var foundPatient = (Patient)((Bundle)FhirContext.FhirResponseResource).Entry[0].Resource;
+            ((Bundle)_fhirContext.FhirResponseResource).Entry.Count.ShouldBeGreaterThanOrEqualTo(1, "No patients were returned for the patient search.");
+            var foundPatient = (Patient)((Bundle)_fhirContext.FhirResponseResource).Entry[0].Resource;
             
             Patient storePatient = new Patient();
 
@@ -679,7 +679,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             storePatient.Gender = foundPatient.Gender != null ? foundPatient.Gender : AdministrativeGender.Unknown;
             storePatient.BirthDateElement = foundPatient.BirthDateElement != null ? foundPatient.BirthDateElement : new Date();
 
-            HttpContext.StoredPatient = storePatient;
+            _httpContext.StoredPatient = storePatient;
         }
 
         [Given(@"I set the stored Patient Registration Period to ""([^""]*)""")]
