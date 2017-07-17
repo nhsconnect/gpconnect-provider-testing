@@ -1,6 +1,11 @@
 ﻿@appointment
 Feature: AppointmentRead
 
+#COMMON
+#Refactor code using haydens test steps moving test setup behind the scenes
+#Merge existing successful tests to reduce number of tests, also verifys the returned appointment is correct as has more params to satisfy
+#Think about using more patients, only 1-3 used
+
 Scenario Outline: I perform a successful Read appointment
 	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the created Appointment
@@ -8,6 +13,7 @@ Scenario Outline: I perform a successful Read appointment
 		And I set the JWT Requested Record to the NHS Number of the stored Patient
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
+	#Think about adding further validation 
 		And the response should be an Appointment resource
 	Examples:
 		| PatientName |
@@ -38,13 +44,14 @@ Scenario Outline: Read appointment failure due to missing Ssp header
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	#Should auth not be included?
 	Examples:
 		| Header            |
 		| Ssp-TraceID       |
 		| Ssp-From          |
 		| Ssp-To            |
 		| Ssp-InteractionId |
-
+#Why are these seperated?
 Scenario: Read appointment failure due to missing Authoriztion header
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -69,6 +76,7 @@ Scenario Outline: Read appointment failure with incorrect interaction id
 		|                                                                   |
 		| null                                                              |
 
+`#Make name more descriptive
 Scenario Outline: Read appointment _format parameter only
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -77,12 +85,16 @@ Scenario Outline: Read appointment _format parameter only
 	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
+		#Think about adding further validation 
 		And the response should be an Appointment resource
 	Examples:
 		| Parameter             | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
+#Add for just accept header
+
+#Make name more descriptive
 Scenario Outline: Read appointment accept header and _format parameter
 	Given I find or create "1" appointments for patient "patient1" at organization "ORG1" and save bundle of appintment resources to "Patient1AppointmentsInBundle"
 	Given I am using the default server
@@ -92,6 +104,7 @@ Scenario Outline: Read appointment accept header and _format parameter
 	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
+		#Think about adding further validation 
 		And the response should be an Appointment resource
 	Examples:
 		| Header                | Parameter             | BodyFormat |
@@ -110,6 +123,7 @@ Scenario: Read appointment valid request shall include id and structure definiti
 		And the returned resource shall contains a logical id
 		And the returned appointment resource should contain meta data profile and version id
 
+#Name doesnt describe the test, link with test below which uses the same params
 Scenario Outline: Read appointment check response contains required elements
 	Given I find or create an appointment with status <AppointmentStatus> for patient "patient1" at organization "ORG1" and save the appointment resources to "<AppointmentStatus>Appointment<BodyFormat>"
 	Given I am using the default server
@@ -138,6 +152,7 @@ Scenario: Read appointment if resource contains identifier then the value is man
 	When I perform an appointment read for the first appointment saved in the bundle of resources stored against key "Patient1AppointmentsInBundle" for patient "patient1"
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
+		#Think about adding further validation 
 		And if the appointment response resource contains any identifiers they must have a value
 
 Scenario: Read appointment if reason is included in response check that it conforms to one of the three valid types
@@ -148,6 +163,7 @@ Scenario: Read appointment if reason is included in response check that it confo
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
+		#Think about adding further validation 
 		And if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
 
 Scenario: Read appointment containing a priority element and check that the priority is valid
@@ -158,6 +174,7 @@ Scenario: Read appointment containing a priority element and check that the prio
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
+		#Think about adding further validation 
 		And if the appointment contains a priority element it should be a valid value
 
 Scenario: Read appointment and all participants must have a type or actor element
@@ -168,6 +185,7 @@ Scenario: Read appointment and all participants must have a type or actor elemen
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
+		#Think about adding further validation 
 		And the returned appointment participants must contain a type or actor element
 
 Scenario Outline: Read appointment if extensions are included they should be valid

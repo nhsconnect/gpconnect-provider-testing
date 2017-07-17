@@ -247,7 +247,7 @@ Scenario: Amend appointment set etag and check etag is the same in the returned 
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the appointment resource should contain a comment which equals "customComment"
-@ignore 
+
 #Investigate further
 Scenario: Amend appointment and send an invalid bundle resource
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -255,7 +255,7 @@ Scenario: Amend appointment and send an invalid bundle resource
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the stored Patient
 		And I set the created Appointment Comment to "customComment"
-	When I make the "AppointmentAmend" request
+	When I make the "AppointmentAmend" request with invalid Resource type
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
