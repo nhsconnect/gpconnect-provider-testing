@@ -830,15 +830,36 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
        
         }
 
-
-        [Given(@"I create a bundle resource and add it to the request")]
-        public void ICreateaBundleResourceAndAddItToTheRequest()
+        [Given(@"I store the Appointment Version Id")]
+        public void StoreThePractitionerVersionId()
         {
-            var bundle = new Bundle();
-            HttpContext.StoredBundle = bundle;
+            var appointment = FhirContext.Appointments.FirstOrDefault();
+            if (appointment != null)
+                HttpContext.GetRequestVersionId = appointment.VersionId;
         }
 
-        
+        [Given(@"I set the created Appointment status to ""([^""]*)""")]
+        public void GivenISetCreatedAppointmentStatusTo(string status)
+        {
+            var appointment = FhirContext.Appointments.FirstOrDefault();
+            switch (status) {
+                case "Booked":
+                    appointment.Status = AppointmentStatus.Booked;
+                    break;
+                case "Cancelled":
+                    appointment.Status = AppointmentStatus.Cancelled;
+                    break;
+            }
+
+            if (appointment != null)
+                HttpContext.CreatedAppointment = appointment;
+        }
+
+        [Given(@"I set the created Appointment priority to ""([^""]*)""")]
+        public void  ISetTheCreatedAppointmentPriorityTo(int priority)
+        {
+            HttpContext.CreatedAppointment.Priority = priority;
+        }
 
 
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
@@ -953,6 +974,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void SetTheCreatedAppointmentComment(string comment)
         {
             HttpContext.CreatedAppointment.Comment = comment;
+      
         }
 
         [Given(@"I set the created Appointment reason to ""([^""]*)""")]
@@ -995,6 +1017,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.CreatedAppointment.Extension.Add(extension);
             HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
         }
+
+
+        [Given("I set created appointment to a new appointment resource")]
+        public void ISetTheAppointmentResourceToANewAppointmentResource()
+        {
+            HttpContext.CreatedAppointment = new Appointment();
+        }
+
+
 
         private static Extension GetCancellationReasonExtensionWithURL(string URL, string reason)
         {
