@@ -5,7 +5,7 @@ Scenario Outline: I perform a successful Read appointment
 	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
 		And the response should be an Appointment resource
@@ -22,7 +22,7 @@ Scenario Outline: Read appointment invalid appointment id
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Read Operation logical identifier used in the request to "<id>"
 	When I make the "AppointmentRead" request
 	Then the response status code should be "404"
@@ -37,7 +37,7 @@ Scenario Outline: Read appointment with missing mandatory header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I do not send header "<Header>"
 	When I make the "AppointmentRead" request
 	Then the response status code should be "400"
@@ -55,7 +55,7 @@ Scenario Outline: Read appointment failure with incorrect interaction id
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I am performing the "<interactionId>" interaction
 	When I make the "AppointmentRead" request
 	Then the response status code should be "400"
@@ -72,7 +72,7 @@ Scenario Outline: Read appointment using the _format parameter to request respon
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
@@ -87,7 +87,7 @@ Scenario Outline: Read appointment using the accept header to request response f
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Accept header to "<Header>"
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
@@ -103,7 +103,7 @@ Scenario Outline: Read appointment using the _format parameter and accept header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make the "AppointmentRead" request
@@ -121,7 +121,7 @@ Scenario: Read appointment valid request shall include id and structure definiti
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -133,7 +133,7 @@ Scenario Outline: Read appointment ensure response appointments contain the mana
 		And I store the created Appointment
 		And I set the created Appointment status to "<AppointmentStatus>"
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Accept header to "<Header>"
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
@@ -155,7 +155,7 @@ Scenario: Read appointment if resource contains identifier then the value is man
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -165,7 +165,7 @@ Scenario: Read appointment if reason is included in response check that it confo
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -177,7 +177,7 @@ Scenario: Read appointment containing a priority element and check that the prio
 		And I store the created Appointment
 		And I set the created Appointment priority to "1"
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -188,7 +188,7 @@ Scenario: Read appointment and all participants must have a type or actor elemen
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -199,7 +199,7 @@ Scenario Outline: Read appointment if extensions are included they should be val
 Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Accept header to "<Header>"
 		And I set the created Appointment priority to "1"
 	When I make the "AppointmentRead" request
@@ -221,7 +221,7 @@ Scenario: Read appointment and response should contain an ETag header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request 
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -233,7 +233,7 @@ Scenario: VRead an appointment for a valid version of the patient appointment re
 		And I store the created Appointment
 		And I store the Appointment Version Id
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request 
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -244,7 +244,7 @@ Scenario: VRead an appointment for a invalid version of the patient appoint reso
 		And I set the GET request Version Id to "NotARealVersionId"
 		And I store the created Appointment
 	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request 
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON

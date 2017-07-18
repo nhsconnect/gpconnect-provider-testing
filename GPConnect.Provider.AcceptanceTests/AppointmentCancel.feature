@@ -5,7 +5,7 @@ Scenario Outline: I perform a successful cancel appointment
 	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
@@ -26,7 +26,7 @@ Scenario Outline: I perform cancel appointment and update invalid elements
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I add an extension to created appointment with url "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1" code "CLI" and display "Clinical"
 		And I add an extension to created appointment with url "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1" code "ONL" and display "Online"
@@ -58,7 +58,7 @@ Scenario Outline: Cancel appointment making a request to an invalid URL
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 	When I make a PUT request to "<url>"
 	Then the response status code should be "404"
@@ -71,7 +71,7 @@ Scenario Outline: Cancel appointment failure due to missing header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I do not send header "<Header>"
 	When I make the "AppointmentCancel" request
@@ -90,7 +90,7 @@ Scenario Outline: Cancel appointment failure with incorrect interaction id
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I am performing the "<interactionId>" interaction
 	When I make the "AppointmentCancel" request
@@ -109,7 +109,7 @@ Scenario Outline: Cancel appointment using the _format parameter to request resp
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make the "AppointmentCancel" request
@@ -128,7 +128,7 @@ Scenario Outline: Cancel appointment using the accept header to request response
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I set the Accept header to "<Header>"
 	When I make the "AppointmentCancel" request
@@ -147,7 +147,7 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
@@ -170,7 +170,7 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I set the request content type to "<ContentType>"
 		And I set the Accept header to "<AcceptHeader>"
@@ -197,7 +197,7 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with URL "<url>" and Reason "<reason>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
@@ -215,7 +215,7 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with URL "<url>" and Reason "<reason>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate failure
@@ -231,7 +231,7 @@ Scenario: Cancel appointment missing cancellation extension reason
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with URL "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1" and Reason ""
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate failure
@@ -250,7 +250,7 @@ Scenario: Cancel appointment verify resource is updated when an valid ETag value
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I set "If-Match" request header to created appointment version
 	When I make the "AppointmentCancel" request
@@ -263,7 +263,7 @@ Scenario: Cancel appointment verify resource is not updated when an out of date 
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I set If-Match request header to "invalidEtag"
 	When I make the "AppointmentCancel" request	
@@ -274,7 +274,7 @@ Scenario: Cancel appointment compare request appointment to returned appointment
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request	
 	Then the response status code should indicate success
@@ -296,7 +296,7 @@ Scenario: Cancel appointment response body must contain valid slot reference
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
@@ -312,7 +312,7 @@ Scenario Outline: Cancel appointment prefer header set to representation
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I set the Prefer header to "return=representation"
 	When I make the "AppointmentCancel" request
@@ -341,7 +341,7 @@ Scenario: Cancel appointment prefer header set to minimal
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "double booked"
 		And I set the Prefer header to "return=minimal"
 	When I make the "AppointmentCancel" request	
@@ -353,7 +353,7 @@ Scenario Outline: Cancel appointment check the version id of the cancelled resou
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment to Cancelled with Reason "Double booked"
 	When I make the "AppointmentCancel" request	
 	Then the response status code should indicate success
