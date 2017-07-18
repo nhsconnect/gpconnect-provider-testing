@@ -273,7 +273,7 @@
             _jwtHelper.RequestedPatientNHSNumber = nhsNumber;
         }
 
-        [Given(@"I set the JWT Requested Record to the NHS Number of the stored Patient")]
+        [Given(@"I set the JWT Requested Record to the NHS Number of the Stored Patient")]
         public void SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient()
         {
             var patient = _httpContext.StoredPatient;
