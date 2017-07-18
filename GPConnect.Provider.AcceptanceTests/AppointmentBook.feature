@@ -19,7 +19,7 @@ Scenario: Book Appointment with invalid url for booking appointment
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make a POST request to ""/Appointmentz\"
 	Then the response status code should be "404"
@@ -30,7 +30,7 @@ Scenario Outline: Book appointment failure due to missing header
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I do not send header "<Header>"
 	When I make the "AppointmentCreate" request
@@ -51,7 +51,7 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
@@ -75,7 +75,7 @@ Scenario Outline: Book appointment _format parameter only but varying request co
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the request content type to "<ContentType>"
 		And I add the parameter "_format" with the value "<Parameter>"
@@ -100,7 +100,7 @@ Scenario Outline: Book appointment accept header to request response format
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Accept header to "<Header>"
 	When I make the "AppointmentCreate" request
@@ -121,7 +121,7 @@ Scenario: Book appointment prefer header set to representation
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Prefer header to "return=representation"
 	When I make the "AppointmentCreate" request
@@ -137,7 +137,7 @@ Scenario: Book appointment prefer header set to minimal
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Prefer header to "return=minimal"
 	When I make the "AppointmentCreate" request
@@ -151,7 +151,7 @@ Scenario Outline: Book appointment with invalid interaction id
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I am performing the "<interactionId>" interaction
 	When I make the "AppointmentCreate" request
@@ -171,7 +171,7 @@ Scenario: Book Appointment and check response contains the manadatory elements
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -191,7 +191,7 @@ Scenario: Book Appointment and check returned appointment resource contains meta
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -206,7 +206,7 @@ Scenario: Book Appointment and appointment participant is valid
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -222,7 +222,7 @@ Scenario: Book Appointment and check extensions are valid
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -239,7 +239,7 @@ Scenario: Book Appointment without location participant
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the participant "Location" from the created Appointment
 	When I make the "AppointmentCreate" request
@@ -253,7 +253,7 @@ Scenario Outline: Book Appointment and remove manadatory resources from the appo
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the participant "<ParticipantToRemove>" from the created Appointment
 	When I make the "AppointmentCreate" request
@@ -272,7 +272,7 @@ Scenario: Book Appointment and remove all participants
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the participant "Location" from the created Appointment
 		And I remove the participant "Patient" from the created Appointment
@@ -289,7 +289,7 @@ Scenario: Book appointment containing additional extension with only value popul
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I add an extra invalid extension to the created appointment only populating the value
 	When I make the "AppointmentCreate" request
@@ -304,7 +304,7 @@ Scenario: Book appointment containing additional extensions with only the system
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I add an extra invalid extension to the appointment only populating the url
 	When I make the "AppointmentCreate" request
@@ -319,7 +319,7 @@ Scenario: Book single appointment for patient and send additional extensions wit
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I add an extra invalid extension to the created appointment containing the url code and display
 	When I make the "AppointmentCreate" request
@@ -334,7 +334,7 @@ Scenario: Book appointment for patient with id
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I change the created appointment id to "1111222233334444"
 	When I make the "AppointmentCreate" request
@@ -350,7 +350,7 @@ Scenario: Book appointment for patient and send extra fields in the resource
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I book the appointment called "Appointment" with an invalid field
 	Then the response status code should be "422"
@@ -363,7 +363,7 @@ Scenario Outline: Book appointment with invalid slot reference
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I change the created appointment slot reference to "<slotReference>"
 	When I make the "AppointmentCreate" request
@@ -383,7 +383,7 @@ Scenario: Book single appointment for patient and check the location reference i
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -397,7 +397,7 @@ Scenario: Book appointment with missing start element in appointment resource
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the created appointment start element
 	When I make the "AppointmentCreate" request
@@ -411,7 +411,7 @@ Scenario: Book appointment with missing end element in appointment resource
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the created appointment end element
 	When I make the "AppointmentCreate" request
@@ -425,7 +425,7 @@ Scenario: Book appointment with missing status element in appointment resource
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the created appointment status element
 	When I make the "AppointmentCreate" request
@@ -439,7 +439,7 @@ Scenario: Book appointment with missing slot element in appointment resource
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the created appointment slot element
 	When I make the "AppointmentCreate" request
@@ -453,7 +453,7 @@ Scenario: Book Appointment and remove identifier value from the appointment book
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	Then I set the created appointment identifier value element to null
 	When I make the "AppointmentCreate" request
@@ -467,7 +467,7 @@ Scenario Outline: Book Appointment and remove reason coding element from the app
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	Then I set the created appointment reason coding system element to null
 	When I make the "AppointmentCreate" request
@@ -486,7 +486,7 @@ Scenario Outline: Book Appointment and remove participant status from the appoin
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	Then I set the created appointment Patient participant status element to null
 	When I make the "AppointmentCreate" request
@@ -505,7 +505,7 @@ Scenario Outline: Book Appointment and remove participant type coding element fr
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	Then I set the created appointment "<Participant>" participant type coding "<CodingElement>" element to null
 	When I make the "AppointmentCreate" request
@@ -527,7 +527,7 @@ Scenario: Book appointment and send an invalid bundle resource
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request with invalid Resource type
 	Then the response status code should be "422"
@@ -540,7 +540,7 @@ Scenario: Book appointment and send an invalid appointment resource
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set created appointment to a new appointment resource
 		When I make the "AppointmentAmend" request
