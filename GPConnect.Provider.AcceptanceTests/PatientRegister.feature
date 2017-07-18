@@ -4,12 +4,12 @@ Feature: PatientRegister
 Scenario Outline: Register patient send request to incorrect URL
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient Registration Period to "<StartDate>"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start "<StartDate>"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
 		And I set the request URL to "<url>"
-		And I add the stored patient as a parameter
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "501"
 		And the response should be a OperationOutcome resource with error code "NOT_IMPLEMENTED"
@@ -21,17 +21,17 @@ Scenario Outline: Register patient send request to incorrect URL
 Scenario Outline: Register patient with invalid interactionIds
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-05-05" and end date "2018-11-12"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I am performing the "<interactionId>" interaction
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Interaction Id header to "<InteractionId>"
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"  
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| interactionId                                                          |
+		| InteractionId                                                          |
 		| urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments |
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatsssient |
 		| urn:nhs:names:services:gpconnect:fhir:rest:create:appointment          |
@@ -41,12 +41,12 @@ Scenario Outline: Register patient with invalid interactionIds
 Scenario Outline: Register patient with missing header
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
 		And I do not send header "<Header>"
-		And I add the stored patient as a parameter
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -61,12 +61,12 @@ Scenario Outline: Register patient with missing header
 Scenario: Register patient without sending identifier within patient
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I remove the patients identifiers from the stored patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I remove the Identifiers from the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
@@ -74,12 +74,12 @@ Scenario: Register patient without sending identifier within patient
 Scenario: Register patient without name element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I remove the name element from the stored patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I remove the Name from the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -87,12 +87,12 @@ Scenario: Register patient without name element
 Scenario: Register patient without gender element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I remove the gender element from the stored patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I remove the Gender from the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -100,12 +100,12 @@ Scenario: Register patient without gender element
 Scenario: Register patient without date of birth element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I remove the DOB element from the stored patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I remove the Birth Date from the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -113,13 +113,13 @@ Scenario: Register patient without date of birth element
 Scenario Outline: Register patient with an invalid NHS number
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I remove the patients identifiers from the stored patient
-		And I add the NHS Number identifier "<nhsNumber>" to the stored patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I remove the Identifiers from the Stored Patient
+		And I add an Identifier with Value "<nhsNumber>" to the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
@@ -137,23 +137,23 @@ Scenario Outline: Register patient with an invalid NHS number
 Scenario Outline: Register Patient and use the Accept Header to request response format
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
 		And I set the request content type to "<ContentType>"
 		And I set the Accept header to "<ContentType>"
-		And I add the stored patient as a parameter
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
-		And the patient resource in the bundle should contain meta data profile and version id
-		And the patient resources within the bundle should contain a registration period
-		And the patient resources within the bundle should contain a registration status
-		And the patient resources within the bundle should contain a registration type
-		And the patient resources within the response bundle should contain the same demographic information as the stored patient
+		And the Patient Metadata should be valid
+		And the Patient Registration Period should be valid
+		And the Patient Registration Status should be valid
+		And the Patient Registration Type should be valid
+		And the Patient Demographics should match the Stored Patient
 	Examples:
 		| ContentType           | ResponseFormat |
 		| application/xml+fhir  | XML            |
@@ -162,23 +162,23 @@ Scenario Outline: Register Patient and use the Accept Header to request response
 Scenario Outline: Register Patient and use the _format parameter to request the response format
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
 		And I set the request content type to "<ContentType>"
-		And I add the parameter "_format" with the value "<ContentType>"
-		And I add the stored patient as a parameter
+		And I add a Format parameter with the Value "<ContentType>"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
-		And the patient resource in the bundle should contain meta data profile and version id
-		And the patient resources within the bundle should contain a registration period
-		And the patient resources within the bundle should contain a registration status
-		And the patient resources within the bundle should contain a registration type
-		And the patient resources within the response bundle should contain the same demographic information as the stored patient
+		And the Patient Metadata should be valid
+		And the Patient Registration Period should be valid
+		And the Patient Registration Status should be valid
+		And the Patient Registration Type should be valid
+		And the Patient Demographics should match the Stored Patient
 	Examples:
 		| ContentType           | ResponseFormat |
 		| application/xml+fhir  | XML            |
@@ -187,27 +187,27 @@ Scenario Outline: Register Patient and use the _format parameter to request the 
 Scenario Outline: Register Patient and use both the Accept header and _format parameter to request the response format
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add a generic identifier to stored patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add a generic Identifier to the Stored Patient
 		And I set the request content type to "<ContentType>"
 		And I set the Accept header to "<AcceptHeader>"
-		And I add the parameter "_format" with the value "<FormatParam>"
-		And I add the stored patient as a parameter
+		And I add a Format parameter with the Value "<Format>"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
-		And the patient resource in the bundle should contain meta data profile and version id
-		And the patient resources within the bundle should contain a registration period
-		And the patient resources within the bundle should contain a registration status
-		And the patient resources within the bundle should contain a registration type
-		And the patient resources within the response bundle should contain the same demographic information as the stored patient
+		And the Patient Metadata should be valid
+		And the Patient Registration Period should be valid
+		And the Patient Registration Status should be valid
+		And the Patient Registration Type should be valid
+		And the Patient Demographics should match the Stored Patient
 	Examples:
-		| ContentType           | AcceptHeader          | FormatParam           | ResponseFormat |
+		| ContentType           | AcceptHeader          | Format                | ResponseFormat |
 		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML            |
 		| application/json+fhir | application/json+fhir | application/json+fhir | JSON           |
 		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON           |
@@ -222,28 +222,28 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 Scenario: Register patient and check all elements conform to the gp connect profile with Extensions sent in a different order
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient Registration Type to "T"
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
-		And the patient resource in the bundle should contain meta data profile and version id
-		And the patient resources within the bundle should contain a registration period
-		And the patient resources within the bundle should contain a registration status
-		And the patient resources within the bundle should contain a registration type
-		And the patient resources within the response bundle should contain the same demographic information as the stored patient
+		And the Patient Metadata should be valid
+		And the Patient Registration Period should be valid
+		And the Patient Registration Status should be valid
+		And the Patient Registration Type should be valid
+		And the Patient Demographics should match the Stored Patient
 
 Scenario: Register patient without registration period element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient Registration Type to "T"
-		And I set the stored Patient Registration Status to "A"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -251,10 +251,10 @@ Scenario: Register patient without registration period element
 Scenario: Register patient without registration status code element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient Registration Type to "T"
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Type with Value "T"
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -262,10 +262,10 @@ Scenario: Register patient without registration status code element
 Scenario: Register patient without registration type element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -273,9 +273,9 @@ Scenario: Register patient without registration type element
 Scenario: Register patient without registration period or type code elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient Registration Status to "A"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Status with Value "A"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -283,9 +283,9 @@ Scenario: Register patient without registration period or type code elements
 Scenario: Register patient without registration status code or registration type element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -293,8 +293,8 @@ Scenario: Register patient without registration status code or registration type
 Scenario: Register patient without any extension elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -302,12 +302,12 @@ Scenario: Register patient without any extension elements
 Scenario: Register patient with duplicate extension
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I set the stored Patient Registration Status to "A"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -315,11 +315,11 @@ Scenario: Register patient with duplicate extension
 Scenario: Register patient with duplicate extension and missing extension
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -327,11 +327,11 @@ Scenario: Register patient with duplicate extension and missing extension
 Scenario: Register patient with invalid bundle resource type
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request with invalid Resource type
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -339,11 +339,11 @@ Scenario: Register patient with invalid bundle resource type
 Scenario: Register patient with invalid patient resource type
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request with invalid parameter Resource type
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -351,11 +351,11 @@ Scenario: Register patient with invalid patient resource type
 Scenario: Register patient with invalid patient resource with additional element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request with additional field in parameter Resource
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -363,12 +363,12 @@ Scenario: Register patient with invalid patient resource with additional element
 Scenario: Register patient with duplicate patient resource parameters
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -376,11 +376,11 @@ Scenario: Register patient with duplicate patient resource parameters
 Scenario: Register patient with additional parameters but the valid patient parameter first
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 		And I am requesting the "SUM" care record section
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
@@ -389,12 +389,12 @@ Scenario: Register patient with additional parameters but the valid patient para
 Scenario: Register patient with duplicate parameters invalid first
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
 		And I am requesting the "SUM" care record section
-		And I add the stored patient as a parameter
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -402,12 +402,12 @@ Scenario: Register patient with duplicate parameters invalid first
 Scenario Outline: Register patient with invalid parameters name
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
 		And I am requesting the "SUM" care record section
-		And I add the stored patient as a parameter with name "<ParameterName>"
+		And I add the Stored Patient as a parameter with name "<ParameterName>"
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -422,46 +422,45 @@ Scenario: Register patient which alread exists on the system as a normal patient
 	Given I get the Patient for Patient Value "patient1"
 		And I store the patient in the register patient resource format
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-
 Scenario: Register patient which alread exists on the system as a temporary patient
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-05-11" and end date "2018-12-12"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Register patient which is not the Spine
-	Given I create a patient to register which does not exist on PDS and store the Patient
+	Given I create a Patient which does not exist on PDS and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -469,12 +468,12 @@ Scenario: Register patient which is not the Spine
 Scenario: Register patient with demographics which do not match spine PDS trace
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I update the stored patient details to not match the NHS number
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I set the Stored Patient Demographics to not match the NHS number
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -482,12 +481,12 @@ Scenario: Register patient with demographics which do not match spine PDS trace
 Scenario: Register patient no family names
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I remove the family name element from the stored patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I remove the Family Name from the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -495,12 +494,12 @@ Scenario: Register patient no family names
 Scenario: Register patient with multiple family names
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the family name "AddedFamilyName" to the store patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Family Name "AddedFamilyName" to the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -508,12 +507,12 @@ Scenario: Register patient with multiple family names
 Scenario: Register patient no given names
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I remove the given name element from the stored patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I remove the Given Name from the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -521,12 +520,12 @@ Scenario: Register patient no given names
 Scenario: Register patient with multiple given names
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the given name "AddedGivenName" to the stored patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Given Name "AddedGivenName" to the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -534,12 +533,12 @@ Scenario: Register patient with multiple given names
 Scenario: Register patient with multiple name elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add a name with given name "NewGivenName" and family name "NewFamilyName" to the stored patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add a Name with Given Name "NewGivenName" and Family Name "NewFamilyName" to the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -547,12 +546,12 @@ Scenario: Register patient with multiple name elements
 Scenario: Register patient containing identifier without mandatory system elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-04-12" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add an identifier with no system element to stored patient
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add an Identifier with missing System to the Stored Patient
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -560,11 +559,11 @@ Scenario: Register patient containing identifier without mandatory system elemen
 Scenario Outline: Register patient with invalid registration period extension
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "<StartDate>" and end date "<EndDate>"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "<StartDate>" and End Date "<EndDate>"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
@@ -578,45 +577,45 @@ Scenario Outline: Register patient with invalid registration period extension
 Scenario: Register patient with a registration period only containing an end date
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "" and end date "2018-12-24"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
-		And the patient resource in the bundle should contain meta data profile and version id
-		And the patient resources within the bundle should contain a registration period
-		And the patient resources within the bundle should contain a registration status
-		And the patient resources within the bundle should contain a registration type
+		And the Patient Metadata should be valid
+		And the Patient Registration Period should be valid
+		And the Patient Registration Status should be valid
+		And the Patient Registration Type should be valid
 
 Scenario: Register patient with a registration period only containing a start date
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-07-14" and end date ""
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-07-14" and End Date ""
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
-		And the patient resource in the bundle should contain meta data profile and version id
-		And the patient resources within the bundle should contain a registration period
-		And the patient resources within the bundle should contain a registration status
-		And the patient resources within the bundle should contain a registration type
+		And the Patient Metadata should be valid
+		And the Patient Registration Period should be valid
+		And the Patient Registration Status should be valid
+		And the Patient Registration Type should be valid
 
 Scenario Outline: Register patient with invalid registration status
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-07-14" and end date "2018-11-23"
-		And I set the stored Patient Registration Status to "<Code>"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "<Code>"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -632,11 +631,11 @@ Scenario Outline: Register patient with invalid registration status
 Scenario Outline: Register patient with invalid registration type
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-07-14" and end date "2018-11-28"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "<Code>"
-		And I add the stored patient as a parameter
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "<Code>"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -651,40 +650,40 @@ Scenario Outline: Register patient with invalid registration type
 Scenario Outline: Register patient with additional not allowed elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
-		And I set the stored Patient registration period with start date "2017-07-14" and end date "2018-11-28"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
-		And I add a <ElementToAdd> element to stored patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
+		And I add a <ElementToAdd> element to the Stored Patient
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| ElementToAdd  |
-		| active        |
-		| telecom       |
-		| deceased      |
-		| address       |
-		| marital       |
-		| births        |
-		| photo         |
-		| contact       |
-		| animal        |
-		| communication |
-		| careprovider  |
-		| managingorg   |
-		| link          |
+		| Active        |
+		| Address       |
+		| Animal        |
+		| Births        |
+		| CareProvider  |
+		| Communication |
+		| Contact       |
+		| Deceased      |
+		| Link          |
+		| ManagingOrg   |
+		| Marital       |
+		| Photo         |
+		| Telecom       |
 
 Scenario Outline: Register patient setting JWT request type to invalid type
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the JWT requested scope to "<JWTType>"
-		And I set the stored Patient registration period with start date "2017-07-14" and end date "2018-11-28"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -698,10 +697,10 @@ Scenario: Register patient setting JWT patient reference so it does not match pa
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number "9999999999"
-		And I set the stored Patient registration period with start date "2017-07-14" and end date "2018-11-28"
-		And I set the stored Patient Registration Status to "A"
-		And I set the stored Patient Registration Type to "T"
-		And I add the stored patient as a parameter
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

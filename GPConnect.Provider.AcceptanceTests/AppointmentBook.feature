@@ -7,7 +7,7 @@ Scenario: Book single appointment for patient
 	Given I get the Schedule for Organization Code "ORG1"
 		And I store the Schedule
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created

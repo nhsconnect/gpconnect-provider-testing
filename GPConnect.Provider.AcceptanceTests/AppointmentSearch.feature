@@ -5,7 +5,7 @@ Scenario: Appointment retrieve success valid id where appointment resource retur
 	Given I get the Patient for Patient Value "patient15"
 		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -14,7 +14,7 @@ Scenario: Appointment retrieve success valid id where appointment resource retur
 Scenario Outline: Appointment retrieve success valid id where single appointment resource should be returned
 	Given I create an Appointment for Patient "<patient>" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -28,7 +28,7 @@ Scenario Outline: Appointment retrieve success valid id where single appointment
 Scenario Outline: Appointment retrieve multiple appointment retrived
 	Given I create "<numberOfAppointments>" Appointments for Patient "<patient>" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the stored Patient
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
