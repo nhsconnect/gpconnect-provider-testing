@@ -132,7 +132,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestContentType = requestContentType;
         }
 
-
         [Given(@"I set ""(.*)"" request header to resource stored ""(.*)""")]
         public void GivenISetRequestHeaderToResourceStored(string headerName, string kstoredValueKey)
         {
@@ -224,6 +223,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenISetTheIfNoneMatchheaderHeaderTo(string ifNoneMatchHeaderContent)
         {
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfNoneMatch, ifNoneMatchHeaderContent);
+        }
+
+        [Given(@"I set the If-Match header to ""([^""]*)""")]
+        public void SetTheIfMatchHeaderTo(string value)
+        {
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfMatch, value);
         }
 
         [Given(@"I set the If-None-Match header with the version from the stored ""([^""]*)"" Resource")]

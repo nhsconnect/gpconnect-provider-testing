@@ -40,19 +40,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             And($@"the response should be an Appointment resource which is saved as ""{appointmentName}""");
         }
 
-        [Given(@"I perform an appointment read on appointment saved with key ""(.*)"" and read the etag and save it as ""(.*)""")]
-        public void GivenIperformAnAppointmentReadOnAppointmentSavedWithKeyAndReadTheEtagAndSaveItAs(string appointmentName, string etagName)
-        {
-            Given("I am using the default server");
-            And(@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:read:appointment"" interaction");
-            When($@"I perform an appointment read for the appointment called ""{appointmentName}""");
-            Then("the response status code should indicate success");
-            And("the response body should be FHIR JSON");
-            And($@"the response ETag is saved as ""{etagName}""");
-            And("the response should be an Appointment resource");
-        }
-
-
         [When(@"I set the URL to ""(.*)"" and cancel appointment with key ""(.*)""")]
         public void WhenISetTheURLToAndCancelAppointmentWithKey(string URL, string appointmentName)
         {
@@ -625,34 +612,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 location.ManagingOrganization.Reference.ShouldNotBeNullOrEmpty();
                 _bundleSteps.ResponseBundleContainsReferenceOfType(location.ManagingOrganization.Reference, ResourceType.Organization);
             }
-        }
-
-        [Then(@"I make a GET request for the appointment with key ""(.*)"" for patient ""(.*)"" to ensure the status has not been changed to cancelled")]
-        public void ThenIMakeAGetRequestForTheAppointmentWithKeyToEnsureTheStatusHasNotBeenChangedToCancelled(string appointmentName, string patient)
-        {
-            Given("I am using the default server");
-            And(@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:read:appointment"" interaction");
-            And($@"I set the JWT requested record NHS number to config patient ""{patient}""");
-            And($@"I set the JWT requested scope to ""patient/*.read""");
-            When($@"I perform an appointment read for the appointment called ""{appointmentName}""");
-            Then("the response status code should indicate success");
-            And("the response body should be FHIR JSON");
-            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
-            appointment.Status.ShouldNotBe(AppointmentStatus.Cancelled);
-        }
-
-        [Then(@"I make a GET request for the appointment with key ""(.*)"" for patient ""(.*)"" to ensure the status has been changed to cancelled")]
-        public void ThenIMakeAGetRequestForTheAppointmentWithKeyToEnsureTheStatusHasBeenChangedToCancelled(string appointmentName, string patient)
-        {
-            Given("I am using the default server");
-            And(@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:read:appointment"" interaction");
-            And($@"I set the JWT requested record NHS number to config patient ""{patient}""");
-            And($@"I set the JWT requested scope to ""patient/*.read""");
-            When($@"I perform an appointment read for the appointment called ""{appointmentName}""");
-            Then("the response status code should indicate success");
-            And("the response body should be FHIR JSON");
-            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
-            appointment.Status.ShouldBe(AppointmentStatus.Cancelled);
         }
 
         [Then(@"the response version id should be different to the version id stored in the requesting appointment")]
