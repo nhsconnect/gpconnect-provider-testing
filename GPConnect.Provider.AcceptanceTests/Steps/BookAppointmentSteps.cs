@@ -223,8 +223,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, bundle);
         }
         
-        [Given(@"I add an extra invalid extension to the appointment called ""([^""]*)"" only populating the value")]
-        public void GivenIAddAnExtraInvalidExtensionToTheAppointmentCalledOnlyPopulatingTheValue(string appointmentName)
+        [Given(@"I add an extra invalid extension to the created appointment only populating the value")]
+        public void GivenIAddAnExtraInvalidExtensionToTheAppointmentCalledOnlyPopulatingTheValue()
         {
             Extension ext = new Extension();
             CodeableConcept codableConcept = new CodeableConcept();
@@ -232,19 +232,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             coding.Code = "TEL";
             codableConcept.Coding.Add(coding);
             ext.Value = codableConcept;
-            Appointment(appointmentName).Extension.Add(ext);
+            HttpContext.CreatedAppointment.Extension.Add(ext);
         }
 
-        [Given(@"I add an extra invalid extension to the appointment called ""([^""]*)"" only populating the url")]
-        public void GivenIAddAnExtraInvalidExtensionToTheAppointmentCalledOnlyPopulatingTheUrl (String appointmentName)
+        [Given(@"I add an extra invalid extension to the appointment only populating the url")]
+        public void GivenIAddAnExtraInvalidExtensionToTheAppointmentCalledOnlyPopulatingTheUrl ()
         {
             Extension ext = new Extension();
             ext.Url = "RandomExtensionUsedForTesting";
-            Appointment(appointmentName).Extension.Add(ext);
+            HttpContext.CreatedAppointment.Extension.Add(ext);
         }
         
-        [Given(@"I add an extra invalid extension to the appointment called ""([^""]*)"" containing the url code and display")]
-        public void GivenIAddAnExtraInvalidExtensionToTheAppointmentCalledContainingTheUrlCodeAndDisplay(string appointmentName)
+        [Given(@"I add an extra invalid extension to the created appointment containing the url code and display")]
+        public void GivenIAddAnExtraInvalidExtensionToTheAppointmentCalledContainingTheUrlCodeAndDisplay()
         {
             Extension ext = new Extension();
             CodeableConcept codableConcept = new CodeableConcept();
@@ -254,54 +254,53 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             codableConcept.Coding.Add(coding);
             ext.Url = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-notanextension-1";
             ext.Value = codableConcept;
-            Appointment(appointmentName).Extension.Add(ext);
+            HttpContext.CreatedAppointment.Extension.Add(ext);
         }
 
-        [Given(@"I change the appointment id to ""([^""]*)"" in the appointment stored against key ""([^""]*)""")]
-        public void GivenIChangeTheAppointmentIdToInTheAppointmentStoredAgainstKey(string id, string appointmentKey)
+        [Given(@"I change the created appointment id to ""([^""]*)""")]
+        public void GivenIChangeTheCreatedAppointmentIdTo(string id)
         {
-            Appointment(appointmentKey).Id = id;
+            HttpContext.CreatedAppointment.Id = id;
         }
 
-        [Given(@"I change the appointment slot reference to ""([^""]*)"" in the appointment stored against key ""([^""]*)""")]
-        public void GivenIChangeTheAppointmentSlotReferenceToInTheAppointmentStoredAgainstKey(string slotRef, string appointmentKey)
+        [Given(@"I change the created appointment slot reference to ""([^""]*)""")]
+        public void GivenIChangeTheAppointmentSlotReferenceToInTheAppointmentStoredAgainstKey(string slotRef)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentKey];
-            appointment.Slot.Clear();
+            HttpContext.CreatedAppointment.Slot.Clear();
             ResourceReference reference = new ResourceReference();
             reference.Reference = slotRef;
-            appointment.Slot.Add(reference);
+            HttpContext.CreatedAppointment.Slot.Add(reference);
         }
 
-        [Given(@"I remove the appointment start element in appointment stored against key ""([^""]*)""")]
-        public void GivenIRemoveTheAppointmentStartElementInAppointmentStoredAgainstKey(string appointmentKey)
+        [Given(@"I remove the created appointment start element")]
+        public void GivenIRemoveTheCreatedAppointmentStartElement()
         {
-            Appointment(appointmentKey).Start = null;
+            HttpContext.CreatedAppointment.Start = null;
         }
 
-        [Given(@"I remove the appointment end element in appointment stored against key ""([^""]*)""")]
-        public void GivenIRemoveTheAppointmentEndElementInAppointmentStoredAgainstKey(string appointmentKey)
+        [Given(@"I remove the created appointment end element")]
+        public void GivenIRemoveTheCreatedAppointmentEndElement()
         {
-            Appointment(appointmentKey).End = null;
+            HttpContext.CreatedAppointment.End = null;
+        }
+
+        [Given(@"I remove the created appointment status element")]
+        public void GivenIRemoveTheAppointmentStatusElementInAppointmentStoredAgainstKey()
+        {
+            HttpContext.CreatedAppointment.Status = null;
+        }
+
+        [Given(@"I remove the created appointment slot element")]
+        public void GivenIRemoveTheAppointmentSlotElementInAppointmentStoredAgainstKey()
+        {
+            HttpContext.CreatedAppointment.Slot = null;
         }
         
-        [Given(@"I remove the appointment status element in appointment stored against key ""([^""]*)""")]
-        public void GivenIRemoveTheAppointmentStatusElementInAppointmentStoredAgainstKey(string appointmentKey)
+        [Then(@"I set the created appointment identifier value element to null")]
+        public void ThenISetTheAppointmentIdentifierValueElementToNull()
         {
-            Appointment(appointmentKey).Status = null;
-        }
-
-        [Given(@"I remove the appointment slot element in appointment stored against key ""([^""]*)""")]
-        public void GivenIRemoveTheAppointmentSlotElementInAppointmentStoredAgainstKey(string appointmentKey)
-        {
-            Appointment(appointmentKey).Slot = null;
-        }
-        
-        [Then(@"I set the appointment identifier value element to null for ""([^""]*)""")]
-        public void ThenISetTheAppointmentIdentifierValueElementToNull(string appointmentName)
-        {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
+            Appointment appointment = (Appointment)HttpContext.CreatedAppointment;
+         
 
             var identifiers = new List<Identifier>
             {
@@ -309,8 +308,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             };
 
             appointment.Identifier = identifiers;
-            
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+
+            HttpContext.CreatedAppointment = appointment;
         }
 
         private CodeableConcept GetReason(string system, string code, string display)
@@ -324,44 +323,40 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             };
         }
 
-        [Then(@"I set the appointment reason coding system element to null for ""([^""]*)""")]
-        public void ThenISetTheAppointmentReasonCodingSystemElementToNull(string appointmentName)
+        [Then(@"I set the created appointment reason coding system element to null")]
+        public void ThenISetTheAppointmentReasonCodingSystemElementToNull()
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
+            Appointment appointment = (Appointment)HttpContext.CreatedAppointment;
 
             appointment.Reason = GetReason(null, "Code", "Display");
 
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+            HttpContext.CreatedAppointment = appointment;
         }
 
-        [Then(@"I set the appointment reason coding code element to null for ""([^""]*)""")]
-        public void ThenISetTheAppointmentReasonCodingCodeElementToNull(string appointmentName)
+        [Then(@"I set the created appointment reason coding code element to null")]
+        public void ThenISetTheAppointmentReasonCodingCodeElementToNull()
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
+            Appointment appointment = (Appointment)HttpContext.CreatedAppointment;
 
             appointment.Reason = GetReason("http://snomed.info/sct", null, "Display");
 
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+            HttpContext.CreatedAppointment = appointment;
         }
 
-        [Then(@"I set the appointment reason coding display element to null for ""([^""]*)""")]
-        public void ThenISetTheAppointmentReasonCodingDisplayElementToNull(string appointmentName)
+        [Then(@"I set the created appointment reason coding display element to null")]
+        public void ThenISetTheAppointmentReasonCodingDisplayElementToNull()
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
+            Appointment appointment = (Appointment)HttpContext.CreatedAppointment;
 
             appointment.Reason = GetReason("http://snomed.info/sct", "Code", null);
 
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+            HttpContext.CreatedAppointment = appointment;
         }
 
-        [Then(@"I set the appointment Patient participant status element to null for ""([^""]*)""")]
-        public void ThenISetTheAppointmentPatientParticipantStatusElementToNull(string appointmentName)
+        [Then(@"I set the created appointment Patient participant status element to null")]
+        public void ThenISetTheAppointmentPatientParticipantStatusElementToNull()
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
+            Appointment appointment = (Appointment)HttpContext.CreatedAppointment;
 
             foreach (ParticipantComponent component in appointment.Participant)
             {
@@ -371,10 +366,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
 
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+            HttpContext.CreatedAppointment = appointment;
         }
 
-        [Then(@"I set the appointment Practitioner participant status element to null for ""([^""]*)""")]
+        [Then(@"I set the appointment Practitioner participant status element to null")]
         public void ThenISetTheAppointmentPractitionerParticipantStatusElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -391,7 +386,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Location participant status element to null for ""([^""]*)""")]
+        [Then(@"I set the appointment Location participant status element to null")]
         public void ThenISetTheAppointmentLocationParticipantStatusElementToNull(string appointmentName)
         {
             Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
@@ -408,21 +403,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Then(@"I set the appointment Patient participant type coding system element to null for ""([^""]*)""")]
-        public void ThenISetTheAppointmentPatientParticipantTypeCodingSystemElementToNull(string appointmentName)
+        [Then(@"I set the created appointment ""([^""]*)"" participant type coding ""([^""]*)"" element to null")]
+        public void ThenISetTheAppointmentPatientParticipantTypeCodingSystemElementToNull(string participant, string codingElement)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
-            HttpContext.StoredFhirResources.Remove(appointmentName);
+            Appointment appointment = (Appointment)HttpContext.CreatedAppointment;
 
             foreach (ParticipantComponent component in appointment.Participant)
             {
-                if (component.Actor.Reference.ToString().Contains("Patient"))
+                if (component.Actor.Reference.ToString().Contains(participant))
                 {
-                    component.Type.First().Coding.First().System = null;
+                    switch (codingElement) {
+                        case "system":
+                            component.Type.First().Coding.First().System = null;
+                            break;
+                        case "code":
+                            component.Type.First().Coding.First().Code = null;
+                            break;
+                        case "display":
+                            component.Type.First().Coding.First().Display = null;
+                            break;
+                    }
                 }
             }
 
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+            HttpContext.CreatedAppointment = appointment;
         }
 
         [Then(@"I set the appointment Patient participant type coding code element to null for ""([^""]*)""")]
@@ -510,10 +514,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
 
-        [Given(@"I remove the participant from the appointment called ""([^""]*)"" which starts with reference ""([^""]*)""")]
-        public void GivenIRemoveTheParticipantFromTheAppointmentCalledWhichStartsWithReference(string appointmentName, string referenceContainsValue)
+        [Given(@"I remove the participant ""([^""]*)"" from the created Appointment")]
+        public void GivenIRemoveTheParticipantFromTheAppointmentCalledWhichStartsWithReference(string referenceContainsValue)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment appointment = HttpContext.CreatedAppointment;
             List<ParticipantComponent> participantsToRemove = new List<ParticipantComponent>();
 
             foreach (ParticipantComponent participant in appointment.Participant)
@@ -527,8 +531,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 appointment.Participant.Remove(participant);
             }
+            HttpContext.CreatedAppointment = appointment;
         }
 
+    
         [Given(@"I set the appointment Priority to ""([^""]*)"" on appointment stored against key ""([^""]*)""")]
         public void GivenISetTheAppointmentPriorityToOnAppointmentStoredAgainstKey(int priority, string appointmentKey)
         {
@@ -565,10 +571,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [When(@"I book the appointment called ""([^""]*)"" with an invalid field")]
         public void ThenIBookTheAppointmentCalledWithAnInvalidField(string appointmentKey)
         {
-            Appointment appointment = (Appointment)HttpContext.StoredFhirResources[appointmentKey];
+            Appointment appointment = (Appointment)HttpContext.CreatedAppointment;
             string appointmentString = FhirSerializer.SerializeToJson(appointment);
             appointmentString = FhirHelper.AddInvalidFieldToResourceJson(appointmentString);
-            HttpSteps.RestRequest(Method.POST, "/Appointment", appointmentString);
+    
         }
         
         [Given(@"I create an appointment for patient ""([^ ""]*)"" at organization ""([^""]*)"" with priority ""([^""]*)"" and save appintment resources to ""([^""]*)""")]
