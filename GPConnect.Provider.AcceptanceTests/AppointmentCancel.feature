@@ -6,13 +6,13 @@ Scenario Outline: I perform a successful cancel appointment
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
-		And the cancellation reason in the returned appointment response should be equal to "double booked"
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "double booked"
+		And the Appointment Metadata should be valid
 	Examples:
 		| PatientName |
 		| patient1    |
@@ -27,23 +27,22 @@ Scenario Outline: I perform cancel appointment and update invalid elements
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
-		And I add an extension to created appointment with url "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1" code "CLI" and display "Clinical"
-		And I add an extension to created appointment with url "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1" code "ONL" and display "Online"
-		And I add an extension to created appointment with url "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1" code "ONL" and display "Online"
-		And I set the description to "RANDOM TEXT" for created appointment
-		And I set the priority to "3" for created appointment
-		And I set the minutes to "20" for created appointment
-		And I set the comment to "RANDOM COMMENT" for created appointment
-		And I set the type text to "RANDOM TYPE TEXT" for created appointment
-		And I set the identifier with system "http://fhir.nhs.net/Id/gpconnect-appointment-identifier" and value "898976578" for the created appointment
-		And I set the identifier with system "http://fhir.nhs.net/Id/gpconnect-appointment-identifier" and value "898955578" for the created appointment
-		And I add participant "location" with reference "lacation/2" for the created appointment
-		And I add participant "patient" with reference "patient/2" for the created appointment
-		And I add participant "practitioner" with reference "practitioner/2" for the created appointment
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+		And I add a Category Extension with Code "CLI" and Display "Clinical" to the Created Appointment
+		And I add a Booking Method Extension with Code "ONL" and Display "Online" to the Created Appointment
+		And I add a Contact Method Extension with Code "ONL" and Display "Online" to the Created Appointment
+		And I add a Participant with Reference "location/2" to the Created Appointment
+		And I add a Participant with Reference "Patient/2" to the Created Appointment
+		And I add a Participant with Reference "Practitioner/2" to the Created Appointment		
+		And I add an Appointment Identifier with default System and Value "898976578" to the Created Appointment
+		And I add an Appointment Identifier with default System and Value "898976578" to the Created Appointment
+		And I set the Created Appointment Description to "RANDOM TEXT" 
+		And I set the Created Appointment Priority to "3"
+		And I set the Created Appointment Minutes Duration to "20"
+		And I set the Created Appointment Comment to "RANDOM COMMENT"
+		And I set the Created Appointment Type Text to "RANDOM TYPE TEXT"
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "403"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| PatientName |
@@ -59,24 +58,24 @@ Scenario Outline: Cancel appointment making a request to an invalid URL
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
-	When I make a PUT request to "<url>"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+		And I set the request URL to "<url>"
+	When I make the "AppointmentCancel" request
 	Then the response status code should be "404"
 	Examples:
 		| url              |
-		| /appointmentqq/! |
-		| /Appointments/#  |
+		| appointmentqq/!  |
+		| Appointments/#   |
 
 Scenario Outline: Cancel appointment failure due to missing header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I do not send header "<Header>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| Header            |
@@ -91,14 +90,13 @@ Scenario Outline: Cancel appointment failure with incorrect interaction id
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
-		And I am performing the "<interactionId>" interaction
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+		And I set the Interaction Id header to "<InteractionId>`"
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| interactionId                                                     |
+		| InteractionId                                                     |
 		| urn:nhs:names:services:gpconnect:fhir:rest:update:appointmentss   |
 		| urn:nhs:names:services:gpconnect:fhir:rest:update:appointmenT     |
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
@@ -110,15 +108,15 @@ Scenario Outline: Cancel appointment using the _format parameter to request resp
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
-		And I add the parameter "_format" with the value "<Parameter>"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+		And I add a Format parameter with the Value "<Parameter>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
-		And the cancellation reason in the returned appointment response should be equal to "double booked"
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "double booked"
+		And the Appointment Metadata should be valid
 	Examples:
 		| Parameter             | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -129,15 +127,15 @@ Scenario Outline: Cancel appointment using the accept header to request response
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Accept header to "<Header>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
-		And the cancellation reason in the returned appointment response should be equal to "double booked"
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "double booked"
+		And the Appointment Metadata should be valid
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -148,40 +146,39 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Accept header to "<Header>"
-		And I add the parameter "_format" with the value "<Parameter>"
+		And I add a Format parameter with the Value "<Parameter>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
-		And the cancellation reason in the returned appointment response should be equal to "double booked"
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "double booked"
+		And the Appointment Metadata should be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
 		| application/json+fhir | application/xml+fhir  | XML        |
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
-
 		
 Scenario Outline: Cancel appointment using the accept header and _format parameter and content-type to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the request content type to "<ContentType>"
 		And I set the Accept header to "<AcceptHeader>"
-		And I add the parameter "_format" with the value "<FormatParam>"
+		And I add a Format parameter with the Value "<FormatParam>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <Format>
 		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
-		And the cancellation reason in the returned appointment response should be equal to "double booked"
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "double booked"
+		And the Appointment Metadata should be valid
 	Examples:
 		| ContentType           | AcceptHeader          | FormatParam           | Format |
 		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML    |
@@ -198,13 +195,13 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with URL "<url>" and Reason "<reason>"
+		And I set the Created Appointment to Cancelled with Url "<url>" and Reason "<reason>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
-		And the cancellation reason in the returned appointment response should be equal to "<reason>"
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "<reason>"
+		And the Appointment Metadata should be valid
 	Examples:
 		| url                                                                                           | reason      |
 		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1 | Too busy    |
@@ -216,10 +213,9 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with URL "<url>" and Reason "<reason>"
+		And I set the Created Appointment to Cancelled with Url "<url>" and Reason "<reason>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
 		| url                                                                                                | reason   |
@@ -232,94 +228,79 @@ Scenario: Cancel appointment missing cancellation extension reason
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with URL "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1" and Reason ""
+		And I set the Created Appointment to Cancelled with Reason ""
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario: Conformance profile supports the cancel appointment operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the conformance profile should contain the "Appointment" resource with a "update" interaction
 
 Scenario: Cancel appointment verify resource is updated when an valid ETag value is provided
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
-		And I set "If-Match" request header to created appointment version
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+		And I set the If-Match header to the Stored Appointment Version Id
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
-		And the cancellation reason in the returned appointment response should be equal to "double booked"	
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "double booked"	
 		
 Scenario: Cancel appointment verify resource is not updated when an out of date ETag value is provided
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set If-Match request header to "invalidEtag"
 	When I make the "AppointmentCancel" request	
 	Then the response status code should be "409"
-		And the response body should be FHIR JSON
 		
 Scenario: Cancel appointment compare request appointment to returned appointment
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request	
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
-		And the resource type of the request appointment and the returned response should be equal
-		And the id of the request appointment and the returned response should be equal
-		And the status of the request appointment and the returned response should be equal
-		And the extensions of the request appointment and the returned response should be equal
-		And the description of the request appointment and the returned response should be equal
-		And the start and end date of the request appointment and the returned response should be equal
-		And the slot display and reference of the request appointment and the returned response should be equal
-		And the reason of the request appointment and the returned response should be equal
-		And the participants of the request appointment and the returned response should be equal
-		
+		And the Appointment Status should be Cancelled
+		And the Appointment Id should equal the Created Appointment Id
+		And the Appointment Status should equal the Created Appointment Status
+		And the Appointment Extensions should equal the Created Appointment Extensions
+		And the Appointment Description should equal the Created Appointment Description
+		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
+		And the Appointment Slots should equal the Created Appointment Slots
+		And the Appointment Reason should equal the Created Appointment Reason
+		And the Appointment Participants should be equal to the Created Appointment Participants		
 
 Scenario: Cancel appointment response body must contain valid slot reference
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And the cancellation reason in the returned appointment response should be equal to "double booked"
-		And the returned appointment resource status should be set to cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "double booked"
+		And the Appointment Status should be Cancelled
 		And the appointment response resource contains a slot reference
 		And the appointment response resource contains atleast 2 participants a practitioner and a patient
-		And the appointment participants of the appointment must conform to the gp connect specifications
+		And the Appointment Participants should be valid and resolvable
 
 Scenario Outline: Cancel appointment prefer header set to representation
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Prefer header to "return=representation"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
+		And the Appointment Status should be Cancelled
 		And the content-type should not be equal to null
 		And the content-length should not be equal to zero
 		And the returned resource shall contains a logical id
@@ -328,7 +309,7 @@ Scenario Outline: Cancel appointment prefer header set to representation
 		And the appointment resource should contain at least one slot reference
 		And the appointment resource should contain at least one participant
 		And if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Metadata should be valid
 	Examples:
 		| PatientName |
 		| patient1    |
@@ -342,7 +323,7 @@ Scenario: Cancel appointment prefer header set to minimal
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Prefer header to "return=minimal"
 	When I make the "AppointmentCancel" request	
 	Then the response status code should indicate success
@@ -354,14 +335,13 @@ Scenario Outline: Cancel appointment check the version id of the cancelled resou
 		And I store the created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the created Appointment to Cancelled with Reason "Double booked"
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request	
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And the returned appointment resource status should be set to cancelled
-		And the cancellation reason in the returned appointment response should be equal to "Double booked"
-		And the response version id should be different to the version id stored in the requesting appointment
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "double booked"
+		And the Appointment Version Id should not equal the Created Appointment Version Id
 	Examples:
 		| PatientName |
 		| patient1    |
@@ -370,3 +350,9 @@ Scenario Outline: Cancel appointment check the version id of the cancelled resou
 		| patient8    |
 		| patient10   |
 		| patient12   |
+
+Scenario: Conformance profile supports the cancel appointment operation
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+		And the conformance profile should contain the "Appointment" resource with a "update" interaction

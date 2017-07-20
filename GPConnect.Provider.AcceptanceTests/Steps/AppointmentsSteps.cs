@@ -1008,9 +1008,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
       
         }
 
-
-
-        [Given(@"I set the created Appointment to Cancelled with Reason ""([^""]*)""")]
+        [Given(@"I set the Created Appointment to Cancelled with Reason ""([^""]*)""")]
         public void SetTheCreatedAppointmentToCancelledWithReason(string reason)
         {
             var extension = GetCancellationReasonExtension(reason);
@@ -1022,10 +1020,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
         }
 
-        [Given(@"I set the created Appointment to Cancelled with URL ""([^""]*)"" and Reason ""([^""]*)""")]
-        public void SetTheCreatedAppointmentToCancelledWithURLAndReason(string URL, string reason)
+        [Given(@"I set the Created Appointment to Cancelled with Url ""([^""]*)"" and Reason ""([^""]*)""")]
+        public void SetTheCreatedAppointmentToCancelledWithUrlAndReason(string url, string reason)
         {
-            var extension = GetCancellationReasonExtensionWithURL(URL, reason);
+            var extension = GetStringExtension(url, reason);
 
             if (HttpContext.CreatedAppointment.Extension == null)
                 HttpContext.CreatedAppointment.Extension = new List<Extension>();
@@ -1034,30 +1032,77 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
         }
 
+
+        [Given(@"I add a Category Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
+        public void AddACategoryExtensionWithCodeAndDisplayToTheCreatedAppointment(string code, string display)
+        {
+            var extension = GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", code, display);
+
+            if (HttpContext.CreatedAppointment.Extension == null)
+                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+
+            HttpContext.CreatedAppointment.Extension.Add(extension);
+        }
+
+        [Given(@"I add a Booking Method Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
+        public void AddABookingMethodExtensionWithCodeAndDisplayToTheCreatedAppointment(string code, string display)
+        {
+            var extension = GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", code, display);
+
+            if (HttpContext.CreatedAppointment.Extension == null)
+                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+
+            HttpContext.CreatedAppointment.Extension.Add(extension);
+        }
+
+        [Given(@"I add a Contact Method Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
+        public void AddAContactMethodExtensionWithCodeAndDisplayToTheCreatedAppointment(string code, string display)
+        {
+            var extension = GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", code, display);
+
+            if (HttpContext.CreatedAppointment.Extension == null)
+                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+
+            HttpContext.CreatedAppointment.Extension.Add(extension);
+        }
+
+
         [Given("I set created appointment to a new appointment resource")]
         public void ISetTheAppointmentResourceToANewAppointmentResource()
         {
             HttpContext.CreatedAppointment = new Appointment();
         }
+        
+        private static Extension GetCodingExtension(string url, string code, string display)
+        {
+            var coding = new Coding
+            {
+                Code = code,
+                Display = display
+            };
 
-        private static Extension GetCancellationReasonExtensionWithURL(string URL, string reason)
+            var reason = new CodeableConcept();
+            reason.Coding.Add(coding);
+
+            return new Extension
+            {
+                Url = url,
+                Value = reason
+            };
+        }
+
+        private static Extension GetStringExtension(string url, string reason)
         {
             return new Extension
             {
-                Url = URL,
+                Url = url,
                 Value = new FhirString(reason)
             };
-
         }
 
         private static Extension GetCancellationReasonExtension(string reason)
         {
-            return new Extension
-            {
-                Url = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1",
-                Value = new FhirString(reason)
-            };
-
+            return GetStringExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", reason);
         }
 
         [Given(@"I read the Stored Appointment")]
