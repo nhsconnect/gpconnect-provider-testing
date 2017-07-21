@@ -64,18 +64,75 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given(@"I configure server certificate and ssl");
         }
 
-        [Given(@"I am using an invalid client certificate")]
-        public void IAmUsingAnInvalidClientCertificate()
+        [Given(@"I am using the SSP client certificate which is out of date")]
+        public void IAmUsingTheSSPClientCertificateWhichIsOutOfDate()
         {
-            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.ClientInvalidCertThumbPrint;
+            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.sspAsClientCertThumbPrintOutOfDate;
             SecurityContext.SendClientCert = true;
             Given(@"I configure server certificate and ssl");
         }
 
-        [Given(@"I am using an expired client certificate")]
-        public void IAmUsingAnExpiredClientCertificate()
+        [Given(@"I am using the client certificate which is out of date")]
+        public void IAmUsingTheClientCertificateWhichIsOutOfDate()
         {
-            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.ClientExpiredCertThumbPrint;
+            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.clientCertThumbPrintOutOfDate;
+            SecurityContext.SendClientCert = true;
+            Given(@"I configure server certificate and ssl");
+        }
+
+
+        [Given(@"I am using the SSP client certificate")]
+        public void GivenIAmUsingTheSSPClientCertificate()
+        {
+            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.sspAsClientCertThumbPrintValid;
+            SecurityContext.SendClientCert = true;
+            Given(@"I configure server certificate and ssl");
+        }
+
+        [Given(@"I am using the SSP client certificate with invalid FQDN")]
+        public void GivenIAmUsingTheSSPClientCertificateWithInvalidFQDN()
+        {
+            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.sspAsClientCertThumbPrintFQDNNotSSPFQDN;
+            SecurityContext.SendClientCert = true;
+            Given(@"I configure server certificate and ssl");
+        }
+
+        [Given(@"I am using the client certificate with invalid FQDN")]
+        public void GivenIAmUsingThePClientCertificateWithInvalidFQDN()
+        {
+            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.clientCertThumbPrintFQDNDoesNotMatchSendingSystem;
+            SecurityContext.SendClientCert = true;
+            Given(@"I configure server certificate and ssl");
+        }
+
+        [Given(@"I am using the SSP client certificate not signed by Spine CA")]
+        public void GivenIAmUsingTheSSPClientCertificateNoteSignedBySpineCA()
+        {
+            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.sspAsClientCertThumbPrintNotIssuedBySpineCA;
+            SecurityContext.SendClientCert = true;
+            Given(@"I configure server certificate and ssl");
+        }
+
+        [Given(@"I am using the client certificate not signed by Spine CA")]
+        public void GivenIAmUsingTheClientCertificateNoteSignedBySpineCA()
+        {
+            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.clientCertThumbPrintNotIssuedBySpineCA;
+            SecurityContext.SendClientCert = true;
+            Given(@"I configure server certificate and ssl");
+        }
+
+        [Given(@"I am using the SSP client certificate which has been revoked")]
+        public void GivenIAmUsingTheSSPClientCertificateWhichHasBeenRevoked()
+        {
+            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.sspAsClientCertThumbPrintRevoked;
+            SecurityContext.SendClientCert = true;
+            Given(@"I configure server certificate and ssl");
+        }
+
+        [Given(@"I am using the client certificate which has been revoked")]
+        public void GivenIAmUsingTheClientCertificateWhichHasBeenRevoked()
+        {
+            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.clientCertThumbPrintRevoked;
             SecurityContext.SendClientCert = true;
             Given(@"I configure server certificate and ssl");
         }
