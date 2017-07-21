@@ -123,6 +123,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.FhirServerPort = serverPort;
         }
 
+
+        [Given(@"I am not using the SSP")]
+        public void GivenIAmNotUsingTheSSP()
+        {
+            HttpContext.UseSpineProxy = false;
+        }
+
         // Http Header Configuration Steps
 
         [Given(@"I am using ""(.*)"" to communicate with the server")]
@@ -131,7 +138,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, requestContentType);
             HttpContext.RequestContentType = requestContentType;
         }
-
 
         [Given(@"I set ""(.*)"" request header to resource stored ""(.*)""")]
         public void GivenISetRequestHeaderToResourceStored(string headerName, string kstoredValueKey)
@@ -224,6 +230,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenISetTheIfNoneMatchheaderHeaderTo(string ifNoneMatchHeaderContent)
         {
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfNoneMatch, ifNoneMatchHeaderContent);
+        }
+
+        [Given(@"I set the If-Match header to ""([^""]*)""")]
+        public void SetTheIfMatchHeaderTo(string value)
+        {
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfMatch, value);
         }
 
         [Given(@"I set the If-None-Match header with the version from the stored ""([^""]*)"" Resource")]

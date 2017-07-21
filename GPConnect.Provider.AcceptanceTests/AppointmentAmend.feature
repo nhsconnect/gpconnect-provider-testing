@@ -10,8 +10,9 @@ Scenario Outline: I perform a successful amend appointment and change the commen
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the response should be an Appointment resource
-		And the appointment resource should contain a comment which equals "customComment"
-		And the returned appointment resource should contain meta data profile and version id
+
+		And the Appointment Comment should be valid for "customComment"
+		And the Appointment Metadata should be valid
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -33,8 +34,8 @@ Scenario: I perform a successful amend appointment and change the reason text to
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the response should be an Appointment resource
-		And the appointment resource should contain a reason text which equals "customComment"
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Reason Text should be valid for "customComment"
+		And the Appointment Metadata should be valid
 @ignore
 Scenario: I perform a successful amend appointment and change the description text to a custom message
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -45,8 +46,8 @@ Scenario: I perform a successful amend appointment and change the description te
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the response should be an Appointment resource
-		And the appointment resource should contain description text which equals "customComment"
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Description should be valid for "customComment"
+		And the Appointment Metadata should be valid
 
 Scenario: Amend appointment and update element which cannot be updated
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -82,7 +83,6 @@ Scenario Outline: Amend appointment failure due to missing header
 		And I do not send header "<Header>"
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| Header            |
@@ -101,7 +101,6 @@ Scenario Outline: Amend appointment failure with incorrect interaction id
 		And I am performing the "<interactionId>" interaction
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| interactionId                                                     |
@@ -117,14 +116,14 @@ Scenario Outline: Amend appointment using the _format parameter to request respo
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment Comment to "customComment"
-		And I add the parameter "_format" with the value "<Parameter>"
+		And I add a Format parameter with the Value "<Format>"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And the appointment resource should contain a comment which equals "customComment"
+		And the Appointment Comment should be valid for "customComment"
 	Examples:
-		| Parameter             | BodyFormat |
+		| Format                | BodyFormat |
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
@@ -139,8 +138,8 @@ Scenario Outline: Amend appointment using the accept header to request response 
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And the returned appointment resource should contain meta data profile and version id
-		And the appointment resource should contain a comment which equals "customComment"
+		And the Appointment Metadata should be valid
+		And the Appointment Comment should be valid for "customComment"
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -158,8 +157,8 @@ Scenario Outline: Amend appointment using the _format and accept parameter to re
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And the returned appointment resource should contain meta data profile and version id
-		And the appointment resource should contain a comment which equals "customComment"
+		And the Appointment Metadata should be valid
+		And the Appointment Comment should be valid for "customComment"
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -172,12 +171,13 @@ Scenario: Amend appointment and check the returned appointment resource conforms
 		And I store the created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		##
 		And I set the created Appointment Comment to "customComment"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And the appointment resource should contain a comment which equals "customComment"
+		And the Appointment Comment should be valid for "customComment"
 		And the appointment response resource contains a status with a valid value
 		And the appointment response resource contains an start date
 		And the appointment response resource contains an end date
@@ -214,14 +214,6 @@ Scenario: Amend appointment prefer header set to minimal
 		And the response body should be empty
 		And the content-type should be equal to null
 
-Scenario: Conformance profile supporAmend appointment send an update with an invalid if-match headerts the amend appointment operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the conformance profile should contain the "Appointment" resource with a "update" interaction
-
 Scenario: Amend appointment send an update with an invalid if-match header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment	
@@ -231,39 +223,31 @@ Scenario: Amend appointment send an update with an invalid if-match header
 		And I set If-Match request header to "invalidEtag"
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "409"
-		And the response body should be FHIR JSON
 
 Scenario: Amend appointment set etag and check etag is the same in the returned amended appointment
-	Given I find or create an appointment with status Booked for patient "patient1" at organization "ORG1" and save the appointment resources to "patientApp"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:appointment" interaction
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "patient1"
-		And I set the JWT requested scope to "patient/*.read"
-	When I perform an appointment read for the appointment called "patientApp"
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"		
+		And I store the created Appointment			
+	Given I read the Stored Appointment
+		And I store the Appointment 
+		And I store the Appointment Id
+	Given I configure the default "AppointmentAmend" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the created Appointment Comment to "customComment"
+		And I set the If-Match header to the Stored Appointment Version Id
+	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response ETag is saved as "etagAmend"
 		And the response should be an Appointment resource
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:update:appointment" interaction
-		And I set the JWT requested record NHS number to the NHS number of patient stored against key "patient1"
-		And I set the JWT requested scope to "patient/*.write"
-		And I set "If-Match" request header to resource stored "etagAmend"
-	When I amend "patientApp" by changing the comment to "customComment"
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be an Appointment resource
-		And the appointment resource should contain a comment which equals "customComment"
+		And the Appointment Comment should be valid for "customComment"
 
 Scenario: Amend appointment and send an invalid bundle resource
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		##
 		And I set the created Appointment Comment to "customComment"
 	When I make the "AppointmentAmend" request with invalid Resource type
 	Then the response status code should be "422"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Amend appointment and send an invalid appointment resource
@@ -272,8 +256,14 @@ Scenario: Amend appointment and send an invalid appointment resource
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment Comment to "customComment"
+		##
 		And I set created appointment to a new appointment resource
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "400"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+				
+Scenario: Conformance profile supporAmend appointment send an update with an invalid if-match headerts the amend appointment operation
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+		And the conformance profile should contain the "Appointment" resource with a "update" interaction

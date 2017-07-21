@@ -653,8 +653,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"all appointments must have a start element which is populated with a date that equals ""([^""]*)""")]
         public void appointmentPopulatedWithAStartDateEquals(string startBoundry)
         {
+<<<<<<< HEAD
             DateTimeOffset? time = HttpContext.CreatedAppointment.Start;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+=======
+            //string time = HttpContext.StoredDate[startBoundry];
+            DateTimeOffset time = DateTimeOffset.Parse(HttpContext.StoredDate[startBoundry]);
+
             foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+>>>>>>> 3e7147fc0e04c998d636af2deafccf0f2933aec6
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {

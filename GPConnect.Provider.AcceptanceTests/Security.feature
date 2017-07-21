@@ -1,45 +1,82 @@
 ﻿@security
 Feature: Security
 
-Scenario: Security reject a non ssl request
-	Given I am using the default server
+Scenario: Security - non ssl request
+	Given I configure the default "GpcGetCareRecord" request
+		And I am not using the SSP
 		And I am not using TLS Connection
 		And I am connecting to server on port "80"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 
-Scenario: Security valid client certificate, ciper and SSL
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+Scenario: Security - valid client certificate
+	Given I configure the default "GpcGetCareRecord" request
+		And I am not using the SSP
+		And I am using the SSP client certificate
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "document"
 
-Scenario: Security no client certificate sent
-	Given I am using the default server
+Scenario: Security - client certificate invalid FQDN
+	Given I configure the default "GpcGetCareRecord" request
+		And I am not using the SSP
+		And I am using the SSP client certificate with invalid FQDN
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "495"
+		And the response should be a OperationOutcome resource
+
+Scenario: Security - client certificate not issued by the Spine CA
+	Given I configure the default "GpcGetCareRecord" request
+		And I am not using the SSP
+		And I am using the SSP client certificate not signed by Spine CA
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "495"
+		And the response should be a OperationOutcome resource
+
+Scenario: Security - client certificate revoked
+	Given I configure the default "GpcGetCareRecord" request
+		And I am not using the SSP
+		And I am using the SSP client certificate which has been revoked
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "495"
+		And the response should be a OperationOutcome resource
+
+Scenario: Security - client certificate out of date
+	Given I configure the default "GpcGetCareRecord" request
+		And I am not using the SSP
+		And I am using the SSP client certificate which is out of date
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "495"
+		And the response should be a OperationOutcome resource
+
+Scenario: Security - no client certificate included in request
+	Given I configure the default "GpcGetCareRecord" request
+		And I am not using the SSP
 		And I am not using a client certificate
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should be "496"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
-
-Scenario: Security invalid client certificate sent
-	Given I am using the default server
-		And I am using an invalid client certificate
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
-	Then the response status code should be "495"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
-
-Scenario: Security Expired client certificate sent
-	Given I am using the default server
-		And I am using an expired client certificate
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
-	Then the response status code should be "495"
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 
 @ignore
