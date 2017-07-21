@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Builders.Appointment;
     using Context;
     using Enum;
     using Hl7.Fhir.Model;
@@ -446,116 +447,15 @@
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
         public void CreateAnAppointmentFromTheStoredPatientAndStoredSchedule()
         {
-            var storedPatient = _httpContext.StoredPatient;
-            var storedBundle = _httpContext.StoredBundle;
+            var appointmentBuilder = new DefaultAppointmentBuilder(_httpContext);
 
-            var firstSlot = storedBundle.Entry
-                .Where(entry => entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                .Select(entry => (Slot)entry.Resource)
-                .First();
-
-            var schedule = storedBundle.Entry
-                .Where(entry =>
-                        entry.Resource.ResourceType.Equals(ResourceType.Schedule) &&
-                        entry.FullUrl == firstSlot.Schedule.Reference)
-                .Select(entry => (Schedule) entry.Resource)
-                .First();
-
-
-            //Patient
-            var patient = GetPatient(storedPatient);
-
-            //Practitioners
-            var practitionerReferences = schedule.Extension.Select(extension => ((ResourceReference)extension.Value).Reference);
-            var practitioners = GetPractitioners(practitionerReferences);
-
-            //Location
-            var locationReference = schedule.Actor.Reference;
-            var location = GetLocation(locationReference);
-
-            //Participants
-            var participants = new List<ParticipantComponent>();
-            participants.Add(patient);
-            participants.AddRange(practitioners);
-            participants.Add(location);
-
-            //Slots
-            var slot = GetSlot(firstSlot);
-
-            var slots = new List<ResourceReference>();
-            slots.Add(slot);
-
-            var appointment = new Appointment
-            {
-                Status = Appointment.AppointmentStatus.Booked,
-                Start = firstSlot.Start,
-                End = firstSlot.End,
-                Participant = participants,
-                Slot = slots
-            };
-
-            _httpContext.CreatedAppointment = appointment;
-        }
-
-        private static ParticipantComponent GetLocation(string locationReference)
-        {
-            return new ParticipantComponent
-            {
-                Actor = new ResourceReference
-                {
-                    Reference = locationReference
-                },
-                Status = Appointment.ParticipationStatus.Accepted
-            };
-        }
-
-        private static ResourceReference GetSlot(Slot firstSlot)
-        {
-            return new ResourceReference
-            {
-                Reference = "Slot/" + firstSlot.Id
-            };
-        }
-
-        private static ParticipantComponent GetPatient(Patient storedPatient)
-        {
-            return new ParticipantComponent
-            {
-                Actor = new ResourceReference
-                {
-                    Reference = "Patient/" + storedPatient.Id
-                },
-                Status = Appointment.ParticipationStatus.Accepted,
-                Type = new List<CodeableConcept>
-                {
-                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "patient", "patient")
-                }
-            };
-        }
-
-        private static List<ParticipantComponent> GetPractitioners(IEnumerable<string> practitionerReferences)
-        {
-            return practitionerReferences
-                .Select(practitionerReference => new ParticipantComponent
-                {
-                    Actor = new ResourceReference
-                    {
-                        Reference = practitionerReference
-                    },
-                    Status = Appointment.ParticipationStatus.Accepted,
-                    Type = new List<CodeableConcept>
-                    {
-                        new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PPRF", "practitioner", "practitioner")
-                    }
-                })
-                .ToList();
+            _httpContext.CreatedAppointment = appointmentBuilder.BuildAppointment();
         }
 
         [Given(@"I set the created Appointment Comment to ""([^""]*)""")]
         public void SetTheCreatedAppointmentComment(string comment)
         {
             _httpContext.CreatedAppointment.Comment = comment;
-      
         }
 
         [Given(@"I set the created Appointment reason to ""([^""]*)""")]

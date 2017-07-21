@@ -104,6 +104,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppointmentCancel.feature</DependentUpon>
     </Compile>
+    <Compile Include="Builders\Appointment\DefaultAppointmentBuilder.cs" />
     <Compile Include="Constants\SpineConst.cs" />
     <Compile Include="Constants\FhirConst.cs" />
     <Compile Include="Constants\HttpConst.cs" />
