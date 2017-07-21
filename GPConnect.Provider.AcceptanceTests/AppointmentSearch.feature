@@ -570,9 +570,7 @@ Scenario: Appointment retrieve JWT patient reference must match payload patient 
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Conformance profile supports the search appointment operation
-	Given I am using the default server
-	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the conformance profile should contain the "Appointment" resource with a "read" interaction
+		And the conformance profile should contain the "Appointment" resource with a "search-type" interaction

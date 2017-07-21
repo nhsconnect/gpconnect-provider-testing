@@ -10,7 +10,6 @@ Scenario Outline: I perform a successful amend appointment and change the commen
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the response should be an Appointment resource
-
 		And the Appointment Comment should be valid for "customComment"
 		And the Appointment Metadata should be valid
 	Examples:
@@ -171,7 +170,6 @@ Scenario: Amend appointment and check the returned appointment resource conforms
 		And I store the created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		##
 		And I set the created Appointment Comment to "customComment"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
@@ -244,7 +242,6 @@ Scenario: Amend appointment and send an invalid bundle resource
 		And I store the created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		##
 		And I set the created Appointment Comment to "customComment"
 	When I make the "AppointmentAmend" request with invalid Resource type
 	Then the response status code should be "422"
@@ -256,13 +253,12 @@ Scenario: Amend appointment and send an invalid appointment resource
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the created Appointment Comment to "customComment"
-		##
 		And I set created appointment to a new appointment resource
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 				
-Scenario: Conformance profile supporAmend appointment send an update with an invalid if-match headerts the amend appointment operation
+Scenario: Conformance profile support the Amend appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
