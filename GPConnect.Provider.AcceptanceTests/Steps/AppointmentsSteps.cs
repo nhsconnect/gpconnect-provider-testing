@@ -1,27 +1,23 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Helpers;
-using Hl7.Fhir.Model;
-using NUnit.Framework;
-using System;
-using Shouldly;
-using System.Collections.Generic;
-using System.Linq;
-using TechTalk.SpecFlow;
-using static Hl7.Fhir.Model.Bundle;
-using static Hl7.Fhir.Model.Appointment;
-using Hl7.Fhir.Serialization;
-using RestSharp;
-using Newtonsoft.Json.Linq;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Context;
     using Enum;
+    using Hl7.Fhir.Model;
+    using Hl7.Fhir.Serialization;
+    using NUnit.Framework;
+    using RestSharp;
+    using Shouldly;
+    using TechTalk.SpecFlow;
+    using static Hl7.Fhir.Model.Bundle;
+    using static Hl7.Fhir.Model.Appointment;
 
     [Binding]
     public class AppointmentsSteps : BaseSteps
     {
-        private readonly HttpContext HttpContext;
+        private readonly HttpContext _httpContext;
         private readonly JwtSteps _jwtSteps;
         private readonly PatientSteps _patientSteps;
         private readonly GetScheduleSteps _getScheduleSteps;
@@ -30,36 +26,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public AppointmentsSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, JwtSteps jwtSteps, PatientSteps patientSteps, GetScheduleSteps getScheduleSteps) 
             : base(fhirContext, httpSteps)
         {
-            HttpContext = httpContext;
+            _httpContext = httpContext;
             _jwtSteps = jwtSteps;
             _patientSteps = patientSteps;
             _getScheduleSteps = getScheduleSteps;
         }
-
-        [When(@"I search for ""([^""]*)"" from the list of patients and make a get request for their appointments")]
-        public void searchAndGetAppointmentsFromPatientListData(string patient)
-        {
-
-            Patient patientResource = (Patient)HttpContext.StoredFhirResources[patient];
-            string id = patientResource.Id.ToString();
-            var url = "/Patient/"+ id+ "/Appointment";
-            When($@"I make a GET request to ""{url}""");
-        }
-
-        [When(@"I search for ""([^""]*)"" and make a get request for their appointments")]
-        public void searchAndGetAppointments(string patient)
-        {
-            Resource patient1 = (Patient)HttpContext.StoredFhirResources[patient];
-            string id = patient1.Id.ToString();
-            var url = "/Patient/" + id + "/Appointment";
-            When($@"I make a GET request to ""{url}""");
-        }
-
+        
         [When(@"I search for patient ""([^""]*)"" and search for the most recently booked appointment ""([^""]*)"" using the stored startDate from the last booked appointment as a search parameter")]
         public void ISearchForPatientAndSearchForTheMostRecentlyBookedAppointmentUsingTheStoredStartDateFromTheLastBookedAppointmentAsASearchParameter(string patient, string appointmentKey)
         {
-            Appointment appointment = HttpContext.CreatedAppointment;
-            Resource patient1 = (Patient)HttpContext.StoredPatient;
+            Appointment appointment = _httpContext.CreatedAppointment;
+            Resource patient1 = (Patient)_httpContext.StoredPatient;
             string id = patient1.Id.ToString();
             var url = "/Patient/" + id + "/Appointment?start=" + appointment.StartElement + "";
             When($@"I make a GET request to ""{url}""");
@@ -70,86 +47,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void searchAndGetaAppointmentsWithCustomStartDateandPrefix(string startBoundry, string prefix, string patient)
         {
            
-            HttpContext.RequestUrl = HttpContext.RequestUrl +"?start="+prefix+ startBoundry + ""; 
+            _httpContext.RequestUrl = _httpContext.RequestUrl +"?start="+prefix+ startBoundry + ""; 
         }
 
         [Given(@"I set the URL for the get request with the slotStartDate date ""([^""]*)"" and prefix ""([^""]*)"" for ""([^""]*)""")]
         public void searchAndGetaAppointmentsWithCustomStartDatessandPrefix(string slotName, string prefix, string patient)
         {
-            var time = HttpContext.CreatedAppointment.StartElement;
+            var time = _httpContext.CreatedAppointment.StartElement;
             string time2 = time.ToString(); 
-            HttpContext.RequestUrl = HttpContext.RequestUrl + "?start=" + prefix + time2 + "";
+            _httpContext.RequestUrl = _httpContext.RequestUrl + "?start=" + prefix + time2 + "";
         }
                 
         [Given(@"I set the URL for the get request with the date ""([^""]*)"" and prefix ""([^""]*)"" for and upper end date boundary ""([^""]*)"" with prefix ""([^""]*)"" for ""([^""]*)""")]
         public void IsettheURLforthegetrequestwiththedateandprefixforandupperenddateboundarywithprefixfor(string startBoundry, string prefix, string endBoundry, string prefixEnd, string patient)
         {
 
-            HttpContext.RequestUrl = HttpContext.RequestUrl + "?start=" + prefix + startBoundry + "&start=" + prefixEnd + endBoundry + "";
-        }
-
-        [Given(@"I set the URL for the get request with the date ""([^""]*)"" with prefix ""([^""]*)"" and upper end date boundary ""([^""]*)"" with prefix ""([^""]*)""")]
-        public void WhenISearchForAndMakeAGetRequestForTheirAppointmentsWithLowerStartDateBoundryWithPrefixAndUpperEndDateBoundaryWithPrefix(string startBoundry, string prefixStart, string endBoundry, string prefixEnd, string patient)
-        {
-            HttpContext.RequestUrl = HttpContext.RequestUrl + "?start=" + prefixStart + startBoundry + "&start=" + prefixEnd + endBoundry + "";
-        }
-
-
-
-        [Given(@"I get the slots avaliable slots for organization ""([^""]*)"" for the next 3 days")]
-        public void BookSlots(string appointmentCode)
-        {
-            DateTime currentDateTime = DateTime.Now;
-            Period period = new Period(new FhirDateTime(currentDateTime), new FhirDateTime(currentDateTime.AddDays(3)));
-            _fhirContext.FhirRequestParameters.Add("timePeriod", period);
-            Organization organization = (Organization)HttpContext.StoredFhirResources[appointmentCode];
-            _httpSteps.RestRequest(Method.POST, "/Organization/" + organization.Id + "/$gpc.getschedule", FhirSerializer.SerializeToJson(_fhirContext.FhirRequestParameters));
-
-            HttpContext.ResponseContentType.ShouldStartWith(FhirConst.ContentTypes.kJsonFhir);
-            HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
-            FhirJsonParser fhirJsonParser = new FhirJsonParser();
-            _fhirContext.FhirResponseResource = fhirJsonParser.Parse<Resource>(HttpContext.ResponseBody);
-
-            List<Resource> slots = new List<Resource>();
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
-                {
-                    HttpContext.StoredFhirResources.Add("Organization", (Organization)entry.Resource);
-                }
-                if (entry.Resource.ResourceType.Equals(ResourceType.Location))
-                {
-                    HttpContext.StoredFhirResources.Add("Location", (Location)entry.Resource);
-                }
-                if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    HttpContext.StoredFhirResources.Remove("Practitioner");
-                    HttpContext.StoredFhirResources.Add("Practitioner", (Practitioner)entry.Resource);
-                }
-
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    string id = ((Slot)entry.Resource).Id.ToString();
-                    slots.Add((Slot)entry.Resource);
-                }
-            }
-            String here = slots.Count.ToString();
-            HttpContext.StoredSlots.Add("Slot", slots);
-
-        }
-
-        [Given(@"I search for an appointments for patient ""([^""]*)"" on the provider system and save the first response to ""([^""]*)""")]
-        public void GivenISearchForAnAppointmentOnTheProviderSystemAndSaveTheFirstResponseTo(int id, string storeKey)
-        {
-            var relativeUrl = "/Patient/" + id + "/Appointment";
-            var returnedResourceBundle = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments", relativeUrl);
-            returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
-            ((Bundle)returnedResourceBundle).Entry.Count.ShouldBeGreaterThan(0);
-            var returnedFirstResource = (Appointment)((Bundle)returnedResourceBundle).Entry[0].Resource;
-            string text = returnedFirstResource.ToString();
-            returnedFirstResource.GetType().ShouldBe(typeof(Appointment));
-            if (HttpContext.StoredFhirResources.ContainsKey(storeKey)) HttpContext.StoredFhirResources.Remove(storeKey);
-            HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
+            _httpContext.RequestUrl = _httpContext.RequestUrl + "?start=" + prefix + startBoundry + "&start=" + prefixEnd + endBoundry + "";
         }
 
         [Then(@"there are zero appointment resources")]
@@ -164,38 +77,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
             count.ShouldBe<int>(0);
-        }
-
-        
-
-        [Then(@"there is one appointment resource")]
-        public void checkForOneAppointmentsBundle()
-        {
-            int count = 0;
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    count++;
-                }
-            }
-            count.ShouldBe<int>(1);
-        }
-
-        [Then(@"there are multiple appointment resources")]
-        public void checkForMultipleAppointmentsBundle()
-        {
-            int appointmentCount = 0;
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    appointmentCount++;
-                    Appointment appointment = (Appointment)entry.Resource;
-                }
-            }
-            appointmentCount.ShouldBeGreaterThan<int>(1);
         }
 
         [Then(@"the response bundle should contain atleast ""([^""]*)"" appointment")]
@@ -252,177 +133,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
-        [Then(@"appointment status should have a valid value")]
-        public void statusShouldHaveValidValue()
-        {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    appointment.Status.ShouldNotBeNull();
-
-                }
-            }
-        }
-
-        [Then(@"the bundle response should contain a participant element")]
-        public void bundleResponseShouldContainParticipantElement()
-        {
-            int count = 0;
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    appointment.Participant.ShouldNotBeNull();
-                    count++;
-
-                }
-            }
-            count.ShouldBe<int>(1);
-        }
-
-        [Then(@"the appointment status element should be valid")]
-        public void appointmentStatusElementShouldBeValid()
-        {
-            List<String> validAppointmentStatus = new List<string>();
-            validAppointmentStatus.Add("Proposed");
-            validAppointmentStatus.Add("Pending");
-            validAppointmentStatus.Add("Booked");
-            validAppointmentStatus.Add("Arrived");
-            validAppointmentStatus.Add("Fulfilled");
-            validAppointmentStatus.Add("Cancelled");
-            validAppointmentStatus.Add("Noshow");
-
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    string status = appointment.Status.ToString();
-                    validAppointmentStatus.ShouldContain(status);
-
-                }
-            }
-
-        }
-
-        [Then(@"the participant element should contain a single status element")]
-        public void participantElementShouldContainASingleStatusElement()
-        {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                }
-            }
-        }
-
-        [Then(@"if appointment contains the resource coding READ V2 element the fields should match the fixed values of the specification")]
-        public void reasonCodingSnomedCT()
-        {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    if (appointment.Type == null)
-                    {
-                      
-                    }
-                    else
-                    {
-                        if (appointment.Reason.Coding != null)
-                        {
-                            int codingCount = 0;
-                            foreach (Coding coding in appointment.Reason.Coding)
-                            {
-                                codingCount++;
-                                coding.System.ShouldBe("http://read.info/readv2");
-                                coding.Code.ShouldBe("425173008");
-                                coding.Display.ShouldBe("Default Appointment Type");
-                            }
-                            codingCount.ShouldBeLessThanOrEqualTo(1);
-                        }
-
-                        if (appointment.Reason.Text != null)
-                        {
-                            appointment.Reason.Text.ShouldBe("Default Appointment Type");
-                        }
-                    }
-                }
-            }
-        }
-        [Then(@"if appointment contains the resource coding SREAD CTV3 element the fields should match the fixed values of the specification")]
-        public void reasonCodingReadV2()
-        {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-
-                 
-                        if (appointment.Reason.Coding != null)
-                        {
-                            int codingCount = 0;
-                            foreach (Coding coding in appointment.Reason.Coding)
-                            {
-                                codingCount++;
-                                coding.System.ShouldBe("http://read.info/ctv3");
-                                coding.Code.ShouldBe("425173008");
-                                coding.Display.ShouldBe("Default Appointment Type");
-                            }
-                            codingCount.ShouldBeLessThanOrEqualTo(1);
-                        }
-
-                        if (appointment.Reason.Text != null)
-                        {
-                            appointment.Reason.Text.ShouldBe("Default Appointment Type");
-                        }
-                 }
-            }
-        }
-
-        [Then(@"if appointment contains the resource coding SNOMED CT element the fields should match the fixed values of the specification")]
-        public void reasonCodingReadCTV3()
-        {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-
-                    if (appointment.Reason.Coding == null)
-                    {
-                  
-                    }
-                    else
-                    {
-                        if (appointment.Reason.Coding != null)
-                        {
-                            int codingCount = 0;
-                            foreach (Coding coding in appointment.Reason.Coding)
-                            {
-                                codingCount++;
-                                coding.System.ShouldBe("http://snomed.info/sct");
-                                coding.Code.ShouldBe("1");
-                                coding.Display.ShouldBe("Default Appointment Type");
-                            }
-                            codingCount.ShouldBeLessThanOrEqualTo(1);
-                        }
-
-                        if (appointment.Reason.Text != null)
-                        {
-                            appointment.Reason.Text.ShouldBe("Default Appointment Type");
-                        }
-                    }
-                }
-            }
-        }
-
         [Then(@"if the appointment resource contains an identifier it contains a valid system and value")]
         public void appointmentContainsValidIdentifierWithSystemAndValue()
         {
@@ -439,26 +149,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             }
         }
-
-        [Then(@"if the the start date must be before the end date")]
-        public void startDateBeforeEndDate()
-        {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    DateTimeOffset? start = appointment.Start;
-                    DateTimeOffset? end = appointment.End;
-
-                    if (start > end)
-                    {
-                        { Assert.Fail(); }
-                    }
-                }
-            }
-        }
-
 
         [Then(@"the appointment response resource contains a status with a valid value")]
         public void ThenTheAppointmentResourceShouldContainAStatus()
@@ -558,61 +248,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the appointment response contains a type with a valid system code and display")]
-        public void ThenTheAppointmentResourceContainsAType()
-        {
-            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
-            appointment.Type.ShouldNotBeNull();
-            foreach (Coding coding in appointment.Type.Coding)
-            {
-                coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/c80-practice-codes");
-                coding.Code.ShouldNotBeNull();
-            }
-
-        }
-
-        [Then(@"if the appointment participant contains a type is should have a valid system and code")]
-        public void AppointmentParticipantValisType()
-        {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    foreach (ParticipantComponent part in appointment.Participant)
-                    {
-
-                        foreach (CodeableConcept codeConcept in part.Type)
-                        {
-                            foreach (Coding code in codeConcept.Coding)
-
-                            {
-                                code.System.ShouldBe("http://hl7.org/fhir/ValueSet/encounter-participant-type");
-                                code.Code.ShouldNotBeNull();
-                                code.Display.ShouldNotBeNull();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        [Then(@"the appointment type should contain a valid system code and display")]
-        public void ThenTheAppointmentResourceContainsTypeWithValidSystemCodeAndType()
-        {
-            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
-            appointment.Identifier.ShouldNotBeNull();
-            String id = appointment.Id.ToString();
-            foreach (Identifier identifier in appointment.Identifier)
-            {
-                identifier.System.ShouldNotBeNull();
-                identifier.System.ShouldBe("http://fhir.nhs.net/Id/gpconnect-appointment-identifier");
-                identifier.Value.ShouldNotBeNull();
-                identifier.Value.ShouldBe(id);
-            }
-        }
-
         [Then(@"if the appointment resource contains a priority the value is valid")]
         public void ThenTheAppointmentResourceContainsPriorityAndTheValueIsValid()
         {
@@ -622,19 +257,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 Assert.Fail("Invalid priority value: " + appointment.Priority);
             }
-        }
-        //Need to check the validity of the reference but currently no GET method
-        [Then(@"the slot reference is present and valid")]
-        public void checkingTheSlotReferenceIsValid()
-        {
-
-            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
-            foreach (ResourceReference slot in appointment.Slot)
-            {
-                slot.Reference.ShouldNotBeNull();
-            }
-
-
         }
 
         [Then(@"all appointments must have an start element which is populated with a valid date")]
@@ -653,7 +275,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"all appointments must have a start element which is populated with a date that equals ""([^""]*)""")]
         public void appointmentPopulatedWithAStartDateEquals(string startBoundry)
         {
-            DateTimeOffset? time = HttpContext.CreatedAppointment.Start;
+            DateTimeOffset? time = _httpContext.CreatedAppointment.Start;
             foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
@@ -704,35 +326,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-
-        [Then(@"the location resource returned in the appointments bundle is present")]
-        public void actorLocationResourceValid()
-        {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    int countLocation = 0; 
-                    Appointment appointment = (Appointment)entry.Resource;
-                    foreach (ParticipantComponent participant in appointment.Participant)
-                    {
-                        if (participant.Actor != null && participant.Actor.Reference != null)
-                        {
-
-                            string actor = participant.Actor.Reference.ToString();
-
-                            if (actor.Contains("Location"))
-                            {
-                                var location = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:location", actor);
-                                location.ShouldNotBeNull();
-                                countLocation++;
-                            }
-                        }
-                    }
-                    countLocation.ShouldBe(1);
-                }
-            }
-        }
         
         [Then(@"the patient resource returned in the appointments bundle is present")]
         public void actorPatientResourceValid()
@@ -761,22 +354,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-        
-        [Then(@"patient ""(.*)"" should have ""(.*)"" appointments")]
-        public void checkPatientHasTheCorrectAmountOfResources(int id, int numberOfAppointments)
-        {
-            int appointmentCount = 0;
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    appointmentCount++;
-                    Appointment appointment = (Appointment)entry.Resource;
-                }
-            }
-            appointmentCount.ShouldBe<int>(numberOfAppointments);
-        }
-
+      
         [Given(@"I create ""([^""]*)"" Appointments for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
         public void CreateAppointmentsForPatientAndOrganizationCode(int appointments, string patient, string code)
         {
@@ -786,7 +364,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 appointments--;
             }
         }
-
 
         [Given(@"I create an Appointment for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
         public void CreateAnAppointmentForPatientAndOrganizationCode(string patient, string code)
@@ -812,7 +389,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var appointment = _fhirContext.Appointments.FirstOrDefault();
 
             if (appointment != null)
-                HttpContext.CreatedAppointment = appointment;
+                _httpContext.CreatedAppointment = appointment;
        
         }
 
@@ -822,7 +399,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var appointment = _fhirContext.Appointments.FirstOrDefault();
 
             if (appointment != null)
-                HttpContext.CreatedAppointment = appointment;
+                _httpContext.CreatedAppointment = appointment;
         }
 
         [Given(@"I store the Appointment Id")]
@@ -831,7 +408,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var appointment = _fhirContext.Appointments.FirstOrDefault();
 
             if (appointment != null)
-                HttpContext.GetRequestId = appointment.Id;
+                _httpContext.GetRequestId = appointment.Id;
         }
 
         [Given(@"I store the Appointment Version Id")]
@@ -839,7 +416,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var appointment = _fhirContext.Appointments.FirstOrDefault();
             if (appointment != null)
-                HttpContext.GetRequestVersionId = appointment.VersionId;
+                _httpContext.GetRequestVersionId = appointment.VersionId;
         }
 
         [Given(@"I set the created Appointment status to ""([^""]*)""")]
@@ -848,29 +425,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var appointment = _fhirContext.Appointments.FirstOrDefault();
             switch (status) {
                 case "Booked":
-                    appointment.Status = AppointmentStatus.Booked;
+                    appointment.Status = Appointment.AppointmentStatus.Booked;
                     break;
                 case "Cancelled":
-                    appointment.Status = AppointmentStatus.Cancelled;
+                    appointment.Status = Appointment.AppointmentStatus.Cancelled;
                     break;
             }
 
             if (appointment != null)
-                HttpContext.CreatedAppointment = appointment;
+                _httpContext.CreatedAppointment = appointment;
         }
 
         [Given(@"I set the created Appointment priority to ""([^""]*)""")]
         public void  ISetTheCreatedAppointmentPriorityTo(int priority)
         {
-            HttpContext.CreatedAppointment.Priority = priority;
+            _httpContext.CreatedAppointment.Priority = priority;
         }
 
 
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
         public void CreateAnAppointmentFromTheStoredPatientAndStoredSchedule()
         {
-            var storedPatient = HttpContext.StoredPatient;
-            var storedBundle = HttpContext.StoredBundle;
+            var storedPatient = _httpContext.StoredPatient;
+            var storedBundle = _httpContext.StoredBundle;
 
             var firstSlot = storedBundle.Entry
                 .Where(entry => entry.Resource.ResourceType.Equals(ResourceType.Slot))
@@ -910,14 +487,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             var appointment = new Appointment
             {
-                Status = AppointmentStatus.Booked,
+                Status = Appointment.AppointmentStatus.Booked,
                 Start = firstSlot.Start,
                 End = firstSlot.End,
                 Participant = participants,
                 Slot = slots
             };
 
-            HttpContext.CreatedAppointment = appointment;
+            _httpContext.CreatedAppointment = appointment;
         }
 
         private static ParticipantComponent GetLocation(string locationReference)
@@ -928,7 +505,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Reference = locationReference
                 },
-                Status = ParticipationStatus.Accepted
+                Status = Appointment.ParticipationStatus.Accepted
             };
         }
 
@@ -948,7 +525,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     Reference = "Patient/" + storedPatient.Id
                 },
-                Status = ParticipationStatus.Accepted,
+                Status = Appointment.ParticipationStatus.Accepted,
                 Type = new List<CodeableConcept>
                 {
                     new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "patient", "patient")
@@ -965,7 +542,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         Reference = practitionerReference
                     },
-                    Status = ParticipationStatus.Accepted,
+                    Status = Appointment.ParticipationStatus.Accepted,
                     Type = new List<CodeableConcept>
                     {
                         new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PPRF", "practitioner", "practitioner")
@@ -977,22 +554,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the created Appointment Comment to ""([^""]*)""")]
         public void SetTheCreatedAppointmentComment(string comment)
         {
-            HttpContext.CreatedAppointment.Comment = comment;
+            _httpContext.CreatedAppointment.Comment = comment;
       
         }
 
         [Given(@"I set the created Appointment reason to ""([^""]*)""")]
         public void SetTheCreatedAppointmentReasonTo(string reason)
         {
-            HttpContext.CreatedAppointment.Reason = new CodeableConcept();
-            HttpContext.CreatedAppointment.Reason.Coding = new List<Coding>();
-            HttpContext.CreatedAppointment.Reason.Coding.Add(new Coding("http://snomed.info/sct", reason, reason));
+            _httpContext.CreatedAppointment.Reason = new CodeableConcept();
+            _httpContext.CreatedAppointment.Reason.Coding = new List<Coding>();
+            _httpContext.CreatedAppointment.Reason.Coding.Add(new Coding("http://snomed.info/sct", reason, reason));
         }
 
         [Given(@"I set the created Appointment description to ""([^""]*)""")]
         public void SetTheCreatedAppointmentDescriptionTo(string description)
         {
-            HttpContext.CreatedAppointment.Description = description;
+            _httpContext.CreatedAppointment.Description = description;
       
         }
 
@@ -1001,11 +578,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var extension = GetCancellationReasonExtension(reason);
 
-            if (HttpContext.CreatedAppointment.Extension == null)
-                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+            if (_httpContext.CreatedAppointment.Extension == null)
+                _httpContext.CreatedAppointment.Extension = new List<Extension>();
 
-            HttpContext.CreatedAppointment.Extension.Add(extension);
-            HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
+            _httpContext.CreatedAppointment.Extension.Add(extension);
+            _httpContext.CreatedAppointment.Status = Appointment.AppointmentStatus.Cancelled;
         }
 
         [Given(@"I set the Created Appointment to Cancelled with Url ""([^""]*)"" and Reason ""([^""]*)""")]
@@ -1013,11 +590,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var extension = GetStringExtension(url, reason);
 
-            if (HttpContext.CreatedAppointment.Extension == null)
-                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+            if (_httpContext.CreatedAppointment.Extension == null)
+                _httpContext.CreatedAppointment.Extension = new List<Extension>();
 
-            HttpContext.CreatedAppointment.Extension.Add(extension);
-            HttpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
+            _httpContext.CreatedAppointment.Extension.Add(extension);
+            _httpContext.CreatedAppointment.Status = Appointment.AppointmentStatus.Cancelled;
         }
 
 
@@ -1026,10 +603,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var extension = GetCategoryExtension(code, display);
 
-            if (HttpContext.CreatedAppointment.Extension == null)
-                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+            if (_httpContext.CreatedAppointment.Extension == null)
+                _httpContext.CreatedAppointment.Extension = new List<Extension>();
 
-            HttpContext.CreatedAppointment.Extension.Add(extension);
+            _httpContext.CreatedAppointment.Extension.Add(extension);
         }
 
         [Given(@"I add a Booking Method Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
@@ -1037,10 +614,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var extension = GetBookingMethodExtension(code, display);
 
-            if (HttpContext.CreatedAppointment.Extension == null)
-                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+            if (_httpContext.CreatedAppointment.Extension == null)
+                _httpContext.CreatedAppointment.Extension = new List<Extension>();
 
-            HttpContext.CreatedAppointment.Extension.Add(extension);
+            _httpContext.CreatedAppointment.Extension.Add(extension);
         }
 
         [Given(@"I add a Contact Method Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
@@ -1048,17 +625,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var extension = GetContactMethodExtension(code, display);
 
-            if (HttpContext.CreatedAppointment.Extension == null)
-                HttpContext.CreatedAppointment.Extension = new List<Extension>();
+            if (_httpContext.CreatedAppointment.Extension == null)
+                _httpContext.CreatedAppointment.Extension = new List<Extension>();
 
-            HttpContext.CreatedAppointment.Extension.Add(extension);
+            _httpContext.CreatedAppointment.Extension.Add(extension);
         }
 
 
         [Given("I set created appointment to a new appointment resource")]
         public void ISetTheAppointmentResourceToANewAppointmentResource()
         {
-            HttpContext.CreatedAppointment = new Appointment();
+            _httpContext.CreatedAppointment = new Appointment();
         }
         private static Extension GetCategoryExtension(string code, string display)
         {
@@ -1120,7 +697,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the If-Match header to the Stored Appointment Version Id")]
         public void SetTheIfMatchHeaderToTheStoreAppointmentVersionId()
         {
-            var versionId = HttpContext.CreatedAppointment.VersionId;
+            var versionId = _httpContext.CreatedAppointment.VersionId;
             var eTag = "W/\"" + versionId + "\"";
 
             _httpSteps.SetTheIfMatchHeaderTo(eTag);
@@ -1141,7 +718,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var extensions = GetExtensions(extensionCombination);
 
-            HttpContext.CreatedAppointment.Extension.AddRange(extensions);
+            _httpContext.CreatedAppointment.Extension.AddRange(extensions);
         }
 
         private List<Extension> GetExtensions(string extensionCombination)
@@ -1197,14 +774,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the appointment Priority to ""([^""]*)"" on appointment stored against key ""([^""]*)""")]
         public void GivenISetTheAppointmentPriorityToOnAppointmentStoredAgainstKey(int priority, string appointmentKey)
         {
-            ((Appointment)HttpContext.StoredFhirResources[appointmentKey]).Priority = priority;
+            ((Appointment)_httpContext.StoredFhirResources[appointmentKey]).Priority = priority;
         }
 
         [When(@"I book the appointment called ""([^""]*)""")]
         public void WhenIBookTheAppointmentCalledString(string appointmentName)
         {
-            var appointment = HttpContext.StoredFhirResources[appointmentName];
-            if (HttpContext.RequestContentType.Contains("xml"))
+            var appointment = _httpContext.StoredFhirResources[appointmentName];
+            if (_httpContext.RequestContentType.Contains("xml"))
             {
                 _httpSteps.RestRequest(Method.POST, "/Appointment", FhirSerializer.SerializeToXml(appointment));
             }
@@ -1233,18 +810,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Then($@"the response status code should indicate created");
             Then($@"the response body should be FHIR JSON");
             And($@"the response should be an Appointment resource");
-            if (HttpContext.StoredFhirResources.ContainsKey(storeAppointmentKey))
+            if (_httpContext.StoredFhirResources.ContainsKey(storeAppointmentKey))
             {
-                HttpContext.StoredFhirResources.Remove(storeAppointmentKey);
+                _httpContext.StoredFhirResources.Remove(storeAppointmentKey);
             }
-            HttpContext.StoredFhirResources.Add(storeAppointmentKey, _fhirContext.FhirResponseResource);
+            _httpContext.StoredFhirResources.Add(storeAppointmentKey, _fhirContext.FhirResponseResource);
         }
 
         [Given(@"I create an appointment for patient ""([^""]*)"" called ""([^""]*)"" from schedule ""([^""]*)""")]
         public void GivenICreateAnAppointmentForPatientCalledFromSchedule(string patientKey, string appointmentName, string getScheduleBundleKey)
         {
-            Patient patientResource = (Patient)HttpContext.StoredFhirResources[patientKey];
-            Bundle getScheduleResponseBundle = (Bundle)HttpContext.StoredFhirResources[getScheduleBundleKey];
+            Patient patientResource = (Patient)_httpContext.StoredFhirResources[patientKey];
+            Bundle getScheduleResponseBundle = (Bundle)_httpContext.StoredFhirResources[getScheduleBundleKey];
 
             List<Slot> slotList = new List<Slot>();
             Dictionary<string, Practitioner> practitionerDictionary = new Dictionary<string, Practitioner>();
@@ -1299,7 +876,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             CodeableConcept reason = null;
             List<Extension> extensionList = null;
             List<Identifier> identifiers = null;
-            AppointmentStatus status = AppointmentStatus.Booked;
+            Appointment.AppointmentStatus status = Appointment.AppointmentStatus.Booked;
             int? priority = null;
 
             switch (appointmentName)
@@ -1353,7 +930,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ResourceReference patientReference = new ResourceReference();
             patientReference.Reference = "Patient/" + patientResource.Id;
             patient.Actor = patientReference;
-            patient.Status = ParticipationStatus.Accepted;
+            patient.Status = Appointment.ParticipationStatus.Accepted;
             patient.Type.Add(new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "patient", "patient"));
             appointment.Participant.Add(patient);
 
@@ -1364,7 +941,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 ResourceReference practitionerReference = new ResourceReference();
                 practitionerReference.Reference = practitionerSlotReference;
                 practitioner.Actor = practitionerReference;
-                practitioner.Status = ParticipationStatus.Accepted;
+                practitioner.Status = Appointment.ParticipationStatus.Accepted;
                 practitioner.Type.Add(new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PPRF", "practitioner", "practitioner"));
                 appointment.Participant.Add(practitioner);
             }
@@ -1374,7 +951,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             ResourceReference locationReference = new ResourceReference();
             locationReference.Reference = locationReferenceForSelectedSlot;
             location.Actor = locationReference;
-            location.Status = ParticipationStatus.Accepted;
+            location.Status = Appointment.ParticipationStatus.Accepted;
             appointment.Participant.Add(location);
 
             // Appointment Slot Resource
@@ -1390,8 +967,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (extensionList != null) appointment.Extension = extensionList;
 
             // Store start date for use in other tests
-            if (HttpContext.StoredDate.ContainsKey("slotStartDate")) HttpContext.StoredDate.Remove("slotStartDate");
-            HttpContext.StoredDate.Add("slotStartDate", firstSlot.StartElement.ToString());
+            if (_httpContext.StoredDate.ContainsKey("slotStartDate")) _httpContext.StoredDate.Remove("slotStartDate");
+            _httpContext.StoredDate.Add("slotStartDate", firstSlot.StartElement.ToString());
 
             // Now we have used the slot remove from it from the getScheduleBundle so it is not used to book other appointments same getSchedule is used
             EntryComponent entryToRemove = null;
@@ -1406,8 +983,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             getScheduleResponseBundle.Entry.Remove(entryToRemove);
 
             // Store appointment
-            if (HttpContext.StoredFhirResources.ContainsKey(appointmentName)) HttpContext.StoredFhirResources.Remove(appointmentName);
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
+            if (_httpContext.StoredFhirResources.ContainsKey(appointmentName)) _httpContext.StoredFhirResources.Remove(appointmentName);
+            _httpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
     }
 }
