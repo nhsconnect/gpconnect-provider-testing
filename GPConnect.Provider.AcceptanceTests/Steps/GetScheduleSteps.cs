@@ -1,37 +1,32 @@
-﻿using System;
-using GPConnect.Provider.AcceptanceTests.Context;
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Serialization;
-using RestSharp;
-using Shouldly;
-using TechTalk.SpecFlow;
-using static Hl7.Fhir.Model.Bundle;
-using GPConnect.Provider.AcceptanceTests.Logger;
-using System.Collections.Generic;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using Context;
     using Enum;
+    using Hl7.Fhir.Model;
+    using Hl7.Fhir.Serialization;
+    using RestSharp;
+    using Shouldly;
+    using TechTalk.SpecFlow;
+    using static Hl7.Fhir.Model.Bundle;
+    using static Hl7.Fhir.Model.Slot;
 
     [Binding]
-    public class GetScheduleSteps : TechTalk.SpecFlow.Steps
+    public class GetScheduleSteps : BaseSteps
     {
-
-        private readonly FhirContext FhirContext;
-        private readonly HttpContext HttpContext;
-        private readonly HttpSteps HttpSteps;
-        private readonly AccessRecordSteps AccessRecordSteps;
+        private readonly HttpContext _httpContext;
+        private readonly AccessRecordSteps _accessRecordSteps;
         private readonly BundleSteps _bundleSteps;
         private readonly OrganizationSteps _organizationSteps;
-
+        private List<Slot> Slots => _fhirContext.Slots;
 
         public GetScheduleSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps)
+            : base(fhirContext, httpSteps)
         {
-            FhirContext = fhirContext;
-            HttpContext = httpContext;
-            HttpSteps = httpSteps;
-            AccessRecordSteps = accessRecordSteps;
+            _httpContext = httpContext;
+            _accessRecordSteps = accessRecordSteps;
             _bundleSteps = bundleSteps;
             _organizationSteps = organizationSteps;
         }
@@ -40,13 +35,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenISearchForTheOrganizationOnTheProviderSystemAndSaveTheFirstResponseTo(string organizaitonName, string storeKey)
         {
             var relativeUrl = "Organization?identifier=http://fhir.nhs.net/Id/ods-organization-code|" + GlobalContext.OdsCodeMap[organizaitonName];
-            var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:organization", relativeUrl);
+            var returnedResourceBundle = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:organization", relativeUrl);
             returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
             ((Bundle)returnedResourceBundle).Entry.Count.ShouldBeGreaterThan(0);
             var returnedFirstResource = (Organization)((Bundle)returnedResourceBundle).Entry[0].Resource;
             returnedFirstResource.GetType().ShouldBe(typeof(Organization));
-            if (HttpContext.StoredFhirResources.ContainsKey(storeKey)) HttpContext.StoredFhirResources.Remove(storeKey);
-            HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
+            if (_httpContext.StoredFhirResources.ContainsKey(storeKey)) _httpContext.StoredFhirResources.Remove(storeKey);
+            _httpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
          
         }
 
@@ -54,7 +49,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAddPeriodRequestParameterWithAStartDateOfTodayAndAnEndDateDaysLater(double numberOfDaysRange) {
             DateTime currentDateTime = DateTime.Now;
             Period period = new Period(new FhirDateTime(currentDateTime), new FhirDateTime(currentDateTime.AddDays(numberOfDaysRange)));
-            FhirContext.FhirRequestParameters.Add("timePeriod", period);
+            _fhirContext.FhirRequestParameters.Add("timePeriod", period);
         }
 
         [Given(@"I add period request parameter with only a start date")]
@@ -62,7 +57,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Period period = new Period();
             period.StartElement = FhirDateTime.Now();
-            FhirContext.FhirRequestParameters.Add("timePeriod", period);
+            _fhirContext.FhirRequestParameters.Add("timePeriod", period);
         }
 
         [Given(@"I add period request parameter with only an end date")]
@@ -70,7 +65,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Period period = new Period();
             period.EndElement = new FhirDateTime(DateTime.Now.AddDays(2));
-            FhirContext.FhirRequestParameters.Add("timePeriod", period);
+            _fhirContext.FhirRequestParameters.Add("timePeriod", period);
         }
 
         [Given(@"I add period request parameter with start date ""([^""]*)"" and end date ""([^""]*)""")]
@@ -79,167 +74,88 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Period period = new Period();
             period.Start = startDate;
             period.End = endDate;
-            FhirContext.FhirRequestParameters.Add("timePeriod", period);
-        }
-
-        [Given(@"I add period request parameter with start date format ""([^""]*)"" and end date format ""([^""]*)""")]
-        public void GivenIAddPeriodRequestParameterWithStartDateFormatAndEndFormatDate(string startDate, string endDate)
-        {
-            List<string> startDateFormatEndDateFormat = new List<string>();
-            startDateFormatEndDateFormat.Add(startDate);
-            startDateFormatEndDateFormat.Add(endDate);
-            String currentDateTime;
-            for (int i = 0; i < startDateFormatEndDateFormat.Count; i++) {
-                switch (startDateFormatEndDateFormat[i])
-                {
-                    case "yyyy-MM-dd":
-                         currentDateTime = DateTime.Now.ToString("yyyy-MM-dd");
-                        startDateFormatEndDateFormat[i] = currentDateTime;
-                        break;
-
-                    case "yyyy":
-                         currentDateTime = DateTime.Now.ToString("yyyy");
-                        startDateFormatEndDateFormat[i] = currentDateTime;
-                        break;
-
-                    case "yyyy-MM":
-                        currentDateTime = DateTime.Now.ToString("yyyy-MM");
-                        startDateFormatEndDateFormat[i] = currentDateTime;
-                        break;
-                    case "yyyy-MM-ddTHH:mm:ss":
-                        currentDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
-                        startDateFormatEndDateFormat[i] = currentDateTime;
-                        break;
-                }
-            }
-
-
-            Period period = new Period();
-            period.Start = startDateFormatEndDateFormat[0];
-            period.End = startDateFormatEndDateFormat[1];
-            FhirContext.FhirRequestParameters.Add("timePeriod", period);
+            _fhirContext.FhirRequestParameters.Add("timePeriod", period);
         }
 
         [When(@"I send a gpc.getschedule operation for the organization stored as ""([^""]*)""")]
         public void ISendAGpcGetScheduleOperationForTheOrganizationStoredAs(string storeKey)
         {
-            Organization organization = (Organization)HttpContext.StoredFhirResources[storeKey];
+            Organization organization = (Organization)_httpContext.StoredFhirResources[storeKey];
             ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(organization.Id);
         }
 
         [When(@"I send a gpc.getschedule operation for the organization stored as ""([^""]*)"" to the wrong endpoint")]
         public void ISendAGpcGetScheduleOperationForTheOrganizationStoredAsToTheWrongEndpoint(string storeKey)
         {
-            Organization organization = (Organization)HttpContext.StoredFhirResources[storeKey];
+            Organization organization = (Organization)_httpContext.StoredFhirResources[storeKey];
             string body = null;
-            if (HttpContext.RequestContentType.Contains("xml"))
+            if (_httpContext.RequestContentType.Contains("xml"))
             {
-                body = FhirSerializer.SerializeToXml(FhirContext.FhirRequestParameters);
+                body = FhirSerializer.SerializeToXml(_fhirContext.FhirRequestParameters);
             }
             else
             {
-                body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
+                body = FhirSerializer.SerializeToJson(_fhirContext.FhirRequestParameters);
             }
-            HttpSteps.RestRequest(Method.POST, "/" + organization.Id + "/$gpc.getschedule", body);
+            _httpSteps.RestRequest(Method.POST, "/" + organization.Id + "/$gpc.getschedule", body);
         }
 
         [When(@"I send a gpc.getschedule operation for the organization with locical id ""([^""]*)""")]
         public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(string logicalId)
         {
             string body = null;
-            if (HttpContext.RequestContentType.Contains("xml"))
+            if (_httpContext.RequestContentType.Contains("xml"))
             {
-                body = FhirSerializer.SerializeToXml(FhirContext.FhirRequestParameters);
+                body = FhirSerializer.SerializeToXml(_fhirContext.FhirRequestParameters);
             } else
             {
-                body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
+                body = FhirSerializer.SerializeToJson(_fhirContext.FhirRequestParameters);
             }
-            HttpSteps.RestRequest(Method.POST, "/Organization/" + logicalId + "/$gpc.getschedule", body);
+            _httpSteps.RestRequest(Method.POST, "/Organization/" + logicalId + "/$gpc.getschedule", body);
         }
 
-        [Then(@"the response bundle should include slot resources")]
-        public void ThenTheResponseBundlleShouldIncludeSlotResources()
+        [Then(@"the Bundle should contain Slots")]
+        public void TheBundleShouldContainSlots()
         {
-            bool slotResourceFoundInResponse = false;
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    slotResourceFoundInResponse = true;
-                    break;
-                }
-            }
-            slotResourceFoundInResponse.ShouldBeTrue("No Slots Resources were found in the response bundle.");
+            Slots.Count.ShouldBeGreaterThanOrEqualTo(1, "There should should be at least 1 Slot in the Bundle but found 0.");
         }
 
-        [Then(@"the slots resources within the response bundle should be free")]
-        public void ThenTheSlotsResourcesWithinTheResponseBundleShouldBeFree()
+        [Then(@"the Slot FreeBusyType should be Free")]
+        public void TheSlotFreeBusyTypeShouldBeFree()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            Slots.ForEach(slot =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    ((Slot)entry.Resource).FreeBusyType.ShouldBe(Slot.SlotStatus.Free, "Slot freeBusy element sould be Free but is not");
-                }
-            }
+                slot.FreeBusyType.ShouldBe(SlotStatus.Free, $"The Slot FreeBusyType should be {SlotStatus.Free.ToString()}, but was {slot.FreeBusyType?.ToString()}");
+            });
         }
 
-        [Then(@"the bundle resources should contain required meta data elements")]
-        public void ThenTheBundleResourcesShouldContainRequiredMetaDataElements()
+        [Then(@"the Slot Metadata should be valid")]
+        public void TheSlotMetadataShouldBeValid()
         {
-            Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
-            bundle.Meta.ShouldNotBeNull();
-            foreach (string profile in bundle.Meta.Profile)
+            Slots.ForEach(slot =>
             {
-                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
-            }
+                CheckForValidMetaDataInResource(slot, "http://fhir.nhs.net/StructureDefinition/gpconnect-slot-1");
+            });
         }
 
-        [Then(@"the slot resources in the response bundle should contain meta data information")]
-        public void ThenTheSlotResourcesInTheResponseBundleShouldContainMetaDataInformation()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    Slot slot = (Slot)entry.Resource;
-                    slot.Meta.ShouldNotBeNull("All Slot resources should contain MetaDate elements");
-                    slot.Meta.VersionId.ShouldNotBeNull("All Slot resource MetaData versionId should be populated");
-                    slot.Meta.VersionId.ShouldNotBeEmpty("All Slot resource MetaData versionId should be populated");
-                    int slotMetaProfileCount = 0;
-                    foreach (string profile in slot.Meta.Profile)
-                    {
-                        profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-slot-1", "The Slot MetaData profile is invalid");
-                        slotMetaProfileCount++;
-                    }
-                    slotMetaProfileCount.ShouldBeGreaterThanOrEqualTo(1,"A Slot Resource is missing the profile within the MetaData element.");
-                }
-            }
-        }
-
-        [Then(@"the slot resources can contain a maximum of one identifier with a populated value")]
+        [Then(@"the Slot Identifiers should be valid")]
         public void ThenTheSlotResourcesCanContainAMaximumOfOneIdentifierWithAPopulatedValue()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            Slots.ForEach(slot =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
+                slot.Identifier.Count.ShouldBeLessThanOrEqualTo(1, $"There Slot Identifiers should contain no more than 1 Identifier but found {slot.Identifier.Count}.");
+
+                slot.Identifier.ForEach(identifier =>
                 {
-                    Slot slot = (Slot)entry.Resource;
-                    int slotIdentifierCount = 0;
-                    foreach (Identifier identifier in slot.Identifier) {
-                        identifier.Value.ShouldNotBeNull("If an identifier is present in a Slot resource it must have a value.");
-                        identifier.Value.ShouldNotBeEmpty("If an identifier is present in a Slot resource it must have a value.");
-                        slotIdentifierCount++;
-                    }
-                    slotIdentifierCount.ShouldBeLessThanOrEqualTo(1, "There is more than one identifier within a Slot resource when there sould be a maximum of one");
-                }
-            }
+                    identifier.Value.ShouldNotBeNullOrEmpty($"The Slot Identifier Value should not be null or empty but was {identifier.Value}");
+                });
+            });
         }
 
         [Then(@"the schedule reference within the slots resources should be resolvable in the response bundle")]
         public void ThenTheScheduleReferenceWithinTheSlotsResourcesShouldBeResolvableInTheResponseBundle()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
                 {
@@ -254,7 +170,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the schedule resources in the response bundle should contain meta data information")]
         public void ThenTheScheduleResourcesInTheResponseBundleShouldContainMetaDataInformation()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
                 {
@@ -276,7 +192,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the schedule resources in the response bundle should contain an actor which references a location within the response bundle")]
         public void ThenTheScheduleResourcesInTheResponseBundleShouldContainAnActorWhichReferencesALocationWithinTheResponseBundle()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
                 {
@@ -292,7 +208,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the schedule resources can contain a single identifier but must have a value if present")]
         public void ThenTheScheduleResourcesCanContainASingleIdentifierButMustHaveAValueIfPresent()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
                 {
@@ -311,7 +227,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the schedule resources can contain a planningHorizon but it must contain a valid start date")]
         public void ThenTheScheduleResourcesCanContainAPlanningHorizonButItMustContainAValidStartDate()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
                 {
@@ -327,7 +243,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the schedule resources can contain a single type element")]
         public void ThenTheScheduleResourcesCanContainASingleTypeElement()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
                 {
@@ -343,7 +259,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the schedule resources can contain extensions which references practitioner resources within the bundle")]
         public void ThenTheScheduleResourcesCanContainExtensionsWhichReferencesPractitionerResourcesWithinTheBundle()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
                 {
@@ -366,22 +282,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _organizationSteps.GetTheOrganizationForOrganizationCode(code);
             _organizationSteps.StoreTheOrganization();
 
-            HttpSteps.ConfigureRequest(GpConnectInteraction.GpcGetSchedule);
+            _httpSteps.ConfigureRequest(GpConnectInteraction.GpcGetSchedule);
 
-            AccessRecordSteps.AddATimePeriodParameterWithStartDateTodayAndEndDateInDays(13);
+            _accessRecordSteps.AddATimePeriodParameterWithStartDateTodayAndEndDateInDays(13);
 
-            HttpSteps.MakeRequest(GpConnectInteraction.GpcGetSchedule);
+            _httpSteps.MakeRequest(GpConnectInteraction.GpcGetSchedule);
         }
 
         [Given(@"I store the Schedule")]
         public void StoreTheSchedule()
         {
-            var schedule = FhirContext.Bundle;
+            var schedule = _fhirContext.Bundle;
 
             if (schedule != null)
             {
-                HttpContext.StoredBundle = schedule;
+                _httpContext.StoredBundle = schedule;
             }
+        }
+
+        [Then(@"the Schedule Bundle Metadata should be valid")]
+        public void TheScheduleBundleMetadataShouldBeValid()
+        {
+            CheckForValidMetaDataInResource(_fhirContext.Bundle, "http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
         }
     }
 }

@@ -96,7 +96,7 @@
                 {
                     Reference = "Patient/" + storedPatient.Id
                 },
-                Status = Appointment.ParticipationStatus.Accepted,
+                Status = ParticipationStatus.Accepted,
                 Type = new List<CodeableConcept>
                 {
                     new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "patient", "patient")

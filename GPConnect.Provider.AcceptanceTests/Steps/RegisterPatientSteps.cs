@@ -578,35 +578,5 @@
             if (_httpContext.StoredFhirResources.ContainsKey(patientResourceKey)) _httpContext.StoredFhirResources.Remove(patientResourceKey);
             _httpContext.StoredFhirResources.Add(patientResourceKey, returnedFirstResource);
         }
-
-        [Given(@"I perform a patient search for patient with NHSNumber ""([^""]*)"" and store the response bundle against key ""([^""]*)""")]
-        public void IPerformAPatientSearchForPatientWithNHSNumberAndStoreTheResponseBundleAgainstKey(string nhsNumber, string patientSearchResponseBundleKey)
-        {
-            Given($@"I am using the default server");
-            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient"" interaction");
-            And($@"I set the JWT requested record patient NHS number to ""{nhsNumber}""");
-            And($@"I set the JWT requested scope to ""patient/*.read""");
-            When($@"I search for Patient with NHS Number ""{nhsNumber}""");
-            Then($@"the response status code should indicate success");
-            And($@"the response body should be FHIR JSON");
-            And($@"the response should be a Bundle resource of type ""searchset""");
-            if (_httpContext.StoredFhirResources.ContainsKey(patientSearchResponseBundleKey)) _httpContext.StoredFhirResources.Remove(patientSearchResponseBundleKey);
-            _httpContext.StoredFhirResources.Add(patientSearchResponseBundleKey, (Bundle)_fhirContext.FhirResponseResource);
-        }
-
-        [When(@"I search for Patient with NHS Number ""([^""]*)""")]
-        public void ISearchForPatientWithNHSNumber(string nhsNumber)
-        {
-            var parameterString = FhirConst.IdentifierSystems.kNHSNumber + "|" + nhsNumber;
-            ISearchForAPatientWithParameterNameAndParameterString("identifier", parameterString);
-        }
-
-
-        [When(@"I search for a Patient with patameter name ""([^""]*)"" and parameter string ""([^""]*)""")]
-        public void ISearchForAPatientWithParameterNameAndParameterString(string parameterName, string parameterString)
-        {
-            Given($@"I add the parameter ""{parameterName}"" with the value ""{parameterString}""");
-            When($@"I make a GET request to ""/Patient""");
-        }
     }
 }
