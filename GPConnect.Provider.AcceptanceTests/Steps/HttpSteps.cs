@@ -123,6 +123,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.FhirServerPort = serverPort;
         }
 
+
+        [Given(@"I am not using the SSP")]
+        public void GivenIAmNotUsingTheSSP()
+        {
+            HttpContext.UseSpineProxy = false;
+        }
+
         // Http Header Configuration Steps
 
         [Given(@"I am using ""(.*)"" to communicate with the server")]
@@ -708,7 +715,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the GET request Id to ""([^""]*)""")]
         public void SetTheGetRequestIdTo(string id)
         {
-            HttpContext.GetRequestId = id;
+            HttpContext.RequestUrl = "/fhir/Patient/" + id;
         }
 
         [Given(@"I set the GET request Version Id to ""([^""]*)""")]

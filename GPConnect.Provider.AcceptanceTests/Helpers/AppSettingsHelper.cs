@@ -34,12 +34,23 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static string SpineProxyPort => Get<string>("spineProxyPort");
 
         // Certificate Settings
-        public static string ClientCertThumbPrint => Get<string>("clientCertThumbPrint");
-        public static string ClientInvalidCertThumbPrint => Get<string>("clientInvalidCertThumbPrint");
-        public static string ClientExpiredCertThumbPrint => Get<string>("clientExpiredCertThumbPrint");
         public static bool SendClientCert => Get<bool>("sendClientCert");
         public static bool ValidateServerCert => Get<bool>("validateServerCert");
-
+        
+        // Certificates for testing SSP
+        public static string ClientCertThumbPrintValid => Get<string>("clientCertThumbPrintValid");
+        public static string clientCertThumbPrintFQDNDoesNotMatchSendingSystem => Get<string>("clientCertThumbPrintFQDNDoesNotMatchSendingSystem");
+        public static string clientCertThumbPrintNotIssuedBySpineCA => Get<string>("clientCertThumbPrintNotIssuedBySpineCA");
+        public static string clientCertThumbPrintRevoked => Get<string>("clientCertThumbPrintRevoked");
+        public static string clientCertThumbPrintOutOfDate => Get<string>("clientCertThumbPrintOutOfDate");
+        
+        // Certificates for testing provider directly, bypassing the ssp
+        public static string sspAsClientCertThumbPrintValid => Get<string>("sspAsClientCertThumbPrintValid");
+        public static string sspAsClientCertThumbPrintFQDNNotSSPFQDN => Get<string>("sspAsClientCertThumbPrintFQDNNotSSPFQDN");
+        public static string sspAsClientCertThumbPrintNotIssuedBySpineCA => Get<string>("sspAsClientCertThumbPrintNotIssuedBySpineCA");
+        public static string sspAsClientCertThumbPrintRevoked => Get<string>("sspAsClientCertThumbPrintRevoked");
+        public static string sspAsClientCertThumbPrintOutOfDate => Get<string>("sspAsClientCertThumbPrintOutOfDate");
+        
         // Consumer Settings
         public static string ConsumerASID => Get<string>("consumerASID");
 

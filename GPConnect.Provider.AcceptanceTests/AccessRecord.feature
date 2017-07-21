@@ -250,11 +250,10 @@ Scenario Outline: Request patient summary with parameters in oposite order to ot
 Scenario: Request care record where request resource type is something other than Parameters
 		Given I configure the default "GpcGetCareRecord" request
 		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "<Code>"
+		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request with invalid Resource type
 	Then the response status code should be "422"
-		
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Invalid start date parameter

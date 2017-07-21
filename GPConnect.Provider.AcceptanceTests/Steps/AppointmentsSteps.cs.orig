@@ -653,8 +653,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"all appointments must have a start element which is populated with a date that equals ""([^""]*)""")]
         public void appointmentPopulatedWithAStartDateEquals(string startBoundry)
         {
+<<<<<<< HEAD
             DateTimeOffset? time = HttpContext.CreatedAppointment.Start;
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+=======
+            //string time = HttpContext.StoredDate[startBoundry];
+            DateTimeOffset time = DateTimeOffset.Parse(HttpContext.StoredDate[startBoundry]);
+
             foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+>>>>>>> 3e7147fc0e04c998d636af2deafccf0f2933aec6
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
                 {
@@ -1024,7 +1031,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add a Category Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
         public void AddACategoryExtensionWithCodeAndDisplayToTheCreatedAppointment(string code, string display)
         {
-            var extension = GetCategoryExtension(code, display);
+            var extension = GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", code, display);
 
             if (HttpContext.CreatedAppointment.Extension == null)
                 HttpContext.CreatedAppointment.Extension = new List<Extension>();
@@ -1035,7 +1042,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add a Booking Method Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
         public void AddABookingMethodExtensionWithCodeAndDisplayToTheCreatedAppointment(string code, string display)
         {
-            var extension = GetBookingMethodExtension(code, display);
+            var extension = GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", code, display);
 
             if (HttpContext.CreatedAppointment.Extension == null)
                 HttpContext.CreatedAppointment.Extension = new List<Extension>();
@@ -1046,7 +1053,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add a Contact Method Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
         public void AddAContactMethodExtensionWithCodeAndDisplayToTheCreatedAppointment(string code, string display)
         {
-            var extension = GetContactMethodExtension(code, display);
+            var extension = GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", code, display);
 
             if (HttpContext.CreatedAppointment.Extension == null)
                 HttpContext.CreatedAppointment.Extension = new List<Extension>();
@@ -1060,27 +1067,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.CreatedAppointment = new Appointment();
         }
-        private static Extension GetCategoryExtension(string code, string display)
-        {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", code, display);
-        }
-        private static Extension GetBookingMethodExtension(string code, string display)
-        {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", code, display);
-        }
-
-        private static Extension GetContactMethodExtension(string code, string display)
-        {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", code, display);
-        }
-
+        
         private static Extension GetCodingExtension(string url, string code, string display)
         {
             var coding = new Coding
             {
                 Code = code,
-                Display = display,
-                System = url
+                Display = display
             };
 
             var reason = new CodeableConcept();
@@ -1133,281 +1126,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 CheckForValidMetaDataInResource(appointment, "http://fhir.nhs.net/StructureDefinition/gpconnect-appointment-1");
             });
-        }
-
-
-        [Given(@"I add the ""([^""]*)"" Extensions to the Created Appointment")]
-        public void AddTheExtensionsToTheCreatedAppointment(string extensionCombination)
-        {
-            var extensions = GetExtensions(extensionCombination);
-
-            HttpContext.CreatedAppointment.Extension.AddRange(extensions);
-        }
-
-        private List<Extension> GetExtensions(string extensionCombination)
-        {
-            var extensions = new List<Extension>();
-            switch (extensionCombination)
-            {
-                case "Category":
-                    extensions.Add(GetCategoryExtension("CLI", "Clinical"));
-                    break;
-                case "BookingMethod":
-                    extensions.Add(GetBookingMethodExtension("ONL", "Online"));
-                    break;
-                case "ContactMethod":
-                    extensions.Add(GetContactMethodExtension("ONL", "Online"));
-                    break;
-                case "Category+BookingMethod":
-                    extensions.Add(GetCategoryExtension("ADM", "Administrative"));
-                    extensions.Add(GetBookingMethodExtension("TEL", "Telephone"));
-                    break;
-                case "Category+ContactMethod":
-                    extensions.Add(GetCategoryExtension("MSG", "Message"));
-                    extensions.Add(GetContactMethodExtension("PER", "In person"));
-                    break;
-                case "BookingMethod+ContactMethod":
-                    extensions.Add(GetBookingMethodExtension("LET", "Letter"));
-                    extensions.Add(GetContactMethodExtension("EMA", "Email"));
-                    break;
-                case "Category+BookingMethod+ContactMethod":
-                    extensions.Add(GetCategoryExtension("VIR", "Virtual"));
-                    extensions.Add(GetBookingMethodExtension("TEX", "Text"));
-                    extensions.Add(GetContactMethodExtension("LET", "Letter"));
-                    break;
-            }
-
-            return extensions;
-        }
-
-
-        private Extension buildAppointmentCategoryExtension(string url, string code, string display)
-        {
-            Extension extension = new Extension();
-            extension.Url = url;
-            CodeableConcept codeableConcept = new CodeableConcept();
-            Coding coding = new Coding();
-            coding.Code = code;
-            coding.Display = display;
-            codeableConcept.Coding.Add(coding);
-            extension.Value = codeableConcept;
-            return extension;
-        }
-
-        [Given(@"I set the appointment Priority to ""([^""]*)"" on appointment stored against key ""([^""]*)""")]
-        public void GivenISetTheAppointmentPriorityToOnAppointmentStoredAgainstKey(int priority, string appointmentKey)
-        {
-            ((Appointment)HttpContext.StoredFhirResources[appointmentKey]).Priority = priority;
-        }
-
-        [When(@"I book the appointment called ""([^""]*)""")]
-        public void WhenIBookTheAppointmentCalledString(string appointmentName)
-        {
-            var appointment = HttpContext.StoredFhirResources[appointmentName];
-            if (HttpContext.RequestContentType.Contains("xml"))
-            {
-                _httpSteps.RestRequest(Method.POST, "/Appointment", FhirSerializer.SerializeToXml(appointment));
-            }
-            else
-            {
-                _httpSteps.RestRequest(Method.POST, "/Appointment", FhirSerializer.SerializeToJson(appointment));
-            }
-        }
-
-        [When(@"I book an appointment for patient ""([^""]*)"" on the provider system using a slot from the getSchedule response bundle stored against key ""([^""]*)"" and store the appointment to ""([^""]*)""")]
-        public void IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentTo(string patientName, string getScheduleBundleKey, string storeAppointmentKey)
-        {
-            IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentToWithPriority(patientName, getScheduleBundleKey, storeAppointmentKey, 1);
-        }
-
-        public void IBookAnAppointmentForPatientOnTheProviderSystemUsingASlotFromTheGetScheduleResponseBundleStoredAgainstKeyAndStoreTheAppointmentToWithPriority(string patientName, string getScheduleBundleKey, string storeAppointmentKey, int priority)
-        {
-            Given($@"I perform a patient search for patient ""{patientName}"" and store the first returned resources against key ""StoredPatientKey""");
-            Given($@"I am using the default server");
-            And($@"I set the JWT requested record NHS number to the NHS number of patient stored against key ""StoredPatientKey""");
-            And($@"I set the JWT requested scope to ""patient/*.write""");
-            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:create:appointment"" interaction");
-            Given($@"I create an appointment for patient ""StoredPatientKey"" called ""Appointment"" from schedule ""{getScheduleBundleKey}""");
-            Given($@"I set the appointment Priority to ""{priority}"" on appointment stored against key ""Appointment""");
-            When($@"I book the appointment called ""Appointment""");
-            Then($@"the response status code should indicate created");
-            Then($@"the response body should be FHIR JSON");
-            And($@"the response should be an Appointment resource");
-            if (HttpContext.StoredFhirResources.ContainsKey(storeAppointmentKey))
-            {
-                HttpContext.StoredFhirResources.Remove(storeAppointmentKey);
-            }
-            HttpContext.StoredFhirResources.Add(storeAppointmentKey, _fhirContext.FhirResponseResource);
-        }
-
-        [Given(@"I create an appointment for patient ""([^""]*)"" called ""([^""]*)"" from schedule ""([^""]*)""")]
-        public void GivenICreateAnAppointmentForPatientCalledFromSchedule(string patientKey, string appointmentName, string getScheduleBundleKey)
-        {
-            Patient patientResource = (Patient)HttpContext.StoredFhirResources[patientKey];
-            Bundle getScheduleResponseBundle = (Bundle)HttpContext.StoredFhirResources[getScheduleBundleKey];
-
-            List<Slot> slotList = new List<Slot>();
-            Dictionary<string, Practitioner> practitionerDictionary = new Dictionary<string, Practitioner>();
-            Dictionary<string, Location> locationDictionary = new Dictionary<string, Location>();
-            Dictionary<string, Schedule> scheduleDictionary = new Dictionary<string, Schedule>();
-
-            foreach (EntryComponent entry in getScheduleResponseBundle.Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    slotList.Add((Slot)entry.Resource);
-                }
-                else if (entry.Resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    if (!practitionerDictionary.ContainsKey(entry.FullUrl))
-                    {
-                        practitionerDictionary.Add(entry.FullUrl, (Practitioner)entry.Resource);
-                    }
-                }
-                else if (entry.Resource.ResourceType.Equals(ResourceType.Location))
-                {
-                    if (!locationDictionary.ContainsKey(entry.FullUrl))
-                    {
-                        locationDictionary.Add(entry.FullUrl, (Location)entry.Resource);
-                    }
-                }
-                else if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
-                {
-                    if (!scheduleDictionary.ContainsKey(entry.FullUrl))
-                    {
-                        scheduleDictionary.Add(entry.FullUrl, (Schedule)entry.Resource);
-                    }
-                }
-            }
-
-            // Select first slot
-            Slot firstSlot = slotList[0];
-
-            string scheduleReference = firstSlot.Schedule.Reference;
-            Schedule schedule = null;
-            scheduleDictionary.TryGetValue(scheduleReference, out schedule);
-
-            string locationReferenceForSelectedSlot = schedule.Actor.Reference;
-
-            List<string> practitionerReferenceForSelectedSlot = new List<string>();
-            foreach (var practitionerReferenceExtension in schedule.Extension)
-            {
-                practitionerReferenceForSelectedSlot.Add(((ResourceReference)practitionerReferenceExtension.Value).Reference);
-            }
-
-            //Elements of the appointment
-            CodeableConcept reason = null;
-            List<Extension> extensionList = null;
-            List<Identifier> identifiers = null;
-            AppointmentStatus status = AppointmentStatus.Booked;
-            int? priority = null;
-
-            switch (appointmentName)
-            {
-                case "Appointment1":
-                    extensionList = new List<Extension>();
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "CLI", "Clinical"));
-                    break;
-
-                case "Appointment2":
-                    extensionList = new List<Extension>();
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "ONL", "Online"));
-                    break;
-
-                case "Appointment3":
-                    extensionList = new List<Extension>();
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "ONL", "Online"));
-                    break;
-
-                case "Appointment4":
-                    extensionList = new List<Extension>();
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "ADM", "Administrative"));
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "TEL", "Telephone"));
-                    break;
-
-                case "Appointment5":
-                    extensionList = new List<Extension>();
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "PER", "In person"));
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "MSG", "Message"));
-                    break;
-
-                case "Appointment6":
-                    extensionList = new List<Extension>();
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "LET", "Letter"));
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "EMA", "Email"));
-                    break;
-
-                case "Appointment7":
-                    extensionList = new List<Extension>();
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", "TEX", "Text"));
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", "VIR", "Virtual"));
-                    extensionList.Add(buildAppointmentCategoryExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", "LET", "Letter"));
-                    break;
-            }
-
-            Appointment appointment = new Appointment();
-            appointment.Status = status;
-
-            // Appointment Patient Resource
-            ParticipantComponent patient = new ParticipantComponent();
-            ResourceReference patientReference = new ResourceReference();
-            patientReference.Reference = "Patient/" + patientResource.Id;
-            patient.Actor = patientReference;
-            patient.Status = ParticipationStatus.Accepted;
-            patient.Type.Add(new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "patient", "patient"));
-            appointment.Participant.Add(patient);
-
-            // Appointment Practitioner Resource
-            foreach (var practitionerSlotReference in practitionerReferenceForSelectedSlot)
-            {
-                ParticipantComponent practitioner = new ParticipantComponent();
-                ResourceReference practitionerReference = new ResourceReference();
-                practitionerReference.Reference = practitionerSlotReference;
-                practitioner.Actor = practitionerReference;
-                practitioner.Status = ParticipationStatus.Accepted;
-                practitioner.Type.Add(new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PPRF", "practitioner", "practitioner"));
-                appointment.Participant.Add(practitioner);
-            }
-
-            // Appointment Location Resource
-            ParticipantComponent location = new ParticipantComponent();
-            ResourceReference locationReference = new ResourceReference();
-            locationReference.Reference = locationReferenceForSelectedSlot;
-            location.Actor = locationReference;
-            location.Status = ParticipationStatus.Accepted;
-            appointment.Participant.Add(location);
-
-            // Appointment Slot Resource
-            ResourceReference slot = new ResourceReference();
-            slot.Reference = "Slot/" + firstSlot.Id;
-            appointment.Slot.Add(slot);
-            appointment.Start = firstSlot.Start;
-            appointment.End = firstSlot.End;
-
-            if (identifiers != null) appointment.Identifier = identifiers;
-            if (priority != null) appointment.Priority = priority;
-            if (reason != null) appointment.Reason = reason;
-            if (extensionList != null) appointment.Extension = extensionList;
-
-            // Store start date for use in other tests
-            if (HttpContext.StoredDate.ContainsKey("slotStartDate")) HttpContext.StoredDate.Remove("slotStartDate");
-            HttpContext.StoredDate.Add("slotStartDate", firstSlot.StartElement.ToString());
-
-            // Now we have used the slot remove from it from the getScheduleBundle so it is not used to book other appointments same getSchedule is used
-            EntryComponent entryToRemove = null;
-            foreach (EntryComponent entry in getScheduleResponseBundle.Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot) && string.Equals(((Slot)entry.Resource).Id, firstSlot.Id))
-                {
-                    entryToRemove = entry;
-                    break;
-                }
-            }
-            getScheduleResponseBundle.Entry.Remove(entryToRemove);
-
-            // Store appointment
-            if (HttpContext.StoredFhirResources.ContainsKey(appointmentName)) HttpContext.StoredFhirResources.Remove(appointmentName);
-            HttpContext.StoredFhirResources.Add(appointmentName, (Appointment)appointment);
         }
     }
 }

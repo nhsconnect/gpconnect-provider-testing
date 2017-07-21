@@ -424,7 +424,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-site-code", new string[0])]
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-site-code|", new string[0])]
         [NUnit.Framework.TestCaseAttribute("|GPC001", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("badSystem|ORG1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("badSyst++", new string[0])]
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-organization-code\\?", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ORG1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ORG2", new string[0])]
@@ -755,8 +755,8 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-organization-code", "ORG2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-organization-code", "ORG3", new string[0])]
         [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-site-code", "SIT1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-site-code", "SIT1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-site-code", "SIT1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-site-code", "SIT2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/ods-site-code", "SIT3", new string[0])]
         public virtual void OrganizationSearchCheckOrganizationResponseContainsLogicalIdentifier(string system, string value, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search check organization response contains logical identifier", exampleTags);
