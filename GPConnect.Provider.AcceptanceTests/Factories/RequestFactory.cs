@@ -88,5 +88,10 @@
         {
             httpContext.RequestBody = FhirHelper.AddFieldToParameterResource(httpContext.RequestBody, FhirConst.Resources.kInvalidResourceType);
         }
+
+        public void ConfigureAdditionalInvalidFieldInResource(HttpContext httpContext)
+        {
+            httpContext.RequestBody = FhirHelper.AddInvalidFieldToResourceJson(httpContext.RequestBody);
+        }
     }
 }

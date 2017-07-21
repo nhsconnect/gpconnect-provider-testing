@@ -137,6 +137,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("HumanLanguage ValueSet Not Found.");
             Log.WriteLine("{0} HumanLanguage Loaded.", humanLanguage.CodeSystem.Concept.Count);
             GlobalContext.FhirHumanLanguageValueSet = humanLanguage;
+
+            var appointmentCategory = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-category-1");
+            if (appointmentCategory == null)
+                Assert.Fail("AppointmentCategory ValueSet Not Found.");
+            Log.WriteLine("{0} AppointmentCategory Loaded.", appointmentCategory.CodeSystem.Concept.Count);
+            GlobalContext.FhirAppointmentCategoryValueSet = appointmentCategory;
+
+            var appointmentBookingMethod = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1");
+            if (appointmentCategory == null)
+                Assert.Fail("AppointmentBookingMethod ValueSet Not Found.");
+            Log.WriteLine("{0} AppointmentBookingMethod Loaded.", appointmentBookingMethod.CodeSystem.Concept.Count);
+            GlobalContext.FhirAppointmentBookingMethodValueSet = appointmentBookingMethod;
+
+            var appointmentContactMethod = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-contact-method-1");
+            if (appointmentContactMethod == null)
+                Assert.Fail("AppointmentContactMethod ValueSet Not Found.");
+            Log.WriteLine("{0} AppointmentContactMethod Loaded.", appointmentContactMethod.CodeSystem.Concept.Count);
+            GlobalContext.FhirAppointmentContactMethodValueSet = appointmentContactMethod;
         }
 
         [BeforeScenario(Order = 0)]

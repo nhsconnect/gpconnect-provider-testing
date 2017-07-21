@@ -56,5 +56,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             set { GlobalContextHelper.SaveValue(Context.kFhirHumanLanguageValueSet, value); }
         }
 
+        public static ValueSet FhirAppointmentCategoryValueSet { get; set; }
+        public static ValueSet FhirAppointmentBookingMethodValueSet { get; set; }
+        public static ValueSet FhirAppointmentContactMethodValueSet { get; set; }
     }
 }

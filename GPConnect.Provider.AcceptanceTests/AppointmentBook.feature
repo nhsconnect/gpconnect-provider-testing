@@ -210,13 +210,12 @@ Scenario: Book Appointment and appointment participant is valid
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the appointment response resource contains atleast 2 participants a practitioner and a patient
 		And the returned appointment participants must contain a type or actor element
 
 #improve name to be more descriptive
-Scenario: Book Appointment and check extensions are valid
+Scenario Outline: Book Appointment and check extensions are valid
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I get the Schedule for Organization Code "ORG1"
@@ -224,14 +223,25 @@ Scenario: Book Appointment and check extensions are valid
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
+		And I add the "<ExtensionCombination>" Extensions to the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And if the returned appointment category element is present it is populated with the correct values
-		And if the returned appointment booking element is present it is populated with the correct values
-		And if the returned appointment contact element is present it is populated with the correct values
-		And if the returned appointment cancellation reason element is present it is populated with the correct values
+		And the Appointment Category Extension should be valid
+		And the Appointment Booking Method Extension should be valid
+		And the Appointment Contact Method Extension should be valid
+		## Not sure why we're testing this... maybe check that it SHOULD NOT be there
+		And the Appointment Cancellation Reason Extension should be valid
+	Examples: 
+		| ExtensionCombination					| 
+		| Category								| 
+		| BookingMethod							| 
+		| ContactMethod							| 
+		| Category+BookingMethod				| 
+		| Category+ContactMethod				| 
+		| BookingMethod+ContactMethod			| 
+		| Category+BookingMethod+ContactMethod	| 
+
 
 Scenario: Book Appointment without location participant
 	Given I get the Patient for Patient Value "patient1"
@@ -241,10 +251,9 @@ Scenario: Book Appointment without location participant
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I remove the participant "Location" from the created Appointment
+		And I remove the "Location" Participants from the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 
 Scenario Outline: Book Appointment and remove manadatory resources from the appointment booking
@@ -255,10 +264,9 @@ Scenario Outline: Book Appointment and remove manadatory resources from the appo
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I remove the participant "<ParticipantToRemove>" from the created Appointment
+		And I remove the "<ParticipantToRemove>" Participants from the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
@@ -274,12 +282,11 @@ Scenario: Book Appointment and remove all participants
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I remove the participant "Location" from the created Appointment
-		And I remove the participant "Patient" from the created Appointment
-		And I remove the participant "Practitioner" from the created Appointment
+		And I remove the "Location" Participants from the Created Appointment
+		And I remove the "Patient" Participants from the Created Appointment
+		And I remove the "Practitioner" Participants from the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
@@ -291,7 +298,7 @@ Scenario: Book appointment containing additional extension with only value popul
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I add an extra invalid extension to the created appointment only populating the value
+		And I add an Invalid Extension with Code only to the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -306,7 +313,7 @@ Scenario: Book appointment containing additional extensions with only the system
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I add an extra invalid extension to the appointment only populating the url
+		And I add an Invalid Extension with Url only to the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -321,7 +328,7 @@ Scenario: Book single appointment for patient and send additional extensions wit
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I add an extra invalid extension to the created appointment containing the url code and display
+		And I add an Invalid Extension with Url, Code and Display to the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -336,7 +343,7 @@ Scenario: Book appointment for patient with id
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I change the created appointment id to "1111222233334444"
+		And I set the Created Appointment Id to "1111222233334444"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -352,7 +359,7 @@ Scenario: Book appointment for patient and send extra fields in the resource
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-	When I book the appointment called "Appointment" with an invalid field
+	When I make the "AppointmentCreate" request with Invalid Additional Field in the Resource
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
@@ -365,7 +372,7 @@ Scenario Outline: Book appointment with invalid slot reference
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I change the created appointment slot reference to "<slotReference>"
+		And I set the Created Appointment Slot Reference to "<slotReference>"
 	When I make the "AppointmentCreate" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -389,7 +396,7 @@ Scenario: Book single appointment for patient and check the location reference i
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And any location participant references included in returned appointment should be valid
+		And the Appointment Location Participant should be valid and resolvable
 	
 Scenario: Book appointment with missing start element in appointment resource
 	Given I get the Patient for Patient Value "patient1"
@@ -399,7 +406,7 @@ Scenario: Book appointment with missing start element in appointment resource
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I remove the created appointment start element
+		And I remove the Start from the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -413,7 +420,7 @@ Scenario: Book appointment with missing end element in appointment resource
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I remove the created appointment end element
+		And I remove the End from the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -427,7 +434,7 @@ Scenario: Book appointment with missing status element in appointment resource
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I remove the created appointment status element
+		And I remove the Status from the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -441,7 +448,7 @@ Scenario: Book appointment with missing slot element in appointment resource
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I remove the created appointment slot element
+		And I remove the Slot from the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -455,7 +462,7 @@ Scenario: Book Appointment and remove identifier value from the appointment book
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-	Then I set the created appointment identifier value element to null
+		And I set the Created Appointment Identifier Value to null
 	When I make the "AppointmentCreate" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
@@ -469,16 +476,16 @@ Scenario Outline: Book Appointment and remove reason coding element from the app
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-	Then I set the created appointment reason coding system element to null
+		And I set the Created Appointment Reason Coding <CodingElement> to null
 	When I make the "AppointmentCreate" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
 		| CodingElement |
-		| system        |
-		| code          |
-		| display       |
+		| System        |
+		| Code          |
+		| Display       |
 
 Scenario Outline: Book Appointment and remove participant status from the appointment booking
 	Given I get the Patient for Patient Value "patient1"
@@ -488,7 +495,7 @@ Scenario Outline: Book Appointment and remove participant status from the appoin
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-	Then I set the created appointment Patient participant status element to null
+		And I set the Created Appointment Patient Participant Status to null
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -507,10 +514,9 @@ Scenario Outline: Book Appointment and remove participant type coding element fr
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-	Then I set the created appointment "<Participant>" participant type coding "<CodingElement>" element to null
+		And I set the Created Appointment Participant Type Coding "<CodingElement>" to null for "<Participant>" Participants
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| Participant  | CodingElement |

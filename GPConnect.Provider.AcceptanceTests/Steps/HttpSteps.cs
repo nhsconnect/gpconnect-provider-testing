@@ -780,6 +780,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpRequest();
         }
 
+        [When(@"I make the ""(.*)"" request with Invalid Additional Field in the Resource")]
+        public void MakeRequestWithInvalidAdditionalFieldInTheResource(GpConnectInteraction interaction)
+        {
+            var requestFactory = new RequestFactory(interaction);
+
+            requestFactory.ConfigureBody(HttpContext);
+            requestFactory.ConfigureAdditionalInvalidFieldInResource(HttpContext);
+
+            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, JwtHelper.GetBearerToken());
+            HttpRequest();
+        }
+
         [When(@"I make the ""(.*)"" request with invalid parameter Resource type")]
         public void MakeRequestWithInvalidParameterResourceType(GpConnectInteraction interaction)
         {
@@ -966,5 +978,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             eTag.ShouldBe("W/\"" + versionId + "\"", "The ETag header contains invalid characters");
         }
+
+        [Then(@"the content-type should not be equal to null")]
+        public void ThenTheContentTypeShouldNotBeEqualToNull()
+        {
+            string contentType = null;
+            HttpContext.ResponseHeaders.TryGetValue("Content-Type", out contentType);
+            contentType.ShouldNotBeNullOrEmpty("The response should contain a Content-Type header.");
+        }
+
+        [Then(@"the content-type should be equal to null")]
+        public void ThenTheContentTypeShouldBeEqualToZero()
+        {
+            string contentType = null;
+            HttpContext.ResponseHeaders.TryGetValue("Content-Type", out contentType);
+            contentType.ShouldBe(null, "There should not be a content-type header on the response");
+        }
+
+        [Then(@"the content-length should not be equal to zero")]
+        public void ThenTheContentLengthShouldNotBeEqualToZero()
+        {
+            string contentLength = "";
+            HttpContext.ResponseHeaders.TryGetValue("Content-Length", out contentLength);
+            contentLength.ShouldNotBe("0", "The response payload should contain a resource.");
+        }
+
     }
 }
