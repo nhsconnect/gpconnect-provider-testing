@@ -69,9 +69,9 @@ Scenario Outline: Location Read with incorrect interaction id
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| interactionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:read:location3         |
-		| urn:nhs:names:services:gpconnect:fhir:rest:read:locations         |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		| urn:nhs:names:servxices:gpconnect:fhir:rest:read:location3         |
+		| urn:nhs:names:services:gpcsonnect:fhir:rest:read:locations         |
+		| urn:nhs:names:xservices:gpconnect:fhir:operation:gpc.getcarerecord |
 		|                                                                   |
 		| null                                                              |
 
@@ -111,8 +111,8 @@ Scenario Outline: Location Read sending the Accept header and _format parameter 
 		| application/xml+fhir  | application/xml+fhir  | XML            |
 
 Scenario: Conformance profile supports the Location read operation
-	Given I configure the default "Metaread" request
-	When I make the "Metadata" request
+	Given I configure the default "Metadataread" request
+	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the conformance profile should contain the "Location" resource with a "read" interaction
 

@@ -243,13 +243,15 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And the Patient CareProvider Practitioner should be valid and resolvable
 		And the Patient should exclude disallowed fields
 	Examples:
-		| Patient  |
-		| patient1 |
-		| patient2 |
-		| patient3 |
-		| patient4 |
-		| patient5 |
-		| patient6 |
+		| Patient   |
+		| patient1  |
+		| patient2  |
+		| patient3  |
+		| patient4  |
+		| patient5  |
+		| patient6  |
+		| patient17 |
+
 
 Scenario: Conformance profile supports the Patient search operation
 	Given I configure the default "MetadataRead" request

@@ -440,10 +440,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
         
-        [Then(@"the returned appointment start date should match ""([^""]*)"" start Date")]
-        public void ThenTheReturnedAppointmentStartDateShouldMatchStartDate(string appointmentName)
+        [Then(@"the returned appointment start date should match created appointment start Date")]
+        public void ThenTheReturnedAppointmentStartDateShouldMatchStartDate()
         {
-            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment savedAppointment = (Appointment)HttpContext.CreatedAppointment;
 
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {

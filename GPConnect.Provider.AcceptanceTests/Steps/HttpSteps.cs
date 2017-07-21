@@ -703,7 +703,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the GET request Id to ""([^""]*)""")]
         public void SetTheGetRequestIdTo(string id)
         {
-            HttpContext.GetRequestId = id;
+            HttpContext.RequestUrl = "/fhir/Patient/" + id;
         }
 
         [Given(@"I set the GET request Version Id to ""([^""]*)""")]
