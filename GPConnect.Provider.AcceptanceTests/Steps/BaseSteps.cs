@@ -41,7 +41,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             resource.Meta.Profile.Count().ShouldBe(1);
             resource.Meta.Profile.First().ShouldBe(profileId);
 
-            if (resource.GetType() != typeof(Composition))
+            if (resource.GetType() != typeof(Composition) && resource.GetType() != typeof(Bundle))
             {
                 resource.Meta.VersionId.ShouldNotBeNull();
             }

@@ -1,363 +1,30 @@
-﻿using System;
-using GPConnect.Provider.AcceptanceTests.Context;
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Serialization;
-using RestSharp;
-using Shouldly;
-using TechTalk.SpecFlow;
-using static Hl7.Fhir.Model.Bundle;
-using GPConnect.Provider.AcceptanceTests.Logger;
-using System.Collections.Generic;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-    using System.Linq;
+    using System.Collections.Generic;
+    using Context;
     using Enum;
+    using Hl7.Fhir.Model;
+    using Shouldly;
+    using TechTalk.SpecFlow;
+    using static Hl7.Fhir.Model.Slot;
 
     [Binding]
-    public class GetScheduleSteps : TechTalk.SpecFlow.Steps
+    public class GetScheduleSteps : BaseSteps
     {
-
-        private readonly FhirContext FhirContext;
-        private readonly HttpContext HttpContext;
-        private readonly HttpSteps HttpSteps;
-        private readonly AccessRecordSteps AccessRecordSteps;
+        private readonly HttpContext _httpContext;
+        private readonly AccessRecordSteps _accessRecordSteps;
         private readonly BundleSteps _bundleSteps;
         private readonly OrganizationSteps _organizationSteps;
-
-
+        private List<Slot> Slots => _fhirContext.Slots;
+        private List<Schedule> Schedules => _fhirContext.Schedules;
+        
         public GetScheduleSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps)
+            : base(fhirContext, httpSteps)
         {
-            FhirContext = fhirContext;
-            HttpContext = httpContext;
-            HttpSteps = httpSteps;
-            AccessRecordSteps = accessRecordSteps;
+            _httpContext = httpContext;
+            _accessRecordSteps = accessRecordSteps;
             _bundleSteps = bundleSteps;
             _organizationSteps = organizationSteps;
-        }
-
-        [Given(@"I search for the organization ""([^""]*)"" on the providers system and save the first response to ""([^""]*)""")]
-        public void GivenISearchForTheOrganizationOnTheProviderSystemAndSaveTheFirstResponseTo(string organizaitonName, string storeKey)
-        {
-            var relativeUrl = "Organization?identifier=http://fhir.nhs.net/Id/ods-organization-code|" + GlobalContext.OdsCodeMap[organizaitonName];
-            var returnedResourceBundle = HttpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:search:organization", relativeUrl);
-            returnedResourceBundle.GetType().ShouldBe(typeof(Bundle));
-            ((Bundle)returnedResourceBundle).Entry.Count.ShouldBeGreaterThan(0);
-            var returnedFirstResource = (Organization)((Bundle)returnedResourceBundle).Entry[0].Resource;
-            returnedFirstResource.GetType().ShouldBe(typeof(Organization));
-            if (HttpContext.StoredFhirResources.ContainsKey(storeKey)) HttpContext.StoredFhirResources.Remove(storeKey);
-            HttpContext.StoredFhirResources.Add(storeKey, returnedFirstResource);
-         
-        }
-
-        [Given(@"I add period request parameter with a start date of today and an end date ""([^""]*)"" days later")]
-        public void GivenIAddPeriodRequestParameterWithAStartDateOfTodayAndAnEndDateDaysLater(double numberOfDaysRange) {
-            DateTime currentDateTime = DateTime.Now;
-            Period period = new Period(new FhirDateTime(currentDateTime), new FhirDateTime(currentDateTime.AddDays(numberOfDaysRange)));
-            FhirContext.FhirRequestParameters.Add("timePeriod", period);
-        }
-
-        [Given(@"I add period request parameter with only a start date")]
-        public void GivenIAddPeriodRequestParameterWithOnlyAStartDate()
-        {
-            Period period = new Period();
-            period.StartElement = FhirDateTime.Now();
-            FhirContext.FhirRequestParameters.Add("timePeriod", period);
-        }
-
-        [Given(@"I add period request parameter with only an end date")]
-        public void GivenIAddPeriodRequestParameterWithOnlyAnEndDate()
-        {
-            Period period = new Period();
-            period.EndElement = new FhirDateTime(DateTime.Now.AddDays(2));
-            FhirContext.FhirRequestParameters.Add("timePeriod", period);
-        }
-
-        [Given(@"I add period request parameter with start date ""([^""]*)"" and end date ""([^""]*)""")]
-        public void GivenIAddPeriodRequestParameterWithStartDateAndEndDate(string startDate, string endDate)
-        {
-            Period period = new Period();
-            period.Start = startDate;
-            period.End = endDate;
-            FhirContext.FhirRequestParameters.Add("timePeriod", period);
-        }
-
-        [Given(@"I add period request parameter with start date format ""([^""]*)"" and end date format ""([^""]*)""")]
-        public void GivenIAddPeriodRequestParameterWithStartDateFormatAndEndFormatDate(string startDate, string endDate)
-        {
-            List<string> startDateFormatEndDateFormat = new List<string>();
-            startDateFormatEndDateFormat.Add(startDate);
-            startDateFormatEndDateFormat.Add(endDate);
-            String currentDateTime;
-            for (int i = 0; i < startDateFormatEndDateFormat.Count; i++) {
-                switch (startDateFormatEndDateFormat[i])
-                {
-                    case "yyyy-MM-dd":
-                         currentDateTime = DateTime.Now.ToString("yyyy-MM-dd");
-                        startDateFormatEndDateFormat[i] = currentDateTime;
-                        break;
-
-                    case "yyyy":
-                         currentDateTime = DateTime.Now.ToString("yyyy");
-                        startDateFormatEndDateFormat[i] = currentDateTime;
-                        break;
-
-                    case "yyyy-MM":
-                        currentDateTime = DateTime.Now.ToString("yyyy-MM");
-                        startDateFormatEndDateFormat[i] = currentDateTime;
-                        break;
-                    case "yyyy-MM-ddTHH:mm:ss":
-                        currentDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
-                        startDateFormatEndDateFormat[i] = currentDateTime;
-                        break;
-                }
-            }
-
-
-            Period period = new Period();
-            period.Start = startDateFormatEndDateFormat[0];
-            period.End = startDateFormatEndDateFormat[1];
-            FhirContext.FhirRequestParameters.Add("timePeriod", period);
-        }
-
-        [When(@"I send a gpc.getschedule operation for the organization stored as ""([^""]*)""")]
-        public void ISendAGpcGetScheduleOperationForTheOrganizationStoredAs(string storeKey)
-        {
-            Organization organization = (Organization)HttpContext.StoredFhirResources[storeKey];
-            ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(organization.Id);
-        }
-
-        [When(@"I send a gpc.getschedule operation for the organization stored as ""([^""]*)"" to the wrong endpoint")]
-        public void ISendAGpcGetScheduleOperationForTheOrganizationStoredAsToTheWrongEndpoint(string storeKey)
-        {
-            Organization organization = (Organization)HttpContext.StoredFhirResources[storeKey];
-            string body = null;
-            if (HttpContext.RequestContentType.Contains("xml"))
-            {
-                body = FhirSerializer.SerializeToXml(FhirContext.FhirRequestParameters);
-            }
-            else
-            {
-                body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
-            }
-            HttpSteps.RestRequest(Method.POST, "/" + organization.Id + "/$gpc.getschedule", body);
-        }
-
-        [When(@"I send a gpc.getschedule operation for the organization with locical id ""([^""]*)""")]
-        public void ISendAGpcGetScheduleOperationForTheOrganizationWithLogicalId(string logicalId)
-        {
-            string body = null;
-            if (HttpContext.RequestContentType.Contains("xml"))
-            {
-                body = FhirSerializer.SerializeToXml(FhirContext.FhirRequestParameters);
-            } else
-            {
-                body = FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters);
-            }
-            HttpSteps.RestRequest(Method.POST, "/Organization/" + logicalId + "/$gpc.getschedule", body);
-        }
-
-        [Then(@"the response bundle should include slot resources")]
-        public void ThenTheResponseBundlleShouldIncludeSlotResources()
-        {
-            bool slotResourceFoundInResponse = false;
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    slotResourceFoundInResponse = true;
-                    break;
-                }
-            }
-            slotResourceFoundInResponse.ShouldBeTrue("No Slots Resources were found in the response bundle.");
-        }
-
-        [Then(@"the slots resources within the response bundle should be free")]
-        public void ThenTheSlotsResourcesWithinTheResponseBundleShouldBeFree()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    ((Slot)entry.Resource).FreeBusyType.ShouldBe(Slot.SlotStatus.Free, "Slot freeBusy element sould be Free but is not");
-                }
-            }
-        }
-
-        [Then(@"the bundle resources should contain required meta data elements")]
-        public void ThenTheBundleResourcesShouldContainRequiredMetaDataElements()
-        {
-            Bundle bundle = (Bundle)FhirContext.FhirResponseResource;
-            bundle.Meta.ShouldNotBeNull();
-            foreach (string profile in bundle.Meta.Profile)
-            {
-                profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
-            }
-        }
-
-        [Then(@"the slot resources in the response bundle should contain meta data information")]
-        public void ThenTheSlotResourcesInTheResponseBundleShouldContainMetaDataInformation()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    Slot slot = (Slot)entry.Resource;
-                    slot.Meta.ShouldNotBeNull("All Slot resources should contain MetaDate elements");
-                    slot.Meta.VersionId.ShouldNotBeNull("All Slot resource MetaData versionId should be populated");
-                    slot.Meta.VersionId.ShouldNotBeEmpty("All Slot resource MetaData versionId should be populated");
-                    int slotMetaProfileCount = 0;
-                    foreach (string profile in slot.Meta.Profile)
-                    {
-                        profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-slot-1", "The Slot MetaData profile is invalid");
-                        slotMetaProfileCount++;
-                    }
-                    slotMetaProfileCount.ShouldBeGreaterThanOrEqualTo(1,"A Slot Resource is missing the profile within the MetaData element.");
-                }
-            }
-        }
-
-        [Then(@"the slot resources can contain a maximum of one identifier with a populated value")]
-        public void ThenTheSlotResourcesCanContainAMaximumOfOneIdentifierWithAPopulatedValue()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    Slot slot = (Slot)entry.Resource;
-                    int slotIdentifierCount = 0;
-                    foreach (Identifier identifier in slot.Identifier) {
-                        identifier.Value.ShouldNotBeNull("If an identifier is present in a Slot resource it must have a value.");
-                        identifier.Value.ShouldNotBeEmpty("If an identifier is present in a Slot resource it must have a value.");
-                        slotIdentifierCount++;
-                    }
-                    slotIdentifierCount.ShouldBeLessThanOrEqualTo(1, "There is more than one identifier within a Slot resource when there sould be a maximum of one");
-                }
-            }
-        }
-
-        [Then(@"the schedule reference within the slots resources should be resolvable in the response bundle")]
-        public void ThenTheScheduleReferenceWithinTheSlotsResourcesShouldBeResolvableInTheResponseBundle()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Slot))
-                {
-                    Slot slot = (Slot)entry.Resource;
-                    slot.Schedule.Reference.ShouldNotBeNull("There must be a Schedule reference within all slots.");
-                    slot.Schedule.Reference.ShouldNotBeEmpty("There must be a Schedule reference within all slots.");
-                    _bundleSteps.ResponseBundleContainsReferenceOfType(slot.Schedule.Reference, ResourceType.Schedule);
-                }
-            }
-        }
-
-        [Then(@"the schedule resources in the response bundle should contain meta data information")]
-        public void ThenTheScheduleResourcesInTheResponseBundleShouldContainMetaDataInformation()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
-                {
-                    Schedule schedule = (Schedule)entry.Resource;
-                    schedule.Meta.ShouldNotBeNull("All Schedule resources should contain MetaDate elements");
-                    schedule.Meta.VersionId.ShouldNotBeNull("All Schedule resource MetaData versionId should be populated");
-                    schedule.Meta.VersionId.ShouldNotBeEmpty("All Schedule resource MetaData versionId should be populated");
-                    int scheduleMetaProfileCount = 0;
-                    foreach (string profile in schedule.Meta.Profile)
-                    {
-                        profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-schedule-1", "The Schedule MetaData profile is invalid");
-                        scheduleMetaProfileCount++;
-                    }
-                    scheduleMetaProfileCount.ShouldBeGreaterThanOrEqualTo(1, "A Schedule Resource is missing the profile within the MetaData element.");
-                }
-            }
-        }
-
-        [Then(@"the schedule resources in the response bundle should contain an actor which references a location within the response bundle")]
-        public void ThenTheScheduleResourcesInTheResponseBundleShouldContainAnActorWhichReferencesALocationWithinTheResponseBundle()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
-                {
-                    Schedule schedule = (Schedule)entry.Resource;
-                    schedule.Actor.ShouldNotBeNull();
-                    schedule.Actor.Reference.ShouldNotBeNull();
-                    schedule.Actor.Reference.ShouldStartWith("Location/");
-                    _bundleSteps.ResponseBundleContainsReferenceOfType(schedule.Actor.Reference, ResourceType.Location);
-                }
-            }
-        }
-
-        [Then(@"the schedule resources can contain a single identifier but must have a value if present")]
-        public void ThenTheScheduleResourcesCanContainASingleIdentifierButMustHaveAValueIfPresent()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
-                {
-                    Schedule schedule = (Schedule)entry.Resource;
-                    int identifierCount = 0;
-                    foreach (var identifier in schedule.Identifier) {
-                        identifier.Value.ShouldNotBeNull("If a schedule identifier is included it should have a value");
-                        identifier.Value.ShouldNotBeEmpty();
-                        identifierCount++;
-                    }
-                    identifierCount.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one identifier in a schedule resource.");
-                }
-            }
-        }
-        
-        [Then(@"the schedule resources can contain a planningHorizon but it must contain a valid start date")]
-        public void ThenTheScheduleResourcesCanContainAPlanningHorizonButItMustContainAValidStartDate()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
-                {
-                    Schedule schedule = (Schedule)entry.Resource;
-                    if (schedule.PlanningHorizon != null)
-                    {
-                        schedule.PlanningHorizon.Start.ShouldNotBeNull();
-                    }
-                }
-            }
-        }
-
-        [Then(@"the schedule resources can contain a single type element")]
-        public void ThenTheScheduleResourcesCanContainASingleTypeElement()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
-                {
-                    Schedule schedule = (Schedule)entry.Resource;
-                    if (schedule.Type != null)
-                    {
-                        schedule.Type.Count.ShouldBeLessThanOrEqualTo(1);
-                    }
-                }
-            }
-        }
-
-        [Then(@"the schedule resources can contain extensions which references practitioner resources within the bundle")]
-        public void ThenTheScheduleResourcesCanContainExtensionsWhichReferencesPractitionerResourcesWithinTheBundle()
-        {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Schedule))
-                {
-                    Schedule schedule = (Schedule)entry.Resource;
-                    foreach (var extension in schedule.Extension) {
-                        extension.Url.ShouldBe("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-practitioner-1");
-                        extension.Value.ShouldNotBeNull("Practitioner reference extension must have a reference.");
-                        var practitionerReference = ((ResourceReference)extension.Value).Reference;
-                        practitionerReference.ShouldNotBeNull();
-                        practitionerReference.ShouldStartWith("Practitioner/");
-                        _bundleSteps.ResponseBundleContainsReferenceOfType(practitionerReference, ResourceType.Practitioner);
-                    }
-                }
-            }
         }
 
         [Given(@"I get the Schedule for Organization Code ""([^""]*)""")]
@@ -366,22 +33,156 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _organizationSteps.GetTheOrganizationForOrganizationCode(code);
             _organizationSteps.StoreTheOrganization();
 
-            HttpSteps.ConfigureRequest(GpConnectInteraction.GpcGetSchedule);
+            _httpSteps.ConfigureRequest(GpConnectInteraction.GpcGetSchedule);
 
-            AccessRecordSteps.AddATimePeriodParameterWithStartDateTodayAndEndDateInDays(13);
+            _accessRecordSteps.AddATimePeriodParameterWithStartDateTodayAndEndDateInDays(13);
 
-            HttpSteps.MakeRequest(GpConnectInteraction.GpcGetSchedule);
+            _httpSteps.MakeRequest(GpConnectInteraction.GpcGetSchedule);
         }
 
         [Given(@"I store the Schedule")]
         public void StoreTheSchedule()
         {
-            var schedule = FhirContext.Bundle;
+            var schedule = _fhirContext.Bundle;
 
             if (schedule != null)
             {
-                HttpContext.StoredBundle = schedule;
+                _httpContext.StoredBundle = schedule;
             }
+        }
+
+        [Then(@"the Bundle should contain Slots")]
+        public void TheBundleShouldContainSlots()
+        {
+            Slots.Count.ShouldBeGreaterThanOrEqualTo(1, "There should should be at least 1 Slot in the Bundle but found 0.");
+        }
+
+        [Then(@"the Slot FreeBusyType should be Free")]
+        public void TheSlotFreeBusyTypeShouldBeFree()
+        {
+            Slots.ForEach(slot =>
+            {
+                slot.FreeBusyType.ShouldBe(SlotStatus.Free, $"The Slot FreeBusyType should be {SlotStatus.Free.ToString()}, but was {slot.FreeBusyType?.ToString()}");
+            });
+        }
+
+        [Then(@"the Slot Metadata should be valid")]
+        public void TheSlotMetadataShouldBeValid()
+        {
+            Slots.ForEach(slot =>
+            {
+                CheckForValidMetaDataInResource(slot, "http://fhir.nhs.net/StructureDefinition/gpconnect-slot-1");
+            });
+        }
+
+        [Then(@"the Slot Identifiers should be valid")]
+        public void ThenTheSlotResourcesCanContainAMaximumOfOneIdentifierWithAPopulatedValue()
+        {
+            Slots.ForEach(slot =>
+            {
+                slot.Identifier.Count.ShouldBeLessThanOrEqualTo(1, $"There Slot Identifiers should contain no more than 1 Identifier but found {slot.Identifier.Count}.");
+
+                slot.Identifier.ForEach(identifier =>
+                {
+                    identifier.Value.ShouldNotBeNullOrEmpty($"The Slot Identifier Value should not be null or empty but was {identifier.Value}.");
+                });
+            });
+        }
+
+        [Then(@"the Slot Schedule should be referenced in the Bundle")]
+        public void TheSlotScheduleShouldBeReferencedInTheBundle()
+        {
+            Slots.ForEach(slot =>
+            {
+                slot.Schedule?.Reference.ShouldNotBeNullOrEmpty($"The Slot Schedule Reference should not be null or empty but was {slot.Schedule?.Reference}");
+
+                _bundleSteps.ResponseBundleContainsReferenceOfType(slot.Schedule?.Reference, ResourceType.Schedule);
+            });
+        }
+
+        [Then(@"the Schedule Metadata should be valid")]
+        public void TheScheduleMetadataShouldBeValid()
+        {
+            Schedules.ForEach(schedule =>
+            {
+                CheckForValidMetaDataInResource(schedule, "http://fhir.nhs.net/StructureDefinition/gpconnect-schedule-1");
+            });
+        }
+
+
+        [Then(@"the Schedule Location should be referenced in the Bundle")]
+        public void TheScheduleLocationShouldBeReferencedInTheBundle()
+        {
+            Schedules.ForEach(schedule =>
+            {
+                schedule.Actor.ShouldNotBeNull();
+                schedule.Actor.Reference.ShouldNotBeNull();
+                schedule.Actor.Reference.ShouldStartWith("Location/");
+                _bundleSteps.ResponseBundleContainsReferenceOfType(schedule.Actor.Reference, ResourceType.Location);
+            });
+        }
+
+        [Then(@"the Schedule Identifiers should be valid")]
+        public void TheScheduleIdentifiersShouldBeValid()
+        {
+            Schedules.ForEach(schedule =>
+            {
+                schedule.Identifier.Count.ShouldBeLessThanOrEqualTo(1, $"The Schedule shoud have a maximum of 1 Identifier but found {schedule.Identifier.Count}.");
+
+                schedule.Identifier.ForEach(identifier =>
+                {
+                    identifier.Value.ShouldNotBeNullOrEmpty($"The Schedule Identifier should not be null or empty but was {identifier.Value}.");
+                });
+            });
+        }
+
+        [Then("the Schedule PlanningHorizon should be valid")]
+        public void TheSchedulePlanningHorizonShouldBeValid()
+        {
+            Schedules.ForEach(schedule =>
+            {
+                if (schedule.PlanningHorizon != null)
+                {
+                    schedule.PlanningHorizon.Start.ShouldNotBeNullOrEmpty($"The Schedule PlanningHorizon Start should not be null or empty but was {schedule.PlanningHorizon?.Start}.");
+                }
+            });
+        }
+
+        [Then("the Schedule Type should be valid")]
+        public void TheScheduleTypeShouldBeValid()
+        {
+            Schedules.ForEach(schedule =>
+            {
+                schedule.Type?.Count.ShouldBeLessThanOrEqualTo(1, $"The Schedule should have a maximum of 1 Type but found {schedule.Type?.Count}.");
+            });
+        }
+
+        [Then("the Schedule Practitioner Extensions should be valid and referenced in the Bundle")]
+        public void TheSchedulePractitionerExtensionsShouldBeValidAndReferencedInTheBundle()
+        {
+            Schedules.ForEach(schedule =>
+            {
+                schedule.Extension.ForEach(extension =>
+                {
+                    const string url = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-practitioner-1";
+                    extension.Url.ShouldBe(url, $"The Practitioner Extension Url should be {url} but was {extension.Url}.");
+                    extension.Value.ShouldNotBeNull("The Practitioner Extension Value should not be null.");
+
+                    var reference = ((ResourceReference)extension.Value).Reference;
+                    reference.ShouldNotBeNullOrEmpty($"The Practitioner Reference should not be null or empty but was {reference}.");
+
+                    const string shouldStartWith = "Practitioner/";
+                    reference.ShouldStartWith(shouldStartWith, $"The Practitioner Reference should start with {shouldStartWith} but was {reference}.");
+
+                    _bundleSteps.ResponseBundleContainsReferenceOfType(reference, ResourceType.Practitioner);
+                });
+            });
+        }
+
+        [Then(@"the Schedule Bundle Metadata should be valid")]
+        public void TheScheduleBundleMetadataShouldBeValid()
+        {
+            CheckForValidMetaDataInResource(_fhirContext.Bundle, "http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
         }
     }
 }

@@ -79,6 +79,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public Bundle Bundle => (Bundle) FhirResponseResource;
         public List<Slot> Slots => GetResources<Slot>();
         public List<Appointment> Appointments => GetResources<Appointment>();
+        public List<Schedule> Schedules => GetResources<Schedule>();
 
         public void SaveToDisk(string filename)
         {
@@ -124,7 +125,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             {typeof(Practitioner), ResourceType.Practitioner},
             {typeof(Location), ResourceType.Location},
             {typeof(Slot), ResourceType.Slot},
-            {typeof(Appointment), ResourceType.Appointment}
+            {typeof(Appointment), ResourceType.Appointment},
+            {typeof(Schedule), ResourceType.Schedule}
         };
 
     }

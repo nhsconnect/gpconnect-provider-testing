@@ -1,32 +1,30 @@
-﻿using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Logger;
-using Hl7.Fhir.Model;
-using NUnit.Framework;
-using Shouldly;
-using System;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using TechTalk.SpecFlow;
-using static Hl7.Fhir.Model.Bundle;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-    [Binding]
-    public sealed class HtmlSteps : TechTalk.SpecFlow.Steps
-    {
-        private readonly FhirContext FhirContext;
-        private readonly HttpContext HttpContext;
+    using System;
+    using System.Text.RegularExpressions;
+    using System.Xml.Linq;
+    using Context;
+    using Hl7.Fhir.Model;
+    using Logger;
+    using NUnit.Framework;
+    using Shouldly;
+    using TechTalk.SpecFlow;
+    using static Hl7.Fhir.Model.Bundle;
 
-        public HtmlSteps(FhirContext fhirContext, HttpContext httpContext)
+    [Binding]
+    public sealed class HtmlSteps : Steps
+    {
+        private readonly FhirContext _fhirContext;
+
+        public HtmlSteps(FhirContext fhirContext)
         {
-            FhirContext = fhirContext;
-            HttpContext = httpContext;
+            _fhirContext = fhirContext;
         }
 
         [Then(@"the html should be valid xhtml")]
         public void ThenTheHtmlShouldBeValidXHTML()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
                 {
@@ -54,7 +52,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the html should not contain ""([^""]*)"" tags")]
         public void ThenTheHtmlShouldNotContaintags(string tagName)
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
                 {
@@ -72,7 +70,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenTheHtmlShouldNotContainAnyAttributes()
         {
             // Find all matches to regex for attributes and use log to print out all instances then fail if any found.
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
                 {
@@ -107,7 +105,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the html should contain headers in coma seperated list ""([^""]*)""")]
         public void ThenTheHTMLShouldNotContainHeadersInComaSeperatedList(string listOfHeaders)
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
                 {
@@ -128,7 +126,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the html should contain table headers in coma seperated list order ""([^""]*)"" for the ""([^""]*)""")]
         public void ThenTheHTMLShouldNotContainTableHeadersInComaSeperatedListOrder(string listOfTableHeadersInOrder, int pageSectionIndex)
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
                 {
@@ -173,7 +171,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response html should contain the applied date range text ""([^""]*)"" to ""([^""]*)""")]
         public void ThenTheResponseHTMLShouldContainTheAppliedDateRangeTest(string fromDate, string toDate)
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
                 {
@@ -202,7 +200,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private int GetSectionTableRows(string sectionName)
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
                 {
@@ -225,7 +223,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response html should contain the all data items text")]
         public void ThenTheResponseHTMLShouldContainTheAllDataItemsText()
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
                 {
@@ -242,7 +240,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the html should not contain ""([^""]*)""")]
         public void ThenTheHTMLShouldNotContain(string value)
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
                 {
@@ -259,7 +257,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response html should contain the no data available html banner in section ""([^""]*)""")]
         public void ThenTheResponseHTMLShouldContainTheNoDataAvailableHTMLBannerInSection(string sectionHeading)
         {
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
                 {
