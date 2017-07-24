@@ -605,9 +605,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 243
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 244
-  testRunner.And("I set the GET request Version Id to \"NotARealVersionId\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 245
   testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 245
+  testRunner.And("I set the GET request Version Id to \"NotARealVersionId\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 246
  testRunner.Given("I configure the default \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 247

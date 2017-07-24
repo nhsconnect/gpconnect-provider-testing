@@ -138,11 +138,16 @@ Scenario Outline: Appointment retrieve send request and find request using equal
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain atleast "1" appointment
 		And all appointments must have a start element which is populated with a date that equals "slotStartDate"
+		And the returned appointment start date should match created appointment start Date
+			And the returned appointment end date should match created appointment end date
+		And the returned appointment patient reference should match created appointment patient reference
+		And the returned appointment slot reference should match created appointment slot reference
+		And the returned appointment participant status should match created appointment participant status
 	Examples:
 		| prefix |
 		| eq     |
 		|        |
-	
+
 Scenario Outline: Appointment retrieve send request with date variations and greater than and less than prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -510,39 +515,6 @@ Scenario: Appointment retrieve JWT requesting scope claim should reflect the ope
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario Outline: Appointment retrieve book appointment and search for the appointment and compare the results
-	Given I perform a patient search for patient "patient1" and store the first returned resources against key "storedPatient1"
-	Given I perform the getSchedule operation for organization "ORG1" and store the returned bundle resources against key "getScheduleResponseBundle"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:create:appointment" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.write"
-		And I create an appointment for patient "storedPatient1" called "<appointment>" from schedule "getScheduleResponseBundle"
-	When I book the appointment called "<appointment>"
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
-	When I search for patient "storedPatient1" and search for the most recently booked appointment "<appointment>" using the stored startDate from the last booked appointment as a search parameter
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
-		And the returned appointment start date should match "<appointment>" start Date
-		And the returned appointment end date should match "<appointment>" end date
-		And the returned appointment patient reference should match "<appointment>" patient reference
-		And the returned appointment slot reference should match "<appointment>" slot reference
-		And the returned appointment participant status should match "<appointment>" participant status
-	Examples: 
-		| appointment  |
-		| Appointment1 |
-		| Appointment2 |
-		| Appointment3 |
-		| Appointment4 |
-		| Appointment5 |
-		| Appointment6 |
-		| Appointment7 |
 
 Scenario Outline: Appointment retrieve JWT patient type request invalid
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

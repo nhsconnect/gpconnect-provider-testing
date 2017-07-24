@@ -33,8 +33,8 @@ Scenario Outline: Register patient with invalid interactionIds
 	Examples:
 		| InteractionId                                                          |
 		| urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatsssient |
-		| urn:nhs:names:services:gpconnect:fhir:rest:create:appointment          |
+		| urn:nhs:nxames:services:gpconnect:fhir:operation:gpc.registerpatsssient |
+		| urn:nhs:names:sservices:gpconnect:fhir:rest:create:appointment          |
 		|                                                                        |
 		| null                                                                   |
 
@@ -209,12 +209,10 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 	Examples:
 		| ContentType           | AcceptHeader          | Format                | ResponseFormat |
 		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML            |
-		| application/json+fhir | application/json+fhir | application/json+fhir | JSON           |
 		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON           |
 		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML            |
 		| application/xml+fhir  | application/json+fhir | application/json+fhir | JSON           |
 		| application/json+fhir | application/xml+fhir  | application/xml+fhir  | XML            |
-		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML            |
 		| application/json+fhir | application/json+fhir | application/json+fhir | JSON           |
 		| application/xml+fhir  | application/json+fhir | application/xml+fhir  | XML            |
 		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON           |

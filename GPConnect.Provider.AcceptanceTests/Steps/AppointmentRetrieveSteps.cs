@@ -455,10 +455,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
         
-        [Then(@"the returned appointment end date should match ""([^""]*)"" end date")]
-        public void ThenTheReturnedAppointmentEndtDateShouldMatchEndDate(string appointmentName)
+        [Then(@"the returned appointment end date should match created appointment end date")]
+        public void ThenTheReturnedAppointmentEndtDateShouldMatchEndDate()
         {
-            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment savedAppointment = (Appointment)HttpContext.CreatedAppointment;
 
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
@@ -470,10 +470,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
         
-        [Then(@"the returned appointment patient reference should match ""([^""]*)"" patient reference")]
-        public void ThenTheReturnedAppointmentPatientReferenceShouldMatchPatientReference(string appointmentName)
+        [Then(@"the returned appointment patient reference should match created appointment patient reference")]
+        public void ThenTheReturnedAppointmentPatientReferenceShouldMatchPatientReference()
         {
-            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment savedAppointment = (Appointment)HttpContext.CreatedAppointment;
             string savedAppointmentPatientReference = "";
             string returnedResponseAppointmentPatientReference = "";
 
@@ -505,10 +505,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             savedAppointmentPatientReference.ShouldBe(returnedResponseAppointmentPatientReference);
         }
         
-        [Then(@"the returned appointment slot reference should match ""([^""]*)"" slot reference")]
-        public void ThenTheReturnedAppointmentSlotReferenceShouldMatchSlotReference(string appointmentName)
+        [Then(@"the returned appointment slot reference should match created appointment slot reference")]
+        public void ThenTheReturnedAppointmentSlotReferenceShouldMatchSlotReference()
         {
-            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment savedAppointment = (Appointment)HttpContext.CreatedAppointment;
             var savedAppointmentSlotURLs = new HashSet<string>();
             var returnedResponseAppointmentsSlotURL = new HashSet<string>();
 
@@ -533,10 +533,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             savedAppointmentSlotURLs.ShouldBe(returnedResponseAppointmentsSlotURL);
         }
 
-        [Then(@"the returned appointment participant status should match ""([^""]*)"" participant status")]
-        public void ThenTheReturnedAppointmentParticipantStatusShouldMatchParticipantStatus(string appointmentName)
+        [Then(@"the returned appointment participant status should match created appointment participant status")]
+        public void ThenTheReturnedAppointmentParticipantStatusShouldMatchParticipantStatus()
         {
-            Appointment savedAppointment = (Appointment)HttpContext.StoredFhirResources[appointmentName];
+            Appointment savedAppointment = (Appointment)HttpContext.CreatedAppointment;
             ParticipationStatus savedAppointmentParticipantStatus = new ParticipationStatus();
             ParticipationStatus returnedResponseAppointmentParticipantStatus = new ParticipationStatus();
 

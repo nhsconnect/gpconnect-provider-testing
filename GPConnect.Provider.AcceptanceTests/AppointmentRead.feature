@@ -241,8 +241,8 @@ Scenario: VRead an appointment for a valid version of the patient appointment re
 
 Scenario: VRead an appointment for a invalid version of the patient appoint resource
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I set the GET request Version Id to "NotARealVersionId"
 		And I store the created Appointment
+		And I set the GET request Version Id to "NotARealVersionId"
 	Given I configure the default "AppointmentRead" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request 
