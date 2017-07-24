@@ -4,14 +4,15 @@
     using Context;
     using Enum;
     using Helpers;
+    using Hl7.Fhir.Model;
+    using Hl7.Fhir.Rest;
     using Hl7.Fhir.Serialization;
 
-    //TODO: Consider XML requests and whether we need each interaction to have its own "configure" method.
-    //There will be 2 types of serialization (JSON & XML) and 2 body types (Parameters & Resource)
-    //Request body could be computed field as all info will be in HttpConext.
     public class RequestFactory
     {
         private readonly GpConnectInteraction _gpConnectInteraction;
+        private delegate string Serializer(Base data, SummaryType summaryType = SummaryType.False, string root = null);
+        private static Serializer _serializer;
 
         public RequestFactory(GpConnectInteraction gpConnectInteraction)
         {
@@ -20,6 +21,8 @@
 
         public void ConfigureBody(HttpContext httpContext)
         {
+            ConfigureSerializer(httpContext);
+
             switch (_gpConnectInteraction)
             {
                 case GpConnectInteraction.GpcGetCareRecord:
@@ -43,35 +46,41 @@
             }
         }
 
- 
+        private static void ConfigureSerializer(HttpContext httpContext)
+        {
+            _serializer = httpContext.RequestContentType.Contains("xml")
+                ? new Serializer(FhirSerializer.SerializeToXml)
+                : FhirSerializer.SerializeToJson;
+        }
+
         private static void ConfigureAppointmentCreateBody(HttpContext httpContext)
         {
-            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.CreatedAppointment);
+            httpContext.RequestBody = _serializer(httpContext.CreatedAppointment);
         }
 
         private static void ConfigureGpcGetCareRecordBody(HttpContext httpContext)
         {
-            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
+            httpContext.RequestBody = _serializer(httpContext.BodyParameters);
         }
 
         private static void ConfigureRegisterPatientBody(HttpContext httpContext)
         {
-            httpContext.RequestBody = httpContext.RequestContentType.Contains("xml") ? FhirSerializer.SerializeToXml(httpContext.BodyParameters) : FhirSerializer.SerializeToJson(httpContext.BodyParameters);
+            httpContext.RequestBody = _serializer(httpContext.BodyParameters);
         }
 
         private static void ConfigureGpcGetSchedule(HttpContext httpContext)
         {
-            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.BodyParameters);
+            httpContext.RequestBody = _serializer(httpContext.BodyParameters);
         }
 
         private static void ConfigureAppointmentAmendBody(HttpContext httpContext)
         {
-            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.CreatedAppointment);
+            httpContext.RequestBody = _serializer(httpContext.CreatedAppointment);
         }
 
         private static void ConfigureAppointmentCancelBody(HttpContext httpContext)
         {
-            httpContext.RequestBody = FhirSerializer.SerializeToJson(httpContext.CreatedAppointment);
+            httpContext.RequestBody = _serializer(httpContext.CreatedAppointment);
         }
 
         public void ConfigureInvalidResourceType(HttpContext httpContext)
