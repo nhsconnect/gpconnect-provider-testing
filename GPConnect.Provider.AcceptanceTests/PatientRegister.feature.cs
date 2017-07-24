@@ -836,9 +836,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 333
  testRunner.When("I make the \"RegisterPatient\" request with invalid Resource type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 334
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 335
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_RESOU" +
+                    "RCE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -868,7 +869,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 345
  testRunner.When("I make the \"RegisterPatient\" request with invalid parameter Resource type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 346
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 347
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -951,27 +952,31 @@ this.ScenarioSetup(scenarioInfo);
 #line 374
 this.ScenarioSetup(scenarioInfo);
 #line 375
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 376
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 377
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 378
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 379
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 380
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 379
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 380
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 381
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 382
-  testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 383
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 384
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I add the Stored Appointment as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 385
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 386
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 387
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -982,30 +987,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithDuplicateParametersInvalidFirst()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with duplicate parameters invalid first", ((string[])(null)));
-#line 387
-this.ScenarioSetup(scenarioInfo);
-#line 388
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 389
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 390
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 391
+  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 392
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 393
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 394
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 395
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 392
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 393
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 394
-  testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 395
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 396
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 397
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 398
+  testRunner.And("I add the Stored Appointment as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 399
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 400
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 401
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 402
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1020,30 +1029,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithInvalidParametersName(string parameterName, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with invalid parameters name", exampleTags);
-#line 400
-this.ScenarioSetup(scenarioInfo);
-#line 401
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 402
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 403
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 404
+this.ScenarioSetup(scenarioInfo);
+#line 405
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 406
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 407
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 408
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 405
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 406
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 407
-  testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 408
-  testRunner.And(string.Format("I add the Stored Patient as a parameter with name \"{0}\"", parameterName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 409
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 410
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 411
+  testRunner.And("I am requesting the \"SUM\" care record section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 412
+  testRunner.And(string.Format("I add the Stored Patient as a parameter with name \"{0}\"", parameterName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 413
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 414
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 415
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1054,30 +1063,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWhichAlreadExistsOnTheSystemAsANormalPatient()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient which alread exists on the system as a normal patient", ((string[])(null)));
-#line 419
-this.ScenarioSetup(scenarioInfo);
-#line 420
- testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 421
-  testRunner.And("I store the patient in the register patient resource format", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 422
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 423
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 424
+ testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 425
+  testRunner.And("I store the patient in the register patient resource format", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 426
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 427
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 428
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 425
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 426
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 427
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 428
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 429
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 430
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 431
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 432
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 433
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 434
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1088,49 +1097,49 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWhichAlreadExistsOnTheSystemAsATemporaryPatient()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient which alread exists on the system as a temporary patient", ((string[])(null)));
-#line 432
-this.ScenarioSetup(scenarioInfo);
-#line 433
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 434
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 435
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 436
-  testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
-                    " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 437
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 438
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 439
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 440
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 441
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 442
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 443
-  testRunner.And("the response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 444
  testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 445
+#line 439
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 446
+#line 440
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 447
+#line 441
   testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 448
+#line 442
   testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 449
+#line 443
   testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 450
+#line 444
  testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 445
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 446
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 447
+  testRunner.And("the response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 448
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 449
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 450
+  testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
+                    " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 451
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 452
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 453
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 454
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 455
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 456
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1141,28 +1150,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWhichIsNotTheSpine()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient which is not the Spine", ((string[])(null)));
-#line 454
-this.ScenarioSetup(scenarioInfo);
-#line 455
- testRunner.Given("I create a Patient which does not exist on PDS and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 456
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 457
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 458
+this.ScenarioSetup(scenarioInfo);
+#line 459
+ testRunner.Given("I create a Patient which does not exist on PDS and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 460
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 461
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 462
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 459
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 460
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 461
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 462
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 463
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 464
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 465
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 466
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 467
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 468
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1173,30 +1182,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithDemographicsWhichDoNotMatchSpinePDSTrace()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with demographics which do not match spine PDS trace", ((string[])(null)));
-#line 466
-this.ScenarioSetup(scenarioInfo);
-#line 467
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 468
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 469
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 470
+this.ScenarioSetup(scenarioInfo);
+#line 471
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 472
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 473
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 474
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 471
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 472
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 473
-  testRunner.And("I set the Stored Patient Demographics to not match the NHS number", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 474
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 475
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 476
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 477
+  testRunner.And("I set the Stored Patient Demographics to not match the NHS number", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 478
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 479
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 480
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 481
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1207,30 +1216,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientNoFamilyNames()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient no family names", ((string[])(null)));
-#line 479
-this.ScenarioSetup(scenarioInfo);
-#line 480
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 481
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 482
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 483
+this.ScenarioSetup(scenarioInfo);
+#line 484
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 485
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 486
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 487
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 484
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 485
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 486
-  testRunner.And("I remove the Family Name from the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 487
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 488
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 489
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 490
+  testRunner.And("I remove the Family Name from the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 491
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 492
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 493
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 494
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1241,30 +1250,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithMultipleFamilyNames()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with multiple family names", ((string[])(null)));
-#line 492
-this.ScenarioSetup(scenarioInfo);
-#line 493
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 494
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 495
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 496
+this.ScenarioSetup(scenarioInfo);
+#line 497
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 498
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 499
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 500
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 497
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 498
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 499
-  testRunner.And("I add the Family Name \"AddedFamilyName\" to the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 500
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 501
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 502
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 503
+  testRunner.And("I add the Family Name \"AddedFamilyName\" to the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 504
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 505
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 506
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 507
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1275,30 +1284,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientNoGivenNames()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient no given names", ((string[])(null)));
-#line 505
-this.ScenarioSetup(scenarioInfo);
-#line 506
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 507
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 508
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 509
+this.ScenarioSetup(scenarioInfo);
+#line 510
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 511
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 512
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 513
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 510
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 511
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 512
-  testRunner.And("I remove the Given Name from the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 513
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 514
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 515
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 516
+  testRunner.And("I remove the Given Name from the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 517
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 518
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 519
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 520
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1309,30 +1318,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithMultipleGivenNames()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with multiple given names", ((string[])(null)));
-#line 518
-this.ScenarioSetup(scenarioInfo);
-#line 519
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 520
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 521
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 522
+this.ScenarioSetup(scenarioInfo);
+#line 523
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 524
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 525
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 526
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 523
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 524
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 525
-  testRunner.And("I add the Given Name \"AddedGivenName\" to the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 526
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 527
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 528
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 529
+  testRunner.And("I add the Given Name \"AddedGivenName\" to the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 530
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 531
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 532
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 533
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1343,31 +1352,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithMultipleNameElements()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with multiple name elements", ((string[])(null)));
-#line 531
-this.ScenarioSetup(scenarioInfo);
-#line 532
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 533
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 534
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 535
+this.ScenarioSetup(scenarioInfo);
+#line 536
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 537
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 538
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 539
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 536
+#line 540
   testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 537
+#line 541
   testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 538
+#line 542
   testRunner.And("I add a Name with Given Name \"NewGivenName\" and Family Name \"NewFamilyName\" to th" +
                     "e Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 539
+#line 543
   testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 540
+#line 544
  testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 541
+#line 545
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 542
+#line 546
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1378,30 +1387,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientContainingIdentifierWithoutMandatorySystemElements()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient containing identifier without mandatory system elements", ((string[])(null)));
-#line 544
-this.ScenarioSetup(scenarioInfo);
-#line 545
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 546
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 547
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 548
+this.ScenarioSetup(scenarioInfo);
+#line 549
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 550
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 551
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 552
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 549
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 550
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 551
-  testRunner.And("I add an Identifier with missing System to the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 552
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 553
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 554
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 555
+  testRunner.And("I add an Identifier with missing System to the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 556
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 557
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 558
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 559
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1416,28 +1425,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithInvalidRegistrationPeriodExtension(string startDate, string endDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with invalid registration period extension", exampleTags);
-#line 557
-this.ScenarioSetup(scenarioInfo);
-#line 558
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 559
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 560
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 561
+this.ScenarioSetup(scenarioInfo);
+#line 562
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 563
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 564
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 565
   testRunner.And(string.Format("I set the Stored Patient Registration Period with Start Date \"{0}\" and End Date \"" +
                         "{1}\"", startDate, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 562
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 563
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 564
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 565
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 566
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 567
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 568
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 569
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 570
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 571
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1449,38 +1458,38 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithARegistrationPeriodOnlyContainingAnEndDate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with a registration period only containing an end date", ((string[])(null)));
-#line 575
-this.ScenarioSetup(scenarioInfo);
-#line 576
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 577
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 578
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 579
+this.ScenarioSetup(scenarioInfo);
+#line 580
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 581
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 582
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 583
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"\" and End Date \"201" +
                     "8-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 580
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 581
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 582
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 583
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 584
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 585
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 586
-  testRunner.And("the response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 587
-  testRunner.And("the Patient Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 588
-  testRunner.And("the Patient Registration Period should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 589
-  testRunner.And("the Patient Registration Status should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 590
+  testRunner.And("the response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 591
+  testRunner.And("the Patient Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 592
+  testRunner.And("the Patient Registration Period should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 593
+  testRunner.And("the Patient Registration Status should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 594
   testRunner.And("the Patient Registration Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1491,38 +1500,38 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithARegistrationPeriodOnlyContainingAStartDate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with a registration period only containing a start date", ((string[])(null)));
-#line 592
-this.ScenarioSetup(scenarioInfo);
-#line 593
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 594
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 595
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 596
+this.ScenarioSetup(scenarioInfo);
+#line 597
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 598
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 599
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 600
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-07-14\" and End" +
                     " Date \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 597
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 598
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 599
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 600
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 601
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 602
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 603
-  testRunner.And("the response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 604
-  testRunner.And("the Patient Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 605
-  testRunner.And("the Patient Registration Period should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 606
-  testRunner.And("the Patient Registration Status should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 607
+  testRunner.And("the response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 608
+  testRunner.And("the Patient Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 609
+  testRunner.And("the Patient Registration Period should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 610
+  testRunner.And("the Patient Registration Status should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 611
   testRunner.And("the Patient Registration Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1539,28 +1548,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithInvalidRegistrationStatus(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with invalid registration status", exampleTags);
-#line 609
-this.ScenarioSetup(scenarioInfo);
-#line 610
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 611
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 612
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 613
+this.ScenarioSetup(scenarioInfo);
+#line 614
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 615
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 616
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 617
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 614
-  testRunner.And(string.Format("I set the Stored Patient Registration Status with Value \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 615
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 616
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 617
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 618
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And(string.Format("I set the Stored Patient Registration Status with Value \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 619
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 620
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 621
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 622
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 623
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1576,28 +1585,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithInvalidRegistrationType(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with invalid registration type", exampleTags);
-#line 629
-this.ScenarioSetup(scenarioInfo);
-#line 630
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 631
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 632
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 633
+this.ScenarioSetup(scenarioInfo);
+#line 634
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 635
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 636
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 637
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 634
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 635
-  testRunner.And(string.Format("I set the Stored Patient Registration Type with Value \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 636
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 637
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 638
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 639
+  testRunner.And(string.Format("I set the Stored Patient Registration Type with Value \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 640
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 641
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 642
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 643
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1621,30 +1630,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientWithAdditionalNotAllowedElements(string elementToAdd, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with additional not allowed elements", exampleTags);
-#line 648
-this.ScenarioSetup(scenarioInfo);
-#line 649
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 650
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 651
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 652
+this.ScenarioSetup(scenarioInfo);
+#line 653
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 654
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 655
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 656
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 653
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 654
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 655
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 656
-  testRunner.And(string.Format("I add a {0} element to the Stored Patient", elementToAdd), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 657
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 658
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 659
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 660
+  testRunner.And(string.Format("I add a {0} element to the Stored Patient", elementToAdd), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 661
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 662
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 663
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1658,30 +1667,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RegisterPatientSettingJWTRequestTypeToInvalidType(string jWTType, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient setting JWT request type to invalid type", exampleTags);
-#line 676
-this.ScenarioSetup(scenarioInfo);
-#line 677
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 678
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 679
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 680
-  testRunner.And(string.Format("I set the JWT requested scope to \"{0}\"", jWTType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 681
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 682
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 683
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 684
+  testRunner.And(string.Format("I set the JWT requested scope to \"{0}\"", jWTType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 685
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 682
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 683
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 684
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 685
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 686
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 687
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 688
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 689
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 690
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 691
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1694,28 +1703,28 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient setting JWT patient reference so it does not match payload patie" +
                     "nt", ((string[])(null)));
-#line 694
-this.ScenarioSetup(scenarioInfo);
-#line 695
- testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 696
- testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 697
-  testRunner.And("I set the JWT Requested Record to the NHS Number \"9999999999\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 698
+this.ScenarioSetup(scenarioInfo);
+#line 699
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 700
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 701
+  testRunner.And("I set the JWT Requested Record to the NHS Number \"9999999999\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 702
   testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
                     " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 699
-  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 700
-  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 701
-  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 702
- testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 703
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 704
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 705
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 706
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 707
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 708
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

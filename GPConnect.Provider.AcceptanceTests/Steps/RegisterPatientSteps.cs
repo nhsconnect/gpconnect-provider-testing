@@ -127,6 +127,12 @@
             _httpContext.BodyParameters.Add("registerPatient", _httpContext.StoredPatient);
         }
 
+        [Given(@"I add the Stored Appointment as a parameter")]
+        public void AddTheStoredAppointmentAsAParameter()
+        {
+            _httpContext.BodyParameters.Add("appointment", _httpContext.CreatedAppointment);
+        }
+
         [Given(@"I add the Stored Patient as a parameter with name ""([^""]*)""")]
         public void AddTheStoredPatientAsAParameterWithName(string parameterName)
         {
