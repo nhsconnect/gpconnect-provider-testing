@@ -221,7 +221,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the response should be an Appointment resource")]
         public void theResponseShouldBeAnAppointmentResource()
         {
-            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Appointment);  
+            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Appointment, "The returned resource type was not Appointment");  
         }
 
         [Then(@"the response should be an Appointment resource which is saved as ""([^""]*)""")]
@@ -304,9 +304,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     coding.Display.ShouldNotBeNullOrEmpty("The appointment reason coding display must have a value");
                 }
                 // Check there is no more than one of each coding
-                sctCount.ShouldBeLessThanOrEqualTo(1);
-                readv2Count.ShouldBeLessThanOrEqualTo(1);
-                ctv3Count.ShouldBeLessThanOrEqualTo(1);
+                sctCount.ShouldBeLessThanOrEqualTo(1, "There was more then one sct coding system");
+                readv2Count.ShouldBeLessThanOrEqualTo(1, "There was more then one readv2 coding system");
+                ctv3Count.ShouldBeLessThanOrEqualTo(1, "There was more then one ctv3 coding system");
             }
         }
 
@@ -345,11 +345,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         int codingCount = 0;
                         foreach (var coding in typeCodableConcept.Coding)
                         {
-                            coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/encounter-participant-type");
+                            coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/encounter-participant-type", "The coding system is incorrect");
                             string[] codes = new string[12] { "translator", "emergency", "ADM", "ATND", "CALLBCK", "CON", "DIS", "ESC", "REF", "SPRF", "PPRF", "PART" };
                             string[] codeDisplays = new string[12] { "Translator", "Emergency", "admitter", "attender", "callback contact", "consultant", "discharger", "escort", "referrer", "secondary performer", "primary performer", "Participation" };
-                            coding.Code.ShouldBeOneOf(codes);
-                            coding.Display.ShouldBeOneOf(codeDisplays);
+                            coding.Code.ShouldBeOneOf(codes, "The code is incorrect");
+                            coding.Display.ShouldBeOneOf(codeDisplays, "The display is incorrect");
                             for (int i = 0; i < codes.Length; i++) {
                                 if (string.Equals(coding.Code, codes[i])) {
                                     coding.Display.ShouldBe(codeDisplays[i], "The participant type code does not match the display element");

@@ -513,7 +513,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the GET request Version Id to ""([^""]*)""")]
         public void SetTheGetRequestVersionIdTo(string versionId)
         {
-            HttpContext.GetRequestVersionId = versionId;
+            HttpContext.CreatedAppointment.VersionId = versionId;
         }
 
         [Given(@"I set the request Http Method to ""([^""]*)""")]

@@ -33,8 +33,8 @@ Scenario Outline: Register patient with invalid interactionIds
 	Examples:
 		| InteractionId                                                          |
 		| urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.registerpatsssient |
-		| urn:nhs:names:services:gpconnect:fhir:rest:create:appointment          |
+		| urn:nhs:nxames:services:gpconnect:fhir:operation:gpc.registerpatsssient |
+		| urn:nhs:names:sservices:gpconnect:fhir:rest:create:appointment          |
 		|                                                                        |
 		| null                                                                   |
 
@@ -209,12 +209,10 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 	Examples:
 		| ContentType           | AcceptHeader          | Format                | ResponseFormat |
 		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML            |
-		| application/json+fhir | application/json+fhir | application/json+fhir | JSON           |
 		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON           |
 		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML            |
 		| application/xml+fhir  | application/json+fhir | application/json+fhir | JSON           |
 		| application/json+fhir | application/xml+fhir  | application/xml+fhir  | XML            |
-		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML            |
 		| application/json+fhir | application/json+fhir | application/json+fhir | JSON           |
 		| application/xml+fhir  | application/json+fhir | application/xml+fhir  | XML            |
 		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON           |
@@ -333,8 +331,8 @@ Scenario: Register patient with invalid bundle resource type
 		And I set the Stored Patient Registration Type with Value "T"
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request with invalid Resource type
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Register patient with invalid patient resource type
 	Given I get the next Patient to register and store it
@@ -345,7 +343,7 @@ Scenario: Register patient with invalid patient resource type
 		And I set the Stored Patient Registration Type with Value "T"
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request with invalid parameter Resource type
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Register patient with invalid patient resource with additional element
@@ -374,6 +372,8 @@ Scenario: Register patient with duplicate patient resource parameters
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Register patient with additional parameters but the valid patient parameter first
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -381,19 +381,21 @@ Scenario: Register patient with additional parameters but the valid patient para
 		And I set the Stored Patient Registration Status with Value "A"
 		And I set the Stored Patient Registration Type with Value "T"
 		And I add the Stored Patient as a parameter
-		And I am requesting the "SUM" care record section
+		And I add the Stored Appointment as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Register patient with duplicate parameters invalid first
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the created Appointment
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
 		And I set the Stored Patient Registration Status with Value "A"
 		And I set the Stored Patient Registration Type with Value "T"
-		And I am requesting the "SUM" care record section
+		And I add the Stored Appointment as a parameter
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
