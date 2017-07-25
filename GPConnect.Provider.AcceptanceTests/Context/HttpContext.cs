@@ -712,6 +712,7 @@
             ResponseBody = null;
             ResponseHeaders.Clear();
             BodyParameters = new Parameters();
+            DecompressionMethod = DecompressionMethods.None;
         }
 
         public void SetDefaultHeaders()
@@ -758,5 +759,7 @@
         public Appointment CreatedAppointment { get; set; }
 
         public Location StoredLocation { get; set; }
+
+        public DecompressionMethods DecompressionMethod { get; set; }
     }
 }

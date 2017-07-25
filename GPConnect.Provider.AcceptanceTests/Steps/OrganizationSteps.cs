@@ -1,5 +1,6 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Context;
@@ -351,6 +352,29 @@
         private List<string> getIdentifiersInList(string code)
         {
             return code.Split('|').Select(element => GlobalContext.OdsCodeMap[element]).ToList();
+        }
+
+        [Then(@"the response bundle Organization entries should contain a maximum of 1 http://fhir.nhs.net/Id/ods-organization-code system identifier")]
+        public void ThenResponseBundleOrganizationEntriesShouldContainAMaximumOf1OrgCodeSystemIdentifier()
+        {
+            foreach (Bundle.EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    Boolean systemAlreadyFound = false;
+
+                    Organization organization = (Organization)entry.Resource;
+
+                    foreach (var identifier in organization.Identifier)
+                    {
+                        if ("http://fhir.nhs.net/Id/ods-organization-code".Equals(identifier.System))
+                        {
+                            systemAlreadyFound.ShouldBeFalse("Found multiple http://fhir.nhs.net/Id/ods-organization-code systems");
+                            systemAlreadyFound = true;
+                        }
+                    }
+                }
+            }
         }
     }
 }

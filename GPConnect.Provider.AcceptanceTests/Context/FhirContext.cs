@@ -81,6 +81,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public List<Appointment> Appointments => GetResources<Appointment>();
         public List<Schedule> Schedules => GetResources<Schedule>();
 
+        public List<Conformance> Conformances => GetResources<Conformance>();
+
         public void SaveToDisk(string filename)
         {
             var doc = new XDocument(
@@ -117,7 +119,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         private static Dictionary<Type, ResourceType> ResourceTypeMap => new Dictionary<Type, ResourceType>
         {
-
             {typeof(Patient), ResourceType.Patient},
             {typeof(Organization), ResourceType.Organization},
             {typeof(Composition), ResourceType.Composition},
@@ -126,7 +127,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             {typeof(Location), ResourceType.Location},
             {typeof(Slot), ResourceType.Slot},
             {typeof(Appointment), ResourceType.Appointment},
-            {typeof(Schedule), ResourceType.Schedule}
+            {typeof(Schedule), ResourceType.Schedule},
+            {typeof(Conformance), ResourceType.Conformance}
         };
 
     }

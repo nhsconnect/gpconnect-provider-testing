@@ -2,12 +2,12 @@
 Feature: HTML
 
 Scenario Outline: HTML should not contain disallowed elements
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the html should be valid xhtml
 		And the html should not contain "head" tags
@@ -34,12 +34,12 @@ Scenario Outline: HTML should not contain disallowed elements
 		| SUM  |
 
 Scenario Outline: html section headers present
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "<Patient>"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "<Patient>"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the html should contain headers in coma seperated list "<Headers>"
 	Examples:
@@ -86,12 +86,12 @@ Scenario Outline: html section headers present
 		| patient8 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Last 3 Encounters |
 
 Scenario Outline: html table headers present and in order that is expected
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the html should contain table headers in coma seperated list order "<Headers>" for the "<PageSectionIndex>"
 	Examples:
@@ -118,13 +118,13 @@ Scenario Outline: html table headers present and in order that is expected
 		| SUM      | Date,Title,Details                                                                       | 5				|
 
 Scenario Outline: filtered sections should contain date range section banner
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "<Patient>"
-		And I set a time period parameter start date to "<StartDateTime>" and end date to "<EndDateTime>"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "<Patient>"		
+		And I add a Record Section parameter for "<Code>"
+		And I add a Time Period parameter with "<StartDateTime>" and "<EndDateTime>"
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the response html should contain the applied date range text "<TextStartDate>" to "<TextEndDate>"
 	Examples:
@@ -163,12 +163,12 @@ Scenario Outline: filtered sections should contain date range section banner
 	#	| PAT ||||||
 	
 Scenario Outline: sections should contain the all data items section banner
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "<Patient>"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "<Patient>"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the response html should contain the all data items text
 	Examples:
@@ -197,33 +197,33 @@ Scenario Outline: sections should contain the all data items section banner
 	#	| PAT ||||||
 	
 Scenario: Summary should contain a max of 3 encounters
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "SUM" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "SUM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the response html for "Last 3 Encounters" section should contain a table with "3" rows
 	
 Scenario: Encounters section should contain all encounters
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "ENC" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "ENC"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the response html for "Encounters" section should contain a table with at least "4" rows
 
 Scenario Outline: filtered sections should return no data available html banner
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "<Patient>"
-		And I set a time period parameter start date to "<StartDateTime>" and end date to "<EndDateTime>"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "<Patient>"		
+		And I add a Record Section parameter for "<Code>"
+		And I add a Time Period parameter with "<StartDateTime>" and "<EndDateTime>"
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the response html should contain the applied date range text "<TextStartDate>" to "<TextEndDate>"
 		And the response html should contain the no data available html banner in section "<Section>"
@@ -237,12 +237,12 @@ Scenario Outline: filtered sections should return no data available html banner
 	#	| PAT ||||||
 
 Scenario Outline: sections should return no data available html banner
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient1"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient1"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient1"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the response html should contain the all data items text
 		And the response html should contain the no data available html banner in section "<Section>"
@@ -270,12 +270,12 @@ Scenario Outline: sections should return no data available html banner
 	#	| PAT ||||||
 
 Scenario Outline: Check html for non html formatting
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "document"
 		And the html should not contain "\n"
 		And the html should not contain "\r"

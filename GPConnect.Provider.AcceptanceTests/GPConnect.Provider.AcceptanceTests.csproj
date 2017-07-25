@@ -241,6 +241,7 @@
     <Compile Include="Steps\BundleSteps.cs" />
     <Compile Include="Steps\CancelAppointmentSteps.cs" />
     <Compile Include="Steps\CompositionSteps.cs" />
+    <Compile Include="Steps\ConformanceSteps.cs" />
     <Compile Include="Steps\DeviceSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
     <Compile Include="Steps\GetScheduleSteps.cs" />

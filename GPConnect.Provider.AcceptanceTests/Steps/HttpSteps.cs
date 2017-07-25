@@ -1,33 +1,33 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Linq;
-using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Helpers;
-using GPConnect.Provider.AcceptanceTests.Logger;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using Shouldly;
-using TechTalk.SpecFlow;
-using Hl7.Fhir.Serialization;
-using Hl7.Fhir.Model;
-using System.Text;
-using RestSharp.Extensions.MonoHttp;
-
-// ReSharper disable ClassNeverInstantiated.Global
+﻿// ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable InconsistentNaming
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Net.Http;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Xml.Linq;
+    using Constants;
+    using Context;
+    using Helpers;
+    using Logger;
+    using Newtonsoft.Json.Linq;
+    using RestSharp;
+    using Shouldly;
+    using TechTalk.SpecFlow;
+    using Hl7.Fhir.Serialization;
+    using Hl7.Fhir.Model;
+    using System.Text;
+    using RestSharp.Extensions.MonoHttp;
+    using System.Collections.Generic;
     using System.Linq;
     using Enum;
     using Factories;
 
     [Binding]
-    public class HttpSteps : TechTalk.SpecFlow.Steps
+    public class HttpSteps : Steps
     {
         private readonly HttpContext HttpContext;
         private readonly FhirContext FhirContext;
@@ -42,11 +42,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             FhirContext = fhirContext;
             JwtHelper = jwtHelper;
             _securitySteps = securitySteps;
-        }
-
-        internal void HttpRequest(object post, string v1, object p, bool v2)
-        {
-            throw new NotImplementedException();
         }
 
         // Before Scenarios
@@ -139,23 +134,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestContentType = requestContentType;
         }
 
-        [Given(@"I set ""(.*)"" request header to resource stored ""(.*)""")]
-        public void GivenISetRequestHeaderToResourceStored(string headerName, string kstoredValueKey)
-        {
-            GivenISetRequestHeaderTo(headerName, HttpContext.resourceNameStored[kstoredValueKey]);
-        }
-
         [Given(@"I set ""(.*)"" request header to ""(.*)""")]
         public void GivenISetRequestHeaderTo(string headerName, string headerValue)
         {
             HttpContext.RequestHeaders.ReplaceHeader(headerName, headerValue);
-        }
-
-        [Given(@"I set ""(.*)"" request header to created appointment version")]
-        public void GivenISetRequestHeaderToVersion(string headerKey)
-        {
-            Resource value = HttpContext.CreatedAppointment;
-            HttpContext.RequestHeaders.ReplaceHeader(headerKey, "W/\"" + value.VersionId + "\"");
         }
 
         [Given(@"I set If-Match request header to ""(.*)""")]
@@ -188,25 +170,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTraceId, Guid.NewGuid().ToString(""));
         }
 
-        [Given(@"I am generating an organization JWT header")]
-        public void GivenIAmGeneratingAnOrganizationAuthorizationHeader()
-        {
-            HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, HttpContext.Jwt.GetBearerToken());
-        }
-
         [Given(@"I do not send header ""(.*)""")]
         public void GivenIDoNotSendHeader(string headerKey)
         {
             HttpContext.RequestHeaders.RemoveHeader(headerKey);
         }
 
-        [Given(@"I ask for the contents to be gzip encoded")]
-        public void GivenIAskForTheContentsToBeGZipEncoded()
+        // Http Request Steps
+        [Given(@"I set the Accept-Encoding header to gzip")]
+        public void SetTheAcceptEncodingHeaderToGzip()
         {
             HttpContext.RequestHeaders.AddHeader(HttpConst.Headers.kAcceptEncoding, "gzip");
         }
-
-        // Http Request Steps
 
         [Given(@"I set the request content type to ""(.*)""")]
         public void GivenISetTheRequestTypeTo(string requestContentType)
@@ -236,16 +211,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void SetTheIfMatchHeaderTo(string value)
         {
             HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfMatch, value);
-        }
-
-        [Given(@"I set the If-None-Match header with the version from the stored ""([^""]*)"" Resource")]
-        public void GivenISetTheIfNoneMatchHeaderWithTheVersionFromTheStoredResource(string resourceName)
-        {
-            Resource resource = null;
-            HttpContext.StoredFhirResources.TryGetValue(resourceName, out resource);
-            if(resource != null && resource.Id != null) {
-                HttpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfNoneMatch, "W/\""+resource.Id+"\"");
-            }
         }
 
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
@@ -291,24 +256,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void WhenIMakeAPUTRequestTo(string relativeUrl)
         {
             RestRequest(Method.PUT, relativeUrl);
-        }
-
-        [When(@"I make a PATCH request to ""(.*)""")]
-        public void WhenIMakeAPATCHRequestTo(string relativeUrl)
-        {
-            RestRequest(Method.PATCH, relativeUrl);
-        }
-
-        [When(@"I make a DELETE request to ""(.*)""")]
-        public void WhenIMakeADELETERequestTo(string relativeUrl)
-        {
-            RestRequest(Method.DELETE, relativeUrl);
-        }
-
-        [When(@"I make a OPTIONS request to ""(.*)""")]
-        public void WhenIMakeAOPTIONSRequestTo(string relativeUrl)
-        {
-            RestRequest(Method.OPTIONS, relativeUrl);
         }
 
         public Resource getReturnedResourceForRelativeURL(string interactionID, string relativeUrl)
@@ -486,143 +433,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             
         }
 
-        private void HttpRequest(HttpMethod method, string relativeUrl, string body = null, bool decompressGzip = false)
-        {
-            var timer = new System.Diagnostics.Stopwatch();
-
-            // Save The Request Details
-            HttpContext.RequestMethod = method.ToString();
-            HttpContext.RequestUrl = relativeUrl;
-            HttpContext.RequestBody = body;
-
-            WebRequestHandler handler = new WebRequestHandler();
-
-            if (decompressGzip)
-            {
-                handler.AutomaticDecompression = DecompressionMethods.GZip;
-            }
-
-            // Setup The Client Certificate
-            if (HttpContext.SecurityContext.SendClientCert)
-            {
-                var clientCert = HttpContext.SecurityContext.ClientCert;
-                handler.ClientCertificates.Add(clientCert);
-            }
-
-            // Setup The Web Proxy
-            if (HttpContext.UseWebProxy)
-            {
-                handler.Proxy = new WebProxy(new Uri(HttpContext.WebProxyAddress, UriKind.Absolute));
-            }
-
-            var sspAddress = HttpContext.UseSpineProxy ? HttpContext.SpineProxyAddress + "/" : string.Empty;
-            string baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + ":" + HttpContext.FhirServerPort + HttpContext.FhirServerFhirBase;
-            // Move the forward slash or the HttpClient will remove everything after the port number
-            if (baseUrl[baseUrl.Length - 1] != '/')
-            {
-                baseUrl = baseUrl + "/";
-            }
-            if (relativeUrl[0] == '/')
-            {
-                relativeUrl = relativeUrl.Substring(1);
-            }
-
-            // Build The Request
-            var httpClient = new HttpClient(handler);
-            httpClient.BaseAddress = new Uri(baseUrl);
-
-            HttpRequestMessage requestMessage = new HttpRequestMessage(method, relativeUrl);
-            if (body != null)
-            {
-                requestMessage.Content = new StringContent(body, System.Text.Encoding.UTF8, HttpContext.RequestContentType);
-            }
-
-            // Add The Headers
-            HttpContext.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, HttpContext.RequestContentType);
-            foreach (var header in HttpContext.RequestHeaders.GetRequestHeaders())
-            {
-                try
-                {
-                    Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
-                    requestMessage.Headers.Add(header.Key, header.Value);
-                }
-                catch (Exception e)
-                {
-                    Log.WriteLine("Could not add header: " + header.Key + e);
-                }
-            }
-
-            // Start The Performance Timer Running
-            timer.Start();
-
-            // Perform The Http Request
-            var result = httpClient.SendAsync(requestMessage).ConfigureAwait(false).GetAwaiter().GetResult();
-
-            // Always Stop The Performance Timer Running
-            timer.Stop();
-
-            // Save The Time Taken To Perform The Request
-            HttpContext.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
-
-            // Save The Response Details
-            HttpContext.ResponseStatusCode = result.StatusCode;
-            HttpContext.ResponseContentType = result.Content.Headers.ContentType.MediaType;
-            using (StreamReader reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
-            {
-                HttpContext.ResponseBody = reader.ReadToEnd();
-            }
-
-            // Add headers
-            foreach (var headerKey in result.Headers)
-            {
-                foreach (var headerKeyValues in headerKey.Value)
-                {
-                    HttpContext.ResponseHeaders.Add(headerKey.Key, headerKeyValues);
-                    Log.WriteLine("Header - " + headerKey.Key + " : " + headerKeyValues);
-                }
-            }
-            foreach (var header in result.Content.Headers)
-            {
-                foreach (var headerValues in header.Value)
-                {
-                    HttpContext.ResponseHeaders.Add(header.Key, headerValues);
-                    Log.WriteLine("Header - " + header.Key + " : " + headerValues);
-                }
-            }
-            
-        }
-
-        [When(@"I send a gpc.getcarerecord operation request with invalid resource type payload")]
-        public void ISendAGpcGetcarerecordOperationRequestWithInvalidResourceTypePayload()
-        {
-            var parameterPayload = FhirHelper.ChangeResourceTypeString(FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), FhirConst.Resources.kInvalidResourceType);
-            RestRequest(Method.POST, "/Patient/$gpc.getcarerecord", parameterPayload);
-        }
-
-        [When(@"I send a gpc.getcarerecord operation request WITH payload")]
-        public void ISendAGpcGetcarerecordOperationRequestWithPayload()
-        {
-            HttpRequest(HttpMethod.Post, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), true);
-        }
-
-        [When(@"I send a gpc.getcarerecord operation request WITH payload but not decompressed")]
-        public void ISendAGpcGetcarerecordOperationRequestWithPayloadButNotDecompressed()
-        {
-            HttpRequest(HttpMethod.Post, "/Patient/$gpc.getcarerecord", FhirSerializer.SerializeToJson(FhirContext.FhirRequestParameters), false);
-        }
-
-        [When(@"I send a metadata request but not decompressed")]
-        public void ISendAMetadataRequestButNotDecompressed()
-        {
-            HttpRequest(HttpMethod.Get, "/metadata", null, false);
-        }
-
-        [When(@"I send a metadata request and decompressed")]
-        public void ISendAMetadataRequestAndDecompressed()
-        {
-            HttpRequest(HttpMethod.Get, "/metadata", null, true);
-        }
-
         // Response Validation Steps
 
         [Then(@"the response status code should indicate success")]
@@ -648,24 +458,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.UnsupportedMediaType);
             Log.WriteLine("Response HttpStatusCode should be {0} but was {1}", HttpStatusCode.UnsupportedMediaType, HttpContext.ResponseStatusCode);
-        }
-
-        [Then(@"the response body should be JSON")]
-        public void ThenTheResponseBodyShouldBeJSON()
-        {
-            HttpContext.ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.kJson);
-            HttpContext.ResponseJSON = JObject.Parse(HttpContext.ResponseBody);
-            FhirJsonParser fhirJsonParser = new FhirJsonParser();
-            FhirContext.FhirResponseResource = fhirJsonParser.Parse<Resource>(HttpContext.ResponseBody);
-        }
-
-        [Then(@"the response body should be XML")]
-        public void ThenTheResponseBodyShouldBeXML()
-        {
-            HttpContext.ResponseContentType.ShouldStartWith(HttpConst.ContentTypes.kXml);
-            HttpContext.ResponseXML = XDocument.Parse(HttpContext.ResponseBody);
-            FhirXmlParser fhirXmlParser = new FhirXmlParser();
-            FhirContext.FhirResponseResource = fhirXmlParser.Parse<Resource>(HttpContext.ResponseBody);
         }
 
         [Then(@"the response should be gzip encoded")]
@@ -724,6 +516,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.CreatedAppointment.VersionId = versionId;
         }
 
+        [Given(@"I set the request Http Method to ""([^""]*)""")]
+        public void SetTheRequestHttpMethodTo(string method)
+        {
+            HttpContext.HttpMethod = new HttpMethod(method);
+        }
+
         [Given(@"I set the request URL to ""([^""]*)""")]
         public void SetTheRequestUrlTo(string url)
         {
@@ -763,6 +561,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             HttpContext.RequestUrl = relativePath + "/" + HttpContext.GetRequestId;
         }
+
+        [Given("I set the ")]
 
         [When(@"I make the ""(.*)"" request")]
         public void MakeRequest(GpConnectInteraction interaction)
@@ -834,9 +634,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpRequest();
         }
 
-        private void HttpRequest(bool decompressGzip = false)
+        [Given("I set the Decompression Method to gzip")]
+        public void SetTheDecompressionMethodToGzip()
         {
-            var httpClient = GetHttpClient(decompressGzip);
+            HttpContext.DecompressionMethod = DecompressionMethods.GZip;
+        }
+
+        private void HttpRequest()
+        {
+            var httpClient = GetHttpClient();
 
             var requestMessage = GetHttpRequestMessage();
 
@@ -867,9 +673,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 HttpContext.ResponseBody = reader.ReadToEnd();
             }
-
-            ParseResponse();
-           
+            
             // Add headers
             foreach (var headerKey in result.Headers)
             {
@@ -888,6 +692,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Log.WriteLine("Header - " + header.Key + " : " + headerValues);
                 }
             }
+
+            ParseResponse();
         }
 
         private HttpRequestMessage GetHttpRequestMessage()
@@ -895,6 +701,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var queryStringParameters = GetQueryStringParameters();
 
             var requestMessage = new HttpRequestMessage(HttpContext.HttpMethod, HttpContext.RequestUrl + queryStringParameters);
+
             if (HttpContext.RequestBody != null)
             {
                 requestMessage.Content = new StringContent(HttpContext.RequestBody, Encoding.UTF8, HttpContext.RequestContentType);
@@ -938,6 +745,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private void ParseResponse()
         {
+            var responseIsCompressed = HttpContext.ResponseHeaders.Contains(new KeyValuePair<string, string>(HttpConst.Headers.kContentEncoding, "gzip"));
+            var decompressResponse = HttpContext.DecompressionMethod != DecompressionMethods.None;
+
+            if (responseIsCompressed && !decompressResponse)
+                return;
+
             switch (HttpContext.ResponseContentType)
             {
                 case FhirConst.ContentTypes.kJsonFhir:
@@ -953,14 +766,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        private WebRequestHandler ConfigureHandler(bool decompressGzip)
+        private WebRequestHandler ConfigureHandler()
         {
-            var handler = new WebRequestHandler();
-
-            if (decompressGzip)
+            var handler = new WebRequestHandler
             {
-                handler.AutomaticDecompression = DecompressionMethods.GZip;
-            }
+                AutomaticDecompression = HttpContext.DecompressionMethod
+            };
 
             if (HttpContext.SecurityContext.SendClientCert)
             {
@@ -976,9 +787,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             return handler;
         }
 
-        private HttpClient GetHttpClient(bool decompressGzip)
+        private HttpClient GetHttpClient()
         {
-            var handler = ConfigureHandler(decompressGzip);
+            var handler = ConfigureHandler();
 
             return new HttpClient(handler)
             {
