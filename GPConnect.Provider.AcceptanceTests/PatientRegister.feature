@@ -11,8 +11,8 @@ Scenario Outline: Register patient send request to incorrect URL
 		And I set the request URL to "<url>"
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
-	Then the response status code should be "501"
-		And the response should be a OperationOutcome resource with error code "NOT_IMPLEMENTED"
+	Then the response status code should be "404"
+		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
 	Examples:
 		| StartDate		| url                            |
 		| 2017-05-05	| Patient/$gpc.registerpatien    |
