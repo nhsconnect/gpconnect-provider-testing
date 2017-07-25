@@ -563,26 +563,5 @@
 
             _httpContext.StoredPatient.Extension.Add(registrationType);
         }
-
-
-        // Patient Steps
-        [Given(@"I perform a patient search for patient ""([^""]*)"" and store the first returned resources against key ""([^""]*)""")]
-        public void IPerformAPatientSearchForPatientAndStoreTheFirstReturnedResourceAgainstKey(string patient, string patientResourceKey)
-        {
-            Given($@"I am using the default server");
-            And($@"I am performing the ""urn:nhs:names:services:gpconnect:fhir:rest:search:patient"" interaction");
-            And($@"I set the JWT requested record NHS number to config patient ""{patient}""");
-            And($@"I set the JWT requested scope to ""patient/*.read""");
-            When($@"I search for Patient ""{patient}""");
-            Then($@"the response status code should indicate success");
-            And($@"the response body should be FHIR JSON");
-            And($@"the response should be a Bundle resource of type ""searchset""");
-            And($@"the response bundle should contain ""1"" entries");
-
-            var returnedFirstResource = (Patient)((Bundle)_fhirContext.FhirResponseResource).Entry[0].Resource;
-            returnedFirstResource.GetType().ShouldBe(typeof(Patient));
-            if (_httpContext.StoredFhirResources.ContainsKey(patientResourceKey)) _httpContext.StoredFhirResources.Remove(patientResourceKey);
-            _httpContext.StoredFhirResources.Add(patientResourceKey, returnedFirstResource);
-        }
     }
 }

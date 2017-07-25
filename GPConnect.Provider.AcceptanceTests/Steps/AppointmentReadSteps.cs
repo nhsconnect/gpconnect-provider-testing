@@ -5,8 +5,6 @@
     using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
-    using static Hl7.Fhir.Model.Appointment;
-    using NUnit.Framework;
 
     [Binding]
     public class AppointmentReadSteps : Steps
@@ -27,7 +25,7 @@
             {
                 appointment.Identifier.ForEach(identifier =>
                 {
-                    identifier.Value.ShouldBeNullOrEmpty($"The Appointment Identifier Value should not be null or empty but was {identifier.Value}.");
+                    identifier.Value.ShouldNotBeNullOrEmpty($"The Appointment Identifier Value should not be null or empty but was {identifier.Value}.");
                 });
             });
         }

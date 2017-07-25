@@ -954,7 +954,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 375
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 376
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 377
  testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 378
@@ -992,7 +992,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 390
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 391
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 392
  testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 393

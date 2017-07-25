@@ -258,8 +258,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 61
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
-  testRunner.And(string.Format("I set the URL for the get request with the date \"{0}\" and prefix \"{1}\" for \"patie" +
-                        "nt1\"", startDate, prefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\"", prefix, startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 64
@@ -288,8 +287,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 133
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 134
-  testRunner.And(string.Format("I set the URL for the get request with the slotStartDate date \"slotStartDate\" and" +
-                        " prefix \"{0}\" for \"patient1\"", prefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for the Created Appo" +
+                        "intment Start", prefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 135
  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 136
@@ -301,8 +300,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 139
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
-  testRunner.And("all appointments must have a start element which is populated with a date that eq" +
-                    "uals \"slotStartDate\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Start should equal the Created Appointment Start", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 141
   testRunner.And("the Appointment Start and End Dates should equal the Created Appointment Start an" +
                     "d End Dates", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -353,8 +351,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 151
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 152
- testRunner.And(string.Format("I set the URL for the get request with the date \"{0}\" and prefix \"{1}\" for \"patie" +
-                        "nt1\"", startDate, prefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\"", prefix, startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 153
  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 154
@@ -409,8 +406,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 188
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
- testRunner.And(string.Format("I set the URL for the get request with the date \"{0}\" and prefix \"{1}\" for and up" +
-                        "per end date boundary \"{2}\" with prefix \"{3}\" for \"patient1\"", startDate, prefix, endDate, prefix2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\" and " +
+                        "Prefix \"{2}\" for End \"{3}\"", prefix, startDate, prefix2, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 190
  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 191
@@ -465,8 +462,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 225
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 226
- testRunner.And(string.Format("I set the URL for the get request with the date \"{0}\" and prefix \"{1}\" for and up" +
-                        "per end date boundary \"{2}\" with prefix \"{3}\" for \"patient1\"", startDate, prefix, endDate, prefix2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\" and " +
+                        "Prefix \"{2}\" for End \"{3}\"", prefix, startDate, prefix2, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 227
  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 228
@@ -526,8 +523,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 262
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 263
- testRunner.And(string.Format("I set the URL for the get request with the date \"{0}\" and prefix \"{1}\" for and up" +
-                        "per end date boundary \"{2}\" with prefix \"{3}\" for \"patient1\"", startDate, prefix, endDate, prefix2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\" and " +
+                        "Prefix \"{2}\" for End \"{3}\"", prefix, startDate, prefix2, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 264
  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 265
@@ -586,8 +583,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 304
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 305
- testRunner.And(string.Format("I set the URL for the get request with the date \"{0}\" and prefix \"{1}\" for and up" +
-                        "per end date boundary \"{2}\" with prefix \"{3}\" for \"patient1\"", startDate, prefix, endDate, prefix2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\" and " +
+                        "Prefix \"{2}\" for End \"{3}\"", prefix, startDate, prefix2, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 306
  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 307

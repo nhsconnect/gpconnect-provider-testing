@@ -80,7 +80,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 5
  testRunner.Given(string.Format("I create an Appointment for Patient \"{0}\" and Organization Code \"ORG1\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 6
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 7
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
@@ -92,7 +92,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 12
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
   testRunner.And("the Appointment Status should be Cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
@@ -120,7 +120,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
   testRunner.Given(string.Format("I create an Appointment for Patient \"{0}\" and Organization Code \"ORG1\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 27
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
@@ -180,7 +180,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 57
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 58
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 60
@@ -212,7 +212,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 71
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 72
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 74
@@ -246,7 +246,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 89
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 90
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 92
@@ -277,7 +277,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 107
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 108
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 109
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 110
@@ -293,7 +293,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 115
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 116
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 117
   testRunner.And("the Appointment Status should be Cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 118
@@ -317,7 +317,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 126
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 127
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 129
@@ -333,7 +333,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 134
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 135
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 136
   testRunner.And("the Appointment Status should be Cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 137
@@ -361,7 +361,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 145
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 146
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 147
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 148
@@ -379,7 +379,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 154
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 155
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 156
   testRunner.And("the Appointment Status should be Cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 157
@@ -411,7 +411,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 167
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 168
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 169
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 170
@@ -431,7 +431,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 177
   testRunner.And(string.Format("the response body should be FHIR {0}", format), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 178
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 179
   testRunner.And("the Appointment Status should be Cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 180
@@ -461,7 +461,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 194
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 195
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 196
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 197
@@ -473,7 +473,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 200
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 201
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 202
   testRunner.And("the Appointment Status should be Cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 203
@@ -499,7 +499,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 212
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 213
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 214
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 215
@@ -527,7 +527,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 227
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 228
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 229
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 230
@@ -556,7 +556,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 237
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 238
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 239
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 240
@@ -570,7 +570,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 244
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 245
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 246
   testRunner.And("the Appointment Status should be Cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 247
@@ -592,7 +592,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 250
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 251
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 252
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 253
@@ -619,7 +619,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 260
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 261
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 262
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 263
@@ -631,7 +631,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 266
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 267
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 268
   testRunner.And("the Appointment Status should be Cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 269
@@ -666,7 +666,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 279
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 280
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 281
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 282
@@ -678,7 +678,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 285
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 286
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 287
   testRunner.And("the Appointment Cancellation Reason Extension should be valid for \"double booked\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -707,7 +707,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 293
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 294
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 295
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 296
@@ -721,7 +721,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 300
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 301
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 302
   testRunner.And("the Appointment Status should be Cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 303
@@ -756,7 +756,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 321
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 322
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 323
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 324
@@ -793,7 +793,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 333
   testRunner.Given(string.Format("I create an Appointment for Patient \"{0}\" and Organization Code \"ORG1\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 334
-  testRunner.And("I store the created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 335
  testRunner.Given("I configure the default \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 336
@@ -805,7 +805,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 339
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 340
-  testRunner.And("the response should be an Appointment resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 341
   testRunner.And("the Appointment Status should be Cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 342

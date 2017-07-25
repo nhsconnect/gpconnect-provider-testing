@@ -1,6 +1,5 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Builders.Appointment;
@@ -31,11 +30,10 @@
             _getScheduleSteps = getScheduleSteps;
         }
 
-        [Then(@"the response should be an Appointment resource")]
-        public void theResponseShouldBeAnAppointmentResource()
+        [Then(@"the Response Resource should be an Appointment")]
+        public void TheResponseResourceShouldBeAnAppointment()
         {
-            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Appointment,
-                "The returned resource type was not Appointment");
+            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Appointment, "the Response Resource should be an Appointment.");
         }
 
         [Then(@"the Bundle should contain no Appointments")]
@@ -50,19 +48,13 @@
             Appointments.Count.ShouldBeGreaterThanOrEqualTo(minimum, $"The Bundle should contain a minimum of {minimum} Appointments, but found {Appointments.Count}.");
         }
 
-
-        [Then(@"all appointments must have a start element which is populated with a date that equals ""([^""]*)""")]
-        public void appointmentPopulatedWithAStartDateEquals(string startBoundry)
+        [Then(@"the Appointment Start should equal the Created Appointment Start")]
+        public void TheAppointmentStartShouldEqualTheCreatedAppointmentStart()
         {
-            DateTimeOffset? time = _httpContext.CreatedAppointment.Start;
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            Appointments.ForEach(appointment =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    appointment.StartElement.Value.ShouldBe(time);
-                }
-            }
+                appointment.Start.ShouldBe(_httpContext.CreatedAppointment.Start, $"The Appointment Start should equal {_httpContext.CreatedAppointment.Start} but was {appointment.Start}.");
+            });
         }
       
         [Given(@"I create ""([^""]*)"" Appointments for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
@@ -93,7 +85,7 @@
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
         }
 
-        [Given(@"I store the created Appointment")]
+        [Given(@"I store the Created Appointment")]
         public void StoreTheCreatedAppointment()
         {
             var appointment = _fhirContext.Appointments.FirstOrDefault();
@@ -129,25 +121,19 @@
                 _httpContext.GetRequestVersionId = appointment.VersionId;
         }
 
-        [Given(@"I set the created Appointment status to ""([^""]*)""")]
+        [Given(@"I set the Created Appointment Status to ""([^""]*)""")]
         public void SetCreatedAppointmentStatusTo(string status)
         {
-            switch (status) {
+            switch (status)
+            {
                 case "Booked":
-                    _httpContext.CreatedAppointment.Status = Appointment.AppointmentStatus.Booked;
+                    _httpContext.CreatedAppointment.Status = AppointmentStatus.Booked;
                     break;
                 case "Cancelled":
-                    _httpContext.CreatedAppointment.Status = Appointment.AppointmentStatus.Cancelled;
+                    _httpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
                     break;
             }
         }
-
-        [Given(@"I set the created Appointment priority to ""([^""]*)""")]
-        public void  ISetTheCreatedAppointmentPriorityTo(int priority)
-        {
-            _httpContext.CreatedAppointment.Priority = priority;
-        }
-
 
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
         public void CreateAnAppointmentFromTheStoredPatientAndStoredSchedule()
@@ -157,25 +143,16 @@
             _httpContext.CreatedAppointment = appointmentBuilder.BuildAppointment();
         }
 
-        [Given(@"I set the created Appointment Comment to ""([^""]*)""")]
-        public void SetTheCreatedAppointmentComment(string comment)
-        {
-            _httpContext.CreatedAppointment.Comment = comment;
-        }
-
-        [Given(@"I set the created Appointment reason to ""([^""]*)""")]
+        [Given(@"I set the Created Appointment Reason to ""([^""]*)""")]
         public void SetTheCreatedAppointmentReasonTo(string reason)
         {
-            _httpContext.CreatedAppointment.Reason = new CodeableConcept();
-            _httpContext.CreatedAppointment.Reason.Coding = new List<Coding>();
-            _httpContext.CreatedAppointment.Reason.Coding.Add(new Coding("http://snomed.info/sct", reason, reason));
-        }
-
-        [Given(@"I set the created Appointment description to ""([^""]*)""")]
-        public void SetTheCreatedAppointmentDescriptionTo(string description)
-        {
-            _httpContext.CreatedAppointment.Description = description;
-      
+            _httpContext.CreatedAppointment.Reason = new CodeableConcept
+            {
+                Coding = new List<Coding>
+                {
+                    new Coding("http://snomed.info/sct", reason, reason)
+                }
+            };
         }
 
         [Given(@"I set the Created Appointment to Cancelled with Reason ""([^""]*)""")]
@@ -187,7 +164,7 @@
                 _httpContext.CreatedAppointment.Extension = new List<Extension>();
 
             _httpContext.CreatedAppointment.Extension.Add(extension);
-            _httpContext.CreatedAppointment.Status = Appointment.AppointmentStatus.Cancelled;
+            _httpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
         }
 
         [Given(@"I set the Created Appointment to Cancelled with Url ""([^""]*)"" and Reason ""([^""]*)""")]
@@ -199,9 +176,8 @@
                 _httpContext.CreatedAppointment.Extension = new List<Extension>();
 
             _httpContext.CreatedAppointment.Extension.Add(extension);
-            _httpContext.CreatedAppointment.Status = Appointment.AppointmentStatus.Cancelled;
+            _httpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
         }
-
 
         [Given(@"I add a Category Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
         public void AddACategoryExtensionWithCodeAndDisplayToTheCreatedAppointment(string code, string display)
@@ -236,16 +212,17 @@
             _httpContext.CreatedAppointment.Extension.Add(extension);
         }
 
-
-        [Given("I set created appointment to a new appointment resource")]
-        public void ISetTheAppointmentResourceToANewAppointmentResource()
+        [Given("I set the Created Appointment to a new Appointment")]
+        public void SetTheCreatedAppointmentToANewAppointment()
         {
             _httpContext.CreatedAppointment = new Appointment();
         }
+
         private static Extension GetCategoryExtension(string code, string display)
         {
             return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", code, display);
         }
+
         private static Extension GetBookingMethodExtension(string code, string display)
         {
             return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", code, display);
@@ -317,7 +294,6 @@
             });
         }
 
-
         [Given(@"I add the ""([^""]*)"" Extensions to the Created Appointment")]
         public void AddTheExtensionsToTheCreatedAppointment(string extensionCombination)
         {
@@ -326,7 +302,7 @@
             _httpContext.CreatedAppointment.Extension.AddRange(extensions);
         }
 
-        private List<Extension> GetExtensions(string extensionCombination)
+        private static List<Extension> GetExtensions(string extensionCombination)
         {
             var extensions = new List<Extension>();
             switch (extensionCombination)
@@ -478,26 +454,22 @@
             }
         }
 
-        [Given(@"I set the URL for the get request with the date ""([^""]*)"" and prefix ""([^""]*)"" for ""([^""]*)""")]
-        public void searchAndGetaAppointmentsWithCustomStartDateandPrefix(string startBoundry, string prefix, string patient)
+        [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for Start ""([^""]*)""")]
+        public void AddAQueryParameterToTheRequestUrlWithPrefixForStart(string prefix, string start)
         {
-
-            _httpContext.RequestUrl = _httpContext.RequestUrl + "?start=" + prefix + startBoundry + "";
+            _httpContext.RequestUrl = $"{_httpContext.RequestUrl}?start={prefix}{start}";
         }
 
-        [Given(@"I set the URL for the get request with the slotStartDate date ""([^""]*)"" and prefix ""([^""]*)"" for ""([^""]*)""")]
-        public void searchAndGetaAppointmentsWithCustomStartDatessandPrefix(string slotName, string prefix, string patient)
+        [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for Start ""([^""]*)"" and Prefix ""([^""]*)"" for End ""([^""]*)""")]
+        public void AddAQueryParameterToTheRequestUrlWithPrefixForStartAndPrefixForEnd(string prefix, string start, string endPrefix, string end)
         {
-            var time = _httpContext.CreatedAppointment.StartElement;
-            string time2 = time.ToString();
-            _httpContext.RequestUrl = _httpContext.RequestUrl + "?start=" + prefix + time2 + "";
+            _httpContext.RequestUrl = $"{_httpContext.RequestUrl}?start={prefix}{start}&start={endPrefix}{end}";
         }
 
-        [Given(@"I set the URL for the get request with the date ""([^""]*)"" and prefix ""([^""]*)"" for and upper end date boundary ""([^""]*)"" with prefix ""([^""]*)"" for ""([^""]*)""")]
-        public void IsettheURLforthegetrequestwiththedateandprefixforandupperenddateboundarywithprefixfor(string startBoundry, string prefix, string endBoundry, string prefixEnd, string patient)
+        [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for the Created Appointment Start")]
+        public void AddAQueryParameterToTheRequestUrlWithPrefixForStoredAppointmentStart(string prefix)
         {
-
-            _httpContext.RequestUrl = _httpContext.RequestUrl + "?start=" + prefix + startBoundry + "&start=" + prefixEnd + endBoundry + "";
+            _httpContext.RequestUrl = $"{_httpContext.RequestUrl}?start={prefix}{_httpContext.CreatedAppointment.StartElement}";
         }
     }
 }

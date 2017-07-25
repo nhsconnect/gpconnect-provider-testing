@@ -59,7 +59,7 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -131,13 +131,13 @@ Scenario Outline: Appointment retrieve send request and find request using equal
 	Given I create "1" Appointments for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the URL for the get request with the slotStartDate date "slotStartDate" and prefix "<prefix>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for the Created Appointment Start
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the Bundle should contain a minimum of "1" Appointments
-		And all appointments must have a start element which is populated with a date that equals "slotStartDate"
+		And the Appointment Start should equal the Created Appointment Start
 		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
 		And the Appointment Participants should be equal to the Created Appointment Participants
 	Examples:
@@ -149,7 +149,7 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -186,7 +186,7 @@ Scenario Outline: Appointment retrieve send request with lower start date boundr
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for and upper end date boundary "<endDate>" with prefix "<prefix2>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -223,7 +223,7 @@ Scenario Outline: Appointment retrieve send request with upper end date boundary
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for and upper end date boundary "<endDate>" with prefix "<prefix2>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -260,7 +260,7 @@ Scenario Outline: Appointment retrieve send request with different upper end dat
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for and upper end date boundary "<endDate>" with prefix "<prefix2>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -302,7 +302,7 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for and upper end date boundary "<endDate>" with prefix "<prefix2>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
