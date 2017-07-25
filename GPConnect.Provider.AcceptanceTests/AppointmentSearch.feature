@@ -138,11 +138,8 @@ Scenario Outline: Appointment retrieve send request and find request using equal
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain atleast "1" appointment
 		And all appointments must have a start element which is populated with a date that equals "slotStartDate"
-		And the returned appointment start date should match created appointment start Date
-			And the returned appointment end date should match created appointment end date
-		And the returned appointment patient reference should match created appointment patient reference
-		And the returned appointment slot reference should match created appointment slot reference
-		And the returned appointment participant status should match created appointment participant status
+		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
+		And the Appointment Participants should be equal to the Created Appointment Participants
 	Examples:
 		| prefix |
 		| eq     |
@@ -431,11 +428,11 @@ Scenario: Appointment retrieve appointment which contains all mandatory resource
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the bundle of appointments should all contain a single status element
-		And the bundle of appointments should all contain a single start element
-		And the bundle of appointments should all contain a single end element
-		And the bundle of appointments should all contain at least one slot reference
-		And the bundle of appointments should all contain one participant which is a patient and one which is a practitioner
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Slots should be valid
+		And the Appointment Participants should be valid and resolvable
 
 Scenario: Appointment retrieve bundle resource must contain participant with type or actor present
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -473,7 +470,7 @@ Scenario: Appointment retrieve appointment response should contain meta data pro
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the bundle of appointments should contain meta data profile and version id
+		And the Appointment Metadata should be valid
 	
 Scenario: Appointment retrieve returned resources must contain coding with valid system code and display
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -482,7 +479,7 @@ Scenario: Appointment retrieve returned resources must contain coding with valid
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And if the bundle of appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
+		And the Appointment Reason should be valid
 	
 Scenario: Appointment retrieve bundle contains appointment contact method
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -491,10 +488,10 @@ Scenario: Appointment retrieve bundle contains appointment contact method
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And if the appointment category element is present it is populated with the correct values
-		And if the appointment booking element is present it is populated with the correct values
-		And if the appointment contact element is present it is populated with the correct values
-		And if the appointment cancellation reason element is present it is populated with the correct values
+		And the Appointment Category Extension should be valid
+		And the Appointment Booking Method Extension should be valid
+		And the Appointment Contact Method Extension should be valid
+		And the Appointment Cancellation Reason Extension should be valid
 
 Scenario: Appointment retrieve bundle contains valid start and end dates
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

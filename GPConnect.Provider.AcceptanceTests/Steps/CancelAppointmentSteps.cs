@@ -232,6 +232,12 @@
         {
             Appointments.ForEach(appointment =>
             {
+                var practitionerCount = appointment.Participant.Count(participant => participant.Actor.Reference.StartsWith("Practitioner/"));
+                practitionerCount.ShouldBeGreaterThanOrEqualTo(1, "There Appointment Participants should a minimum of 1 Practitioner but found none.");
+
+                var patientCount = appointment.Participant.Count(participant => participant.Actor.Reference.StartsWith("Patient/"));
+                patientCount.ShouldBeGreaterThanOrEqualTo(1, "There Appointment Participants should a minimum of 1 Patient but found none.");
+
                 appointment.Participant.ForEach(participant =>
                 {
                     if (participant.Actor.Reference.StartsWith("Practitioner/"))
