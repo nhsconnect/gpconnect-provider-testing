@@ -166,11 +166,8 @@
             });
         }
 
-        [Given(
-                @"I set the Created Appointment Participant Type Coding ""([^""]*)"" to null for ""([^""]*)"" Participants")
-        ]
-        public void SetTheCreatedAppointmentParticipantTypeCodingToNullForParticipants(string codingType,
-            string participantType)
+        [Given(@"I set the Created Appointment Participant Type Coding ""([^""]*)"" to null for ""([^""]*)"" Participants")]
+        public void SetTheCreatedAppointmentParticipantTypeCodingToNullForParticipants(string codingType, string participantType)
         {
             _httpContext.CreatedAppointment.Participant.ForEach(particpant =>
             {
