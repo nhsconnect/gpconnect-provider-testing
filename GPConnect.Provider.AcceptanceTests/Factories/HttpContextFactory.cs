@@ -195,8 +195,8 @@
         }
         private static void ConfigureAppointmentAmendContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Put; ;
-            httpContext.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
+            httpContext.HttpMethod = HttpMethod.Put;
+            httpContext.RequestUrl = "Appointment/" + httpContext.CreatedAppointment?.Id;
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentAmend);
         }
 

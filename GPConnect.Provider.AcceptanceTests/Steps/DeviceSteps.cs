@@ -15,8 +15,7 @@
         }
 
         private List<Device> Devices => _fhirContext.Devices;
-
-
+        
         public void TheDeviceShouldBeValid()
         {
             TheDeviceShouldExcludeFields();

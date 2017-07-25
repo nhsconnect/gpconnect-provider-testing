@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Linq;
     using Context;

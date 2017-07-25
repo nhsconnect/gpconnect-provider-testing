@@ -735,10 +735,11 @@ Scenario Outline: patient does not contain disallowed fields
 		| SUM  |
 
 Scenario Outline: practitioner resource contains mandatory fields and does not include dissallowed fields
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "patient2"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "<Code>"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
 		And the Practitioner Name should be valid

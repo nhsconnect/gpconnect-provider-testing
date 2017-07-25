@@ -1495,22 +1495,22 @@ this.ScenarioSetup(scenarioInfo);
 #line 737
 this.ScenarioSetup(scenarioInfo);
 #line 738
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 739
-  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
-                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 740
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"patient2" +
-                        "\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 741
- testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 742
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 743
-  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 744
-  testRunner.And("the Practitioner Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 745
+  testRunner.And("the Practitioner Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 746
   testRunner.And("the Practitioner should exclude disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1531,27 +1531,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerResourceContainsMandatoryFieldsWithinOptionalElements(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("practitioner resource contains mandatory fields within optional elements", exampleTags);
-#line 761
-this.ScenarioSetup(scenarioInfo);
 #line 762
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 763
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 764
-  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 765
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 766
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 767
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 768
-  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 769
-  testRunner.And("the Practitioner Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 770
-  testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 771
+  testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 772
   testRunner.And("the Practitioner Communication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1574,23 +1574,23 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("if practitioner resource contains a managing organization it must reference an or" +
                     "ganization within the response bundle", exampleTags);
-#line 787
-this.ScenarioSetup(scenarioInfo);
 #line 788
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 789
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 790
-  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 791
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 792
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 793
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 794
-  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 795
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 796
   testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be referenced in t" +
                     "he Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1612,23 +1612,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OrganizationResourceIdentifiers(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("organization resource identifiers", exampleTags);
-#line 811
-this.ScenarioSetup(scenarioInfo);
 #line 812
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 813
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 814
-  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 815
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 816
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 817
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 818
-  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 819
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 820
   testRunner.And("the Organization Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1649,23 +1649,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OrganizationResourceElementCardinality(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("organization resource element cardinality", exampleTags);
-#line 835
-this.ScenarioSetup(scenarioInfo);
 #line 836
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 837
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 838
-  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 839
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 840
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 841
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 842
-  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 843
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 844
   testRunner.And("the Organization Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1686,23 +1686,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OrganizationResourceInternalReference(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("organization resource internal reference", exampleTags);
-#line 859
-this.ScenarioSetup(scenarioInfo);
 #line 860
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 861
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 862
-  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 863
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 864
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 865
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 866
-  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 867
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 868
   testRunner.And("the Organization PartOf Organization should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1723,27 +1723,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeviceResourceElementCardinalityConformance(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("device resource element cardinality conformance", exampleTags);
-#line 883
-this.ScenarioSetup(scenarioInfo);
 #line 884
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 885
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 886
-  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 887
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 888
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 889
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 890
-  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 891
-  testRunner.And("the Device should exclude fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 892
-  testRunner.And("the Device Note should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Device should exclude fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 893
+  testRunner.And("the Device Note should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 894
   testRunner.And("the Device Identifier should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1764,23 +1764,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeviceResourceTypeElementValuesMatchSpecification(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("device resource type element values match specification", exampleTags);
-#line 909
-this.ScenarioSetup(scenarioInfo);
 #line 910
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 911
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 912
-  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 913
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 914
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 915
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 916
-  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 917
+  testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 918
   testRunner.And("the Device Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1834,23 +1834,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CheckAllDateTimeFormatVariationsAreAllowed(string code, string startDateTime, string endDateTime, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("check all dateTime format variations are allowed", exampleTags);
-#line 933
-this.ScenarioSetup(scenarioInfo);
 #line 934
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 935
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 936
-  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 937
-  testRunner.And(string.Format("I add a Time Period parameter with \"{0}\" and \"{1}\"", startDateTime, endDateTime), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 938
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Time Period parameter with \"{0}\" and \"{1}\"", startDateTime, endDateTime), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 939
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 940
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 941
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 942
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1870,25 +1870,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InvalidRequestParameterNamesAndCase(string parameterName, string invalidParameterName, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("invalid request parameter names and case", exampleTags);
-#line 990
-this.ScenarioSetup(scenarioInfo);
 #line 991
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 992
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 993
-  testRunner.And("I add a Record Section parameter for \"ENC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 994
-  testRunner.And("I add a valid Time Period parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add a Record Section parameter for \"ENC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 995
-  testRunner.And(string.Format("I set the Parameter name \"{0}\" to \"{1}\"", parameterName, invalidParameterName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add a valid Time Period parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 996
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I set the Parameter name \"{0}\" to \"{1}\"", parameterName, invalidParameterName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 997
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 998
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 999
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1000
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1899,21 +1899,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RequestParameterPatientNHSNumberValuesIsEmpty()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter patientNHSNumber values is empty", ((string[])(null)));
-#line 1012
-this.ScenarioSetup(scenarioInfo);
 #line 1013
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 1014
-  testRunner.And("I add an NHS Number parameter with an empty NHS Number", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1015
-  testRunner.And("I add a Record Section parameter for \"SUM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter with an empty NHS Number", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1016
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add a Record Section parameter for \"SUM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1017
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1018
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1019
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1020
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_NHS_N" +
                     "UMBER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1925,21 +1925,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RequestParameterPatientNHSNumberSystemIsEmpty()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter patientNHSNumber system is empty", ((string[])(null)));
-#line 1021
-this.ScenarioSetup(scenarioInfo);
 #line 1022
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 1023
-  testRunner.And("I add an NHS Number parameter for \"patient2\" with an empty Identifier System", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1024
-  testRunner.And("I add a Record Section parameter for \"SUM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\" with an empty Identifier System", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1025
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add a Record Section parameter for \"SUM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1026
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1027
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1028
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1029
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_IDENT" +
                     "IFIER_SYSTEM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1951,21 +1951,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RequestParameterRecordSectionValuesIsEmpty()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSection values is empty", ((string[])(null)));
-#line 1030
-this.ScenarioSetup(scenarioInfo);
 #line 1031
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 1032
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1033
-  testRunner.And("I add a Record Section parameter with empty Code", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1034
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add a Record Section parameter with empty Code", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1035
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1036
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1037
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1038
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1977,21 +1977,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RequestParameterRecordSectionSystemIsEmpty()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Request parameter recordSection system is empty", ((string[])(null)));
-#line 1039
-this.ScenarioSetup(scenarioInfo);
 #line 1040
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 1041
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1042
-  testRunner.And("I add a Record Section parameter for \"SUM\" with empty System", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1043
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add a Record Section parameter for \"SUM\" with empty System", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1044
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1045
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1046
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1047
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -2029,21 +2029,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RequestedSectionCodeIncorrectParameterCase(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Requested section code incorrect parameter case", exampleTags);
-#line 1048
-this.ScenarioSetup(scenarioInfo);
 #line 1049
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 1050
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1051
-  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1052
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1053
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1054
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1055
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1056
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -2065,21 +2065,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void APatientIsRequestedWhichIsNotOnSpineButIsOnProviderSystem(string code, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A patient is requested which is not on Spine but is on provider system", exampleTags);
-#line 1089
-this.ScenarioSetup(scenarioInfo);
 #line 1090
- testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 1091
-  testRunner.And("I add an NHS Number parameter for \"patient14\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1092
-  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient14\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1093
-  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient14\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Record Section parameter for \"{0}\"", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1094
- testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient14\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1095
- testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1096
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1097
   testRunner.And("the response should be a OperationOutcome resource with error code \"PATIENT_NOT_F" +
                     "OUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -2093,7 +2093,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Identifier order in response resources", new string[] {
                         "ignore"});
-#line 1113
+#line 1114
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -2110,7 +2110,7 @@ this.ScenarioSetup(scenarioInfo);
                     "t contain sensitive fields", new string[] {
                         "ignore",
                         "Manual"});
-#line 1118
+#line 1119
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -2125,7 +2125,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient with inactive nhs number in system should not return that NHS Number", new string[] {
                         "ignore",
                         "Manual"});
-#line 1122
+#line 1123
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -2142,7 +2142,7 @@ this.ScenarioSetup(scenarioInfo);
                     " addear to gender mapping", new string[] {
                         "ignore",
                         "Manual"});
-#line 1126
+#line 1127
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -2159,7 +2159,7 @@ this.ScenarioSetup(scenarioInfo);
                     " if not check mapping is covered in documentation and system maps correctly", new string[] {
                         "ignore",
                         "Manual"});
-#line 1131
+#line 1132
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -2176,7 +2176,7 @@ this.ScenarioSetup(scenarioInfo);
                     "ueset so must addear to relationship mapping", new string[] {
                         "ignore",
                         "Manual"});
-#line 1136
+#line 1137
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -2195,7 +2195,7 @@ this.ScenarioSetup(scenarioInfo);
                     "em maps correctly", new string[] {
                         "ignore",
                         "Manual"});
-#line 1141
+#line 1142
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -2210,7 +2210,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient whos records are currently in transit", new string[] {
                         "ignore",
                         "Manual"});
-#line 1146
+#line 1147
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
