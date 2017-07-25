@@ -41,7 +41,7 @@ Scenario Outline: Practitioner search with failure due to bad request identifier
 		And I add a Practitioner Identifier parameter with System "<System>" and Value "<Value>"
 	When I make the "PractitionerSearch" request
 	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
 	Examples:
 		| System                                     | Value         |
 		| http://fhir.nhs.net/Id/sds-user-id9        | practitioner2 |
