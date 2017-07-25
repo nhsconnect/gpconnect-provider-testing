@@ -183,7 +183,7 @@ Scenario: Amend appointment and check the returned appointment resource conforms
 		And the Appointment Participants should be valid and resolvable
 		And the Appointment Reason should be valid
 		And the Appointment Priority should be valid
-		And the returned appointment participants must contain a type or actor element
+		And the Appointment Participant Type and Actor should be valid
 		And the Appointment Identifiers should be valid
 		
 Scenario: Amend appointment prefer header set to representation

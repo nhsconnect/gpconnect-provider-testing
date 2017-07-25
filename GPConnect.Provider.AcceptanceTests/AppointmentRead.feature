@@ -193,7 +193,7 @@ Scenario: Read appointment and all participants must have a type or actor elemen
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the Response Resource should be an Appointment
-		And the returned appointment participants must contain a type or actor element
+		And the Appointment Participant Type and Actor should be valid
 
 Scenario Outline: Read appointment if extensions are included they should be valid
 Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

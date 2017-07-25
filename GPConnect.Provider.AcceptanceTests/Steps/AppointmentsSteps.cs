@@ -6,10 +6,8 @@
     using Context;
     using Enum;
     using Hl7.Fhir.Model;
-    using NUnit.Framework;
     using Shouldly;
     using TechTalk.SpecFlow;
-    using static Hl7.Fhir.Model.Bundle;
     using static Hl7.Fhir.Model.Appointment;
 
     [Binding]
@@ -338,120 +336,52 @@
             return extensions;
         }
 
-
-        [Then(@"the returned appointment participants must contain a type or actor element")]
-        public void ThenTheReturnedAppointmentParticipantsMustContainATypeOrActorElement()
+        [Then(@"the Appointment Participant Type and Actor should be valid")]
+        public void TheAppointmentParticipantTypeAndActorShouldBeValid()
         {
-            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
-            foreach (ParticipantComponent participant in appointment.Participant)
+            Appointments.ForEach(appointment =>
             {
-                var actor = participant.Actor;
-                var type = participant.Type;
-
-                if (null == actor && null == type)
+                appointment.Participant.ForEach(participant =>
                 {
-                    Assert.Fail("There must be an actor or type element within the appointment participants");
-                }
+                    var hasActorOrType = participant.Actor == null && participant.Type == null;
 
-                if (null != type)
-                {
-                    int codableConceptCount = 0;
-                    foreach (var typeCodableConcept in type)
+                    hasActorOrType.ShouldBeTrue("The Appointment Participant should have an Actor or Type, but has neither.");
+
+                    if (participant.Type != null)
                     {
-                        codableConceptCount++;
-                        int codingCount = 0;
-                        foreach (var coding in typeCodableConcept.Coding)
-                        {
-                            coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/encounter-participant-type", "The coding system is incorrect");
-                            string[] codes = new string[12] { "translator", "emergency", "ADM", "ATND", "CALLBCK", "CON", "DIS", "ESC", "REF", "SPRF", "PPRF", "PART" };
-                            string[] codeDisplays = new string[12] { "Translator", "Emergency", "admitter", "attender", "callback contact", "consultant", "discharger", "escort", "referrer", "secondary performer", "primary performer", "Participation" };
-                            coding.Code.ShouldBeOneOf(codes, "The code is incorrect");
-                            coding.Display.ShouldBeOneOf(codeDisplays, "The display is incorrect");
-                            for (int i = 0; i < codes.Length; i++)
-                            {
-                                if (string.Equals(coding.Code, codes[i]))
-                                {
-                                    coding.Display.ShouldBe(codeDisplays[i], "The participant type code does not match the display element");
-                                }
-                            }
-                            codingCount++;
-                        }
-                        codingCount.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of 1 participant type coding element for each participant");
-                    }
-                    codableConceptCount.ShouldBeLessThanOrEqualTo(1, "The participant type element may only contain one codable concept.");
-                }
+                        participant.Type.Count.ShouldBeLessThanOrEqualTo(1, $"The Appointment Participant should contain a maximum of 1 Type, but found {participant.Type.Count}.");
 
-                if (actor != null && actor.Reference != null)
-                {
-                    actor.Reference.ShouldNotBeEmpty();
-                    if (!actor.Reference.StartsWith("Patient/") &&
-                        !actor.Reference.StartsWith("Practitioner/") &&
-                        !actor.Reference.StartsWith("Location/"))
+                        participant.Type.ForEach(type =>
+                        {
+                            type.Coding.Count.ShouldBeLessThanOrEqualTo(1, $"The Appointment Participant Type should contain a maximum of 1 Coding, but found {type.Coding.Count}.");
+
+                            type.Coding.ForEach(coding =>
+                            {
+                                const string codingSystem = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
+                                coding.System.ShouldBe(codingSystem, $"The Appointment Participant Type Coding System should be {codingSystem}, but was {coding.System}.");
+
+                                ParticipantTypeDictionary.ShouldContainKey(coding.Code, $"The Appointment Appointment Participant Type Coding Code {coding.Code} was not valid.");
+                                ParticipantTypeDictionary.ShouldContainKeyAndValue(coding.Code, coding.Display, $"The Appointment Appointment Participant Type Coding Display {coding.Code} was not valid.");
+                            });
+                        });
+                    }
+
+                    if (participant.Actor?.Reference != null)
                     {
-                        Assert.Fail("The actor reference should be a Patient, Practitioner or Location");
+                        participant.Actor.Reference.ShouldNotBeEmpty();
+
+                        const string patient = "Patient/";
+                        const string practitioner = "Practitioner/";
+                        const string location = "Location/";
+
+                        var shouldStartWith = participant.Actor.Reference.StartsWith(patient) ||
+                                              participant.Actor.Reference.StartsWith(practitioner) ||
+                                              participant.Actor.Reference.StartsWith(location);
+                       
+                        shouldStartWith.ShouldBeTrue($"The Appointment Participant Actor Reference should start with one of {patient}, {practitioner} or {location}, but was {participant.Actor.Reference}.");
                     }
-                }
-            }
-        }
-
-        [Then(@"if appointment is present the single or multiple participant must contain a type or actor")]
-        public void ThenTheAppointmentResourceShouldContainAParticipantWithATypeOrActor()
-        {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Appointment))
-                {
-                    Appointment appointment = (Appointment)entry.Resource;
-                    foreach (ParticipantComponent participant in appointment.Participant)
-                    {
-                        var actor = participant.Actor;
-                        var type = participant.Type;
-
-                        if (null == actor && null == type)
-                        {
-                            Assert.Fail("Actor and type are null");
-                        }
-                        if (null != type)
-                        {
-                            int codableConceptCount = 0;
-                            foreach (var typeCodableConcept in type)
-                            {
-                                codableConceptCount++;
-                                int codingCount = 0;
-                                foreach (var coding in typeCodableConcept.Coding)
-                                {
-                                    coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/encounter-participant-type");
-                                    string[] codes = new string[12] { "translator", "emergency", "ADM", "ATND", "CALLBCK", "CON", "DIS", "ESC", "REF", "SPRF", "PPRF", "PART" };
-                                    string[] codeDisplays = new string[12] { "Translator", "Emergency", "admitter", "attender", "callback contact", "consultant", "discharger", "escort", "referrer", "secondary performer", "primary performer", "Participation" };
-                                    coding.Code.ShouldBeOneOf(codes);
-                                    coding.Display.ShouldBeOneOf(codeDisplays);
-                                    for (int i = 0; i < codes.Length; i++)
-                                    {
-                                        if (string.Equals(coding.Code, codes[i]))
-                                        {
-                                            coding.Display.ShouldBe(codeDisplays[i], "The participant type code does not match the display element");
-                                        }
-                                    }
-                                    codingCount++;
-                                }
-                                codingCount.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of 1 participant type coding element for each participant");
-                            }
-                            codableConceptCount.ShouldBeLessThanOrEqualTo(1, "The participant type element may only contain one codable concept.");
-                        }
-
-                        if (actor != null && actor.Reference != null)
-                        {
-                            actor.Reference.ShouldNotBeEmpty();
-                            if (!actor.Reference.StartsWith("Patient/") &&
-                                !actor.Reference.StartsWith("Practitioner/") &&
-                                !actor.Reference.StartsWith("Location/"))
-                            {
-                                Assert.Fail("The actor reference should be a Patient, Practitioner or Location");
-                            }
-                        }
-                    }
-                }
-            }
+                });
+            });
         }
 
         [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for Start ""([^""]*)""")]
@@ -471,5 +401,21 @@
         {
             _httpContext.RequestUrl = $"{_httpContext.RequestUrl}?start={prefix}{_httpContext.CreatedAppointment.StartElement}";
         }
+
+        private static Dictionary<string, string> ParticipantTypeDictionary => new Dictionary<string, string>
+        {
+            { "translator", "Translator"},
+            { "emergency",  "Emergency"},
+            { "ADM", "admitter"},
+            { "ATND", "attender"},
+            { "CALLBCK", "callback contact"},
+            { "CON", "consultant"},
+            { "DIS", "discharger"},
+            { "ESC", "escort"},
+            { "REF", "referrer"},
+            { "SPRF", "secondary performer"},
+            { "PPRF", "primary performer"},
+            { "PART", "Participation"}
+        };
     }
 }

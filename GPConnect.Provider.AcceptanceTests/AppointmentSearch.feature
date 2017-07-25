@@ -442,7 +442,7 @@ Scenario: Appointment retrieve bundle resource must contain participant with typ
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-	Then if appointment is present the single or multiple participant must contain a type or actor
+		And the Appointment Participant Type and Actor should be valid
 
 Scenario: Appointment retrieve bundle valid resources returned in the response
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

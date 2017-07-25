@@ -211,7 +211,7 @@ Scenario: Book Appointment and appointment participant is valid
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
 		And the Appointment Participants should be valid and resolvable
-		And the returned appointment participants must contain a type or actor element
+		And the Appointment Participant Type and Actor should be valid
 
 #improve name to be more descriptive
 Scenario Outline: Book Appointment and check extensions are valid
