@@ -60,8 +60,7 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned resource shall contains a logical id
-		And the appointment resource should contain a status element
-		And the appointment response resource contains a slot reference
+		And the Appointment Status should be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -84,8 +83,8 @@ Scenario Outline: Book appointment _format parameter only but varying request co
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned resource shall contains a logical id
-		And the appointment resource should contain a status element
-		And the appointment response resource contains a slot reference
+		And the Appointment Status should be valid
+		And the Appointment Slots should be valid
 	Examples:
 		| ContentType           | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -108,8 +107,8 @@ Scenario Outline: Book appointment accept header to request response format
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
 		And the returned resource shall contains a logical id
-		And the appointment resource should contain a status element
-		And the appointment response resource contains a slot reference
+		And the Appointment Status should be valid
+		And the Appointment Slots should be valid
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -178,12 +177,12 @@ Scenario: Book Appointment and check response contains the manadatory elements
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the returned resource shall contains a logical id
-		And the appointment resource should contain a status element
-		And the appointment resource should contain a single start element
-		And the appointment resource should contain a single end element
-		And the appointment resource should contain at least one participant
-		And the appointment resource should contain at least one slot reference
-		And if the appointment resource contains a priority the value is valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Priority should be valid
 
 Scenario: Book Appointment and check returned appointment resource contains meta data
 	Given I get the Patient for Patient Value "patient1"

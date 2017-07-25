@@ -176,10 +176,10 @@ Scenario: Amend appointment and check the returned appointment resource conforms
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
 		And the Appointment Comment should be valid for "customComment"
-		And the appointment response resource contains a status with a valid value
-		And the appointment response resource contains an start date
-		And the appointment response resource contains an end date
-		And the appointment response resource contains a slot reference
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
 		And the Appointment Reason should be valid
 		And the Appointment Priority should be valid

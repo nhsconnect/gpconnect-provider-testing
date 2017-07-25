@@ -286,7 +286,7 @@ Scenario: Cancel appointment response body must contain valid slot reference
 		And the response should be an Appointment resource
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Status should be Cancelled
-		And the appointment response resource contains a slot reference
+		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
 
 Scenario Outline: Cancel appointment prefer header set to representation
@@ -303,10 +303,10 @@ Scenario Outline: Cancel appointment prefer header set to representation
 		And the content-type should not be equal to null
 		And the content-length should not be equal to zero
 		And the returned resource shall contains a logical id
-		And the appointment resource should contain a single start element
-		And the appointment resource should contain a single end element
-		And the appointment resource should contain at least one slot reference
-		And the appointment resource should contain at least one participant
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Slots should be valid
+		And the Appointment Participants should be valid and resolvable
 		And the Appointment Reason should be valid
 		And the Appointment Metadata should be valid
 	Examples:

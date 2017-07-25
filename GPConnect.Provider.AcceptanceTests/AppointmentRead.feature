@@ -139,10 +139,10 @@ Scenario Outline: Read appointment ensure response appointments contain the mana
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And the appointment response resource contains a status with a valid value
-		And the appointment response resource contains an start date
-		And the appointment response resource contains an end date
-		And the appointment response resource contains a slot reference
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
 	Examples:
 		| AppointmentStatus | Header                | BodyFormat |
