@@ -197,7 +197,7 @@ Scenario: Book Appointment and check returned appointment resource contains meta
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Metadata should be valid
 
 #improve name to be more descriptive
 Scenario: Book Appointment and appointment participant is valid
@@ -211,7 +211,7 @@ Scenario: Book Appointment and appointment participant is valid
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response should be an Appointment resource
-		And the appointment response resource contains atleast 2 participants a practitioner and a patient
+		And the Appointment Participants should be valid and resolvable
 		And the returned appointment participants must contain a type or actor element
 
 #improve name to be more descriptive

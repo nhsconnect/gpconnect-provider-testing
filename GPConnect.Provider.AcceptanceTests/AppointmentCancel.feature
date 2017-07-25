@@ -287,7 +287,6 @@ Scenario: Cancel appointment response body must contain valid slot reference
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Status should be Cancelled
 		And the appointment response resource contains a slot reference
-		And the appointment response resource contains atleast 2 participants a practitioner and a patient
 		And the Appointment Participants should be valid and resolvable
 
 Scenario Outline: Cancel appointment prefer header set to representation
@@ -308,7 +307,7 @@ Scenario Outline: Cancel appointment prefer header set to representation
 		And the appointment resource should contain a single end element
 		And the appointment resource should contain at least one slot reference
 		And the appointment resource should contain at least one participant
-		And if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
+		And the Appointment Reason should be valid
 		And the Appointment Metadata should be valid
 	Examples:
 		| PatientName |

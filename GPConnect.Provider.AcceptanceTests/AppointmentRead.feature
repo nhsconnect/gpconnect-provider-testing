@@ -126,7 +126,7 @@ Scenario: Read appointment valid request shall include id and structure definiti
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the returned resource shall contains a logical id
-		And the returned appointment resource should contain meta data profile and version id
+		And the Appointment Metadata should be valid
 
 Scenario Outline: Read appointment ensure response appointments contain the manadatory elements
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -143,7 +143,7 @@ Scenario Outline: Read appointment ensure response appointments contain the mana
 		And the appointment response resource contains an start date
 		And the appointment response resource contains an end date
 		And the appointment response resource contains a slot reference
-		And the appointment response resource contains atleast 2 participants a practitioner and a patient
+		And the Appointment Participants should be valid and resolvable
 	Examples:
 		| AppointmentStatus | Header                | BodyFormat |
 		| Booked            | application/json+fhir | JSON       |
@@ -159,7 +159,7 @@ Scenario: Read appointment if resource contains identifier then the value is man
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And if the appointment response resource contains any identifiers they must have a value
+		And the Appointment Identifiers should be valid
 
 Scenario: Read appointment if reason is included in response check that it conforms to one of the three valid types
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -170,7 +170,7 @@ Scenario: Read appointment if reason is included in response check that it confo
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
+		And the Appointment Reason should be valid
 
 Scenario: Read appointment containing a priority element and check that the priority is valid
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -182,7 +182,7 @@ Scenario: Read appointment containing a priority element and check that the prio
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be an Appointment resource
-		And if the appointment contains a priority element it should be a valid value
+		And the Appointment Priority should be valid
 
 Scenario: Read appointment and all participants must have a type or actor element
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -206,10 +206,10 @@ Given I create an Appointment for Patient "patient1" and Organization Code "ORG1
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be an Appointment resource
-		And if the returned appointment contains appointmentCategory extension the value should be valid
-		And if the returned appointment contains appointmentBookingMethod extension the value should be valid
-		And if the returned appointment contains appointmentContactMethod extension the value should be valid
-		And if the returned appointment contains appointmentCancellationReason extension the value should be valid
+		And the Appointment Category Extension should be valid
+		And the Appointment Booking Method Extension should be valid
+		And the Appointment Contact Method Extension should be valid
+		And the Appointment Cancellation Reason Extension should be valid
 	Examples:
 		| AppointmentStatus | Header                | BodyFormat |
 		| Booked            | application/json+fhir | JSON       |

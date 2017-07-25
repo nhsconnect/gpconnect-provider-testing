@@ -180,11 +180,11 @@ Scenario: Amend appointment and check the returned appointment resource conforms
 		And the appointment response resource contains an start date
 		And the appointment response resource contains an end date
 		And the appointment response resource contains a slot reference
-		And the appointment response resource contains atleast 2 participants a practitioner and a patient
-		And if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
-		And if the appointment contains a priority element it should be a valid value
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Reason should be valid
+		And the Appointment Priority should be valid
 		And the returned appointment participants must contain a type or actor element
-		And if the appointment response resource contains any identifiers they must have a value
+		And the Appointment Identifiers should be valid
 		
 Scenario: Amend appointment prefer header set to representation
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

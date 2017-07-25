@@ -836,5 +836,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             contentLength.ShouldNotBe("0", "The response payload should contain a resource.");
         }
 
+
+        [Then(@"the response should contain the ETag header matching the resource version")]
+        public void ThenTheResponseShouldContainTheETagHeaderMatchingTheResourceVersion()
+        {
+            Resource resource = FhirContext.FhirResponseResource;
+            string returnedETag = "";
+            HttpContext.ResponseHeaders.TryGetValue("ETag", out returnedETag);
+            returnedETag.ShouldStartWith("W/\"", "The Tag header should start with W/\"");
+            returnedETag.ShouldEndWith(resource.Meta.VersionId + "\"", "The ETag header should contain the resource version enclosed within speech marks");
+            returnedETag.ShouldBe("W/\"" + resource.Meta.VersionId + "\"", "The ETag header contains invalid characters");
+        }
+
     }
 }

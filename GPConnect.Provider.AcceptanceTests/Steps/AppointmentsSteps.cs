@@ -32,7 +32,14 @@
             _patientSteps = patientSteps;
             _getScheduleSteps = getScheduleSteps;
         }
-        
+
+        [Then(@"the response should be an Appointment resource")]
+        public void theResponseShouldBeAnAppointmentResource()
+        {
+            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Appointment,
+                "The returned resource type was not Appointment");
+        }
+
         [When(@"I search for patient ""([^""]*)"" and search for the most recently booked appointment ""([^""]*)"" using the stored startDate from the last booked appointment as a search parameter")]
         public void ISearchForPatientAndSearchForTheMostRecentlyBookedAppointmentUsingTheStoredStartDateFromTheLastBookedAppointmentAsASearchParameter(string patient, string appointmentKey)
         {
@@ -929,6 +936,62 @@
                 body = FhirSerializer.SerializeToJson(_fhirContext.FhirRequestParameters);
             }
             _httpSteps.RestRequest(Method.POST, "/Organization/" + logicalId + "/$gpc.getschedule", body);
+        }
+
+
+        [Then(@"the returned appointment participants must contain a type or actor element")]
+        public void ThenTheReturnedAppointmentParticipantsMustContainATypeOrActorElement()
+        {
+            Appointment appointment = (Appointment)_fhirContext.FhirResponseResource;
+            foreach (ParticipantComponent participant in appointment.Participant)
+            {
+                var actor = participant.Actor;
+                var type = participant.Type;
+
+                if (null == actor && null == type)
+                {
+                    Assert.Fail("There must be an actor or type element within the appointment participants");
+                }
+
+                if (null != type)
+                {
+                    int codableConceptCount = 0;
+                    foreach (var typeCodableConcept in type)
+                    {
+                        codableConceptCount++;
+                        int codingCount = 0;
+                        foreach (var coding in typeCodableConcept.Coding)
+                        {
+                            coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/encounter-participant-type", "The coding system is incorrect");
+                            string[] codes = new string[12] { "translator", "emergency", "ADM", "ATND", "CALLBCK", "CON", "DIS", "ESC", "REF", "SPRF", "PPRF", "PART" };
+                            string[] codeDisplays = new string[12] { "Translator", "Emergency", "admitter", "attender", "callback contact", "consultant", "discharger", "escort", "referrer", "secondary performer", "primary performer", "Participation" };
+                            coding.Code.ShouldBeOneOf(codes, "The code is incorrect");
+                            coding.Display.ShouldBeOneOf(codeDisplays, "The display is incorrect");
+                            for (int i = 0; i < codes.Length; i++)
+                            {
+                                if (string.Equals(coding.Code, codes[i]))
+                                {
+                                    coding.Display.ShouldBe(codeDisplays[i], "The participant type code does not match the display element");
+                                }
+                            }
+                            codingCount++;
+                        }
+                        codingCount.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of 1 participant type coding element for each participant");
+                    }
+                    codableConceptCount.ShouldBeLessThanOrEqualTo(1, "The participant type element may only contain one codable concept.");
+                }
+
+                if (actor != null && actor.Reference != null)
+                {
+                    actor.Reference.ShouldNotBeEmpty();
+                    if (!actor.Reference.StartsWith("Patient/") &&
+                        !actor.Reference.StartsWith("Practitioner/") &&
+                        !actor.Reference.StartsWith("Location/"))
+                    {
+                        Assert.Fail("The actor reference should be a Patient, Practitioner or Location");
+                    }
+                }
+            }
         }
     }
 }
