@@ -262,8 +262,8 @@ Scenario: Conformance profile supports the Patient search operation
 Scenario Outline: System should error if multiple parameters valid or invalid are sent
 	 Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add the parameter "<Identifier1>" with system "http://fhir.nhs.net/Id/nhs-number" for patient "<PatientOne>"
-		And I add the parameter "<Identifier2>" with system "http://fhir.nhs.net/Id/nhs-number" for patient "<PatientTwo>"
+		And I add a Patient Identifier parameter with identifier name "<Identifier1>" default System and Value "<PatientOne>"
+		And I add a Patient Identifier parameter with identifier name "<Identifier2>" default System and Value "<PatienTwo>"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

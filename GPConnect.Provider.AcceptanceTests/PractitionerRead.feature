@@ -148,7 +148,7 @@ Scenario: Practitioner read response should contain an ETag header
 	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
 		And the Response Resource should be a Practitioner
-		And the response should contain the ETag header matching the resource version
+		And the Response should contain the ETag header matching the Resource Version Id
 
 #Potentially out of scope, needs verifiying
 Scenario: Practitioner read VRead of current resource should return resource

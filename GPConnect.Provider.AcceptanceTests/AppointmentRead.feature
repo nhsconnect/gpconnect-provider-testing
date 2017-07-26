@@ -226,7 +226,7 @@ Scenario: Read appointment and response should contain an ETag header
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the Response Resource should be an Appointment
-		And the response should contain the ETag header matching the resource version
+		And the Response should contain the ETag header matching the Resource Version Id
 
 Scenario: VRead an appointment for a valid version of the patient appointment resource
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

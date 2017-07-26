@@ -21,7 +21,7 @@ Scenario: Book Appointment with invalid url for booking appointment
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-	When I make a POST request to ""/Appointmentz\"
+	When I make the "AppointmentCreate" request
 	Then the response status code should be "404"
 
 Scenario Outline: Book appointment failure due to missing header

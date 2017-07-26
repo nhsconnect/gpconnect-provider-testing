@@ -64,7 +64,8 @@ Scenario Outline: Amend appointment making a request to an invalid URL
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment Reason to "customComment"
-	When I make a GET request to "<url>"
+		And I set the request URL to "<url>"
+	When I make the "AppointmentAmend" request
 	Then the response status code should indicate failure
 	Examples:
 		| url                 |

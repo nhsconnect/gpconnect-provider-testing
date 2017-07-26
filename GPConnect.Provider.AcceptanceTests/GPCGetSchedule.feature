@@ -385,11 +385,9 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		| ORG2         | 13   |
 
 Scenario: Conformance profile supports the gpc.getSchedule operation
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the conformance profile should contain the "gpc.getschedule" operation
 
 @Manual
