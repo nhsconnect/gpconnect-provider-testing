@@ -149,6 +149,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HTTP.feature</DependentUpon>
     </Compile>
+    <Compile Include="Http\HttpRequest.cs" />
     <Compile Include="Importers\OrganizationSiteCodeClassMap.cs" />
     <Compile Include="Importers\OrganizationSiteCodeMapImporter.cs" />
     <Compile Include="Importers\RegisterPatientsImporter.cs" />
