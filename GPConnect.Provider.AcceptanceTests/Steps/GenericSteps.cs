@@ -18,13 +18,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     {
         private readonly IObjectContainer _objectContainer;
         private readonly HttpContext _httpContext;
-        private readonly FhirContext _fhirContext;
 
-        public GenericSteps(IObjectContainer objectContainer, FhirContext fhirContext, HttpContext httpContext)
+        public GenericSteps(IObjectContainer objectContainer, HttpContext httpContext)
         {
             Log.WriteLine("GenericSteps() Constructor");
             _objectContainer = objectContainer;
-            _fhirContext = fhirContext;
             _httpContext = httpContext;
         }
 
@@ -200,7 +198,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             try
             {
-                _fhirContext.SaveToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
+                _httpContext.SaveToFhirContextToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
             }
             catch (Exception e) {
                 Log.WriteLine("Exception writing FhirContext to Output File");

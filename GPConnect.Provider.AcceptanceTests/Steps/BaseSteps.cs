@@ -2,19 +2,16 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Context;
     using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
 
     public abstract class BaseSteps : Steps
     {
-        protected readonly FhirContext _fhirContext;
         protected readonly HttpSteps _httpSteps;
 
-        protected BaseSteps(FhirContext fhirContext, HttpSteps httpSteps)
+        protected BaseSteps(HttpSteps httpSteps)
         {
-            _fhirContext = fhirContext;
             _httpSteps = httpSteps;
         }
 

@@ -13,10 +13,10 @@
     {
         private readonly HttpContext _httpContext;
 
-        private List<Location> Locations => _fhirContext.Locations;
+        private List<Location> Locations => _httpContext.HttpResponse.Locations;
 
-        public LocationSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps) 
-            : base(fhirContext, httpSteps)
+        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps) 
+            : base(httpSteps)
         {
             _httpContext = httpContext;
         }
@@ -60,7 +60,7 @@
         [Given(@"I store the Location Id")]
         public void StoreTheLocationId()
         {
-            var location = _fhirContext.Locations.FirstOrDefault();
+            var location = Locations.FirstOrDefault();
 
             if (location != null)
                 _httpContext.GetRequestId = location.Id;
@@ -69,7 +69,7 @@
         [Given(@"I store the Location")]
         public void StoreTheLocation()
         {
-            var location = _fhirContext.Locations.FirstOrDefault();
+            var location = Locations.FirstOrDefault();
 
             if (location != null)
                 _httpContext.StoredLocation = location;
@@ -87,7 +87,7 @@
         [Then(@"the Response Resource should be a Location")]
         public void TheResponseResourceShouldBeALocation()
         {
-            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Location);
+            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Location);
         }
 
         [Then(@"the Location Name should be valid")]
@@ -180,7 +180,7 @@
         [Then(@"the Location Id should match the GET request Id")]
         public void TheLocationIdShouldMarchTheGetRequestId()
         {
-            var location = _fhirContext.Locations.FirstOrDefault();
+            var location = Locations.FirstOrDefault();
 
             location.ShouldNotBeNull();
             location.Id.ShouldBe(_httpContext.GetRequestId);

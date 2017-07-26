@@ -408,7 +408,7 @@ Scenario Outline: Register patient with invalid parameters name
 		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
 		And I set the Stored Patient Registration Status with Value "A"
 		And I set the Stored Patient Registration Type with Value "T"
-		And I am requesting the "SUM" care record section
+		And I add a Record Section parameter for "SUM"
 		And I add the Stored Patient as a parameter with name "<ParameterName>"
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"

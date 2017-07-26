@@ -19,12 +19,10 @@
     public class HttpRequest
     {
         private readonly HttpContext _httpContext;
-        private readonly FhirContext _fhirContext;
 
-        public HttpRequest(HttpContext httpContext, FhirContext fhirContext)
+        public HttpRequest(HttpContext httpContext)
         {
             _httpContext = httpContext;
-            _fhirContext = fhirContext;
         }
 
         public void MakeHttpRequest()
@@ -143,12 +141,12 @@
                 case FhirConst.ContentTypes.kJsonFhir:
                     _httpContext.ResponseJSON = JObject.Parse(_httpContext.ResponseBody);
                     var jsonParser = new FhirJsonParser();
-                    _fhirContext.FhirResponseResource = jsonParser.Parse<Resource>(_httpContext.ResponseBody);
+                    _httpContext.HttpResponse.Resource = jsonParser.Parse<Resource>(_httpContext.ResponseBody);
                     break;
                 case FhirConst.ContentTypes.kXmlFhir:
                     _httpContext.ResponseXML = XDocument.Parse(_httpContext.ResponseBody);
                     var xmlParser = new FhirXmlParser();
-                    _fhirContext.FhirResponseResource = xmlParser.Parse<Resource>(_httpContext.ResponseBody);
+                    _httpContext.HttpResponse.Resource = xmlParser.Parse<Resource>(_httpContext.ResponseBody);
                     break;
             }
         }

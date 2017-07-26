@@ -24,15 +24,13 @@
     public class HttpSteps : Steps
     {
         private readonly HttpContext _httpContext;
-        private readonly FhirContext _fhirContext;
         private readonly JwtHelper _jwtHelper;
         private readonly SecuritySteps _securitySteps;
 
-        public HttpSteps(HttpContext httpContext, FhirContext fhirContext, JwtHelper jwtHelper, SecuritySteps securitySteps)
+        public HttpSteps(HttpContext httpContext, JwtHelper jwtHelper, SecuritySteps securitySteps)
         {
             Log.WriteLine("HttpSteps() Constructor");
             _httpContext = httpContext;
-            _fhirContext = fhirContext;
             _jwtHelper = jwtHelper;
             _securitySteps = securitySteps;
         }
@@ -83,7 +81,6 @@
             _httpContext.RequestUrl = "";
             _httpContext.RequestParameters.ClearParameters();
             _httpContext.RequestBody = null;
-            _fhirContext.FhirRequestParameters = new Parameters();
 
             _httpContext.RequestParameters.ClearParameters();
 
@@ -92,7 +89,7 @@
             _httpContext.ResponseContentType = null;
             _httpContext.ResponseBody = null;
             _httpContext.ResponseHeaders.Clear();
-            _fhirContext.FhirResponseResource = null;
+            _httpContext.HttpResponse.Resource = null;
 
             // Load The Default Settings From The App.config File
             _httpContext.LoadAppConfig();
@@ -261,7 +258,7 @@
             }
             catch (Exception) { }
 
-            var preFhirResponseResource = _fhirContext.FhirResponseResource;
+            var preFhirResponseResource = _httpContext.HttpResponse.Resource;
 
             // Setup configuration
             Given($@"I am using the default server");
@@ -281,7 +278,7 @@
             // Check the response
             _httpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.OK);
             Then($@"the response body should be FHIR JSON"); // Create resource object from returned JSON
-            var returnResource = _fhirContext.FhirResponseResource; // Store the found resource for use in the calling system
+            var returnResource = _httpContext.HttpResponse.Resource; // Store the found resource for use in the calling system
 
             // Restore state
             _httpContext.RequestHeaders.SetRequestHeaders(preRequestHeaders);
@@ -298,7 +295,7 @@
             _httpContext.ResponseHeaders = preResponseHeaders;
             _httpContext.ResponseJSON = preResponseJSON;
             _httpContext.ResponseXML = preResponseXML;
-            _fhirContext.FhirResponseResource = preFhirResponseResource;
+            _httpContext.HttpResponse.Resource = preFhirResponseResource;
 
             return returnResource;
         }
@@ -464,7 +461,6 @@
             var httpContextFactory = new HttpContextFactory(interaction);
 
             httpContextFactory.ConfigureHttpContext(_httpContext);
-            httpContextFactory.ConfigureFhirContext(_fhirContext);
 
             var jwtFactory = new JwtFactory(interaction);
 
@@ -545,7 +541,7 @@
                 _httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
             }
 
-            var httpRequest = new HttpRequest(_httpContext, _fhirContext);
+            var httpRequest = new HttpRequest(_httpContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -559,7 +555,7 @@
 
             _httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerTokenWithoutEncoding());
 
-            var httpRequest = new HttpRequest(_httpContext, _fhirContext);
+            var httpRequest = new HttpRequest(_httpContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -574,7 +570,7 @@
 
             _httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext, _fhirContext);
+            var httpRequest = new HttpRequest(_httpContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -589,7 +585,7 @@
 
             _httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext, _fhirContext);
+            var httpRequest = new HttpRequest(_httpContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -602,7 +598,7 @@
             requestFactory.ConfigureInvalidParameterResourceType(_httpContext);
             _httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext, _fhirContext);
+            var httpRequest = new HttpRequest(_httpContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -615,7 +611,7 @@
             requestFactory.ConfigureParameterResourceWithAdditionalField(_httpContext);
             _httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext, _fhirContext);
+            var httpRequest = new HttpRequest(_httpContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -629,7 +625,7 @@
         [Then(@"the Response should contain the ETag header matching the Resource Version Id")]
         public void TheResponseShouldContainTheETagHeaderMatchingTheResourceVersionId()
         {
-            var versionId = _fhirContext.FhirResponseResource.VersionId;
+            var versionId = _httpContext.HttpResponse.Resource.VersionId;
 
             string eTag;
             _httpContext.ResponseHeaders.TryGetValue("ETag", out eTag);

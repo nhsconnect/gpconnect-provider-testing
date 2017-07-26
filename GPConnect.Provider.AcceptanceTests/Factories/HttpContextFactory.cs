@@ -5,7 +5,6 @@
     using Constants;
     using Context;
     using Enum;
-    using Hl7.Fhir.Model;
 
     public class HttpContextFactory
     {
@@ -219,13 +218,6 @@
             httpContext.HttpMethod = HttpMethod.Get;
             httpContext.RequestUrl = "metadata";
             httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.MetadataRead);
-        }
-
-        //TODO: Remove fhirContext dependencies
-        public void ConfigureFhirContext(FhirContext fhirContext)
-        {
-            fhirContext.FhirResponseResource = null;
-            fhirContext.FhirRequestParameters = new Parameters();
         }
     }
 }

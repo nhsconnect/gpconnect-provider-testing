@@ -11,14 +11,12 @@
     [Binding]
     public class RegisterPatientSteps : Steps
     {
-        private readonly FhirContext _fhirContext;
         private readonly HttpContext _httpContext;
         private readonly PatientSteps _patientSteps;
-        private List<Patient> Patients => _fhirContext.Patients;
+        private List<Patient> Patients => _httpContext.HttpResponse.Patients;
 
-        public RegisterPatientSteps(FhirContext fhirContext, HttpContext httpContext, PatientSteps patientSteps)
+        public RegisterPatientSteps(HttpContext httpContext, PatientSteps patientSteps)
         {
-            _fhirContext = fhirContext;
             _httpContext = httpContext;
             _patientSteps = patientSteps;
         }
@@ -427,7 +425,7 @@
             {
                 _patientSteps.GetThePatientForPatientNhsNumber(registerPatient.SPINE_NHS_NUMBER);
 
-                var entries = _fhirContext.Entries;
+                var entries = _httpContext.HttpResponse.Entries;
 
                 if (!entries.Any())
                 {

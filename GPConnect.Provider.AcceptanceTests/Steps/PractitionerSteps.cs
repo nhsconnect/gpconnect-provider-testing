@@ -15,10 +15,10 @@
         private readonly BundleSteps _bundleSteps;
         private readonly OrganizationSteps _organizationSteps;
 
-        private List<Practitioner> Practitioners => _fhirContext.Practitioners;
+        private List<Practitioner> Practitioners => _httpContext.HttpResponse.Practitioners;
 
-        public PractitionerSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps) 
-            : base(fhirContext, httpSteps)
+        public PractitionerSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps) 
+            : base(httpSteps)
         {
             _httpContext = httpContext;
             _bundleSteps = bundleSteps;
@@ -68,7 +68,7 @@
         [Given(@"I store the Practitioner Id")]
         public void StoreThePractitionerId()
         {
-            var practitioner = _fhirContext.Practitioners.FirstOrDefault();
+            var practitioner = Practitioners.FirstOrDefault();
             if (practitioner != null)
                 _httpContext.GetRequestId = practitioner.Id;
         }
@@ -76,7 +76,7 @@
         [Given(@"I store the Practitioner Version Id")]
         public void StoreThePractitionerVersionId()
         {
-            var practitioner = _fhirContext.Practitioners.FirstOrDefault();
+            var practitioner = Practitioners.FirstOrDefault();
             if (practitioner != null)
                 _httpContext.GetRequestVersionId = practitioner.VersionId;
         }
@@ -84,7 +84,7 @@
         [Then(@"the Response Resource should be a Practitioner")]
         public void ResponseResourceShouldBeAPractitioner()
         {
-            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Practitioner);
+            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Practitioner);
         }
 
         [Then(@"the Practitioner should be valid")]

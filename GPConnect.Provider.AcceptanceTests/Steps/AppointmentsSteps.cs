@@ -17,10 +17,10 @@
         private readonly JwtSteps _jwtSteps;
         private readonly PatientSteps _patientSteps;
         private readonly GetScheduleSteps _getScheduleSteps;
-        private List<Appointment> Appointments => _fhirContext.Appointments;
+        private List<Appointment> Appointments => _httpContext.HttpResponse.Appointments;
 
-        public AppointmentsSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, JwtSteps jwtSteps, PatientSteps patientSteps, GetScheduleSteps getScheduleSteps) 
-            : base(fhirContext, httpSteps)
+        public AppointmentsSteps(HttpSteps httpSteps, HttpContext httpContext, JwtSteps jwtSteps, PatientSteps patientSteps, GetScheduleSteps getScheduleSteps) 
+            : base(httpSteps)
         {
             _httpContext = httpContext;
             _jwtSteps = jwtSteps;
@@ -31,7 +31,7 @@
         [Then(@"the Response Resource should be an Appointment")]
         public void TheResponseResourceShouldBeAnAppointment()
         {
-            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Appointment, "the Response Resource should be an Appointment.");
+            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Appointment, "the Response Resource should be an Appointment.");
         }
 
         [Then(@"the Bundle should contain no Appointments")]
@@ -86,7 +86,7 @@
         [Given(@"I store the Created Appointment")]
         public void StoreTheCreatedAppointment()
         {
-            var appointment = _fhirContext.Appointments.FirstOrDefault();
+            var appointment = _httpContext.HttpResponse.Appointments.FirstOrDefault();
 
             if (appointment != null)
                 _httpContext.CreatedAppointment = appointment;
@@ -96,7 +96,7 @@
         [Given(@"I store the Appointment")]
         public void StoreTheAppointment()
         {
-            var appointment = _fhirContext.Appointments.FirstOrDefault();
+            var appointment = _httpContext.HttpResponse.Appointments.FirstOrDefault();
 
             if (appointment != null)
                 _httpContext.CreatedAppointment = appointment;
@@ -105,7 +105,7 @@
         [Given(@"I store the Appointment Id")]
         public void StoreTheAppointmentId()
         {
-            var appointment = _fhirContext.Appointments.FirstOrDefault();
+            var appointment = _httpContext.HttpResponse.Appointments.FirstOrDefault();
 
             if (appointment != null)
                 _httpContext.GetRequestId = appointment.Id;
@@ -114,7 +114,7 @@
         [Given(@"I store the Appointment Version Id")]
         public void StoreThePractitionerVersionId()
         {
-            var appointment = _fhirContext.Appointments.FirstOrDefault();
+            var appointment = _httpContext.HttpResponse.Appointments.FirstOrDefault();
             if (appointment != null)
                 _httpContext.GetRequestVersionId = appointment.VersionId;
         }

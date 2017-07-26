@@ -11,8 +11,8 @@
     {
         private readonly HttpContext _httpContext;
 
-        public AccessRecordSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext) 
-            : base(fhirContext, httpSteps)
+        public AccessRecordSteps(HttpSteps httpSteps, HttpContext httpContext) 
+            : base(httpSteps)
         {
             _httpContext = httpContext;
         }

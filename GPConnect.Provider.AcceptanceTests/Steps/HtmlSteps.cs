@@ -1,6 +1,7 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System;
+    using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using System.Xml.Linq;
     using Context;
@@ -14,176 +15,157 @@
     [Binding]
     public sealed class HtmlSteps : Steps
     {
-        private readonly FhirContext _fhirContext;
+        private readonly HttpContext _httpContext;
+        private List<Composition> Compositions => _httpContext.HttpResponse.Compositions;
 
-        public HtmlSteps(FhirContext fhirContext)
+        public HtmlSteps(HttpContext httpContext)
         {
-            _fhirContext = fhirContext;
+            _httpContext = httpContext;
         }
 
         [Then(@"the html should be valid xhtml")]
         public void ThenTheHtmlShouldBeValidXHTML()
         {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                foreach (var section in composition.Section)
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
+                    var xhtml = section.Text.Div;
+                    XDocument doc = null;
+                    try
                     {
-                        var xhtml = section.Text.Div;
-                        XDocument doc = null;
-                        try
-                        {
-                            doc = XDocument.Parse(xhtml);
-                            doc.ShouldNotBeNull();
-                        }
-                        catch (Exception e)
-                        {
-                            Log.WriteLine("Failed to parse div to xhtml");
-                            Log.WriteLine(e.StackTrace);
-                            doc.ShouldNotBeNull();
-                        }
+                        doc = XDocument.Parse(xhtml);
+                        doc.ShouldNotBeNull();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLine("Failed to parse div to xhtml");
+                        Log.WriteLine(e.StackTrace);
+                        doc.ShouldNotBeNull();
                     }
                 }
-            }
+            });
         }
 
         [Then(@"the html should not contain ""([^""]*)"" tags")]
         public void ThenTheHtmlShouldNotContaintags(string tagName)
         {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                foreach (Composition.SectionComponent section in composition.Section)
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
-                    {
-                        Regex regex = new Regex("<" + tagName);
-                        regex.Matches(section.Text.Div).Count.ShouldBe(0);
-                    }
+                    Regex regex = new Regex("<" + tagName);
+                    regex.Matches(section.Text.Div).Count.ShouldBe(0);
                 }
-            }
+            });
+
         }
 
         [Then(@"the html should not contain any attributes")]
         public void ThenTheHtmlShouldNotContainAnyAttributes()
         {
-            // Find all matches to regex for attributes and use log to print out all instances then fail if any found.
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                foreach (Composition.SectionComponent section in composition.Section)
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
+                    var HTML = section.Text.Div;
+                    Regex regex = new Regex("<[^>]*([^' ']{1,}[' ']*=[' ']*[^' '>]{1,})[^>]*>");
+                    Regex regexXmlns = new Regex("<[^>]*(xmlns[' ']*=[' ']*[^' '>]{1,})[^>]*>");
+
+                    MatchCollection matches = regex.Matches(HTML);
+                    MatchCollection matchesXmlns = regexXmlns.Matches(HTML);
+
+                    foreach (Match match in matchesXmlns)
                     {
-                        var HTML = section.Text.Div;
-                        Regex regex = new Regex("<[^>]*([^' ']{1,}[' ']*=[' ']*[^' '>]{1,})[^>]*>");
-                        Regex regexXmlns = new Regex("<[^>]*(xmlns[' ']*=[' ']*[^' '>]{1,})[^>]*>");
-
-                        MatchCollection matches = regex.Matches(HTML);
-                        MatchCollection matchesXmlns = regexXmlns.Matches(HTML);
-
-                        foreach (Match match in matchesXmlns)
-                        {
-                            Log.WriteLine("xmlns Regex Match = " + match.Value);
-                        }
-
-                        foreach (Match match in matches)
-                        {
-                            Log.WriteLine("Attribute Regex Match = " + match.Value);
-                        }
-
-                        var numberOfNonXmlnsAttributes = matches.Count - matchesXmlns.Count;
-                        numberOfNonXmlnsAttributes.ShouldBe(0);
-                        matchesXmlns.Count.ShouldBeGreaterThanOrEqualTo(1);
+                        Log.WriteLine("xmlns Regex Match = " + match.Value);
                     }
+
+                    foreach (Match match in matches)
+                    {
+                        Log.WriteLine("Attribute Regex Match = " + match.Value);
+                    }
+
+                    var numberOfNonXmlnsAttributes = matches.Count - matchesXmlns.Count;
+                    numberOfNonXmlnsAttributes.ShouldBe(0);
+                    matchesXmlns.Count.ShouldBeGreaterThanOrEqualTo(1);
                 }
-            }
+            });
         }
 
         [Then(@"the html should contain headers in coma seperated list ""([^""]*)""")]
         public void ThenTheHTMLShouldNotContainHeadersInComaSeperatedList(string listOfHeaders)
         {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                foreach (Composition.SectionComponent section in composition.Section)
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
+                    var html = section.Text.Div;
+                    var headers = listOfHeaders.Split(',');
+                    foreach (string header in headers)
                     {
-                        var html = section.Text.Div;
-                        var headers = listOfHeaders.Split(',');
-                        foreach (string header in headers)
-                        {
-                            html.ShouldContain("<h2>" + header + "</h2>");
-                        }
+                        html.ShouldContain("<h2>" + header + "</h2>");
                     }
                 }
-            }
+            });
         }
 
         [Then(@"the html should contain table headers in coma seperated list order ""([^""]*)"" for the ""([^""]*)""")]
         public void ThenTheHTMLShouldNotContainTableHeadersInComaSeperatedListOrder(string listOfTableHeadersInOrder, int pageSectionIndex)
         {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                foreach (Composition.SectionComponent section in composition.Section)
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
+                    var html = section.Text.Div;
+                    var headerList = listOfTableHeadersInOrder.Split(',');
+                    Regex regexHeaderSection = new Regex("<thead[\\w\\W]*?thead>");
+                    MatchCollection tableHeaderSectionMatches = regexHeaderSection.Matches(html);
+                    if (tableHeaderSectionMatches.Count < pageSectionIndex)
                     {
-                        var html = section.Text.Div;
-                        var headerList = listOfTableHeadersInOrder.Split(',');
-                        Regex regexHeaderSection = new Regex("<thead[\\w\\W]*?thead>");
-                        MatchCollection tableHeaderSectionMatches = regexHeaderSection.Matches(html);
-                        if (tableHeaderSectionMatches.Count < pageSectionIndex)
+                        Log.WriteLine("The html table that is expected does not exist in the response.");
+                        Assert.Fail();
+                    }
+                    else
+                    {
+                        string tableHeaderSectionHTML = tableHeaderSectionMatches[pageSectionIndex - 1].Value;
+                        Log.WriteLine("HeaderSection = " + tableHeaderSectionHTML);
+                        Regex regexHeaders = new Regex("<th>[^<]*</th>");
+                        MatchCollection matchesForTableHeadersInHTML = regexHeaders.Matches(tableHeaderSectionHTML);
+                        Log.WriteLine("Number of <th> headers in html {0}, expected {1}",
+                            matchesForTableHeadersInHTML.Count, headerList.Length);
+                        if (headerList.Length != matchesForTableHeadersInHTML.Count)
                         {
-                            Log.WriteLine("The html table that is expected does not exist in the response.");
+                            Log.WriteLine(
+                                "The number of table headers in HTML section does not match the required number of headers.");
                             Assert.Fail();
                         }
                         else
                         {
-                            string tableHeaderSectionHTML = tableHeaderSectionMatches[pageSectionIndex - 1].Value;
-                            Log.WriteLine("HeaderSection = " + tableHeaderSectionHTML);
-                            Regex regexHeaders = new Regex("<th>[^<]*</th>");
-                            MatchCollection matchesForTableHeadersInHTML = regexHeaders.Matches(tableHeaderSectionHTML);
-                            Log.WriteLine("Number of <th> headers in html {0}, expected {1}", matchesForTableHeadersInHTML.Count, headerList.Length);
-                            if (headerList.Length != matchesForTableHeadersInHTML.Count)
+                            for (int index = 0; index < headerList.Length; index++)
                             {
-                                Log.WriteLine("The number of table headers in HTML section does not match the required number of headers.");
-                                Assert.Fail();
-                            }
-                            else
-                            {
-                                for (int index = 0; index < headerList.Length; index++)
-                                {
-                                    Console.WriteLine("Expected Header = {0} and was {1}", "<th>" + headerList[index] + "</th>", matchesForTableHeadersInHTML[index].Value);
-                                    (matchesForTableHeadersInHTML[index].Value).ShouldBe("<th>" + headerList[index] + "</th>");
-                                }
+                                Console.WriteLine("Expected Header = {0} and was {1}",
+                                    "<th>" + headerList[index] + "</th>", matchesForTableHeadersInHTML[index].Value);
+                                (matchesForTableHeadersInHTML[index].Value).ShouldBe("<th>" + headerList[index] +
+                                                                                     "</th>");
                             }
                         }
                     }
                 }
-            }
+            });
         }
 
         [Then(@"the response html should contain the applied date range text ""([^""]*)"" to ""([^""]*)""")]
         public void ThenTheResponseHTMLShouldContainTheAppliedDateRangeTest(string fromDate, string toDate)
         {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                foreach (Composition.SectionComponent section in composition.Section)
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
-                    {
-                        var html = section.Text.Div;
-                        string expectedTimePeriodBanner = "<p>For the period '" + fromDate + "' to '" + toDate + "'</p>";
-                        html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
-                    }
+                    var html = section.Text.Div;
+                    string expectedTimePeriodBanner = "<p>For the period '" + fromDate + "' to '" + toDate + "'</p>";
+                    html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
                 }
-            }
+            });
         }
 
         [Then(@"the response html for ""([^""]*)"" section should contain a table with ""([^""]*)"" rows")]
@@ -200,20 +182,16 @@
 
         private int GetSectionTableRows(string sectionName)
         {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            foreach (var composition in Compositions)
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                foreach (Composition.SectionComponent section in composition.Section)
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
-                    {
-                        string html = section.Text.Div
-                            .Split(new string[] { "<h2>" + sectionName + "</h2>" }, StringSplitOptions.None)[1]
-                            .Split(new string[] { "<tbody>" }, StringSplitOptions.None)[1]
-                            .Split(new string[] { "</tbody>" }, StringSplitOptions.None)[0];
+                    string html = section.Text.Div
+                        .Split(new string[] { "<h2>" + sectionName + "</h2>" }, StringSplitOptions.None)[1]
+                        .Split(new string[] { "<tbody>" }, StringSplitOptions.None)[1]
+                        .Split(new string[] { "</tbody>" }, StringSplitOptions.None)[0];
 
-                        return Regex.Matches(html, "<tr>").Count;
-                    }
+                    return Regex.Matches(html, "<tr>").Count;
                 }
             }
 
@@ -223,64 +201,53 @@
         [Then(@"the response html should contain the all data items text")]
         public void ThenTheResponseHTMLShouldContainTheAllDataItemsText()
         {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                foreach (Composition.SectionComponent section in composition.Section)
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
-                    {
-                        var html = section.Text.Div;
-                        html.ShouldContain("<p>All relevant items</p>");
-                    }
+                    var html = section.Text.Div;
+                    html.ShouldContain("<p>All relevant items</p>");
                 }
-            }
+            });
         }
 
         [Then(@"the html should not contain ""([^""]*)""")]
         public void ThenTheHTMLShouldNotContain(string value)
         {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                foreach (Composition.SectionComponent section in composition.Section)
                 {
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
-                    {
-                        var html = section.Text.Div;
-                        html.ShouldNotContain(value);
-                    }
+                    var html = section.Text.Div;
+                    html.ShouldNotContain(value);
                 }
-            }
+            });
         }
 
         [Then(@"the response html should contain the no data available html banner in section ""([^""]*)""")]
         public void ThenTheResponseHTMLShouldContainTheNoDataAvailableHTMLBannerInSection(string sectionHeading)
         {
-            foreach (EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            Compositions.ForEach(composition =>
             {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                var sectionFound = false;
+                foreach (Composition.SectionComponent section in composition.Section)
                 {
-                    var sectionFound = false;
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
-                    {
-                        var html = section.Text.Div;
-                        string[] sections = html.Split(new[] { "<h2>" }, StringSplitOptions.None);
+                    var html = section.Text.Div;
+                    string[] sections = html.Split(new[] { "<h2>" }, StringSplitOptions.None);
 
-                        // Find relavant section
-                        foreach (string sectionHtml in sections)
+                    // Find relavant section
+                    foreach (string sectionHtml in sections)
+                    {
+                        if (sectionHtml.Contains(sectionHeading))
                         {
-                            if (sectionHtml.Contains(sectionHeading))
-                            {
-                                sectionFound = true;
-                                sectionHtml.ShouldContain("<p>No '" + sectionHeading + "' data is recorded for this patient.</p>");
-                            }
+                            sectionFound = true;
+                            sectionHtml.ShouldContain("<p>No '" + sectionHeading + "' data is recorded for this patient.</p>");
                         }
                     }
-                    sectionFound.ShouldBeTrue();
                 }
-            }
+
+                sectionFound.ShouldBeTrue();
+            });
         }
     }
 }

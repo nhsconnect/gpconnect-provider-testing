@@ -14,9 +14,9 @@
     {
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
-        private List<Organization> Organizations => _fhirContext.Organizations;
+        private List<Organization> Organizations => _httpContext.HttpResponse.Organizations;
 
-        public OrganizationSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps) : base(fhirContext, httpSteps)
+        public OrganizationSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps) : base(httpSteps)
         {
             _httpContext = httpContext;
             _bundleSteps = bundleSteps;
@@ -25,7 +25,7 @@
         [Then(@"the Response Resource should be an Organization")]
         public void TheResponseResourceShouldBeAnOrganization()
         {
-            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Organization);
+            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Organization);
         }
 
         [Then(@"the Organization Identifiers should be valid")]
@@ -302,7 +302,7 @@
         [Then(@"the returned organization contains identifiers of type ""([^""]*)"" with values ""([^""]*)""")]
         public void ThenTheReturnedOrgainzationContainsIdentifiersOfTypeWithValues(string identifierSystem, string identifierValueCSV)
         {
-            var organization = (Organization)_fhirContext.FhirResponseResource;
+            var organization = (Organization)_httpContext.HttpResponse.Resource;
             organization.Identifier.ShouldNotBeNull("The organization should contain an organization identifier as the business identifier was used to find the organization for this test.");
 
             foreach (var identifierValue in identifierValueCSV.Split(','))
@@ -357,7 +357,7 @@
         [Then(@"the response bundle Organization entries should contain a maximum of 1 http://fhir.nhs.net/Id/ods-organization-code system identifier")]
         public void ThenResponseBundleOrganizationEntriesShouldContainAMaximumOf1OrgCodeSystemIdentifier()
         {
-            foreach (Bundle.EntryComponent entry in ((Bundle)_fhirContext.FhirResponseResource).Entry)
+            foreach (var entry in _httpContext.HttpResponse.Entries)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {

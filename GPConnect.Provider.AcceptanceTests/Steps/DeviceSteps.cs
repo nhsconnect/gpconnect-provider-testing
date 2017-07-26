@@ -10,11 +10,14 @@
     [Binding]
     internal sealed class DeviceSteps : BaseSteps
     {
-        public DeviceSteps(FhirContext fhirContext, HttpSteps httpSteps) : base(fhirContext, httpSteps)
+        private readonly HttpContext _httpContext;
+
+        public DeviceSteps(HttpSteps httpSteps, HttpContext httpContext) : base(httpSteps)
         {
+            _httpContext = httpContext;
         }
 
-        private List<Device> Devices => _fhirContext.Devices;
+        private List<Device> Devices => _httpContext.HttpResponse.Devices;
         
         public void TheDeviceShouldBeValid()
         {

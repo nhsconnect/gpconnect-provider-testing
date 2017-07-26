@@ -16,9 +16,9 @@
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
         private readonly JwtSteps _jwtSteps;
-        private List<Patient> Patients => _fhirContext.Patients;
+        private List<Patient> Patients => _httpContext.HttpResponse.Patients;
 
-        public PatientSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, JwtSteps jwtSteps) : base(fhirContext, httpSteps)
+        public PatientSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, JwtSteps jwtSteps) : base(httpSteps)
         {
             _httpContext = httpContext;
             _bundleSteps = bundleSteps;
@@ -29,7 +29,7 @@
         [Then(@"the Response Resource should be a Patient")]
         public void TheResponseResourceShouldBeAPatient()
         {
-            _fhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.Patient);
+            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Patient);
         }
 
         [Then(@"the Patient Id should be valid")]
@@ -277,7 +277,7 @@
                     // Contact Organization Checks
                     if (contact.Organization?.Reference != null)
                     {
-                        _fhirContext.Entries.ShouldContain(
+                        _httpContext.HttpResponse.Entries.ShouldContain(
                             entry => entry.Resource.ResourceType.Equals(ResourceType.Organization) &&
                             entry.FullUrl.Equals(contact.Organization.Reference)
                         );
@@ -343,7 +343,7 @@
         [Given(@"I store the Patient")]
         public void StoreThePatient()
         {
-            var patient = _fhirContext.Patients.FirstOrDefault();
+            var patient = Patients.FirstOrDefault();
 
             if (patient != null)
             {
@@ -354,7 +354,7 @@
         [Given(@"I store the Patient Id")]
         public void StoreThePatientId()
         {
-            var patient = _fhirContext.Patients.FirstOrDefault();
+            var patient = Patients.FirstOrDefault();
 
             if (patient != null)
             {
@@ -365,7 +365,7 @@
         [Given(@"I store the Patient Version Id")]
         public void StoreThePatientVersionId()
         {
-            var patient = _fhirContext.Patients.FirstOrDefault();
+            var patient = Patients.FirstOrDefault();
 
             if (patient != null)
             {

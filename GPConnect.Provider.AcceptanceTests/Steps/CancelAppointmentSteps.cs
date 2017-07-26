@@ -13,10 +13,10 @@
     public class CancelAppointmentSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
-        private List<Appointment> Appointments => _fhirContext.Appointments;
+        private List<Appointment> Appointments => _httpContext.HttpResponse.Appointments;
 
-        public CancelAppointmentSteps(FhirContext fhirContext, HttpSteps httpSteps, HttpContext httpContext) 
-            : base(fhirContext, httpSteps)
+        public CancelAppointmentSteps(HttpSteps httpSteps, HttpContext httpContext) 
+            : base(httpSteps)
         {
             _httpContext = httpContext;
         }

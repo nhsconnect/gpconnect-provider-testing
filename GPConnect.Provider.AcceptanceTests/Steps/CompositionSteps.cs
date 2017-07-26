@@ -9,14 +9,17 @@
     [Binding]
     public class CompositionSteps : BaseSteps
     {
-        public CompositionSteps(FhirContext fhirContext, HttpSteps httpSteps) 
-            : base(fhirContext, httpSteps)
+        private readonly HttpContext _httpContext;
+
+        public CompositionSteps(HttpSteps httpSteps, HttpContext httpContext) 
+            : base(httpSteps)
         {
+            _httpContext = httpContext;
         }
 
         private Composition GetComposition()
         {
-            return _fhirContext.Compositions.First();
+            return _httpContext.HttpResponse.Compositions.First();
         }
 
         [Then("the Composition should be valid")]

@@ -9,13 +9,12 @@
     [Binding]
     public class AppointmentReadSteps : Steps
     {
-        private readonly FhirContext _fhirContext;
+        private readonly HttpContext _httpContext;
+        private List<Appointment> Appointments => _httpContext.HttpResponse.Appointments;
 
-        private List<Appointment> Appointments => _fhirContext.Appointments;
-
-        public AppointmentReadSteps(FhirContext fhirContext)
+        public AppointmentReadSteps(HttpContext httpContext)
         {
-            _fhirContext = fhirContext;
+            _httpContext = httpContext;
         }
 
         [Then("the Appointment Identifiers should be valid")]

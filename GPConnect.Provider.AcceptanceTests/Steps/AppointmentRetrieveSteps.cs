@@ -10,12 +10,13 @@
     [Binding]
     public class AppointmentRetrieveSteps : Steps
     {
-        private readonly FhirContext _fhirContext;
-        private List<Appointment> Appointments => _fhirContext.Appointments;
+        private readonly HttpContext _httpContext;
 
-        public AppointmentRetrieveSteps(FhirContext fhirContext)
+        private List<Appointment> Appointments => _httpContext.HttpResponse.Appointments;
+
+        public AppointmentRetrieveSteps(HttpContext httpContext)
         {
-            _fhirContext = fhirContext;
+            _httpContext = httpContext;
         }
 
         [Then(@"the Appointment Status should be valid")]

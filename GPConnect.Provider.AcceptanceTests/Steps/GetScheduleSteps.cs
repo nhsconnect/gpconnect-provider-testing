@@ -15,11 +15,11 @@
         private readonly AccessRecordSteps _accessRecordSteps;
         private readonly BundleSteps _bundleSteps;
         private readonly OrganizationSteps _organizationSteps;
-        private List<Slot> Slots => _fhirContext.Slots;
-        private List<Schedule> Schedules => _fhirContext.Schedules;
+        private List<Slot> Slots => _httpContext.HttpResponse.Slots;
+        private List<Schedule> Schedules => _httpContext.HttpResponse.Schedules;
         
-        public GetScheduleSteps(FhirContext fhirContext, HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps)
-            : base(fhirContext, httpSteps)
+        public GetScheduleSteps(HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps)
+            : base(httpSteps)
         {
             _httpContext = httpContext;
             _accessRecordSteps = accessRecordSteps;
@@ -43,7 +43,7 @@
         [Given(@"I store the Schedule")]
         public void StoreTheSchedule()
         {
-            var schedule = _fhirContext.Bundle;
+            var schedule = _httpContext.HttpResponse.Bundle;
 
             if (schedule != null)
             {
@@ -182,7 +182,7 @@
         [Then(@"the Schedule Bundle Metadata should be valid")]
         public void TheScheduleBundleMetadataShouldBeValid()
         {
-            CheckForValidMetaDataInResource(_fhirContext.Bundle, "http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
+            CheckForValidMetaDataInResource(_httpContext.HttpResponse.Bundle, "http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
         }
     }
 }

@@ -283,21 +283,6 @@
             _jwtHelper.RequestedPatientNHSNumber = identifier?.Value;
         }
 
-        [Given(@"I set the JWT requested record NHS number to the NHS number of patient stored against key ""([^""]*)""")]
-        public void SetTheJwtRequestRecordNHSNumberToTheNNhsNumberOfPatientSotredAgainstKey(string storedPatientKey)
-        {
-            Patient storedPatient = (Patient)_httpContext.StoredFhirResources[storedPatientKey];
-            foreach (Identifier identifier in storedPatient.Identifier)
-            {
-                if (identifier.System != null && string.Equals(identifier.System, FhirConst.IdentifierSystems.kNHSNumber))
-                {
-                    _jwtHelper.RequestedPatientNHSNumber = identifier.Value;
-                    break;
-                }
-            }
-            _headerHelper.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
-        }
-
         [Given(@"I set the JWT requested record patient NHS number to ""(.*)""")]
         public void SetTheJwtRequestedRecordPatientNhsNumberTo(string nhsNumber)
         {

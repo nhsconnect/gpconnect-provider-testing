@@ -94,11 +94,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessRecord.feature</DependentUpon>
     </Compile>
-    <Compile Include="AppointmentBook.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppointmentBook.feature</DependentUpon>
-    </Compile>
     <Compile Include="AppointmentCancel.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -111,7 +106,6 @@
     <Compile Include="Constants\JwtConst.cs" />
     <Compile Include="Constants\SecurityConst.cs" />
     <Compile Include="Context\GlobalContext.cs" />
-    <Compile Include="Context\FhirContext.cs" />
     <Compile Include="Context\HttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
     <Compile Include="Data\OrganizationSiteCodeMap.cs" />
@@ -150,6 +144,7 @@
       <DependentUpon>HTTP.feature</DependentUpon>
     </Compile>
     <Compile Include="Http\HttpRequest.cs" />
+    <Compile Include="Http\HttpResponse.cs" />
     <Compile Include="Importers\OrganizationSiteCodeClassMap.cs" />
     <Compile Include="Importers\OrganizationSiteCodeMapImporter.cs" />
     <Compile Include="Importers\RegisterPatientsImporter.cs" />

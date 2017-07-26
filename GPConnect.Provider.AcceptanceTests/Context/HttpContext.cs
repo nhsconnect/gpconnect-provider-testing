@@ -8,6 +8,8 @@
     using Constants;
     using Helpers;
     using Hl7.Fhir.Model;
+    using Hl7.Fhir.Serialization;
+    using Http;
     using Logger;
     using Newtonsoft.Json.Linq;
     using TechTalk.SpecFlow;
@@ -57,12 +59,6 @@
         string FhirServerFhirBase { get; set; }
         string ProviderAddress { get; }
         string EndpointAddress { get; }
-        Dictionary<string, Hl7.Fhir.Model.Resource> StoredFhirResources { get;}
-        Dictionary<string, List<Hl7.Fhir.Model.Resource>> StoredSlots { get; }
-        Dictionary<string, Appointment> StoredAppointment { get; }
-        Dictionary<string, string> StoredDate { get; }
-        Dictionary<string, Patient> registerPatient { get; }
-        Dictionary<string, string> resourceNameStored { get; }
     }
 
     public class HttpContext : IHttpContext
@@ -482,159 +478,6 @@
             }
         }
 
-        public Dictionary<string, Resource> StoredFhirResources {
-            get {
-                try
-                {
-                    return ScenarioContext.Get<Dictionary<string, Resource>>(Context.kStoredFhirResources);
-                }
-                catch (Exception) {
-                }
-                try
-                {
-                    ScenarioContext.Set(new Dictionary<string, Resource>(), Context.kStoredFhirResources);
-                    return ScenarioContext.Get<Dictionary<string, Resource>>(Context.kStoredFhirResources);
-                }
-                catch (Exception) {
-                }
-                return null;
-            }
-        }
-
-
-        public Dictionary<string, List<Resource>> StoredSlots
-        {
-            get
-            {
-                try
-                {
-                   
-                    return ScenarioContext.Get<Dictionary<string, List<Resource>>>(Context.kStoredSlots);
-                }
-                catch (Exception)
-                {
-                }
-                try
-                {
-                  
-                    ScenarioContext.Set(new Dictionary<string, List<Resource>>(), Context.kStoredSlots);
-                    return ScenarioContext.Get<Dictionary<string, List<Resource>>>(Context.kStoredSlots);
-                }
-                catch (Exception)
-                {
-                }
-                return null;
-            }
-        }
-
-
-        public Dictionary<string, Appointment> StoredAppointment
-        {
-            get
-            {
-                try
-                {
-
-                    return ScenarioContext.Get<Dictionary<string, Appointment>>(Context.kStoredAppointment);
-                }
-                catch (Exception)
-                {
-                }
-                try
-                {
-
-                    ScenarioContext.Set(new Dictionary<string, Appointment>(), Context.kStoredAppointment);
-                    return ScenarioContext.Get<Dictionary<string, Appointment>>(Context.kStoredAppointment);
-                }
-                catch (Exception)
-                {
-                }
-                return null;
-            }
-        }
-
-
-        public Dictionary<string, string> StoredDate
-        {
-            get
-            {
-                try
-                {
-
-                    return ScenarioContext.Get<Dictionary<string, string>>(Context.kStoredDate);
-                }
-                catch (Exception)
-                {
-                }
-                try
-                {
-
-                    ScenarioContext.Set(new Dictionary<string, string>(), Context.kStoredDate);
-                    return ScenarioContext.Get<Dictionary<string, string>>(Context.kStoredDate);
-                }
-                catch (Exception)
-                {
-                }
-                return null;
-            }
-        }
-
-        public Dictionary<string, string> resourceNameStored
-        {
-            get
-            {
-                try
-                {
-
-                    return ScenarioContext.Get<Dictionary<string, string>>(Context.kResourceNameStored);
-                }
-                catch (Exception)
-                {
-                }
-                try
-                {
-
-                    ScenarioContext.Set(new Dictionary<string, string>(), Context.kResourceNameStored);
-                    return ScenarioContext.Get<Dictionary<string, string>>(Context.kResourceNameStored);
-                }
-                catch (Exception)
-                {
-                }
-                return null;
-            }
-        }
-
-        public Dictionary<string, Patient> registerPatient
-        {
-            get
-            {
-                try
-                {
-
-                    return ScenarioContext.Get<Dictionary<string, Patient>>(Context.kRegisterPatient);
-                }
-                catch (Exception)
-                {
-                }
-                try
-                {
-
-                    ScenarioContext.Set(new Dictionary<string, Patient>(), Context.kRegisterPatient);
-                    return ScenarioContext.Get<Dictionary<string, Patient>>(Context.kRegisterPatient);
-                }
-                catch (Exception)
-                {
-                }
-                return null;
-            }
-        }
-
-
-
-
-
-        // Load App.Config
-
         public void LoadAppConfig()
         {
             Log.WriteLine("HttpContext->LoadAppConfig()");
@@ -700,6 +543,21 @@
             doc.Save(filename);
         }
 
+        public void SaveToFhirContextToDisk(string filename)
+        {
+            var doc = new XDocument(
+                new XElement("fhirContext",
+                    new XElement("request",
+                        new XElement("fhirRequestParameters", FhirSerializer.SerializeResourceToJson(BodyParameters))
+                    ),
+                    new XElement("response",
+                        new XElement("fhirResponseResource", FhirSerializer.SerializeResourceToJson(HttpResponse.Resource))
+                    )
+                )
+            );
+            doc.Save(filename);
+        }
+
         public void SetDefaults()
         {
             RequestHeaders.Clear();
@@ -713,6 +571,7 @@
             ResponseHeaders.Clear();
             BodyParameters = new Parameters();
             DecompressionMethod = DecompressionMethods.None;
+            HttpResponse = new HttpResponse();
         }
 
         public void SetDefaultHeaders()
@@ -761,5 +620,8 @@
         public Location StoredLocation { get; set; }
 
         public DecompressionMethods DecompressionMethod { get; set; }
+
+        public HttpResponse HttpResponse { get; set; }
+
     }
 }

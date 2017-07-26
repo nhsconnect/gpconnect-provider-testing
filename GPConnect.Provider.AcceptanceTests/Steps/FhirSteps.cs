@@ -4,7 +4,6 @@
     using System.Xml.Linq;
     using Constants;
     using Context;
-    using Helpers;
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Serialization;
     using Logger;
@@ -16,29 +15,13 @@
     [Binding]
     public class FhirSteps : Steps
     {
-        private readonly FhirContext _fhirContext;
         private readonly HttpContext _httpContext;
 
         // Constructor
-        public FhirSteps(HttpContext httpContext, FhirContext fhirContext)
+        public FhirSteps(HttpContext httpContext)
         {
             Log.WriteLine("FhirSteps() Constructor");
             _httpContext = httpContext;            
-            _fhirContext = fhirContext;
-        }
-
-        // Before Scenario
-        [BeforeScenario(Order = 4)]
-        public void ClearFhirOperationParameters()
-        {
-            Log.WriteLine("ClearFhirOperationParameters()");
-            _fhirContext.FhirRequestParameters = new Parameters();
-        }
-
-        [Given(@"I am requesting the ""([^""]*)"" care record section")]
-        public void GivenIAmRequestingTheCareRecordSection(string careRecordSection)
-        {
-            _fhirContext.FhirRequestParameters.Add(FhirConst.GetCareRecordParams.kRecordSection, FhirHelper.GetRecordSectionCodeableConcept(careRecordSection));
         }
 
         [Then(@"the response body should be FHIR JSON")]
@@ -48,7 +31,7 @@
             Log.WriteLine("Response ContentType={0}", _httpContext.ResponseContentType);
             _httpContext.ResponseJSON = JObject.Parse(_httpContext.ResponseBody);
             FhirJsonParser fhirJsonParser = new FhirJsonParser();
-            _fhirContext.FhirResponseResource = fhirJsonParser.Parse<Resource>(_httpContext.ResponseBody);
+            _httpContext.HttpResponse.Resource = fhirJsonParser.Parse<Resource>(_httpContext.ResponseBody);
         }
 
         [Then(@"the response should be the format FHIR JSON")]
@@ -77,13 +60,13 @@
             // TODO Move XML Parsing Out Of Here
             _httpContext.ResponseXML = XDocument.Parse(_httpContext.ResponseBody);
             FhirXmlParser fhirXmlParser = new FhirXmlParser();
-            _fhirContext.FhirResponseResource = fhirXmlParser.Parse<Resource>(_httpContext.ResponseBody);
+            _httpContext.HttpResponse.Resource = fhirXmlParser.Parse<Resource>(_httpContext.ResponseBody);
         }
 
         [Then(@"the response bundle should contain ""([^""]*)"" entries")]
         public void ThenResponseBundleEntryShouldNotBeEmpty(int expectedSize)
         {
-            Bundle bundle = (Bundle)_fhirContext.FhirResponseResource;
+            Bundle bundle = _httpContext.HttpResponse.Bundle;
             bundle.Entry.Count.ShouldBe(expectedSize, "The response bundle does not contain the expected number of entries");
         }
 
@@ -159,7 +142,7 @@
         [Then(@"all search response entities in bundle should contain a logical identifier")]
         public void AllSearchResponseEntitiesShouldContainALogicalIdentifier()
         {
-            ((Bundle)_fhirContext.FhirResponseResource)
+            _httpContext.HttpResponse.Bundle
                 .Entry
                 .Where(x => string.IsNullOrWhiteSpace(x.Resource.Id))
                 .ShouldBeEmpty("Found an empty (or non-existant) logical id");
@@ -168,22 +151,14 @@
         [Then(@"the returned resource shall contains a logical id")]
         public void ThenTheReturnedResourceShallContainALogicalId()
         {
-            _fhirContext.FhirResponseResource.Id.ShouldNotBeNullOrEmpty("The returned resource should contain a logical Id but does not.");
+            _httpContext.HttpResponse.Resource.Id.ShouldNotBeNullOrEmpty("The returned resource should contain a logical Id but does not.");
         }
 
         [Then(@"the returned resource shall contain a logical id matching the requested read logical identifier")]
         public void ThenTheReturnedResourceShallContainALogicalIdMatchingTheRequestedReadLogicalIdentifier()
         {
-            _fhirContext.FhirResponseResource.Id.ShouldNotBeNullOrEmpty("The returned resource should contain a logical Id but does not.");
-            _fhirContext.FhirResponseResource.Id.ShouldBe(_httpContext.GetRequestId, "The returned resource logical id did not match the requested id");
-        }
-
-        [Then(@"the response resource logical identifier should match that of stored resource ""([^""]*)""")]
-        public void TheResponseResourceLogicalIdentifierShouldMatchThatOfStoredResource(string resource)
-        {
-            var id = _httpContext.StoredFhirResources[resource].Id;
-
-            _fhirContext.FhirResponseResource.Id.ShouldBe(id);
+            _httpContext.HttpResponse.Resource.Id.ShouldNotBeNullOrEmpty("The returned resource should contain a logical Id but does not.");
+            _httpContext.HttpResponse.Resource.Id.ShouldBe(_httpContext.GetRequestId, "The returned resource logical id did not match the requested id");
         }
     }
 }
