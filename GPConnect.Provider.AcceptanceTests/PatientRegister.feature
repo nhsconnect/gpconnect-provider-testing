@@ -373,7 +373,7 @@ Scenario: Register patient with duplicate patient resource parameters
 
 Scenario: Register patient with additional parameters but the valid patient parameter first
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -388,7 +388,7 @@ Scenario: Register patient with additional parameters but the valid patient para
 
 Scenario: Register patient with duplicate parameters invalid first
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient

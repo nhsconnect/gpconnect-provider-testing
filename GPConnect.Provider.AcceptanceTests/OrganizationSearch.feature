@@ -105,7 +105,7 @@ Scenario Outline: Organization - Identifier - have correct Organization Codes an
 Scenario: Organization search by organization code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
-	When I make a GET request to "/Organization"
+	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -118,7 +118,7 @@ Scenario: Organization search by organization code successfully returns multiple
 Scenario: Organization search by site code successfully returns single result containing the correct fields
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with Site Code System and Value "SIT1"
-	When I make a GET request to "/Organization"
+	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
@@ -130,7 +130,7 @@ Scenario: Organization search by site code successfully returns single result co
 Scenario: Organization search by site code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with Site Code System and Value "SIT3"
-	When I make a GET request to "/Organization"
+	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"

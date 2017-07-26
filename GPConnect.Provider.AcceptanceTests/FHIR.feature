@@ -58,7 +58,8 @@ Scenario: Fhir content type test where Accept header is JSON and request payload
 		And I add an NHS Number parameter for "patient2"		
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I am using "application/json+fhir" to communicate with the server
+		And I set the request content type to "application/json+fhir"
+		And I set the Accept header to "application/json+fhir"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -68,7 +69,8 @@ Scenario: Fhir content type test where Accept header is XML and request payload 
 		And I add an NHS Number parameter for "patient2"		
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I am using "application/xml+fhir" to communicate with the server
+		And I set the request content type to "application/xml+fhir"
+		And I set the Accept header to "application/xml+fhir"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
 		And the response body should be FHIR XML

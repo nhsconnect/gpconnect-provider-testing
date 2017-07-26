@@ -3,13 +3,13 @@ Feature: AppointmentCancel
 
 Scenario Outline: I perform a successful cancel appointment
 	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Metadata should be valid
@@ -24,7 +24,7 @@ Scenario Outline: I perform a successful cancel appointment
 #Potentially split this up, only one of the steps could fair the test and the rest could result in a pass ?? May be false postive
 Scenario Outline: I perform cancel appointment and update invalid elements
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
@@ -55,7 +55,7 @@ Scenario Outline: I perform cancel appointment and update invalid elements
 
 Scenario Outline: Cancel appointment making a request to an invalid URL
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
@@ -69,7 +69,7 @@ Scenario Outline: Cancel appointment making a request to an invalid URL
 
 Scenario Outline: Cancel appointment failure due to missing header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
@@ -87,7 +87,7 @@ Scenario Outline: Cancel appointment failure due to missing header
 
 Scenario Outline: Cancel appointment failure with incorrect interaction id
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
@@ -105,7 +105,7 @@ Scenario Outline: Cancel appointment failure with incorrect interaction id
 
 Scenario Outline: Cancel appointment using the _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
@@ -113,7 +113,7 @@ Scenario Outline: Cancel appointment using the _format parameter to request resp
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Metadata should be valid
@@ -124,7 +124,7 @@ Scenario Outline: Cancel appointment using the _format parameter to request resp
 
 Scenario Outline: Cancel appointment using the accept header to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
@@ -132,7 +132,7 @@ Scenario Outline: Cancel appointment using the accept header to request response
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Metadata should be valid
@@ -143,7 +143,7 @@ Scenario Outline: Cancel appointment using the accept header to request response
 
 Scenario Outline: Cancel appointment using the accept header and _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
@@ -152,7 +152,7 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Metadata should be valid
@@ -165,7 +165,7 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 		
 Scenario Outline: Cancel appointment using the accept header and _format parameter and content-type to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
@@ -175,7 +175,7 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <Format>
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Metadata should be valid
@@ -192,13 +192,13 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 
 Scenario Outline: Cancel appointment check cancellation reason is equal to the request cancellation reason
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Url "<url>" and Reason "<reason>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "<reason>"
 		And the Appointment Metadata should be valid
@@ -210,7 +210,7 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 
 Scenario Outline: Cancel appointment invalid cancellation extension url
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Url "<url>" and Reason "<reason>"
@@ -225,7 +225,7 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 
 Scenario: Cancel appointment missing cancellation extension reason
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason ""
@@ -235,20 +235,20 @@ Scenario: Cancel appointment missing cancellation extension reason
 
 Scenario: Cancel appointment verify resource is updated when an valid ETag value is provided
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the If-Match header to the Stored Appointment Version Id
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"	
 		
 Scenario: Cancel appointment verify resource is not updated when an out of date ETag value is provided
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
@@ -258,13 +258,13 @@ Scenario: Cancel appointment verify resource is not updated when an out of date 
 		
 Scenario: Cancel appointment compare request appointment to returned appointment
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request	
 	Then the response status code should indicate success
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Id should equal the Created Appointment Id
 		And the Appointment Status should equal the Created Appointment Status
@@ -277,38 +277,37 @@ Scenario: Cancel appointment compare request appointment to returned appointment
 
 Scenario: Cancel appointment response body must contain valid slot reference
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Status should be Cancelled
-		And the appointment response resource contains a slot reference
-		And the appointment response resource contains atleast 2 participants a practitioner and a patient
+		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
 
 Scenario Outline: Cancel appointment prefer header set to representation
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Prefer header to "return=representation"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the content-type should not be equal to null
 		And the content-length should not be equal to zero
 		And the returned resource shall contains a logical id
-		And the appointment resource should contain a single start element
-		And the appointment resource should contain a single end element
-		And the appointment resource should contain at least one slot reference
-		And the appointment resource should contain at least one participant
-		And if the appointment response resource contains a reason element and coding the codings must be one of the three allowed with system code and display elements
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Slots should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Reason should be valid
 		And the Appointment Metadata should be valid
 	Examples:
 		| PatientName |
@@ -320,7 +319,7 @@ Scenario Outline: Cancel appointment prefer header set to representation
 
 Scenario: Cancel appointment prefer header set to minimal
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
@@ -332,13 +331,13 @@ Scenario: Cancel appointment prefer header set to minimal
 
 Scenario Outline: Cancel appointment check the version id of the cancelled resource is different
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
-		And I store the created Appointment
+		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 	When I make the "AppointmentCancel" request	
 	Then the response status code should indicate success
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Version Id should not equal the Created Appointment Version Id

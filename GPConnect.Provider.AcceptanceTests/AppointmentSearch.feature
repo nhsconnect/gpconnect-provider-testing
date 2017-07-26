@@ -9,7 +9,7 @@ Scenario: Appointment retrieve success valid id where appointment resource retur
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And there are zero appointment resources
+		And the Bundle should contain no Appointments
 
 Scenario Outline: Appointment retrieve success valid id where single appointment resource should be returned
 	Given I create an Appointment for Patient "<patient>" and Organization Code "ORG1"
@@ -18,7 +18,7 @@ Scenario Outline: Appointment retrieve success valid id where single appointment
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
+		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| patient  |
 		| patient1 |
@@ -32,7 +32,7 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "<numberOfAppointments>" appointment
+		And the Bundle should contain a minimum of "<numberOfAppointments>" Appointments
 	Examples:
 		| patient  | numberOfAppointments |
 		| patient4 | 2                    |
@@ -40,11 +40,11 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 		| patient6 | 3                    |
 
 Scenario Outline: Appointment retrieve fail due to invalid patient logical id
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments" interaction
-		And I set the JWT requested record NHS number to config patient "patient1"
-		And I set the JWT requested scope to "patient/*.read"
-	When I make a GET request to "/Patient/<id>/Appointment"
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I configure the default "AppointmentSearch" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the request URL to "/Patient/<id>/Appointment"
+	When I make the "AppointmentSearch" request
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
@@ -59,7 +59,7 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -131,13 +131,13 @@ Scenario Outline: Appointment retrieve send request and find request using equal
 	Given I create "1" Appointments for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the URL for the get request with the slotStartDate date "slotStartDate" and prefix "<prefix>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for the Created Appointment Start
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
-		And all appointments must have a start element which is populated with a date that equals "slotStartDate"
+		And the Bundle should contain a minimum of "1" Appointments
+		And the Appointment Start should equal the Created Appointment Start
 		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
 		And the Appointment Participants should be equal to the Created Appointment Participants
 	Examples:
@@ -149,12 +149,12 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
+		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| startDate                 | prefix |
 		| 2014                      | gt     |
@@ -186,12 +186,12 @@ Scenario Outline: Appointment retrieve send request with lower start date boundr
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for and upper end date boundary "<endDate>" with prefix "<prefix2>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
+		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| startDate                 | prefix | endDate                   | prefix2 |
 		| 2015                      | gt     | 2018                      | lt      |
@@ -223,12 +223,12 @@ Scenario Outline: Appointment retrieve send request with upper end date boundary
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for and upper end date boundary "<endDate>" with prefix "<prefix2>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
+		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| startDate                 | prefix | endDate                   | prefix2 |
 		| 2018                      | lt     | 2015                      | gt      |
@@ -260,12 +260,12 @@ Scenario Outline: Appointment retrieve send request with different upper end dat
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for and upper end date boundary "<endDate>" with prefix "<prefix2>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
+		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| startDate                 | prefix | endDate                   | prefix2 |
 		| 2015                      | gt     | 2018                      | lt      |
@@ -302,7 +302,7 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	And I set the URL for the get request with the date "<startDate>" and prefix "<prefix>" for and upper end date boundary "<endDate>" with prefix "<prefix2>" for "patient1"
+		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -382,7 +382,7 @@ Scenario Outline: Appointment retrieve accept header and _format parameter
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
+		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -399,7 +399,7 @@ Scenario Outline: Appointment retrieve accept header
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
+		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -414,7 +414,7 @@ Scenario Outline: Appointment retrieve _format parameter only
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain atleast "1" appointment
+		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| Parameter             | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -442,7 +442,7 @@ Scenario: Appointment retrieve bundle resource must contain participant with typ
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-	Then if appointment is present the single or multiple participant must contain a type or actor
+		And the Appointment Participant Type and Actor should be valid
 
 Scenario: Appointment retrieve bundle valid resources returned in the response
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -451,8 +451,7 @@ Scenario: Appointment retrieve bundle valid resources returned in the response
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the practitioner resource returned in the appointments bundle is present
-		And the patient resource returned in the appointments bundle is present
+		And the Appointment Participants should be valid and resolvable
 
 Scenario: Appointment retrieve bundle contains appointment with identifer with correct system and value
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -461,7 +460,7 @@ Scenario: Appointment retrieve bundle contains appointment with identifer with c
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And if the appointment resource contains an identifier it contains a valid system and value
+		And the Appointment Identifiers should be valid
 
 Scenario: Appointment retrieve appointment response should contain meta data profile and version id
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -500,8 +499,8 @@ Scenario: Appointment retrieve bundle contains valid start and end dates
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And all appointments must have an start element which is populated with a valid date
-		And all appointments must have an end element which is populated vith a valid date
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
 
 Scenario: Appointment retrieve JWT requesting scope claim should reflect the operation being performed
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

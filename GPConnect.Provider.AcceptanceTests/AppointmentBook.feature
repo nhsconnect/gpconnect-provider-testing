@@ -11,7 +11,7 @@ Scenario: Book single appointment for patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 	
 Scenario: Book Appointment with invalid url for booking appointment
 	Given I get the Patient for Patient Value "patient1"
@@ -21,7 +21,7 @@ Scenario: Book Appointment with invalid url for booking appointment
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-	When I make a POST request to ""/Appointmentz\"
+	When I make the "AppointmentCreate" request
 	Then the response status code should be "404"
 
 Scenario Outline: Book appointment failure due to missing header
@@ -58,10 +58,9 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response body should be FHIR <BodyFormat>
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the returned resource shall contains a logical id
-		And the appointment resource should contain a status element
-		And the appointment response resource contains a slot reference
+		And the Appointment Status should be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -82,10 +81,10 @@ Scenario Outline: Book appointment _format parameter only but varying request co
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response body should be FHIR <BodyFormat>
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the returned resource shall contains a logical id
-		And the appointment resource should contain a status element
-		And the appointment response resource contains a slot reference
+		And the Appointment Status should be valid
+		And the Appointment Slots should be valid
 	Examples:
 		| ContentType           | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -105,10 +104,10 @@ Scenario Outline: Book appointment accept header to request response format
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response body should be FHIR <BodyFormat>
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the returned resource shall contains a logical id
-		And the appointment resource should contain a status element
-		And the appointment response resource contains a slot reference
+		And the Appointment Status should be valid
+		And the Appointment Slots should be valid
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -126,7 +125,7 @@ Scenario: Book appointment prefer header set to representation
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the content-type should not be equal to null
 		And the content-length should not be equal to zero
 
@@ -175,14 +174,14 @@ Scenario: Book Appointment and check response contains the manadatory elements
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the returned resource shall contains a logical id
-		And the appointment resource should contain a status element
-		And the appointment resource should contain a single start element
-		And the appointment resource should contain a single end element
-		And the appointment resource should contain at least one participant
-		And the appointment resource should contain at least one slot reference
-		And if the appointment resource contains a priority the value is valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Priority should be valid
 
 Scenario: Book Appointment and check returned appointment resource contains meta data
 	Given I get the Patient for Patient Value "patient1"
@@ -195,8 +194,8 @@ Scenario: Book Appointment and check returned appointment resource contains meta
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
-		And the response should be an Appointment resource
-		And the returned appointment resource should contain meta data profile and version id
+		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
 
 #improve name to be more descriptive
 Scenario: Book Appointment and appointment participant is valid
@@ -209,9 +208,9 @@ Scenario: Book Appointment and appointment participant is valid
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the response should be an Appointment resource
-		And the appointment response resource contains atleast 2 participants a practitioner and a patient
-		And the returned appointment participants must contain a type or actor element
+		And the Response Resource should be an Appointment
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Participant Type and Actor should be valid
 
 #improve name to be more descriptive
 Scenario Outline: Book Appointment and check extensions are valid
@@ -225,7 +224,7 @@ Scenario Outline: Book Appointment and check extensions are valid
 		And I add the "<ExtensionCombination>" Extensions to the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Category Extension should be valid
 		And the Appointment Booking Method Extension should be valid
 		And the Appointment Contact Method Extension should be valid
@@ -253,7 +252,7 @@ Scenario: Book Appointment without location participant
 		And I remove the "Location" Participants from the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 
 Scenario Outline: Book Appointment and remove manadatory resources from the appointment booking
 	Given I get the Patient for Patient Value "patient1"
@@ -393,7 +392,7 @@ Scenario: Book single appointment for patient and check the location reference i
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
-		And the response should be an Appointment resource
+		And the Response Resource should be an Appointment
 		And the Appointment Location Participant should be valid and resolvable
 	
 Scenario: Book appointment with missing start element in appointment resource
@@ -544,7 +543,7 @@ Scenario: Book appointment and send an invalid appointment resource
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I set created appointment to a new appointment resource
+		And I set the Created Appointment to a new Appointment
 		When I make the "AppointmentAmend" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON

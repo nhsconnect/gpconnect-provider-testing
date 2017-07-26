@@ -1,8 +1,7 @@
-﻿using System.Linq;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Context;
     using Hl7.Fhir.Model;
     using Shouldly;

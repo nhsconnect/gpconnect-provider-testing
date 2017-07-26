@@ -689,11 +689,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 264
   testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 265
-  testRunner.And(string.Format("I add the parameter \"{0}\" with system \"http://fhir.nhs.net/Id/nhs-number\" for pat" +
-                        "ient \"{1}\"", identifier1, patientOne), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Patient Identifier parameter with identifier name \"{0}\" default System an" +
+                        "d Value \"{1}\"", identifier1, patientOne), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 266
-  testRunner.And(string.Format("I add the parameter \"{0}\" with system \"http://fhir.nhs.net/Id/nhs-number\" for pat" +
-                        "ient \"{1}\"", identifier2, patientTwo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Patient Identifier parameter with identifier name \"{0}\" default System an" +
+                        "d Value \"<PatienTwo>\"", identifier2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 267
  testRunner.When("I make the \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 268
