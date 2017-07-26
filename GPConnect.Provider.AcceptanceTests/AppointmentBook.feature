@@ -93,7 +93,6 @@ Scenario Outline: Book appointment _format parameter only but varying request co
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
 
-#improve name to be more descriptive
 Scenario Outline: Book appointment accept header to request response format
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -335,7 +334,7 @@ Scenario: Book single appointment for patient and send additional extensions wit
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-Scenario: Book appointment for patient with id
+Scenario: Book appointment and set an incorrect appointment id
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I get the Schedule for Organization Code "ORG1"
@@ -350,7 +349,6 @@ Scenario: Book appointment for patient with id
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-@ignore
 Scenario: Book appointment for patient and send extra fields in the resource
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -487,7 +485,7 @@ Scenario Outline: Book Appointment and remove reason coding element from the app
 		| Code          |
 		| Display       |
 
-Scenario Outline: Book Appointment and remove participant status from the appointment booking
+Scenario: Book Appointment and remove participant status from the appointment booking
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I get the Schedule for Organization Code "ORG1"
@@ -496,15 +494,13 @@ Scenario Outline: Book Appointment and remove participant status from the appoin
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Created Appointment Patient Participant Status to null
+		And I set the Created Appointment Practitioner Participant Status to null
+		And I set the Created Appointment Location Participant Status to null
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Participant  |
-		| Patient      |
-		| Practitioner |
-		| Location     |
+
 
 Scenario Outline: Book Appointment and remove participant type coding element from the appointment booking
 		Given I get the Patient for Patient Value "patient1"

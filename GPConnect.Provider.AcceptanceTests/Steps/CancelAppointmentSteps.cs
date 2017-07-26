@@ -52,7 +52,7 @@
         }
 
         [Given(@"I add an Appointment Identifier with default System and Value ""(.*)"" to the Created Appointment")]
-        public void AddAnAppointmentIdentifierWithSystemAndValue(string system, string value)
+        public void AddAnAppointmentIdentifierWithSystemAndValue(string value)
         {
             _httpContext.CreatedAppointment.Identifier.Add(new Identifier("http://fhir.nhs.net/Id/gpconnect-appointment-identifier", value));
         }

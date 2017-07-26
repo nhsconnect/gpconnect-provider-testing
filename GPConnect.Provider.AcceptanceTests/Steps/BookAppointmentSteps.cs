@@ -166,6 +166,30 @@
             });
         }
 
+        [Given(@"I set the Created Appointment Practitioner Participant Status to null")]
+        public void SetTheCreatedAppointmentPractitionerParticipantStatusToNull()
+        {
+            _httpContext.CreatedAppointment.Participant.ForEach(participant =>
+            {
+                if (participant.Actor.Reference.ToString().Contains("Patient"))
+                {
+                    participant.Status = null;
+                }
+            });
+        }
+
+        [Given(@"I set the Created Appointment Location Participant Status to null")]
+        public void SetTheCreatedAppointmentLocationParticipantStatusToNull()
+        {
+            _httpContext.CreatedAppointment.Participant.ForEach(participant =>
+            {
+                if (participant.Actor.Reference.ToString().Contains("Patient"))
+                {
+                    participant.Status = null;
+                }
+            });
+        }
+
         [Given(@"I set the Created Appointment Participant Type Coding ""([^""]*)"" to null for ""([^""]*)"" Participants")]
         public void SetTheCreatedAppointmentParticipantTypeCodingToNullForParticipants(string codingType, string participantType)
         {
