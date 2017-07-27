@@ -94,6 +94,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessRecord.feature</DependentUpon>
     </Compile>
+    <Compile Include="AppointmentBook.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppointmentBook.feature</DependentUpon>
+    </Compile>
     <Compile Include="AppointmentCancel.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
