@@ -13,7 +13,7 @@
     {
         private readonly HttpContext _httpContext;
         private readonly PatientSteps _patientSteps;
-        private List<Patient> Patients => _httpContext.HttpResponse.Patients;
+        private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
         public RegisterPatientSteps(HttpContext httpContext, PatientSteps patientSteps)
         {
@@ -122,19 +122,19 @@
         [Given(@"I add the Stored Patient as a parameter")]
         public void AddTheStoredPatientAsAParameter()
         {
-            _httpContext.BodyParameters.Add("registerPatient", _httpContext.StoredPatient);
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add("registerPatient", _httpContext.StoredPatient);
         }
 
         [Given(@"I add the Stored Appointment as a parameter")]
         public void AddTheStoredAppointmentAsAParameter()
         {
-            _httpContext.BodyParameters.Add("appointment", _httpContext.CreatedAppointment);
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add("appointment", _httpContext.CreatedAppointment);
         }
 
         [Given(@"I add the Stored Patient as a parameter with name ""([^""]*)""")]
         public void AddTheStoredPatientAsAParameterWithName(string parameterName)
         {
-            _httpContext.BodyParameters.Add(parameterName, _httpContext.StoredPatient);
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(parameterName, _httpContext.StoredPatient);
         }
 
         [Given(@"I add the Family Name ""([^""]*)"" to the Stored Patient")]
@@ -425,7 +425,7 @@
             {
                 _patientSteps.GetThePatientForPatientNhsNumber(registerPatient.SPINE_NHS_NUMBER);
 
-                var entries = _httpContext.HttpResponse.Entries;
+                var entries = _httpContext.FhirResponse.Entries;
 
                 if (!entries.Any())
                 {

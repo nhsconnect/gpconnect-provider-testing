@@ -16,7 +16,7 @@
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
         private readonly JwtSteps _jwtSteps;
-        private List<Patient> Patients => _httpContext.HttpResponse.Patients;
+        private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
         public PatientSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, JwtSteps jwtSteps) : base(httpSteps)
         {
@@ -29,7 +29,7 @@
         [Then(@"the Response Resource should be a Patient")]
         public void TheResponseResourceShouldBeAPatient()
         {
-            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Patient);
+            _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Patient);
         }
 
         [Then(@"the Patient Id should be valid")]
@@ -277,7 +277,7 @@
                     // Contact Organization Checks
                     if (contact.Organization?.Reference != null)
                     {
-                        _httpContext.HttpResponse.Entries.ShouldContain(
+                        _httpContext.FhirResponse.Entries.ShouldContain(
                             entry => entry.Resource.ResourceType.Equals(ResourceType.Organization) &&
                             entry.FullUrl.Equals(contact.Organization.Reference)
                         );
@@ -289,7 +289,7 @@
         [Given(@"I add a Patient Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
         public void AddAPatientIdentifierParameterWithSystemAndValue(string system, string value)
         {
-            _httpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.PatientNhsNumberMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.PatientNhsNumberMap[value]);
         }
 
         [Given(@"I add a Patient Identifier parameter with default System and Value ""([^""]*)""")]
@@ -301,19 +301,19 @@
         [Given(@"I add a Patient Identifier parameter with identifier name ""([^""]*)"" default System and Value ""([^""]*)""")]
         public void AddAPatientIdentifierParameterWithIdentifierNameDefaultSystemAndValue(string identifierName, string value)
         {
-            _httpContext.RequestParameters.AddParameter(identifierName, FhirConst.IdentifierSystems.kNHSNumber + '|' + GlobalContext.PatientNhsNumberMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(identifierName, FhirConst.IdentifierSystems.kNHSNumber + '|' + GlobalContext.PatientNhsNumberMap[value]);
         }
 
         [Given(@"I add a Patient Identifier parameter with default System and NHS number ""([^""]*)""")]
         public void AddAPatientIdentifierParameterWithDefaultSystemAndNhsNumber(string nhsNumber)
         {
-            _httpContext.RequestParameters.AddParameter("identifier", FhirConst.IdentifierSystems.kNHSNumber + '|' + nhsNumber);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", FhirConst.IdentifierSystems.kNHSNumber + '|' + nhsNumber);
         }
 
         [Given(@"I add a Patient Identifier parameter with no System and Value ""([^""]*)""")]
         public void AddAPatientIdentifierParameterWithNoSystemAndValue(string value)
         {
-            _httpContext.RequestParameters.AddParameter("identifier", GlobalContext.PatientNhsNumberMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", GlobalContext.PatientNhsNumberMap[value]);
         }
 
         [Given(@"I get the Patient for Patient Value ""([^""]*)""")]
@@ -358,7 +358,7 @@
 
             if (patient != null)
             {
-                _httpContext.GetRequestId = patient.Id;
+                _httpContext.HttpRequestConfiguration.GetRequestId = patient.Id;
             }
         }
 
@@ -369,14 +369,14 @@
 
             if (patient != null)
             {
-                _httpContext.GetRequestVersionId = patient.VersionId;
+                _httpContext.HttpRequestConfiguration.GetRequestVersionId = patient.VersionId;
             }
         }
 
         [Given(@"I set an invalid Patient Version Id")]
         public void SetAnInvlalidPatientVersionId()
         {
-            _httpContext.GetRequestVersionId = "1234567890";
+            _httpContext.HttpRequestConfiguration.GetRequestVersionId = "1234567890";
         }
 
         [Given(@"I set the If-None-Match header to the stored Patient Version Id")]

@@ -16,7 +16,7 @@
     public sealed class HtmlSteps : Steps
     {
         private readonly HttpContext _httpContext;
-        private List<Composition> Compositions => _httpContext.HttpResponse.Compositions;
+        private List<Composition> Compositions => _httpContext.FhirResponse.Compositions;
 
         public HtmlSteps(HttpContext httpContext)
         {

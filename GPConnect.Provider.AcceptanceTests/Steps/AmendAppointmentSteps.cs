@@ -10,7 +10,7 @@
     public class AmendAppointmentSteps : Steps
     {
         private readonly HttpContext _httpContext;
-        private List<Appointment> Appointments => _httpContext.HttpResponse.Appointments;
+        private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
         public AmendAppointmentSteps(HttpContext httpContext)
         {

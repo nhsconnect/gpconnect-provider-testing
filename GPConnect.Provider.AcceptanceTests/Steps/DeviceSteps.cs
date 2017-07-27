@@ -17,7 +17,7 @@
             _httpContext = httpContext;
         }
 
-        private List<Device> Devices => _httpContext.HttpResponse.Devices;
+        private List<Device> Devices => _httpContext.FhirResponse.Devices;
         
         public void TheDeviceShouldBeValid()
         {

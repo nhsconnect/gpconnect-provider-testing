@@ -17,7 +17,7 @@
         private readonly JwtSteps _jwtSteps;
         private readonly PatientSteps _patientSteps;
         private readonly GetScheduleSteps _getScheduleSteps;
-        private List<Appointment> Appointments => _httpContext.HttpResponse.Appointments;
+        private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
         public AppointmentsSteps(HttpSteps httpSteps, HttpContext httpContext, JwtSteps jwtSteps, PatientSteps patientSteps, GetScheduleSteps getScheduleSteps) 
             : base(httpSteps)
@@ -31,7 +31,7 @@
         [Then(@"the Response Resource should be an Appointment")]
         public void TheResponseResourceShouldBeAnAppointment()
         {
-            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Appointment, "the Response Resource should be an Appointment.");
+            _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Appointment, "the Response Resource should be an Appointment.");
         }
 
         [Then(@"the Bundle should contain no Appointments")]
@@ -86,7 +86,7 @@
         [Given(@"I store the Created Appointment")]
         public void StoreTheCreatedAppointment()
         {
-            var appointment = _httpContext.HttpResponse.Appointments.FirstOrDefault();
+            var appointment = _httpContext.FhirResponse.Appointments.FirstOrDefault();
 
             if (appointment != null)
                 _httpContext.CreatedAppointment = appointment;
@@ -96,7 +96,7 @@
         [Given(@"I store the Appointment")]
         public void StoreTheAppointment()
         {
-            var appointment = _httpContext.HttpResponse.Appointments.FirstOrDefault();
+            var appointment = _httpContext.FhirResponse.Appointments.FirstOrDefault();
 
             if (appointment != null)
                 _httpContext.CreatedAppointment = appointment;
@@ -105,18 +105,18 @@
         [Given(@"I store the Appointment Id")]
         public void StoreTheAppointmentId()
         {
-            var appointment = _httpContext.HttpResponse.Appointments.FirstOrDefault();
+            var appointment = _httpContext.FhirResponse.Appointments.FirstOrDefault();
 
             if (appointment != null)
-                _httpContext.GetRequestId = appointment.Id;
+                _httpContext.HttpRequestConfiguration.GetRequestId = appointment.Id;
         }
 
         [Given(@"I store the Appointment Version Id")]
         public void StoreThePractitionerVersionId()
         {
-            var appointment = _httpContext.HttpResponse.Appointments.FirstOrDefault();
+            var appointment = _httpContext.FhirResponse.Appointments.FirstOrDefault();
             if (appointment != null)
-                _httpContext.GetRequestVersionId = appointment.VersionId;
+                _httpContext.HttpRequestConfiguration.GetRequestVersionId = appointment.VersionId;
         }
 
         [Given(@"I set the Created Appointment Status to ""([^""]*)""")]
@@ -387,19 +387,19 @@
         [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for Start ""([^""]*)""")]
         public void AddAQueryParameterToTheRequestUrlWithPrefixForStart(string prefix, string start)
         {
-            _httpContext.RequestUrl = $"{_httpContext.RequestUrl}?start={prefix}{start}";
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={prefix}{start}";
         }
 
         [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for Start ""([^""]*)"" and Prefix ""([^""]*)"" for End ""([^""]*)""")]
         public void AddAQueryParameterToTheRequestUrlWithPrefixForStartAndPrefixForEnd(string prefix, string start, string endPrefix, string end)
         {
-            _httpContext.RequestUrl = $"{_httpContext.RequestUrl}?start={prefix}{start}&start={endPrefix}{end}";
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={prefix}{start}&start={endPrefix}{end}";
         }
 
         [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for the Created Appointment Start")]
         public void AddAQueryParameterToTheRequestUrlWithPrefixForStoredAppointmentStart(string prefix)
         {
-            _httpContext.RequestUrl = $"{_httpContext.RequestUrl}?start={prefix}{_httpContext.CreatedAppointment.StartElement}";
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={prefix}{_httpContext.CreatedAppointment.StartElement}";
         }
 
         private static Dictionary<string, string> ParticipantTypeDictionary => new Dictionary<string, string>

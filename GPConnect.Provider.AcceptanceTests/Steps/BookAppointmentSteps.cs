@@ -13,7 +13,7 @@
     public class BookAppointmentSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
-        private List<Appointment> Appointments => _httpContext.HttpResponse.Appointments;
+        private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
         public BookAppointmentSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)

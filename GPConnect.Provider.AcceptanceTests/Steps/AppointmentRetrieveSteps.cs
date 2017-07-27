@@ -12,7 +12,7 @@
     {
         private readonly HttpContext _httpContext;
 
-        private List<Appointment> Appointments => _httpContext.HttpResponse.Appointments;
+        private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
         public AppointmentRetrieveSteps(HttpContext httpContext)
         {

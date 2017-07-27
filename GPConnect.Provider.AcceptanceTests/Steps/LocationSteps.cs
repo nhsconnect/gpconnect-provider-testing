@@ -13,7 +13,7 @@
     {
         private readonly HttpContext _httpContext;
 
-        private List<Location> Locations => _httpContext.HttpResponse.Locations;
+        private List<Location> Locations => _httpContext.FhirResponse.Locations;
 
         public LocationSteps(HttpContext httpContext, HttpSteps httpSteps) 
             : base(httpSteps)
@@ -28,7 +28,7 @@
 
             GlobalContext.OdsCodeMap.TryGetValue(value, out locationCode);
 
-            _httpContext.RequestParameters.AddParameter("identifier", system + '|' + locationCode);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", system + '|' + locationCode);
         }
 
         [Given(@"I add a Location Identifier parameter with default System and Value ""([^""]*)""")]
@@ -44,7 +44,7 @@
 
             GlobalContext.OdsCodeMap.TryGetValue(value, out locationCode);
 
-            _httpContext.RequestParameters.AddParameter(parameterName, "http://fhir.nhs.net/Id/ods-site-code" + '|' + GlobalContext.OdsCodeMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, "http://fhir.nhs.net/Id/ods-site-code" + '|' + GlobalContext.OdsCodeMap[value]);
         }       
 
         [Given(@"I get the Location for Location Value ""([^""]*)""")]
@@ -63,7 +63,7 @@
             var location = Locations.FirstOrDefault();
 
             if (location != null)
-                _httpContext.GetRequestId = location.Id;
+                _httpContext.HttpRequestConfiguration.GetRequestId = location.Id;
         }
 
         [Given(@"I store the Location")]
@@ -87,7 +87,7 @@
         [Then(@"the Response Resource should be a Location")]
         public void TheResponseResourceShouldBeALocation()
         {
-            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Location);
+            _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Location);
         }
 
         [Then(@"the Location Name should be valid")]
@@ -183,7 +183,7 @@
             var location = Locations.FirstOrDefault();
 
             location.ShouldNotBeNull();
-            location.Id.ShouldBe(_httpContext.GetRequestId);
+            location.Id.ShouldBe(_httpContext.HttpRequestConfiguration.GetRequestId);
         }
 
         [Then(@"the Location Identifier should be valid")]

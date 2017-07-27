@@ -14,7 +14,7 @@
     {
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
-        private List<Organization> Organizations => _httpContext.HttpResponse.Organizations;
+        private List<Organization> Organizations => _httpContext.FhirResponse.Organizations;
 
         public OrganizationSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps) : base(httpSteps)
         {
@@ -25,7 +25,7 @@
         [Then(@"the Response Resource should be an Organization")]
         public void TheResponseResourceShouldBeAnOrganization()
         {
-            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Organization);
+            _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Organization);
         }
 
         [Then(@"the Organization Identifiers should be valid")]
@@ -124,7 +124,7 @@
                 {
                     _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
 
-                    _httpContext.RequestUrl = organization.PartOf.Reference;
+                    _httpContext.HttpRequestConfiguration.RequestUrl = organization.PartOf.Reference;
 
                     _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
 
@@ -142,37 +142,37 @@
         [Given(@"I add an Organization Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithSystemAndValue(string system, string value)
         {
-            _httpContext.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.OdsCodeMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", system + '|' + GlobalContext.OdsCodeMap[value]);
         }
 
         [Given(@"I add an Organization Identifier parameter with Organization Code System and Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithOrganizationsCodeSystemAndValue(string value)
         {
-            _httpContext.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap[value]);
         }
 
         [Given(@"I add an Organization Identifier parameter with Site Code System and Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithSiteCodeSystemAndValue(string value)
         {
-            _httpContext.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/ods-site-code" + '|' + GlobalContext.OdsCodeMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/ods-site-code" + '|' + GlobalContext.OdsCodeMap[value]);
         }
 
         [Given(@"I add an Identifier parameter with the Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithTheValue(string value)
         {
-            _httpContext.RequestParameters.AddParameter("identifier", value);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", value);
         }
 
         [Given(@"I add a ""([^""]*)"" parameter with the Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithTheValue(string parameterName, string value)
         {
-            _httpContext.RequestParameters.AddParameter(parameterName, value);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, value);
         }
 
         [Given(@"I add a Format parameter with the Value ""([^""]*)""")]
         public void AddAFormatParameterWithTheValue(string value)
         {
-            _httpContext.RequestParameters.AddParameter("_format", value);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("_format", value);
         }
 
         [Given(@"I get the Organization for Organization Code ""([^""]*)""")]
@@ -190,7 +190,7 @@
         {
             var organization = Organizations.FirstOrDefault();
             if (organization != null)
-                _httpContext.GetRequestId = organization.Id;
+                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
         }
 
         [Given(@"I store the Organization Version Id")]
@@ -198,7 +198,7 @@
         {
             var organization = Organizations.FirstOrDefault();
             if (organization != null)
-                _httpContext.GetRequestVersionId = organization.VersionId;
+                _httpContext.HttpRequestConfiguration.GetRequestVersionId = organization.VersionId;
         }
 
         [Given(@"I store the Organization")]
@@ -302,7 +302,7 @@
         [Then(@"the returned organization contains identifiers of type ""([^""]*)"" with values ""([^""]*)""")]
         public void ThenTheReturnedOrgainzationContainsIdentifiersOfTypeWithValues(string identifierSystem, string identifierValueCSV)
         {
-            var organization = (Organization)_httpContext.HttpResponse.Resource;
+            var organization = (Organization)_httpContext.FhirResponse.Resource;
             organization.Identifier.ShouldNotBeNull("The organization should contain an organization identifier as the business identifier was used to find the organization for this test.");
 
             foreach (var identifierValue in identifierValueCSV.Split(','))
@@ -357,7 +357,7 @@
         [Then(@"the response bundle Organization entries should contain a maximum of 1 http://fhir.nhs.net/Id/ods-organization-code system identifier")]
         public void ThenResponseBundleOrganizationEntriesShouldContainAMaximumOf1OrgCodeSystemIdentifier()
         {
-            foreach (var entry in _httpContext.HttpResponse.Entries)
+            foreach (var entry in _httpContext.FhirResponse.Entries)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {

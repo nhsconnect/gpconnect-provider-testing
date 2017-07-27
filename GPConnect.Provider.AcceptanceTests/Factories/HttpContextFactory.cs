@@ -79,145 +79,144 @@
 
         private static void SetHttpContextDefaults(HttpContext httpContext)
         {
-            httpContext.SetDefaults();
-            httpContext.SetDefaultHeaders();
-            httpContext.LoadAppConfig();
+            httpContext.HttpRequestConfiguration.SetDefaultHeaders();
+            httpContext.HttpRequestConfiguration.LoadAppConfig();
         }
 
         private static void ConfigureGpcGetCareRecordContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Post;
-            httpContext.RequestUrl = "Patient/$gpc.getcarerecord";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetCareRecord);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Post;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Patient/$gpc.getcarerecord";
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetCareRecord);
         }
 
         private static void ConfigureOrganizationSearchContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "Organization";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.OrganizationSearch);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Organization";
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.OrganizationSearch);
         }
 
         private static void ConfigureOrganizationReadContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "Organization/" + httpContext.GetRequestId;
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Organization/" + httpContext.HttpRequestConfiguration.GetRequestId;
 
-            if (!string.IsNullOrEmpty(httpContext.GetRequestVersionId))
+            if (!string.IsNullOrEmpty(httpContext.HttpRequestConfiguration.GetRequestVersionId))
             {
-                httpContext.RequestUrl = httpContext.RequestUrl + "/_history/" + httpContext.GetRequestVersionId;
+                httpContext.HttpRequestConfiguration.RequestUrl = httpContext.HttpRequestConfiguration.RequestUrl + "/_history/" + httpContext.HttpRequestConfiguration.GetRequestVersionId;
             }
 
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.OrganizationRead);
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.OrganizationRead);
         }
 
         private static void ConfigurePractitionerSearchContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "Practitioner";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PractitionerSearch);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Practitioner";
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PractitionerSearch);
         }
 
         private static void ConfigurePractitionerReadContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "Practitioner/" + httpContext.GetRequestId;
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Practitioner/" + httpContext.HttpRequestConfiguration.GetRequestId;
 
-            if (!string.IsNullOrEmpty(httpContext.GetRequestVersionId))
+            if (!string.IsNullOrEmpty(httpContext.HttpRequestConfiguration.GetRequestVersionId))
             {
-                httpContext.RequestUrl = httpContext.RequestUrl + "/_history/" + httpContext.GetRequestVersionId;
+                httpContext.HttpRequestConfiguration.RequestUrl = httpContext.HttpRequestConfiguration.RequestUrl + "/_history/" + httpContext.HttpRequestConfiguration.GetRequestVersionId;
             }
 
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PractitionerRead);
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PractitionerRead);
         }
 
         private static void ConfigurePatientSearchContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "Patient";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientSearch);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Patient";
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientSearch);
         }
 
         private static void ConfigurePatientReadContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "Patient/" + httpContext.GetRequestId;
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Patient/" + httpContext.HttpRequestConfiguration.GetRequestId;
 
-            if (!string.IsNullOrEmpty(httpContext.GetRequestVersionId))
+            if (!string.IsNullOrEmpty(httpContext.HttpRequestConfiguration.GetRequestVersionId))
             {
-                httpContext.RequestUrl = httpContext.RequestUrl + "/_history/" + httpContext.GetRequestVersionId;
+                httpContext.HttpRequestConfiguration.RequestUrl = httpContext.HttpRequestConfiguration.RequestUrl + "/_history/" + httpContext.HttpRequestConfiguration.GetRequestVersionId;
             }
 
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientRead);
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientRead);
         }
 
         private static void ConfigureLocationSearchContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "Location";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationSearch);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Location";
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationSearch);
         }
 
         private static void ConfigureLocationReadContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "Location/" + httpContext.GetRequestId; 
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationRead);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Location/" + httpContext.HttpRequestConfiguration.GetRequestId; 
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationRead);
         }
 
         private static void ConfigureRegisterPatientContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Post;
-            httpContext.RequestUrl = "Patient/$gpc.registerpatient";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.RegisterPatient);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Post;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Patient/$gpc.registerpatient";
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.RegisterPatient);
         }
 
         private static void ConfigureGpcGetScheduleContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Post;
-            httpContext.RequestUrl = "Organization/" + httpContext.StoredOrganization.Id + "/$gpc.getschedule";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetSchedule);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Post;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Organization/" + httpContext.StoredOrganization.Id + "/$gpc.getschedule";
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetSchedule);
         }
 
         private static void ConfigureAppointmentCreate(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Post;
-            httpContext.RequestUrl = "Appointment";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentCreate);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Post;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Appointment";
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentCreate);
         }
 
         private static void ConfigureAppointmentSearchContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;;
-            httpContext.RequestUrl = "Patient/" + httpContext.StoredPatient.Id + "/Appointment";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentSearch);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Patient/" + httpContext.StoredPatient.Id + "/Appointment";
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentSearch);
         }
         private static void ConfigureAppointmentAmendContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Put;
-            httpContext.RequestUrl = "Appointment/" + httpContext.CreatedAppointment?.Id;
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentAmend);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Put;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Appointment/" + httpContext.CreatedAppointment?.Id;
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentAmend);
         }
 
         private static void ConfigureAppointmentCancelContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Put; 
-            httpContext.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentCancel);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Put; 
+            httpContext.HttpRequestConfiguration.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentCancel);
         }
 
         private static void ConfigureAppointmentReadContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentRead);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentRead);
         }
 
         private static void ConfigureMetadataReadContext(HttpContext httpContext)
         {
-            httpContext.HttpMethod = HttpMethod.Get;
-            httpContext.RequestUrl = "metadata";
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.MetadataRead);
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "metadata";
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.MetadataRead);
         }
     }
 }

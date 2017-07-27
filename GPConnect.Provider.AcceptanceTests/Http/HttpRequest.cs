@@ -43,20 +43,20 @@
             timer.Stop();
 
             // Save The Time Taken To Perform The Request
-            _httpContext.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
+            _httpContext.HttpResponse.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
 
             // Save The Response Details
-            _httpContext.ResponseStatusCode = result.StatusCode;
+            _httpContext.HttpResponse.StatusCode = result.StatusCode;
 
             // Some HTTP responses will have no content e.g. 304
             if (result.Content.Headers.ContentType != null)
             {
-                _httpContext.ResponseContentType = result.Content.Headers.ContentType.MediaType;
+                _httpContext.HttpResponse.ContentType = result.Content.Headers.ContentType.MediaType;
             }
 
             using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
             {
-                _httpContext.ResponseBody = reader.ReadToEnd();
+                _httpContext.HttpResponse.Body = reader.ReadToEnd();
             }
 
             // Add headers
@@ -64,7 +64,7 @@
             {
                 foreach (var headerKeyValues in headerKey.Value)
                 {
-                    _httpContext.ResponseHeaders.Add(headerKey.Key, headerKeyValues);
+                    _httpContext.HttpResponse.Headers.Add(headerKey.Key, headerKeyValues);
                     Log.WriteLine("Header - " + headerKey.Key + " : " + headerKeyValues);
                 }
             }
@@ -73,7 +73,7 @@
             {
                 foreach (var headerValues in header.Value)
                 {
-                    _httpContext.ResponseHeaders.Add(header.Key, headerValues);
+                    _httpContext.HttpResponse.Headers.Add(header.Key, headerValues);
                     Log.WriteLine("Header - " + header.Key + " : " + headerValues);
                 }
             }
@@ -85,16 +85,16 @@
         {
             var queryStringParameters = GetQueryStringParameters();
 
-            var requestMessage = new HttpRequestMessage(_httpContext.HttpMethod, _httpContext.RequestUrl + queryStringParameters);
+            var requestMessage = new HttpRequestMessage(_httpContext.HttpRequestConfiguration.HttpMethod, _httpContext.HttpRequestConfiguration.RequestUrl + queryStringParameters);
 
-            if (_httpContext.RequestBody != null)
+            if (_httpContext.HttpRequestConfiguration.RequestBody != null)
             {
-                requestMessage.Content = new StringContent(_httpContext.RequestBody, Encoding.UTF8, _httpContext.RequestContentType);
+                requestMessage.Content = new StringContent(_httpContext.HttpRequestConfiguration.RequestBody, Encoding.UTF8, _httpContext.HttpRequestConfiguration.RequestContentType);
             }
 
             // Add The Headers
-            _httpContext.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, _httpContext.RequestContentType);
-            foreach (var header in _httpContext.RequestHeaders.GetRequestHeaders())
+            _httpContext.HttpRequestConfiguration.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, _httpContext.HttpRequestConfiguration.RequestContentType);
+            foreach (var header in _httpContext.HttpRequestConfiguration.RequestHeaders.GetRequestHeaders())
             {
                 try
                 {
@@ -112,14 +112,14 @@
 
         private string GetQueryStringParameters()
         {
-            if (!_httpContext.RequestParameters.GetRequestParameters().Any())
+            if (!_httpContext.HttpRequestConfiguration.RequestParameters.GetRequestParameters().Any())
             {
                 return string.Empty;
             }
 
             var requestParamString = "?";
 
-            foreach (var parameter in _httpContext.RequestParameters.GetRequestParameters())
+            foreach (var parameter in _httpContext.HttpRequestConfiguration.RequestParameters.GetRequestParameters())
             {
                 Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
                 requestParamString = requestParamString + HttpUtility.UrlEncode(parameter.Key, Encoding.UTF8) + "=" + HttpUtility.UrlEncode(parameter.Value, Encoding.UTF8) + "&";
@@ -130,23 +130,23 @@
 
         private void ParseResponse()
         {
-            var responseIsCompressed = _httpContext.ResponseHeaders.Contains(new KeyValuePair<string, string>(HttpConst.Headers.kContentEncoding, "gzip"));
-            var decompressResponse = _httpContext.DecompressionMethod != DecompressionMethods.None;
+            var responseIsCompressed = _httpContext.HttpResponse.Headers.Contains(new KeyValuePair<string, string>(HttpConst.Headers.kContentEncoding, "gzip"));
+            var decompressResponse = _httpContext.HttpRequestConfiguration.DecompressionMethod != DecompressionMethods.None;
 
             if (responseIsCompressed && !decompressResponse)
                 return;
 
-            switch (_httpContext.ResponseContentType)
+            switch (_httpContext.HttpResponse.ContentType)
             {
                 case FhirConst.ContentTypes.kJsonFhir:
-                    _httpContext.ResponseJSON = JObject.Parse(_httpContext.ResponseBody);
+                    _httpContext.HttpResponse.ResponseJSON = JObject.Parse(_httpContext.HttpResponse.Body);
                     var jsonParser = new FhirJsonParser();
-                    _httpContext.HttpResponse.Resource = jsonParser.Parse<Resource>(_httpContext.ResponseBody);
+                    _httpContext.FhirResponse.Resource = jsonParser.Parse<Resource>(_httpContext.HttpResponse.Body);
                     break;
                 case FhirConst.ContentTypes.kXmlFhir:
-                    _httpContext.ResponseXML = XDocument.Parse(_httpContext.ResponseBody);
+                    _httpContext.HttpResponse.ResponseXML = XDocument.Parse(_httpContext.HttpResponse.Body);
                     var xmlParser = new FhirXmlParser();
-                    _httpContext.HttpResponse.Resource = xmlParser.Parse<Resource>(_httpContext.ResponseBody);
+                    _httpContext.FhirResponse.Resource = xmlParser.Parse<Resource>(_httpContext.HttpResponse.Body);
                     break;
             }
         }
@@ -155,7 +155,7 @@
         {
             var handler = new WebRequestHandler
             {
-                AutomaticDecompression = _httpContext.DecompressionMethod
+                AutomaticDecompression = _httpContext.HttpRequestConfiguration.DecompressionMethod
             };
 
             if (_httpContext.SecurityContext.SendClientCert)
@@ -164,9 +164,9 @@
                 handler.ClientCertificates.Add(clientCert);
             }
 
-            if (_httpContext.UseWebProxy)
+            if (_httpContext.HttpRequestConfiguration.UseWebProxy)
             {
-                handler.Proxy = new WebProxy(new Uri(_httpContext.WebProxyAddress, UriKind.Absolute));
+                handler.Proxy = new WebProxy(new Uri(_httpContext.HttpRequestConfiguration.WebProxyAddress, UriKind.Absolute));
             }
 
             return handler;
@@ -178,7 +178,8 @@
 
             return new HttpClient(handler)
             {
-                BaseAddress = new Uri(_httpContext.BaseUrl)
+                BaseAddress = new Uri(_httpContext.HttpRequestConfiguration.BaseUrl),
+                Timeout = new TimeSpan(0, 0, 10, 0)
             };
         }
     }

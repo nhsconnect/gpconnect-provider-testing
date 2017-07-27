@@ -15,7 +15,7 @@
         private readonly BundleSteps _bundleSteps;
         private readonly OrganizationSteps _organizationSteps;
 
-        private List<Practitioner> Practitioners => _httpContext.HttpResponse.Practitioners;
+        private List<Practitioner> Practitioners => _httpContext.FhirResponse.Practitioners;
 
         public PractitionerSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps) 
             : base(httpSteps)
@@ -32,7 +32,7 @@
 
             GlobalContext.PractionerCodeMap.TryGetValue(value, out practitionerCode);
 
-            _httpContext.RequestParameters.AddParameter("identifier", system + '|' + practitionerCode);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", system + '|' + practitionerCode);
         }
 
         [Given(@"I add a Practitioner Identifier parameter with SDS User Id System and Value ""([^""]*)""")]
@@ -42,7 +42,7 @@
 
             GlobalContext.PractionerCodeMap.TryGetValue(value, out practitionerCode);
 
-            _httpContext.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/sds-user-id" + '|' + GlobalContext.PractionerCodeMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/sds-user-id" + '|' + GlobalContext.PractionerCodeMap[value]);
         }
 
         [Given(@"I add a Practitioner ""([^""]*)"" parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -52,7 +52,7 @@
 
             GlobalContext.PractionerCodeMap.TryGetValue(value, out practitionerCode);
 
-            _httpContext.RequestParameters.AddParameter(identifier, system + '|' + practitionerCode);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(identifier, system + '|' + practitionerCode);
         }
 
         [Given(@"I get the Practitioner for Practitioner Code ""([^""]*)""")]
@@ -70,7 +70,7 @@
         {
             var practitioner = Practitioners.FirstOrDefault();
             if (practitioner != null)
-                _httpContext.GetRequestId = practitioner.Id;
+                _httpContext.HttpRequestConfiguration.GetRequestId = practitioner.Id;
         }
 
         [Given(@"I store the Practitioner Version Id")]
@@ -78,13 +78,13 @@
         {
             var practitioner = Practitioners.FirstOrDefault();
             if (practitioner != null)
-                _httpContext.GetRequestVersionId = practitioner.VersionId;
+                _httpContext.HttpRequestConfiguration.GetRequestVersionId = practitioner.VersionId;
         }
 
         [Then(@"the Response Resource should be a Practitioner")]
         public void ResponseResourceShouldBeAPractitioner()
         {
-            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Practitioner);
+            _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Practitioner);
         }
 
         [Then(@"the Practitioner should be valid")]
@@ -306,7 +306,7 @@
 
                         _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
 
-                        _httpContext.RequestUrl = practitionerRole.ManagingOrganization.Reference;
+                        _httpContext.HttpRequestConfiguration.RequestUrl = practitionerRole.ManagingOrganization.Reference;
 
                         _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
 

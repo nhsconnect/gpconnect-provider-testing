@@ -22,15 +22,15 @@
         [Then(@"the response should be a Bundle resource of type ""([^""]*)""")]
         public void ThenTheResponseShouldBeABundleResourceOfType(string resourceType)
         {
-            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Bundle);
+            _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Bundle);
 
             if ("document".Equals(resourceType))
             {
-                _httpContext.HttpResponse.Bundle.Type.ShouldBe(BundleType.Document);
+                _httpContext.FhirResponse.Bundle.Type.ShouldBe(BundleType.Document);
             }
             else if ("searchset".Equals(resourceType))
             {
-                _httpContext.HttpResponse.Bundle.Type.ShouldBe(BundleType.Searchset);
+                _httpContext.FhirResponse.Bundle.Type.ShouldBe(BundleType.Searchset);
             }
             else
             {
@@ -52,7 +52,7 @@
 
         private void TestOperationOutcomeResource(string errorCode = null)
         {
-            var resource = _httpContext.HttpResponse.Resource;
+            var resource = _httpContext.FhirResponse.Resource;
 
             resource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
 
@@ -88,27 +88,27 @@
         [Then(@"the response bundle should contain a single Patient resource")]
         public void ThenTheResponseBundleShouldContainASinglePatientResource()
         {
-            _httpContext.HttpResponse.Patients.Count.ShouldBe(1);
+            _httpContext.FhirResponse.Patients.Count.ShouldBe(1);
         }
 
         [Then(@"the response bundle should contain at least One Practitioner resource")]
         public void ThenTheResponseBundleShouldContainAtLeastOnePractitionerResource()
         {
-            _httpContext.HttpResponse.Practitioners.Count.ShouldBeGreaterThan(0);
+            _httpContext.FhirResponse.Practitioners.Count.ShouldBeGreaterThan(0);
         }
 
         [Then(@"the response bundle should contain a single Composition resource")]
         public void ThenTheResponseBundleShouldContainASingleCompositionResource()
         {
-            _httpContext.HttpResponse.Compositions.Count.ShouldBe(1);
+            _httpContext.FhirResponse.Compositions.Count.ShouldBe(1);
         }
 
         [Then(@"the response Bundle should contain a single Composition resource as the first Entry")]
         public void ThenTheResponseBundleShouldContainASingleCompositionResourceAsTheFirstEntry()
         {
-            _httpContext.HttpResponse.Compositions.Count.ShouldBe(1);
+            _httpContext.FhirResponse.Compositions.Count.ShouldBe(1);
 
-            _httpContext.HttpResponse.Entries
+            _httpContext.FhirResponse.Entries
                 .Select(entry => entry.Resource.ResourceType)
                 .First()
                 .ShouldBe(ResourceType.Composition);
@@ -117,7 +117,7 @@
         [Then(@"the response bundle should contain the composition resource as the first entry")]
         public void ThenTheResponseBundleShouldContainTheCompositionResourceAsTheFirstEntry()
         {
-            _httpContext.HttpResponse.Bundle
+            _httpContext.FhirResponse.Bundle
                 .Entry
                 .Select(entry => entry.Resource.ResourceType)
                 .First()
@@ -127,31 +127,31 @@
         [Then(@"the patient resource in the bundle should contain meta data profile and version id")]
         public void ThenThePatientResourceInTheBundleShouldContainMetaDataProfileAndVersionId()
         {
-            CheckForValidMetaDataInResource(_httpContext.HttpResponse.Patients, "http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Patients, "http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
         }
 
         [Then(@"if the response bundle contains an organization resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsAnOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            CheckForValidMetaDataInResource(_httpContext.HttpResponse.Organizations, "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Organizations, "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
         }
 
         [Then(@"if the response bundle contains a practitioner resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsAPractitionerResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            CheckForValidMetaDataInResource(_httpContext.HttpResponse.Practitioners, "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Practitioners, "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
         }
 
         [Then(@"if the response bundle contains a device resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsADeviceResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            CheckForValidMetaDataInResource(_httpContext.HttpResponse.Devices, "http://fhir.nhs.net/StructureDefinition/gpconnect-device-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Devices, "http://fhir.nhs.net/StructureDefinition/gpconnect-device-1");
         }
 
         [Then(@"if the response bundle contains a location resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsALocationResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            CheckForValidMetaDataInResource(_httpContext.HttpResponse.Locations, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Locations, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
         }
 
         public void CheckForValidMetaDataInResource<T>(List<T> resources, string profileId) where T : Resource
@@ -172,7 +172,7 @@
         {
             const string customMessage = "The reference from the resource was not found in the bundle by fullUrl resource element.";
 
-            _httpContext.HttpResponse.Bundle
+            _httpContext.FhirResponse.Bundle
                 .Entry
                 .ShouldContain(entry => reference.Equals(entry.FullUrl) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
         }

@@ -76,7 +76,7 @@
                     throw new ArgumentOutOfRangeException();
             }
 
-            httpContext.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
         }
 
         private static void ConfigureGpcGetCareRecordJwt(JwtHelper jwtHelper)

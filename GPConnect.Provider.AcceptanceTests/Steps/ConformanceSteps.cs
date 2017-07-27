@@ -12,7 +12,7 @@
     public class ConformanceSteps 
     {
         private readonly HttpContext _httpContext;
-        private List<Conformance> Conformances => _httpContext.HttpResponse.Conformances;
+        private List<Conformance> Conformances => _httpContext.FhirResponse.Conformances;
         public ConformanceSteps(HttpContext httpContext)
         {
             _httpContext = httpContext;
@@ -21,7 +21,7 @@
         [Then("the Response Resource should be a Conformance")]
         public void TheResponseResourceShouldBeALocation()
         {
-            _httpContext.HttpResponse.Resource.ResourceType.ShouldBe(ResourceType.Conformance);
+            _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Conformance);
         }
 
         [Then("the Conformance Format should contain XML and JSON")]

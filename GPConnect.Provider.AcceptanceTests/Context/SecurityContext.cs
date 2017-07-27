@@ -21,7 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         private readonly ScenarioContext _scenarioContext;
 
         // Constructor
-
         public SecurityContext(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;

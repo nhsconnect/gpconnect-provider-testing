@@ -19,7 +19,7 @@
 
         private Composition GetComposition()
         {
-            return _httpContext.HttpResponse.Compositions.First();
+            return _httpContext.FhirResponse.Compositions.First();
         }
 
         [Then("the Composition should be valid")]
