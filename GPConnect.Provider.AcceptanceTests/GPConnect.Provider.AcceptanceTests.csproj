@@ -94,11 +94,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessRecord.feature</DependentUpon>
     </Compile>
-    <Compile Include="AppointmentBook.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppointmentBook.feature</DependentUpon>
-    </Compile>
     <Compile Include="AppointmentCancel.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -201,10 +196,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PatientSearch.feature</DependentUpon>
     </Compile>
-    <Compile Include="AppointmentSearch.feature.cs">
+    <Compile Include="AppointmentRetrieve.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AppointmentSearch.feature</DependentUpon>
+      <DependentUpon>AppointmentRetrieve.feature</DependentUpon>
     </Compile>
     <Compile Include="PractitionerRead.feature.cs">
       <AutoGen>True</AutoGen>
@@ -356,9 +351,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Security.feature.cs</LastGenOutput>
     </None>
-    <None Include="AppointmentSearch.feature">
+    <None Include="AppointmentRetrieve.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AppointmentSearch.feature.cs</LastGenOutput>
+      <LastGenOutput>AppointmentRetrieve.feature.cs</LastGenOutput>
     </None>
     <None Include="AppointmentAmend.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

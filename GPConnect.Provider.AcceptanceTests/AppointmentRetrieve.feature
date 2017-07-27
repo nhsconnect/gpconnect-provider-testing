@@ -1,6 +1,6 @@
 ﻿@appointment
-Feature: AppointmentSearch
-
+Feature: AppointmentRetrieve
+#
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
 	Given I get the Patient for Patient Value "patient15"
 		And I store the Patient
@@ -10,7 +10,7 @@ Scenario: Appointment retrieve success valid id where appointment resource retur
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Bundle should contain no Appointments
-
+#
 Scenario Outline: Appointment retrieve success valid id where single appointment resource should be returned
 	Given I create an Appointment for Patient "<patient>" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -54,7 +54,7 @@ Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 		| dd   |
 		|      |
 		| null |
-
+#
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -126,7 +126,7 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		| 2016-08-05T08:16          | eq     |
 		| 2016-08-                  | eq     |
 		| 2016-08-05 08:16:07       | eq     |
-
+#
 Scenario Outline: Appointment retrieve send request and find request using equal to prefix
 	Given I create "1" Appointments for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -144,7 +144,7 @@ Scenario Outline: Appointment retrieve send request and find request using equal
 		| prefix |
 		| eq     |
 		|        |
-
+#
 Scenario Outline: Appointment retrieve send request with date variations and greater than and less than prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -181,7 +181,7 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 		| 2044-05                   | le     |
 		| 2044-05-01T11:08:32       | le     |
 		| 2044-10-23T11:08:32+00:00 | le     |
-
+#
 Scenario Outline: Appointment retrieve send request with lower start date boundry and start prefix and upper end date boundary and end prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -218,7 +218,7 @@ Scenario Outline: Appointment retrieve send request with lower start date boundr
 		| 2014-05                   | ge     | 2044-05                   | lt      |
 		| 2014-05-01T11:08:32       | ge     | 2044-05-01T11:08:32       | lt      |
 		| 2015-10-23T11:08:32+00:00 | ge     | 2044-10-23T11:08:32+00:00 | lt      |
-
+#
 Scenario Outline: Appointment retrieve send request with upper end date boundary and end prefix and lower start date boundry and start prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -255,7 +255,7 @@ Scenario Outline: Appointment retrieve send request with upper end date boundary
 		| 2044-05                   | lt     | 2014-05                   | ge      |
 		| 2044-05-01T11:08:32       | lt     | 2014-05-01T11:08:32       | ge      |
 		| 2044-10-23T11:08:32+00:00 | lt     | 2015-10-23T11:08:32+00:00 | ge      |
-
+#
 Scenario Outline: Appointment retrieve send request with different upper end date boundary formats and end prefix and different lower start date boundry formats and start prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -297,7 +297,7 @@ Scenario Outline: Appointment retrieve send request with different upper end dat
 		| 2015-10-23T11:08:32+00:00 | gt     | 2018-10-05                | lt      |
 		| 2015-10-23T11:08:32+00:00 | gt     | 2044-05-01T11:08:32       | lt      |
 		| 2015-10-23T11:08:32+00:00 | gt     | 2018-05                   | lt      |
-
+#
 Scenario Outline: Appointment retrieve send request with start date and invalid start prefix and end date and invalid end prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -337,7 +337,7 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 		| 2014-05                   | le     | 2044-05                   | le      |
 		| 2014-05-01T11:08:32       | le     | 2044-05-01T11:08:32       | le      |
 		| 2015-10-23T11:08:32+00:00 | le     | 2044-10-23T11:08:32+00:00 | le      |
-
+#
 Scenario Outline: Appointment retrieve failure due to missing header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -354,7 +354,7 @@ Scenario Outline: Appointment retrieve failure due to missing header
 		| Ssp-To            |
 		| Ssp-InteractionId |
 		| Authorization     |
-
+#
 Scenario Outline: Appointment retrieve interaction id incorrect fail
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -372,7 +372,7 @@ Scenario Outline: Appointment retrieve interaction id incorrect fail
 		|                                                                   |
 		| null                                                              |
 	
-Scenario Outline: Appointment retrieve accept header and _format parameter
+Scenario Outline: Appointment retrieve accept header and _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -390,7 +390,7 @@ Scenario Outline: Appointment retrieve accept header and _format parameter
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
 
-Scenario Outline: Appointment retrieve accept header
+Scenario Outline: Appointment retrieve accept header to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -405,7 +405,7 @@ Scenario Outline: Appointment retrieve accept header
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
-Scenario Outline: Appointment retrieve _format parameter only
+Scenario Outline: Appointment retrieve _format parameter only to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
