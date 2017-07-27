@@ -96,12 +96,12 @@ Scenario Outline: Cancel appointment failure with incorrect interaction id
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| InteractionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:update:appointmentss   |
-		| urn:nhs:names:services:gpconnect:fhir:rest:update:appointmenT     |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                   |
-		| null                                                              |
+		| InteractionId                                                      |
+		| urn:nhs:names:aservices:gpconnect:fhir:rest:update:appointmentss   |
+		| urn:nhs:names:servisces:gpconnect:fhir:rest:update:appointmenT     |
+		| urn:nhs:nazmes:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		|                                                                    |
+		| null                                                               |
 
 Scenario Outline: Cancel appointment using the _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -216,6 +216,7 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 		And I set the Created Appointment to Cancelled with Url "<url>" and Reason "<reason>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate failure
+	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
 		| url                                                                                                | reason   |
@@ -231,6 +232,7 @@ Scenario: Cancel appointment missing cancellation extension reason
 		And I set the Created Appointment to Cancelled with Reason ""
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate failure
+	Then the response status code should be "403"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Cancel appointment verify resource is updated when an valid ETag value is provided
