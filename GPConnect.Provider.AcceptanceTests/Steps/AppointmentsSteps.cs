@@ -345,7 +345,7 @@
                 {
                     var hasActorOrType = participant.Actor == null && participant.Type == null;
 
-                    hasActorOrType.ShouldBeTrue("The Appointment Participant should have an Actor or Type, but has neither.");
+                    hasActorOrType.ShouldBeFalse("The Appointment Participant should have an Actor or Type, but has neither.");
 
                     if (participant.Type != null)
                     {
