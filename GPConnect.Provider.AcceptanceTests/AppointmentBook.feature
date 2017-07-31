@@ -500,7 +500,6 @@ Scenario: Book Appointment and remove participant status from the appointment bo
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-
 Scenario Outline: Book Appointment and remove participant type coding element from the appointment booking
 		Given I get the Patient for Patient Value "patient1"
 		And I store the Patient

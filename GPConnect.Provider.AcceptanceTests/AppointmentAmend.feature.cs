@@ -76,7 +76,6 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestCaseAttribute("patient6", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient7", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient8", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient8", new string[0])]
         public virtual void IPerformASuccessfulAmendAppointmentAndChangeTheCommentToACustomMessage(string patient, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I perform a successful amend appointment and change the comment to a custom messa" +
@@ -84,7 +83,7 @@ namespace GPConnect.Provider.AcceptanceTests
 #line 4
 this.ScenarioSetup(scenarioInfo);
 #line 5
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I create an Appointment for Patient \"{0}\" and Organization Code \"ORG1\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 6
   testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 7
@@ -100,7 +99,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
   testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
-  testRunner.And("the Appointment Comment should be valid for \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Comment should equal \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
   testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -204,10 +203,10 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Amend appointment making a request to an invalid URL")]
-        [NUnit.Framework.TestCaseAttribute("/Appointment/!", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("/APPointment/23", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("/Appointment/#", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("/Appointment/update", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Appointment/!", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("APPointment/23", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Appointment/#", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Appointment/update", new string[0])]
         public virtual void AmendAppointmentMakingARequestToAnInvalidURL(string url, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment making a request to an invalid URL", exampleTags);
@@ -271,7 +270,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Amend appointment failure with incorrect interaction id")]
         [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:rest:update:appointmentt", new string[0])]
         [NUnit.Framework.TestCaseAttribute("urn:nSs:namEs:servIces:gpconnect:fhir:rest:update:appointmenT", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("urn:nhs:ncames:services:gpconnect:fhir:operation:gpc.getcarerecord", new string[0])]
         [NUnit.Framework.TestCaseAttribute("", new string[0])]
         [NUnit.Framework.TestCaseAttribute("null", new string[0])]
         public virtual void AmendAppointmentFailureWithIncorrectInteractionId(string interactionId, string[] exampleTags)
@@ -331,7 +330,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 123
   testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 124
-  testRunner.And("the Appointment Comment should be valid for \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Comment should equal \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -368,7 +367,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 141
   testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 142
-  testRunner.And("the Appointment Comment should be valid for \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Comment should equal \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -411,7 +410,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 160
   testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 161
-  testRunner.And("the Appointment Comment should be valid for \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Comment should equal \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -444,7 +443,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 178
   testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 179
-  testRunner.And("the Appointment Comment should be valid for \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Comment should equal \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 180
   testRunner.And("the Appointment Status should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 181
@@ -594,7 +593,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 238
   testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 239
-  testRunner.And("the Appointment Comment should be valid for \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Comment should equal \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

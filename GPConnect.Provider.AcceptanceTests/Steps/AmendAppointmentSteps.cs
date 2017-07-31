@@ -17,7 +17,7 @@
             _httpContext = httpContext;
         }
 
-        [Then(@"the Appointment Comment should be valid for ""(.*)""")]
+        [Then(@"the Appointment Comment should equal ""(.*)""")]
         public void TheAppointmentCommentShouldBeValidFor(string value)
         {
             Appointments.ForEach(appointment =>

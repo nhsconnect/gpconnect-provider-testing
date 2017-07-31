@@ -1,8 +1,8 @@
 ﻿@appointment
 Feature: AppointmentAmend
-#Specification is unclear as to what can be updated
+
 Scenario Outline: I perform a successful amend appointment and change the comment to a custom message
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for Patient "<Patient>" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -10,7 +10,7 @@ Scenario Outline: I perform a successful amend appointment and change the commen
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "customComment"
+		And the Appointment Comment should equal "customComment"
 		And the Appointment Metadata should be valid
 	Examples:
 		| Patient  |
@@ -22,7 +22,7 @@ Scenario Outline: I perform a successful amend appointment and change the commen
 		| patient6 |
 		| patient7 |
 		| patient8 |
-		| patient8 |
+
 
 Scenario: I perform a successful amend appointment and change the reason text to a custom message
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -69,10 +69,10 @@ Scenario Outline: Amend appointment making a request to an invalid URL
 	Then the response status code should indicate failure
 	Examples:
 		| url                 |
-		| /Appointment/!      |
-		| /APPointment/23     |
-		| /Appointment/#      |
-		| /Appointment/update |
+		| Appointment/!      |
+		| APPointment/23     |
+		| Appointment/#      |
+		| Appointment/update |
 
 Scenario Outline: Amend appointment failure due to missing header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -106,7 +106,7 @@ Scenario Outline: Amend appointment failure with incorrect interaction id
 		| interactionId                                                     |
 		| urn:nhs:names:services:gpconnect:fhir:rest:update:appointmentt    |
 		| urn:nSs:namEs:servIces:gpconnect:fhir:rest:update:appointmenT     |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		| urn:nhs:ncames:services:gpconnect:fhir:operation:gpc.getcarerecord |
 		|                                                                   |
 		| null                                                              |
 
@@ -121,7 +121,7 @@ Scenario Outline: Amend appointment using the _format parameter to request respo
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "customComment"
+		And the Appointment Comment should equal "customComment"
 	Examples:
 		| Format                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -139,7 +139,7 @@ Scenario Outline: Amend appointment using the accept header to request response 
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
 		And the Appointment Metadata should be valid
-		And the Appointment Comment should be valid for "customComment"
+		And the Appointment Comment should equal "customComment"
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -158,7 +158,7 @@ Scenario Outline: Amend appointment using the _format and accept parameter to re
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
 		And the Appointment Metadata should be valid
-		And the Appointment Comment should be valid for "customComment"
+		And the Appointment Comment should equal "customComment"
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -176,7 +176,7 @@ Scenario: Amend appointment and check the returned appointment resource conforms
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "customComment"
+		And the Appointment Comment should equal "customComment"
 		And the Appointment Status should be valid
 		And the Appointment Start should be valid
 		And the Appointment End should be valid
@@ -236,7 +236,7 @@ Scenario: Amend appointment set etag and check etag is the same in the returned 
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "customComment"
+		And the Appointment Comment should equal "customComment"
 
 Scenario: Amend appointment and send an invalid bundle resource
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
