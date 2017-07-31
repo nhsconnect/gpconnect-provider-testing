@@ -9,7 +9,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
     {
         private readonly Dictionary<string, string> _requestHeaders;
 
-        private HttpHeaderHelper()
+        public HttpHeaderHelper()
         {
             Log.WriteLine("HttpHeaderHelper() Constructor");
             _requestHeaders = new Dictionary<string, string>();

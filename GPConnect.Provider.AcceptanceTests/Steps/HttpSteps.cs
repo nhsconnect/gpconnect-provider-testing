@@ -26,13 +26,15 @@
         private readonly HttpContext _httpContext;
         private readonly JwtHelper _jwtHelper;
         private readonly SecuritySteps _securitySteps;
+        private readonly SecurityContext _securityContext;
 
-        public HttpSteps(HttpContext httpContext, JwtHelper jwtHelper, SecuritySteps securitySteps)
+        public HttpSteps(HttpContext httpContext, JwtHelper jwtHelper, SecuritySteps securitySteps, SecurityContext securityContext)
         {
             Log.WriteLine("HttpSteps() Constructor");
             _httpContext = httpContext;
             _jwtHelper = jwtHelper;
             _securitySteps = securitySteps;
+            _securityContext = securityContext;
         }
 
         // Before Scenarios
@@ -323,9 +325,9 @@
             }
 
             // Setup The Client Certificate
-            if (_httpContext.SecurityContext.SendClientCert)
+            if (_securityContext.SendClientCert)
             {
-                var clientCert = _httpContext.SecurityContext.ClientCert;
+                var clientCert = _securityContext.ClientCert;
                 if (restClient.ClientCertificates == null)
                 {
                     restClient.ClientCertificates = new X509CertificateCollection();
@@ -542,7 +544,7 @@
                 _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
             }
 
-            var httpRequest = new HttpRequest(_httpContext);
+            var httpRequest = new HttpRequest(_httpContext, _securityContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -556,7 +558,7 @@
 
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerTokenWithoutEncoding());
 
-            var httpRequest = new HttpRequest(_httpContext);
+            var httpRequest = new HttpRequest(_httpContext, _securityContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -571,7 +573,7 @@
 
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext);
+            var httpRequest = new HttpRequest(_httpContext, _securityContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -586,7 +588,7 @@
 
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext);
+            var httpRequest = new HttpRequest(_httpContext, _securityContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -599,7 +601,7 @@
             requestFactory.ConfigureInvalidParameterResourceType(_httpContext);
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext);
+            var httpRequest = new HttpRequest(_httpContext, _securityContext);
 
             httpRequest.MakeHttpRequest();
         }
@@ -612,7 +614,7 @@
             requestFactory.ConfigureParameterResourceWithAdditionalField(_httpContext);
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext);
+            var httpRequest = new HttpRequest(_httpContext, _securityContext);
 
             httpRequest.MakeHttpRequest();
         }

@@ -161,6 +161,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("InitializeContainer For Dependency Injection");
             _objectContainer.RegisterTypeAs<SecurityContext, ISecurityContext>();
             _objectContainer.RegisterTypeAs<HttpContext, IHttpContext>();
+            //_objectContainer.Resolve<HttpHeaderHelper>();
             // HACK To Be Able To See What We've Loaded In The BeforeTestRun Phase
             Log.WriteLine("{0} Organisations Loaded From ODS CSV File.", GlobalContext.OdsCodeMap.Count);
             Log.WriteLine("{0} Genders Loaded From FHIR ValueSet File.", GlobalContext.FhirGenderValueSet.CodeSystem.Concept.Count);
@@ -183,7 +184,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var traceDirectory = GlobalContext.TraceDirectory;
             if (!Directory.Exists(traceDirectory)) return;
-            var scenarioDirectory = Path.Combine(traceDirectory, _httpContext.ScenarioContext.ScenarioInfo.Title);
+            var scenarioDirectory = Path.Combine(traceDirectory, ScenarioContext.Current.ScenarioInfo.Title);
             int fileIndex = 1;
             while (Directory.Exists(scenarioDirectory + "-" + fileIndex)) fileIndex++;
             scenarioDirectory = scenarioDirectory + "-" + fileIndex;

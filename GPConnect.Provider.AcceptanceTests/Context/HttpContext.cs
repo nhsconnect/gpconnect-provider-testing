@@ -3,38 +3,17 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Xml.Linq;
-    using Helpers;
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Serialization;
     using Http;
-    using TechTalk.SpecFlow;
 
     public class HttpContext : IHttpContext
     {
-        public HttpContext(ScenarioContext scenarioContext, HttpHeaderHelper requestHeaderHelper, JwtHelper jwtHelper, SecurityContext securityContext, HttpParameterHelper requestParametersHelper)
+        public HttpContext()
         {
-            ScenarioContext = scenarioContext;
-            Jwt = jwtHelper;
-            SecurityContext = securityContext;
             HttpResponse = new HttpResponse();
-            HttpRequestConfiguration = new HttpRequestConfiguration(securityContext)
-            {
-                RequestHeaders = requestHeaderHelper,
-                RequestParameters = requestParametersHelper,
-                BodyParameters = new Parameters()
-            };
+            HttpRequestConfiguration = new HttpRequestConfiguration();
         }
-
-        public readonly ScenarioContext ScenarioContext;
-
-        // Http Helper
-        public HttpParameterHelper RequestParameters { get; set; }
-
-        // JWT Helper
-        public JwtHelper Jwt { get; }
-
-        // Security Context
-        public SecurityContext SecurityContext { get; }
 
         public Patient StoredPatient { get; set; }
 

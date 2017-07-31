@@ -8,7 +8,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
     {
         private readonly List<KeyValuePair<string, string>> _parameters;
 
-        private HttpParameterHelper()
+        public HttpParameterHelper()
         {
             Log.WriteLine("HttpHelper() Constructor");
             _parameters = new List<KeyValuePair<string, string>>();

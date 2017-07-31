@@ -19,10 +19,12 @@
     public class HttpRequest
     {
         private readonly HttpContext _httpContext;
+        private readonly SecurityContext _securityContext;
 
-        public HttpRequest(HttpContext httpContext)
+        public HttpRequest(HttpContext httpContext, SecurityContext securityContext)
         {
             _httpContext = httpContext;
+            _securityContext = securityContext;
         }
 
         public void MakeHttpRequest()
@@ -158,9 +160,9 @@
                 AutomaticDecompression = _httpContext.HttpRequestConfiguration.DecompressionMethod
             };
 
-            if (_httpContext.SecurityContext.SendClientCert)
+            if (_securityContext.SendClientCert)
             {
-                var clientCert = _httpContext.SecurityContext.ClientCert;
+                var clientCert = _securityContext.ClientCert;
                 handler.ClientCertificates.Add(clientCert);
             }
 

@@ -4,9 +4,5 @@
 
     public interface IHttpContext
     {
-        JwtHelper Jwt { get; }
-        // Security Context
-        SecurityContext SecurityContext { get; }
-
     }
 }
