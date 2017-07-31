@@ -39,7 +39,7 @@
 
         public string SpineProxyPort { get; set; }
 
-        public string SpineProxyAddress { get; set; }
+        public string SpineProxyAddress => Protocol + SpineProxyUrl + ":" + SpineProxyPort;
 
         // Raw Request
         public string RequestMethod { get; set; }

@@ -82,7 +82,7 @@
                 requestHeaders.Add(new XElement("requestHeader", new XAttribute("name", entry.Key), new XAttribute("value", entry.Value)));
             }
             var requestParameters = new XElement(Context.kRequestParameters);
-            foreach (var entry in RequestParameters.GetRequestParameters())
+            foreach (var entry in HttpRequestConfiguration.RequestParameters.GetRequestParameters())
             {
                 requestParameters.Add(new XElement("requestParameter", new XAttribute("name", entry.Key), new XAttribute("value", entry.Value)));
             }
@@ -104,7 +104,7 @@
                         requestHeaders,
                         new XElement(Context.kRequestUrl, HttpRequestConfiguration.RequestUrl),
                         requestParameters,
-                        new XElement(Context.kRequestMethod, HttpRequestConfiguration.RequestMethod),
+                        new XElement(Context.kRequestMethod, HttpRequestConfiguration.HttpMethod.ToString()),
                         new XElement(Context.kRequestContentType, HttpRequestConfiguration.RequestContentType),
                         new XElement(Context.kRequestBody, System.Security.SecurityElement.Escape(HttpRequestConfiguration.RequestBody))),
                     new XElement("response",
