@@ -9,6 +9,7 @@
     using Enum;
     using Factories;
     using Http;
+    using Repository;
 
     [Binding]
     public class HttpSteps : Steps
@@ -17,14 +18,16 @@
         private readonly JwtHelper _jwtHelper;
         private readonly SecuritySteps _securitySteps;
         private readonly SecurityContext _securityContext;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
 
-        public HttpSteps(HttpContext httpContext, JwtHelper jwtHelper, SecuritySteps securitySteps, SecurityContext securityContext)
+        public HttpSteps(HttpContext httpContext, JwtHelper jwtHelper, SecuritySteps securitySteps, SecurityContext securityContext, IFhirResourceRepository fhirResourceRepository)
         {
             Log.WriteLine("HttpSteps() Constructor");
             _httpContext = httpContext;
             _jwtHelper = jwtHelper;
             _securitySteps = securitySteps;
             _securityContext = securityContext;
+            _fhirResourceRepository = fhirResourceRepository;
         }
         
         [Given(@"I configure the default ""(.*)"" request")]
@@ -46,7 +49,7 @@
         [When(@"I make the ""(.*)"" request")]
         public void MakeRequest(GpConnectInteraction interaction)
         {
-            var requestFactory = new RequestFactory(interaction);
+            var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
 
             requestFactory.ConfigureBody(_httpContext);
 
@@ -63,7 +66,7 @@
         [When(@"I make the ""(.*)"" request with an unencoded JWT Bearer Token")]
         public void MakeRequestWithAnUnencodedJwtBearerToken(GpConnectInteraction interaction)
         {
-            var requestFactory = new RequestFactory(interaction);
+            var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
 
             requestFactory.ConfigureBody(_httpContext);
 
@@ -77,7 +80,7 @@
         [When(@"I make the ""(.*)"" request with invalid Resource type")]
         public void MakeRequestWithInvalidResourceType(GpConnectInteraction interaction)
         {
-            var requestFactory = new RequestFactory(interaction);
+            var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
 
             requestFactory.ConfigureBody(_httpContext);
             requestFactory.ConfigureInvalidResourceType(_httpContext);
@@ -92,7 +95,7 @@
         [When(@"I make the ""(.*)"" request with Invalid Additional Field in the Resource")]
         public void MakeRequestWithInvalidAdditionalFieldInTheResource(GpConnectInteraction interaction)
         {
-            var requestFactory = new RequestFactory(interaction);
+            var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
 
             requestFactory.ConfigureBody(_httpContext);
             requestFactory.ConfigureAdditionalInvalidFieldInResource(_httpContext);
@@ -107,7 +110,7 @@
         [When(@"I make the ""(.*)"" request with invalid parameter Resource type")]
         public void MakeRequestWithInvalidParameterResourceType(GpConnectInteraction interaction)
         {
-            var requestFactory = new RequestFactory(interaction);
+            var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
             requestFactory.ConfigureBody(_httpContext);
             requestFactory.ConfigureInvalidParameterResourceType(_httpContext);
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
@@ -120,7 +123,7 @@
         [When(@"I make the ""(.*)"" request with additional field in parameter Resource")]
         public void MakeRequestWithAdditionalFieldInParameterResource(GpConnectInteraction interaction)
         {
-            var requestFactory = new RequestFactory(interaction);
+            var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
             requestFactory.ConfigureBody(_httpContext);
             requestFactory.ConfigureParameterResourceWithAdditionalField(_httpContext);
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
@@ -154,7 +157,7 @@
 
             httpContext.HttpRequestConfiguration.RequestUrl = relativeUrl;
 
-            var requestFactory = new RequestFactory(gpConnectInteraction);
+            var requestFactory = new RequestFactory(gpConnectInteraction, _fhirResourceRepository);
             requestFactory.ConfigureBody(httpContext);
 
             httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());

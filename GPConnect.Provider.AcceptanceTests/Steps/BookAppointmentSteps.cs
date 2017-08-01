@@ -6,20 +6,23 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Constants;
     using Enum;
+    using Repository;
     using TechTalk.SpecFlow;
 
     [Binding]
     public class BookAppointmentSteps : BaseSteps
     {
+        private readonly IFhirResourceRepository _fhirResourceRepository;
         private readonly HttpContext _httpContext;
+
         private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
-        public BookAppointmentSteps(HttpSteps httpSteps, HttpContext httpContext)
+        public BookAppointmentSteps(HttpSteps httpSteps, HttpContext httpContext, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
         {
             _httpContext = httpContext;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         [Given(@"I add an Invalid Extension with Code only to the Created Appointment")]
@@ -38,7 +41,7 @@
                 Value = codableConcept
             };
 
-            _httpContext.CreatedAppointment.Extension.Add(extension);
+            _fhirResourceRepository.Appointment.Extension.Add(extension);
         }
 
         [Given(@"I add an Invalid Extension with Url only to the Created Appointment")]
@@ -49,7 +52,7 @@
                 Url = "RandomExtensionUsedForTesting"
             };
 
-            _httpContext.CreatedAppointment.Extension.Add(extension);
+            _fhirResourceRepository.Appointment.Extension.Add(extension);
         }
 
         [Given(@"I add an Invalid Extension with Url, Code and Display to the Created Appointment")]
@@ -70,13 +73,13 @@
                 Value = codableConcept
             };
 
-            _httpContext.CreatedAppointment.Extension.Add(extension);
+            _fhirResourceRepository.Appointment.Extension.Add(extension);
         }
 
         [Given(@"I set the Created Appointment Id to ""([^""]*)""")]
         public void SetTheCreatedAppointmentIdTo(string id)
         {
-            _httpContext.CreatedAppointment.Id = id;
+            _fhirResourceRepository.Appointment.Id = id;
         }
 
         [Given(@"I set the Created Appointment Slot Reference to ""([^""]*)""")]
@@ -87,32 +90,32 @@
                 Reference = slotReference
             };
 
-            _httpContext.CreatedAppointment.Slot.Clear();
-            _httpContext.CreatedAppointment.Slot.Add(reference);
+            _fhirResourceRepository.Appointment.Slot.Clear();
+            _fhirResourceRepository.Appointment.Slot.Add(reference);
         }
 
         [Given(@"I remove the Start from the Created Appointment")]
         public void RemoveTheStartFromTheCreatedAppointment()
         {
-            _httpContext.CreatedAppointment.Start = null;
+            _fhirResourceRepository.Appointment.Start = null;
         }
 
         [Given(@"I remove the End from the Created Appointment")]
         public void RemoveTheEndFromTheCreatedAppointment()
         {
-            _httpContext.CreatedAppointment.End = null;
+            _fhirResourceRepository.Appointment.End = null;
         }
 
         [Given(@"I remove the Status from the Created Appointment")]
         public void RemoveTheStatusFromTheCreatedAppointment()
         {
-            _httpContext.CreatedAppointment.Status = null;
+            _fhirResourceRepository.Appointment.Status = null;
         }
 
         [Given(@"I remove the Slot from the Created Appointment")]
         public void RemoveTheSlotFromTheCreatedAppointment()
         {
-            _httpContext.CreatedAppointment.Slot = null;
+            _fhirResourceRepository.Appointment.Slot = null;
         }
 
         [Given(@"I set the Created Appointment Identifier Value to null")]
@@ -123,7 +126,7 @@
                 new Identifier("http://fhir.nhs.net/Id/gpconnect-appointment-identifier", null)
             };
 
-            _httpContext.CreatedAppointment.Identifier = identifiers;
+            _fhirResourceRepository.Appointment.Identifier = identifiers;
         }
 
         private static CodeableConcept GetReason(string system, string code, string display)
@@ -140,25 +143,25 @@
         [Given(@"I set the Created Appointment Reason Coding System to null")]
         public void SetTheCreatedAppointmentReasonCodingSystemToNull()
         {
-            _httpContext.CreatedAppointment.Reason = GetReason(null, "Code", "Display");
+            _fhirResourceRepository.Appointment.Reason = GetReason(null, "Code", "Display");
         }
 
         [Given(@"I set the Created Appointment Reason Coding Code to null")]
         public void SetTheCreatedAppointmentReasonCodingCodeToNull()
         {
-            _httpContext.CreatedAppointment.Reason = GetReason("http://snomed.info/sct", null, "Display");
+            _fhirResourceRepository.Appointment.Reason = GetReason("http://snomed.info/sct", null, "Display");
         }
 
         [Given(@"I set the Created Appointment Reason Coding Display to null")]
         public void SetTheCreatedAppointmentReasonCodingDisplayToNull()
         {
-            _httpContext.CreatedAppointment.Reason = GetReason("http://snomed.info/sct", "Code", null);
+            _fhirResourceRepository.Appointment.Reason = GetReason("http://snomed.info/sct", "Code", null);
         }
 
         [Given(@"I set the Created Appointment Patient Participant Status to null")]
         public void SetTheCreatedAppointmentPatientParticipantStatusToNull()
         {
-            _httpContext.CreatedAppointment.Participant.ForEach(participant =>
+            _fhirResourceRepository.Appointment.Participant.ForEach(participant =>
             {
                 if (participant.Actor.Reference.ToString().Contains("Patient"))
                 {
@@ -170,7 +173,7 @@
         [Given(@"I set the Created Appointment Practitioner Participant Status to null")]
         public void SetTheCreatedAppointmentPractitionerParticipantStatusToNull()
         {
-            _httpContext.CreatedAppointment.Participant.ForEach(participant =>
+            _fhirResourceRepository.Appointment.Participant.ForEach(participant =>
             {
                 if (participant.Actor.Reference.ToString().Contains("Patient"))
                 {
@@ -182,7 +185,7 @@
         [Given(@"I set the Created Appointment Location Participant Status to null")]
         public void SetTheCreatedAppointmentLocationParticipantStatusToNull()
         {
-            _httpContext.CreatedAppointment.Participant.ForEach(participant =>
+            _fhirResourceRepository.Appointment.Participant.ForEach(participant =>
             {
                 if (participant.Actor.Reference.ToString().Contains("Patient"))
                 {
@@ -194,7 +197,7 @@
         [Given(@"I set the Created Appointment Participant Type Coding ""([^""]*)"" to null for ""([^""]*)"" Participants")]
         public void SetTheCreatedAppointmentParticipantTypeCodingToNullForParticipants(string codingType, string participantType)
         {
-            _httpContext.CreatedAppointment.Participant.ForEach(particpant =>
+            _fhirResourceRepository.Appointment.Participant.ForEach(particpant =>
             {
                 if (particpant.Actor.Reference.Contains(participantType))
                 {
@@ -217,7 +220,7 @@
         [Given(@"I remove the ""([^""]*)"" Participants from the Created Appointment")]
         public void RemoveTheParticipantsFromTheCreatedAppointment(string participantType)
         {
-            _httpContext.CreatedAppointment
+            _fhirResourceRepository.Appointment
                 .Participant
                 .RemoveAll(participant => participant.Actor.Reference.Contains(participantType));
         }

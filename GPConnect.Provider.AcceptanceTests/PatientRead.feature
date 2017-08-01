@@ -37,7 +37,7 @@ Scenario: Read patient 404 if patient id not sent
 
 Scenario Outline: Read patient using the Accept header to request response format
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I set the Accept header to "<Header>"
@@ -53,7 +53,7 @@ Scenario Outline: Read patient using the Accept header to request response forma
 
 Scenario Outline: Read patient using the _format parameter to request response format
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I add a Format parameter with the Value "<Format>"
@@ -70,7 +70,7 @@ Scenario Outline: Read patient using the _format parameter to request response f
 
 Scenario Outline: Read patient sending the Accept header and _format parameter to request response format
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I set the Accept header to "<Header>"
@@ -90,7 +90,7 @@ Scenario Outline: Read patient sending the Accept header and _format parameter t
 
 Scenario Outline: Read patient failure due to missing header
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I do not send header "<Header>"
@@ -107,7 +107,7 @@ Scenario Outline: Read patient failure due to missing header
 
 Scenario: Read patient should contain correct logical identifier
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
@@ -117,7 +117,7 @@ Scenario: Read patient should contain correct logical identifier
 
 Scenario: Read patient response should contain an ETag header
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
@@ -128,7 +128,7 @@ Scenario: Read patient response should contain an ETag header
 
 Scenario: Read patient If-None-Match should return a 304 on match
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
@@ -138,7 +138,7 @@ Scenario: Read patient If-None-Match should return a 304 on match
 	
 Scenario: Read patient If-None-Match should return full resource if no match
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I set the If-None-Match header to "W/\"somethingincorrect\""
@@ -150,7 +150,7 @@ Scenario: Read patient If-None-Match should return full resource if no match
 
 Scenario: VRead patient _history with current etag should return current patient
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 		And I store the Patient Version Id
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
@@ -161,7 +161,7 @@ Scenario: VRead patient _history with current etag should return current patient
 
 Scenario: VRead patient _history with invalid etag should give a 404
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 		And I set an invalid Patient Version Id
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
@@ -170,7 +170,7 @@ Scenario: VRead patient _history with invalid etag should give a 404
 
 Scenario: Read patient resurned should conform to the GPconnect specification
 	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient Id
+		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request

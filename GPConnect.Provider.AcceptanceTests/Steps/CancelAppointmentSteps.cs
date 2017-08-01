@@ -2,10 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Constants;
     using Context;
     using Enum;
     using Hl7.Fhir.Model;
+    using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
     using static Hl7.Fhir.Model.Appointment;
@@ -14,48 +14,51 @@
     public class CancelAppointmentSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
+
         private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
-        public CancelAppointmentSteps(HttpSteps httpSteps, HttpContext httpContext) 
+        public CancelAppointmentSteps(HttpSteps httpSteps, HttpContext httpContext, IFhirResourceRepository fhirResourceRepository) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         [Given(@"I set the Created Appointment Description to ""(.*)""")]
         public void SetTheCreatedAppointmentDescription(string value)
         {
-            _httpContext.CreatedAppointment.Description = value;
+            _fhirResourceRepository.Appointment.Description = value;
         }
 
         [Given(@"I set the Created Appointment Priority to ""(.*)""")]
         public void SetTheCreatedAppointmentPriorityTo(int value)
         {
-            _httpContext.CreatedAppointment.Priority = value;
+            _fhirResourceRepository.Appointment.Priority = value;
         }
 
         [Given(@"I set the Created Appointment Minutes Duration to ""(.*)""")]
         public void SetTheCreatedAppointmentMinutesDurationTo(int value)
         {
-            _httpContext.CreatedAppointment.MinutesDuration = value;
+            _fhirResourceRepository.Appointment.MinutesDuration = value;
         }
 
         [Given(@"I set the Created Appointment Comment to ""(.*)""")]
         public void SetTheCreatedAppointmentCommentTo(string value)
         {
-            _httpContext.CreatedAppointment.Comment = value;
+            _fhirResourceRepository.Appointment.Comment = value;
         }
 
         [Given(@"I set the Created Appointment Type Text to ""(.*)""")]
         public void SetTheCreatedAppointmentTypeTextTo(string value)
         {
-            _httpContext.CreatedAppointment.Type.Text = value;
+            _fhirResourceRepository.Appointment.Type.Text = value;
         }
 
         [Given(@"I add an Appointment Identifier with default System and Value ""(.*)"" to the Created Appointment")]
         public void AddAnAppointmentIdentifierWithSystemAndValue(string value)
         {
-            _httpContext.CreatedAppointment.Identifier.Add(new Identifier("http://fhir.nhs.net/Id/gpconnect-appointment-identifier", value));
+            _fhirResourceRepository.Appointment.Identifier.Add(new Identifier("http://fhir.nhs.net/Id/gpconnect-appointment-identifier", value));
         }
 
         [Given(@"I add a Participant with Reference ""(.*)"" to the Created Appointment")]
@@ -67,7 +70,7 @@
                 Status = ParticipationStatus.Declined
             };
        
-            _httpContext.CreatedAppointment.Participant.Add(practitioner);
+            _fhirResourceRepository.Appointment.Participant.Add(practitioner);
         }
 
         [Then("the Appointment Status should be Cancelled")]
@@ -97,7 +100,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentId = _httpContext.CreatedAppointment.Id;
+                var createdAppointmentId = _fhirResourceRepository.Appointment.Id;
 
                 appointment.Id.ShouldBe(createdAppointmentId, $"The Appointment Id should be {createdAppointmentId} but was {appointment.Id}.");
             });
@@ -108,7 +111,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentStatus = _httpContext.CreatedAppointment.Status;
+                var createdAppointmentStatus = _fhirResourceRepository.Appointment.Status;
 
                 appointment.Status.ShouldBe(createdAppointmentStatus, $"The Appointment Status should be {createdAppointmentStatus} but was {appointment.Status}.");
             });
@@ -119,7 +122,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentExtensions = _httpContext.CreatedAppointment.Extension;
+                var createdAppointmentExtensions = _fhirResourceRepository.Appointment.Extension;
 
                 var appointmentExtensions = appointment.Extension;
 
@@ -141,7 +144,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentSlots = _httpContext.CreatedAppointment.Slot;
+                var createdAppointmentSlots = _fhirResourceRepository.Appointment.Slot;
 
                 var appointmentSlots = appointment.Slot;
 
@@ -164,7 +167,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentParticipants = _httpContext.CreatedAppointment.Participant;
+                var createdAppointmentParticipants = _fhirResourceRepository.Appointment.Participant;
                 var appointmentParticipants = appointment.Participant;
 
                 appointmentParticipants.Count.ShouldBe(createdAppointmentParticipants.Count, $"There should be {createdAppointmentParticipants.Count} Appointment Participants but found {appointmentParticipants.Count}.");
@@ -197,7 +200,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentDescription = _httpContext.CreatedAppointment.Description;
+                var createdAppointmentDescription = _fhirResourceRepository.Appointment.Description;
                 appointment.Description.ShouldBe(createdAppointmentDescription, $"The Appointment Description should be {createdAppointmentDescription} but was {appointment.Description}.");
             });
         }
@@ -207,11 +210,11 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentStartDate = _httpContext.CreatedAppointment.Start;
+                var createdAppointmentStartDate = _fhirResourceRepository.Appointment.Start;
                 appointment.Start.ShouldNotBeNull("The Appointment Start Date should not be null.");
                 appointment.Start.ShouldBe(createdAppointmentStartDate, $"The Appointment Start Date should be {createdAppointmentStartDate} but was {appointment.Start}.");
 
-                var createdAppointmentEndDate = _httpContext.CreatedAppointment.End;
+                var createdAppointmentEndDate = _fhirResourceRepository.Appointment.End;
                 appointment.End.ShouldNotBeNull("The Appointment End Date should not be null.");
                 appointment.End.ShouldBe(createdAppointmentEndDate, $"The Appointment End Date should be {createdAppointmentEndDate} but was {appointment.End}.");
             });
@@ -222,7 +225,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentReason = _httpContext.CreatedAppointment.Reason?.Text;
+                var createdAppointmentReason = _fhirResourceRepository.Appointment.Reason?.Text;
 
                 appointment.Reason?.Text.ShouldBe(createdAppointmentReason, $"The Appointment Reason should be {createdAppointmentReason} but was {appointment.Reason?.Text}");
             });
@@ -274,7 +277,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentVersionId = _httpContext.CreatedAppointment.VersionId;
+                var createdAppointmentVersionId = _fhirResourceRepository.Appointment.VersionId;
 
                 appointment.VersionId.ShouldNotBe(createdAppointmentVersionId, $"The Appointment Version Id and the Created Appointment Version Id were both {appointment.VersionId}");
             });

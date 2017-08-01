@@ -127,7 +127,7 @@
         [Given(@"I set the GET request Version Id to ""([^""]*)""")]
         public void SetTheGetRequestVersionIdTo(string versionId)
         {
-            _httpContext.CreatedAppointment.VersionId = versionId;
+            _httpContext.HttpRequestConfiguration.GetRequestVersionId = versionId;
         }
 
         [Given(@"I set the request Http Method to ""([^""]*)""")]

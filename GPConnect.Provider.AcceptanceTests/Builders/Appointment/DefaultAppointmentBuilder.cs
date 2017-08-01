@@ -2,23 +2,23 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Context;
     using Hl7.Fhir.Model;
+    using Repository;
     using static Hl7.Fhir.Model.Appointment;
 
     public class DefaultAppointmentBuilder
     {
-        private readonly HttpContext _httpContext;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
 
-        public DefaultAppointmentBuilder(HttpContext httpContext)
+        public DefaultAppointmentBuilder(IFhirResourceRepository fhirResourceRepository)
         {
-            _httpContext = httpContext;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         public Appointment BuildAppointment()
         {
-            var storedPatient = _httpContext.StoredPatient;
-            var storedBundle = _httpContext.StoredBundle;
+            var storedPatient = _fhirResourceRepository.Patient;
+            var storedBundle = _fhirResourceRepository.Bundle;
 
             var firstSlot = storedBundle.Entry
                 .Where(entry => entry.Resource.ResourceType.Equals(ResourceType.Slot))

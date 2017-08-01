@@ -228,7 +228,6 @@ Scenario: Amend appointment set etag and check etag is the same in the returned 
 		And I store the Created Appointment			
 	Given I read the Stored Appointment
 		And I store the Appointment 
-		And I store the Appointment Id
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment Comment to "customComment"

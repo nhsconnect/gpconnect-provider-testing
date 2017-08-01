@@ -6,6 +6,7 @@
     using Context;
     using Enum;
     using Hl7.Fhir.Model;
+    using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
     using static Hl7.Fhir.Model.Appointment;
@@ -18,10 +19,18 @@
         private readonly PatientSteps _patientSteps;
         private readonly GetScheduleSteps _getScheduleSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
 
         private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
-        public AppointmentsSteps(HttpSteps httpSteps, HttpContext httpContext, JwtSteps jwtSteps, PatientSteps patientSteps, GetScheduleSteps getScheduleSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps) 
+        public AppointmentsSteps(
+            HttpSteps httpSteps,
+            HttpContext httpContext,
+            JwtSteps jwtSteps, 
+            PatientSteps patientSteps, 
+            GetScheduleSteps getScheduleSteps, 
+            HttpRequestConfigurationSteps httpRequestConfigurationSteps, 
+            IFhirResourceRepository fhirResourceRepository) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
@@ -29,6 +38,7 @@
             _patientSteps = patientSteps;
             _getScheduleSteps = getScheduleSteps;
             _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         [Then(@"the Response Resource should be an Appointment")]
@@ -54,7 +64,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                appointment.Start.ShouldBe(_httpContext.CreatedAppointment.Start, $"The Appointment Start should equal {_httpContext.CreatedAppointment.Start} but was {appointment.Start}.");
+                appointment.Start.ShouldBe(_fhirResourceRepository.Appointment.Start, $"The Appointment Start should equal {_fhirResourceRepository.Appointment.Start} but was {appointment.Start}.");
             });
         }
       
@@ -89,11 +99,7 @@
         [Given(@"I store the Created Appointment")]
         public void StoreTheCreatedAppointment()
         {
-            var appointment = _httpContext.FhirResponse.Appointments.FirstOrDefault();
-
-            if (appointment != null)
-                _httpContext.CreatedAppointment = appointment;
-       
+            StoreTheAppointment();
         }
 
         [Given(@"I store the Appointment")]
@@ -102,16 +108,10 @@
             var appointment = _httpContext.FhirResponse.Appointments.FirstOrDefault();
 
             if (appointment != null)
-                _httpContext.CreatedAppointment = appointment;
-        }
-
-        [Given(@"I store the Appointment Id")]
-        public void StoreTheAppointmentId()
-        {
-            var appointment = _httpContext.FhirResponse.Appointments.FirstOrDefault();
-
-            if (appointment != null)
+            {
                 _httpContext.HttpRequestConfiguration.GetRequestId = appointment.Id;
+                _fhirResourceRepository.Appointment = appointment;
+            }
         }
 
         [Given(@"I store the Appointment Version Id")]
@@ -128,10 +128,10 @@
             switch (status)
             {
                 case "Booked":
-                    _httpContext.CreatedAppointment.Status = AppointmentStatus.Booked;
+                    _fhirResourceRepository.Appointment.Status = AppointmentStatus.Booked;
                     break;
                 case "Cancelled":
-                    _httpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
+                    _fhirResourceRepository.Appointment.Status = AppointmentStatus.Cancelled;
                     break;
             }
         }
@@ -139,15 +139,15 @@
         [Given(@"I create an Appointment from the stored Patient and stored Schedule")]
         public void CreateAnAppointmentFromTheStoredPatientAndStoredSchedule()
         {
-            var appointmentBuilder = new DefaultAppointmentBuilder(_httpContext);
+            var appointmentBuilder = new DefaultAppointmentBuilder(_fhirResourceRepository);
 
-            _httpContext.CreatedAppointment = appointmentBuilder.BuildAppointment();
+            _fhirResourceRepository.Appointment = appointmentBuilder.BuildAppointment();
         }
 
         [Given(@"I set the Created Appointment Reason to ""([^""]*)""")]
         public void SetTheCreatedAppointmentReasonTo(string reason)
         {
-            _httpContext.CreatedAppointment.Reason = new CodeableConcept
+            _fhirResourceRepository.Appointment.Reason = new CodeableConcept
             {
                 Coding = new List<Coding>
                 {
@@ -161,11 +161,11 @@
         {
             var extension = GetCancellationReasonExtension(reason);
 
-            if (_httpContext.CreatedAppointment.Extension == null)
-                _httpContext.CreatedAppointment.Extension = new List<Extension>();
+            if (_fhirResourceRepository.Appointment.Extension == null)
+                _fhirResourceRepository.Appointment.Extension = new List<Extension>();
 
-            _httpContext.CreatedAppointment.Extension.Add(extension);
-            _httpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
+            _fhirResourceRepository.Appointment.Extension.Add(extension);
+            _fhirResourceRepository.Appointment.Status = AppointmentStatus.Cancelled;
         }
 
         [Given(@"I set the Created Appointment to Cancelled with Url ""([^""]*)"" and Reason ""([^""]*)""")]
@@ -173,11 +173,11 @@
         {
             var extension = GetStringExtension(url, reason);
 
-            if (_httpContext.CreatedAppointment.Extension == null)
-                _httpContext.CreatedAppointment.Extension = new List<Extension>();
+            if (_fhirResourceRepository.Appointment.Extension == null)
+                _fhirResourceRepository.Appointment.Extension = new List<Extension>();
 
-            _httpContext.CreatedAppointment.Extension.Add(extension);
-            _httpContext.CreatedAppointment.Status = AppointmentStatus.Cancelled;
+            _fhirResourceRepository.Appointment.Extension.Add(extension);
+            _fhirResourceRepository.Appointment.Status = AppointmentStatus.Cancelled;
         }
 
         [Given(@"I add a Category Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
@@ -185,10 +185,10 @@
         {
             var extension = GetCategoryExtension(code, display);
 
-            if (_httpContext.CreatedAppointment.Extension == null)
-                _httpContext.CreatedAppointment.Extension = new List<Extension>();
+            if (_fhirResourceRepository.Appointment.Extension == null)
+                _fhirResourceRepository.Appointment.Extension = new List<Extension>();
 
-            _httpContext.CreatedAppointment.Extension.Add(extension);
+            _fhirResourceRepository.Appointment.Extension.Add(extension);
         }
 
         [Given(@"I add a Booking Method Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
@@ -196,10 +196,10 @@
         {
             var extension = GetBookingMethodExtension(code, display);
 
-            if (_httpContext.CreatedAppointment.Extension == null)
-                _httpContext.CreatedAppointment.Extension = new List<Extension>();
+            if (_fhirResourceRepository.Appointment.Extension == null)
+                _fhirResourceRepository.Appointment.Extension = new List<Extension>();
 
-            _httpContext.CreatedAppointment.Extension.Add(extension);
+            _fhirResourceRepository.Appointment.Extension.Add(extension);
         }
 
         [Given(@"I add a Contact Method Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
@@ -207,16 +207,16 @@
         {
             var extension = GetContactMethodExtension(code, display);
 
-            if (_httpContext.CreatedAppointment.Extension == null)
-                _httpContext.CreatedAppointment.Extension = new List<Extension>();
+            if (_fhirResourceRepository.Appointment.Extension == null)
+                _fhirResourceRepository.Appointment.Extension = new List<Extension>();
 
-            _httpContext.CreatedAppointment.Extension.Add(extension);
+            _fhirResourceRepository.Appointment.Extension.Add(extension);
         }
 
         [Given("I set the Created Appointment to a new Appointment")]
         public void SetTheCreatedAppointmentToANewAppointment()
         {
-            _httpContext.CreatedAppointment = new Appointment();
+            _fhirResourceRepository.Appointment = new Appointment();
         }
 
         private static Extension GetCategoryExtension(string code, string display)
@@ -280,7 +280,7 @@
         [Given(@"I set the If-Match header to the Stored Appointment Version Id")]
         public void SetTheIfMatchHeaderToTheStoreAppointmentVersionId()
         {
-            var versionId = _httpContext.CreatedAppointment.VersionId;
+            var versionId = _fhirResourceRepository.Appointment.VersionId;
             var eTag = "W/\"" + versionId + "\"";
 
             _httpRequestConfigurationSteps.SetTheIfMatchHeaderTo(eTag);
@@ -300,7 +300,7 @@
         {
             var extensions = GetExtensions(extensionCombination);
 
-            _httpContext.CreatedAppointment.Extension.AddRange(extensions);
+            _fhirResourceRepository.Appointment.Extension.AddRange(extensions);
         }
 
         private static List<Extension> GetExtensions(string extensionCombination)
@@ -402,7 +402,7 @@
         [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for the Created Appointment Start")]
         public void AddAQueryParameterToTheRequestUrlWithPrefixForStoredAppointmentStart(string prefix)
         {
-            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={prefix}{_httpContext.CreatedAppointment.StartElement}";
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={prefix}{_fhirResourceRepository.Appointment.StartElement}";
         }
 
         private static Dictionary<string, string> ParticipantTypeDictionary => new Dictionary<string, string>

@@ -13,6 +13,8 @@ using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using Repository;
+
     [Binding]
     public class GenericSteps : TechTalk.SpecFlow.Steps
     {
@@ -161,6 +163,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("InitializeContainer For Dependency Injection");
             _objectContainer.RegisterTypeAs<SecurityContext, ISecurityContext>();
             _objectContainer.RegisterTypeAs<HttpContext, IHttpContext>();
+            _objectContainer.RegisterTypeAs<FhirResourceRepository, IFhirResourceRepository>();
             //_objectContainer.Resolve<HttpHeaderHelper>();
             // HACK To Be Able To See What We've Loaded In The BeforeTestRun Phase
             Log.WriteLine("{0} Organisations Loaded From ODS CSV File.", GlobalContext.OdsCodeMap.Count);

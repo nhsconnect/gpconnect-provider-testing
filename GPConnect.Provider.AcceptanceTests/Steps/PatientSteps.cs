@@ -7,6 +7,7 @@
     using Enum;
     using Helpers;
     using Hl7.Fhir.Model;
+    using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
 
@@ -17,15 +18,17 @@
         private readonly BundleSteps _bundleSteps;
         private readonly JwtSteps _jwtSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
 
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
-        public PatientSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, JwtSteps jwtSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps) : base(httpSteps)
+        public PatientSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, JwtSteps jwtSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository) : base(httpSteps)
         {
             _httpContext = httpContext;
             _bundleSteps = bundleSteps;
             _jwtSteps = jwtSteps;
             _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
 
@@ -355,18 +358,8 @@
 
             if (patient != null)
             {
-                _httpContext.StoredPatient = patient;
-            }
-        }
-
-        [Given(@"I store the Patient Id")]
-        public void StoreThePatientId()
-        {
-            var patient = Patients.FirstOrDefault();
-
-            if (patient != null)
-            {
                 _httpContext.HttpRequestConfiguration.GetRequestId = patient.Id;
+                _fhirResourceRepository.Patient = patient;
             }
         }
 
@@ -390,7 +383,7 @@
         [Given(@"I set the If-None-Match header to the stored Patient Version Id")]
         public void SetTheIfNoneMatchHeaderToTheStoredPatientVersionId()
         {
-            var patient = _httpContext.StoredPatient;
+            var patient = _fhirResourceRepository.Patient;
 
             if (patient != null)
                 _httpRequestConfigurationSteps.GivenISetTheIfNoneMatchheaderHeaderTo("W/\"" + patient.VersionId + "\"");

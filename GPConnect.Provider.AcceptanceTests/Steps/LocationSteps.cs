@@ -5,6 +5,7 @@
     using Context;
     using Enum;
     using Hl7.Fhir.Model;
+    using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
 
@@ -14,12 +15,14 @@
         private readonly HttpContext _httpContext;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
         private List<Location> Locations => _httpContext.FhirResponse.Locations;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
 
-        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps) 
+        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
             _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         [Given(@"I add a Location Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -58,28 +61,22 @@
             _httpSteps.MakeRequest(GpConnectInteraction.LocationSearch);
         }
 
-        [Given(@"I store the Location Id")]
-        public void StoreTheLocationId()
-        {
-            var location = Locations.FirstOrDefault();
-
-            if (location != null)
-                _httpContext.HttpRequestConfiguration.GetRequestId = location.Id;
-        }
-
         [Given(@"I store the Location")]
         public void StoreTheLocation()
         {
             var location = Locations.FirstOrDefault();
 
             if (location != null)
-                _httpContext.StoredLocation = location;
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = location.Id;
+                _fhirResourceRepository.Location = location;
+            }
         }
 
         [Given(@"I set the If-None-Match header to the stored Location Id")]
         public void SetTheIfNoneMatchHeaderToTheStoredLocationVerisionId()
         {
-            var location = _httpContext.StoredLocation;
+            var location = _fhirResourceRepository.Location;
 
             if (location != null)
                 _httpRequestConfigurationSteps.GivenISetTheIfNoneMatchheaderHeaderTo("W/\"" + location.VersionId + "\"");

@@ -1,6 +1,5 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Context
 {
-    using System.Collections.Generic;
     using System.Net;
     using System.Xml.Linq;
     using Hl7.Fhir.Model;
@@ -15,17 +14,7 @@
             HttpRequestConfiguration = new HttpRequestConfiguration();
             FhirResponse = new FhirResponse();
         }
-
-        public Patient StoredPatient { get; set; }
-
-        public Organization StoredOrganization { get; set; }
-
-        public Bundle StoredBundle { get; set; }
-
-        public Appointment CreatedAppointment { get; set; }
-
-        public Location StoredLocation { get; set; }
-
+        
         public FhirResponse FhirResponse { get; set; }
 
         public HttpResponse HttpResponse { get; set; }
