@@ -16,13 +16,16 @@
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
         private readonly JwtSteps _jwtSteps;
+        private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
+
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
-        public PatientSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, JwtSteps jwtSteps) : base(httpSteps)
+        public PatientSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, JwtSteps jwtSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps) : base(httpSteps)
         {
             _httpContext = httpContext;
             _bundleSteps = bundleSteps;
             _jwtSteps = jwtSteps;
+            _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
         }
 
 
@@ -390,7 +393,7 @@
             var patient = _httpContext.StoredPatient;
 
             if (patient != null)
-                _httpSteps.GivenISetTheIfNoneMatchheaderHeaderTo("W/\"" + patient.VersionId + "\"");
+                _httpRequestConfigurationSteps.GivenISetTheIfNoneMatchheaderHeaderTo("W/\"" + patient.VersionId + "\"");
         }
     }
 }

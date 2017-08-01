@@ -12,13 +12,14 @@
     public class LocationSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
-
+        private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
         private List<Location> Locations => _httpContext.FhirResponse.Locations;
 
-        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps) 
+        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
+            _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
         }
 
         [Given(@"I add a Location Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -81,7 +82,7 @@
             var location = _httpContext.StoredLocation;
 
             if (location != null)
-                _httpSteps.GivenISetTheIfNoneMatchheaderHeaderTo("W/\"" + location.VersionId + "\"");
+                _httpRequestConfigurationSteps.GivenISetTheIfNoneMatchheaderHeaderTo("W/\"" + location.VersionId + "\"");
         }
 
         [Then(@"the Response Resource should be a Location")]

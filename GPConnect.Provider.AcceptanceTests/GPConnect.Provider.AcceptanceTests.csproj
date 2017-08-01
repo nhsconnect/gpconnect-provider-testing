@@ -243,6 +243,8 @@
     <Compile Include="Steps\CompositionSteps.cs" />
     <Compile Include="Steps\ConformanceSteps.cs" />
     <Compile Include="Steps\DeviceSteps.cs" />
+    <Compile Include="Steps\HttpRequestConfigurationSteps.cs" />
+    <Compile Include="Steps\HttpResponseSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
     <Compile Include="Steps\GetScheduleSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />

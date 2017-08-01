@@ -14,15 +14,16 @@
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
         private readonly OrganizationSteps _organizationSteps;
-
+        private readonly HttpResponseSteps _httpResponseSteps;
         private List<Practitioner> Practitioners => _httpContext.FhirResponse.Practitioners;
 
-        public PractitionerSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps) 
+        public PractitionerSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps, HttpResponseSteps httpResponseSteps) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
             _bundleSteps = bundleSteps;
             _organizationSteps = organizationSteps;
+            _httpResponseSteps = httpResponseSteps;
         }
 
         [Given(@"I add a Practitioner Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -310,7 +311,7 @@
 
                         _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
 
-                        _httpSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
+                        _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
 
                         _organizationSteps.StoreTheOrganization();
 

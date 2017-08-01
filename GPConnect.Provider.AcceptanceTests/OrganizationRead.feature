@@ -81,7 +81,7 @@ Scenario Outline: Organization Read with incorrect interaction id
 	Given I get the Organization for Organization Code "ORG1"
 		And I store the Organization Id
 	Given I configure the default "OrganizationRead" request
-		And I am performing the "<interactionId>" interaction
+		And I set the Interaction Id header to "<interactionId>"
 	When I make the "OrganizationRead" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

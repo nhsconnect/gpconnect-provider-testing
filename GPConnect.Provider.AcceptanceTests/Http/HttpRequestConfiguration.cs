@@ -15,6 +15,12 @@
         {
             RequestHeaders = new HttpHeaderHelper();
             RequestParameters = new HttpParameterHelper();
+            RequestHeaders.Clear();
+            RequestUrl = "";
+            RequestParameters.ClearParameters();
+            RequestBody = null;
+            BodyParameters = new Parameters();
+            DecompressionMethod = DecompressionMethods.None;
             LoadAppConfig();
             SetDefaultHeaders();
         }

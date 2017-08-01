@@ -13,6 +13,7 @@
         {
             HttpResponse = new HttpResponse();
             HttpRequestConfiguration = new HttpRequestConfiguration();
+            FhirResponse = new FhirResponse();
         }
 
         public Patient StoredPatient { get; set; }
@@ -33,24 +34,13 @@
 
         public void SetDefaults()
         {
+            HttpResponse = new HttpResponse();
             HttpRequestConfiguration.RequestHeaders.Clear();
             HttpRequestConfiguration.RequestUrl = "";
             HttpRequestConfiguration.RequestParameters.ClearParameters();
             HttpRequestConfiguration.RequestBody = null;
             HttpRequestConfiguration.BodyParameters = new Parameters();
             HttpRequestConfiguration.DecompressionMethod = DecompressionMethods.None;
-
-            HttpResponse = new HttpResponse
-            {
-                StatusCode = default(HttpStatusCode),
-                ResponseTimeInMilliseconds = -1,
-                ContentType = null,
-                Body = null,
-                Headers = new Dictionary<string, string>()
-            };
-
-
-            FhirResponse = new FhirResponse();
         }
 
         public void SaveToDisk(string filename)

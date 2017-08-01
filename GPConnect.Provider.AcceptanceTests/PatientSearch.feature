@@ -169,7 +169,7 @@ Scenario Outline: Patient search failure due to invalid interactionId
 	Given I configure the default "PatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I am performing the "<InteractionId>" interaction
+		And I set the Interaction Id header to "<InteractionId>"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

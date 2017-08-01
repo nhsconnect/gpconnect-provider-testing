@@ -147,7 +147,7 @@ Scenario Outline: Practitioner search failure due to missing header
 
 Scenario Outline: Practitioner search failure due to invalid interactionId
 	Given I configure the default "PractitionerSearch" request
-		And I am performing the "<InteractionId>" interaction
+		And I set the Interaction Id header to "<InteractionId>"
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
 	When I make the "PractitionerSearch" request
 	Then the response status code should be "400"

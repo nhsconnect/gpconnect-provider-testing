@@ -373,7 +373,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 149
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 150
-  testRunner.And(string.Format("I am performing the \"{0}\" interaction", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I set the Interaction Id header to \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 151
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

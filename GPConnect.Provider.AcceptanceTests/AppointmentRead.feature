@@ -56,7 +56,7 @@ Scenario Outline: Read appointment failure with incorrect interaction id
 		And I store the Created Appointment
 	Given I configure the default "AppointmentRead" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I am performing the "<interactionId>" interaction
+		And I set the Interaction Id header to "<interactionId>"
 	When I make the "AppointmentRead" request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON

@@ -254,7 +254,7 @@ Scenario: Cancel appointment verify resource is not updated when an out of date 
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I set If-Match request header to "invalidEtag"
+		And I set the If-Match header to "invalidEtag"
 	When I make the "AppointmentCancel" request	
 	Then the response status code should be "409"
 		

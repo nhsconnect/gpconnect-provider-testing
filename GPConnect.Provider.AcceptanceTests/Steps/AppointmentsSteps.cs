@@ -17,15 +17,18 @@
         private readonly JwtSteps _jwtSteps;
         private readonly PatientSteps _patientSteps;
         private readonly GetScheduleSteps _getScheduleSteps;
+        private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
+
         private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
-        public AppointmentsSteps(HttpSteps httpSteps, HttpContext httpContext, JwtSteps jwtSteps, PatientSteps patientSteps, GetScheduleSteps getScheduleSteps) 
+        public AppointmentsSteps(HttpSteps httpSteps, HttpContext httpContext, JwtSteps jwtSteps, PatientSteps patientSteps, GetScheduleSteps getScheduleSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
             _jwtSteps = jwtSteps;
             _patientSteps = patientSteps;
             _getScheduleSteps = getScheduleSteps;
+            _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
         }
 
         [Then(@"the Response Resource should be an Appointment")]
@@ -280,7 +283,7 @@
             var versionId = _httpContext.CreatedAppointment.VersionId;
             var eTag = "W/\"" + versionId + "\"";
 
-            _httpSteps.SetTheIfMatchHeaderTo(eTag);
+            _httpRequestConfigurationSteps.SetTheIfMatchHeaderTo(eTag);
         }
 
         [Then(@"the Appointment Metadata should be valid")]

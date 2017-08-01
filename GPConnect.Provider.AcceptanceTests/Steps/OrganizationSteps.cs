@@ -14,12 +14,15 @@
     {
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
+        private readonly HttpResponseSteps _httpResponseSteps;
+
         private List<Organization> Organizations => _httpContext.FhirResponse.Organizations;
 
-        public OrganizationSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps) : base(httpSteps)
+        public OrganizationSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, HttpResponseSteps httpResponseSteps) : base(httpSteps)
         {
             _httpContext = httpContext;
             _bundleSteps = bundleSteps;
+            _httpResponseSteps = httpResponseSteps;
         }
 
         [Then(@"the Response Resource should be an Organization")]
@@ -128,7 +131,7 @@
 
                     _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
 
-                    _httpSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
+                    _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
 
                     StoreTheOrganization();
 
