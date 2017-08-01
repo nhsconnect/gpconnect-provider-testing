@@ -14,7 +14,7 @@
     using Hl7.Fhir.Serialization;
     using Logger;
     using Newtonsoft.Json.Linq;
-    using RestSharp.Extensions.MonoHttp;
+    using static System.Net.WebUtility;
 
     public class HttpRequest
     {
@@ -124,7 +124,7 @@
             foreach (var parameter in _httpContext.HttpRequestConfiguration.RequestParameters.GetRequestParameters())
             {
                 Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
-                requestParamString = requestParamString + HttpUtility.UrlEncode(parameter.Key, Encoding.UTF8) + "=" + HttpUtility.UrlEncode(parameter.Value, Encoding.UTF8) + "&";
+                requestParamString = requestParamString + UrlEncode(parameter.Key) + "=" + UrlEncode(parameter.Value) + "&";
             }
 
             return requestParamString.Substring(0, requestParamString.Length - 1);

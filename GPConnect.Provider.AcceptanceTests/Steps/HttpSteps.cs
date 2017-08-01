@@ -3,19 +3,13 @@
     using System;
     using System.Net;
     using System.Net.Http;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Xml.Linq;
     using Constants;
     using Context;
     using Helpers;
     using Logger;
-    using Newtonsoft.Json.Linq;
-    using RestSharp;
     using Shouldly;
     using TechTalk.SpecFlow;
     using Hl7.Fhir.Model;
-    using System.Text;
-    using RestSharp.Extensions.MonoHttp;
     using Enum;
     using Factories;
     using Http;
@@ -73,37 +67,6 @@
             Log.WriteLine("Response HttpStatusCode should be {0} but was {1}", statusCode, _httpContext.HttpResponse.StatusCode);
         }
 
-        // Provider Configuration Steps
-
-        [Given(@"I am using the default server")]
-        public void GivenIAmUsingTheDefaultServer()
-        {
-            // Clear down headers for pre-steps which get resources for use within the test scenario
-            _httpContext.HttpRequestConfiguration.RequestHeaders.Clear();
-            _httpContext.HttpRequestConfiguration.RequestUrl = "";
-            _httpContext.HttpRequestConfiguration.RequestParameters.ClearParameters();
-            _httpContext.HttpRequestConfiguration.RequestBody = null;
-
-            _httpContext.HttpRequestConfiguration.RequestParameters.ClearParameters();
-
-            _httpContext.HttpResponse.ResponseTimeInMilliseconds = -1;
-            //HttpContext.ResponseStatusCode = null;
-            _httpContext.HttpResponse.ContentType = null;
-            _httpContext.HttpResponse.Body = null;
-            _httpContext.HttpResponse.Headers.Clear();
-            _httpContext.FhirResponse.Resource = null;
-
-            // Load The Default Settings From The App.config File
-            _httpContext.HttpRequestConfiguration.LoadAppConfig();
-
-            Given(@"I configure server certificate and ssl");
-            And($@"I am using ""{FhirConst.ContentTypes.kJsonFhir}"" to communicate with the server");
-            And(@"I am generating a random message trace identifier");
-            And($@"I am accredited system ""{_httpContext.HttpRequestConfiguration.ConsumerASID}""");
-            And($@"I am connecting to accredited system ""{_httpContext.HttpRequestConfiguration.ProviderASID}""");
-            And(@"I set the default JWT");
-        }
-
         [Given(@"I am connecting to server on port ""([^\s]*)""")]
         public void GivenIAmConnectingToServerOnPort(string serverPort)
         {
@@ -112,19 +75,12 @@
 
 
         [Given(@"I am not using the SSP")]
-        public void GivenIAmNotUsingTheSSP()
+        public void GivenIAmNotUsingTheSsp()
         {
             _httpContext.HttpRequestConfiguration.UseSpineProxy = false;
         }
 
         // Http Header Configuration Steps
-
-        [Given(@"I am using ""(.*)"" to communicate with the server")]
-        public void GivenIAmUsingToCommunicateWithTheServer(string requestContentType)
-        {
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, requestContentType);
-            _httpContext.HttpRequestConfiguration.RequestContentType = requestContentType;
-        }
 
         [Given(@"I set ""(.*)"" request header to ""(.*)""")]
         public void GivenISetRequestHeaderTo(string headerName, string headerValue)
@@ -136,12 +92,6 @@
         public void GivenISetRequestHeaderToNotStored(string headerValue)
         {
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader("If-Match", "W/\"" + headerValue + "\"");
-        }
-
-        [Given(@"I am accredited system ""(.*)""")]
-        public void GivenIAmAccreditedSystem(string fromASID)
-        {
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspFrom, fromASID);
         }
 
         [Given(@"I am performing the ""(.*)"" interaction")]
@@ -216,7 +166,6 @@
         {
             if (parameterValue.Contains("http://fhir.nhs.net/Id/ods-site-code"))
             {
-                var result = parameterValue.LastIndexOf('|');
                 var siteCode = parameterValue.Substring(parameterValue.LastIndexOf('|') + 1);
                 string mappedSiteValue = GlobalContext.OdsCodeMap[siteCode];
                 _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, "http://fhir.nhs.net/Id/ods-site-code|" + mappedSiteValue);
@@ -226,182 +175,41 @@
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, parameterValue);
         }
 
-        public Resource getReturnedResourceForRelativeURL(string interactionID, string relativeUrl)
+        public Resource GetResourceForRelativeUrl(GpConnectInteraction gpConnectInteraction, string relativeUrl)
         {
-            // Store current state
-            var preRequestHeaders = _httpContext.HttpRequestConfiguration.RequestHeaders.GetRequestHeaders();
-            _httpContext.HttpRequestConfiguration.RequestHeaders.Clear();
-            var preRequestUrl = _httpContext.HttpRequestConfiguration.RequestUrl;
-            _httpContext.HttpRequestConfiguration.RequestUrl = "";
-            var preRequestParameters = _httpContext.HttpRequestConfiguration.RequestParameters;
-            _httpContext.HttpRequestConfiguration.RequestParameters.ClearParameters();
-            var preRequestMethod = _httpContext.HttpRequestConfiguration.RequestMethod;
-            var preRequestContentType = _httpContext.HttpRequestConfiguration.RequestContentType;
-            var preRequestBody = _httpContext.HttpRequestConfiguration.RequestBody;
-            _httpContext.HttpRequestConfiguration.RequestBody = null;
+            var httpContext = new HttpContext();
+            httpContext.SetDefaults();
+            httpContext.HttpRequestConfiguration.SetDefaultHeaders();
 
-            var preResponseTimeInMilliseconds = _httpContext.HttpResponse.ResponseTimeInMilliseconds;
-            var preResponseStatusCode = _httpContext.HttpResponse.StatusCode;
-            var preResponseContentType = _httpContext.HttpResponse.ContentType;
-            var preResponseBody = _httpContext.HttpResponse.Body;
-            var preResponseHeaders = _httpContext.HttpResponse.Headers;
-            _httpContext.HttpResponse.Headers.Clear();
+            var httpContextFactory = new HttpContextFactory(gpConnectInteraction);
+            httpContextFactory.ConfigureHttpContext(httpContext);
+            
+            var jwtHelper = new JwtHelper();
+            var jwtFactory = new JwtFactory(gpConnectInteraction);
 
-            JObject preResponseJSON = null;
-            try
-            {
-                preResponseJSON = _httpContext.HttpResponse.ResponseJSON;
-            }
-            catch (Exception) { }
-            XDocument preResponseXML = null;
-            try
-            {
-                preResponseXML = _httpContext.HttpResponse.ResponseXML;
-            }
-            catch (Exception) { }
+            jwtFactory.ConfigureJwt(jwtHelper, httpContext);
 
-            var preFhirResponseResource = _httpContext.FhirResponse.Resource;
-
-            // Setup configuration
-            Given($@"I am using the default server");
-
-            And($@"I set the default JWT");
-            And($@"I am performing the ""{interactionID}"" interaction");
             if (relativeUrl.Contains("Patient"))
             {
-               string removedSlash = relativeUrl.Replace(@"/", "");
-                string patientName = removedSlash.ToLower();
-                And($@"I set the JWT requested record NHS number to config patient ""{patientName}""");
-                And($@"I set the JWT requested scope to ""patient/*.read""");
+                var patient = relativeUrl.ToLower().Replace("/", string.Empty);
+                jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
             }
-            // Make Call
-            RestRequest(Method.GET, relativeUrl);
 
-            // Check the response
-            _httpContext.HttpResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
-            Then($@"the response body should be FHIR JSON"); // Create resource object from returned JSON
-            var returnResource = _httpContext.FhirResponse.Resource; // Store the found resource for use in the calling system
+            _securitySteps.ConfigureServerCertificatesAndSsl();
 
-            // Restore state
-            _httpContext.HttpRequestConfiguration.RequestHeaders.SetRequestHeaders(preRequestHeaders);
-            _httpContext.HttpRequestConfiguration.RequestUrl = preRequestUrl;
-            _httpContext.HttpRequestConfiguration.RequestParameters = preRequestParameters;
-            _httpContext.HttpRequestConfiguration.RequestMethod = preRequestMethod;
-            _httpContext.HttpRequestConfiguration.RequestContentType = preRequestContentType;
-            _httpContext.HttpRequestConfiguration.RequestBody = preRequestBody;
+            httpContext.HttpRequestConfiguration.RequestUrl = relativeUrl;
 
-            _httpContext.HttpResponse.ResponseTimeInMilliseconds = preResponseTimeInMilliseconds;
-            _httpContext.HttpResponse.StatusCode = preResponseStatusCode;
-            _httpContext.HttpResponse.ContentType = preResponseContentType;
-            _httpContext.HttpResponse.Body = preResponseBody;
-            _httpContext.HttpResponse.Headers = preResponseHeaders;
-            _httpContext.HttpResponse.ResponseJSON = preResponseJSON;
-            _httpContext.HttpResponse.ResponseXML = preResponseXML;
-            _httpContext.FhirResponse.Resource = preFhirResponseResource;
+            var requestFactory = new RequestFactory(gpConnectInteraction);
+            requestFactory.ConfigureBody(httpContext);
 
-            return returnResource;
+            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
+
+            var httpRequest = new HttpRequest(httpContext, _securityContext);
+
+            httpRequest.MakeHttpRequest();
+
+            return httpContext.FhirResponse.Resource;
         }
-
-        // Rest Request Helper
-
-        public void RestRequest(Method method, string relativeUrl, string body = null)
-        {
-            var timer = new System.Diagnostics.Stopwatch();
-
-            Log.WriteLine("{0} relative URL = {1}", method, relativeUrl);
-
-            // Save The Request Details
-            _httpContext.HttpRequestConfiguration.RequestMethod = method.ToString();
-            _httpContext.HttpRequestConfiguration.RequestUrl = relativeUrl;
-            _httpContext.HttpRequestConfiguration.RequestBody = body;
-
-            // Build The Rest Request
-            var restClient = new RestClient(_httpContext.HttpRequestConfiguration.EndpointAddress);
-
-            // Setup The Web Proxy
-            if (_httpContext.HttpRequestConfiguration.UseWebProxy)
-            {
-                restClient.Proxy = new WebProxy(new Uri(_httpContext.HttpRequestConfiguration.WebProxyAddress, UriKind.Absolute));
-            }
-
-            // Setup The Client Certificate
-            if (_securityContext.SendClientCert)
-            {
-                var clientCert = _securityContext.ClientCert;
-                if (restClient.ClientCertificates == null)
-                {
-                    restClient.ClientCertificates = new X509CertificateCollection();
-                }
-                restClient.ClientCertificates.Clear();
-                restClient.ClientCertificates.Add(clientCert);
-            }
-
-            // Remove default handlers to stop it sending default Accept header
-            restClient.ClearHandlers();
-
-            // Add Parameters
-            String requestParamString = "?";
-            foreach (var parameter in _httpContext.HttpRequestConfiguration.RequestParameters.GetRequestParameters())
-            {
-                Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
-                requestParamString = requestParamString + HttpUtility.UrlEncode(parameter.Key, Encoding.UTF8) + "=" + HttpUtility.UrlEncode(parameter.Value, Encoding.UTF8) + "&";
-            }
-            requestParamString = requestParamString.Substring(0, requestParamString.Length - 1);
-
-            var restRequest = new RestRequest(relativeUrl + requestParamString, method);
-
-            // Set the Content-Type header
-            restRequest.AddParameter(_httpContext.HttpRequestConfiguration.RequestContentType, body, ParameterType.RequestBody);
-            _httpContext.HttpRequestConfiguration.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, _httpContext.HttpRequestConfiguration.RequestContentType);
-
-            // Add The Headers
-            foreach (var header in _httpContext.HttpRequestConfiguration.RequestHeaders.GetRequestHeaders())
-            {
-                Log.WriteLine("Header - {0} -> {1}", header.Key, header.Value);
-                restRequest.AddHeader(header.Key, header.Value);
-            }
-
-            // Execute The Request
-            IRestResponse restResponse = null;
-            try
-            {
-                // Start The Performance Timer Running
-                timer.Start();
-
-                // Perform The Rest Request
-                restResponse = restClient.Execute(restRequest);
-            }
-            catch (Exception e)
-            {
-                Log.WriteLine(e.StackTrace);
-            }
-            finally
-            {
-                // Always Stop The Performance Timer Running
-                timer.Stop();
-            }
-
-            // Save The Time Taken To Perform The Request
-            _httpContext.HttpResponse.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
-
-            // TODO Save The Error Message And Exception Details
-            Log.WriteLine("Error Message = " + restResponse.ErrorMessage);
-            Log.WriteLine("Error Exception = " + restResponse.ErrorException);
-
-            // Save The Response Details
-            _httpContext.HttpResponse.StatusCode = restResponse.StatusCode;
-            _httpContext.HttpResponse.ContentType = restResponse.ContentType;
-            _httpContext.HttpResponse.Body = restResponse.Content;
-
-            _httpContext.HttpResponse.Headers.Clear();
-            foreach (var parameter in restResponse.Headers)
-            {
-                _httpContext.HttpResponse.Headers.Add(parameter.Name, (string)parameter.Value);
-            }
-            
-        }
-
-        // Response Validation Steps
 
         [Then(@"the response status code should indicate success")]
         public void ThenTheResponseStatusCodeShouldIndicateSuccess()
@@ -643,7 +451,7 @@
         [Then(@"the content-type should not be equal to null")]
         public void ThenTheContentTypeShouldNotBeEqualToNull()
         {
-            string contentType = null;
+            string contentType;
             _httpContext.HttpResponse.Headers.TryGetValue("Content-Type", out contentType);
             contentType.ShouldNotBeNullOrEmpty("The response should contain a Content-Type header.");
         }
@@ -651,7 +459,7 @@
         [Then(@"the content-type should be equal to null")]
         public void ThenTheContentTypeShouldBeEqualToZero()
         {
-            string contentType = null;
+            string contentType;
             _httpContext.HttpResponse.Headers.TryGetValue("Content-Type", out contentType);
             contentType.ShouldBe(null, "There should not be a content-type header on the response");
         }
@@ -659,7 +467,7 @@
         [Then(@"the content-length should not be equal to zero")]
         public void ThenTheContentLengthShouldNotBeEqualToZero()
         {
-            string contentLength = "";
+            string contentLength;
             _httpContext.HttpResponse.Headers.TryGetValue("Content-Length", out contentLength);
             contentLength.ShouldNotBe("0", "The response payload should contain a resource.");
         }

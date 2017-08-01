@@ -4,6 +4,7 @@
     using System.Linq;
     using Constants;
     using Context;
+    using Enum;
     using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
@@ -242,7 +243,7 @@
                 {
                     if (participant.Actor.Reference.StartsWith("Practitioner/"))
                     {
-                        var practitioner = _httpSteps.getReturnedResourceForRelativeURL(SpineConst.InteractionIds.PractitionerRead , participant.Actor.Reference);
+                        var practitioner = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PractitionerRead, participant.Actor.Reference);
 
                         practitioner.ShouldNotBeNull($"The Appointment Participant with Reference {participant.Actor.Reference} returned a null Practitioner.");
                         practitioner.GetType().ShouldBe(typeof(Practitioner), $"The Appointment Participant with Reference {participant.Actor.Reference} returned a {practitioner.GetType().ToString()}.");
@@ -250,7 +251,7 @@
 
                     if (participant.Actor.Reference.StartsWith("Patient/"))
                     {
-                        var patient = _httpSteps.getReturnedResourceForRelativeURL(SpineConst.InteractionIds.PatientRead, participant.Actor.Reference);
+                        var patient = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PatientRead, participant.Actor.Reference);
 
                         patient.ShouldNotBeNull($"The Appointment Participant with Reference {participant.Actor.Reference} returned a null Patient.");
                         patient.GetType().ShouldBe(typeof(Patient), $"The Appointment Participant with Reference {participant.Actor.Reference} returned a {patient.GetType().ToString()}.");
@@ -258,7 +259,8 @@
 
                     if (participant.Actor.Reference.StartsWith("Location/"))
                     {
-                        var location = _httpSteps.getReturnedResourceForRelativeURL(SpineConst.InteractionIds.LocationRead, participant.Actor.Reference);
+
+                        var location = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.LocationRead, participant.Actor.Reference);
 
                         location.ShouldNotBeNull($"The Appointment Participant with Reference {participant.Actor.Reference} returned a null Location.");
                         location.GetType().ShouldBe(typeof(Location), $"The Appointment Participant with Reference {participant.Actor.Reference} returned a {location.GetType().ToString()}.");

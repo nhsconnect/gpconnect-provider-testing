@@ -15,6 +15,8 @@
         {
             RequestHeaders = new HttpHeaderHelper();
             RequestParameters = new HttpParameterHelper();
+            LoadAppConfig();
+            SetDefaultHeaders();
         }
 
         public DecompressionMethods DecompressionMethod { get; set; }

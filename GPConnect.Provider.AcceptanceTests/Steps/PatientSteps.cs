@@ -192,8 +192,9 @@
 
                         reference.ShouldStartWith("Practitioner/");
 
-                        var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner", reference);
-                        returnedResource.GetType().ShouldBe(typeof(Practitioner));
+                        var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PractitionerRead, reference);
+
+                        resource.GetType().ShouldBe(typeof(Practitioner));
                     }
                 }
             });
@@ -223,9 +224,13 @@
             {
                 if (patient.ManagingOrganization != null)
                 {
-                    patient.ManagingOrganization.Reference.ShouldStartWith("Organization/");
-                    var returnedResource = _httpSteps.getReturnedResourceForRelativeURL("urn:nhs:names:services:gpconnect:fhir:rest:read:organization", patient.ManagingOrganization.Reference);
-                    returnedResource.GetType().ShouldBe(typeof(Organization));
+                    var reference = patient.ManagingOrganization.Reference;
+
+                    reference.ShouldStartWith("Organization/");
+
+                    var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.OrganizationRead, reference);
+
+                    resource.GetType().ShouldBe(typeof(Organization));
                 }
             });
         }

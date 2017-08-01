@@ -187,7 +187,7 @@
 
         private static void ConfigureAppointmentSearchContext(HttpContext httpContext)
         {
-            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;;
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
             httpContext.HttpRequestConfiguration.RequestUrl = "Patient/" + httpContext.StoredPatient.Id + "/Appointment";
             httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentSearch);
         }

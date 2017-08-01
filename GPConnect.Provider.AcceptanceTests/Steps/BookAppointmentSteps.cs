@@ -7,6 +7,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Constants;
+    using Enum;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -308,9 +309,7 @@
                 {
                     if (participant.Actor.Reference.StartsWith("Location/"))
                     {
-                        var location =
-                            _httpSteps.getReturnedResourceForRelativeURL(SpineConst.InteractionIds.LocationRead,
-                                participant.Actor.Reference);
+                        var location = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.LocationRead, participant.Actor.Reference);
 
                         location.ShouldNotBeNull(
                             $"The Appointment Participant with Reference {participant.Actor.Reference} returned a null Location.");
