@@ -21,25 +21,127 @@ Scenario Outline: I perform a successful cancel appointment
 		| patient8    |
 		| patient9    |
 
-#Potentially split this up, only one of the steps could fair the test and the rest could result in a pass ?? May be false postive
-Scenario Outline: I perform cancel appointment and update invalid elements
+Scenario Outline: I perform cancel appointment and update the category extension
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I add a Category Extension with Code "CLI" and Display "Clinical" to the Created Appointment
+	When I make the "AppointmentCancel" request
+	Then the response status code should be "403"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| PatientName |
+		| patient1    |
+
+Scenario Outline: I perform cancel appointment and update the booking method extension
+		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I add a Booking Method Extension with Code "ONL" and Display "Online" to the Created Appointment
+	When I make the "AppointmentCancel" request
+	Then the response status code should be "403"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| PatientName |
+		| patient1    |
+
+
+Scenario Outline: I perform cancel appointment and update the contact method extension
+		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I add a Contact Method Extension with Code "ONL" and Display "Online" to the Created Appointment
+	When I make the "AppointmentCancel" request
+	Then the response status code should be "403"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| PatientName |
+		| patient1    |
+
+Scenario Outline: I perform cancel appointment and add participants
+		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I add a Participant with Reference "location/2" to the Created Appointment
 		And I add a Participant with Reference "Patient/2" to the Created Appointment
 		And I add a Participant with Reference "Practitioner/2" to the Created Appointment		
-		And I add an Appointment Identifier with default System and Value "898976578" to the Created Appointment
-		And I add an Appointment Identifier with default System and Value "898976578" to the Created Appointment
+	When I make the "AppointmentCancel" request
+	Then the response status code should be "403"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| PatientName |
+		| patient1    |
+
+Scenario Outline: I perform cancel appointment and update the description
+		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Description to "RANDOM TEXT" 
+	When I make the "AppointmentCancel" request
+	Then the response status code should be "403"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| PatientName |
+		| patient1    |
+
+Scenario Outline: I perform cancel appointment and update the priority
+		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Priority to "3"
+	When I make the "AppointmentCancel" request
+	Then the response status code should be "403"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| PatientName |
+		| patient1    |
+
+Scenario Outline: I perform cancel appointment and update the minutes duration
+		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Minutes Duration to "20"
+	When I make the "AppointmentCancel" request
+	Then the response status code should be "403"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| PatientName |
+		| patient1    |
+
+Scenario Outline: I perform cancel appointment and update the comment
+		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Comment to "RANDOM COMMENT"
+	When I make the "AppointmentCancel" request
+	Then the response status code should be "403"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| PatientName |
+		| patient1    |
+
+Scenario Outline: I perform cancel appointment and update the type text
+		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Type Text to "RANDOM TYPE TEXT"
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "403"
@@ -47,11 +149,6 @@ Scenario Outline: I perform cancel appointment and update invalid elements
 	Examples:
 		| PatientName |
 		| patient1    |
-		| patient2    |
-		| patient3    |
-		| patient10   |
-		| patient11   |
-		| patient12   |
 
 Scenario Outline: Cancel appointment making a request to an invalid URL
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
