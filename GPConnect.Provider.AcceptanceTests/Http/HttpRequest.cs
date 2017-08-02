@@ -10,6 +10,7 @@
     using System.Xml.Linq;
     using Constants;
     using Context;
+    using Extensions;
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Serialization;
     using Logger;
@@ -56,7 +57,7 @@
                 _httpContext.HttpResponse.ContentType = result.Content.Headers.ContentType.MediaType;
             }
 
-            using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
+            using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result, Encoding.UTF8))
             {
                 _httpContext.HttpResponse.Body = reader.ReadToEnd();
             }
