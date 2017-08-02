@@ -147,6 +147,7 @@ Scenario: Book appointment prefer header set to minimal
 		And the response body should be empty
 		And the content-type should be equal to null
 
+#testCaseId is a random parameter which forces VS Test Explorer to identify each example as a unique test
 Scenario Outline: Book appointment with invalid interaction id
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -161,11 +162,11 @@ Scenario Outline: Book appointment with invalid interaction id
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| Case_ID | interactionId |
-		| 1       | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
-		| 2       | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		| 3       |                                                                   |
-		| 4       | null                                                              |
+		| testCaseId | interactionId |
+		| 1          | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
+		| 2          | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		| 3          |                                                                   |
+		| 4          | null                                                              |
 
 Scenario: Book Appointment and check response contains the manadatory elements
 	Given I get the Patient for Patient Value "patient1"
