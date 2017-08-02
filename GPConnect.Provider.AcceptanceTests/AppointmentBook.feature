@@ -13,7 +13,7 @@ Scenario: Book single appointment for patient
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
 	
-Scenario: Book Appointment with invalid url for booking appointment
+Scenario Outline: Book Appointment with invalid url for booking appointment
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I get the Schedule for Organization Code "ORG1"
@@ -21,8 +21,12 @@ Scenario: Book Appointment with invalid url for booking appointment
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
+		And I set the request URL to "<url>"
 	When I make the "AppointmentCreate" request
 	Then the response status code should be "404"
+	Examples:
+		| url             |
+		| appointmentqq/! |
 
 Scenario Outline: Book appointment failure due to missing header
 	Given I get the Patient for Patient Value "patient1"
@@ -157,11 +161,11 @@ Scenario Outline: Book appointment with invalid interaction id
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| interactionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                   |
-		| null                                                              |
+		| Case_ID | interactionId |
+		| 1       | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
+		| 2       | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		| 3       |                                                                   |
+		| 4       | null                                                              |
 
 Scenario: Book Appointment and check response contains the manadatory elements
 	Given I get the Patient for Patient Value "patient1"
