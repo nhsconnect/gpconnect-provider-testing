@@ -98,7 +98,7 @@ Scenario Outline: Amend appointment failure with incorrect interaction id
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment Comment to "customComment"
-		And I am performing the "<interactionId>" interaction
+		And I set the Interaction Id header to "<interactionId>" 
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -219,7 +219,7 @@ Scenario: Amend appointment send an update with an invalid if-match header
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment Comment to "customComment"
-		And I set If-Match request header to "invalidEtag"
+		And I set the If-Match header to "invalidEtag"
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "409"
 
@@ -228,7 +228,6 @@ Scenario: Amend appointment set etag and check etag is the same in the returned 
 		And I store the Created Appointment			
 	Given I read the Stored Appointment
 		And I store the Appointment 
-		And I store the Appointment Id
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment Comment to "customComment"

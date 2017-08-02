@@ -1,0 +1,185 @@
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
+{
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using Constants;
+    using Context;
+    using TechTalk.SpecFlow;
+
+    [Binding]
+    public class HttpRequestConfigurationSteps : Steps
+    {
+        private readonly HttpContext _httpContext;
+
+        public HttpRequestConfigurationSteps(HttpContext httpContext)
+        {
+            _httpContext = httpContext;
+        }
+
+        [Given(@"I am connecting to server on port ""([^\s]*)""")]
+        public void GivenIAmConnectingToServerOnPort(string serverPort)
+        {
+            _httpContext.HttpRequestConfiguration.FhirServerPort = serverPort;
+        }
+
+        [Given(@"I am not using the SSP")]
+        public void GivenIAmNotUsingTheSsp()
+        {
+            _httpContext.HttpRequestConfiguration.UseSpineProxy = false;
+        }
+
+        // Http Header Configuration Steps
+
+        [Given(@"I set ""(.*)"" request header to ""(.*)""")]
+        public void GivenISetRequestHeaderTo(string headerName, string headerValue)
+        {
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(headerName, headerValue);
+        }
+
+        [Given(@"I am connecting to accredited system ""(.*)""")]
+        public void GivenIConnectingToAccreditedSystem(string toASID)
+        {
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTo, toASID);
+        }
+
+        [Given(@"I am generating a random message trace identifier")]
+        public void GivenIAmGeneratingARandomMessageTraceIdentifier()
+        {
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTraceId, Guid.NewGuid().ToString(""));
+        }
+
+        [Given(@"I do not send header ""(.*)""")]
+        public void GivenIDoNotSendHeader(string headerKey)
+        {
+            _httpContext.HttpRequestConfiguration.RequestHeaders.RemoveHeader(headerKey);
+        }
+
+        // Http Request Steps
+        [Given(@"I set the Accept-Encoding header to gzip")]
+        public void SetTheAcceptEncodingHeaderToGzip()
+        {
+            _httpContext.HttpRequestConfiguration.RequestHeaders.AddHeader(HttpConst.Headers.kAcceptEncoding, "gzip");
+        }
+
+        [Given(@"I set the request content type to ""(.*)""")]
+        public void GivenISetTheRequestTypeTo(string requestContentType)
+        {
+            _httpContext.HttpRequestConfiguration.RequestContentType = requestContentType;
+        }
+
+        [Given(@"I set the Accept header to ""(.*)""")]
+        public void GivenISetTheAcceptHeaderTo(string acceptContentType)
+        {
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, acceptContentType);
+        }
+
+        [Given(@"I set the Prefer header to ""(.*)""")]
+        public void GivenISetThePreferHeaderTo(string preferHeaderContent)
+        {
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kPrefer, preferHeaderContent);
+        }
+
+        [Given(@"I set the If-None-Match header to ""(.*)""")]
+        public void GivenISetTheIfNoneMatchheaderHeaderTo(string ifNoneMatchHeaderContent)
+        {
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfNoneMatch, ifNoneMatchHeaderContent);
+        }
+
+        [Given(@"I set the If-Match header to ""([^""]*)""")]
+        public void SetTheIfMatchHeaderTo(string value)
+        {
+            if (!value.StartsWith("W/"))
+            {
+                value = "W/\"" + value + "\"";
+            }
+
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfMatch, value);
+        }
+
+        [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
+        public void GivenIAddTheParameterWithTheValue(string parameterName, string parameterValue)
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, parameterValue);
+        }
+
+        [Given(@"I add the parameter ""(.*)"" with the value or sitecode ""(.*)""")]
+        public void GivenIAddTheParameterWithTheSiteCode(string parameterName, string parameterValue)
+        {
+            if (parameterValue.Contains("http://fhir.nhs.net/Id/ods-site-code"))
+            {
+                var siteCode = parameterValue.Substring(parameterValue.LastIndexOf('|') + 1);
+                string mappedSiteValue = GlobalContext.OdsCodeMap[siteCode];
+                _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, "http://fhir.nhs.net/Id/ods-site-code|" + mappedSiteValue);
+                return;
+            }
+
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, parameterValue);
+        }
+
+
+        [Given(@"I set the GET request Id to ""([^""]*)""")]
+        public void SetTheGetRequestIdTo(string id)
+        {
+            _httpContext.HttpRequestConfiguration.RequestUrl = "/fhir/Patient/" + id;
+        }
+
+        [Given(@"I set the GET request Version Id to ""([^""]*)""")]
+        public void SetTheGetRequestVersionIdTo(string versionId)
+        {
+            _httpContext.HttpRequestConfiguration.GetRequestVersionId = versionId;
+        }
+
+        [Given(@"I set the request Http Method to ""([^""]*)""")]
+        public void SetTheRequestHttpMethodTo(string method)
+        {
+            _httpContext.HttpRequestConfiguration.HttpMethod = new HttpMethod(method);
+        }
+
+        [Given(@"I set the request URL to ""([^""]*)""")]
+        public void SetTheRequestUrlTo(string url)
+        {
+            _httpContext.HttpRequestConfiguration.RequestUrl = url;
+        }
+
+        [Given(@"I set the Interaction Id header to ""([^""]*)""")]
+        public void SetTheInteractionIdHeaderTo(string interactionId)
+        {
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, interactionId);
+        }
+
+        [Given(@"I set the Read Operation logical identifier used in the request to ""([^""]*)""")]
+        public void SetTheReadOperationLogicalIdentifierUsedInTheRequestTo(string logicalId)
+        {
+            _httpContext.HttpRequestConfiguration.GetRequestId = logicalId;
+
+            var lastIndex = _httpContext.HttpRequestConfiguration.RequestUrl.LastIndexOf('/');
+
+            if (_httpContext.HttpRequestConfiguration.RequestUrl.Contains("$"))
+            {
+                var action = _httpContext.HttpRequestConfiguration.RequestUrl.Substring(lastIndex);
+
+                var firstIndex = _httpContext.HttpRequestConfiguration.RequestUrl.IndexOf('/');
+                var url = _httpContext.HttpRequestConfiguration.RequestUrl.Substring(0, firstIndex + 1);
+
+                _httpContext.HttpRequestConfiguration.RequestUrl = url + _httpContext.HttpRequestConfiguration.GetRequestId + action;
+            }
+            else
+            {
+                _httpContext.HttpRequestConfiguration.RequestUrl = _httpContext.HttpRequestConfiguration.RequestUrl.Substring(0, lastIndex + 1) + _httpContext.HttpRequestConfiguration.GetRequestId;
+            }
+        }
+
+        [Given(@"I set the Read Operation relative path to ""([^""]*)"" and append the resource logical identifier")]
+        public void SetTheReadOperationRelativePathToAndAppendTheResourceLogicalIdentifier(string relativePath)
+        {
+            _httpContext.HttpRequestConfiguration.RequestUrl = relativePath + "/" + _httpContext.HttpRequestConfiguration.GetRequestId;
+        }
+
+        [Given("I set the Decompression Method to gzip")]
+        public void SetTheDecompressionMethodToGzip()
+        {
+            _httpContext.HttpRequestConfiguration.DecompressionMethod = DecompressionMethods.GZip;
+        }
+    }
+}

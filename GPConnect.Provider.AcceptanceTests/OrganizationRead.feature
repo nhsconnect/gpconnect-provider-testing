@@ -3,7 +3,7 @@ Feature: OrganizationRead
 
 Scenario Outline: Organization Read successful request validate all of response
 	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization Id
+		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
@@ -22,7 +22,7 @@ Scenario Outline: Organization Read successful request validate all of response
 
 Scenario Outline: Organization Read successful request validate site codes returned are as expected
 	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization Id
+		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
@@ -49,7 +49,7 @@ Scenario Outline: Organization Read with valid identifier which does not exist o
 
 Scenario Outline: Organization Read with invalid resource path in URL
 	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization Id
+		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
 	When I make the "OrganizationRead" request
@@ -63,7 +63,7 @@ Scenario Outline: Organization Read with invalid resource path in URL
 
 Scenario Outline: Organization Read with missing mandatory header
 	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization Id
+		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 		And I do not send header "<Header>"
 	When I make the "OrganizationRead" request
@@ -79,9 +79,9 @@ Scenario Outline: Organization Read with missing mandatory header
 
 Scenario Outline: Organization Read with incorrect interaction id
 	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization Id
+		And I store the Organization
 	Given I configure the default "OrganizationRead" request
-		And I am performing the "<interactionId>" interaction
+		And I set the Interaction Id header to "<interactionId>"
 	When I make the "OrganizationRead" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -95,7 +95,7 @@ Scenario Outline: Organization Read with incorrect interaction id
 
 Scenario Outline: Organization Read using the _format parameter to request response format
 	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization Id
+		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make the "OrganizationRead" request
@@ -111,7 +111,7 @@ Scenario Outline: Organization Read using the _format parameter to request respo
 
 Scenario Outline: Organization Read using the Accept header to request response format
 	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization Id
+		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 		And I set the Accept header to "<Header>"
 	When I make the "OrganizationRead" request
@@ -127,7 +127,7 @@ Scenario Outline: Organization Read using the Accept header to request response 
 
 Scenario Outline: Organization Read sending the Accept header and _format parameter to request response format
 	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization Id
+		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
@@ -153,7 +153,7 @@ Scenario: Conformance profile supports the Organization read operation
 #Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 Scenario: VRead of current resource should return resource
 	Given I get the Organization for Organization Code "ORG3"
-		And I store the Organization Id
+		And I store the Organization
 		And I store the Organization Version Id
 	Given I configure the default "OrganizationRead" request
 	When I make the "OrganizationRead" request
@@ -163,7 +163,7 @@ Scenario: VRead of current resource should return resource
 #Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 Scenario: VRead of non existant version should return an error
 	Given I get the Organization for Organization Code "ORG2"
-		And I store the Organization Id
+		And I store the Organization
 		And I set the GET request Version Id to "NotARealVersionId"
 	Given I configure the default "OrganizationRead" request
 	When I make the "OrganizationRead" request

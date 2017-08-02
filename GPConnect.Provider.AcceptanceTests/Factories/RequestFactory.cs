@@ -7,16 +7,20 @@
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Rest;
     using Hl7.Fhir.Serialization;
+    using Repository;
 
     public class RequestFactory
     {
         private readonly GpConnectInteraction _gpConnectInteraction;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
+
         private delegate string Serializer(Base data, SummaryType summaryType = SummaryType.False, string root = null);
         private static Serializer _serializer;
 
-        public RequestFactory(GpConnectInteraction gpConnectInteraction)
+        public RequestFactory(GpConnectInteraction gpConnectInteraction, IFhirResourceRepository fhirResourceRepository)
         {
             _gpConnectInteraction = gpConnectInteraction;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         public void ConfigureBody(HttpContext httpContext)
@@ -53,9 +57,9 @@
                 : FhirSerializer.SerializeToJson;
         }
 
-        private static void ConfigureAppointmentCreateBody(HttpContext httpContext)
+        private void ConfigureAppointmentCreateBody(HttpContext httpContext)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = _serializer(httpContext.CreatedAppointment);
+            httpContext.HttpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
         }
 
         private static void ConfigureGpcGetCareRecordBody(HttpContext httpContext)
@@ -73,14 +77,14 @@
             httpContext.HttpRequestConfiguration.RequestBody = _serializer(httpContext.HttpRequestConfiguration.BodyParameters);
         }
 
-        private static void ConfigureAppointmentAmendBody(HttpContext httpContext)
+        private void ConfigureAppointmentAmendBody(HttpContext httpContext)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = _serializer(httpContext.CreatedAppointment);
+            httpContext.HttpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
         }
 
-        private static void ConfigureAppointmentCancelBody(HttpContext httpContext)
+        private void ConfigureAppointmentCancelBody(HttpContext httpContext)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = _serializer(httpContext.CreatedAppointment);
+            httpContext.HttpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
         }
 
         public void ConfigureInvalidResourceType(HttpContext httpContext)

@@ -14,15 +14,17 @@
     using Hl7.Fhir.Serialization;
     using Logger;
     using Newtonsoft.Json.Linq;
-    using RestSharp.Extensions.MonoHttp;
+    using static System.Net.WebUtility;
 
     public class HttpRequest
     {
         private readonly HttpContext _httpContext;
+        private readonly SecurityContext _securityContext;
 
-        public HttpRequest(HttpContext httpContext)
+        public HttpRequest(HttpContext httpContext, SecurityContext securityContext)
         {
             _httpContext = httpContext;
+            _securityContext = securityContext;
         }
 
         public void MakeHttpRequest()
@@ -122,7 +124,7 @@
             foreach (var parameter in _httpContext.HttpRequestConfiguration.RequestParameters.GetRequestParameters())
             {
                 Log.WriteLine("Parameter - {0} -> {1}", parameter.Key, parameter.Value);
-                requestParamString = requestParamString + HttpUtility.UrlEncode(parameter.Key, Encoding.UTF8) + "=" + HttpUtility.UrlEncode(parameter.Value, Encoding.UTF8) + "&";
+                requestParamString = requestParamString + UrlEncode(parameter.Key) + "=" + UrlEncode(parameter.Value) + "&";
             }
 
             return requestParamString.Substring(0, requestParamString.Length - 1);
@@ -158,9 +160,9 @@
                 AutomaticDecompression = _httpContext.HttpRequestConfiguration.DecompressionMethod
             };
 
-            if (_httpContext.SecurityContext.SendClientCert)
+            if (_securityContext.SendClientCert)
             {
-                var clientCert = _httpContext.SecurityContext.ClientCert;
+                var clientCert = _securityContext.ClientCert;
                 handler.ClientCertificates.Add(clientCert);
             }
 

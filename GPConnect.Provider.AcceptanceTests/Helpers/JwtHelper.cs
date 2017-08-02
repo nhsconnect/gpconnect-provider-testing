@@ -30,7 +30,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public string RequestedOrganizationODSCode { get; set; }
         public string RequestingSystemUrl { get; set; }
 
-        private JwtHelper()
+        public JwtHelper()
         {
             Log.WriteLine("JwtHelper() Constructor");
             SetDefaultValues();

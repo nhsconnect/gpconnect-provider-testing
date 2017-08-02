@@ -61,10 +61,6 @@
       <HintPath>..\packages\NUnit.3.0.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Shouldly, Version=2.8.3.0, Culture=neutral, PublicKeyToken=6042cbcb05cbc941, processorArchitecture=MSIL">
       <HintPath>..\packages\Shouldly.2.8.3\lib\net451\Shouldly.dll</HintPath>
     </Reference>
@@ -236,6 +232,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppointmentAmend.feature</DependentUpon>
     </Compile>
+    <Compile Include="Repository\FhirResourceRepository.cs" />
+    <Compile Include="Repository\IFhirResourceRepository.cs" />
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
     <Compile Include="Steps\AppointmentReadSteps.cs" />
     <Compile Include="Steps\AppointmentRetrieveSteps.cs" />
@@ -247,6 +245,8 @@
     <Compile Include="Steps\CompositionSteps.cs" />
     <Compile Include="Steps\ConformanceSteps.cs" />
     <Compile Include="Steps\DeviceSteps.cs" />
+    <Compile Include="Steps\HttpRequestConfigurationSteps.cs" />
+    <Compile Include="Steps\HttpResponseSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
     <Compile Include="Steps\GetScheduleSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />

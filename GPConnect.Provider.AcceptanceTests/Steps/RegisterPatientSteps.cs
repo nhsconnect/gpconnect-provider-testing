@@ -5,6 +5,7 @@
     using Constants;
     using Context;
     using Hl7.Fhir.Model;
+    using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
 
@@ -13,12 +14,14 @@
     {
         private readonly HttpContext _httpContext;
         private readonly PatientSteps _patientSteps;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
-        public RegisterPatientSteps(HttpContext httpContext, PatientSteps patientSteps)
+        public RegisterPatientSteps(HttpContext httpContext, PatientSteps patientSteps, IFhirResourceRepository fhirResourceRepository)
         {
             _httpContext = httpContext;
             _patientSteps = patientSteps;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         [Given(@"I create a Patient which does not exist on PDS and store it")]
@@ -38,7 +41,7 @@
 
             returnPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, "9019546082"));
 
-            _httpContext.StoredPatient = returnPatient;
+            _fhirResourceRepository.Patient = returnPatient;
         }
 
         [Given(@"I set the Stored Patient Demographics to not match the NHS number")]
@@ -49,56 +52,56 @@
             name.FamilyElement.Add(new FhirString("GPConnectFamilyName"));
             name.GivenElement.Add(new FhirString("GPConnectGivenName"));
 
-            _httpContext.StoredPatient.Name = new List<HumanName>
+            _fhirResourceRepository.Patient.Name = new List<HumanName>
             {
                 name
             };
 
-            _httpContext.StoredPatient.Gender = AdministrativeGender.Other;
+            _fhirResourceRepository.Patient.Gender = AdministrativeGender.Other;
 
-            _httpContext.StoredPatient.BirthDateElement = new Date("2017-05-05");
+            _fhirResourceRepository.Patient.BirthDateElement = new Date("2017-05-05");
         }
         
         [Given(@"I remove the Identifiers from the Stored Patient")]
         public void RemoveTheIdentifiersFromTheStoredPatient()
         {
-            _httpContext.StoredPatient.Identifier = null;
+            _fhirResourceRepository.Patient.Identifier = null;
         }
 
         [Given(@"I remove the Name from the Stored Patient")]
         public void RemoveTheNameFromTheStoredPatient()
         {
-            _httpContext.StoredPatient.Name = null;
+            _fhirResourceRepository.Patient.Name = null;
         }
 
         [Given(@"I remove the Family Name from the Stored Patient")]
         public void RemoveTheFamilyNameFromTheStoredPatient()
         {
-            _httpContext.StoredPatient.Name[0].Family = null;
+            _fhirResourceRepository.Patient.Name[0].Family = null;
         }
 
         [Given(@"I remove the Given Name from the Stored Patient")]
         public void RemoveTheGivenNameFromTheStoredPatient()
         {
-            _httpContext.StoredPatient.Name[0].Given = null;
+            _fhirResourceRepository.Patient.Name[0].Given = null;
         }
 
         [Given(@"I remove the Gender from the Stored Patient")]
         public void RemoveTheGenderFromTheStoredPatient()
         {
-            _httpContext.StoredPatient.Gender = null;
+            _fhirResourceRepository.Patient.Gender = null;
         }
 
         [Given(@"I remove the Birth Date from the Stored Patient")]
         public void RemoveTheBirthDateFromTheStoredPatient()
         {
-            _httpContext.StoredPatient.BirthDate = null;
+            _fhirResourceRepository.Patient.BirthDate = null;
         }
 
         [Given(@"I add an Identifier with Value ""([^""]*)"" to the Stored Patient")]
         public void AddAnIdentifierWithValueToTheStoredPatient(string nhsNumber)
         {
-            _httpContext.StoredPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber));
+            _fhirResourceRepository.Patient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber));
         }
 
         [Given(@"I set the Stored Patient Registration Period with Start Date ""([^""]*)"" and End Date ""([^""]*)""")]
@@ -116,31 +119,31 @@
                 Value = period
             };
 
-            _httpContext.StoredPatient.Extension.Add(registrationPeriod);
+            _fhirResourceRepository.Patient.Extension.Add(registrationPeriod);
         }
         
         [Given(@"I add the Stored Patient as a parameter")]
         public void AddTheStoredPatientAsAParameter()
         {
-            _httpContext.HttpRequestConfiguration.BodyParameters.Add("registerPatient", _httpContext.StoredPatient);
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add("registerPatient", _fhirResourceRepository.Patient);
         }
 
         [Given(@"I add the Stored Appointment as a parameter")]
         public void AddTheStoredAppointmentAsAParameter()
         {
-            _httpContext.HttpRequestConfiguration.BodyParameters.Add("appointment", _httpContext.CreatedAppointment);
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add("appointment", _fhirResourceRepository.Appointment);
         }
 
         [Given(@"I add the Stored Patient as a parameter with name ""([^""]*)""")]
         public void AddTheStoredPatientAsAParameterWithName(string parameterName)
         {
-            _httpContext.HttpRequestConfiguration.BodyParameters.Add(parameterName, _httpContext.StoredPatient);
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(parameterName, _fhirResourceRepository.Patient);
         }
 
         [Given(@"I add the Family Name ""([^""]*)"" to the Stored Patient")]
         public void AddTheFamilyNameToTheStoredPatient(string familyName)
         {
-            foreach (var name in _httpContext.StoredPatient.Name)
+            foreach (var name in _fhirResourceRepository.Patient.Name)
             {
                 name.FamilyElement.Add(new FhirString(familyName));
             }
@@ -149,7 +152,7 @@
         [Given(@"I add the Given Name ""([^""]*)"" to the Stored Patient")]
         public void AddTheGivenNameToTheStoredPatient(string givenName)
         {
-            foreach (var name in _httpContext.StoredPatient.Name)
+            foreach (var name in _fhirResourceRepository.Patient.Name)
             {
                 name.GivenElement.Add(new FhirString(givenName));
             }
@@ -163,7 +166,7 @@
             name.GivenElement.Add(new FhirString(givenName));
             name.FamilyElement.Add(new FhirString(familyName));
 
-            _httpContext.StoredPatient.Name.Add(name);
+            _fhirResourceRepository.Patient.Name.Add(name);
         }
 
         [Given(@"I add an Identifier with missing System to the Stored Patient")]
@@ -174,7 +177,7 @@
                 Value = "NewIdentifierNoSystem"
             };
 
-            _httpContext.StoredPatient.Identifier.Add(identifier);
+            _fhirResourceRepository.Patient.Identifier.Add(identifier);
         }
         
         [Given(@"I add a generic Identifier to the Stored Patient")]
@@ -186,13 +189,13 @@
                 System = "GenericIdentifierSystem"
             };
 
-            _httpContext.StoredPatient.Identifier.Add(identifier);
+            _fhirResourceRepository.Patient.Identifier.Add(identifier);
         }
 
         [Given(@"I add a Active element to the Stored Patient")]
         public void AddAActiveElementToStoredPatient()
         {
-            _httpContext.StoredPatient.Active = true;
+            _fhirResourceRepository.Patient.Active = true;
         }
 
         [Given(@"I add a Address element to the Stored Patient")]
@@ -207,13 +210,13 @@
             address.LineElement.Add(new FhirString("1 Trevelyan Square"));
             address.LineElement.Add(new FhirString("Boar Lane"));
            
-            _httpContext.StoredPatient.Address.Add(address);
+            _fhirResourceRepository.Patient.Address.Add(address);
         }
 
         [Given(@"I add a Animal element to the Stored Patient")]
         public void AddAAnimalElementToStoredPatient()
         {
-            _httpContext.StoredPatient.Animal = new Patient.AnimalComponent
+            _fhirResourceRepository.Patient.Animal = new Patient.AnimalComponent
             {
                 Species = new CodeableConcept("AllSpecies", "Human")
             };
@@ -222,7 +225,7 @@
         [Given(@"I add a Births element to the Stored Patient")]
         public void AddABirthsElementToStoredPatient()
         {
-            _httpContext.StoredPatient.MultipleBirth = new FhirBoolean(true);
+            _fhirResourceRepository.Patient.MultipleBirth = new FhirBoolean(true);
         }
 
         [Given(@"I add a CareProvider element to the Stored Patient")]
@@ -233,7 +236,7 @@
                 Display = "Test Care Provider"
             };
 
-            _httpContext.StoredPatient.CareProvider.Add(reference);
+            _fhirResourceRepository.Patient.CareProvider.Add(reference);
         }
 
         [Given(@"I add a Communication element to the Stored Patient")]
@@ -244,7 +247,7 @@
                 Language = new CodeableConcept("https://tools.ietf.org/html/bcp47", "en")
             };
 
-            _httpContext.StoredPatient.Communication.Add(com);
+            _fhirResourceRepository.Patient.Communication.Add(com);
         }
 
 
@@ -259,13 +262,13 @@
             contact.Name.GivenElement.Add(new FhirString("TestGiven"));
             contact.Name.FamilyElement.Add(new FhirString("TestFamily"));
 
-            _httpContext.StoredPatient.Contact.Add(contact);
+            _fhirResourceRepository.Patient.Contact.Add(contact);
         }
 
         [Given(@"I add a Deceased element to the Stored Patient")]
         public void AddADeceasedElementToStoredPatient()
         {
-            _httpContext.StoredPatient.Deceased = new FhirBoolean(false);
+            _fhirResourceRepository.Patient.Deceased = new FhirBoolean(false);
         }
 
         [Given(@"I add a Link element to the Stored Patient")]
@@ -282,7 +285,7 @@
                 Type = Patient.LinkType.Refer
             };
 
-            _httpContext.StoredPatient.Link.Add(link);
+            _fhirResourceRepository.Patient.Link.Add(link);
         }
 
         [Given(@"I add a ManagingOrg element to the Stored Patient")]
@@ -293,13 +296,13 @@
                 Display = "Test Managing Org"
             };
 
-            _httpContext.StoredPatient.ManagingOrganization = reference;
+            _fhirResourceRepository.Patient.ManagingOrganization = reference;
         }
 
         [Given(@"I add a Marital element to the Stored Patient")]
         public void AddAMaritalElementToStoredPatient()
         {
-            _httpContext.StoredPatient.MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "M");
+            _fhirResourceRepository.Patient.MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "M");
         }
         
         [Given(@"I add a Photo element to the Stored Patient")]
@@ -310,13 +313,13 @@
                 Url = "Test Photo Element"
             };
 
-            _httpContext.StoredPatient.Photo.Add(attachment);
+            _fhirResourceRepository.Patient.Photo.Add(attachment);
         }
     
         [Given(@"I add a Telecom element to the Stored Patient")]
         public void AddATelecomElementToStoredPatient()
         {
-            _httpContext.StoredPatient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
         }
 
         [Then(@"the Patient Registration Type should be valid")]
@@ -371,7 +374,7 @@
         [Then(@"the Patient Demographics should match the Stored Patient")]
         public void ThePatientDemographicsShouldMatchTheStoredPatient()
         {
-            var storedPatientNhsNumber = _httpContext.StoredPatient
+            var storedPatientNhsNumber = _fhirResourceRepository.Patient
                 .Identifier
                 .First(identifier => identifier.System == FhirConst.IdentifierSystems.kNHSNumber)
                 .Value;
@@ -379,15 +382,15 @@
             Patients.ForEach(patient =>
             {
                 patient.BirthDate.ShouldNotBeNull("The returned patient resource should contain a birthDate element.");
-                patient.BirthDate.ShouldBe(_httpContext.StoredPatient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
+                patient.BirthDate.ShouldBe(_fhirResourceRepository.Patient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
 
                 patient.Gender.ShouldNotBeNull("The patient resource should contain a gender element");
-                patient.Gender.ShouldBe(_httpContext.StoredPatient.Gender, "The returned patient gender does not match the creted patient gender");
+                patient.Gender.ShouldBe(_fhirResourceRepository.Patient.Gender, "The returned patient gender does not match the creted patient gender");
 
                 patient.Name.Count.ShouldBe(1, "There should be a single name element within the returned patient resource");
 
-                var storedGivenName = _httpContext.StoredPatient.Name.First().Given.First();
-                var storedFamilyName = _httpContext.StoredPatient.Name.First().Family.First();
+                var storedGivenName = _fhirResourceRepository.Patient.Name.First().Given.First();
+                var storedFamilyName = _fhirResourceRepository.Patient.Name.First().Family.First();
 
                 patient.Name.ForEach(name =>
                 {
@@ -465,7 +468,7 @@
                     }
 
 
-                    _httpContext.StoredPatient = patientToRegister;
+                    _fhirResourceRepository.Patient = patientToRegister;
 
                     return;
                 }
@@ -506,7 +509,7 @@
             registerPatient.Gender = patient.Gender ?? AdministrativeGender.Unknown;
             registerPatient.BirthDateElement = patient.BirthDateElement ?? new Date();
 
-            _httpContext.StoredPatient = registerPatient;
+            _fhirResourceRepository.Patient = registerPatient;
         }
 
         [Given(@"I set the Stored Patient Registration Period with Start ""([^""]*)""")]
@@ -519,7 +522,7 @@
                 
             };
 
-            _httpContext.StoredPatient.Extension.Add(registrationPeriod);
+            _fhirResourceRepository.Patient.Extension.Add(registrationPeriod);
         }
 
         [Given(@"I set the Stored Patient Registration Status with Value ""([^""]*)""")]
@@ -539,7 +542,7 @@
                 Value = codableConcept
             };
 
-            _httpContext.StoredPatient.Extension.Add(registrationStatus);
+            _fhirResourceRepository.Patient.Extension.Add(registrationStatus);
         }
 
         [Given(@"I set the Stored Patient Registration Type with Value ""([^""]*)""")]
@@ -559,7 +562,7 @@
                 Value = codableConcept
             };
 
-            _httpContext.StoredPatient.Extension.Add(registrationType);
+            _fhirResourceRepository.Patient.Extension.Add(registrationType);
         }
     }
 }

@@ -174,7 +174,7 @@
         private static void ConfigureGpcGetScheduleContext(HttpContext httpContext)
         {
             httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Post;
-            httpContext.HttpRequestConfiguration.RequestUrl = "Organization/" + httpContext.StoredOrganization.Id + "/$gpc.getschedule";
+            httpContext.HttpRequestConfiguration.RequestUrl = "Organization/" + httpContext.HttpRequestConfiguration.GetRequestId + "/$gpc.getschedule";
             httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetSchedule);
         }
 
@@ -187,28 +187,28 @@
 
         private static void ConfigureAppointmentSearchContext(HttpContext httpContext)
         {
-            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;;
-            httpContext.HttpRequestConfiguration.RequestUrl = "Patient/" + httpContext.StoredPatient.Id + "/Appointment";
+            httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Patient/" + httpContext.HttpRequestConfiguration.GetRequestId + "/Appointment";
             httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentSearch);
         }
         private static void ConfigureAppointmentAmendContext(HttpContext httpContext)
         {
             httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Put;
-            httpContext.HttpRequestConfiguration.RequestUrl = "Appointment/" + httpContext.CreatedAppointment?.Id;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Appointment/" + httpContext.HttpRequestConfiguration.GetRequestId;
             httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentAmend);
         }
 
         private static void ConfigureAppointmentCancelContext(HttpContext httpContext)
         {
             httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Put; 
-            httpContext.HttpRequestConfiguration.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Appointment/" + httpContext.HttpRequestConfiguration.GetRequestId;
             httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentCancel);
         }
 
         private static void ConfigureAppointmentReadContext(HttpContext httpContext)
         {
             httpContext.HttpRequestConfiguration.HttpMethod = HttpMethod.Get;
-            httpContext.HttpRequestConfiguration.RequestUrl = "Appointment/" + httpContext.CreatedAppointment.Id;
+            httpContext.HttpRequestConfiguration.RequestUrl = "Appointment/" + httpContext.HttpRequestConfiguration.GetRequestId;
             httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentRead);
         }
 

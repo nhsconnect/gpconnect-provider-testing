@@ -6,6 +6,7 @@
     using Context;
     using Enum;
     using Hl7.Fhir.Model;
+    using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
 
@@ -14,12 +15,17 @@
     {
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
+        private readonly HttpResponseSteps _httpResponseSteps;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
+
         private List<Organization> Organizations => _httpContext.FhirResponse.Organizations;
 
-        public OrganizationSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps) : base(httpSteps)
+        public OrganizationSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, HttpResponseSteps httpResponseSteps, IFhirResourceRepository fhirResourceRepository) : base(httpSteps)
         {
             _httpContext = httpContext;
             _bundleSteps = bundleSteps;
+            _httpResponseSteps = httpResponseSteps;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         [Then(@"the Response Resource should be an Organization")]
@@ -128,11 +134,11 @@
 
                     _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
 
-                    _httpSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
+                    _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
 
                     StoreTheOrganization();
 
-                    var returnedReference = _httpContext.StoredOrganization.ResourceIdentity().ToString();
+                    var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
 
                     returnedReference.ShouldStartWith(organization.PartOf.Reference);
                 }
@@ -185,14 +191,6 @@
             _httpSteps.MakeRequest(GpConnectInteraction.OrganizationSearch);
         }
 
-        [Given(@"I store the Organization Id")]
-        public void StoreTheOrganizationId()
-        {
-            var organization = Organizations.FirstOrDefault();
-            if (organization != null)
-                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
-        }
-
         [Given(@"I store the Organization Version Id")]
         public void StoreTheOrganizationVersionId()
         {
@@ -206,7 +204,10 @@
         {
             var organization = Organizations.FirstOrDefault();
             if (organization != null)
-                _httpContext.StoredOrganization = organization;
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
+                _fhirResourceRepository.Organization = organization;
+            }
         }
 
         [Then(@"the Organization Identifiers are correct for Organization Code ""([^""]*)""")]

@@ -151,7 +151,7 @@ Scenario Outline: Book appointment with invalid interaction id
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I am performing the "<interactionId>" interaction
+		And I set the Interaction Id header to "<interactionId>" 
 	When I make the "AppointmentCreate" request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON

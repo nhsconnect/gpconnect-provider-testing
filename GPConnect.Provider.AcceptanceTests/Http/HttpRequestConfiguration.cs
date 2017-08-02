@@ -4,24 +4,32 @@
     using System.Net;
     using System.Net.Http;
     using Constants;
-    using Context;
     using Helpers;
     using Hl7.Fhir.Model;
     using Logger;
+    using TechTalk.SpecFlow;
 
     public class HttpRequestConfiguration
     {
-        private readonly SecurityContext _securityContext;
-
-        public HttpRequestConfiguration(SecurityContext securityContext)
+        public HttpRequestConfiguration()
         {
-            _securityContext = securityContext;
+            RequestHeaders = new HttpHeaderHelper();
+            RequestParameters = new HttpParameterHelper();
+            RequestHeaders.Clear();
+            RequestUrl = "";
+            RequestParameters.ClearParameters();
+            RequestBody = null;
+            BodyParameters = new Parameters();
+            DecompressionMethod = DecompressionMethods.None;
+            LoadAppConfig();
+            SetDefaultHeaders();
         }
 
         public DecompressionMethods DecompressionMethod { get; set; }
 
-        public bool UseTls { get; set; }
-        public string Protocol => _securityContext.UseTLS ? "https://" : "http://";
+        public bool UseTls => ScenarioContext.Current.Get<bool>("useTLS");
+
+        public string Protocol => UseTls ? "https://" : "http://";
 
         // Web Proxy
         public bool UseWebProxy { get; set; }
@@ -43,7 +51,7 @@
 
         // Raw Request
         public string RequestMethod { get; set; }
-
+        
         public string RequestUrl { get; set; }
 
         public string RequestContentType { get; set; }
@@ -108,7 +116,6 @@
             SpineProxyPort = AppSettingsHelper.SpineProxyPort;
             ProviderASID = AppSettingsHelper.ProviderASID;
             ConsumerASID = AppSettingsHelper.ConsumerASID;
-            UseTls = AppSettingsHelper.UseTLS;
         }
 
         public Parameters BodyParameters { get; set; }

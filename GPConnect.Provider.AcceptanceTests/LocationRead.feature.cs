@@ -80,7 +80,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 5
  testRunner.Given(string.Format("I get the Location for Location Value \"{0}\"", location), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 6
-  testRunner.And("I store the Location Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 7
  testRunner.Given("I configure the default \"LocationRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
@@ -134,7 +134,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
  testRunner.Given("I get the Location for Location Value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
-  testRunner.And("I store the Location Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
  testRunner.Given("I configure the default \"LocationRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 36
@@ -163,7 +163,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 47
  testRunner.Given("I get the Location for Location Value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 48
-  testRunner.And("I store the Location Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
  testRunner.Given("I configure the default \"LocationRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 50
@@ -193,7 +193,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 63
  testRunner.Given("I get the Location for Location Value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
-  testRunner.And("I store the Location Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
  testRunner.Given("I configure the default \"LocationRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 66
@@ -220,7 +220,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 79
  testRunner.Given("I get the Location for Location Value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 80
-  testRunner.And("I store the Location Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 81
  testRunner.Given("I configure the default \"LocationRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 82
@@ -258,7 +258,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 95
  testRunner.Given("I get the Location for Location Value \"SIT3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 96
-  testRunner.And("I store the Location Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 97
  testRunner.Given("I configure the default \"LocationRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 98
@@ -314,7 +314,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 120
  testRunner.Given("I get the Location for Location Value \"SIT2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 121
-  testRunner.And("I store the Location Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 122
  testRunner.Given("I configure the default \"LocationRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 123
@@ -360,7 +360,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 145
  testRunner.Given("I get the Location for Location Value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 146
-  testRunner.And("I store the Location Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 147
  testRunner.Given("I configure the default \"LocationRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 148
@@ -383,7 +383,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 154
  testRunner.Given("I get the Location for Location Value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 155
-  testRunner.And("I store the Location Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 156
   testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 157
@@ -408,7 +408,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 165
  testRunner.Given("I get the Location for Location Value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 166
-  testRunner.And("I store the Location Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 167
  testRunner.Given("I configure the default \"LocationRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 168

@@ -152,7 +152,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 39
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 40
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
  testRunner.Given("I configure the default \"PatientRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 42
@@ -186,7 +186,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 55
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 56
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
  testRunner.Given("I configure the default \"PatientRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 58
@@ -226,7 +226,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 72
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 73
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
  testRunner.Given("I configure the default \"PatientRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 75
@@ -267,7 +267,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 92
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 93
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 94
  testRunner.Given("I configure the default \"PatientRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 95
@@ -294,7 +294,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 109
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 110
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 111
  testRunner.Given("I configure the default \"PatientRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 112
@@ -322,7 +322,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 119
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 120
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 121
  testRunner.Given("I configure the default \"PatientRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 122
@@ -351,7 +351,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 130
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 131
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 132
   testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 133
@@ -378,7 +378,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 140
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 141
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 142
  testRunner.Given("I configure the default \"PatientRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 143
@@ -409,7 +409,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 152
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 153
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 154
   testRunner.And("I store the Patient Version Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 155
@@ -438,7 +438,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 163
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 164
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 165
   testRunner.And("I set an invalid Patient Version Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 166
@@ -463,7 +463,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 172
  testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 173
-  testRunner.And("I store the Patient Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 174
  testRunner.Given("I configure the default \"PatientRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 175

@@ -3,7 +3,7 @@ Feature: PractitionerRead
 
 Scenario Outline: Practitioner read successful request validate all of response
 	Given I get the Practitioner for Practitioner Code "<practitioner>"
-		And I store the Practitioner Id
+		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
 	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
@@ -39,7 +39,7 @@ Scenario Outline: Practitioner Read with valid identifier which does not exist o
 
 Scenario Outline: Practitioner Read with invalid resource path in URL
 	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner Id
+		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
 		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
 	When I make the "PractitionerRead" request
@@ -53,7 +53,7 @@ Scenario Outline: Practitioner Read with invalid resource path in URL
 
 Scenario Outline: Practitioner Read with missing mandatory header
 	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner Id
+		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
 		And I do not send header "<Header>"
 	When I make the "PractitionerRead" request
@@ -69,7 +69,7 @@ Scenario Outline: Practitioner Read with missing mandatory header
 
 Scenario Outline: Practitioner Read with incorrect interaction id
 	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner Id
+		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
 		And I set the Interaction Id header to "<InteractionId>"
 	When I make the "PractitionerRead" request
@@ -85,7 +85,7 @@ Scenario Outline: Practitioner Read with incorrect interaction id
 
 Scenario Outline: Practitioner Read using the _format parameter to request response format
 	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner Id
+		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
 		And I add a Format parameter with the Value "<Parameter>"
 	When I make the "PractitionerRead" request
@@ -101,7 +101,7 @@ Scenario Outline: Practitioner Read using the _format parameter to request respo
 
 Scenario Outline: Practitioner Read using the Accept header to request response format
 	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner Id
+		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
 		And I set the Accept header to "<Header>"
 	When I make the "PractitionerRead" request
@@ -117,7 +117,7 @@ Scenario Outline: Practitioner Read using the Accept header to request response 
 
 Scenario Outline: Practitioner Read sending the Accept header and _format parameter to request response format
 	Given I get the Practitioner for Practitioner Code "practitioner2"
-		And I store the Practitioner Id
+		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
 		And I set the Accept header to "<Header>"
 		And I add a Format parameter with the Value "<Parameter>"
@@ -143,7 +143,7 @@ Scenario: Conformance profile supports the Practitioner read operation
 #Potentially out of scope, needs verifiying
 Scenario: Practitioner read response should contain an ETag header
 	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner Id
+		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
 	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
@@ -153,7 +153,7 @@ Scenario: Practitioner read response should contain an ETag header
 #Potentially out of scope, needs verifiying
 Scenario: Practitioner read VRead of current resource should return resource
 	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner Id
+		And I store the Practitioner
 		And I store the Practitioner Version Id
 	Given I configure the default "PractitionerRead" request
 	When I make the "PractitionerRead" request
@@ -163,7 +163,7 @@ Scenario: Practitioner read VRead of current resource should return resource
 #Potentially out of scope, needs verifiying
 Scenario: Practitioner read VRead of non existant version should return error
 	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner Id
+		And I store the Practitioner
 		And I set the GET request Version Id to "NotARealVersionId"
 	Given I configure the default "PractitionerRead" request
 	When I make the "PractitionerRead" request

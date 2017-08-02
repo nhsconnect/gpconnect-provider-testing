@@ -7,21 +7,22 @@
     using Helpers;
     using Hl7.Fhir.Model;
     using Logger;
+    using Repository;
     using TechTalk.SpecFlow;
 
     [Binding]
     public class JwtSteps : Steps
     {
-        private readonly HttpContext _httpContext;
         private readonly HttpHeaderHelper _headerHelper;
         private readonly JwtHelper _jwtHelper;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
 
-        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper, HttpContext httpContext)
+        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper, IFhirResourceRepository fhirResourceRepository)
         {
             Log.WriteLine("JwtSteps() Constructor");
-            _httpContext = httpContext;
             _headerHelper = headerHelper;
             _jwtHelper = jwtHelper;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         // Before Scenario
@@ -276,7 +277,7 @@
         [Given(@"I set the JWT Requested Record to the NHS Number of the Stored Patient")]
         public void SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient()
         {
-            var patient = _httpContext.StoredPatient;
+            var patient = _fhirResourceRepository.Patient;
 
             var identifier = patient.Identifier.FirstOrDefault(x => x.System == FhirConst.IdentifierSystems.kNHSNumber);
        

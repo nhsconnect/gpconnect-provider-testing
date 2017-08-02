@@ -7,6 +7,15 @@
 
     public class HttpResponse
     {
+        public HttpResponse()
+        {
+            StatusCode = default(HttpStatusCode);
+            ResponseTimeInMilliseconds = -1;
+            ContentType = null;
+            Body = null;
+            Headers = new Dictionary<string, string>();
+        }
+
         private long _responseTimeInMilliseconds;
         public HttpStatusCode StatusCode { get; set; }
         public string ContentType { get; set; }

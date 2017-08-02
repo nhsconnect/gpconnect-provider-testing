@@ -7,6 +7,7 @@
     using Enum;
     using TechTalk.SpecFlow;
     using System.Linq;
+    using Repository;
 
     [Binding]
     public class PractitionerSteps : BaseSteps
@@ -14,15 +15,19 @@
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
         private readonly OrganizationSteps _organizationSteps;
+        private readonly HttpResponseSteps _httpResponseSteps;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
 
         private List<Practitioner> Practitioners => _httpContext.FhirResponse.Practitioners;
 
-        public PractitionerSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps) 
+        public PractitionerSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps, HttpResponseSteps httpResponseSteps, IFhirResourceRepository fhirResourceRepository) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
             _bundleSteps = bundleSteps;
             _organizationSteps = organizationSteps;
+            _httpResponseSteps = httpResponseSteps;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         [Given(@"I add a Practitioner Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -65,12 +70,15 @@
             _httpSteps.MakeRequest(GpConnectInteraction.PractitionerSearch);
         }
 
-        [Given(@"I store the Practitioner Id")]
-        public void StoreThePractitionerId()
+        [Given(@"I store the Practitioner")]
+        public void StoreThePractitioner()
         {
             var practitioner = Practitioners.FirstOrDefault();
             if (practitioner != null)
+            {
                 _httpContext.HttpRequestConfiguration.GetRequestId = practitioner.Id;
+                _fhirResourceRepository.Practitioner = practitioner;
+            }
         }
 
         [Given(@"I store the Practitioner Version Id")]
@@ -310,11 +318,11 @@
 
                         _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
 
-                        _httpSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
+                        _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
 
                         _organizationSteps.StoreTheOrganization();
 
-                        var returnedReference = _httpContext.StoredOrganization.ResourceIdentity().ToString();
+                        var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
 
                         returnedReference.ShouldStartWith(practitionerRole.ManagingOrganization.Reference);
                     }

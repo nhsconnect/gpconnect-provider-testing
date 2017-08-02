@@ -4,6 +4,7 @@
     using Context;
     using Enum;
     using Hl7.Fhir.Model;
+    using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
     using static Hl7.Fhir.Model.Slot;
@@ -15,16 +16,19 @@
         private readonly AccessRecordSteps _accessRecordSteps;
         private readonly BundleSteps _bundleSteps;
         private readonly OrganizationSteps _organizationSteps;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
+
         private List<Slot> Slots => _httpContext.FhirResponse.Slots;
         private List<Schedule> Schedules => _httpContext.FhirResponse.Schedules;
-        
-        public GetScheduleSteps(HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps)
+
+        public GetScheduleSteps(HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
         {
             _httpContext = httpContext;
             _accessRecordSteps = accessRecordSteps;
             _bundleSteps = bundleSteps;
             _organizationSteps = organizationSteps;
+            _fhirResourceRepository = fhirResourceRepository;
         }
 
         [Given(@"I get the Schedule for Organization Code ""([^""]*)""")]
@@ -47,7 +51,7 @@
 
             if (schedule != null)
             {
-                _httpContext.StoredBundle = schedule;
+                _fhirResourceRepository.Bundle = schedule;
             }
         }
 

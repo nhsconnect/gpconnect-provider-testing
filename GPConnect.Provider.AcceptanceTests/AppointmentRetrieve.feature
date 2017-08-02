@@ -359,7 +359,7 @@ Scenario Outline: Appointment retrieve interaction id incorrect fail
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I am performing the "<interactionId>" interaction
+		And I set the Interaction Id header to "<interactionId>"
 	When I make the "AppointmentSearch" request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON

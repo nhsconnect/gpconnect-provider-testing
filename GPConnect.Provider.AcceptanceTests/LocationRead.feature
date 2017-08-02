@@ -3,7 +3,7 @@ Feature: LocationRead
 
 Scenario Outline: Location read successful request validate the response contains logical identifier
 	Given I get the Location for Location Value "<Location>"
-		And I store the Location Id
+		And I store the Location
 	Given I configure the default "LocationRead" request
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
@@ -31,7 +31,7 @@ Scenario Outline: Location Read with valid identifier which does not exist on pr
 
 Scenario Outline: Location Read with invalid resource path in URL
 	Given I get the Location for Location Value "SIT1"
-		And I store the Location Id
+		And I store the Location
 	Given I configure the default "LocationRead" request
 		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
 	When I make the "LocationRead" request
@@ -45,7 +45,7 @@ Scenario Outline: Location Read with invalid resource path in URL
 
 Scenario Outline: Location Read with missing mandatory header
 	Given I get the Location for Location Value "SIT1"
-		And I store the Location Id
+		And I store the Location
 	Given I configure the default "LocationRead" request
 		And I do not send header "<Header>"
 	When I make the "LocationRead" request
@@ -61,7 +61,7 @@ Scenario Outline: Location Read with missing mandatory header
 
 Scenario Outline: Location Read with incorrect interaction id
 	Given I get the Location for Location Value "SIT1"
-		And I store the Location Id
+		And I store the Location
 	Given I configure the default "LocationRead" request
 		And I set the Interaction Id header to "<interactionId>"
 	When I make the "LocationRead" request
@@ -77,7 +77,7 @@ Scenario Outline: Location Read with incorrect interaction id
 
 Scenario Outline: Location Read using the _format parameter to request response format
 	Given I get the Location for Location Value "SIT1"
-		And I store the Location Id
+		And I store the Location
 	Given I configure the default "LocationRead" request
 		And I add a Format parameter with the Value "<Format>"
 	When I make the "LocationRead" request
@@ -93,7 +93,7 @@ Scenario Outline: Location Read using the _format parameter to request response 
 
 Scenario Outline: Location Read sending the Accept header and _format parameter to request response format
 	Given I get the Location for Location Value "SIT3"
-		And I store the Location Id
+		And I store the Location
 	Given I configure the default "LocationRead" request
 		And I set the Accept header to "<Header>"
 		And I add a Format parameter with the Value "<Format>"
@@ -118,7 +118,7 @@ Scenario: Conformance profile supports the Location read operation
 
 Scenario Outline: Location read resource conforms to GP-Connect specification
 	Given I get the Location for Location Value "SIT2"
-		And I store the Location Id
+		And I store the Location
 	Given I configure the default "LocationRead" request
 		And I set the Accept header to "<Header>"
 	When I make the "LocationRead" request
@@ -143,7 +143,7 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 
 Scenario: Read location should contain ETag
 	Given I get the Location for Location Value "SIT1"
-		And I store the Location Id
+		And I store the Location
 	Given I configure the default "LocationRead" request
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
@@ -152,7 +152,7 @@ Scenario: Read location should contain ETag
 # Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 Scenario: Read location If-None-Match should return a 304 on match
 	Given I get the Location for Location Value "SIT1"
-		And I store the Location Id
+		And I store the Location
 		And I store the Location
 	Given I configure the default "LocationRead" request
 		#And I set the If-None-Match header with the version from the stored "Location" Resource
@@ -163,7 +163,7 @@ Scenario: Read location If-None-Match should return a 304 on match
 # Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 Scenario: Read location If-None-Match should return full resource if no match
 	Given I get the Location for Location Value "SIT1"
-		And I store the Location Id
+		And I store the Location
 	Given I configure the default "LocationRead" request
 		And I set the If-None-Match header to "W/\"somethingincorrect\""
 	When I make the "LocationRead" request
