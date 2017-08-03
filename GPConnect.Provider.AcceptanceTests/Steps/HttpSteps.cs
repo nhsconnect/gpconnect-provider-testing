@@ -20,6 +20,8 @@ using Hl7.Fhir.Model;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System.Text;
+
     [Binding]
     public class HttpSteps : TechTalk.SpecFlow.Steps
     {
@@ -392,7 +394,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Save The Response Details
             HttpContext.ResponseStatusCode = result.StatusCode;
             HttpContext.ResponseContentType = result.Content.Headers.ContentType.MediaType;
-            using (StreamReader reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
+            using (StreamReader reader = new StreamReader(result.Content.ReadAsStreamAsync().Result, Encoding.UTF8))
             {
                 HttpContext.ResponseBody = reader.ReadToEnd();
             }
