@@ -1,12 +1,12 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Factories
 {
     using Constants;
-    using Context;
     using Enum;
     using Helpers;
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Rest;
     using Hl7.Fhir.Serialization;
+    using Http;
     using Repository;
 
     public class RequestFactory
@@ -23,88 +23,88 @@
             _fhirResourceRepository = fhirResourceRepository;
         }
 
-        public void ConfigureBody(HttpContext httpContext)
+        public void ConfigureBody(HttpRequestConfiguration httpRequestConfiguration)
         {
-            ConfigureSerializer(httpContext);
+            ConfigureSerializer(httpRequestConfiguration);
 
             switch (_gpConnectInteraction)
             {
                 case GpConnectInteraction.GpcGetCareRecord:
-                    ConfigureGpcGetCareRecordBody(httpContext);
+                    ConfigureGpcGetCareRecordBody(httpRequestConfiguration);
                     break;
                 case GpConnectInteraction.RegisterPatient:
-                    ConfigureRegisterPatientBody(httpContext);
+                    ConfigureRegisterPatientBody(httpRequestConfiguration);
                     break;
                 case GpConnectInteraction.GpcGetSchedule:
-                    ConfigureGpcGetSchedule(httpContext);
+                    ConfigureGpcGetSchedule(httpRequestConfiguration);
                     break;
                 case GpConnectInteraction.AppointmentCreate:
-                    ConfigureAppointmentCreateBody(httpContext);
+                    ConfigureAppointmentCreateBody(httpRequestConfiguration);
                     break;
                 case GpConnectInteraction.AppointmentAmend:
-                    ConfigureAppointmentAmendBody(httpContext);
+                    ConfigureAppointmentAmendBody(httpRequestConfiguration);
                     break;
                 case GpConnectInteraction.AppointmentCancel:
-                    ConfigureAppointmentCancelBody(httpContext);
+                    ConfigureAppointmentCancelBody(httpRequestConfiguration);
                     break;
             }
         }
 
-        private static void ConfigureSerializer(HttpContext httpContext)
+        private static void ConfigureSerializer(HttpRequestConfiguration httpRequestConfiguration)
         {
-            _serializer = httpContext.HttpRequestConfiguration.RequestContentType.Contains("xml")
+            _serializer = httpRequestConfiguration.RequestContentType.Contains("xml")
                 ? new Serializer(FhirSerializer.SerializeToXml)
                 : FhirSerializer.SerializeToJson;
         }
 
-        private void ConfigureAppointmentCreateBody(HttpContext httpContext)
+        private void ConfigureAppointmentCreateBody(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
+            httpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
         }
 
-        private static void ConfigureGpcGetCareRecordBody(HttpContext httpContext)
+        private static void ConfigureGpcGetCareRecordBody(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = _serializer(httpContext.HttpRequestConfiguration.BodyParameters);
+            httpRequestConfiguration.RequestBody = _serializer(httpRequestConfiguration.BodyParameters);
         }
 
-        private static void ConfigureRegisterPatientBody(HttpContext httpContext)
+        private static void ConfigureRegisterPatientBody(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = _serializer(httpContext.HttpRequestConfiguration.BodyParameters);
+            httpRequestConfiguration.RequestBody = _serializer(httpRequestConfiguration.BodyParameters);
         }
 
-        private static void ConfigureGpcGetSchedule(HttpContext httpContext)
+        private static void ConfigureGpcGetSchedule(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = _serializer(httpContext.HttpRequestConfiguration.BodyParameters);
+            httpRequestConfiguration.RequestBody = _serializer(httpRequestConfiguration.BodyParameters);
         }
 
-        private void ConfigureAppointmentAmendBody(HttpContext httpContext)
+        private void ConfigureAppointmentAmendBody(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
+            httpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
         }
 
-        private void ConfigureAppointmentCancelBody(HttpContext httpContext)
+        private void ConfigureAppointmentCancelBody(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
+            httpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
         }
 
-        public void ConfigureInvalidResourceType(HttpContext httpContext)
+        public void ConfigureInvalidResourceType(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = FhirHelper.ChangeResourceTypeString(httpContext.HttpRequestConfiguration.RequestBody, FhirConst.Resources.kInvalidResourceType);
+            httpRequestConfiguration.RequestBody = FhirHelper.ChangeResourceTypeString(httpRequestConfiguration.RequestBody, FhirConst.Resources.kInvalidResourceType);
         }
 
-        public void ConfigureInvalidParameterResourceType(HttpContext httpContext)
+        public void ConfigureInvalidParameterResourceType(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = FhirHelper.ChangeParameterResourceTypeString(httpContext.HttpRequestConfiguration.RequestBody, FhirConst.Resources.kInvalidResourceType);
+            httpRequestConfiguration.RequestBody = FhirHelper.ChangeParameterResourceTypeString(httpRequestConfiguration.RequestBody, FhirConst.Resources.kInvalidResourceType);
         }
 
-        public void ConfigureParameterResourceWithAdditionalField(HttpContext httpContext)
+        public void ConfigureParameterResourceWithAdditionalField(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = FhirHelper.AddFieldToParameterResource(httpContext.HttpRequestConfiguration.RequestBody, FhirConst.Resources.kInvalidResourceType);
+            httpRequestConfiguration.RequestBody = FhirHelper.AddFieldToParameterResource(httpRequestConfiguration.RequestBody, FhirConst.Resources.kInvalidResourceType);
         }
 
-        public void ConfigureAdditionalInvalidFieldInResource(HttpContext httpContext)
+        public void ConfigureAdditionalInvalidFieldInResource(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpContext.HttpRequestConfiguration.RequestBody = FhirHelper.AddInvalidFieldToResourceJson(httpContext.HttpRequestConfiguration.RequestBody);
+            httpRequestConfiguration.RequestBody = FhirHelper.AddInvalidFieldToResourceJson(httpRequestConfiguration.RequestBody);
         }
     }
 }

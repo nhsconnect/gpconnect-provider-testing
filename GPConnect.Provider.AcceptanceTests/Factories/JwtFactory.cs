@@ -2,9 +2,9 @@
 {
     using System;
     using Constants;
-    using Context;
     using Enum;
     using Helpers;
+    using Http;
 
     public class JwtFactory
     {
@@ -15,7 +15,7 @@
             _gpConnectInteraction = gpConnectInteraction;
         }
 
-        public void ConfigureJwt(JwtHelper jwtHelper, HttpContext httpContext)
+        public void ConfigureJwt(JwtHelper jwtHelper, HttpRequestConfiguration httpRequestConfiguration)
         {
             jwtHelper.SetDefaultValues();
 
@@ -76,7 +76,7 @@
                     throw new ArgumentOutOfRangeException();
             }
 
-            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
+            httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
         }
 
         private static void ConfigureGpcGetCareRecordJwt(JwtHelper jwtHelper)

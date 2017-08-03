@@ -10,7 +10,6 @@
     using System.Xml.Linq;
     using Constants;
     using Context;
-    using Extensions;
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Serialization;
     using Logger;
