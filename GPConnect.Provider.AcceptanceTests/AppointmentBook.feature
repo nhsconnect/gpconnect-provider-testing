@@ -489,6 +489,7 @@ Scenario Outline: Book Appointment and remove reason coding element from the app
 		| Code          |
 		| Display       |
 
+#Miss-leading test name - participant status is not removed but nullified
 Scenario: Book Appointment and remove participant status from the appointment booking
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -505,6 +506,7 @@ Scenario: Book Appointment and remove participant status from the appointment bo
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+#Miss-leading test name - participant type coding element is not removed but nullified
 Scenario Outline: Book Appointment and remove participant type coding element from the appointment booking
 		Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
