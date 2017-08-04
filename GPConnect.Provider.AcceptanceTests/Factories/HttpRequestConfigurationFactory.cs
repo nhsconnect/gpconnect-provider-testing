@@ -66,7 +66,7 @@
             _httpRequestConfiguration.HttpMethod = HttpMethod.Post;
             _httpRequestConfiguration.RequestUrl = "Patient/$gpc.getcarerecord";
             _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetCareRecord);
-
+            
             return _httpRequestConfiguration;
         }
 
