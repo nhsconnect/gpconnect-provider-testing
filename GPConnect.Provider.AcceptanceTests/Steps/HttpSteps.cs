@@ -227,7 +227,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             restClient.Encoding = Encoding.UTF8;
 
             var restRequest = new RestRequest(relativeUrl, method);
-            
+
             // Setup The Web Proxy
             if (HttpContext.UseWebProxy)
             {
@@ -296,7 +296,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Save The Response Details
             HttpContext.ResponseStatusCode = restResponse.StatusCode;
             HttpContext.ResponseContentType = restResponse.ContentType;
-            HttpContext.ResponseBody = restResponse.Content;
+            
+            using (var reader = new StreamReader(new MemoryStream(restResponse.RawBytes), Encoding.UTF8))
+            {
+                HttpContext.ResponseBody = reader.ReadToEnd();
+            }
+
+            //HttpContext.ResponseBody = restResponse.Content;
 
             foreach(var parameter in restResponse.Headers)
             {
