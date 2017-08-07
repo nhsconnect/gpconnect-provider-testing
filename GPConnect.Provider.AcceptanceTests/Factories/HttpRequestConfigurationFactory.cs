@@ -1,0 +1,236 @@
+﻿namespace GPConnect.Provider.AcceptanceTests.Factories
+{
+    using System.Net.Http;
+    using Constants;
+    using Enum;
+    using Http;
+
+    public class HttpRequestConfigurationFactory
+    {
+        private readonly GpConnectInteraction _gpConnectInteraction;
+        private static HttpRequestConfiguration _httpRequestConfiguration;
+
+        public HttpRequestConfigurationFactory(GpConnectInteraction gpConnectInteraction, HttpRequestConfiguration httpRequestConfiguration)
+        {
+            _gpConnectInteraction = gpConnectInteraction;
+            _httpRequestConfiguration = httpRequestConfiguration;
+            _httpRequestConfiguration.LoadAppConfig();
+            _httpRequestConfiguration.SetDefaultHeaders();
+        }
+
+        public HttpRequestConfiguration GetHttpRequestConfiguration()
+        {
+            switch (_gpConnectInteraction)
+            {
+                case GpConnectInteraction.GpcGetCareRecord:
+                    return GetCareRecordConfiguration();
+                case GpConnectInteraction.OrganizationSearch:
+                    return OrganizationSearchConfiguration();
+                case GpConnectInteraction.OrganizationRead:
+                    return OrganizationReadConfiguration();
+                case GpConnectInteraction.PractitionerSearch:
+                    return PractitionerSearchConfiguration();
+                case GpConnectInteraction.PractitionerRead:
+                    return PractitionerReadConfiguration();
+                case GpConnectInteraction.PatientSearch:
+                    return PatientSearchConfiguration();
+                case GpConnectInteraction.PatientRead:
+                    return PatientReadConfiguration();
+                case GpConnectInteraction.LocationSearch:
+                    return LocationSearchConfiguration();
+                case GpConnectInteraction.LocationRead:
+                    return LocationReadConfiguration();
+                case GpConnectInteraction.RegisterPatient:
+                    return RegisterPatientConfiguration();
+                case GpConnectInteraction.GpcGetSchedule:
+                    return GetScheduleConfiguration();
+                case GpConnectInteraction.AppointmentCreate:
+                    return AppointmentCreateConfiguration();
+                case GpConnectInteraction.AppointmentSearch:
+                    return AppointmentSearchConfiguration();
+                case GpConnectInteraction.AppointmentAmend:
+                    return AppointmentAmendConfiguration();
+                case GpConnectInteraction.AppointmentCancel:
+                    return AppointmentCancelConfiguration();
+                case GpConnectInteraction.AppointmentRead:
+                    return AppointmentReadConfiguration();
+                case GpConnectInteraction.MetadataRead:
+                    return MetadataReadConfiguration();
+                default:
+                    return _httpRequestConfiguration;
+            }
+        }
+
+        private static HttpRequestConfiguration GetCareRecordConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Post;
+            _httpRequestConfiguration.RequestUrl = "Patient/$gpc.getcarerecord";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetCareRecord);
+            
+            return _httpRequestConfiguration;
+        }
+
+
+        private static HttpRequestConfiguration OrganizationSearchConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Organization";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.OrganizationSearch);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration OrganizationReadConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Organization/" + _httpRequestConfiguration.GetRequestId;
+
+            if (!string.IsNullOrEmpty(_httpRequestConfiguration.GetRequestVersionId))
+            {
+                _httpRequestConfiguration.RequestUrl = _httpRequestConfiguration.RequestUrl + "/_history/" + _httpRequestConfiguration.GetRequestVersionId;
+            }
+
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.OrganizationRead);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration PractitionerSearchConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Practitioner";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PractitionerSearch);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration PractitionerReadConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Practitioner/" + _httpRequestConfiguration.GetRequestId;
+
+            if (!string.IsNullOrEmpty(_httpRequestConfiguration.GetRequestVersionId))
+            {
+                _httpRequestConfiguration.RequestUrl = _httpRequestConfiguration.RequestUrl + "/_history/" + _httpRequestConfiguration.GetRequestVersionId;
+            }
+
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PractitionerRead);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration PatientSearchConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Patient";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientSearch);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration PatientReadConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Patient/" + _httpRequestConfiguration.GetRequestId;
+
+            if (!string.IsNullOrEmpty(_httpRequestConfiguration.GetRequestVersionId))
+            {
+                _httpRequestConfiguration.RequestUrl = _httpRequestConfiguration.RequestUrl + "/_history/" + _httpRequestConfiguration.GetRequestVersionId;
+            }
+
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientRead);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration LocationSearchConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Location";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationSearch);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration LocationReadConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Location/" + _httpRequestConfiguration.GetRequestId;
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationRead);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration RegisterPatientConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Post;
+            _httpRequestConfiguration.RequestUrl = "Patient/$gpc.registerpatient";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.RegisterPatient);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration GetScheduleConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Post;
+            _httpRequestConfiguration.RequestUrl = "Organization/" + _httpRequestConfiguration.GetRequestId + "/$gpc.getschedule";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetSchedule);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration AppointmentCreateConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Post;
+            _httpRequestConfiguration.RequestUrl = "Appointment";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentCreate);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration AppointmentSearchConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Patient/" + _httpRequestConfiguration.GetRequestId + "/Appointment";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentSearch);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration AppointmentAmendConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Put;
+            _httpRequestConfiguration.RequestUrl = "Appointment/" + _httpRequestConfiguration.GetRequestId;
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentAmend);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration AppointmentCancelConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Put;
+            _httpRequestConfiguration.RequestUrl = "Appointment/" + _httpRequestConfiguration.GetRequestId;
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentCancel);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration AppointmentReadConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Appointment/" + _httpRequestConfiguration.GetRequestId;
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.AppointmentRead);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration MetadataReadConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "metadata";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.MetadataRead);
+
+            return _httpRequestConfiguration;
+        }
+    }
+}

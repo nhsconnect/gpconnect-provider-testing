@@ -118,7 +118,7 @@
     <Compile Include="Data\PDS.cs" />
     <Compile Include="Enum\GpConnectInteraction.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
-    <Compile Include="Factories\HttpContextFactory.cs" />
+    <Compile Include="Factories\HttpRequestConfigurationFactory.cs" />
     <Compile Include="Factories\JwtFactory.cs" />
     <Compile Include="Factories\RequestFactory.cs" />
     <Compile Include="FHIR.feature.cs">
@@ -145,9 +145,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HTTP.feature</DependentUpon>
     </Compile>
-    <Compile Include="Http\HttpRequest.cs" />
+    <Compile Include="Http\HttpContextRequest.cs" />
+    <Compile Include="Http\HttpRequestBase.cs" />
     <Compile Include="Http\FhirResponse.cs" />
     <Compile Include="Http\HttpRequestConfiguration.cs" />
+    <Compile Include="Http\HttpResourceRequest.cs" />
     <Compile Include="Http\HttpResponse.cs" />
     <Compile Include="Importers\OrganizationSiteCodeClassMap.cs" />
     <Compile Include="Importers\OrganizationSiteCodeMapImporter.cs" />

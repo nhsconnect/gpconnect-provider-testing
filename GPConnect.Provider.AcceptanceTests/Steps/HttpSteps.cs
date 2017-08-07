@@ -15,7 +15,7 @@
     public class HttpSteps : Steps
     {
         private readonly HttpContext _httpContext;
-        private readonly JwtHelper _jwtHelper;
+        private JwtHelper _jwtHelper;
         private readonly SecuritySteps _securitySteps;
         private readonly SecurityContext _securityContext;
         private readonly IFhirResourceRepository _fhirResourceRepository;
@@ -29,19 +29,55 @@
             _securityContext = securityContext;
             _fhirResourceRepository = fhirResourceRepository;
         }
-        
-        [Given(@"I configure the default ""(.*)"" request")]
-        public void ConfigureRequest(GpConnectInteraction interaction)
+
+        public HttpRequestConfiguration GetHttpRequestConfiguration(GpConnectInteraction interaction, HttpRequestConfiguration httpRequestConfiguration = null)
         {
-            var httpContextFactory = new HttpContextFactory(interaction);
+            if (httpRequestConfiguration == null)
+            {
+                httpRequestConfiguration = new HttpRequestConfiguration();
+            }
 
-            _httpContext.SetDefaults();
+            var httpRequestConfigurationFactory = new HttpRequestConfigurationFactory(interaction, httpRequestConfiguration);
 
-            httpContextFactory.ConfigureHttpContext(_httpContext);
+            return httpRequestConfigurationFactory.GetHttpRequestConfiguration();
+        }
+
+        public JwtHelper GetJwtHelper(GpConnectInteraction interaction, JwtHelper jwtHelper = null)
+        {
+            if (jwtHelper == null)
+            {
+                jwtHelper = new JwtHelper();
+            }
 
             var jwtFactory = new JwtFactory(interaction);
 
-            jwtFactory.ConfigureJwt(_jwtHelper, _httpContext);
+            jwtFactory.ConfigureJwt(jwtHelper);
+
+            return jwtHelper;
+        }
+
+        public HttpRequestConfiguration GetRequestBody(GpConnectInteraction interaction, HttpRequestConfiguration httpRequestConfiguration = null)
+        {
+            if (httpRequestConfiguration == null)
+            {
+                httpRequestConfiguration = new HttpRequestConfiguration();
+            }
+
+            var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
+
+            requestFactory.ConfigureBody(httpRequestConfiguration);
+
+            return httpRequestConfiguration;
+        }
+
+        [Given(@"I configure the default ""(.*)"" request")]
+        public void ConfigureRequest(GpConnectInteraction interaction)
+        {
+            _httpContext.SetDefaults();
+
+            _httpContext.HttpRequestConfiguration = GetHttpRequestConfiguration(interaction, _httpContext.HttpRequestConfiguration);
+
+            _jwtHelper = GetJwtHelper(interaction, _jwtHelper);
 
             _securitySteps.ConfigureServerCertificatesAndSsl();
         }
@@ -49,18 +85,13 @@
         [When(@"I make the ""(.*)"" request")]
         public void MakeRequest(GpConnectInteraction interaction)
         {
-            var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
+            _httpContext.HttpRequestConfiguration = GetRequestBody(interaction, _httpContext.HttpRequestConfiguration);
 
-            requestFactory.ConfigureBody(_httpContext);
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            if (!string.IsNullOrEmpty(_httpContext.HttpRequestConfiguration.RequestHeaders.GetHeaderValue(HttpConst.Headers.kAuthorization)))
-            {
-                _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
-            }
+            var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
-            var httpRequest = new HttpRequest(_httpContext, _securityContext);
-
-            httpRequest.MakeHttpRequest();
+            httpRequest.MakeRequest();
         }
 
         [When(@"I make the ""(.*)"" request with an unencoded JWT Bearer Token")]
@@ -68,13 +99,13 @@
         {
             var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
 
-            requestFactory.ConfigureBody(_httpContext);
+            requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
 
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerTokenWithoutEncoding());
 
-            var httpRequest = new HttpRequest(_httpContext, _securityContext);
+            var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
-            httpRequest.MakeHttpRequest();
+            httpRequest.MakeRequest();
         }
 
         [When(@"I make the ""(.*)"" request with invalid Resource type")]
@@ -82,14 +113,14 @@
         {
             var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
 
-            requestFactory.ConfigureBody(_httpContext);
-            requestFactory.ConfigureInvalidResourceType(_httpContext);
+            requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
+            requestFactory.ConfigureInvalidResourceType(_httpContext.HttpRequestConfiguration);
 
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext, _securityContext);
+            var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
-            httpRequest.MakeHttpRequest();
+            httpRequest.MakeRequest();
         }
 
         [When(@"I make the ""(.*)"" request with Invalid Additional Field in the Resource")]
@@ -97,55 +128,54 @@
         {
             var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
 
-            requestFactory.ConfigureBody(_httpContext);
-            requestFactory.ConfigureAdditionalInvalidFieldInResource(_httpContext);
+            requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
+            requestFactory.ConfigureAdditionalInvalidFieldInResource(_httpContext.HttpRequestConfiguration);
 
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext, _securityContext);
+            var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
-            httpRequest.MakeHttpRequest();
+            httpRequest.MakeRequest();
         }
 
         [When(@"I make the ""(.*)"" request with invalid parameter Resource type")]
         public void MakeRequestWithInvalidParameterResourceType(GpConnectInteraction interaction)
         {
             var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
-            requestFactory.ConfigureBody(_httpContext);
-            requestFactory.ConfigureInvalidParameterResourceType(_httpContext);
+            requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
+            requestFactory.ConfigureInvalidParameterResourceType(_httpContext.HttpRequestConfiguration);
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext, _securityContext);
+            var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
-            httpRequest.MakeHttpRequest();
+            httpRequest.MakeRequest();
         }
 
         [When(@"I make the ""(.*)"" request with additional field in parameter Resource")]
         public void MakeRequestWithAdditionalFieldInParameterResource(GpConnectInteraction interaction)
         {
             var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
-            requestFactory.ConfigureBody(_httpContext);
-            requestFactory.ConfigureParameterResourceWithAdditionalField(_httpContext);
+            requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
+            requestFactory.ConfigureParameterResourceWithAdditionalField(_httpContext.HttpRequestConfiguration);
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
-            var httpRequest = new HttpRequest(_httpContext, _securityContext);
+            var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
-            httpRequest.MakeHttpRequest();
+            httpRequest.MakeRequest();
         }
 
         public Resource GetResourceForRelativeUrl(GpConnectInteraction gpConnectInteraction, string relativeUrl)
         {
-            var httpContext = new HttpContext();
-            httpContext.SetDefaults();
-            httpContext.HttpRequestConfiguration.SetDefaultHeaders();
+            var httpRequestConfiguration = new HttpRequestConfiguration();
 
-            var httpContextFactory = new HttpContextFactory(gpConnectInteraction);
-            httpContextFactory.ConfigureHttpContext(httpContext);
+            var httpContextFactory = new HttpRequestConfigurationFactory(gpConnectInteraction, httpRequestConfiguration);
 
+            httpContextFactory.GetHttpRequestConfiguration();
+            
             var jwtHelper = new JwtHelper();
             var jwtFactory = new JwtFactory(gpConnectInteraction);
 
-            jwtFactory.ConfigureJwt(jwtHelper, httpContext);
+            jwtFactory.ConfigureJwt(jwtHelper);
 
             if (relativeUrl.Contains("Patient"))
             {
@@ -153,20 +183,19 @@
                 jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
             }
 
+            httpRequestConfiguration.RequestUrl = relativeUrl;
+
             _securitySteps.ConfigureServerCertificatesAndSsl();
 
-            httpContext.HttpRequestConfiguration.RequestUrl = relativeUrl;
-
             var requestFactory = new RequestFactory(gpConnectInteraction, _fhirResourceRepository);
-            requestFactory.ConfigureBody(httpContext);
 
-            httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
+            requestFactory.ConfigureBody(httpRequestConfiguration);
 
-            var httpRequest = new HttpRequest(httpContext, _securityContext);
+            httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
 
-            httpRequest.MakeHttpRequest();
+            var httpRequest = new HttpResourceRequest(httpRequestConfiguration, _securityContext);
 
-            return httpContext.FhirResponse.Resource;
+            return httpRequest.MakeRequest().Resource;
         }
     }
 }
