@@ -223,6 +223,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             // Build The Rest Request
             var restClient = new RestClient(HttpContext.EndpointAddress);
+
+            restClient.Encoding = Encoding.UTF8;
+
             var restRequest = new RestRequest(relativeUrl, method);
             
             // Setup The Web Proxy
