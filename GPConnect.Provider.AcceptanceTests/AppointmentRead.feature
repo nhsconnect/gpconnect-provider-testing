@@ -222,7 +222,6 @@ Scenario: Read appointment if all participants must have a type or actor element
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I add the participant type with code "hello" and display "goodbye"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And I store the Appointment

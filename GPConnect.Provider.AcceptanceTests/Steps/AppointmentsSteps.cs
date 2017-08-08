@@ -103,6 +103,7 @@
         }
 
         [Given(@"I store the Appointment")]
+        [Then(@"I store the Appointment")]
         public void StoreTheAppointment()
         {
             var appointment = _httpContext.FhirResponse.Appointments.FirstOrDefault();
