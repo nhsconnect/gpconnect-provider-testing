@@ -143,7 +143,7 @@ Scenario Outline: I perform a getSchedule with valid partial dateTime strings
 		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-ddTHH:mm:ss |
 		| yyyy-MM-dd          | yyyy-MM-ddTHH:mm:ss |
 		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-dd          |
-		| yyyy-MM             | yyyy-MM             |
+
 
 Scenario Outline: I perform a getSchedule with in-valid partial dateTime strings
 	Given I get the Organization for Organization Code "ORG1"
@@ -216,7 +216,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 	Given I get the Organization for Organization Code "<Organization>"
 		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
-		And I add a Time Period parameter with Start Date today and End Date in "<Days>" days	
+		And I add a Time Period parameter with Start Date today and End Date in "<DaysRange>" days	
 	When I make the "GpcGetSchedule" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"

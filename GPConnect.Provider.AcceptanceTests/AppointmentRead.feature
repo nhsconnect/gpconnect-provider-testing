@@ -63,7 +63,7 @@ Scenario Outline: Read appointment failure with incorrect interaction id
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| interactionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
+		| urn:nhs:naames:services:gpconnect:fhir:rest:search:organization   |
 		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
 		|                                                                   |
 		| null                                                              |
@@ -130,8 +130,8 @@ Scenario: Read appointment valid request shall include id and structure definiti
 
 Scenario Outline: Read appointment ensure response appointments contain the manadatory elements
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
 		And I set the Created Appointment Status to "<AppointmentStatus>"
+		And I store the Created Appointment
 	Given I configure the default "AppointmentRead" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Accept header to "<Header>"
@@ -148,8 +148,6 @@ Scenario Outline: Read appointment ensure response appointments contain the mana
 		| AppointmentStatus | Header                | BodyFormat |
 		| Booked            | application/json+fhir | JSON       |
 		| Booked            | application/xml+fhir  | XML        |
-		| Cancelled         | application/json+fhir | JSON       |
-		| Cancelled         | application/xml+fhir  | XML        |
 
 Scenario: Read appointment if resource contains identifier then the value is mandatory
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -162,10 +160,21 @@ Scenario: Read appointment if resource contains identifier then the value is man
 		And the Appointment Identifiers should be valid
 
 Scenario: Read appointment if reason is included in response check that it conforms to one of the three valid types
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I set the Created Appointment Reason to "customComment"
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And I store the Appointment
+		And the Response Resource should be an Appointment
 	Given I configure the default "AppointmentRead" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment Reason to "customComment"
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -173,9 +182,18 @@ Scenario: Read appointment if reason is included in response check that it confo
 		And the Appointment Reason should be valid
 
 Scenario: Read appointment containing a priority element and check that the priority is valid
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-		And I set the Created Appointment Priority to "1"
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I set the Created Appointment Priority to "22"
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And I store the Appointment
+		And the Response Resource should be an Appointment
 	Given I configure the default "AppointmentRead" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentRead" request
@@ -195,27 +213,48 @@ Scenario: Read appointment and all participants must have a type or actor elemen
 		And the Response Resource should be an Appointment
 		And the Appointment Participant Type and Actor should be valid
 
-Scenario Outline: Read appointment if extensions are included they should be valid
-Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
+	
+Scenario: Read appointment if all participants must have a type or actor element
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And I store the Appointment
+		And the Response Resource should be an Appointment
 	Given I configure the default "AppointmentRead" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Accept header to "<Header>"
-		And I set the Created Appointment Priority to "1"
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR <BodyFormat>
+		And the Response Resource should be an Appointment
+		And the Appointment Participant Type and Actor should be valid
+
+Scenario: Read appointment if extensions are included they should be valid
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I add a Category Extension with Code "CLI" and Display "Clinical" to the Created Appointment
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And I store the Appointment
+		And the Response Resource should be an Appointment
+	Given I configure the default "AppointmentRead" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
 		And the Appointment Category Extension should be valid
 		And the Appointment Booking Method Extension should be valid
 		And the Appointment Contact Method Extension should be valid
-		And the Appointment Cancellation Reason Extension should be valid
-	Examples:
-		| AppointmentStatus | Header                | BodyFormat |
-		| Booked            | application/json+fhir | JSON       |
-		| Booked            | application/xml+fhir  | XML        |
-		| Cancelled         | application/json+fhir | JSON       |
-		| Cancelled         | application/xml+fhir  | XML        |
+
 
 Scenario: Read appointment and response should contain an ETag header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

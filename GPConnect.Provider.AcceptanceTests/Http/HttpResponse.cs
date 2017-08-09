@@ -3,6 +3,9 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Xml.Linq;
+    using Constants;
+    using Hl7.Fhir.Model;
+    using Hl7.Fhir.Serialization;
     using Newtonsoft.Json.Linq;
 
     public class HttpResponse
@@ -35,5 +38,26 @@
         }
 
         public bool ResponseTimeAcceptable { get; set; }
+
+        public FhirResponse ParseFhirResource()
+        {
+            var fhirResponse = new FhirResponse();
+
+            switch (ContentType)
+            {
+                case FhirConst.ContentTypes.kJsonFhir:
+                    ResponseJSON = JObject.Parse(Body);
+                    var jsonParser = new FhirJsonParser();
+                    fhirResponse.Resource = jsonParser.Parse<Resource>(Body);
+                    break;
+                case FhirConst.ContentTypes.kXmlFhir:
+                    ResponseXML = XDocument.Parse(Body);
+                    var xmlParser = new FhirXmlParser();
+                    fhirResponse.Resource = xmlParser.Parse<Resource>(Body);
+                    break;
+            }
+
+            return fhirResponse;
+        }
     }
 }
