@@ -8,7 +8,7 @@ Scenario Outline: HTML should not contain disallowed elements
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the html should be valid xhtml
 		And the html should not contain "head" tags
 		And the html should not contain "body" tags
@@ -40,7 +40,7 @@ Scenario Outline: html section headers present
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the html should contain headers in coma seperated list "<Headers>"
 	Examples:
 		| Patient  | Code | Headers |
@@ -92,7 +92,7 @@ Scenario Outline: html table headers present and in order that is expected
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the html should contain table headers in coma seperated list order "<Headers>" for the "<PageSectionIndex>"
 	Examples:
 		| Code     | Headers                                                                                  | PageSectionIndex |
@@ -125,7 +125,7 @@ Scenario Outline: filtered sections should contain date range section banner
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response html should contain the applied date range text "<TextStartDate>" to "<TextEndDate>"
 	Examples:
 		| Code | Patient  | StartDateTime | EndDateTime | TextStartDate | TextEndDate |
@@ -169,7 +169,7 @@ Scenario Outline: sections should contain the all data items section banner
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response html should contain the all data items text
 	Examples:
 		| Code | Patient  |
@@ -203,7 +203,7 @@ Scenario: Summary should contain a max of 3 encounters
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response html for "Last 3 Encounters" section should contain a table with "3" rows
 	
 Scenario: Encounters section should contain all encounters
@@ -213,7 +213,7 @@ Scenario: Encounters section should contain all encounters
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response html for "Encounters" section should contain a table with at least "4" rows
 
 Scenario Outline: filtered sections should return no data available html banner
@@ -224,7 +224,7 @@ Scenario Outline: filtered sections should return no data available html banner
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response html should contain the applied date range text "<TextStartDate>" to "<TextEndDate>"
 		And the response html should contain the no data available html banner in section "<Section>"
 	Examples:
@@ -243,7 +243,7 @@ Scenario Outline: sections should return no data available html banner
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response html should contain the all data items text
 		And the response html should contain the no data available html banner in section "<Section>"
 	Examples:
@@ -276,7 +276,7 @@ Scenario Outline: Check html for non html formatting
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the html should not contain "\n"
 		And the html should not contain "\r"
 		And the html should not contain "\t"

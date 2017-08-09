@@ -28,7 +28,7 @@ Scenario Outline: Retrieve the care record sections for a patient
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 	Examples:
 		| Code |
 		| ADM |
@@ -178,7 +178,7 @@ Scenario Outline: Time period specified for a care record section that can be fi
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 	Examples:
 		| Code |
 		| ADM |
@@ -237,7 +237,7 @@ Scenario Outline: Request patient summary with parameters in oposite order to ot
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 	Examples:
 		| Code |
 		| ADM  |
@@ -294,7 +294,7 @@ Scenario: Time period with only start date parameter
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 
 Scenario: Time period with only end date parameter
 	Given I configure the default "GpcGetCareRecord" request
@@ -304,7 +304,7 @@ Scenario: Time period with only end date parameter
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 	
 Scenario Outline: response should be bundle containing all mandatory elements
 	Given I configure the default "GpcGetCareRecord" request
@@ -313,7 +313,7 @@ Scenario Outline: response should be bundle containing all mandatory elements
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Composition resource
 		And the response bundle should contain a single Patient resource
 	Examples:
@@ -338,7 +338,7 @@ Scenario Outline: response bundle should contain composition as the first entry
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain the composition resource as the first entry
 	Examples:
 		| Code |
@@ -362,7 +362,7 @@ Scenario Outline: request contain the structure definition in the meta fields
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Composition Metadata should be valid
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
@@ -391,7 +391,7 @@ Scenario Outline: composition contains generic mandatory fields
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Composition should be valid
 		And the Composition Section should be valid for "<Title>", "<Code>", "<Display>"
 	Examples:
@@ -428,7 +428,7 @@ Scenario Outline: if composition contains type mandatory field fixed values shou
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Composition Type should be valid
 	Examples:
 		| Code |
@@ -452,7 +452,7 @@ Scenario Outline: if composition contains class coding
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Composition Class should be valid
 	Examples:
 		| Code |
@@ -476,7 +476,7 @@ Scenario Outline: composition contains subject referencing a patient resource in
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response bundle entry "Composition" should optionally contain element "resource.subject.reference" and that element should reference a resource in the bundle
 	Examples:
 		| Code |
@@ -500,7 +500,7 @@ Scenario Outline: if composition contains author, the device reference can be fo
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response bundle entry "Composition" should optionally contain element "resource.author[0].reference" and that element should reference a resource in the bundle
 	Examples:
 		| Code |
@@ -524,7 +524,7 @@ Scenario Outline: if composition contains custodian reference
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response bundle entry "Composition" should optionally contain element "resource.custodian.reference" and that element should reference a resource in the bundle
 	Examples:
 		| Code |
@@ -548,7 +548,7 @@ Scenario Outline: patient contains a valid identifiers
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response bundle entry "Patient" should contain element "resource.id"
 		And the Patient Identifiers should be valid
 	Examples:
@@ -573,7 +573,7 @@ Scenario Outline: if patient contains telecom information
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Patient Telecom should be valid
 	Examples:
 		| Code |
@@ -597,7 +597,7 @@ Scenario Outline: if patient contains maritalStatus
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Patient MaritalStatus should be valid
 	Examples:
 		| Code |
@@ -621,7 +621,7 @@ Scenario Outline: if patient contains contact
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Patient Contact should be valid
 	Examples:
 		| Code |
@@ -645,7 +645,7 @@ Scenario Outline: if patient contins communicaiton
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Patient Communication should be valid
 	Examples:
 		| Code |
@@ -669,7 +669,7 @@ Scenario Outline: if patient contains practitioner as care provider
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Patient CareProvider Practitioner should be referenced in the Bundle
 	Examples:
 		| Code |
@@ -693,7 +693,7 @@ Scenario Outline: if patient contains managingOrganizaiton
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Patient ManagingOrganization Organization should be referenced in the Bundle
 	Examples:
 		| Code |
@@ -717,7 +717,7 @@ Scenario Outline: patient does not contain disallowed fields
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Patient should exclude disallowed fields
 	Examples:
 		| Code |
@@ -741,7 +741,7 @@ Scenario Outline: practitioner resource contains mandatory fields and does not i
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
 	Examples:
@@ -766,7 +766,7 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid
 		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Communication should be valid
@@ -792,7 +792,7 @@ Scenario Outline: if practitioner resource contains a managing organization it m
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner PractitionerRoles ManagingOrganization should be referenced in the Bundle
 	Examples:
 		| Code |
@@ -816,7 +816,7 @@ Scenario Outline: organization resource identifiers
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Organization Identifiers should be valid
 	Examples:
 		| Code |
@@ -840,7 +840,7 @@ Scenario Outline: organization resource element cardinality
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Organization Type should be valid
 	Examples:
 		| Code |
@@ -864,7 +864,7 @@ Scenario Outline: organization resource internal reference
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success	
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Organization PartOf Organization should be referenced in the Bundle
 	Examples:
 		| Code |
@@ -888,7 +888,7 @@ Scenario Outline: device resource element cardinality conformance
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Device should exclude fields
 		And the Device Note should be valid
 		And the Device Identifier should be valid
@@ -914,7 +914,7 @@ Scenario Outline: device resource type element values match specification
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Device Type should be valid
 	Examples:
 		| Code |
@@ -939,7 +939,7 @@ Scenario Outline: check all dateTime format variations are allowed
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 	Examples:
 		| Code | StartDateTime             | EndDateTime               |
 		| ADM  | 2014                      | 2016                      |

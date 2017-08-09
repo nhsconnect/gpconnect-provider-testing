@@ -227,7 +227,7 @@ Scenario Outline: Request and response in XML
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 	Examples:
 		| Code |
 		| ADM |
@@ -279,7 +279,7 @@ Scenario: endpoint should support gzip compression for getCareRecord operation a
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 
 Scenario: endpoint should support chunking of data
 	Given I configure the default "GpcGetCareRecord" request
@@ -289,7 +289,7 @@ Scenario: endpoint should support chunking of data
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the response should be chunked
 
 @ignore

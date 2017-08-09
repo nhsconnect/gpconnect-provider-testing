@@ -74,4 +74,4 @@ Scenario: Allow and audit additional http headers
 		And I set "AdditionalHeader" request header to "NotStandardHeader"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"

@@ -31,7 +31,7 @@ Scenario: SSP - valid client certificate
 		And I add a Record Section parameter for "SUM"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 
 Scenario: SSP - client certificate invalid FQDN
 	Given I configure the default "GpcGetCareRecord" request
