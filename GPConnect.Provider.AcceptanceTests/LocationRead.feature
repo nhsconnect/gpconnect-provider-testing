@@ -148,33 +148,3 @@ Scenario: Read location should contain ETag
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
 		And the Response should contain the ETag header matching the Resource Version Id
-
-# Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
-Scenario: Read location If-None-Match should return a 304 on match
-	Given I get the Location for Location Value "SIT1"
-		And I store the Location
-		And I store the Location
-	Given I configure the default "LocationRead" request
-		#And I set the If-None-Match header with the version from the stored "Location" Resource
-		And I set the If-None-Match header to the stored Location Id
-	When I make the "LocationRead" request
-	Then the response status code should be "304"
-	
-# Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
-Scenario: Read location If-None-Match should return full resource if no match
-	Given I get the Location for Location Value "SIT1"
-		And I store the Location
-	Given I configure the default "LocationRead" request
-		And I set the If-None-Match header to "W/\"somethingincorrect\""
-	When I make the "LocationRead" request
-	Then the response status code should indicate success
-		And the Response Resource should be a Location
-		And the Response should contain the ETag header matching the Resource Version Id
-
-# Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
-@ignore
-Scenario: VRead location _history with current etag should return current location
-
-# Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
-@ignore
-Scenario: VRead location _history with invalid etag should give a 404

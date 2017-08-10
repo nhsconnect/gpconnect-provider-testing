@@ -151,31 +151,4 @@ Scenario: Conformance profile supports the Organization read operation
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Organization" Resource with the "Read" Interaction
 
-#Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
-Scenario: VRead of current resource should return resource
-	Given I get the Organization for Organization Code "ORG3"
-		And I store the Organization
-		And I store the Organization Version Id
-	Given I configure the default "OrganizationRead" request
-	When I make the "OrganizationRead" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Organization
-
-#Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
-Scenario: VRead of non existant version should return an error
-	Given I get the Organization for Organization Code "ORG2"
-		And I store the Organization
-		And I set the GET request Version Id to "NotARealVersionId"
-	Given I configure the default "OrganizationRead" request
-	When I make the "OrganizationRead" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource
-
-@ignore
-Scenario: If-None-Match read organization on a matching version
-	#Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
-
-@ignore
-Scenario: If-None-Match read organization on a non matching version
-	#Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 
