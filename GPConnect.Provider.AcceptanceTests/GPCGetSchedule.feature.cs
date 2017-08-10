@@ -357,7 +357,6 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm:ss", new string[0])]
         [NUnit.Framework.TestCaseAttribute("yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss", new string[0])]
         [NUnit.Framework.TestCaseAttribute("yyyy-MM-ddTHH:mm:ss", "yyyy-MM-dd", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("yyyy-MM", "yyyy-MM", new string[0])]
         public virtual void IPerformAGetScheduleWithValidPartialDateTimeStrings(string startDate, string endDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I perform a getSchedule with valid partial dateTime strings", exampleTags);
@@ -556,8 +555,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 218
  testRunner.Given("I configure the default \"GpcGetSchedule\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 219
-  testRunner.And("I add a Time Period parameter with Start Date today and End Date in \"<Days>\" days" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Time Period parameter with Start Date today and End Date in \"{0}\" days", daysRange), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 220
  testRunner.When("I make the \"GpcGetSchedule\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 221
