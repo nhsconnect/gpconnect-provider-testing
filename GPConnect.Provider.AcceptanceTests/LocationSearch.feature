@@ -228,6 +228,17 @@ Scenario: Location search send additional invalid parameter
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+Scenario: Location search include count and sort parameters
+	Given I configure the default "LocationSearch" request
+		And I add a Location Identifier parameter with default System and Value "SIT1"
+		And I add the parameter "_count" with the value "1"
+		And I add the parameter "_sort" with the value "status"
+	When I make the "LocationSearch" request
+	Then the response status code should indicate success
+		And the response should be the format FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+
 @ignore
 @Manual
 Scenario: Ensure out of date site codes are no longer returning any resource

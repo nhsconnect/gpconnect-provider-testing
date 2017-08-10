@@ -231,6 +231,16 @@ Scenario: Practitioner search multiple multiple identifiers for different practi
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+Scenario: Practitioner search include count and sort parameters
+	Given I configure the default "PractitionerSearch" request		
+		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner1"
+		And I add the parameter "_count" with the value "1"
+		And I add the parameter "_sort" with the value "status"
+	When I make the "PractitionerSearch" request
+	Then the response status code should indicate success
+		And the response bundle should contain "1" entries
+		And the response should be a Bundle resource of type "searchset" 
+
 Scenario: Conformance profile supports the Practitioner search operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request

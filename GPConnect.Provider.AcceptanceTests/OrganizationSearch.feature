@@ -312,3 +312,13 @@ Scenario Outline: Organization search check organization response contains logic
 		| http://fhir.nhs.net/Id/ods-site-code         | SIT1  |
 		| http://fhir.nhs.net/Id/ods-site-code         | SIT2  |
 		| http://fhir.nhs.net/Id/ods-site-code         | SIT3  |
+
+Scenario: Organization search include count and sort parameters
+	Given I configure the default "OrganizationSearch" request
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
+		And I add the parameter "_count" with the value "1"
+		And I add the parameter "_sort" with the value "status"
+	When I make the "OrganizationSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
