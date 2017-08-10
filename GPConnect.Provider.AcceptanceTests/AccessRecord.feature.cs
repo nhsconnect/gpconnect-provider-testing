@@ -1092,9 +1092,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 479
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 480
-  testRunner.And("the response bundle entry \"Composition\" should optionally contain element \"resour" +
-                    "ce.subject.reference\" and that element should reference a resource in the bundle" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Composition Subject should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1131,9 +1129,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 503
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 504
-  testRunner.And("the response bundle entry \"Composition\" should optionally contain element \"resour" +
-                    "ce.author[0].reference\" and that element should reference a resource in the bund" +
-                    "le", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Composition Author should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1170,9 +1166,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 527
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 528
-  testRunner.And("the response bundle entry \"Composition\" should optionally contain element \"resour" +
-                    "ce.custodian.reference\" and that element should reference a resource in the bund" +
-                    "le", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Composition Custodian should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1209,7 +1203,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 551
   testRunner.And("the response should be a Bundle resource of type \"document\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 552
-  testRunner.And("the response bundle entry \"Patient\" should contain element \"resource.id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 553
   testRunner.And("the Patient Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

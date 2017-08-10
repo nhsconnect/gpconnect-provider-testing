@@ -388,7 +388,7 @@ Scenario: Conformance profile supports the gpc.getSchedule operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "gpc.getschedule" operation
+		And the Conformance REST Operations should contain "gpc.getschedule"
 
 @Manual
 @ignore

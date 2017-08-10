@@ -125,7 +125,7 @@ Scenario: Read appointment valid request shall include id and structure definiti
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
-		And the returned resource shall contains a logical id
+		And the Appointment Id should be valid
 		And the Appointment Metadata should be valid
 
 Scenario Outline: Read appointment ensure response appointments contain the manadatory elements

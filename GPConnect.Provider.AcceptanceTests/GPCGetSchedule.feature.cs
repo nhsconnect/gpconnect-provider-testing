@@ -919,7 +919,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 390
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 391
-  testRunner.And("the conformance profile should contain the \"gpc.getschedule\" operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Conformance REST Operations should contain \"gpc.getschedule\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

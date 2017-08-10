@@ -34,6 +34,16 @@
             _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Organization);
         }
 
+        [Then("the Organization Id should equal the Request Id")]
+        public void TheOrganizationIdShouldEqualTheRequestId()
+        {
+            Organizations.ForEach(organization =>
+            {
+                organization.Id.ShouldBe(_httpContext.HttpRequestConfiguration.GetRequestId,
+                    $"The Organization Id should be equal to {_httpContext.HttpRequestConfiguration.GetRequestId} but was {organization.Id}.");
+            });
+        }
+
         [Then(@"the Organization Identifiers should be valid")]
         public void TheOrganizationIdentifiersShouldBeValid()
         {
@@ -82,6 +92,21 @@
             Organizations.ForEach(organization =>
             {
                 CheckForValidMetaDataInResource(organization, "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
+            });
+        }
+
+        [Then("the Organization Full Url should be valid")]
+        public void TheOrganizationFullUrlShouldBeValid()
+        {
+            var organizationEntries = _httpContext
+                .FhirResponse
+                .Entries
+                .Where(entry => entry.Resource.ResourceType == ResourceType.Organization)
+                .ToList();
+
+            organizationEntries.ForEach(organizationEntry =>
+            {
+                organizationEntry.FullUrl.ShouldNotBeNull();
             });
         }
 

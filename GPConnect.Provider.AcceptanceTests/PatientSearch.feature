@@ -19,7 +19,7 @@ Scenario: Returned patients should contain a logical identifier
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And all search response entities in bundle should contain a logical identifier
+		And the Patient Id should be valid
 
 Scenario: Provider should return an error when an invalid system is supplied in the identifier parameter
 	Given I configure the default "PatientSearch" request
@@ -101,7 +101,7 @@ Scenario Outline: The patient search endpoint should accept the accept header
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And all search response entities in bundle should contain a logical identifier
+		And the Patient Id should be valid
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | ResultFormat |
@@ -118,7 +118,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And all search response entities in bundle should contain a logical identifier
+		And the Patient Id should be valid
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| FormatParam           | ResultFormat |
@@ -136,7 +136,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And all search response entities in bundle should contain a logical identifier
+		And the Patient Id should be valid
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
@@ -156,7 +156,7 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the response body should be FHIR <ResultFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And all search response entities in bundle should contain a logical identifier
+		And the Patient Id should be valid
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
@@ -257,7 +257,7 @@ Scenario: Conformance profile supports the Patient search operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Patient" resource with a "search-type" interaction
+		And the Conformance REST Resources should contain the "Patient" Resource with the "SearchType" Interaction
 
 Scenario Outline: System should error if multiple parameters valid or invalid are sent
 	 Given I configure the default "PatientSearch" request

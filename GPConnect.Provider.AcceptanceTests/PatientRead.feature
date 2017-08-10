@@ -45,7 +45,7 @@ Scenario Outline: Read patient using the Accept header to request response forma
 	Then the response status code should indicate success
 		And the response body should be FHIR <ResponseFormat>
 		And the Response Resource should be a Patient
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Patient Id should equal the Request Id
 	Examples:
 		| Header                | ResponseFormat |
 		| application/json+fhir | JSON           |
@@ -61,7 +61,7 @@ Scenario Outline: Read patient using the _format parameter to request response f
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be a Patient
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Patient Id should equal the Request Id
 		And the Patient Identifiers should be valid for Patient "patient1"
 	Examples:
 		| Format                | BodyFormat |
@@ -79,7 +79,7 @@ Scenario Outline: Read patient sending the Accept header and _format parameter t
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be a Patient
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Patient Id should equal the Request Id
 		And the Patient Identifiers should be valid for Patient "patient1"
 	Examples:
 		| Header                | Format                | BodyFormat |
@@ -113,7 +113,7 @@ Scenario: Read patient should contain correct logical identifier
 	When I make the "PatientRead" request
 	Then the response status code should indicate success
 		And the Response Resource should be a Patient
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Patient Id should equal the Request Id
 
 Scenario: Read patient response should contain an ETag header
 	Given I get the Patient for Patient Value "patient1"
@@ -195,5 +195,4 @@ Scenario: Conformance profile supports the Patient read operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Patient" resource with a "read" interaction
-#Manual tests need adding 
+		And the Conformance REST Resources should contain the "Patient" Resource with the "Read" Interaction

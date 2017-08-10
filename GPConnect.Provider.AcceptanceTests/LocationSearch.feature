@@ -30,7 +30,7 @@ Scenario Outline: Location search success
 		And the response should be the format FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<EntrySize>" entries
-		And all search response entities in bundle should contain a logical identifier
+		And the Location Id should be valid
 		And the Location Identifier should be valid
 		And the Location Metadata should be valid
 		And the Location Name should be valid
@@ -107,7 +107,7 @@ Scenario Outline: Location Search using the accept header to request response fo
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "8" entries
-		And all search response entities in bundle should contain a logical identifier
+		And the Location Id should be valid
 		And the Location Metadata should be valid
 		And the Location Identifier should be valid
 		And the Location Name should be valid
@@ -125,7 +125,7 @@ Scenario Outline: Location Search using the _format parameter to request respons
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "2" entries
-		And all search response entities in bundle should contain a logical identifier
+		And the Location Id should be valid
 		And the Location Metadata should be valid
 		And the Location Identifier should be valid
 		And the Location Name should be valid
@@ -144,7 +144,7 @@ Scenario Outline: Location Search using the accept header and _format parameter 
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "8" entries
-		And all search response entities in bundle should contain a logical identifier
+		And the Location Id should be valid
 		And the Location Metadata should be valid
 		And the Location Identifier should be valid
 		And the Location Name should be valid
@@ -187,7 +187,7 @@ Scenario: Conformance profile supports the Location search operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Location" resource with a "search-type" interaction
+		And the Conformance REST Resources should contain the "Location" Resource with the "SearchType" Interaction
 
 Scenario: Location search send multiple identifiers in the request
 	Given I configure the default "LocationSearch" request

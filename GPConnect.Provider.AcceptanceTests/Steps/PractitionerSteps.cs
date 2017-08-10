@@ -95,6 +95,25 @@
             _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Practitioner);
         }
 
+        [Then("the Practitioner Id should be valid")]
+        public void ThePractitionerIdShouldBeValid()
+        {
+            Practitioners.ForEach(practitioner =>
+            {
+                practitioner.Id.ShouldNotBeNullOrEmpty($"The Practitioner Id should not be null or empty but was {practitioner.Id}.");
+            });
+        }
+
+        [Then("the Practitioner Id should equal the Request Id")]
+        public void ThePractitionerIdShouldEqualTheRequestId()
+        {
+            Practitioners.ForEach(practitioner =>
+            {
+                practitioner.Id.ShouldBe(_httpContext.HttpRequestConfiguration.GetRequestId,
+                    $"The Practitioner Id should be equal to {_httpContext.HttpRequestConfiguration.GetRequestId} but was {practitioner.Id}.");
+            });
+        }
+
         [Then(@"the Practitioner should be valid")]
         public void ThePractitionerShouldBeValid()
         {

@@ -66,5 +66,23 @@
                 });
             });
         }
+
+        [Then(@"the Conformance REST Resources should contain the ""([^""]*)"" Resource with the ""([^""]*)"" Interaction")]
+        public void TheConformanceRestResourcesShouldContainAResourceWithInteraction(ResourceType resourceType, Conformance.TypeRestfulInteraction interaction)
+        {
+            Conformances.ForEach(conformance =>
+            {
+                conformance.Rest.ForEach(rest =>
+                {
+                    var resource = rest.Resource.FirstOrDefault(r => r.Type == resourceType);
+
+                    resource.ShouldNotBeNull($"The Conformance REST Resources should contain {resourceType.ToString()} but did not.");
+
+                    var interactions = resource.Interaction.Where(i => i.Code == interaction);
+
+                    interactions.ShouldNotBeNull($"The Conformance REST {resourceType.ToString()} Resource Interactions should contain the {interaction.ToString()} Interaction but did not.");
+                });
+            });
+        }
     }
 }

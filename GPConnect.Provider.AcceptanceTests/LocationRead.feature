@@ -84,7 +84,7 @@ Scenario Outline: Location Read using the _format parameter to request response 
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the Response Resource should be a Location
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Location Id should equal the Request Id
 		And the Location Identifier should be valid for Value "SIT1"
 	Examples:
 		| Format	            | ResponseFormat |
@@ -101,7 +101,7 @@ Scenario Outline: Location Read sending the Accept header and _format parameter 
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the Response Resource should be a Location
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Location Id should equal the Request Id
 		And the Location Identifier should be valid for Value "SIT3"
 	Examples:
 		| Header                | Format                | ResponseFormat |
@@ -114,7 +114,7 @@ Scenario: Conformance profile supports the Location read operation
 	Given I configure the default "Metadataread" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Location" resource with a "read" interaction
+		And the Conformance REST Resources should contain the "Location" Resource with the "Read" Interaction
 
 Scenario Outline: Location read resource conforms to GP-Connect specification
 	Given I get the Location for Location Value "SIT2"
@@ -125,7 +125,7 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be a Location
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Location Id should equal the Request Id
 		And the Location Identifier should be valid for Value "SIT2"
 		And the Location Metadata should be valid
 #		status // This is checked by the FHIR .NET library

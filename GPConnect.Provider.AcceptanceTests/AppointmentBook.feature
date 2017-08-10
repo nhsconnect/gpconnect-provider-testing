@@ -63,7 +63,7 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 	Then the response status code should indicate created
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
-		And the returned resource shall contains a logical id
+		And the Appointment Id should be valid
 		And the Appointment Status should be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
@@ -86,7 +86,7 @@ Scenario Outline: Book appointment _format parameter only but varying request co
 	Then the response status code should indicate created
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
-		And the returned resource shall contains a logical id
+		And the Appointment Id should be valid
 		And the Appointment Status should be valid
 		And the Appointment Slots should be valid
 	Examples:
@@ -109,7 +109,7 @@ Scenario Outline: Book appointment accept header to request response format
 	Then the response status code should indicate created
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
-		And the returned resource shall contains a logical id
+		And the Appointment Id should be valid
 		And the Appointment Status should be valid
 		And the Appointment Slots should be valid
 	Examples:
@@ -180,7 +180,6 @@ Scenario: Book Appointment and check response contains the manadatory elements
 	Then the response status code should indicate created
 		And the response body should be FHIR JSON
 		And the Response Resource should be an Appointment
-		And the returned resource shall contains a logical id
 		And the Appointment Status should be valid
 		And the Appointment Start should be valid
 		And the Appointment End should be valid
@@ -557,7 +556,7 @@ Scenario: Conformance profile supports the book appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Appointment" resource with a "create" interaction
+		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction		
 
 @ignore
 Scenario: Book appointment for temporary patient

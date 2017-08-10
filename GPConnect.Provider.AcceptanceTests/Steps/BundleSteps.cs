@@ -85,6 +85,12 @@
             });
         }
 
+        [Then(@"the response bundle should contain ""([^""]*)"" entries")]
+        public void ThenResponseBundleEntryShouldNotBeEmpty(int expectedSize)
+        {
+            _httpContext.FhirResponse.Entries.Count.ShouldBe(expectedSize, "The response bundle does not contain the expected number of entries");
+        }
+
         [Then(@"the response bundle should contain a single Patient resource")]
         public void ThenTheResponseBundleShouldContainASinglePatientResource()
         {

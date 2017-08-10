@@ -477,7 +477,7 @@ Scenario Outline: composition contains subject referencing a patient resource in
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the response bundle entry "Composition" should optionally contain element "resource.subject.reference" and that element should reference a resource in the bundle
+		And the Composition Subject should be referenced in the Bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -501,7 +501,7 @@ Scenario Outline: if composition contains author, the device reference can be fo
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the response bundle entry "Composition" should optionally contain element "resource.author[0].reference" and that element should reference a resource in the bundle
+		And the Composition Author should be referenced in the Bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -525,7 +525,7 @@ Scenario Outline: if composition contains custodian reference
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the response bundle entry "Composition" should optionally contain element "resource.custodian.reference" and that element should reference a resource in the bundle
+		And the Composition Custodian should be referenced in the Bundle
 	Examples:
 		| Code |
 		| ADM  |
@@ -549,7 +549,7 @@ Scenario Outline: patient contains a valid identifiers
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "document"
-		And the response bundle entry "Patient" should contain element "resource.id"
+		And the Patient Id should be valid
 		And the Patient Identifiers should be valid
 	Examples:
 		| Code |

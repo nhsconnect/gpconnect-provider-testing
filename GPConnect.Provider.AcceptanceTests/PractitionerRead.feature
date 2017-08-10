@@ -8,7 +8,7 @@ Scenario Outline: Practitioner read successful request validate all of response
 	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
 		And the Response Resource should be a Practitioner
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Practitioner Id should equal the Request Id
 		And the Practitioner Metadata should be valid
 		And the Practitioner Identifiers should be valid
 		And the Practitioner Name should be valid
@@ -92,7 +92,7 @@ Scenario Outline: Practitioner Read using the _format parameter to request respo
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the Response Resource should be a Practitioner
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Practitioner Id should equal the Request Id
 		And the Practitioner SDS User Identifier should be valid for Value "practitioner1"
 	Examples:
 		| Parameter             | ResponseFormat |
@@ -108,7 +108,7 @@ Scenario Outline: Practitioner Read using the Accept header to request response 
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the Response Resource should be a Practitioner
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Practitioner Id should equal the Request Id
 		And the Practitioner SDS User Identifier should be valid for Value "practitioner1"
 	Examples:
 		| Header                | ResponseFormat |
@@ -125,7 +125,7 @@ Scenario Outline: Practitioner Read sending the Accept header and _format parame
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the Response Resource should be a Practitioner
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Practitioner Id should equal the Request Id
 		And the Practitioner SDS User Identifier should be valid for Value "practitioner2"
 	Examples:
 		| Header                | Parameter             | ResponseFormat |
@@ -138,7 +138,7 @@ Scenario: Conformance profile supports the Practitioner read operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Practitioner" resource with a "read" interaction
+		And the Conformance REST Resources should contain the "Practitioner" Resource with the "Read" Interaction
 
 #Potentially out of scope, needs verifiying
 Scenario: Practitioner read response should contain an ETag header
