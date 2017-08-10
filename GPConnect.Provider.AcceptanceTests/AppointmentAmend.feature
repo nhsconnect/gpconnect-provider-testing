@@ -262,4 +262,4 @@ Scenario: Conformance profile support the Amend appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Appointment" resource with a "update" interaction
+		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction

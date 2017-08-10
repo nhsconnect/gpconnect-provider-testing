@@ -8,9 +8,9 @@ Scenario Outline: Organization Read successful request validate all of response
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
 		And the Response should contain the ETag header matching the Resource Version Id
-		And the returned resource shall contain a logical id matching the requested read logical identifier
 		And the Response Resource should be an Organization
 		And the Organization Identifiers should be valid for Organization "<Organization>"
+		And the Organization Id should equal the Request Id
 		And the Organization Metadata should be valid
 		And the Organization PartOf Organization should be resolvable
 		And the Organization Type should be valid
@@ -102,7 +102,8 @@ Scenario Outline: Organization Read using the _format parameter to request respo
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the Response Resource should be an Organization
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Organization Identifiers should be valid
+		And the Organization Id should equal the Request Id
 		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
 		| Parameter             | ResponseFormat |
@@ -118,7 +119,7 @@ Scenario Outline: Organization Read using the Accept header to request response 
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the Response Resource should be an Organization
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Organization Id should equal the Request Id
 		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
 		| Header                | ResponseFormat |
@@ -135,7 +136,7 @@ Scenario Outline: Organization Read sending the Accept header and _format parame
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the Response Resource should be an Organization
-		And the returned resource shall contain a logical id matching the requested read logical identifier
+		And the Organization Id should equal the Request Id
 		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
 		| Header                | Parameter             | ResponseFormat |
@@ -148,7 +149,7 @@ Scenario: Conformance profile supports the Organization read operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Organization" resource with a "read" interaction
+		And the Conformance REST Resources should contain the "Organization" Resource with the "Read" Interaction
 
 #Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
 Scenario: VRead of current resource should return resource

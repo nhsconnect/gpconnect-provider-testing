@@ -59,6 +59,15 @@
             Appointments.Count.ShouldBeGreaterThanOrEqualTo(minimum, $"The Bundle should contain a minimum of {minimum} Appointments, but found {Appointments.Count}.");
         }
 
+        [Then("the Appointment Id should be valid")]
+        public void TheAppointmentIdShouldBeValid()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Id.ShouldNotBeNullOrEmpty($"The Appointment Id should not be null or empty but was {appointment.Id}.");
+            });
+        }
+
         [Then(@"the Appointment Start should equal the Created Appointment Start")]
         public void TheAppointmentStartShouldEqualTheCreatedAppointmentStart()
         {

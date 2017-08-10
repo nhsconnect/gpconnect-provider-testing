@@ -47,6 +47,15 @@
             });
         }
 
+        [Then(@"the Patient Id should equal the Request Id")]
+        public void ThePatienIdShouldEqualTheRequestId()
+        {
+            Patients.ForEach(patient =>
+            {
+                patient.Id.ShouldBe(_httpContext.HttpRequestConfiguration.GetRequestId, $"The Patient Id should be equal to {_httpContext.HttpRequestConfiguration.GetRequestId} but was {patient.Id}.");
+            });
+        }
+
         [Then(@"the Patient Metadata should be valid")]
         public void ThePatientMetadataShouldBeValid()
         {
