@@ -168,8 +168,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 47
   testRunner.And("the Response Resource should be a Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
-  testRunner.And("the returned resource shall contain a logical id matching the requested read logi" +
-                    "cal identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Patient Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -202,8 +201,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 63
   testRunner.And("the Response Resource should be a Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
-  testRunner.And("the returned resource shall contain a logical id matching the requested read logi" +
-                    "cal identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Patient Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
   testRunner.And("the Patient Identifiers should be valid for Patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -244,8 +242,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 81
   testRunner.And("the Response Resource should be a Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
-  testRunner.And("the returned resource shall contain a logical id matching the requested read logi" +
-                    "cal identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Patient Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
   testRunner.And("the Patient Identifiers should be valid for Patient \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -306,8 +303,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 115
   testRunner.And("the Response Resource should be a Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 116
-  testRunner.And("the returned resource shall contain a logical id matching the requested read logi" +
-                    "cal identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Patient Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -520,8 +516,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 197
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 198
-  testRunner.And("the conformance profile should contain the \"Patient\" resource with a \"read\" inter" +
-                    "action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Conformance REST Resources should contain the \"Patient\" Resource with the \"Re" +
+                    "ad\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

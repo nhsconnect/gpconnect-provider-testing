@@ -91,7 +91,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
-  testRunner.And("all search response entities in bundle should contain a logical identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
   testRunner.And("the Practitioner Identifiers should be valid fixed values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
@@ -617,49 +617,21 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Practitioner search include count and sort parameters")]
-        public virtual void PractitionerSearchIncludeCountAndSortParameters()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search include count and sort parameters", ((string[])(null)));
-#line 234
-this.ScenarioSetup(scenarioInfo);
-#line 235
- testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 236
-  testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
-                    "titioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 237
-  testRunner.And("I add the parameter \"_count\" with the value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 238
-  testRunner.And("I add the parameter \"_sort\" with the value \"status\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 239
- testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 240
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 241
-  testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 242
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Conformance profile supports the Practitioner search operation")]
         public virtual void ConformanceProfileSupportsThePractitionerSearchOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Practitioner search operation", ((string[])(null)));
-#line 244
+#line 234
 this.ScenarioSetup(scenarioInfo);
-#line 245
+#line 235
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 246
+#line 236
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 247
+#line 237
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 248
-  testRunner.And("the conformance profile should contain the \"Practitioner\" resource with a \"search" +
-                    "-type\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 238
+  testRunner.And("the Conformance REST Resources should contain the \"Practitioner\" Resource with th" +
+                    "e \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

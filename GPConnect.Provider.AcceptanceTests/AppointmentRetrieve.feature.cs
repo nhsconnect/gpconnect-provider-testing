@@ -1086,8 +1086,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 544
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 545
-  testRunner.And("the conformance profile should contain the \"Appointment\" resource with a \"search-" +
-                    "type\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Conformance REST Resources should contain the \"Appointment\" Resource with the" +
+                    " \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

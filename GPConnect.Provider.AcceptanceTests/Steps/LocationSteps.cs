@@ -88,6 +88,24 @@
             _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Location);
         }
 
+        [Then(@"the Location Id should be valid")]
+        public void TheLocationIdShouldBeValid()
+        {
+            Locations.ForEach(location =>
+            {
+                location.Id.ShouldNotBeNullOrEmpty($"The Location Id should not be null or empty but was {location.Id}.");
+            });
+        }
+
+        [Then(@"the Location Id should equal the Request Id")]
+        public void TheLocationIdShouldEqualTheRequestId()
+        {
+            Locations.ForEach(location =>
+            {
+                location.Id.ShouldBe(_httpContext.HttpRequestConfiguration.GetRequestId, $"The Location Id should be equal to {_httpContext.HttpRequestConfiguration.GetRequestId} but was {location.Id}.");
+            });
+        }
+
         [Then(@"the Location Name should be valid")]
         public void TheLocationNameShouldBeValid()
         {

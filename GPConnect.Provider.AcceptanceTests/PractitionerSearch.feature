@@ -12,7 +12,7 @@ Scenario Outline: Practitioner search success and validate the practitioner iden
 	Then the response status code should indicate success
 		And the response bundle should contain "<EntrySize>" entries
 		And the response should be a Bundle resource of type "searchset" 
-		And all search response entities in bundle should contain a logical identifier
+		And the Practitioner Id should be valid
 		And the Practitioner Identifiers should be valid fixed values
 		And the Practitioner SDS User Identifier should be valid for Value "<Value>"
 		And the Practitioner SDS Role Profile Identifier should be valid for "<RoleSize>" Role Profile Identifiers
@@ -245,4 +245,4 @@ Scenario: Conformance profile supports the Practitioner search operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Practitioner" resource with a "search-type" interaction
+		And the Conformance REST Resources should contain the "Practitioner" Resource with the "SearchType" Interaction

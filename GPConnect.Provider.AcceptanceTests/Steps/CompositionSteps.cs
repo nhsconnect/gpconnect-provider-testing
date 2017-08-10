@@ -10,42 +10,38 @@
     public class CompositionSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
+        private readonly BundleSteps _bundleSteps;
+        private Composition _composition => _httpContext.FhirResponse.Compositions.First();
 
-        public CompositionSteps(HttpSteps httpSteps, HttpContext httpContext) 
+        public CompositionSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
-        }
-
-        private Composition GetComposition()
-        {
-            return _httpContext.FhirResponse.Compositions.First();
+            _bundleSteps = bundleSteps;
         }
 
         [Then("the Composition should be valid")]
         public void TheCompositionShouldBeValid()
         {
-            var composition = GetComposition();
-
-            composition.Date.ShouldNotBeNull();
+            _composition.Date.ShouldNotBeNull();
 
             TheCompositionTypeShouldBeValid();
 
-            if (composition.Class != null)
+            if (_composition.Class != null)
             {
                TheCompositionClassShouldBeValid();
             }
 
-            composition.Title.ShouldBe("Patient Care Record");
-            composition.Status.ShouldBe(Composition.CompositionStatus.Final);
+            _composition.Title.ShouldBe("Patient Care Record");
+            _composition.Status.ShouldBe(Composition.CompositionStatus.Final);
 
-            composition.Section.Count.ShouldBe(1);
+            _composition.Section.Count.ShouldBe(1);
         }
 
         [Then("the Composition Class should be valid")]
         private void TheCompositionClassShouldBeValid()
         {
-            var compositionClass = GetComposition().Class;
+            var compositionClass = _composition.Class;
 
             if (compositionClass.Coding != null)
             {
@@ -64,7 +60,7 @@
         [Then("the Composition Type should be valid")]
         public void TheCompositionTypeShouldBeValid()
         {
-            var compositionType = GetComposition().Type;
+            var compositionType = _composition.Type;
 
             compositionType.ShouldNotBeNull();
             compositionType.Text?.ShouldBe("record extract (record artifact)");
@@ -81,7 +77,7 @@
         [Then(@"the Composition Section should be valid for ""([^""]*)"", ""([^""]*)"", ""([^""]*)""")]
         public void TheCompositionSectionShouldBeValidFor(string title, string code, string display)
         {
-            var section = GetComposition().Section.First();
+            var section = _composition.Section.First();
 
             section.Title.ShouldBe(title);
             section.Code.Coding[0].System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-record-section-1");
@@ -95,9 +91,45 @@
         [Then(@"the Composition Metadata should be valid")]
         public void TheCompositionMetadataShouldBeValid()
         {
-            var composition = GetComposition();
+            CheckForValidMetaDataInResource(_composition, "http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
+        }
 
-            CheckForValidMetaDataInResource(composition, "http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
+        [Then("the Composition Subject should be referenced in the Bundle")]
+        public void TheCompositionSubjectShouldReferencedInTheBundle()
+        {
+            var subject = _composition.Subject;
+
+            if (subject != null)
+            {
+                subject.Reference.ShouldNotBeNull();
+                _bundleSteps.ResponseBundleContainsReferenceOfType(subject.Reference, ResourceType.Patient);
+            }
+        }
+
+        [Then("the Composition Author should be referenced in the Bundle")]
+        public void TheCompositionAuthorShouldReferencedInTheBundle()
+        {
+            var author = _composition.Author?[0];
+
+            if (author != null)
+            {
+                author.Reference.ShouldNotBeNull();
+
+                _bundleSteps.ResponseBundleContainsReferenceOfType(author.Reference, ResourceType.Practitioner);
+            }
+        }
+
+        [Then("the Composition Custodian should be referenced in the Bundle")]
+        public void TheCompositionCustodianShouldReferencedInTheBundle()
+        {
+            var custodian = _composition.Custodian;
+
+            if (custodian != null)
+            {
+                custodian.Reference.ShouldNotBeNull();
+
+                _bundleSteps.ResponseBundleContainsReferenceOfType(custodian.Reference, ResourceType.Organization);
+            }
         }
     }
 }

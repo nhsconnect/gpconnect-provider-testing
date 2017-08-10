@@ -401,7 +401,7 @@ Scenario Outline: Cancel appointment prefer header set to representation
 		And the Appointment Status should be Cancelled
 		And the content-type should not be equal to null
 		And the content-length should not be equal to zero
-		And the returned resource shall contains a logical id
+		And the Appointment Id should be valid
 		And the Appointment Start should be valid
 		And the Appointment End should be valid
 		And the Appointment Slots should be valid
@@ -453,4 +453,4 @@ Scenario: Conformance profile supports the cancel appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Appointment" resource with a "update" interaction
+		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction		

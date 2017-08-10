@@ -25,22 +25,6 @@
             _fhirResourceRepository = fhirResourceRepository;
         }
 
-        // Before Scenario
-        [BeforeScenario(Order = 3)]
-        public void SetDefaultJwtValues()
-        {
-            Log.WriteLine("SetDefaultJWTValues()");
-            _jwtHelper.SetDefaultValues();
-        }
-
-        // JWT Configuration Steps
-        [Given(@"I set the default JWT")]
-        public void SetTheDefaultJwt()
-        {
-            _jwtHelper.SetDefaultValues();
-            _headerHelper.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
-        }
-
         [Given(@"I set the JWT requested scope to ""(.*)""")]
         public void SetTheJwtRequestedScopeTo(string requestedScope)
         {

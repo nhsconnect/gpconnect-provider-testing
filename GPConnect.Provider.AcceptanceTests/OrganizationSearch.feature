@@ -72,7 +72,7 @@ Scenario: Organization search by organization code successfully returns single r
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And the response bundle "Organization" entries should contain element "fullUrl"
+		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG1" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT1"
 	
@@ -110,7 +110,7 @@ Scenario: Organization search by organization code successfully returns multiple
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And the response bundle "Organization" entries should contain element "fullUrl"
+		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG2" and "2" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT2|SIT3"
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG2|ORG3" and "2" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT2|SIT3"
@@ -123,7 +123,7 @@ Scenario: Organization search by site code successfully returns single result co
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And the response bundle "Organization" entries should contain element "fullUrl"
+		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG1" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT1"
 
@@ -135,7 +135,7 @@ Scenario: Organization search by site code successfully returns multiple results
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "2" entries
-		And the response bundle "Organization" entries should contain element "fullUrl"
+		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG3" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT3"
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG2" and "2" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT2|SIT3"
@@ -295,7 +295,7 @@ Scenario: Conformance profile supports the Organization search operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the conformance profile should contain the "Organization" resource with a "search-type" interaction
+		And the Conformance REST Resources should contain the "Organization" Resource with the "SearchType" Interaction
 
 Scenario Outline: Organization search check organization response contains logical identifier
 	Given I configure the default "OrganizationSearch" request

@@ -142,7 +142,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 32
   testRunner.And(string.Format("the response bundle should contain \"{0}\" entries", entrySize), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
-  testRunner.And("all search response entities in bundle should contain a logical identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
   testRunner.And("the Location Identifier should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
@@ -309,7 +309,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 109
   testRunner.And("the response bundle should contain \"8\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 110
-  testRunner.And("all search response entities in bundle should contain a logical identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 111
   testRunner.And("the Location Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 112
@@ -346,7 +346,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 127
   testRunner.And("the response bundle should contain \"2\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
-  testRunner.And("all search response entities in bundle should contain a logical identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
   testRunner.And("the Location Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
@@ -389,7 +389,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 146
   testRunner.And("the response bundle should contain \"8\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 147
-  testRunner.And("all search response entities in bundle should contain a logical identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
   testRunner.And("the Location Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 149
@@ -468,8 +468,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 189
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 190
-  testRunner.And("the conformance profile should contain the \"Location\" resource with a \"search-typ" +
-                    "e\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Conformance REST Resources should contain the \"Location\" Resource with the \"S" +
+                    "earchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

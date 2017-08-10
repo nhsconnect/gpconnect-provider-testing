@@ -234,8 +234,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 86
   testRunner.And("the Response Resource should be a Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
-  testRunner.And("the returned resource shall contain a logical id matching the requested read logi" +
-                    "cal identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
   testRunner.And("the Location Identifier should be valid for Value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -274,8 +273,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 103
   testRunner.And("the Response Resource should be a Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
-  testRunner.And("the returned resource shall contain a logical id matching the requested read logi" +
-                    "cal identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 105
   testRunner.And("the Location Identifier should be valid for Value \"SIT3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -296,8 +294,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 116
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 117
-  testRunner.And("the conformance profile should contain the \"Location\" resource with a \"read\" inte" +
-                    "raction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Conformance REST Resources should contain the \"Location\" Resource with the \"R" +
+                    "ead\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -328,8 +326,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 127
   testRunner.And("the Response Resource should be a Location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
-  testRunner.And("the returned resource shall contain a logical id matching the requested read logi" +
-                    "cal identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
   testRunner.And("the Location Identifier should be valid for Value \"SIT2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
