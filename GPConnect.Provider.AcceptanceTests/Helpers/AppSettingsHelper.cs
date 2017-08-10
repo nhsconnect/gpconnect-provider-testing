@@ -14,6 +14,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         // FHIR Settings
         public static string FhirDirectory => Get<string>("fhirDirectory");
+        public static string FhirWebDirectory => Get<string>("fhirWebDirectory");
+        public static bool FhirCheckWeb => Get<bool>("fhirCheckWeb");
+        public static bool FhirCheckDisk => Get<bool>("fhirCheckDisk");
+        public static bool FhirCheckWebFirst => Get<bool>("fhirCheckWebFirst");
         
         // Security Settings
         public static bool UseTLS => Get<bool>("useTLS");
