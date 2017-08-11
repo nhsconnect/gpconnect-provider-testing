@@ -476,7 +476,7 @@ Scenario Outline: composition contains subject referencing a patient resource in
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Composition Subject should be referenced in the Bundle
 	Examples:
 		| Code |
@@ -500,7 +500,7 @@ Scenario Outline: if composition contains author, the device reference can be fo
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Composition Author should be referenced in the Bundle
 	Examples:
 		| Code |
@@ -524,7 +524,7 @@ Scenario Outline: if composition contains custodian reference
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Composition Custodian should be referenced in the Bundle
 	Examples:
 		| Code |
@@ -548,7 +548,7 @@ Scenario Outline: patient contains a valid identifiers
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "document"
+		And the response should be a Bundle resource of type "searchset"
 		And the Patient Id should be valid
 		And the Patient Identifiers should be valid
 	Examples:
