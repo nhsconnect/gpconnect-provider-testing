@@ -35,19 +35,6 @@ Scenario Outline: Practitioner search with failure due to invalid identifier
 		| http://fhir.nhs.net/Id/sds-user-id         |               |
 		|                                            | practitioner2 |
 
-
-Scenario Outline: Practitioner search with failure due to bad request identifier
-	Given I configure the default "PractitionerSearch" request
-		And I add a Practitioner Identifier parameter with System "<System>" and Value "<Value>"
-	When I make the "PractitionerSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
-	Examples:
-		| System                                     | Value         |
-		| http://fhir.nhs.net/Id/sds-user-id9        | practitioner2 |
-		| http://fhir.nhs.net/Id/sds-role-profile-id | practitioner2 |
-		| null                                       | practitioner2 |
-
 Scenario: Practitioner search without the identifier parameter
 	Given I configure the default "PractitionerSearch" request
 	When I make the "PractitionerSearch" request

@@ -21,14 +21,6 @@ Scenario: Returned patients should contain a logical identifier
 		And the response bundle should contain "1" entries
 		And the Patient Id should be valid
 
-Scenario: Provider should return an error when an invalid system is supplied in the identifier parameter
-	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
-		And I add a Patient Identifier parameter with System "http://test.net/types/internalIdentifier" and Value "patient2"
-	When I make the "PatientSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
-
 Scenario: Provider should return an error when no system is supplied in the identifier parameter
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"

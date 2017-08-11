@@ -140,23 +140,6 @@ Scenario: Organization search by site code successfully returns multiple results
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG3" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT3"
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG2" and "2" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT2|SIT3"
 
-Scenario Outline: Organization search failure due to invalid identifier
-	Given I configure the default "OrganizationSearch" request
-		And I add an Identifier parameter with the Value "<Identifier>"
-	When I make the "OrganizationSearch" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-	Examples:
-		| Identifier                             |
-		| GPC001                                 |
-		| http://fhir.nhs.net/Id/ods-site-code   |
-		| http://fhir.nhs.net/Id/ods-site-code\| |
-		| \|GPC001                               |
-		| badSyst++                              |
-		| http://fhir.nhs.net/Id/ods-organization-code\? |
-		| ORG1                                           |
-		| ORG2                                           |
-
 Scenario: Organization search failure due to no identifier parameter
 	Given I configure the default "OrganizationSearch" request
 	When I make the "OrganizationSearch" request

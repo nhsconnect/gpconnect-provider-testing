@@ -51,18 +51,6 @@ Scenario: Location search no entrys found
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "0" entries
-	
-Scenario Outline: Location search failure invalid system
-	Given I configure the default "LocationSearch" request
-		And I add a Location Identifier parameter with System "<System>" and Value "SIT1"
-	When I make the "LocationSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
-	Examples:
-		| System                                         |
-		| http://fhir.nhs.net/Id/ods-site-code9          |
-		| http://fhir.nhs.net/Id/sds-role-profile-id     |
-		| http://fhir.nh5555555555555555555/555555555555 |
 
 Scenario: Location search failure missing identifier
 	Given I configure the default "LocationSearch" request
