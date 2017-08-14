@@ -1344,13 +1344,84 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Book appointment valid response check caching headers exist")]
+        public virtual void BookAppointmentValidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment valid response check caching headers exist", ((string[])(null)));
+#line 561
+this.ScenarioSetup(scenarioInfo);
+#line 562
+ testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 563
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 564
+ testRunner.Given("I get the Schedule for Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 565
+  testRunner.And("I store the Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 566
+ testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 567
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 568
+  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 569
+ testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 570
+ testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 571
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 572
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Book appointment invalid response check caching headers exist")]
+        public virtual void BookAppointmentInvalidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment invalid response check caching headers exist", ((string[])(null)));
+#line 574
+this.ScenarioSetup(scenarioInfo);
+#line 575
+testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 576
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 577
+ testRunner.Given("I get the Schedule for Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 578
+  testRunner.And("I store the Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 579
+ testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 580
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 581
+  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 582
+  testRunner.And("I remove the Slot from the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 583
+ testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 584
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 585
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 586
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_RESOU" +
+                    "RCE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 587
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Book appointment for temporary patient")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         public virtual void BookAppointmentForTemporaryPatient()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment for temporary patient", new string[] {
                         "ignore"});
-#line 562
+#line 590
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1365,7 +1436,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multi slot booking", new string[] {
                         "ignore",
                         "Manual"});
-#line 566
+#line 594
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -1380,7 +1451,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Extension supported", new string[] {
                         "ignore",
                         "Manual"});
-#line 574
+#line 602
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();

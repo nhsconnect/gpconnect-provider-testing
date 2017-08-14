@@ -266,3 +266,23 @@ Scenario: Read appointment and response should contain an ETag header
 		And the response body should be FHIR JSON
 		And the Response Resource should be an Appointment
 		And the Response should contain the ETag header matching the Resource Version Id
+
+Scenario: Read appointment valid response check caching headers exist
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the required cacheing headers should be present in the response
+
+Scenario:Read appointment invalid response check caching headers exist
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Read Operation logical identifier used in the request to "555555"
+	When I make the "AppointmentRead" request
+	Then the response status code should be "404"
+		And the response body should be FHIR JSON

@@ -923,6 +923,61 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("GPCGetSchedule valid response check caching headers exist")]
+        public virtual void GPCGetScheduleValidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GPCGetSchedule valid response check caching headers exist", ((string[])(null)));
+#line 393
+this.ScenarioSetup(scenarioInfo);
+#line 394
+ testRunner.Given("I get the Organization for Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 395
+  testRunner.And("I store the Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 396
+ testRunner.Given("I configure the default \"GpcGetSchedule\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 397
+  testRunner.And("I add a Time Period parameter with Start Date today and End Date in \"14\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 398
+ testRunner.When("I make the \"GpcGetSchedule\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 399
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 400
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 401
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("GPCGetSchedule invalid response check caching headers exist")]
+        public virtual void GPCGetScheduleInvalidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GPCGetSchedule invalid response check caching headers exist", ((string[])(null)));
+#line 403
+this.ScenarioSetup(scenarioInfo);
+#line 404
+ testRunner.Given("I get the Organization for Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 405
+  testRunner.And("I store the Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 406
+ testRunner.Given("I configure the default \"GpcGetSchedule\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 407
+  testRunner.And("I add a Time Period parameter with Start Date today and End Date in \"15\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 408
+ testRunner.When("I make the \"GpcGetSchedule\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 409
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 410
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 411
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I successfully perform a gpc.getschedule operation where the start date in the re" +
             "quest is after the start date of a slot but before the end date of the slot")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
@@ -933,19 +988,19 @@ this.ScenarioSetup(scenarioInfo);
                     "quest is after the start date of a slot but before the end date of the slot", new string[] {
                         "Manual",
                         "ignore"});
-#line 396
+#line 416
 this.ScenarioSetup(scenarioInfo);
-#line 397
+#line 417
  testRunner.Given("I search for free slots at organization \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 398
+#line 418
   testRunner.And("I search for slots using a date range I know there is a free slot which has a sta" +
                     "rt date before the request parameter start date but the slot end date is after t" +
                     "he requeste parameter start date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 399
+#line 419
  testRunner.When("I perform the gpc.getSchedule operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 400
+#line 420
  testRunner.Then("the response should be successful and return a FHIR Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 401
+#line 421
  testRunner.Then("the slot which straddles the request parameter start date should appear in the re" +
                     "sponse bundle.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -965,19 +1020,19 @@ this.ScenarioSetup(scenarioInfo);
                     "lot", new string[] {
                         "Manual",
                         "ignore"});
-#line 406
+#line 426
 this.ScenarioSetup(scenarioInfo);
-#line 407
+#line 427
  testRunner.Given("I search for free slots at organization \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 408
+#line 428
   testRunner.And("I search for slots using a date range I know there is a free slot which has a sta" +
                     "rt date before the request parameter end date but the slot end date is after the" +
                     " requeste parameter end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 409
+#line 429
  testRunner.When("I perform the gpc.getSchedule operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 410
+#line 430
  testRunner.Then("the response should be successful and return a FHIR Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 411
+#line 431
  testRunner.Then("the slot which straddles the request parameter start date should appear in the re" +
                     "sponse bundle.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

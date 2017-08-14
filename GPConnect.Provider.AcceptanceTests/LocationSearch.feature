@@ -227,6 +227,24 @@ Scenario: Location search include count and sort parameters
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 
+Scenario: Location search valid response check caching headers exist
+	Given I configure the default "LocationSearch" request
+		And I add a Location Identifier parameter with default System and Value "SIT1"
+	When I make the "LocationSearch" request
+	Then the response status code should indicate success
+		And the response should be the format FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the required cacheing headers should be present in the response
+
+
+Scenario: Location search invalid response check caching headers exist
+	Given I configure the default "LocationSearch" request
+	When I make the "LocationSearch" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response
+
+
 @ignore
 @Manual
 Scenario: Ensure out of date site codes are no longer returning any resource

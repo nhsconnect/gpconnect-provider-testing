@@ -151,4 +151,22 @@ Scenario: Conformance profile supports the Organization read operation
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Organization" Resource with the "Read" Interaction
 
+Scenario: Organization read valid response check caching headers exist
+	Given I get the Organization for Organization Code "ORG1"
+		And I store the Organization
+	Given I configure the default "OrganizationRead" request
+	When I make the "OrganizationRead" request
+	Then the response status code should indicate success
+		And the Response should contain the ETag header matching the Resource Version Id
+		And the Response Resource should be an Organization
+		And the required cacheing headers should be present in the response
 
+Scenario: Organization read invalid response check caching headers exist
+	Given I get the Organization for Organization Code "ORG1"
+		And I store the Organization
+	Given I configure the default "OrganizationRead" request
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3"
+	When I make the "OrganizationRead" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response

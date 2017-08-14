@@ -595,6 +595,52 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Location search valid response check caching headers exist")]
+        public virtual void LocationSearchValidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search valid response check caching headers exist", ((string[])(null)));
+#line 230
+this.ScenarioSetup(scenarioInfo);
+#line 231
+ testRunner.Given("I configure the default \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 232
+  testRunner.And("I add a Location Identifier parameter with default System and Value \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 233
+ testRunner.When("I make the \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 234
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 235
+  testRunner.And("the response should be the format FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 236
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 237
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Location search invalid response check caching headers exist")]
+        public virtual void LocationSearchInvalidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search invalid response check caching headers exist", ((string[])(null)));
+#line 240
+this.ScenarioSetup(scenarioInfo);
+#line 241
+ testRunner.Given("I configure the default \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 242
+ testRunner.When("I make the \"LocationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 243
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 244
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 245
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Ensure out of date site codes are no longer returning any resource")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         [NUnit.Framework.CategoryAttribute("Manual")]
@@ -603,7 +649,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure out of date site codes are no longer returning any resource", new string[] {
                         "ignore",
                         "Manual"});
-#line 232
+#line 250
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -620,7 +666,7 @@ this.ScenarioSetup(scenarioInfo);
                     " available in the provider system", new string[] {
                         "Manual",
                         "ignore"});
-#line 237
+#line 255
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();

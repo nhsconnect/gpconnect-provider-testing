@@ -558,6 +558,34 @@ Scenario: Conformance profile supports the book appointment operation
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction		
 
+Scenario: Book appointment valid response check caching headers exist
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the required cacheing headers should be present in the response
+
+Scenario: Book appointment invalid response check caching headers exist
+Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I remove the Slot from the Created Appointment
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+		And the required cacheing headers should be present in the response
+
 @ignore
 Scenario: Book appointment for temporary patient
 

@@ -517,16 +517,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 208
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 209
-  testRunner.And("I set the Created Appointment Comment to \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 210
   testRunner.And("I set the Prefer header to \"return=minimal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 211
+#line 210
  testRunner.When("I make the \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 212
+#line 211
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 213
+#line 212
   testRunner.And("the response body should be empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
+#line 213
   testRunner.And("the content-type should be equal to null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -537,23 +535,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AmendAppointmentSendAnUpdateWithAnInvalidIf_MatchHeader()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment send an update with an invalid if-match header", ((string[])(null)));
-#line 216
+#line 215
 this.ScenarioSetup(scenarioInfo);
-#line 217
+#line 216
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 218
+#line 217
   testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 219
+#line 218
  testRunner.Given("I configure the default \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 220
+#line 219
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 221
+#line 220
   testRunner.And("I set the Created Appointment Comment to \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 222
+#line 221
   testRunner.And("I set the If-Match header to \"invalidEtag\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 223
+#line 222
  testRunner.When("I make the \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 224
+#line 223
  testRunner.Then("the response status code should be \"409\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -566,31 +564,31 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment set etag and check etag is the same in the returned amended app" +
                     "ointment", ((string[])(null)));
-#line 226
+#line 225
 this.ScenarioSetup(scenarioInfo);
-#line 227
+#line 226
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 228
+#line 227
   testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 229
+#line 228
  testRunner.Given("I read the Stored Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 230
+#line 229
   testRunner.And("I store the Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 231
+#line 230
  testRunner.Given("I configure the default \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 232
+#line 231
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 233
+#line 232
   testRunner.And("I set the Created Appointment Comment to \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 234
+#line 233
   testRunner.And("I set the If-Match header to the Stored Appointment Version Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 235
+#line 234
  testRunner.When("I make the \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 236
+#line 235
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 237
+#line 236
   testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 238
+#line 237
   testRunner.And("the Appointment Comment should equal \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -601,23 +599,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AmendAppointmentAndSendAnInvalidBundleResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment and send an invalid bundle resource", ((string[])(null)));
-#line 240
+#line 239
 this.ScenarioSetup(scenarioInfo);
-#line 241
+#line 240
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 242
+#line 241
   testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 243
+#line 242
  testRunner.Given("I configure the default \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 244
+#line 243
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 245
+#line 244
   testRunner.And("I set the Created Appointment Comment to \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 246
+#line 245
  testRunner.When("I make the \"AppointmentAmend\" request with invalid Resource type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 247
+#line 246
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 248
+#line 247
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_RESOU" +
                     "RCE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -629,25 +627,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AmendAppointmentAndSendAnInvalidAppointmentResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment and send an invalid appointment resource", ((string[])(null)));
-#line 250
+#line 249
 this.ScenarioSetup(scenarioInfo);
-#line 251
+#line 250
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 252
+#line 251
   testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 253
+#line 252
  testRunner.Given("I configure the default \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 254
+#line 253
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 255
+#line 254
   testRunner.And("I set the Created Appointment Comment to \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 256
+#line 255
   testRunner.And("I set the Created Appointment to a new Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 257
+#line 256
  testRunner.When("I make the \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 258
+#line 257
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 259
+#line 258
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -658,17 +656,79 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConformanceProfileSupportTheAmendAppointmentOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile support the Amend appointment operation", ((string[])(null)));
-#line 261
+#line 260
 this.ScenarioSetup(scenarioInfo);
-#line 262
+#line 261
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 263
+#line 262
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 264
+#line 263
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 265
+#line 264
   testRunner.And("the Conformance REST Resources should contain the \"Appointment\" Resource with the" +
                     " \"Update\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Amend appointment valid response check caching headers exist")]
+        public virtual void AmendAppointmentValidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment valid response check caching headers exist", ((string[])(null)));
+#line 266
+this.ScenarioSetup(scenarioInfo);
+#line 267
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 268
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 269
+ testRunner.Given("I configure the default \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 270
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 271
+  testRunner.And("I set the Created Appointment Comment to \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 272
+ testRunner.When("I make the \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 273
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 274
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 275
+  testRunner.And("the Appointment Comment should equal \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 276
+  testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 277
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Amend appointment invalid response check caching headers exist")]
+        public virtual void AmendAppointmentInvalidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment invalid response check caching headers exist", ((string[])(null)));
+#line 279
+this.ScenarioSetup(scenarioInfo);
+#line 280
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 281
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 282
+ testRunner.Given("I configure the default \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 283
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 284
+  testRunner.And("I set the Created Appointment Comment to \"customComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 285
+  testRunner.And("I set the Created Appointment to a new Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 286
+ testRunner.When("I make the \"AppointmentAmend\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 287
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 288
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

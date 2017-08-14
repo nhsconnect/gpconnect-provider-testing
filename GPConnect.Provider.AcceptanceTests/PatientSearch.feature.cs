@@ -757,6 +757,60 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Amend appointment valid response check caching headers exist")]
+        public virtual void AmendAppointmentValidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment valid response check caching headers exist", ((string[])(null)));
+#line 300
+this.ScenarioSetup(scenarioInfo);
+#line 301
+ testRunner.Given("I configure the default \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 302
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 303
+  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 304
+ testRunner.When("I make the \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 305
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 306
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 307
+  testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 308
+  testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 309
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Amend appointment invalid response check caching headers exist")]
+        public virtual void AmendAppointmentInvalidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment invalid response check caching headers exist", ((string[])(null)));
+#line 311
+this.ScenarioSetup(scenarioInfo);
+#line 312
+testRunner.Given("I configure the default \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 313
+  testRunner.And("I set the JWT Requested Record to the NHS Number for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 314
+  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 315
+ testRunner.When("I make the \"PatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 316
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 317
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 318
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Test that if patient is part of a multiple birth that this is reflected in the pa" +
             "tient resource with a boolean element only")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
@@ -767,7 +821,7 @@ this.ScenarioSetup(scenarioInfo);
                     "tient resource with a boolean element only", new string[] {
                         "Manual",
                         "ignore"});
-#line 302
+#line 323
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -786,7 +840,7 @@ this.ScenarioSetup(scenarioInfo);
                     " resource.", new string[] {
                         "Manual",
                         "ignore"});
-#line 306
+#line 327
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();

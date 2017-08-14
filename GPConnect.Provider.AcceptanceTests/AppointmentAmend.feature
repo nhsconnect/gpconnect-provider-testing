@@ -206,7 +206,6 @@ Scenario: Amend appointment prefer header set to minimal
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment Comment to "customComment"
 		And I set the Prefer header to "return=minimal"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
@@ -263,3 +262,27 @@ Scenario: Conformance profile support the Amend appointment operation
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction
+
+Scenario: Amend appointment valid response check caching headers exist
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment Comment to "customComment"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Comment should equal "customComment"
+		And the Appointment Metadata should be valid
+		And the required cacheing headers should be present in the response
+
+Scenario:Amend appointment invalid response check caching headers exist
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment	
+	Given I configure the default "AppointmentAmend" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment Comment to "customComment"
+		And I set the Created Appointment to a new Appointment
+	When I make the "AppointmentAmend" request
+	Then the response status code should be "400"
+		And the required cacheing headers should be present in the response

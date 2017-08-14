@@ -297,6 +297,27 @@ Scenario: Patient Search include count and sort parameters
 		And the response bundle should contain "1" entries
 		And all search response entities in bundle should contain a logical identifier
 
+Scenario: Amend appointment valid response check caching headers exist
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+	When I make the "PatientSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And the Patient Id should be valid
+		And the required cacheing headers should be present in the response
+
+Scenario:Amend appointment invalid response check caching headers exist
+Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add a Patient Identifier parameter with default System and Value "patient1"
+	When I make the "PatientSearch" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response
+
+
 @Manual
 @ignore
 Scenario: Test that if patient is part of a multiple birth that this is reflected in the patient resource with a boolean element only

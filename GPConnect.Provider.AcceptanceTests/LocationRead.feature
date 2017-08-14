@@ -141,10 +141,31 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 		| application/json+fhir | JSON       |
 		| application/xml+fhir  | XML        |
 
-Scenario: Read location should contain ETag
+Scenario: Location read should contain ETag
 	Given I get the Location for Location Value "SIT1"
 		And I store the Location
 	Given I configure the default "LocationRead" request
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
 		And the Response should contain the ETag header matching the Resource Version Id
+
+Scenario: Location read valid response check caching headers exist
+		Given I get the Location for Location Value "SIT1"
+		And I store the Location
+	Given I configure the default "LocationRead" request
+	When I make the "LocationRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a Location
+		And the Location Id should match the GET request Id
+		And the required cacheing headers should be present in the response
+
+Scenario: Location read invalid response check caching headers exist
+	Given I get the Location for Location Value "SIT1"
+		And I store the Location
+	Given I configure the default "LocationRead" request
+		And I set the Interaction Id header to "urn:nhs:names:servxices:gpconnect:fhir:rest:read:location3"
+	When I make the "LocationRead" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response
+	

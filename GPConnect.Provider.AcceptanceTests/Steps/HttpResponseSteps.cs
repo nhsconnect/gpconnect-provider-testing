@@ -98,6 +98,7 @@
             eTag.ShouldEndWith(versionId + "\"", "The ETag header should contain the resource version enclosed within speech marks");
 
             eTag.ShouldBe("W/\"" + versionId + "\"", "The ETag header contains invalid characters");
+
         }
 
         [Then(@"the content-type should not be equal to null")]
@@ -122,6 +123,20 @@
             string contentLength;
             _httpContext.HttpResponse.Headers.TryGetValue("Content-Length", out contentLength);
             contentLength.ShouldNotBe("0", "The response payload should contain a resource.");
+        }
+
+        [Then(@"the required cacheing headers should be present in the response")]
+        public void ThenTheRequiredCacheingHeadersShouldBePresentInTheResponse()
+        {
+            string cacheControl;
+            string expires;
+            string pragma;
+            _httpContext.HttpResponse.Headers.TryGetValue("Cache-Control", out cacheControl);
+            _httpContext.HttpResponse.Headers.TryGetValue("Expires", out expires);
+            _httpContext.HttpResponse.Headers.TryGetValue("Pragma", out pragma);
+            cacheControl.ShouldBe("no-store, no-cache", "The response payload should contain a resource.");
+            expires.ShouldBe("0", "The response payload should contain a resource.");
+            pragma.ShouldBe("no-cache", "The response payload should contain a resource.");
         }
     }
 }

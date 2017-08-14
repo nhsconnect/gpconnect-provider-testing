@@ -638,6 +638,57 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Practitioner search valid response check caching headers exist")]
+        public virtual void PractitionerSearchValidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search valid response check caching headers exist", ((string[])(null)));
+#line 237
+this.ScenarioSetup(scenarioInfo);
+#line 238
+ testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 239
+  testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
+                    "titioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 240
+ testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 241
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 242
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 243
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Practitioner search invalid response check caching headers exist")]
+        public virtual void PractitionerSearchInvalidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search invalid response check caching headers exist", ((string[])(null)));
+#line 245
+this.ScenarioSetup(scenarioInfo);
+#line 246
+ testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 247
+  testRunner.And("I set the Interaction Id header to \"urn:nhs:names:services:gpconnect:fhir:operati" +
+                    "on:gpc.getcarerecord\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 248
+  testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
+                    "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 249
+ testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 250
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 251
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 252
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

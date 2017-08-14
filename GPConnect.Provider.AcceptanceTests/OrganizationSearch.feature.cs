@@ -775,6 +775,60 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Organization search valid response check caching headers exist")]
+        public virtual void OrganizationSearchValidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search valid response check caching headers exist", ((string[])(null)));
+#line 309
+this.ScenarioSetup(scenarioInfo);
+#line 310
+ testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 311
+  testRunner.And("I add an Organization Identifier parameter with Site Code System and Value \"SIT1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 312
+ testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 313
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 314
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 315
+  testRunner.And("the Organization Identifiers are correct for Site Code \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 316
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Organization search invalid response check caching headers exist")]
+        public virtual void OrganizationSearchInvalidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search invalid response check caching headers exist", ((string[])(null)));
+#line 318
+this.ScenarioSetup(scenarioInfo);
+#line 319
+ testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 320
+  testRunner.And("I add the parameter \"incorrectParameter\" with the value \"incorrectParameter\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 321
+  testRunner.And("I add an Organization Identifier parameter with Organization Code System and Valu" +
+                    "e \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 322
+  testRunner.And("I add the parameter \"invalidParameter\" with the value \"invalidParameter\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 323
+ testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 324
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 325
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 326
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
