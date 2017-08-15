@@ -83,5 +83,47 @@ Scenario: Security - no client certificate included in request
 	Then the response status code should be "496"
 		And the response should be a OperationOutcome resource
 
+Scenario Outline: SSP - Connect with valid Cipher
+	Given I configure the default "MetadataRead" cURL request
+		And I am using the SSP
+		And I am using the client certificate
+		And I set the Cipher to "<Cipher>"
+	When I make the "MetadataRead" cURL request
+	Then the cURL Code should be "Ok"
+		And the Response Resource should be a Conformance
+	Examples: 
+	| Cipher                      |
+	| ECDHE-RSA-AES128-GCM-SHA256 |
+	| ECDHE-RSA-AES256-GCM-SHA384 |
+	| ECDHE-RSA-AES256-SHA384     |
+	| ECDHE-RSA-AES256-SHA        |
+	| DHE-RSA-AES128-GCM-SHA256   |
+	| DHE-RSA-AES256-GCM-SHA384   |
+	| DHE-RSA-AES256-SHA256       |
+	| DHE-RSA-AES256-SHA          |
+
+Scenario: Security - Connect with invalid nonexistent Cipher
+	Given I configure the default "MetadataRead" cURL request
+		And I am using the SSP
+		And I am using the client certificate
+		And I set the Cipher to "ABC-DEF"
+	When I make the "MetadataRead" cURL request
+	Then the cURL Code should be "SslCipher"
+
+Scenario: Security - Connect with invalid insecure Cipher
+	Given I configure the default "MetadataRead" cURL request
+		And I am using the SSP
+		And I am using the client certificate
+		And I set the Cipher to "NULL-MD5"
+	When I make the "MetadataRead" cURL request
+	Then the cURL Code should be "SslConnectError"
+
+Scenario: Security - Connect with invalid secure Cipher
+	Given I configure the default "MetadataRead" cURL request
+		And I am using the SSP
+		And I am using the client certificate
+		And I set the Cipher to "AES128-SHA256"
+	When I make the "MetadataRead" cURL request
+	Then the cURL Code should be "SslConnectError"
 # CORS Testing
 # Cipher Tests

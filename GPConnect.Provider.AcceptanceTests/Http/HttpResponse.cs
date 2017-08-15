@@ -4,6 +4,7 @@
     using System.Net;
     using System.Xml.Linq;
     using Constants;
+    using CurlSharp;
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Serialization;
     using Newtonsoft.Json.Linq;
@@ -38,6 +39,7 @@
         }
 
         public bool ResponseTimeAcceptable { get; set; }
+        public CurlCode CurlCode { get; set; }
 
         public FhirResponse ParseFhirResource()
         {

@@ -29,6 +29,12 @@
             _httpContext.HttpRequestConfiguration.UseSpineProxy = false;
         }
 
+        [Given(@"I am using the SSP")]
+        public void IAmUsingTheSsp()
+        {
+            _httpContext.HttpRequestConfiguration.UseSpineProxy = true;
+        }
+
         // Http Header Configuration Steps
 
         [Given(@"I set ""(.*)"" request header to ""(.*)""")]
