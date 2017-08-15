@@ -36,8 +36,7 @@ Scenario Outline: Book appointment failure due to missing header
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I do not send header "<Header>"
-	When I make the "AppointmentCreate" request
+	When I make the "AppointmentCreate" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -185,7 +184,6 @@ Scenario: Book Appointment and check response contains the manadatory elements
 		And the Appointment End should be valid
 		And the Appointment Participants should be valid and resolvable
 		And the Appointment Slots should be valid
-		And the Appointment Priority should be valid
 
 Scenario: Book Appointment and check returned appointment resource contains meta data
 	Given I get the Patient for Patient Value "patient1"
