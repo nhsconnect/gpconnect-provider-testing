@@ -651,10 +651,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book Appointment without location participant")]
-        public virtual void BookAppointmentWithoutLocationParticipant()
+        [NUnit.Framework.DescriptionAttribute("Book Appointment without practitioner participant")]
+        public virtual void BookAppointmentWithoutPractitionerParticipant()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment without location participant", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment without practitioner participant", ((string[])(null)));
 #line 282
 this.ScenarioSetup(scenarioInfo);
 #line 283
@@ -672,7 +672,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 289
   testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 290
-  testRunner.And("I remove the \"Location\" Participants from the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I remove the \"Practitioner\" Participants from the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 291
  testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 292
@@ -686,7 +686,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Book Appointment and remove manadatory resources from the appointment booking")]
         [NUnit.Framework.TestCaseAttribute("Patient", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Practitioner", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Location", new string[0])]
         public virtual void BookAppointmentAndRemoveManadatoryResourcesFromTheAppointmentBooking(string participantToRemove, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove manadatory resources from the appointment booking", exampleTags);
