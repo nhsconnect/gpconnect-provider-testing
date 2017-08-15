@@ -89,6 +89,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given(@"I configure server certificate and ssl");
         }
 
+        [Given(@"I am using the client certificate")]
+        public void GivenIAmUsingTheClientCertificate()
+        {
+            SecurityContext.ClientCertThumbPrint = AppSettingsHelper.ClientCertThumbPrintValid;
+            SecurityContext.SendClientCert = true;
+            Given(@"I configure server certificate and ssl");
+        }
+
+
         [Given(@"I am using the SSP client certificate with invalid FQDN")]
         public void GivenIAmUsingTheSSPClientCertificateWithInvalidFQDN()
         {
@@ -149,6 +158,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             SecurityContext.UseTLS = false;
             Given(@"I do not want to verify the server certificate");
             And(@"I am not using a client certificate");
+        }
+
+        [Given(@"I set the Cipher to ""(.*)""")]
+        public void SetTheCipherTo(string cipher)
+        {
+            SecurityContext.Cipher = cipher;
         }
 
         [Given(@"I configure server certificate and ssl")]

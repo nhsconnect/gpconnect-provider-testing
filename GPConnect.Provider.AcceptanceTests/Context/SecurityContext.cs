@@ -87,6 +87,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             }
         }
 
+        public string Cipher { get; set; }
+
         public void LoadAppConfig()
         {
             Log.WriteLine("SecurityContext->LoadAppConfig()");
