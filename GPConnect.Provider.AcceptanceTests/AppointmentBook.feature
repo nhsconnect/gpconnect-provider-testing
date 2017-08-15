@@ -277,6 +277,7 @@ Scenario Outline: Book Appointment with invalid extension valueset codes
 	Examples: 
 		| ExtensionCombination									| 
 		| Category+InvalidContactMethod+InvalidBookingMethod	| 
+		| InvalidCategory+InvalidContactMethod+BookingMethod	| 
 
 Scenario: Book Appointment without location participant
 	Given I get the Patient for Patient Value "patient1"
