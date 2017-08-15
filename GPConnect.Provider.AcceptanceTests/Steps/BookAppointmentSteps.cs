@@ -175,7 +175,7 @@
         {
             _fhirResourceRepository.Appointment.Participant.ForEach(participant =>
             {
-                if (participant.Actor.Reference.ToString().Contains("Patient"))
+                if (participant.Actor.Reference.ToString().Contains("Practitioner"))
                 {
                     participant.Status = null;
                 }
@@ -187,7 +187,7 @@
         {
             _fhirResourceRepository.Appointment.Participant.ForEach(participant =>
             {
-                if (participant.Actor.Reference.ToString().Contains("Patient"))
+                if (participant.Actor.Reference.ToString().Contains("Location"))
                 {
                     participant.Status = null;
                 }

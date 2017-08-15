@@ -128,21 +128,46 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Practitioner search with failure due to bad request identifier")]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-user-id9", "practitioner2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-role-profile-id", "practitioner2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("null", "practitioner2", new string[0])]
+        public virtual void PractitionerSearchWithFailureDueToBadRequestIdentifier(string system, string value, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search with failure due to bad request identifier", exampleTags);
+#line 39
+this.ScenarioSetup(scenarioInfo);
+#line 40
+ testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 41
+  testRunner.And(string.Format("I add a Practitioner Identifier parameter with System \"{0}\" and Value \"{1}\"", system, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+ testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 43
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 44
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_IDENT" +
+                    "IFIER_SYSTEM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Practitioner search without the identifier parameter")]
         public virtual void PractitionerSearchWithoutTheIdentifierParameter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search without the identifier parameter", ((string[])(null)));
-#line 38
+#line 51
 this.ScenarioSetup(scenarioInfo);
-#line 39
+#line 52
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 40
+#line 53
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 41
+#line 54
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 42
+#line 55
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
+#line 56
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -157,18 +182,18 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerSearchWhereIdentifierContainsTheIncorrectCaseOrSpelling(string parameterName, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search where identifier contains the incorrect case or spelling", exampleTags);
-#line 45
+#line 58
 this.ScenarioSetup(scenarioInfo);
-#line 46
+#line 59
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 47
+#line 60
   testRunner.And(string.Format("I add a Practitioner \"{0}\" parameter with System \"http://fhir.nhs.net/Id/sds-user" +
                         "-id\" and Value \"practitioner2\"", parameterName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 61
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 49
+#line 62
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 50
+#line 63
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -183,34 +208,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerSearchTestingParamaterValidityAndOrderSentInTheRequest(string param1Name, string param1Value, string param2Name, string param2Value, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search testing paramater validity and order sent in the request", exampleTags);
-#line 58
+#line 71
 this.ScenarioSetup(scenarioInfo);
-#line 59
+#line 72
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 73
   testRunner.And(string.Format("I add the parameter \"{0}\" with the value \"{1}\"", param1Name, param1Value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 74
   testRunner.And(string.Format("I add the parameter \"{0}\" with the value \"{1}\"", param2Name, param2Value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 75
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 63
+#line 76
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 64
+#line 77
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
+#line 78
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
+#line 79
   testRunner.And("the Practitioner Identifiers should be valid fixed values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 67
+#line 80
   testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
+#line 81
   testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be valid and resol" +
                     "vable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 82
   testRunner.And("the Practitioner Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 83
   testRunner.And("the Practitioner should exclude disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 84
   testRunner.And("the Practitioner Communication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -225,34 +250,34 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search add accept header to request and check for correct response f" +
                     "ormat", exampleTags);
-#line 79
+#line 92
 this.ScenarioSetup(scenarioInfo);
-#line 80
+#line 93
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 81
+#line 94
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
+#line 95
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 96
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 84
+#line 97
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 85
+#line 98
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 99
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 100
   testRunner.And("the Practitioner Identifiers should be valid fixed values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 101
   testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
+#line 102
   testRunner.And("the Practitioner Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
+#line 103
   testRunner.And("the Practitioner should exclude disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
+#line 104
   testRunner.And("the Practitioner Communication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 105
   testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be valid and resol" +
                     "vable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -270,36 +295,36 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search add accept header and _format parameter to the request and ch" +
                     "eck for correct response format", exampleTags);
-#line 98
+#line 111
 this.ScenarioSetup(scenarioInfo);
-#line 99
+#line 112
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 100
+#line 113
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
+#line 114
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 115
   testRunner.And(string.Format("I add a Format parameter with the Value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
+#line 116
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 104
+#line 117
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 105
+#line 118
   testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 119
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 120
   testRunner.And("the Practitioner Identifiers should be valid fixed values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
+#line 121
   testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
+#line 122
   testRunner.And("the Practitioner Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
+#line 123
   testRunner.And("the Practitioner should exclude disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 124
   testRunner.And("the Practitioner Communication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
+#line 125
   testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be valid and resol" +
                     "vable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -316,20 +341,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerSearchFailureDueToMissingHeader(string header, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search failure due to missing header", exampleTags);
-#line 120
+#line 133
 this.ScenarioSetup(scenarioInfo);
-#line 121
+#line 134
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 122
+#line 135
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
+#line 136
   testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 124
+#line 137
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 125
+#line 138
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 126
+#line 139
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -343,20 +368,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerSearchFailureDueToInvalidInteractionId(string interactionId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search failure due to invalid interactionId", exampleTags);
-#line 135
+#line 148
 this.ScenarioSetup(scenarioInfo);
-#line 136
+#line 149
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 137
+#line 150
   testRunner.And(string.Format("I set the Interaction Id header to \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
+#line 151
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 139
+#line 152
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 140
+#line 153
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 141
+#line 154
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -369,20 +394,20 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search multiple practitioners contains metadata and populated fields" +
                     "", ((string[])(null)));
-#line 148
+#line 161
 this.ScenarioSetup(scenarioInfo);
-#line 149
+#line 162
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 150
+#line 163
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 164
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 152
+#line 165
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 153
+#line 166
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
+#line 167
   testRunner.And("the Practitioner Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -393,20 +418,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerSearchReturnsBackUserWithNameElement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search returns back user with name element", ((string[])(null)));
-#line 156
+#line 169
 this.ScenarioSetup(scenarioInfo);
-#line 157
+#line 170
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 158
+#line 171
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 159
+#line 172
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 160
+#line 173
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 161
+#line 174
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 162
+#line 175
   testRunner.And("the Practitioner Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -417,22 +442,22 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerSearchReturnsPractitionerRoleElementWithValidParameters()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search returns practitioner role element with valid parameters", ((string[])(null)));
-#line 164
+#line 177
 this.ScenarioSetup(scenarioInfo);
-#line 165
+#line 178
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 166
+#line 179
     testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 167
+#line 180
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 168
+#line 181
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 169
+#line 182
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 170
+#line 183
   testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
+#line 184
   testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be valid and resol" +
                     "vable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -444,20 +469,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerSearchShouldNotContainPhotoOrQualificationInformation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search should not contain photo or qualification information", ((string[])(null)));
-#line 173
+#line 186
 this.ScenarioSetup(scenarioInfo);
-#line 174
+#line 187
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 175
+#line 188
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 176
+#line 189
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 177
+#line 190
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 178
+#line 191
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
+#line 192
   testRunner.And("the Practitioner should exclude disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -468,20 +493,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerSearchContainsCommunicationElement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search contains communication element", ((string[])(null)));
-#line 181
+#line 194
 this.ScenarioSetup(scenarioInfo);
-#line 182
+#line 195
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 183
+#line 196
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
+#line 197
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 185
+#line 198
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 186
+#line 199
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
+#line 200
   testRunner.And("the Practitioner Communication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -492,21 +517,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerSearchMultipleIdentifierParameterFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search multiple identifier parameter failure", ((string[])(null)));
-#line 189
+#line 202
 this.ScenarioSetup(scenarioInfo);
-#line 190
+#line 203
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 191
+#line 204
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
+#line 205
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 193
+#line 206
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 194
+#line 207
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 195
+#line 208
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -519,20 +544,20 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search with multiple identifiers sending an invalid identifier after" +
                     " a valid identifier", ((string[])(null)));
-#line 197
+#line 210
 this.ScenarioSetup(scenarioInfo);
-#line 198
+#line 211
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 199
+#line 212
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
+#line 213
   testRunner.And("I add an Identifier parameter with the Value \"INVALID SYSTEM|INVALID VALUE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
+#line 214
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 202
+#line 215
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 203
+#line 216
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -545,20 +570,20 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search with multiple identifiers sending a valid identifier after an" +
                     " invalid identifier", ((string[])(null)));
-#line 205
+#line 218
 this.ScenarioSetup(scenarioInfo);
-#line 206
+#line 219
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 207
+#line 220
   testRunner.And("I add an Identifier parameter with the Value \"INVALID SYSTEM|INVALID VALUE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 208
+#line 221
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 209
+#line 222
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 210
+#line 223
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 211
+#line 224
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -571,21 +596,21 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search multiple multiple identifiers for different practitioner para" +
                     "meter failure", ((string[])(null)));
-#line 213
+#line 226
 this.ScenarioSetup(scenarioInfo);
-#line 214
+#line 227
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 215
+#line 228
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
+#line 229
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
+#line 230
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 218
+#line 231
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 219
+#line 232
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -596,24 +621,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerSearchIncludeCountAndSortParameters()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search include count and sort parameters", ((string[])(null)));
-#line 221
+#line 234
 this.ScenarioSetup(scenarioInfo);
-#line 222
+#line 235
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 223
+#line 236
   testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
                     "titioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
+#line 237
   testRunner.And("I add the parameter \"_count\" with the value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
+#line 238
   testRunner.And("I add the parameter \"_sort\" with the value \"status\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
+#line 239
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 227
+#line 240
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 228
+#line 241
   testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 229
+#line 242
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -624,68 +649,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConformanceProfileSupportsThePractitionerSearchOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Practitioner search operation", ((string[])(null)));
-#line 231
+#line 244
 this.ScenarioSetup(scenarioInfo);
-#line 232
+#line 245
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 233
+#line 246
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 234
+#line 247
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 235
+#line 248
   testRunner.And("the Conformance REST Resources should contain the \"Practitioner\" Resource with th" +
                     "e \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Practitioner search valid response check caching headers exist")]
-        public virtual void PractitionerSearchValidResponseCheckCachingHeadersExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search valid response check caching headers exist", ((string[])(null)));
-#line 237
-this.ScenarioSetup(scenarioInfo);
-#line 238
- testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 239
-  testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
-                    "titioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 240
- testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 241
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 242
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 243
-  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Practitioner search invalid response check caching headers exist")]
-        public virtual void PractitionerSearchInvalidResponseCheckCachingHeadersExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search invalid response check caching headers exist", ((string[])(null)));
-#line 245
-this.ScenarioSetup(scenarioInfo);
-#line 246
- testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 247
-  testRunner.And("I set the Interaction Id header to \"urn:nhs:names:services:gpconnect:fhir:operati" +
-                    "on:gpc.getcarerecord\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 248
-  testRunner.And("I add a Practitioner Identifier parameter with SDS User Id System and Value \"prac" +
-                    "titioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
- testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 250
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 251
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 252
-  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
