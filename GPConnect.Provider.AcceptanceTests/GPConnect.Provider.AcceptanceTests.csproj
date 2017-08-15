@@ -318,7 +318,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AppointmentCancel.feature.cs</LastGenOutput>
     </None>
-    <None Include="cacert.pem" />
     <None Include="FHIR.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FHIR.feature.cs</LastGenOutput>
