@@ -543,3 +543,26 @@ Scenario: Conformance profile supports the search appointment operation
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Appointment" Resource with the "SearchType" Interaction
+
+
+Scenario: Appointment retrieve valid response check caching headers exist
+Given I get the Patient for Patient Value "patient15"
+		And I store the Patient
+	Given I configure the default "AppointmentSearch" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+	When I make the "AppointmentSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Bundle should contain no Appointments
+		And the required cacheing headers should be present in the response
+
+Scenario: Appointment retrieve invalid response check caching headers exist
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I configure the default "AppointmentSearch" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:search:organization "
+	When I make the "AppointmentSearch" request
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response

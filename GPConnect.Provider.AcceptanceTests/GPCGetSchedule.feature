@@ -390,6 +390,26 @@ Scenario: Conformance profile supports the gpc.getSchedule operation
 	Then the response status code should indicate success
 		And the Conformance REST Operations should contain "gpc.getschedule"
 
+Scenario:GPCGetSchedule valid response check caching headers exist
+	Given I get the Organization for Organization Code "ORG1"
+		And I store the Organization
+	Given I configure the default "GpcGetSchedule" request
+		And I add a Time Period parameter with Start Date today and End Date in "14" days
+	When I make the "GpcGetSchedule" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the required cacheing headers should be present in the response
+
+Scenario:GPCGetSchedule invalid response check caching headers exist
+	Given I get the Organization for Organization Code "ORG1"
+		And I store the Organization
+	Given I configure the default "GpcGetSchedule" request
+		And I add a Time Period parameter with Start Date today and End Date in "15" days
+	When I make the "GpcGetSchedule" request
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		And the required cacheing headers should be present in the response
+
 @Manual
 @ignore
 # This is tested by "I perform a getSchedule with valid partial dateTime strings" but would benefit from additional manual testing

@@ -1729,6 +1729,75 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Register pateient valid response check caching headers exist")]
+        public virtual void RegisterPateientValidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register pateient valid response check caching headers exist", ((string[])(null)));
+#line 711
+this.ScenarioSetup(scenarioInfo);
+#line 712
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 713
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 714
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 715
+  testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
+                    " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 716
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 717
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 718
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 719
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 720
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 721
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Register pateient invalid response check caching headers exist")]
+        public virtual void RegisterPateientInvalidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register pateient invalid response check caching headers exist", ((string[])(null)));
+#line 723
+this.ScenarioSetup(scenarioInfo);
+#line 724
+ testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 725
+ testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 726
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 727
+  testRunner.And("I set the Stored Patient Registration Period with Start Date \"2017-04-12\" and End" +
+                    " Date \"2018-12-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 728
+  testRunner.And("I set the Stored Patient Registration Status with Value \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 729
+  testRunner.And("I set the Stored Patient Registration Type with Value \"T\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 730
+  testRunner.And("I remove the Identifiers from the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 731
+  testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 732
+ testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 733
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 734
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_NHS_N" +
+                    "UMBER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 735
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

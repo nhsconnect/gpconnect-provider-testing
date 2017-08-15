@@ -374,6 +374,57 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Practitioner read valid response check caching headers exist")]
+        public virtual void PractitionerReadValidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read valid response check caching headers exist", ((string[])(null)));
+#line 152
+this.ScenarioSetup(scenarioInfo);
+#line 153
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 154
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 155
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 156
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 157
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 158
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Practitioner read invalid response check caching headers exist")]
+        public virtual void PractitionerReadInvalidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read invalid response check caching headers exist", ((string[])(null)));
+#line 160
+this.ScenarioSetup(scenarioInfo);
+#line 161
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 162
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 163
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 164
+  testRunner.And("I set the Interaction Id header to \"urn:nhs:names:services:gpconnect:fhir:rest:re" +
+                    "ad:practitioner3>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 165
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 166
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 167
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 168
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("If provider sysstems allow the practitioner to be associated with multiple langua" +
             "ges shown by communication element manual testing is required")]
         [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
@@ -384,7 +435,7 @@ this.ScenarioSetup(scenarioInfo);
                     "ges shown by communication element manual testing is required", new string[] {
                         "Manual",
                         "ignore"});
-#line 154
+#line 175
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -401,7 +452,7 @@ this.ScenarioSetup(scenarioInfo);
                     " version can be retrieved", new string[] {
                         "Manual",
                         "ignore"});
-#line 158
+#line 179
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -418,7 +469,7 @@ this.ScenarioSetup(scenarioInfo);
                     "sible within the returned practitioner resource", new string[] {
                         "Manual",
                         "ignore"});
-#line 162
+#line 183
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -435,7 +486,7 @@ this.ScenarioSetup(scenarioInfo);
                     " are available in the provider system", new string[] {
                         "Manual",
                         "ignore"});
-#line 166
+#line 187
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();

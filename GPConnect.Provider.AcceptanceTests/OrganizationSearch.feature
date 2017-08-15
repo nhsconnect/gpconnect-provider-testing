@@ -140,23 +140,6 @@ Scenario: Organization search by site code successfully returns multiple results
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG3" and "1" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT3"
 		And an organization returned in the bundle has "1" "http://fhir.nhs.net/Id/ods-organization-code" system identifier with "ORG2" and "2" "http://fhir.nhs.net/Id/ods-site-code" system identifier with site code "SIT2|SIT3"
 
-Scenario Outline: Organization search failure due to invalid identifier
-	Given I configure the default "OrganizationSearch" request
-		And I add an Identifier parameter with the Value "<Identifier>"
-	When I make the "OrganizationSearch" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-	Examples:
-		| Identifier                             |
-		| GPC001                                 |
-		| http://fhir.nhs.net/Id/ods-site-code   |
-		| http://fhir.nhs.net/Id/ods-site-code\| |
-		| \|GPC001                               |
-		| badSyst++                              |
-		| http://fhir.nhs.net/Id/ods-organization-code\? |
-		| ORG1                                           |
-		| ORG2                                           |
-
 Scenario: Organization search failure due to no identifier parameter
 	Given I configure the default "OrganizationSearch" request
 	When I make the "OrganizationSearch" request
@@ -322,3 +305,22 @@ Scenario: Organization search include count and sort parameters
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
+
+Scenario: Organization search valid response check caching headers exist
+	Given I configure the default "OrganizationSearch" request
+		And I add an Organization Identifier parameter with Site Code System and Value "SIT1"
+	When I make the "OrganizationSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Organization Identifiers are correct for Site Code "SIT1"
+		And the required cacheing headers should be present in the response
+
+Scenario: Organization search invalid response check caching headers exist
+	Given I configure the default "OrganizationSearch" request
+		And I add the parameter "incorrectParameter" with the value "incorrectParameter"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
+		And I add the parameter "invalidParameter" with the value "invalidParameter"
+	When I make the "OrganizationSearch" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response

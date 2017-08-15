@@ -25,7 +25,9 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kAcceptEncoding = "Accept-Encoding";
             public const string kContentEncoding = "Content-Encoding";
             public const string kTransferEncoding = "Transfer-Encoding";
-
+            public const string kCacheControl = "Cache-Control";
+            public const string kExpires = "Expires";
+            public const string kPragma = "Pragma";
         }
     }
 }

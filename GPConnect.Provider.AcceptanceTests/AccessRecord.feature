@@ -1110,6 +1110,26 @@ Scenario Outline: A patient is requested which is not on Spine but is on provide
 		| REF |
 		| SUM |
 
+Scenario: Access record valid response check caching headers exist
+	Given I configure the default "GpcGetCareRecord" request
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "ADM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the required cacheing headers should be present in the response
+	
+
+Scenario: Access record invalid response check caching headers exist
+	Given I configure the default "GpcGetCareRecord" request
+		And I set the JWT Requested Record to the NHS Number for "patient2"	
+	When I make the "GpcGetCareRecord" request
+	Then the response status code should be "400"		
+		And the response should be a OperationOutcome resource
+		And the required cacheing headers should be present in the response
+
+
 @ignore
 Scenario: Identifier order in response resources
 # The identifiers within the response resources have to appear in the correct order as per the specfication.

@@ -17,12 +17,12 @@
             _httpContext = httpContext;
         }
 
-        [Then(@"the Appointment Comment should equal ""(.*)""")]
+        [Then(@"the Appointment Reason should equal ""(.*)""")]
         public void TheAppointmentCommentShouldBeValidFor(string value)
         {
             Appointments.ForEach(appointment =>
             {
-                appointment.Comment.ShouldBe(value, $@"The Appointment Comment should be ""{value} but was ""{appointment.Comment}"".");
+                appointment.Reason?.Text.ShouldBe(value, $@"The Appointment Comment should be ""{value} but was ""{appointment.Comment}"".");
             });
         }
 

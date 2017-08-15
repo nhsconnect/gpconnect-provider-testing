@@ -149,6 +149,27 @@ Scenario: Practitioner read response should contain an ETag header
 		And the Response Resource should be a Practitioner
 		And the Response should contain the ETag header matching the Resource Version Id
 
+Scenario: Practitioner read valid response check caching headers exist
+	Given I get the Practitioner for Practitioner Code "practitioner1"
+		And I store the Practitioner
+	Given I configure the default "PractitionerRead" request
+	When I make the "PractitionerRead" request
+	Then the response status code should indicate success
+		And the required cacheing headers should be present in the response
+
+Scenario: Practitioner read invalid response check caching headers exist
+	Given I get the Practitioner for Practitioner Code "practitioner1"
+		And I store the Practitioner
+	Given I configure the default "PractitionerRead" request
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3>"
+	When I make the "PractitionerRead" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response
+	
+
+
+
 @Manual
 @ignore
 Scenario: If provider sysstems allow the practitioner to be associated with multiple languages shown by communication element manual testing is required
