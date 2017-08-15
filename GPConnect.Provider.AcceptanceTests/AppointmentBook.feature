@@ -244,6 +244,41 @@ Scenario Outline: Book Appointment and check extensions are valid
 		| BookingMethod+ContactMethod			| 
 		| Category+BookingMethod+ContactMethod	| 
 
+#improve name to be more descriptive
+Scenario Outline: Book Appointment with invalid extensions
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I add the "<ExtensionCombination>" Extensions to the Created Appointment
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+	Examples: 
+		| ExtensionCombination					| 
+		| Category+InvalidMethod				| 
+
+#improve name to be more descriptive
+Scenario Outline: Book Appointment with invalid extension valueset codes
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I add the "<ExtensionCombination>" Extensions to the Created Appointment
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+	Examples: 
+		| ExtensionCombination									| 
+		| Category+InvalidContactMethod+InvalidBookingMethod	| 
 
 Scenario: Book Appointment without location participant
 	Given I get the Patient for Patient Value "patient1"
@@ -322,6 +357,7 @@ Scenario: Book appointment containing additional extensions with only the system
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
+#This test passes but for the wrong reasons
 Scenario: Book single appointment for patient and send additional extensions with url and value populated
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -488,6 +524,7 @@ Scenario Outline: Book Appointment and remove reason coding element from the app
 		| Code          |
 		| Display       |
 
+#Miss-leading test name - participant status is not removed but nullified
 Scenario: Book Appointment and remove participant status from the appointment booking
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -504,6 +541,7 @@ Scenario: Book Appointment and remove participant status from the appointment bo
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+#Miss-leading test name - participant type coding element is not removed but nullified
 Scenario Outline: Book Appointment and remove participant type coding element from the appointment booking
 		Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -557,6 +595,34 @@ Scenario: Conformance profile supports the book appointment operation
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction		
+
+Scenario: Book appointment valid response check caching headers exist
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the required cacheing headers should be present in the response
+
+Scenario: Book appointment invalid response check caching headers exist
+Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get the Schedule for Organization Code "ORG1"
+		And I store the Schedule
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I remove the Slot from the Created Appointment
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+		And the required cacheing headers should be present in the response
 
 @ignore
 Scenario: Book appointment for temporary patient

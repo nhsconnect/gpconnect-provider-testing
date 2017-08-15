@@ -51,18 +51,6 @@ Scenario: Location search no entrys found
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "0" entries
-	
-Scenario Outline: Location search failure invalid system
-	Given I configure the default "LocationSearch" request
-		And I add a Location Identifier parameter with System "<System>" and Value "SIT1"
-	When I make the "LocationSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
-	Examples:
-		| System                                         |
-		| http://fhir.nhs.net/Id/ods-site-code9          |
-		| http://fhir.nhs.net/Id/sds-role-profile-id     |
-		| http://fhir.nh5555555555555555555/555555555555 |
 
 Scenario: Location search failure missing identifier
 	Given I configure the default "LocationSearch" request
@@ -227,6 +215,35 @@ Scenario: Location search send additional invalid parameter
 	When I make the "LocationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Location search include count and sort parameters
+	Given I configure the default "LocationSearch" request
+		And I add a Location Identifier parameter with default System and Value "SIT1"
+		And I add the parameter "_count" with the value "1"
+		And I add the parameter "_sort" with the value "status"
+	When I make the "LocationSearch" request
+	Then the response status code should indicate success
+		And the response should be the format FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+
+Scenario: Location search valid response check caching headers exist
+	Given I configure the default "LocationSearch" request
+		And I add a Location Identifier parameter with default System and Value "SIT1"
+	When I make the "LocationSearch" request
+	Then the response status code should indicate success
+		And the response should be the format FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the required cacheing headers should be present in the response
+
+
+Scenario: Location search invalid response check caching headers exist
+	Given I configure the default "LocationSearch" request
+	When I make the "LocationSearch" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response
+
 
 @ignore
 @Manual

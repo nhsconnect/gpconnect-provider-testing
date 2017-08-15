@@ -140,7 +140,6 @@ Scenario: Conformance profile supports the Practitioner read operation
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Practitioner" Resource with the "Read" Interaction
 
-#Potentially out of scope, needs verifiying
 Scenario: Practitioner read response should contain an ETag header
 	Given I get the Practitioner for Practitioner Code "practitioner1"
 		And I store the Practitioner
@@ -150,25 +149,26 @@ Scenario: Practitioner read response should contain an ETag header
 		And the Response Resource should be a Practitioner
 		And the Response should contain the ETag header matching the Resource Version Id
 
-#Potentially out of scope, needs verifiying
-Scenario: Practitioner read VRead of current resource should return resource
+Scenario: Practitioner read valid response check caching headers exist
 	Given I get the Practitioner for Practitioner Code "practitioner1"
 		And I store the Practitioner
-		And I store the Practitioner Version Id
 	Given I configure the default "PractitionerRead" request
 	When I make the "PractitionerRead" request
 	Then the response status code should indicate success
-		And the Response Resource should be a Practitioner
+		And the required cacheing headers should be present in the response
 
-#Potentially out of scope, needs verifiying
-Scenario: Practitioner read VRead of non existant version should return error
+Scenario: Practitioner read invalid response check caching headers exist
 	Given I get the Practitioner for Practitioner Code "practitioner1"
 		And I store the Practitioner
-		And I set the GET request Version Id to "NotARealVersionId"
 	Given I configure the default "PractitionerRead" request
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3>"
 	When I make the "PractitionerRead" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response
+	
+
+
 
 @Manual
 @ignore

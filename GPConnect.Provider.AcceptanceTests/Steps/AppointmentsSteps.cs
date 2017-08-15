@@ -231,26 +231,35 @@
 
         private static Extension GetCategoryExtension(string code, string display)
         {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1", code, display);
+            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1",
+                                        "http://fhir.nhs.net/ValueSet/gpconnect-appointment-category-1", code, display);
         }
 
         private static Extension GetBookingMethodExtension(string code, string display)
         {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1", code, display);
+            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1",
+                                        "http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1", code, display);
         }
 
         private static Extension GetContactMethodExtension(string code, string display)
         {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1", code, display);
+            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1",
+                                        "http://fhir.nhs.net/ValueSet/gpconnect-appointment-contact-method-1", code, display);
         }
 
-        private static Extension GetCodingExtension(string url, string code, string display)
+        private static Extension GetInvalidMethodExtension(string code, string display)
+        {
+            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-invalid-method-0000",
+                "http://fhir.nhs.net/ValueSet/gpconnect-appointment-invalid-method-0000", code, display);
+        }
+
+        private static Extension GetCodingExtension(string extensionUrl, string codingUrl, string code, string display)
         {
             var coding = new Coding
             {
                 Code = code,
                 Display = display,
-                System = url
+                System = codingUrl
             };
 
             var reason = new CodeableConcept();
@@ -258,7 +267,7 @@
 
             return new Extension
             {
-                Url = url,
+                Url = extensionUrl,
                 Value = reason
             };
         }
@@ -343,6 +352,15 @@
                     extensions.Add(GetCategoryExtension("VIR", "Virtual"));
                     extensions.Add(GetBookingMethodExtension("TEX", "Text"));
                     extensions.Add(GetContactMethodExtension("LET", "Letter"));
+                    break;
+                case "Category+InvalidMethod":
+                    extensions.Add(GetCategoryExtension("VIR", "Virtual"));
+                    extensions.Add(GetInvalidMethodExtension("INV", "Invalid Method"));
+                    break;
+                case "Category+InvalidContactMethod+InvalidBookingMethod":
+                    extensions.Add(GetCategoryExtension("MSG", "Message"));
+                    extensions.Add(GetBookingMethodExtension("LET", "Letterer"));
+                    extensions.Add(GetContactMethodExtension("PERS", "In person"));
                     break;
             }
 

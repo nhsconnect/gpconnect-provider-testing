@@ -454,3 +454,31 @@ Scenario: Conformance profile supports the cancel appointment operation
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction		
+
+Scenario: Cancel appointment valid response check caching headers exist
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+	When I make the "AppointmentCancel" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "double booked"
+		And the Appointment Metadata should be valid
+		And the required cacheing headers should be present in the response
+
+Scenario:Cancel appointment invalid response check caching headers exist
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+		And I add a Category Extension with Code "CLI" and Display "Clinical" to the Created Appointment
+	When I make the "AppointmentCancel" request
+	Then the response status code should be "403"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response
+
+

@@ -35,19 +35,6 @@ Scenario Outline: Practitioner search with failure due to invalid identifier
 		| http://fhir.nhs.net/Id/sds-user-id         |               |
 		|                                            | practitioner2 |
 
-
-Scenario Outline: Practitioner search with failure due to bad request identifier
-	Given I configure the default "PractitionerSearch" request
-		And I add a Practitioner Identifier parameter with System "<System>" and Value "<Value>"
-	When I make the "PractitionerSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
-	Examples:
-		| System                                     | Value         |
-		| http://fhir.nhs.net/Id/sds-user-id9        | practitioner2 |
-		| http://fhir.nhs.net/Id/sds-role-profile-id | practitioner2 |
-		| null                                       | practitioner2 |
-
 Scenario: Practitioner search without the identifier parameter
 	Given I configure the default "PractitionerSearch" request
 	When I make the "PractitionerSearch" request
@@ -231,8 +218,36 @@ Scenario: Practitioner search multiple multiple identifiers for different practi
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
+Scenario: Practitioner search include count and sort parameters
+	Given I configure the default "PractitionerSearch" request		
+		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner1"
+		And I add the parameter "_count" with the value "1"
+		And I add the parameter "_sort" with the value "status"
+	When I make the "PractitionerSearch" request
+	Then the response status code should indicate success
+		And the response bundle should contain "1" entries
+		And the response should be a Bundle resource of type "searchset" 
+
 Scenario: Conformance profile supports the Practitioner search operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Practitioner" Resource with the "SearchType" Interaction
+
+Scenario:Practitioner search valid response check caching headers exist
+	Given I configure the default "PractitionerSearch" request		
+		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner1"
+	When I make the "PractitionerSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset" 
+		And the required cacheing headers should be present in the response
+
+Scenario:Practitioner search invalid response check caching headers exist
+	Given I configure the default "PractitionerSearch" request
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord"
+		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
+	When I make the "PractitionerSearch" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response
+	

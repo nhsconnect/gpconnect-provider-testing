@@ -267,28 +267,22 @@ Scenario: Read appointment and response should contain an ETag header
 		And the Response Resource should be an Appointment
 		And the Response should contain the ETag header matching the Resource Version Id
 
-# Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
-@ignore
-Scenario: VRead an appointment for a valid version of the patient appointment resource
+Scenario: Read appointment valid response check caching headers exist
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
-		And I store the Appointment Version Id
 	Given I configure the default "AppointmentRead" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	When I make the "AppointmentRead" request 
+	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
-		And the response body should be FHIR JSON
 		And the Response Resource should be an Appointment
+		And the required cacheing headers should be present in the response
 
-# Potentially out of scope, outstanding issue on github "https://github.com/nhsconnect/gpconnect/issues/189"
-@ignore
-Scenario: VRead an appointment for a invalid version of the patient appoint resource
+Scenario:Read appointment invalid response check caching headers exist
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
-		And I set the If-Match header to the Stored Appointment Version Id
 	Given I configure the default "AppointmentRead" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	When I make the "AppointmentRead" request 
+		And I set the Read Operation logical identifier used in the request to "555555"
+	When I make the "AppointmentRead" request
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource

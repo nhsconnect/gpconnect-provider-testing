@@ -706,3 +706,30 @@ Scenario: Register patient setting JWT patient reference so it does not match pa
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+
+Scenario: Register pateient valid response check caching headers exist
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I add the Stored Patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should indicate success
+		And the required cacheing headers should be present in the response
+
+Scenario:Register pateient invalid response check caching headers exist
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
+		And I set the Stored Patient Registration Status with Value "A"
+		And I set the Stored Patient Registration Type with Value "T"
+		And I remove the Identifiers from the Stored Patient
+		And I add the Stored Patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
+		And the required cacheing headers should be present in the response

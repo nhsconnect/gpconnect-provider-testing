@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BoDi;
@@ -6,6 +7,7 @@ using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Importers;
 using GPConnect.Provider.AcceptanceTests.Logger;
+using Hl7.Fhir.Rest;
 using Hl7.Fhir.Specification.Source;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -113,7 +115,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("Data Directory Not Found.");
             }
 
-            var resolver = new ArtifactResolver(new FileDirectoryArtifactSource(AppSettingsHelper.FhirDirectory, true));
+            var vsSources = new List<IArtifactSource>();
+
+            if (AppSettingsHelper.FhirCheckWeb && AppSettingsHelper.FhirCheckWebFirst)
+            {
+                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+            }
+
+            if (AppSettingsHelper.FhirCheckDisk)
+            {
+                vsSources.Add(new FileDirectoryArtifactSource(AppSettingsHelper.FhirDirectory, true));
+            }
+
+            if (AppSettingsHelper.FhirCheckWeb && !AppSettingsHelper.FhirCheckWebFirst)
+            {
+                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+            }
+
+            var resolver = new ArtifactResolver(new MultiArtifactSource(vsSources));
             var gender = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/administrative-gender-1");
             if (gender == null)
                 Assert.Fail("Gender ValueSet Not Found.");
