@@ -280,7 +280,7 @@ Scenario Outline: Book Appointment with invalid extension valueset codes
 		| ExtensionCombination									| 
 		| Category+InvalidContactMethod+InvalidBookingMethod	| 
 
-Scenario: Book Appointment without location participant
+Scenario: Book Appointment without practitioner participant
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I get the Schedule for Organization Code "ORG1"
@@ -288,7 +288,7 @@ Scenario: Book Appointment without location participant
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I remove the "Location" Participants from the Created Appointment
+		And I remove the "Practitioner" Participants from the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
@@ -555,13 +555,13 @@ Scenario Outline: Book Appointment and remove participant type coding element fr
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| Participant  | CodingElement |
-		| Patient      | system        |
-		| Patient      | code          |
-		| Patient      | display       |
-		| Practitioner | system        |
-		| Practitioner | code          |
-		| Practitioner | display       |
+		| Participant | CodingElement |
+		| Patient     | system        |
+		| Patient     | code          |
+		| Patient     | display       |
+		| Location    | system        |
+		| Location    | code          |
+		| Location    | display       |
 
 Scenario: Book appointment and send an invalid bundle resource
 	Given I get the Patient for Patient Value "patient1"
