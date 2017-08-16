@@ -1288,9 +1288,9 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("Patient", "system", new string[0])]
         [NUnit.Framework.TestCaseAttribute("Patient", "code", new string[0])]
         [NUnit.Framework.TestCaseAttribute("Patient", "display", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Practitioner", "system", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Practitioner", "code", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Practitioner", "display", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Location", "system", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Location", "code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Location", "display", new string[0])]
         public virtual void BookAppointmentAndRemoveParticipantTypeCodingElementFromTheAppointmentBooking(string participant, string codingElement, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book Appointment and remove participant type coding element from the appointment " +
