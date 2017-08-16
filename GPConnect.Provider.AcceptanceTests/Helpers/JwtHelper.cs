@@ -23,8 +23,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public string AuthTokenURL { get; set; }
         public string RequestingDevice { get; set; }
         public string RequestingOrganization { get; set; }
-        public string RequestingPractitioner { get; set; }
-        public string RequestingPractitionerId { get; set; }
+        public string RequestingIdentity { get; set; }
+        public string RequestingIdentityId { get; set; }
         public string RequestedScope { get; set; }
         public string RequestedPatientNHSNumber { get; set; }
         public string RequestedOrganizationODSCode { get; set; }
@@ -44,8 +44,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             AuthTokenURL = JwtConst.Values.kAuthTokenURL;
             RequestingDevice = FhirHelper.GetDefaultDevice().ToJson();
             RequestingOrganization = FhirHelper.GetDefaultOrganization().ToJson();
-            RequestingPractitionerId = FhirHelper.GetDefaultPractitioner().Id;
-            RequestingPractitioner = FhirHelper.GetDefaultPractitioner().ToJson();
+            RequestingIdentityId = FhirHelper.GetDefaultPractitioner().Id;
+            RequestingIdentity = FhirHelper.GetDefaultPractitioner().ToJson();
             RequestedScope = JwtConst.Scope.kOrganizationRead;
             // TODO Check We're Using The Correct Scope For Metadata vs. GetCareRecord
             RequestedPatientNHSNumber = null;
@@ -71,8 +71,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
             if (RequestingSystemUrl != null)
                 claims.Add(new Claim(JwtConst.Claims.kRequestingSystemUrl, RequestingSystemUrl, ClaimValueTypes.String));
-            if (RequestingPractitionerId != null)
-                claims.Add(new Claim(JwtConst.Claims.kPractitionerId, RequestingPractitionerId, ClaimValueTypes.String));
+            if (RequestingIdentityId != null)
+                claims.Add(new Claim(JwtConst.Claims.kPractitionerId, RequestingIdentityId, ClaimValueTypes.String));
             if (AuthTokenURL != null)
                 claims.Add(new Claim(JwtConst.Claims.kAuthTokenURL, AuthTokenURL, ClaimValueTypes.String));
             if (ExpiryTime != null)
@@ -85,8 +85,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 claims.Add(new Claim(JwtConst.Claims.kRequestingDevice, RequestingDevice, JsonClaimValueTypes.Json));
             if (RequestingOrganization != null)
                 claims.Add(new Claim(JwtConst.Claims.kRequestingOrganization, RequestingOrganization, JsonClaimValueTypes.Json));
-            if (RequestingPractitioner != null)
-                claims.Add(new Claim(JwtConst.Claims.kRequestingPractitioner, RequestingPractitioner, JsonClaimValueTypes.Json));
+            if (RequestingIdentity != null)
+                claims.Add(new Claim(JwtConst.Claims.kRequestingPractitioner, RequestingIdentity, JsonClaimValueTypes.Json));
             if (RequestedScope != null)
                 claims.Add(new Claim(JwtConst.Claims.kRequestedScope, RequestedScope, ClaimValueTypes.String));
 
@@ -137,8 +137,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public void SetRequestingPractitioner(string practitionerId, string practitionerJson)
         {
             // TODO Make The RequestingPractitionerId Use The Business Identifier And Not The Logical Identifier 
-            RequestingPractitionerId = practitionerId;
-            RequestingPractitioner = practitionerJson;
+            RequestingIdentityId = practitionerId;
+            RequestingIdentity = practitionerJson;
         }
     }
 }
