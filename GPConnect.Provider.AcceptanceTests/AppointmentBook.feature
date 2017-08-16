@@ -554,13 +554,13 @@ Scenario Outline: Book Appointment and remove participant type coding element fr
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| Participant  | CodingElement |
-		| Patient      | system        |
-		| Patient      | code          |
-		| Patient      | display       |
-		| Practitioner | system        |
-		| Practitioner | code          |
-		| Practitioner | display       |
+		| Participant | CodingElement |
+		| Patient     | system        |
+		| Patient     | code          |
+		| Patient     | display       |
+		| Location    | system        |
+		| Location    | code          |
+		| Location    | display       |
 
 Scenario: Book appointment and send an invalid bundle resource
 	Given I get the Patient for Patient Value "patient1"

@@ -204,13 +204,22 @@
                     switch (codingType)
                     {
                         case "system":
-                            particpant.Type.First().Coding.First().System = null;
+                            if (particpant.Type.Count > 0)
+                            {
+                                particpant.Type.First().Coding.First().System = null;
+                            }
                             break;
                         case "code":
-                            particpant.Type.First().Coding.First().Code = null;
+                            if (particpant.Type.Count > 0)
+                            {
+                                particpant.Type.First().Coding.First().Code = null;
+                            }
                             break;
                         case "display":
-                            particpant.Type.First().Coding.First().Display = null;
+                            if (particpant.Type.Count > 0)
+                            {
+                                particpant.Type.First().Coding.First().Display = null;
+                            }
                             break;
                     }
                 }
