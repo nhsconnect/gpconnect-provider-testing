@@ -137,13 +137,13 @@
             _jwtHelper.RequestingOrganization = FhirHelper.ChangeResourceTypeString(_jwtHelper.RequestingOrganization, FhirConst.Resources.kInvalidResourceType);
         }
 
-        [Given(@"I set the JWT with missing Requesting Practitioner")]
+        [Given(@"I set the JWT with missing Requesting Identity")]
         public void SetTheJwtWithMissingRequestingPractitioner()
         {
-            _jwtHelper.RequestingPractitioner = null;
+            _jwtHelper.RequestingIdentity = null;
         }
 
-        [Given(@"I set the JWT Requesting Practitioner as an invalid Practitioner")]
+        [Given(@"I set the JWT Requesting Identity as an invalid Identity")]
         public void SetTheJwtRequestingPractitionerAsAnInvalidPractitioner()
         {
             _jwtHelper.SetRequestingPractitioner("1", FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultPractitioner().ToJson()));
@@ -203,10 +203,10 @@
             _jwtHelper.SetRequestingPractitioner("1", practitioner.ToJson());
         }
 
-        [Given(@"I set the JWT Requesting Practitioner Resource Type as an invalid Resource Type")]
+        [Given(@"I set the JWT Requesting Identity Resource Type as an invalid Resource Type")]
         public void SetTheJwtRequestingPractitionerResourceTypeAsAnInvalidResourceType()
         {
-            _jwtHelper.SetRequestingPractitioner(_jwtHelper.RequestingPractitionerId, FhirHelper.ChangeResourceTypeString(_jwtHelper.RequestingPractitioner, FhirConst.Resources.kInvalidResourceType));
+            _jwtHelper.SetRequestingPractitioner(_jwtHelper.RequestingIdentityId, FhirHelper.ChangeResourceTypeString(_jwtHelper.RequestingIdentity, FhirConst.Resources.kInvalidResourceType));
         }
 
         [Given(@"I set the JWT with missing Requesting System URL")]
@@ -218,7 +218,7 @@
         [Given(@"I set the JWT with missing Requesting Practitioner Id")]
         public void SetTheJwtWIthMissingRequestingPractitionerId()
         {
-            _jwtHelper.RequestingPractitionerId = null;
+            _jwtHelper.RequestingIdentityId = null;
         }
 
         [Given(@"I set the JWT with missing Authorization Server Token URL")]
