@@ -189,7 +189,7 @@ Scenario: Read appointment containing a priority element and check that the prio
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Priority to "22"
+		And I set the Created Appointment Priority to "1"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And I store the Appointment
