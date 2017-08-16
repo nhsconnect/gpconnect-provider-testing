@@ -99,7 +99,7 @@
                 Status = ParticipationStatus.Accepted,
                 Type = new List<CodeableConcept>
                 {
-                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "patient", "patient")
+                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "subject", "subject")
                 }
             };
         }
@@ -116,7 +116,7 @@
                     Status = ParticipationStatus.Accepted,
                     Type = new List<CodeableConcept>
                     {
-                        new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PPRF", "practitioner", "practitioner")
+                        new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PPRF", "primary performer", "primary performer")
                     }
                 })
                 .ToList();
