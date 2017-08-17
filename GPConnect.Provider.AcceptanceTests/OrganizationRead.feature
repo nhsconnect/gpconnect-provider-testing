@@ -26,7 +26,7 @@ Scenario Outline: Organization Read successful request validate site codes retur
 	Given I configure the default "OrganizationRead" request
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
-		And the returned organization contains identifiers of type "http://fhir.nhs.net/Id/ods-site-code" with values "<ExpectedSiteCode>"
+		And the returned organization contains identifiers of type "https://fhir.nhs.uk/Id/ods-site-code" with values "<ExpectedSiteCode>"
 	Examples:
 		| Organization | ExpectedSiteCode |
 		| ORG1         | SIT1             |

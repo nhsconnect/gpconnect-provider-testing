@@ -229,10 +229,10 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Location search parameter order test")]
-        [NUnit.Framework.TestCaseAttribute("_format", "application/json+fhir", "identifier", "http://fhir.nhs.net/Id/ods-site-code|SIT1", "JSON", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("_format", "application/xml+fhir", "identifier", "http://fhir.nhs.net/Id/ods-site-code|SIT1", "XML", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("identifier", "http://fhir.nhs.net/Id/ods-site-code|SIT1", "_format", "application/json+fhir", "JSON", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("identifier", "http://fhir.nhs.net/Id/ods-site-code|SIT1", "_format", "application/xml+fhir", "XML", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("_format", "application/json+fhir", "identifier", "https://fhir.nhs.uk/Id/ods-site-code|SIT1", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("_format", "application/xml+fhir", "identifier", "https://fhir.nhs.uk/Id/ods-site-code|SIT1", "XML", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("identifier", "https://fhir.nhs.uk/Id/ods-site-code|SIT1", "_format", "application/json+fhir", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("identifier", "https://fhir.nhs.uk/Id/ods-site-code|SIT1", "_format", "application/xml+fhir", "XML", new string[0])]
         public virtual void LocationSearchParameterOrderTest(string parameter1Name, string parameter1, string parameter2Name, string parameter2, string responseFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Location search parameter order test", exampleTags);

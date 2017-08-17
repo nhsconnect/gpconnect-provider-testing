@@ -73,7 +73,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     organization.Identifier.ForEach(identifier =>
                     {
                         identifier.System.ShouldNotBeNullOrEmpty("The Identifier System should not be null or empty");
-                        identifier.System.ShouldBeOneOf(FhirConst.IdentifierSystems.kOdsOrgzCode, "http://fhir.nhs.net/Id/ods-site-code", "The Identifier System should be one of the two valid System values.");
+                        identifier.System.ShouldBeOneOf(FhirConst.IdentifierSystems.kOdsOrgzCode, FhirConst.IdentifierSystems.kOdsSiteCode, "The Identifier System should be one of the two valid System values.");
                         identifier.Value.ShouldNotBeNull("The included identifier should have a value.");
                     });
 
@@ -187,7 +187,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add an Organization Identifier parameter with Site Code System and Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithSiteCodeSystemAndValue(string value)
         {
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/ods-site-code" + '|' + GlobalContext.OdsCodeMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsSiteCode, GlobalContext.OdsCodeMap[value]));
         }
 
         [Given(@"I add an Identifier parameter with the Value ""([^""]*)""")]
@@ -286,7 +286,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             //Get Site Code Identifier Values for Organization
             var siteCodeIdentifierValues = organization.Identifier
-                .Where(identifier => identifier.System == "http://fhir.nhs.net/Id/ods-site-code")
+                .Where(identifier => identifier.System == FhirConst.IdentifierSystems.kOdsSiteCode)
                 .Select(identifier => identifier.Value)
                 .ToList();
 

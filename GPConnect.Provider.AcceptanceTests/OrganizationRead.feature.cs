@@ -126,7 +126,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 28
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 29
-  testRunner.And(string.Format("the returned organization contains identifiers of type \"http://fhir.nhs.net/Id/od" +
+  testRunner.And(string.Format("the returned organization contains identifiers of type \"https://fhir.nhs.uk/Id/od" +
                         "s-site-code\" with values \"{0}\"", expectedSiteCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
