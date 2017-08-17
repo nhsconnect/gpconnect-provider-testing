@@ -164,7 +164,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             GlobalContext.FhirAppointmentCategoryValueSet = appointmentCategory;
 
             var appointmentBookingMethod = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1");
-            if (appointmentCategory == null)
+            if (appointmentBookingMethod == null)
                 Assert.Fail("AppointmentBookingMethod ValueSet Not Found.");
             Log.WriteLine("{0} AppointmentBookingMethod Loaded.", appointmentBookingMethod.CodeSystem.Concept.Count);
             GlobalContext.FhirAppointmentBookingMethodValueSet = appointmentBookingMethod;
