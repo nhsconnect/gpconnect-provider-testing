@@ -242,6 +242,8 @@ Scenario: Read appointment if extensions are included they should be valid
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I add a Category Extension with Code "CLI" and Display "Clinical" to the Created Appointment
+		And I add a Booking Method Extension with Code "ONL" and Display "Online" to the Created Appointment
+		And I add a Contact Method Extension with Code "ONL" and Display "Online" to the Created Appointment
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And I store the Appointment
