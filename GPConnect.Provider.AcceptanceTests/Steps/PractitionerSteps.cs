@@ -47,7 +47,7 @@
 
             GlobalContext.PractionerCodeMap.TryGetValue(value, out practitionerCode);
 
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/sds-user-id" + '|' + GlobalContext.PractionerCodeMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", "https://fhir.nhs.uk/Id/sds-user-id" + '|' + GlobalContext.PractionerCodeMap[value]);
         }
 
         [Given(@"I add a Practitioner ""([^""]*)"" parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -65,7 +65,7 @@
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.PractitionerSearch);
 
-            AddAPractitionerIdentifierParameterWithSystemAndValue("http://fhir.nhs.net/Id/sds-user-id", code);
+            AddAPractitionerIdentifierParameterWithSystemAndValue("https://fhir.nhs.uk/Id/sds-user-id", code);
 
             _httpSteps.MakeRequest(GpConnectInteraction.PractitionerSearch);
         }
@@ -158,7 +158,7 @@
             {
                 practitioner.Identifier.ForEach(identifier =>
                 {
-                    identifier.System.ShouldBeOneOf("http://fhir.nhs.net/Id/sds-user-id", "http://fhir.nhs.net/Id/sds-role-profile-id");
+                    identifier.System.ShouldBeOneOf("https://fhir.nhs.uk/Id/sds-user-id", "http://fhir.nhs.net/Id/sds-role-profile-id");
                 });
             });
         }
@@ -213,7 +213,7 @@
         {
             Practitioners.ForEach(practitioner =>
             {
-                var sdsUserIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id")).ToList();
+                var sdsUserIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals("https://fhir.nhs.uk/Id/sds-user-id")).ToList();
 
                 if (shouldBeSingle)
                 {
