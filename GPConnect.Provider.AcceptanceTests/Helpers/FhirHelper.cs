@@ -5,6 +5,7 @@ using Hl7.Fhir.Model;
 using Newtonsoft.Json;
 using System;
 using System.Text.RegularExpressions;
+using GPConnect.Provider.AcceptanceTests.Constants;
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
@@ -32,7 +33,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static Identifier GetODSCodeIdentifier(string odsCode)
         {
-            return new Identifier("http://fhir.nhs.net/Id/ods-organization-code", odsCode);
+            return new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, odsCode);
         }
 
         public static Patient GetDefaultPatient(string nhsNumber = "123456")

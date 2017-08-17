@@ -1,4 +1,6 @@
-﻿namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿using GPConnect.Provider.AcceptanceTests.Constants;
+
+namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System;
     using System.Collections.Generic;
@@ -63,7 +65,7 @@
                 if (organization.Identifier != null)
                 {
                     var odsOrganizationCodeIdentifiers = organization.Identifier
-                        .Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code"))
+                        .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kOdsOrgzCode))
                         .ToList();
 
                     odsOrganizationCodeIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, "There may only be one Organization Identifier within the returned Organization.");
@@ -71,7 +73,7 @@
                     organization.Identifier.ForEach(identifier =>
                     {
                         identifier.System.ShouldNotBeNullOrEmpty("The Identifier System should not be null or empty");
-                        identifier.System.ShouldBeOneOf("http://fhir.nhs.net/Id/ods-organization-code", "http://fhir.nhs.net/Id/ods-site-code", "The Identifier System should be one of the two valid System values.");
+                        identifier.System.ShouldBeOneOf(FhirConst.IdentifierSystems.kOdsOrgzCode, "http://fhir.nhs.net/Id/ods-site-code", "The Identifier System should be one of the two valid System values.");
                         identifier.Value.ShouldNotBeNull("The included identifier should have a value.");
                     });
 
@@ -179,7 +181,7 @@
         [Given(@"I add an Organization Identifier parameter with Organization Code System and Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithOrganizationsCodeSystemAndValue(string value)
         {
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap[value]));
         }
 
         [Given(@"I add an Organization Identifier parameter with Site Code System and Value ""([^""]*)""")]
@@ -308,7 +310,7 @@
 
             //Get Organization Code Identifier values
             var organizationCodeIdentifierValues = organization.Identifier
-                .Where(identifier => identifier.System == "http://fhir.nhs.net/Id/ods-organization-code")
+                .Where(identifier => identifier.System == FhirConst.IdentifierSystems.kOdsOrgzCode)
                 .Select(identifier => identifier.Value)
                 .ToList();
 
@@ -380,7 +382,7 @@
             return code.Split('|').Select(element => GlobalContext.OdsCodeMap[element]).ToList();
         }
 
-        [Then(@"the response bundle Organization entries should contain a maximum of 1 http://fhir.nhs.net/Id/ods-organization-code system identifier")]
+        [Then(@"the response bundle Organization entries should contain a maximum of 1 https://fhir.nhs.uk/Id/ods-organization-code system identifier")]
         public void ThenResponseBundleOrganizationEntriesShouldContainAMaximumOf1OrgCodeSystemIdentifier()
         {
             foreach (var entry in _httpContext.FhirResponse.Entries)
@@ -393,9 +395,9 @@
 
                     foreach (var identifier in organization.Identifier)
                     {
-                        if ("http://fhir.nhs.net/Id/ods-organization-code".Equals(identifier.System))
+                        if (FhirConst.IdentifierSystems.kOdsOrgzCode.Equals(identifier.System))
                         {
-                            systemAlreadyFound.ShouldBeFalse("Found multiple http://fhir.nhs.net/Id/ods-organization-code systems");
+                            systemAlreadyFound.ShouldBeFalse(string.Format("Found multiple {0} systems", FhirConst.IdentifierSystems.kOdsOrgzCode));
                             systemAlreadyFound = true;
                         }
                     }
