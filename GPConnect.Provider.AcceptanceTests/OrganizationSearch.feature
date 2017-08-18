@@ -11,7 +11,8 @@ Scenario Outline: Organization search success
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<Entries>" entries
-		And the response bundle Organization entries should contain a maximum of 1 https://fhir.nhs.uk/Id/ods-organization-code system identifier
+		And the response bundle Organization entries should contain a maximum of 1 "https://fhir.nhs.uk/Id/ods-organization-code" system identifier
+		And the response bundle Organization entries should contain a maximum of 1 "https://fhir.nhs.uk/Id/ods-site-code" system identifier
 	Examples:
 		| System                                       | Value      | Entries |
 		| https://fhir.nhs.uk/Id/ods-organization-code | unknownORG | 0       | 
@@ -21,7 +22,7 @@ Scenario Outline: Organization search success
 		| https://fhir.nhs.uk/Id/ods-site-code         | unknownSIT | 0       |
 		| https://fhir.nhs.uk/Id/ods-site-code         | SIT1       | 1       |
 		| https://fhir.nhs.uk/Id/ods-site-code         | SIT2       | 1       |
-		| https://fhir.nhs.uk/Id/ods-site-code         | SIT3       | 2       |
+		| https://fhir.nhs.uk/Id/ods-site-code         | SIT3       | 1       |
 
 Scenario: Organization search failure with two invalid parameters sent in the request
 	Given I configure the default "OrganizationSearch" request
@@ -59,12 +60,12 @@ Scenario Outline: Organization search sending multiple identifiers resulting in 
 		| System1                                      | Value1 | System2                                      | Value2 |
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1   | https://fhir.nhs.uk/Id/ods-organization-code | ORG2   |
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG2   | https://fhir.nhs.uk/Id/ods-organization-code | ORG2   |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG2   | https://fhir.nhs.uk/Id/ods-site-code         | SIT2   |
 		| https://fhir.nhs.uk/Id/ods-site-code         | SIT1   | https://fhir.nhs.uk/Id/ods-site-code         | SIT2   |
 		| https://fhir.nhs.uk/Id/ods-site-code         | SIT2   | https://fhir.nhs.uk/Id/ods-site-code         | SIT2   |
 		| https://fhir.nhs.uk/Id/ods-site-code         | SIT2   | badSystem                                    | SIT2   |
 		| badSystem                                    | SIT2   | https://fhir.nhs.uk/Id/ods-site-code         | SIT2   |
 
+#Possible upgrade test to include a check for the identifier type of localIdentifier
 Scenario: Organization search by organization code successfully returns single result containing the correct fields
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
@@ -112,8 +113,8 @@ Scenario: Organization search by organization code successfully returns multiple
 		And the response bundle should contain "1" entries
 		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG2" and "2" "https://fhir.nhs.uk/Id/ods-site-code" system identifier with site code "SIT2|SIT3"
-		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG2|ORG3" and "2" "https://fhir.nhs.uk/Id/ods-site-code" system identifier with site code "SIT2|SIT3"
+		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG2" and "1" "https://fhir.nhs.uk/Id/ods-site-code" system identifier with site code "SIT2"
+		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG3" and "1" "https://fhir.nhs.uk/Id/ods-site-code" system identifier with site code "SIT3"
 		
 Scenario: Organization search by site code successfully returns single result containing the correct fields
 	Given I configure the default "OrganizationSearch" request
@@ -138,7 +139,7 @@ Scenario: Organization search by site code successfully returns multiple results
 		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG3" and "1" "https://fhir.nhs.uk/Id/ods-site-code" system identifier with site code "SIT3"
-		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG2" and "2" "https://fhir.nhs.uk/Id/ods-site-code" system identifier with site code "SIT2|SIT3"
+		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG2" and "1" "https://fhir.nhs.uk/Id/ods-site-code" system identifier with site code "SIT2"
 
 Scenario: Organization search failure due to no identifier parameter
 	Given I configure the default "OrganizationSearch" request

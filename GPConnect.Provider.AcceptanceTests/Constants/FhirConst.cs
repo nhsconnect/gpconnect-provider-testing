@@ -27,5 +27,22 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kOdsOrgzCode = "https://fhir.nhs.uk/Id/ods-organization-code";
             public const string kOdsSiteCode = "https://fhir.nhs.uk/Id/ods-site-code";
         }
+
+        internal static class ValueSetSystems
+        {
+            public const string kOrgzType = "http://hl7.org/fhir/organization-type";
+            public const string kNameUse = "http://hl7.org/fhir/ValueSet/name-use";
+            public const string kContactPointSystem = "http://hl7.org/fhir/ValueSet/contact-point-system";
+            public const string kNContactPointUse = "http://hl7.org/fhir/ValueSet/contact-point-use";
+            public const string kAddressUse = "http://hl7.org/fhir/ValueSet/address-use";
+            public const string kAddressType = "http://hl7.org/fhir/ValueSet/address-type";
+        }
+
+        internal static class StructureDefinitionSystems
+        {
+            public const string kOrganisation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Organization-1";
+            public const string kExtCcGpcMainLoc = "https://fhir.hl7.org.uk/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
+            public const string kOrgzPeriod = "http://hl7.org/fhir/StructureDefinition/organization-period";  
+        }
     }
 }

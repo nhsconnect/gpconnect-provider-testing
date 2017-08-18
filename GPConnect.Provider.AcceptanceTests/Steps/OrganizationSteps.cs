@@ -73,7 +73,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     organization.Identifier.ForEach(identifier =>
                     {
                         identifier.System.ShouldNotBeNullOrEmpty("The Identifier System should not be null or empty");
-                        identifier.System.ShouldBeOneOf(FhirConst.IdentifierSystems.kOdsOrgzCode, FhirConst.IdentifierSystems.kOdsSiteCode, "The Identifier System should be one of the two valid System values.");
                         identifier.Value.ShouldNotBeNull("The included identifier should have a value.");
                     });
 
@@ -93,7 +92,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Organizations.ForEach(organization =>
             {
-                CheckForValidMetaDataInResource(organization, "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
+                CheckForValidMetaDataInResource(organization, FhirConst.StructureDefinitionSystems.kOrganisation);
             });
         }
 
@@ -128,12 +127,72 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     if (coding != null)
                     {
                         coding.System.ShouldNotBeNullOrEmpty("The Coding System value should not be null or empty");
-                        coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/organisation-type-1", "The Coding should contain a valid System value.");
                         coding.Code.ShouldNotBeNullOrEmpty("The Coding Code value should not be null or empty");
                         coding.Display.ShouldNotBeNullOrEmpty("The Coding Display value should not be null or empty");
                     }
                 }
             });
+        }
+
+        [Then(@"the Organization Name should be valid")]
+        public void TheOrganizationNameShouldBeValid()
+        {
+            Organizations.ForEach(organization =>
+            {
+                organization.Name.ShouldNotBeNullOrEmpty("The organisations name is missing but must be provided.");
+            });
+        }
+
+        [Then(@"the Organization Contact should be valid")]
+        public void TheOrganizationContactShouldBeValid()
+        {
+            Organizations.ForEach(organization =>
+            {
+                organization.Contact.ForEach(ValidateContact);
+
+                organization.ModifierExtension.ForEach(ValidateExtensions);
+            });
+        }
+
+        private void ValidateExtensions(Extension extensions)
+        {
+            if (extensions != null)
+            {
+                var validExtensions = new [] { FhirConst.StructureDefinitionSystems.kExtCcGpcMainLoc, FhirConst.StructureDefinitionSystems.kOrgzPeriod };
+                extensions.Url.ShouldBeOneOf(validExtensions);
+            }
+        }
+
+        private void ValidateContact(Organization.ContactComponent contact)
+        {
+            if (contact != null)
+            {
+                var contactName = contact.Name;
+
+                if (contactName != null)
+                {
+                    contactName.Use?.ShouldBeOfType<HumanName.NameUse>(string.Format("Organisation Contact Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
+
+                    contactName.Family.Count().ShouldBeLessThanOrEqualTo(1, "Organisation Contact Name Family Element should contain a maximum of 1.");
+                }
+
+                var contactTeleCom = contact.Telecom;
+
+                contactTeleCom.ForEach(teleCom =>
+                {
+                    teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("Organisation Contact Telecom System is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kContactPointSystem));
+                    teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>(string.Format("Organisation Contact Telecom Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNContactPointUse));
+                });
+
+                var contactAddress = contact.Address;
+
+                if (contactAddress != null)
+                {
+                    contactAddress.Type?.ShouldBeOfType<Address.AddressType>(string.Format("Organisation Contact Address Type is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kAddressType));
+                    contactAddress.Use?.ShouldBeOfType<Address.AddressUse>(string.Format("Organisation Contact Address Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kAddressUse));
+                }
+
+            }
         }
 
         [Then(@"the Organization PartOf Organization should be referenced in the Bundle")]
@@ -327,18 +386,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        [Then(@"the returned organization contains identifiers of type ""([^""]*)"" with values ""([^""]*)""")]
-        public void ThenTheReturnedOrgainzationContainsIdentifiersOfTypeWithValues(string identifierSystem, string identifierValueCSV)
+        [Then(@"the returned organization contains an identifier of type ""([^""]*)"" with a value of ""([^""]*)""")]
+        public void ThenTheReturnedOrgainzationContainsIdentifiersOfTypeWithValues(string identifierSystem, string identifierValue)
         {
             var organization = (Organization)_httpContext.FhirResponse.Resource;
             organization.Identifier.ShouldNotBeNull("The organization should contain an organization identifier as the business identifier was used to find the organization for this test.");
 
-            foreach (var identifierValue in identifierValueCSV.Split(','))
-            {
-                var identifierFound = organization.Identifier.Find(identifier => identifier.System.Equals(identifierSystem) && identifier.Value.Equals(GlobalContext.OdsCodeMap[identifierValue]));
-                identifierFound.ShouldNotBeNull($"The expected identifier was not found in the returned organization resource, expected value {GlobalContext.OdsCodeMap[identifierValue]}");
-            }
-
+            var identifierFound = organization.Identifier.Find(identifier => identifier.System.Equals(identifierSystem) && identifier.Value.Equals(GlobalContext.OdsCodeMap[identifierValue]));
+            identifierFound.ShouldNotBeNull($"The expected identifier was not found in the returned organization resource, expected value {GlobalContext.OdsCodeMap[identifierValue]}");
         }
 
         [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)"" and ""([^""]*)"" ""([^""]*)"" system identifier with site code ""([^""]*)""")]
@@ -382,25 +437,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             return code.Split('|').Select(element => GlobalContext.OdsCodeMap[element]).ToList();
         }
 
-        [Then(@"the response bundle Organization entries should contain a maximum of 1 https://fhir.nhs.uk/Id/ods-organization-code system identifier")]
-        public void ThenResponseBundleOrganizationEntriesShouldContainAMaximumOf1OrgCodeSystemIdentifier()
+        [Then(@"the response bundle Organization entries should contain a maximum of 1 ""([^""]*)"" system identifier")]
+        public void ThenResponseBundleOrganizationEntriesShouldContainAMaximumOf1OrgCodeSystemIdentifier(string systemIdentifier)
         {
             foreach (var entry in _httpContext.FhirResponse.Entries)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Organization))
                 {
-                    Boolean systemAlreadyFound = false;
 
                     Organization organization = (Organization)entry.Resource;
 
-                    foreach (var identifier in organization.Identifier)
-                    {
-                        if (FhirConst.IdentifierSystems.kOdsOrgzCode.Equals(identifier.System))
-                        {
-                            systemAlreadyFound.ShouldBeFalse(string.Format("Found multiple {0} systems", FhirConst.IdentifierSystems.kOdsOrgzCode));
-                            systemAlreadyFound = true;
-                        }
-                    }
+                    var odsOrganizationCodeIdentifiers = organization.Identifier
+                        .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kOdsOrgzCode))
+                        .ToList();
+
+                    var odsSiteCodeIdentifiers = organization.Identifier
+                        .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kOdsSiteCode))
+                        .ToList();
+
+                    odsOrganizationCodeIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, string.Format("There may only be one Identifier with system of {0} within the returned Organization.", FhirConst.IdentifierSystems.kOdsOrgzCode));
+                    odsSiteCodeIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, string.Format("There may only be one Identifier with system of {0} within the returned Organization.", FhirConst.IdentifierSystems.kOdsSiteCode));
                 }
             }
         }
