@@ -41,9 +41,10 @@
             var practitioners = GetPractitioners(practitionerReferences);
 
             //Location
+
             var locationReference = schedule.Actor.Reference;
             var location = GetLocation(locationReference);
-
+  
             //Participants
             var participants = new List<ParticipantComponent>();
             participants.Add(patient);
@@ -76,7 +77,11 @@
                 {
                     Reference = locationReference
                 },
-                Status = ParticipationStatus.Accepted
+                Status = ParticipationStatus.Accepted,
+                Type = new List<CodeableConcept>
+                {
+                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "subject", "subject")
+                }
             };
         }
 
@@ -121,5 +126,6 @@
                 })
                 .ToList();
         }
-    }
+
+     }
 }
