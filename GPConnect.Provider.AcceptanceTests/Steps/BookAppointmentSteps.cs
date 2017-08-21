@@ -282,7 +282,7 @@
 
                 if (appointmentContactMethodExtension?.Coding != null)
                 {
-                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirAppointmentCategoryValueSet,
+                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirAppointmentContactMethodValueSet,
                         appointmentContactMethodExtension.Coding);
                 }
             });

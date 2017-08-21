@@ -32,7 +32,7 @@ Scenario Outline: Practitioner search with failure due to invalid identifier
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
 		| System                                     | Value         |
-		| http://fhir.nhs.net/Id/sds-user-id         |               |
+		| https://fhir.nhs.uk/Id/sds-user-id         |               |
 		|                                            | practitioner2 |
 
 Scenario: Practitioner search without the identifier parameter
@@ -44,7 +44,7 @@ Scenario: Practitioner search without the identifier parameter
 
 Scenario Outline: Practitioner search where identifier contains the incorrect case or spelling
 	Given I configure the default "PractitionerSearch" request
-		And I add a Practitioner "<ParameterName>" parameter with System "http://fhir.nhs.net/Id/sds-user-id" and Value "practitioner2"
+		And I add a Practitioner "<ParameterName>" parameter with System "https://fhir.nhs.uk/Id/sds-user-id" and Value "practitioner2"
 	When I make the "PractitionerSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -71,10 +71,10 @@ Scenario Outline: Practitioner search testing paramater validity and order sent 
 		And the Practitioner Communication should be valid
 	Examples:
 		| Param1Name | Param1Value                                       | Param2Name | Param2Value                                       | BodyFormat |
-		| _format    | application/json+fhir                             | identifier | http://fhir.nhs.net/Id/sds-user-id\|practitioner2 | JSON       |
-		| _format    | application/xml+fhir                              | identifier | http://fhir.nhs.net/Id/sds-user-id\|practitioner2 | XML        |
-		| identifier | http://fhir.nhs.net/Id/sds-user-id\|practitioner2 | _format    | application/json+fhir                             | JSON       |
-		| identifier | http://fhir.nhs.net/Id/sds-user-id\|practitioner2 | _format    | application/xml+fhir                              | XML        |
+		| _format    | application/json+fhir                             | identifier | https://fhir.nhs.uk/Id/sds-user-id\|practitioner2 | JSON       |
+		| _format    | application/xml+fhir                              | identifier | https://fhir.nhs.uk/Id/sds-user-id\|practitioner2 | XML        |
+		| identifier | https://fhir.nhs.uk/Id/sds-user-id\|practitioner2 | _format    | application/json+fhir                             | JSON       |
+		| identifier | https://fhir.nhs.uk/Id/sds-user-id\|practitioner2 | _format    | application/xml+fhir                              | XML        |
 
 Scenario Outline: Practitioner search add accept header to request and check for correct response format
 	Given I configure the default "PractitionerSearch" request
