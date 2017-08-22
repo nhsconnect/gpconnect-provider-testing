@@ -26,6 +26,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kNHSNumber = "http://fhir.nhs.net/Id/nhs-number";
             public const string kOdsOrgzCode = "https://fhir.nhs.uk/Id/ods-organization-code";
             public const string kOdsSiteCode = "https://fhir.nhs.uk/Id/ods-site-code";
+            public const string kLocalOrgzCode = "https://fhir.nhs.uk/Id/local-organization-code";
         }
 
         internal static class ValueSetSystems
@@ -36,6 +37,9 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kNContactPointUse = "http://hl7.org/fhir/ValueSet/contact-point-use";
             public const string kAddressUse = "http://hl7.org/fhir/ValueSet/address-use";
             public const string kAddressType = "http://hl7.org/fhir/ValueSet/address-type";
+            public const string kContactEntityType = "http://hl7.org/fhir/ValueSet/contactentity-type";
+            public const string kIdentifierUse = "http://hl7.org/fhir/ValueSet/identifier-use";
+            public const string kIdentifierType = "http://hl7.org/fhir/ValueSet/identifier-type";
         }
 
         internal static class StructureDefinitionSystems

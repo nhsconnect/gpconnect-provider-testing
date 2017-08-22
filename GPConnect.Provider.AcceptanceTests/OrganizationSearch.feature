@@ -103,6 +103,7 @@ Scenario Outline: Organization - Identifier - have correct Organization Codes an
 		| SIT2	   | 
 		| SIT3	   | 
 
+#should fail
 Scenario: Organization search by organization code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"

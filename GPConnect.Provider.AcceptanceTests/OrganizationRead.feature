@@ -15,7 +15,10 @@ Scenario Outline: Organization Read successful request validate all of response
 		And the Organization PartOf Organization should be resolvable
 		And the Organization Type should be valid
 		And the Organization Name should be valid
+		And the Organization Telecom should be valid
+		And the Organization Address should be valid
 		And the Organization Contact should be valid
+		And the Organization Extensions should be valid
 	Examples:
 		| Organization |
 		| ORG1         |

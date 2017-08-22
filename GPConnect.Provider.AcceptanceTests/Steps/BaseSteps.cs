@@ -31,6 +31,13 @@
             valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display));
         }
 
+        public static void ValueSetContainsCode(ValueSet valueSet, Coding coding)
+        {
+            coding.System.ShouldBe(valueSet.CodeSystem.System);
+
+            valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code));
+        }
+
         public void CheckForValidMetaDataInResource<T>(T resource, string profileId) where T : Resource
         {
             resource.Meta.ShouldNotBeNull();
