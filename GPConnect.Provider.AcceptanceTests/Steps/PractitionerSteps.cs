@@ -158,7 +158,7 @@
             {
                 practitioner.Identifier.ForEach(identifier =>
                 {
-                    identifier.System.ShouldBeOneOf("https://fhir.nhs.uk/Id/sds-user-id", "http://fhir.nhs.net/Id/sds-role-profile-id");
+                    identifier.System.ShouldBeOneOf("https://fhir.nhs.uk/Id/sds-user-id", "https://fhir.nhs.uk/Id/sds-role-profile-id");
                 });
             });
         }
@@ -283,7 +283,7 @@
                         practitionerRole.Role.Coding.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one practitioner role coding in each practitioner role.");
                         practitionerRole.Role.Coding.ForEach(coding =>
                         {
-                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
+                            coding.System.ShouldBe("https://fhir.hl7.org.uk/ValueSet/CareConnect-SDSJobRoleName-1");
                             coding.Code.ShouldNotBeNull("The practitioner role code element should not be null");
                             coding.Display.ShouldNotBeNull("The practitioner role display elemenet should not be null");
                         });

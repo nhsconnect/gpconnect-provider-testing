@@ -1,5 +1,6 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Builders.Appointment
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Hl7.Fhir.Model;
@@ -57,16 +58,26 @@
             var slots = new List<ResourceReference>();
             slots.Add(slot);
 
+
+            CodeableConcept reason = GetReason();
+
             var appointment = new Appointment
             {
                 Status = AppointmentStatus.Booked,
                 Start = firstSlot.Start,
                 End = firstSlot.End,
                 Participant = participants,
-                Slot = slots
+                Slot = slots,
+                Reason = reason
+
             };
 
             return appointment;
+        }
+
+        private CodeableConcept GetReason()
+        {
+            return new CodeableConcept("http://snomed.info/sct", "http://snomed.info/sct", "subject", "subject");
         }
 
         private static ParticipantComponent GetLocation(string locationReference)

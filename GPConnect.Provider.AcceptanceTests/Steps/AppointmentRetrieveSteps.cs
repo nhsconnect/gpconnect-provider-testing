@@ -6,6 +6,8 @@
     using Shouldly;
     using TechTalk.SpecFlow;
     using System.Linq;
+    using System;
+    using System.Globalization;
 
     [Binding]
     public class AppointmentRetrieveSteps : Steps
@@ -34,6 +36,7 @@
             Appointments.ForEach(appointment =>
             {
                 appointment.Start.ShouldNotBeNull("The Appointment Start should not be null.");
+             
             });
         }
 

@@ -148,6 +148,8 @@ Scenario: Read patient resurned should conform to the GPconnect specification
 		And the Patient Name should be valid
 		And the Patient Contact Name should be valid
 		And the Patient should exclude disallowed fields
+		And the Patient Use should be valid
+		And the Patient Gender should be valid
 
 Scenario: Conformance profile supports the Patient read operation
 	Given I configure the default "MetadataRead" request

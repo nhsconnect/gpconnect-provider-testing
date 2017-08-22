@@ -78,7 +78,7 @@ Scenario: The response should be an error if parameter is not identifier
 Scenario: The response should be an error if no value is sent in the identifier parameter
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add the parameter "identifier" with the value "http://fhir.nhs.net/Id/nhs-number|"
+		And I add the parameter "identifier" with the value "https://fhir.nhs.uk/Id/nhs-number|"
 	When I make the "PatientSearch" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
@@ -225,6 +225,7 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And the response bundle should contain "1" entries
 		And the Patient CareProvider Practitioner should be valid and resolvable
 		And the Patient Name should be valid
+		And the Patient Use should be valid
 		And the Patient Communication should be valid
 		And the Patient Contact should be valid
 		And the Patient MultipleBirth should be valid
