@@ -27,6 +27,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kOdsOrgzCode = "https://fhir.nhs.uk/Id/ods-organization-code";
             public const string kOdsSiteCode = "https://fhir.nhs.uk/Id/ods-site-code";
             public const string kLocalOrgzCode = "https://fhir.nhs.uk/Id/local-organization-code";
+            public const string kPracSDSUserId = "https://fhir.nhs.uk/Id/sds-user-id";
+            public const string kPracRoleProfile = "https://fhir.nhs.uk/Id/sds-role-profile-id";
         }
 
         internal static class ValueSetSystems
@@ -40,6 +42,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kContactEntityType = "http://hl7.org/fhir/ValueSet/contactentity-type";
             public const string kIdentifierUse = "http://hl7.org/fhir/ValueSet/identifier-use";
             public const string kIdentifierType = "http://hl7.org/fhir/ValueSet/identifier-type";
+            public const string kAdministrativeGender = "https://fhir.hl7.org.uk/ValueSet/CareConnect-AdministrativeGender-1";
+            public const string kSDSJobRoleName = "https://fhir.hl7.org.uk/ValueSet/CareConnect-SDSJobRoleName-1";
         }
 
         internal static class StructureDefinitionSystems
