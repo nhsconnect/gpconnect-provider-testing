@@ -79,8 +79,7 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.MultipleBirth?.ShouldBeOfType<FhirBoolean>()
-             
+                patient.MultipleBirth?.ShouldBeOfType<FhirBoolean>();
 
             });
         }
