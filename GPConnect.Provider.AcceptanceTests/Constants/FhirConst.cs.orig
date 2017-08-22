@@ -23,7 +23,10 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
 
         internal static class IdentifierSystems
         {
+<<<<<<< HEAD
             public const string kNHSNumber = "https://fhir.nhs.uk/Id/nhs-number";
+=======
+            public const string kNHSNumber = "http://fhir.nhs.net/Id/nhs-number";
             public const string kOdsOrgzCode = "https://fhir.nhs.uk/Id/ods-organization-code";
             public const string kOdsSiteCode = "https://fhir.nhs.uk/Id/ods-site-code";
             public const string kLocalOrgzCode = "https://fhir.nhs.uk/Id/local-organization-code";
@@ -47,6 +50,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kOrganisation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Organization-1";
             public const string kExtCcGpcMainLoc = "https://fhir.hl7.org.uk/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
             public const string kOrgzPeriod = "http://hl7.org/fhir/StructureDefinition/organization-period";  
+>>>>>>> 43d51c4cbc2bf1e626a809f8189a40eee2da95df
         }
     }
 }

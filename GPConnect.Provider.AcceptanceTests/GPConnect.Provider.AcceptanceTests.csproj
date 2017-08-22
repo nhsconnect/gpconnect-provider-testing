@@ -141,6 +141,7 @@
     <Compile Include="Data\PDS.cs" />
     <Compile Include="Enum\GpConnectInteraction.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
+    <Compile Include="Extensions\ValueSetExtensions.cs" />
     <Compile Include="Factories\HttpRequestConfigurationFactory.cs" />
     <Compile Include="Factories\JwtFactory.cs" />
     <Compile Include="Factories\RequestFactory.cs" />
