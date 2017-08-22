@@ -237,7 +237,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (extensions != null)
             {
                 var validExtensions = new [] { FhirConst.StructureDefinitionSystems.kExtCcGpcMainLoc, FhirConst.StructureDefinitionSystems.kOrgzPeriod };
-                extensions.Url.ShouldBeOneOf(validExtensions, "Organisation Extension is invalid. Extensions must have a URL element.");
+                extensions.Url.ShouldBeOneOf(validExtensions, string.Format("Organisation Extension is invalid. Extensions must be one of {0}", validExtensions.ToString()));
             }
         }
 
@@ -396,7 +396,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I store the Organization")]
         public void StoreTheOrganization()
         {
-            var organization = Organizations.FirstOrDefault();
+            StoreTheOrganization(null);
+        }
+
+        [Given(@"I store the Organization with site code ""([^""]*)""")]
+        public void StoreTheOrganization(string siteCode)
+        {
+            var organization = Organizations.FirstOrDefault(orgz => string.IsNullOrEmpty(siteCode) || (!string.IsNullOrEmpty(siteCode) && orgz.Identifier.Select(zi => zi.Value).ToList().Contains(GlobalContext.OdsCodeMap[siteCode])));
             if (organization != null)
             {
                 _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
@@ -500,14 +506,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var organization = (Organization)_httpContext.FhirResponse.Resource;
             organization.Identifier.ShouldNotBeNull("The organization should contain an organization identifier as the business identifier was used to find the organization for this test.");
 
-            var identifierFound = organization.Identifier.Find(identifier => identifier.System.Equals(identifierSystem) && identifier.Value.Equals(GlobalContext.OdsCodeMap[identifierValue]));
-            identifierFound.ShouldNotBeNull($"The expected identifier was not found in the returned organization resource, expected value {GlobalContext.OdsCodeMap[identifierValue]}");
+            var referenceValueLists = getIdentifiersInList(identifierValue);
+            var identifierFound = organization.Identifier.Find(identifier => identifier.System.Equals(identifierSystem) && referenceValueLists.Contains(identifier.Value));
+            identifierFound.ShouldNotBeNull($"The expected identifier was not found in the returned organization resource, expected value {referenceValueLists}");
         }
 
         [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)"" and ""([^""]*)"" ""([^""]*)"" system identifier with site code ""([^""]*)""")]
         public void ThenAnOrganizationReturnedInTheBundleHasSystemIdentifierWithAndSystemIdentifierWithSiteCode(int orgCount, string orgSystem, string orgCode, int siteCount, string siteSystem, string siteCode)
         {
-            var allOrganizationsFound = false;
+            var totalValidOrganisations = 0;
 
             Organizations.ForEach(organization =>
             {
@@ -521,22 +528,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         var referenceValueLists = getIdentifiersInList(orgCode);
                         referenceValueLists.ShouldContain(identifier.Value);
                         orgLoopCounter++;
+                        continue;
                     }
                     if (identifier.System == siteSystem)
                     {
                         var referenceValueLists = getIdentifiersInList(siteCode);
                         referenceValueLists.ShouldContain(identifier.Value);
                         siteLoopCounter++;
+                        continue;
                     }
                 }
 
                 if ((orgLoopCounter == orgCount) && (siteLoopCounter == siteCount))
                 {
-                    allOrganizationsFound = true;
+                    totalValidOrganisations++;
                 }
             });
 
-            allOrganizationsFound.ShouldBe(true, "The number of organizations or site codes are invalid");
+            totalValidOrganisations.ShouldBe(Organizations.Count, "The number of organizations or site codes are invalid");
         }
 
         private List<string> getIdentifiersInList(string code)

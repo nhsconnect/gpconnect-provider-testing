@@ -27,7 +27,7 @@ Scenario Outline: Organization Read successful request validate all of response
 
 Scenario Outline: Organization Read successful request validate site codes returned are as expected
 	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization
+		And I store the Organization with site code "<ExpectedSiteCode>"
 	Given I configure the default "OrganizationRead" request
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
@@ -70,8 +70,7 @@ Scenario Outline: Organization Read with missing mandatory header
 	Given I get the Organization for Organization Code "ORG1"
 		And I store the Organization
 	Given I configure the default "OrganizationRead" request
-		And I do not send header "<Header>"
-	When I make the "OrganizationRead" request
+	When I make the "OrganizationRead" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:

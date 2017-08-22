@@ -69,11 +69,11 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.DescriptionAttribute("Organization search success")]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/ods-organization-code", "unknownORG", "0", new string[0])]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/ods-organization-code", "ORG1", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/ods-organization-code", "ORG2", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/ods-organization-code", "ORG2", "2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/ods-organization-code", "ORG3", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/ods-site-code", "unknownSIT", "0", new string[0])]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/ods-site-code", "SIT1", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/ods-site-code", "SIT2", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/ods-site-code", "SIT2", "3", new string[0])]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/ods-site-code", "SIT3", "1", new string[0])]
         public virtual void OrganizationSearchSuccess(string system, string value, string entries, string[] exampleTags)
         {
@@ -247,27 +247,34 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Organization - Identifier - have correct Organization Codes and Site Codes when s" +
             "earching by Organization Code")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         [NUnit.Framework.TestCaseAttribute("ORG1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ORG2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ORG3", new string[0])]
         public virtual void Organization_Identifier_HaveCorrectOrganizationCodesAndSiteCodesWhenSearchingByOrganizationCode(string organizationCode, string[] exampleTags)
         {
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization - Identifier - have correct Organization Codes and Site Codes when s" +
-                    "earching by Organization Code", exampleTags);
-#line 80
-this.ScenarioSetup(scenarioInfo);
-#line 81
- testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "earching by Organization Code", @__tags);
 #line 82
+this.ScenarioSetup(scenarioInfo);
+#line 83
+ testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 84
   testRunner.And(string.Format("I add an Organization Identifier parameter with Organization Code System and Valu" +
                         "e \"{0}\"", organizationCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
- testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 84
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 85
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 86
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 87
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 88
   testRunner.And(string.Format("the Organization Identifiers are correct for Organization Code \"{0}\"", organizationCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -276,26 +283,33 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Organization - Identifier - have correct Organization Codes and Site Codes when s" +
             "earching by Site Code")]
+        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
         [NUnit.Framework.TestCaseAttribute("SIT1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SIT2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SIT3", new string[0])]
         public virtual void Organization_Identifier_HaveCorrectOrganizationCodesAndSiteCodesWhenSearchingBySiteCode(string siteCode, string[] exampleTags)
         {
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization - Identifier - have correct Organization Codes and Site Codes when s" +
-                    "earching by Site Code", exampleTags);
-#line 93
-this.ScenarioSetup(scenarioInfo);
-#line 94
- testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 95
-  testRunner.And(string.Format("I add an Organization Identifier parameter with Site Code System and Value \"{0}\"", siteCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
- testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "earching by Site Code", @__tags);
 #line 97
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 98
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 99
+  testRunner.And(string.Format("I add an Organization Identifier parameter with Site Code System and Value \"{0}\"", siteCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 100
+ testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 101
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 102
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 103
   testRunner.And(string.Format("the Organization Identifiers are correct for Site Code \"{0}\"", siteCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -308,36 +322,32 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search by organization code successfully returns multiple results co" +
                     "ntaining the correct fields", ((string[])(null)));
-#line 107
+#line 110
 this.ScenarioSetup(scenarioInfo);
-#line 108
+#line 111
  testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 109
+#line 112
   testRunner.And("I add an Organization Identifier parameter with Organization Code System and Valu" +
                     "e \"ORG2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
- testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 111
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 112
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 114
-  testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 115
-  testRunner.And("the Organization Full Url should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 116
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 117
+  testRunner.And("the response bundle should contain \"2\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 118
+  testRunner.And("the Organization Full Url should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 119
   testRunner.And("if the response bundle contains an organization resource it should contain meta d" +
                     "ata profile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 120
   testRunner.And("an organization returned in the bundle has \"1\" \"https://fhir.nhs.uk/Id/ods-organi" +
                     "zation-code\" system identifier with \"ORG2\" and \"1\" \"https://fhir.nhs.uk/Id/ods-s" +
-                    "ite-code\" system identifier with site code \"SIT2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
-  testRunner.And("an organization returned in the bundle has \"1\" \"https://fhir.nhs.uk/Id/ods-organi" +
-                    "zation-code\" system identifier with \"ORG3\" and \"1\" \"https://fhir.nhs.uk/Id/ods-s" +
-                    "ite-code\" system identifier with site code \"SIT3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "ite-code\" system identifier with site code \"SIT2|SIT4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -349,29 +359,29 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search by site code successfully returns single result containing th" +
                     "e correct fields", ((string[])(null)));
-#line 120
-this.ScenarioSetup(scenarioInfo);
-#line 121
- testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 122
+this.ScenarioSetup(scenarioInfo);
+#line 123
+ testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 124
   testRunner.And("I add an Organization Identifier parameter with Site Code System and Value \"SIT1\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
- testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 124
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 125
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 126
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 127
-  testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
-  testRunner.And("the Organization Full Url should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
+  testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 130
+  testRunner.And("the Organization Full Url should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 131
   testRunner.And("if the response bundle contains an organization resource it should contain meta d" +
                     "ata profile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 130
+#line 132
   testRunner.And("an organization returned in the bundle has \"1\" \"https://fhir.nhs.uk/Id/ods-organi" +
                     "zation-code\" system identifier with \"ORG1\" and \"1\" \"https://fhir.nhs.uk/Id/ods-s" +
                     "ite-code\" system identifier with site code \"SIT1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -386,36 +396,32 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search by site code successfully returns multiple results containing" +
                     " the correct fields", ((string[])(null)));
-#line 132
-this.ScenarioSetup(scenarioInfo);
-#line 133
- testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 134
-  testRunner.And("I add an Organization Identifier parameter with Site Code System and Value \"SIT3\"" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 135
- testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 136
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I add an Organization Identifier parameter with Site Code System and Value \"SIT2\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 137
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 138
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 139
-  testRunner.And("the response bundle should contain \"2\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
-  testRunner.And("the Organization Full Url should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 141
+  testRunner.And("the response bundle should contain \"3\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 142
+  testRunner.And("the Organization Full Url should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 143
   testRunner.And("if the response bundle contains an organization resource it should contain meta d" +
                     "ata profile and version id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 142
+#line 144
   testRunner.And("an organization returned in the bundle has \"1\" \"https://fhir.nhs.uk/Id/ods-organi" +
-                    "zation-code\" system identifier with \"ORG3\" and \"1\" \"https://fhir.nhs.uk/Id/ods-s" +
-                    "ite-code\" system identifier with site code \"SIT3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
-  testRunner.And("an organization returned in the bundle has \"1\" \"https://fhir.nhs.uk/Id/ods-organi" +
-                    "zation-code\" system identifier with \"ORG2\" and \"1\" \"https://fhir.nhs.uk/Id/ods-s" +
-                    "ite-code\" system identifier with site code \"SIT2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "zation-code\" system identifier with \"ORG2|ORG4\" and \"1\" \"https://fhir.nhs.uk/Id/" +
+                    "ods-site-code\" system identifier with site code \"SIT2|SIT3|SIT4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -425,15 +431,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OrganizationSearchFailureDueToNoIdentifierParameter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search failure due to no identifier parameter", ((string[])(null)));
-#line 145
-this.ScenarioSetup(scenarioInfo);
 #line 146
- testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 147
- testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 148
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 149
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 150
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -452,17 +458,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OrganizationSearchFailureDueToInvalidIdentifierParameterName(string parameter, string value, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search failure due to invalid identifier parameter name", exampleTags);
-#line 151
-this.ScenarioSetup(scenarioInfo);
 #line 152
- testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 153
-  testRunner.And(string.Format("I add a \"{0}\" parameter with the Value \"{1}\"", parameter, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 154
- testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I add a \"{0}\" parameter with the Value \"{1}\"", parameter, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 155
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 156
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 157
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -476,20 +482,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OrganizationSearchFailureDueToInvalidInteractionId(string interactionId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search failure due to invalid interactionId", exampleTags);
-#line 168
-this.ScenarioSetup(scenarioInfo);
 #line 169
- testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 170
+ testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 171
   testRunner.And("I add an Organization Identifier parameter with Organization Code System and Valu" +
                     "e \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
-  testRunner.And(string.Format("I set the Interaction Id header to \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 172
- testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I set the Interaction Id header to \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 173
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 174
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 175
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -505,17 +511,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OrganizationSearchFailureDueToMissingHeader(string header, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search failure due to missing header", exampleTags);
-#line 181
-this.ScenarioSetup(scenarioInfo);
 #line 182
- testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 183
+ testRunner.Given("I configure the default \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 184
   testRunner.And("I add an Organization Identifier parameter with Organization Code System and Valu" +
                     "e \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
-  testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 185
- testRunner.When("I make the \"OrganizationSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I make the \"OrganizationSearch\" request with missing Header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 186
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 187
