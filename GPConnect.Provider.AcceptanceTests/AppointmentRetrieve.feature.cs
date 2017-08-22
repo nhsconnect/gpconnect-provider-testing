@@ -109,16 +109,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.Given(string.Format("I create an Appointment for Patient \"{0}\" and Organization Code \"ORG1\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I get the Patient for Patient Value \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 17
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 19
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 21
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 22
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -132,21 +136,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveMultipleAppointmentRetrived(string patient, string numberOfAppointments, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve multiple appointment retrived", exampleTags);
-#line 28
-this.ScenarioSetup(scenarioInfo);
-#line 29
- testRunner.Given(string.Format("I create \"{0}\" Appointments for Patient \"{1}\" and Organization Code \"ORG1\"", numberOfAppointments, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 30
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 31
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I create \"{0}\" Appointments for Patient \"{1}\" and Organization Code \"ORG1\"", numberOfAppointments, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 32
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given(string.Format("I get the Patient for Patient Value \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 33
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
+   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 38
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 39
   testRunner.And(string.Format("the Bundle should contain a minimum of \"{0}\" Appointments", numberOfAppointments), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -161,23 +169,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveFailDueToInvalidPatientLogicalId(string id, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve fail due to invalid patient logical id", exampleTags);
-#line 42
-this.ScenarioSetup(scenarioInfo);
-#line 43
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 44
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 45
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
-  testRunner.And(string.Format("I set the request URL to \"/fhir/Patient/{0}/Appointment\"", id), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 47
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 48
- testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 49
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
+  testRunner.And(string.Format("I set the request URL to \"/fhir/Patient/{0}/Appointment\"", id), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 51
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 52
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 53
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 54
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -248,23 +256,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveSendRequestWithDateVariationsWhichAreInvalid(string startDate, string prefix, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with date variations which are invalid", exampleTags);
-#line 58
-this.ScenarioSetup(scenarioInfo);
-#line 59
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 61
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
-  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\"", prefix, startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 63
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 65
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 66
+  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\"", prefix, startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 68
+ testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 69
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -277,33 +285,33 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveSendRequestAndFindRequestUsingEqualToPrefix(string prefix, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request and find request using equal to prefix", exampleTags);
-#line 130
-this.ScenarioSetup(scenarioInfo);
-#line 131
- testRunner.Given("I create \"1\" Appointments for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 132
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 133
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 134
+this.ScenarioSetup(scenarioInfo);
+#line 135
+ testRunner.Given("I create \"1\" Appointments for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 136
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 137
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 138
   testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for the Created Appo" +
                         "intment Start", prefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 135
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 136
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 137
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 139
-  testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 140
-  testRunner.And("the Appointment Start should equal the Created Appointment Start", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 141
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 142
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 143
+  testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 144
+  testRunner.And("the Appointment Start should equal the Created Appointment Start", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 145
   testRunner.And("the Appointment Start and End Dates should equal the Created Appointment Start an" +
                     "d End Dates", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 142
+#line 146
   testRunner.And("the Appointment Participants should be equal to the Created Appointment Participa" +
                     "nts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -341,25 +349,25 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with date variations and greater than and less " +
                     "than prefix", exampleTags);
-#line 148
-this.ScenarioSetup(scenarioInfo);
-#line 149
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 150
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 151
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 152
-  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\"", prefix, startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 153
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 154
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 155
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 156
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\"", prefix, startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 157
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 158
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 159
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 160
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 161
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -396,26 +404,26 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with lower start date boundry and start prefix " +
                     "and upper end date boundary and end prefix", exampleTags);
-#line 185
-this.ScenarioSetup(scenarioInfo);
-#line 186
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 187
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 188
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
+this.ScenarioSetup(scenarioInfo);
+#line 190
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 191
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 192
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 193
   testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\" and " +
                         "Prefix \"{2}\" for End \"{3}\"", prefix, startDate, prefix2, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 190
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 191
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 192
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 193
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 194
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 195
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 196
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 197
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 198
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -451,26 +459,26 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with upper end date boundary and end prefix and" +
                     " lower start date boundry and start prefix", exampleTags);
-#line 222
-this.ScenarioSetup(scenarioInfo);
-#line 223
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 224
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 225
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 226
+this.ScenarioSetup(scenarioInfo);
+#line 227
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 228
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 229
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 230
   testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\" and " +
                         "Prefix \"{2}\" for End \"{3}\"", prefix, startDate, prefix2, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 228
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 229
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 230
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 231
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 232
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 233
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 234
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 235
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -512,26 +520,26 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with different upper end date boundary formats " +
                     "and end prefix and different lower start date boundry formats and start prefix", exampleTags);
-#line 259
+#line 264
 this.ScenarioSetup(scenarioInfo);
-#line 260
+#line 265
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 261
+#line 266
  testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 262
+#line 267
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 263
+#line 268
   testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\" and " +
                         "Prefix \"{2}\" for End \"{3}\"", prefix, startDate, prefix2, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 264
+#line 269
  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 265
+#line 270
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 266
+#line 271
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 267
+#line 272
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 268
+#line 273
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -572,24 +580,24 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with start date and invalid start prefix and en" +
                     "d date and invalid end prefix", exampleTags);
-#line 301
+#line 306
 this.ScenarioSetup(scenarioInfo);
-#line 302
+#line 307
  testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 303
+#line 308
  testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 304
+#line 309
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 305
+#line 310
   testRunner.And(string.Format("I add a query parameter to the Request URL with Prefix \"{0}\" for Start \"{1}\" and " +
                         "Prefix \"{2}\" for End \"{3}\"", prefix, startDate, prefix2, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 306
+#line 311
  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 307
+#line 312
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 308
+#line 313
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 309
+#line 314
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -605,23 +613,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveFailureDueToMissingHeader(string header, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve failure due to missing header", exampleTags);
-#line 341
-this.ScenarioSetup(scenarioInfo);
-#line 342
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 343
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 344
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 345
-  testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 346
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 347
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 348
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 349
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 350
+  testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 351
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 352
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 353
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 354
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -631,29 +639,29 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve interaction id incorrect fail")]
         [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:rest:search:organization", new string[0])]
         [NUnit.Framework.TestCaseAttribute("urn:nh4s:names:se34rv4ices4:gpconnect3:fhir:re23st:seawwwwwwwww", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("urn:nhs:namezzs:services:gpconnect:fhir:operation:gpc.getcarerecord", new string[0])]
         [NUnit.Framework.TestCaseAttribute("", new string[0])]
         [NUnit.Framework.TestCaseAttribute("null", new string[0])]
         public virtual void AppointmentRetrieveInteractionIdIncorrectFail(string interactionId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve interaction id incorrect fail", exampleTags);
-#line 358
-this.ScenarioSetup(scenarioInfo);
-#line 359
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 360
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 361
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 362
-  testRunner.And(string.Format("I set the Interaction Id header to \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 363
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 364
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 365
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 366
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 367
+  testRunner.And(string.Format("I set the Interaction Id header to \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 368
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 369
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 370
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 371
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -670,27 +678,27 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve accept header and _format parameter to request response form" +
                     "at", exampleTags);
-#line 375
-this.ScenarioSetup(scenarioInfo);
-#line 376
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 377
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 378
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 379
-  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 380
-  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 381
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 382
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 383
-  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 384
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 385
+  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 386
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 387
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 388
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 389
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 390
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -703,25 +711,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveAcceptHeaderToRequestResponseFormat(string header, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve accept header to request response format", exampleTags);
-#line 393
-this.ScenarioSetup(scenarioInfo);
-#line 394
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 395
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 396
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 397
-  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 398
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 399
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 400
-  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 401
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 402
+  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 403
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 404
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 405
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 406
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 407
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -734,25 +742,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieve_FormatParameterOnlyToRequestResponseFormat(string parameter, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve _format parameter only to request response format", exampleTags);
-#line 408
-this.ScenarioSetup(scenarioInfo);
-#line 409
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 410
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 411
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 412
-  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 413
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 414
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 415
-  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 416
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 417
+  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 418
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 419
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 420
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 421
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 422
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -763,31 +771,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveAppointmentWhichContainsAllMandatoryResources()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve appointment which contains all mandatory resources", ((string[])(null)));
-#line 423
-this.ScenarioSetup(scenarioInfo);
-#line 424
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 425
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 426
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 427
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 428
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 429
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 430
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 431
-  testRunner.And("the Appointment Status should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 432
-  testRunner.And("the Appointment Start should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 433
-  testRunner.And("the Appointment End should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 434
-  testRunner.And("the Appointment Slots should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 435
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 436
+  testRunner.And("the Appointment Status should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 437
+  testRunner.And("the Appointment Start should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 438
+  testRunner.And("the Appointment End should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 439
+  testRunner.And("the Appointment Slots should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 440
   testRunner.And("the Appointment Participants should be valid and resolvable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -800,23 +808,23 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle resource must contain participant with type or actor " +
                     "present", ((string[])(null)));
-#line 437
-this.ScenarioSetup(scenarioInfo);
-#line 438
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 439
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 440
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 441
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 442
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 443
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 444
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 445
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 446
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 447
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 448
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 449
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 450
   testRunner.And("the Appointment Participant Type and Actor should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -827,21 +835,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveBundleValidResourcesReturnedInTheResponse()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle valid resources returned in the response", ((string[])(null)));
-#line 447
-this.ScenarioSetup(scenarioInfo);
-#line 448
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 449
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 450
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 451
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 452
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 453
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 454
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 455
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 456
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 457
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 458
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 459
   testRunner.And("the Appointment Participants should be valid and resolvable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -854,21 +862,21 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle contains appointment with identifer with correct syst" +
                     "em and value", ((string[])(null)));
-#line 456
-this.ScenarioSetup(scenarioInfo);
-#line 457
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 458
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 459
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 460
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 461
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 462
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 463
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 464
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 465
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 466
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 467
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 468
   testRunner.And("the Appointment Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -881,21 +889,21 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve appointment response should contain meta data profile and ve" +
                     "rsion id", ((string[])(null)));
-#line 465
-this.ScenarioSetup(scenarioInfo);
-#line 466
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 467
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 468
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 469
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 470
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 471
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 472
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 473
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 474
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 475
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 476
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 477
   testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -908,21 +916,21 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve returned resources must contain coding with valid system cod" +
                     "e and display", ((string[])(null)));
-#line 474
-this.ScenarioSetup(scenarioInfo);
-#line 475
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 476
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 477
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 478
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 479
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 480
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 481
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 482
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 483
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 484
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 485
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 486
   testRunner.And("the Appointment Reason should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -933,27 +941,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveBundleContainsExtensions()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle contains extensions", ((string[])(null)));
-#line 483
-this.ScenarioSetup(scenarioInfo);
-#line 484
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 485
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 486
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 487
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 488
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 489
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 490
-  testRunner.And("the Appointment Category Extension should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 491
-  testRunner.And("the Appointment Booking Method Extension should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 492
-  testRunner.And("the Appointment Contact Method Extension should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 493
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 494
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 495
+  testRunner.And("the Appointment Category Extension should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 496
+  testRunner.And("the Appointment Booking Method Extension should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 497
+  testRunner.And("the Appointment Contact Method Extension should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 498
   testRunner.And("the Appointment Cancellation Reason Extension should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -964,23 +972,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveBundleContainsValidStartAndEndDates()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle contains valid start and end dates", ((string[])(null)));
-#line 495
-this.ScenarioSetup(scenarioInfo);
-#line 496
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 497
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 498
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 499
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 500
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 501
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 502
-  testRunner.And("the Appointment Start should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 503
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 504
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 505
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 506
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 507
+  testRunner.And("the Appointment Start should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 508
   testRunner.And("the Appointment End should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -994,23 +1002,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveJWTPatientTypeRequestInvalid(string jWTType, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve JWT patient type request invalid", exampleTags);
-#line 505
-this.ScenarioSetup(scenarioInfo);
-#line 506
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 507
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 508
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 509
-  testRunner.And(string.Format("I set the JWT requested scope to \"{0}\"", jWTType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 510
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 511
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 512
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 513
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 514
+  testRunner.And(string.Format("I set the JWT requested scope to \"{0}\"", jWTType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 515
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 516
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 517
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 518
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1021,23 +1029,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveJWTPatientReferenceMustMatchPayloadPatientNhsNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve JWT patient reference must match payload patient nhs number", ((string[])(null)));
-#line 520
-this.ScenarioSetup(scenarioInfo);
-#line 521
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 522
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 523
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 524
-  testRunner.And("I set the JWT requested record NHS number to config patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 525
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 526
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 527
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 528
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 529
+  testRunner.And("I set the JWT requested record NHS number to config patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 530
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 531
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 532
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 533
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1048,25 +1056,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveSendingAdditionalValidParametersInTheRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve sending additional valid parameters in the request", ((string[])(null)));
-#line 530
-this.ScenarioSetup(scenarioInfo);
-#line 531
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 532
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 533
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 534
-  testRunner.And("I add the parameter \"_count\" with the value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 535
-  testRunner.And("I add the parameter \"_sort\" with the value \"status\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 536
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 537
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 538
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 539
+  testRunner.And("I add the parameter \"_sort\" with the value \"entry\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 540
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 541
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 542
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 543
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1077,15 +1083,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConformanceProfileSupportsTheSearchAppointmentOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the search appointment operation", ((string[])(null)));
-#line 541
-this.ScenarioSetup(scenarioInfo);
-#line 542
- testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 543
- testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 544
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 545
+this.ScenarioSetup(scenarioInfo);
+#line 546
+ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 547
+ testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 548
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 549
   testRunner.And("the Conformance REST Resources should contain the \"Appointment\" Resource with the" +
                     " \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1097,25 +1103,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AppointmentRetrieveValidResponseCheckCachingHeadersExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve valid response check caching headers exist", ((string[])(null)));
-#line 548
-this.ScenarioSetup(scenarioInfo);
-#line 549
-testRunner.Given("I get the Patient for Patient Value \"patient15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 550
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 551
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 552
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 553
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.Given("I get the Patient for Patient Value \"patient15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 554
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 555
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 556
-  testRunner.And("the Bundle should contain no Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 557
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 558
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 559
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 560
+  testRunner.And("the Bundle should contain no Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 561
   testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1126,26 +1132,26 @@ testRunner.Given("I get the Patient for Patient Value \"patient15\"", ((string)(
         public virtual void AppointmentRetrieveInvalidResponseCheckCachingHeadersExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve invalid response check caching headers exist", ((string[])(null)));
-#line 559
-this.ScenarioSetup(scenarioInfo);
-#line 560
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 561
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 562
-  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 563
+this.ScenarioSetup(scenarioInfo);
+#line 564
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 565
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 566
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 567
   testRunner.And("I set the Interaction Id header to \"urn:nhs:names:services:gpconnect:fhir:rest:se" +
                     "arch:organization \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 564
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 565
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 566
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 567
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 568
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 569
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 570
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 571
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 572
   testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

@@ -102,9 +102,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 17
   testRunner.And("the Practitioner should exclude disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
+  testRunner.And("the practitioner Telecom should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+  testRunner.And("the practitioner Address should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+  testRunner.And("the practitioner Gender should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 21
   testRunner.And(string.Format("the Practitioner SDS Role Profile Identifier should be valid for \"{0}\" Role Profi" +
                         "le Identifiers", numberOfRoleIdentifiers), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
+#line 22
   testRunner.And(string.Format("the Practitioner SDS User Identifier should be valid for Value \"{0}\"", practitioner), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -121,15 +127,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerReadWithValidIdentifierWhichDoesNotExistOnProvidersSystem(string logicalId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner Read with valid identifier which does not exist on providers system", exampleTags);
-#line 26
-this.ScenarioSetup(scenarioInfo);
-#line 27
- testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 28
-  testRunner.And(string.Format("I set the Read Operation logical identifier used in the request to \"{0}\"", logicalId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
- testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 30
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 31
+  testRunner.And(string.Format("I set the Read Operation logical identifier used in the request to \"{0}\"", logicalId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 32
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 33
  testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -144,20 +150,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerReadWithInvalidResourcePathInURL(string relativePath, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner Read with invalid resource path in URL", exampleTags);
-#line 40
-this.ScenarioSetup(scenarioInfo);
-#line 41
- testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 42
-  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
- testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 44
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 45
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 47
   testRunner.And(string.Format("I set the Read Operation relative path to \"{0}\" and append the resource logical i" +
                         "dentifier", relativePath), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
+#line 48
  testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 46
+#line 49
  testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -173,21 +179,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerReadWithMissingMandatoryHeader(string header, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner Read with missing mandatory header", exampleTags);
-#line 54
-this.ScenarioSetup(scenarioInfo);
-#line 55
- testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
-  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
- testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 58
-  testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 59
- testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 61
+  testRunner.And(string.Format("I do not send header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 62
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 63
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 64
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -203,21 +209,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerReadWithIncorrectInteractionId(string interactionId, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner Read with incorrect interaction id", exampleTags);
-#line 70
-this.ScenarioSetup(scenarioInfo);
-#line 71
- testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 72
-  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
- testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 74
-  testRunner.And(string.Format("I set the Interaction Id header to \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 75
- testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 76
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 77
+  testRunner.And(string.Format("I set the Interaction Id header to \"{0}\"", interactionId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 78
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 79
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 80
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -230,27 +236,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerReadUsingThe_FormatParameterToRequestResponseFormat(string parameter, string responseFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner Read using the _format parameter to request response format", exampleTags);
-#line 86
-this.ScenarioSetup(scenarioInfo);
-#line 87
- testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 88
-  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
- testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 90
-  testRunner.And(string.Format("I add a Format parameter with the Value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 91
- testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 93
-  testRunner.And(string.Format("the response should be the format FHIR {0}", responseFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Format parameter with the Value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 94
-  testRunner.And("the Response Resource should be a Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 95
-  testRunner.And("the Practitioner Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 96
+  testRunner.And(string.Format("the response should be the format FHIR {0}", responseFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 97
+  testRunner.And("the Response Resource should be a Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 98
+  testRunner.And("the Practitioner Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 99
   testRunner.And("the Practitioner SDS User Identifier should be valid for Value \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -263,27 +269,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerReadUsingTheAcceptHeaderToRequestResponseFormat(string header, string responseFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner Read using the Accept header to request response format", exampleTags);
-#line 102
-this.ScenarioSetup(scenarioInfo);
-#line 103
- testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 104
-  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 105
- testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 106
-  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 107
- testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 109
-  testRunner.And(string.Format("the response should be the format FHIR {0}", responseFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 110
-  testRunner.And("the Response Resource should be a Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 111
-  testRunner.And("the Practitioner Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 112
+  testRunner.And(string.Format("the response should be the format FHIR {0}", responseFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 113
+  testRunner.And("the Response Resource should be a Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 114
+  testRunner.And("the Practitioner Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 115
   testRunner.And("the Practitioner SDS User Identifier should be valid for Value \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -300,29 +306,29 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner Read sending the Accept header and _format parameter to request resp" +
                     "onse format", exampleTags);
-#line 118
-this.ScenarioSetup(scenarioInfo);
-#line 119
- testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 120
-  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 121
- testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 122
-  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 123
-  testRunner.And(string.Format("I add a Format parameter with the Value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 124
- testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 125
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
-  testRunner.And(string.Format("the response should be the format FHIR {0}", responseFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Format parameter with the Value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
-  testRunner.And("the Response Resource should be a Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 128
-  testRunner.And("the Practitioner Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 129
+  testRunner.And(string.Format("the response should be the format FHIR {0}", responseFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 130
+  testRunner.And("the Response Resource should be a Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 131
+  testRunner.And("the Practitioner Id should equal the Request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 132
   testRunner.And("the Practitioner SDS User Identifier should be valid for Value \"practitioner2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -333,15 +339,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConformanceProfileSupportsThePractitionerReadOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Practitioner read operation", ((string[])(null)));
-#line 137
-this.ScenarioSetup(scenarioInfo);
-#line 138
- testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 139
- testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 140
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 141
+ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 142
+ testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 143
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 144
   testRunner.And("the Conformance REST Resources should contain the \"Practitioner\" Resource with th" +
                     "e \"Read\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -353,21 +359,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerReadResponseShouldContainAnETagHeader()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read response should contain an ETag header", ((string[])(null)));
-#line 143
-this.ScenarioSetup(scenarioInfo);
-#line 144
- testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 145
-  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 146
- testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 147
- testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 148
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 149
-  testRunner.And("the Response Resource should be a Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 150
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 151
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 152
+  testRunner.And("the Response Resource should be a Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 153
   testRunner.And("the Response should contain the ETag header matching the Resource Version Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -378,19 +384,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerReadValidResponseCheckCachingHeadersExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read valid response check caching headers exist", ((string[])(null)));
-#line 152
-this.ScenarioSetup(scenarioInfo);
-#line 153
- testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 154
-  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 155
- testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 156
- testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 157
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 158
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 159
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 160
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 161
   testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -401,24 +407,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PractitionerReadInvalidResponseCheckCachingHeadersExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner read invalid response check caching headers exist", ((string[])(null)));
-#line 160
-this.ScenarioSetup(scenarioInfo);
-#line 161
- testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 162
-  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 163
- testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 164
+ testRunner.Given("I get the Practitioner for Practitioner Code \"practitioner1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 165
+  testRunner.And("I store the Practitioner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 166
+ testRunner.Given("I configure the default \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 167
   testRunner.And("I set the Interaction Id header to \"urn:nhs:names:services:gpconnect:fhir:rest:re" +
                     "ad:practitioner3>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 165
- testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 166
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 167
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 168
+ testRunner.When("I make the \"PractitionerRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 169
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 170
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 171
   testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -435,7 +441,7 @@ this.ScenarioSetup(scenarioInfo);
                     "ges shown by communication element manual testing is required", new string[] {
                         "Manual",
                         "ignore"});
-#line 175
+#line 178
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -452,7 +458,7 @@ this.ScenarioSetup(scenarioInfo);
                     " version can be retrieved", new string[] {
                         "Manual",
                         "ignore"});
-#line 179
+#line 182
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -469,7 +475,7 @@ this.ScenarioSetup(scenarioInfo);
                     "sible within the returned practitioner resource", new string[] {
                         "Manual",
                         "ignore"});
-#line 183
+#line 186
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -486,7 +492,7 @@ this.ScenarioSetup(scenarioInfo);
                     " are available in the provider system", new string[] {
                         "Manual",
                         "ignore"});
-#line 187
+#line 190
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();

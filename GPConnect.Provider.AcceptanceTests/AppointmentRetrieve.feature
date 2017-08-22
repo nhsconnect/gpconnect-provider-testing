@@ -13,6 +13,8 @@ Scenario: Appointment retrieve success valid id where appointment resource retur
 
 Scenario Outline: Appointment retrieve success valid id where single appointment resource should be returned
 	Given I create an Appointment for Patient "<patient>" and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "<patient>"
+		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
@@ -27,8 +29,10 @@ Scenario Outline: Appointment retrieve success valid id where single appointment
 
 Scenario Outline: Appointment retrieve multiple appointment retrived
 	Given I create "<numberOfAppointments>" Appointments for Patient "<patient>" and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "<patient>"
+		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+			And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -254,6 +258,7 @@ Scenario Outline: Appointment retrieve send request with upper end date boundary
 		| 2044-10-05                | lt     | 2014-10-05                | ge      |
 		| 2044-05                   | lt     | 2014-05                   | ge      |
 		| 2044-05-01T11:08:32       | lt     | 2014-05-01T11:08:32       | ge      |
+	
 
 
 Scenario Outline: Appointment retrieve send request with different upper end date boundary formats and end prefix and different lower start date boundry formats and start prefix
@@ -368,7 +373,7 @@ Scenario Outline: Appointment retrieve interaction id incorrect fail
 		| interactionId                                                     |
 		| urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
 		| urn:nh4s:names:se34rv4ices4:gpconnect3:fhir:re23st:seawwwwwwwww   |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		| urn:nhs:namezzs:services:gpconnect:fhir:operation:gpc.getcarerecord |
 		|                                                                   |
 		| null                                                              |
 	
@@ -531,8 +536,7 @@ Scenario: Appointment retrieve sending additional valid parameters in the reques
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add the parameter "_count" with the value "1"
-		And I add the parameter "_sort" with the value "status"
+		And I add the parameter "_sort" with the value "entry"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON

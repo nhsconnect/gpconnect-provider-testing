@@ -13,7 +13,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
     {
         public static Identifier GetNHSNumberIdentifier(string nhsNumber)
         {
-            return GetIdentifier("http://fhir.nhs.net/Id/nhs-number", nhsNumber);
+            return GetIdentifier("https://fhir.nhs.uk/Id/nhs-number", nhsNumber);
         }
 
         public static Identifier GetIdentifier(string system, string nhsNumber)
