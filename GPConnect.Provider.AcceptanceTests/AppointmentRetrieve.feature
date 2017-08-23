@@ -130,6 +130,13 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 		| 2016-08-05T08:16          | eq     |
 		| 2016-08-                  | eq     |
 		| 2016-08-05 08:16:07       | eq     |
+		| 2044                      | ne     |
+		| 2044-02                   | ne     |
+		| 2044-10-05                | ne     |
+		| 2044-05                   | ne     |
+		| 2044-05-01T11:08:32       | ne     |
+		| 2044-10-23T11:08:32+00:00 | ne     |
+
 
 Scenario Outline: Appointment retrieve send request and find request using equal to prefix
 	Given I create "1" Appointments for Patient "patient1" and Organization Code "ORG1"
@@ -185,6 +192,7 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 		| 2044-05                   | le     |
 		| 2044-05-01T11:08:32       | le     |
 		| 2044-10-23T11:08:32+00:00 | le     |
+	
 
 Scenario Outline: Appointment retrieve send request with lower start date boundry and start prefix and upper end date boundary and end prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
