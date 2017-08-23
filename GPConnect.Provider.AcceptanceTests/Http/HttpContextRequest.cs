@@ -1,6 +1,8 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Http
 {
+    using System;
     using System.Diagnostics;
+    using System.Net;
     using Context;
 
     public class HttpContextRequest : HttpRequestBase
@@ -16,22 +18,32 @@
         public void MakeRequest()
         {
             var httpClient = GetHttpClient();
-
+  
             var requestMessage = GetHttpRequestMessage();
 
             var timer = new Stopwatch();
 
             timer.Start();
 
-            var result = httpClient.SendAsync(requestMessage).Result;
+            try
+            {
+                var result = httpClient.SendAsync(requestMessage).Result;
 
-            timer.Stop();
+                timer.Stop();
 
-            _httpContext.HttpResponse = GetHttpResponse(result);
+                _httpContext.HttpResponse = GetHttpResponse(result);
 
-            _httpContext.HttpResponse.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
+                _httpContext.HttpResponse.ResponseTimeInMilliseconds = timer.ElapsedMilliseconds;
 
-            _httpContext.FhirResponse.Resource = _httpContext.HttpResponse.ParseFhirResource().Resource;
+                _httpContext.FhirResponse.Resource = _httpContext.HttpResponse.ParseFhirResource().Resource;
+            }
+            catch (Exception exception)
+            {
+                _httpContext.HttpResponse = new HttpResponse
+                {
+                    ConnectionClosed = true
+                };
+            }
         }
     }
 }

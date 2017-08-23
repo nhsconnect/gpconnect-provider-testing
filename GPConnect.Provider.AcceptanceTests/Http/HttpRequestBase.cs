@@ -22,7 +22,7 @@
             _securityContext = securityContext;
         }
 
-        protected static HttpResponse GetHttpResponse(HttpResponseMessage result)
+        protected HttpResponse GetHttpResponse(HttpResponseMessage result)
         {
             var httpResponse = new HttpResponse
             {
@@ -58,6 +58,8 @@
                     Log.WriteLine("Header - " + header.Key + " : " + headerValues);
                 }
             }
+
+            httpResponse.Redirected = _httpRequestConfiguration.BaseUrl + _httpRequestConfiguration.RequestUrl != result.RequestMessage.RequestUri.ToString();
 
             return httpResponse;
         }
@@ -113,9 +115,10 @@
         {
             var handler = new WebRequestHandler
             {
-                AutomaticDecompression = _httpRequestConfiguration.DecompressionMethod
+                AutomaticDecompression = _httpRequestConfiguration.DecompressionMethod,
+                AllowAutoRedirect = true
             };
-
+            
             if (_securityContext.SendClientCert)
             {
                 var clientCert = _securityContext.ClientCert;
@@ -135,7 +138,7 @@
             var handler = ConfigureHandler();
 
             return new HttpClient(handler)
-            {
+            { 
                 BaseAddress = new Uri(_httpRequestConfiguration.BaseUrl),
                 Timeout = new TimeSpan(0, 0, 10, 0)
             };

@@ -40,6 +40,8 @@
 
         public bool ResponseTimeAcceptable { get; set; }
         public CurlCode CurlCode { get; set; }
+        public bool Redirected { get; set; }
+        public bool ConnectionClosed { get; set; }
 
         public FhirResponse ParseFhirResource()
         {

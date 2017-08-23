@@ -156,8 +156,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAmNotUsingTLSConnection()
         {
             SecurityContext.UseTLS = false;
-            Given(@"I do not want to verify the server certificate");
-            And(@"I am not using a client certificate");
         }
 
         [Given(@"I set the Cipher to ""(.*)""")]

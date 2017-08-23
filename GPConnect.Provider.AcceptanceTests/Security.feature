@@ -4,16 +4,13 @@ Feature: Security
 #These tests expect some Apache/nginx specific http errors 495, 496 - need to consider providers not using Apache/nginx.
 
 Scenario: Security - non ssl request
-	Given I configure the default "GpcGetCareRecord" request
+Given I configure the default "MetadataRead" request
 		And I am not using the SSP
+		And I am using the SSP client certificate
 		And I am not using TLS Connection
-		And I am connecting to server on port "80"
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "SUM"
-	When I make the "GpcGetCareRecord" request
-	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource
+	When I make the "MetadataRead" request
+	Then the Response should indicate the connection was closed by the server or the Request was redirected 
+		And if redirected the Response Headers should contain a Strict-Transport-Security header
 
 Scenario: Security - valid client certificate
 	Given I configure the default "GpcGetCareRecord" request

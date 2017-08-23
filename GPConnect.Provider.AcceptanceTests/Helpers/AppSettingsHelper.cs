@@ -24,7 +24,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         // Server Settings
         public static string ServerUrl => Get<string>("serverUrl");
-        public static string ServerPort => Get<string>("serverPort");
+        public static string ServerHttpsPort => Get<string>("serverHttpsPort");
+        public static string ServerHttpPort => Get<string>("serverHttpPort");
         public static string ServerBase => Get<string>("serverBase");
 
         // Web Proxy Settings

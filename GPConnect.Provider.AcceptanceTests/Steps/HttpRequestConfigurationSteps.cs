@@ -17,12 +17,6 @@
             _httpContext = httpContext;
         }
 
-        [Given(@"I am connecting to server on port ""([^\s]*)""")]
-        public void GivenIAmConnectingToServerOnPort(string serverPort)
-        {
-            _httpContext.HttpRequestConfiguration.FhirServerPort = serverPort;
-        }
-
         [Given(@"I am not using the SSP")]
         public void GivenIAmNotUsingTheSsp()
         {
