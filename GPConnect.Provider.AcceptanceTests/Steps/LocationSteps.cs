@@ -1,4 +1,6 @@
-﻿namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿using GPConnect.Provider.AcceptanceTests.Constants;
+
+namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -38,7 +40,7 @@
         [Given(@"I add a Location Identifier parameter with default System and Value ""([^""]*)""")]
         public void AddALocationIdentifierParameterWithDefaultSystemAndValue(string value)
         {
-            AddALocationIdentifierParameterWithSystemAndValue("http://fhir.nhs.net/Id/ods-site-code", value);
+            AddALocationIdentifierParameterWithSystemAndValue(FhirConst.IdentifierSystems.kOdsSiteCode, value);
         }
 
         [Given(@"I add a Location ""([^""]*)"" parameter with default System and Value ""([^""]*)""")]
@@ -48,7 +50,7 @@
 
             GlobalContext.OdsCodeMap.TryGetValue(value, out locationCode);
 
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, "http://fhir.nhs.net/Id/ods-site-code" + '|' + GlobalContext.OdsCodeMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsSiteCode, GlobalContext.OdsCodeMap[value]));
         }       
 
         [Given(@"I get the Location for Location Value ""([^""]*)""")]
@@ -214,7 +216,7 @@
             Locations.ForEach(location =>
             {
                 var siteCodeIdentifiers = location.Identifier
-                    .Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code"))
+                    .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kOdsSiteCode))
                     .ToList();
 
                 siteCodeIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one ods site code in the location resource");

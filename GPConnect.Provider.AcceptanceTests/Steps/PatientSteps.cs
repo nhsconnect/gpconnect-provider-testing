@@ -80,6 +80,7 @@
             Patients.ForEach(patient =>
             {
                 patient.MultipleBirth?.ShouldBeOfType<FhirBoolean>();
+
             });
         }
 
@@ -105,8 +106,16 @@
             {
                 patient.Contact.ForEach(contact =>
                 {
-                    contact.Name.Family.Count().ShouldBeLessThanOrEqualTo(1);
-                });
+                    contact.Name.Family.Count().ShouldBe(1);
+
+                    contact.Name.Use.ShouldNotBeNull();
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>();
+                    if (contact.Gender != null) {
+                        contact.Gender.ShouldBeOfType<AdministrativeGender>();
+                        }
+                    // Contact Relationship Checks
+                
+                    });
             });
         }
 
@@ -115,10 +124,12 @@
         {
             Patients.ForEach(patient =>
             {
+                patient.Name.ShouldNotBeNull();
                 patient.Name.ForEach(name =>
                 {
                     name.Family.Count().ShouldBeLessThanOrEqualTo(1);
-                    name.Given.Count().ShouldBeLessThanOrEqualTo(1);
+                    
+                    
                 });
             });
         }
@@ -139,17 +150,18 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.Identifier.ShouldNotBeNull("The patient identifier should not be null");
-                patient.Identifier.Count.ShouldBe(1);
-
-                var identifier = patient.Identifier.First();
-
-                FhirConst.IdentifierSystems.kNHSNumber.Equals(identifier.System).ShouldBeTrue();
-                NhsNumberHelper.IsNhsNumberValid(identifier.Value).ShouldBeTrue();
-
-                if (!string.IsNullOrEmpty(patientName))
+                patient.Identifier.Count.ShouldBeLessThanOrEqualTo(1);
+                if (patient.Identifier.Count == 1)
                 {
-                    identifier.Value.ShouldBe(GlobalContext.PatientNhsNumberMap[patientName]);
+                    var identifier = patient.Identifier.First();
+
+                    FhirConst.IdentifierSystems.kNHSNumber.Equals(identifier.System).ShouldBeTrue();
+                    NhsNumberHelper.IsNhsNumberValid(identifier.Value).ShouldBeTrue();
+
+                    if (!string.IsNullOrEmpty(patientName))
+                    {
+                        identifier.Value.ShouldBe(GlobalContext.PatientNhsNumberMap[patientName]);
+                    }
                 }
             });
         }
@@ -163,6 +175,10 @@
                 {
                     telecom.System.ShouldNotBeNull("The telecom system should not be null");
                     telecom.Value.ShouldNotBeNull("The telecom value element should not be null");
+                    telecom.System.ShouldBeOfType<ContactPoint.ContactPointSystem>();
+                    
+
+                   
                 });
             });
         }
@@ -172,10 +188,11 @@
         {
             Patients.ForEach(patient =>
             {
-                if (patient.MaritalStatus?.Coding != null)
-                {
-                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirMaritalStatusValueSet, patient.MaritalStatus.Coding);
-                }
+                patient.MaritalStatus.Coding.ShouldNotBeNull();
+                ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirMaritalStatusValueSet, patient.MaritalStatus.Coding);
+
+
+                
             });
         }
 
@@ -396,6 +413,46 @@
 
             if (patient != null)
                 _httpRequestConfigurationSteps.GivenISetTheIfNoneMatchheaderHeaderTo("W/\"" + patient.VersionId + "\"");
+        }
+
+        [Then(@"the Patient Use should be valid")]
+        public void ThePatientUseShouldBeValid()
+        {
+            Patients.ForEach(patient =>
+            {
+                patient.Name.ForEach(name =>
+                {
+                    // Contact Relationship Checks
+
+                    name.Use.ShouldNotBeNull();
+                    name.Use.ShouldBeOfType<HumanName.NameUse>();
+                });
+            });
+        }
+
+        [Then(@"the Patient Family Name should be valid")]
+        public void ThePatientFamilyShouldBeValid()
+        {
+            Patients.ForEach(patient =>
+            {
+                patient.Name.ForEach(name =>
+                {
+                    // Contact Relationship Checks
+
+                    name.Family.ShouldNotBeNull();
+                    name.Family.Count().ShouldBe(1);
+                });
+            });
+        }
+
+        [Then(@"the Patient Gender should be valid")]
+        public void ThePatientGenderShouldBeValid()
+        {
+            Patients.ForEach(patient =>
+            {
+                patient.Gender.ShouldBeOfType<AdministrativeGender>();
+               
+            });
         }
     }
 }

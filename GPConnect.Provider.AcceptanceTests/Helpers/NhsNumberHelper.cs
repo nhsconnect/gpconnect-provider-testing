@@ -4,7 +4,7 @@
 
     public static class NhsNumberHelper
     {
-        private static string DefaultSystem => "http://fhir.nhs.net/Id/nhs-number";
+        private static string DefaultSystem => "https://fhir.nhs.uk/Id/nhs-number";
 
         private static string InvalidNhsNumber => "1234567891";
 

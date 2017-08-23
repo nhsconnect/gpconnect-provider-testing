@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BoDi;
+using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Importers;
@@ -164,7 +165,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             GlobalContext.FhirAppointmentCategoryValueSet = appointmentCategory;
 
             var appointmentBookingMethod = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1");
-            if (appointmentCategory == null)
+            if (appointmentBookingMethod == null)
                 Assert.Fail("AppointmentBookingMethod ValueSet Not Found.");
             Log.WriteLine("{0} AppointmentBookingMethod Loaded.", appointmentBookingMethod.CodeSystem.Concept.Count);
             GlobalContext.FhirAppointmentBookingMethodValueSet = appointmentBookingMethod;
@@ -174,6 +175,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("AppointmentContactMethod ValueSet Not Found.");
             Log.WriteLine("{0} AppointmentContactMethod Loaded.", appointmentContactMethod.CodeSystem.Concept.Count);
             GlobalContext.FhirAppointmentContactMethodValueSet = appointmentContactMethod;
+
+            var identifierTypes = resolver.GetValueSet(FhirConst.ValueSetSystems.kIdentifierType);
+            if (identifierTypes == null)
+                Assert.Fail("IdentifierTypes ValueSet Not Found.");
+            Log.WriteLine("{0} IdentifierTypes Loaded.", identifierTypes.CodeSystem.Concept.Count);
+            GlobalContext.FhirIdentifierTypeValueSet = identifierTypes;
+           
         }
 
         [BeforeScenario(Order = 0)]

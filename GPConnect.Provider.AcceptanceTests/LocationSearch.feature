@@ -81,10 +81,10 @@ Scenario Outline: Location search parameter order test
 		And the Location Identifier should be valid
 	Examples:
 		| Parameter1Name | Parameter1                                 | Parameter2Name | Parameter2                                 | ResponseFormat |
-		| _format        | application/json+fhir                      | identifier     | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | JSON           |
-		| _format        | application/xml+fhir                       | identifier     | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | XML            |
-		| identifier     | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | _format        | application/json+fhir                      | JSON           |
-		| identifier     | http://fhir.nhs.net/Id/ods-site-code\|SIT1 | _format        | application/xml+fhir                       | XML            |
+		| _format        | application/json+fhir                      | identifier     | https://fhir.nhs.uk/Id/ods-site-code\|SIT1 | JSON           |
+		| _format        | application/xml+fhir                       | identifier     | https://fhir.nhs.uk/Id/ods-site-code\|SIT1 | XML            |
+		| identifier     | https://fhir.nhs.uk/Id/ods-site-code\|SIT1 | _format        | application/json+fhir                      | JSON           |
+		| identifier     | https://fhir.nhs.uk/Id/ods-site-code\|SIT1 | _format        | application/xml+fhir                       | XML            |
 
 Scenario Outline: Location Search using the accept header to request response format
 	Given I configure the default "LocationSearch" request

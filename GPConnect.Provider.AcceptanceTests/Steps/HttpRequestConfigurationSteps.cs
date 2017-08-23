@@ -106,11 +106,11 @@
         [Given(@"I add the parameter ""(.*)"" with the value or sitecode ""(.*)""")]
         public void GivenIAddTheParameterWithTheSiteCode(string parameterName, string parameterValue)
         {
-            if (parameterValue.Contains("http://fhir.nhs.net/Id/ods-site-code"))
+            if (parameterValue.Contains(FhirConst.IdentifierSystems.kOdsSiteCode))
             {
                 var siteCode = parameterValue.Substring(parameterValue.LastIndexOf('|') + 1);
                 string mappedSiteValue = GlobalContext.OdsCodeMap[siteCode];
-                _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, "http://fhir.nhs.net/Id/ods-site-code|" + mappedSiteValue);
+                _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsSiteCode, mappedSiteValue));
                 return;
             }
 

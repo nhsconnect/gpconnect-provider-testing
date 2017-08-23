@@ -94,6 +94,20 @@
             httpRequest.MakeRequest();
         }
 
+        [When(@"I make the ""(.*)"" request with missing Header ""(.*)""")]
+        public void MakeRequestWithMissingHeader(GpConnectInteraction interaction, string headerKey)
+        {
+            _httpContext.HttpRequestConfiguration = GetRequestBody(interaction, _httpContext.HttpRequestConfiguration);
+
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+
+            _httpContext.HttpRequestConfiguration.RequestHeaders.RemoveHeader(headerKey);
+
+            var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
+
+            httpRequest.MakeRequest();
+        }
+
         [When(@"I make the ""(.*)"" request with an unencoded JWT Bearer Token")]
         public void MakeRequestWithAnUnencodedJwtBearerToken(GpConnectInteraction interaction)
         {

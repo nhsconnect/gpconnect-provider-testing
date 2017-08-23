@@ -59,5 +59,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public static ValueSet FhirAppointmentCategoryValueSet { get; set; }
         public static ValueSet FhirAppointmentBookingMethodValueSet { get; set; }
         public static ValueSet FhirAppointmentContactMethodValueSet { get; set; }
+        public static ValueSet FhirIdentifierTypeValueSet { get; set; }
     }
 }

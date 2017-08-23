@@ -8,6 +8,7 @@
     using TechTalk.SpecFlow;
     using System.Linq;
     using Repository;
+    using Constants;
 
     [Binding]
     public class PractitionerSteps : BaseSteps
@@ -20,7 +21,7 @@
 
         private List<Practitioner> Practitioners => _httpContext.FhirResponse.Practitioners;
 
-        public PractitionerSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps, HttpResponseSteps httpResponseSteps, IFhirResourceRepository fhirResourceRepository) 
+        public PractitionerSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps, HttpResponseSteps httpResponseSteps, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
         {
             _httpContext = httpContext;
@@ -47,7 +48,7 @@
 
             GlobalContext.PractionerCodeMap.TryGetValue(value, out practitionerCode);
 
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", "http://fhir.nhs.net/Id/sds-user-id" + '|' + GlobalContext.PractionerCodeMap[value]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", FhirConst.IdentifierSystems.kPracSDSUserId + '|' + GlobalContext.PractionerCodeMap[value]);
         }
 
         [Given(@"I add a Practitioner ""([^""]*)"" parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -65,7 +66,7 @@
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.PractitionerSearch);
 
-            AddAPractitionerIdentifierParameterWithSystemAndValue("http://fhir.nhs.net/Id/sds-user-id", code);
+            AddAPractitionerIdentifierParameterWithSystemAndValue(FhirConst.IdentifierSystems.kPracSDSUserId, code);
 
             _httpSteps.MakeRequest(GpConnectInteraction.PractitionerSearch);
         }
@@ -158,7 +159,7 @@
             {
                 practitioner.Identifier.ForEach(identifier =>
                 {
-                    identifier.System.ShouldBeOneOf("http://fhir.nhs.net/Id/sds-user-id", "http://fhir.nhs.net/Id/sds-role-profile-id");
+                    identifier.System.ShouldBeOneOf(FhirConst.IdentifierSystems.kPracSDSUserId, FhirConst.IdentifierSystems.kPracRoleProfile);
                 });
             });
         }
@@ -181,7 +182,7 @@
 
             Practitioners.ForEach(practitioner =>
             {
-                var sdsRoleProfileIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id")).ToList();
+                var sdsRoleProfileIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kPracRoleProfile)).ToList();
 
                 if (expectedTotalRoleProfileCount != null)
                 {
@@ -213,7 +214,7 @@
         {
             Practitioners.ForEach(practitioner =>
             {
-                var sdsUserIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id")).ToList();
+                var sdsUserIdentifiers = practitioner.Identifier.Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kPracSDSUserId)).ToList();
 
                 if (shouldBeSingle)
                 {
@@ -240,9 +241,13 @@
         public void ThePractitionerNameShouldBeValid()
         {
             Practitioners.ForEach(practitioner =>
-            { 
+            {
                 practitioner.Name.ShouldNotBeNull("Practitioner resources must contain a name element");
-                practitioner.Name.Family?.Count().ShouldBeLessThanOrEqualTo(1, "There must be a maximum of 1 family name in the practitioner name.");
+                practitioner.Name.Family?.Count().ShouldBe(1, "There must be 1 family name in the practitioner name.");
+                if (practitioner.Name.Use != null)
+                {
+                    practitioner.Name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Practitioner Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
+                }
             });
         }
 
@@ -283,11 +288,13 @@
                         practitionerRole.Role.Coding.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one practitioner role coding in each practitioner role.");
                         practitionerRole.Role.Coding.ForEach(coding =>
                         {
-                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
+                            coding.System.ShouldBe(FhirConst.ValueSetSystems.kSDSJobRoleName);
                             coding.Code.ShouldNotBeNull("The practitioner role code element should not be null");
                             coding.Display.ShouldNotBeNull("The practitioner role display elemenet should not be null");
                         });
                     }
+
+                  
                 });
             });
         }
@@ -346,6 +353,60 @@
                         returnedReference.ShouldStartWith(practitionerRole.ManagingOrganization.Reference);
                     }
                 });
+            });
+        }
+
+        [Then(@"the practitioner Telecom should be valid")]
+        public void ThenThePractitionerTelecomShouldBeValid()
+        {
+            Practitioners.ForEach(practitioner =>
+            {
+                ValidateTelecom(practitioner.Telecom, "Practitioner Telecom");
+            });
+
+        }
+
+        [Then(@"the practitioner Address should be valid")]
+        public void ThenThePractitionerAddressShouldBeValid()
+        {
+            Practitioners.ForEach(practitioner =>
+            {
+                ValidateAddress(practitioner.Address, "Practitioner Address");
+            });
+
+        }
+
+        [Then(@"the practitioner Gender should be valid")]
+        public void ThenThePractitionerGenderShouldBeValid()
+        {
+            Practitioners.ForEach(practitioner =>
+            {
+                if (practitioner.Gender != null)
+                {
+                    practitioner.Gender.ShouldBeOfType<AdministrativeGender>(string.Format("{0} Type is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kAdministrativeGender));
+                }
+            });
+        }
+
+
+        private void ValidateAddress(List<Address> addressList, string from)
+        {
+            addressList.ForEach(address =>
+            {
+                address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", from)));
+                address.Type?.ShouldBeOfType<Address.AddressType>(string.Format("{0} Type is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kAddressType));
+                address.Use?.ShouldBeOfType<Address.AddressUse>(string.Format("{0} Use is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kAddressUse));
+            });
+        }
+
+
+        private void ValidateTelecom(List<ContactPoint> telecoms, string from)
+        {
+            telecoms.ForEach(teleCom =>
+            {
+                teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", from)));
+                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kContactPointSystem));
+                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>(string.Format("{0} Use is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kNContactPointUse));
             });
         }
     }

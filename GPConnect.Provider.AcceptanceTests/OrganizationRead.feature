@@ -14,6 +14,11 @@ Scenario Outline: Organization Read successful request validate all of response
 		And the Organization Metadata should be valid
 		And the Organization PartOf Organization should be resolvable
 		And the Organization Type should be valid
+		And the Organization Name should be valid
+		And the Organization Telecom should be valid
+		And the Organization Address should be valid
+		And the Organization Contact should be valid
+		And the Organization Extensions should be valid
 	Examples:
 		| Organization |
 		| ORG1         |
@@ -22,15 +27,15 @@ Scenario Outline: Organization Read successful request validate all of response
 
 Scenario Outline: Organization Read successful request validate site codes returned are as expected
 	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization
+		And I store the Organization with site code "<ExpectedSiteCode>"
 	Given I configure the default "OrganizationRead" request
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
-		And the returned organization contains identifiers of type "http://fhir.nhs.net/Id/ods-site-code" with values "<ExpectedSiteCode>"
+		And the returned organization contains an identifier of type "https://fhir.nhs.uk/Id/ods-site-code" with a value of "<ExpectedSiteCode>"
 	Examples:
 		| Organization | ExpectedSiteCode |
 		| ORG1         | SIT1             |
-		| ORG2         | SIT2,SIT3        |
+		| ORG2         | SIT2             |
 		| ORG3         | SIT3             |
 
 Scenario Outline: Organization Read with valid identifier which does not exist on providers system
@@ -65,8 +70,7 @@ Scenario Outline: Organization Read with missing mandatory header
 	Given I get the Organization for Organization Code "ORG1"
 		And I store the Organization
 	Given I configure the default "OrganizationRead" request
-		And I do not send header "<Header>"
-	When I make the "OrganizationRead" request
+	When I make the "OrganizationRead" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:

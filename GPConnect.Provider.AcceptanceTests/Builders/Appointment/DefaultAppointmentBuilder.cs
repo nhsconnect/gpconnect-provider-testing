@@ -1,5 +1,6 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Builders.Appointment
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Hl7.Fhir.Model;
@@ -41,9 +42,10 @@
             var practitioners = GetPractitioners(practitionerReferences);
 
             //Location
+
             var locationReference = schedule.Actor.Reference;
             var location = GetLocation(locationReference);
-
+  
             //Participants
             var participants = new List<ParticipantComponent>();
             participants.Add(patient);
@@ -56,16 +58,26 @@
             var slots = new List<ResourceReference>();
             slots.Add(slot);
 
+
+            CodeableConcept reason = GetReason();
+
             var appointment = new Appointment
             {
                 Status = AppointmentStatus.Booked,
                 Start = firstSlot.Start,
                 End = firstSlot.End,
                 Participant = participants,
-                Slot = slots
+                Slot = slots,
+                Reason = reason
+
             };
 
             return appointment;
+        }
+
+        private CodeableConcept GetReason()
+        {
+            return new CodeableConcept("http://snomed.info/sct", "http://snomed.info/sct", "subject", "subject");
         }
 
         private static ParticipantComponent GetLocation(string locationReference)
@@ -76,7 +88,11 @@
                 {
                     Reference = locationReference
                 },
-                Status = ParticipationStatus.Accepted
+                Status = ParticipationStatus.Accepted,
+                Type = new List<CodeableConcept>
+                {
+                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "subject", "subject")
+                }
             };
         }
 
@@ -99,7 +115,7 @@
                 Status = ParticipationStatus.Accepted,
                 Type = new List<CodeableConcept>
                 {
-                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "patient", "patient")
+                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "subject", "subject")
                 }
             };
         }
@@ -116,10 +132,11 @@
                     Status = ParticipationStatus.Accepted,
                     Type = new List<CodeableConcept>
                     {
-                        new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PPRF", "practitioner", "practitioner")
+                        new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PPRF", "primary performer", "primary performer")
                     }
                 })
                 .ToList();
         }
-    }
+
+     }
 }

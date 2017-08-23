@@ -1,4 +1,6 @@
-﻿namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿using GPConnect.Provider.AcceptanceTests.Constants;
+
+namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using Context;
     using Hl7.Fhir.Model;
@@ -139,7 +141,7 @@
         [Then(@"if the response bundle contains an organization resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsAnOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Organizations, "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Organizations, FhirConst.StructureDefinitionSystems.kOrganisation);
         }
 
         [Then(@"if the response bundle contains a practitioner resource it should contain meta data profile and version id")]

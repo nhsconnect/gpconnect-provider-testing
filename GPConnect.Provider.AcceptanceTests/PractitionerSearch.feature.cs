@@ -105,7 +105,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Practitioner search with failure due to invalid identifier")]
-        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/Id/sds-user-id", "", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/Id/sds-user-id", "", new string[0])]
         [NUnit.Framework.TestCaseAttribute("", "practitioner2", new string[0])]
         public virtual void PractitionerSearchWithFailureDueToInvalidIdentifier(string system, string value, string[] exampleTags)
         {
@@ -162,7 +162,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 46
  testRunner.Given("I configure the default \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 47
-  testRunner.And(string.Format("I add a Practitioner \"{0}\" parameter with System \"http://fhir.nhs.net/Id/sds-user" +
+  testRunner.And(string.Format("I add a Practitioner \"{0}\" parameter with System \"https://fhir.nhs.uk/Id/sds-user" +
                         "-id\" and Value \"practitioner2\"", parameterName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
  testRunner.When("I make the \"PractitionerSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -176,10 +176,10 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Practitioner search testing paramater validity and order sent in the request")]
-        [NUnit.Framework.TestCaseAttribute("_format", "application/json+fhir", "identifier", "http://fhir.nhs.net/Id/sds-user-id|practitioner2", "JSON", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("_format", "application/xml+fhir", "identifier", "http://fhir.nhs.net/Id/sds-user-id|practitioner2", "XML", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("identifier", "http://fhir.nhs.net/Id/sds-user-id|practitioner2", "_format", "application/json+fhir", "JSON", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("identifier", "http://fhir.nhs.net/Id/sds-user-id|practitioner2", "_format", "application/xml+fhir", "XML", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("_format", "application/json+fhir", "identifier", "https://fhir.nhs.uk/Id/sds-user-id|practitioner2", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("_format", "application/xml+fhir", "identifier", "https://fhir.nhs.uk/Id/sds-user-id|practitioner2", "XML", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("identifier", "https://fhir.nhs.uk/Id/sds-user-id|practitioner2", "_format", "application/json+fhir", "JSON", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("identifier", "https://fhir.nhs.uk/Id/sds-user-id|practitioner2", "_format", "application/xml+fhir", "XML", new string[0])]
         public virtual void PractitionerSearchTestingParamaterValidityAndOrderSentInTheRequest(string param1Name, string param1Value, string param2Name, string param2Value, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search testing paramater validity and order sent in the request", exampleTags);

@@ -362,6 +362,11 @@
                     extensions.Add(GetBookingMethodExtension("LET", "Letterer"));
                     extensions.Add(GetContactMethodExtension("PERS", "In person"));
                     break;
+                case "InvalidCategory+InvalidContactMethod+BookingMethod":
+                    extensions.Add(GetCategoryExtension("MSGED", "Message"));
+                    extensions.Add(GetBookingMethodExtension("LET", "Letter"));
+                    extensions.Add(GetContactMethodExtension("PERS", "In person"));
+                    break;
             }
 
             return extensions;
