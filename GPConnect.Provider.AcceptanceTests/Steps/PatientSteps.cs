@@ -177,7 +177,7 @@
                 {
                     telecom.System.ShouldNotBeNull("The telecom system should not be null");
                     telecom.Value.ShouldNotBeNull("The telecom value element should not be null");
-                    telecom.System.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kContactPointSystem));
+                    //telecom.System.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kContactPointSystem));
 
 
 
@@ -306,6 +306,9 @@
                         ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
                     });
 
+                    contact.Name.ShouldBeNull();
+                    contact.Name.Use.ShouldNotBeNull("Patient Name Use cannot be null");
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
                     contact.Name.Family.Count().ShouldBeLessThanOrEqualTo(1);
                     // Contact Name Checks
                     // Contact Telecom Checks
