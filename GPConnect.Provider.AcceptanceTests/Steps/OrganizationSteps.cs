@@ -97,47 +97,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     localOrgzCodeIdentifiers.ForEach(lOrgz =>
                     {
-                        lOrgz.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier has an invalid extension. Extensions must have a URL element."));
-                        lOrgz.Use?.ShouldBeOfType<Identifier.IdentifierUse>(string.Format("Local Identifier use is Invalid. But be from the value set: {0}", FhirConst.ValueSetSystems.kIdentifierUse));
-
-                        var localOrgzType = lOrgz.Type;
-
-                        if (localOrgzType != null)
-                        {
-                            localOrgzType.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Type has an invalid extension. Extensions must have a URL element."));
-
-                            var localOrgzTypeValues = GlobalContext.FhirIdentifierTypeValueSet.WithComposeImports();
-                            var localOrgzTypeCodes = localOrgzType.Coding.Where(lzc => lzc.System.Equals(FhirConst.ValueSetSystems.kIdentifierType)).ToList();
-                            localOrgzTypeCodes.ForEach(lztc =>
-                            {
-                                lztc.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Type Coding has an invalid extension. Extensions must have a URL element."));
-                                lztc.Code.ShouldBeOneOf(localOrgzTypeValues.ToArray());
-                            });
-                        }
-
-                        if (lOrgz.Assigner != null)
-                        {
-                            _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
-
-                            _httpContext.HttpRequestConfiguration.RequestUrl = organization.PartOf.Reference;
-
-                            _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
-
-                            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
-
-                            StoreTheOrganization();
-
-                            var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
-
-                            returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
-
-                            lOrgz.Assigner.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Assigner has an invalid extension. Extensions must have a URL element."));
-
-                        }
+                        CheckForValidLocalIdentifier(lOrgz, () => ValidateAssignerRequest(organization.PartOf.Reference));
                     });
 
                 }
             });
+        }
+
+        private void ValidateAssignerRequest(string reference)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
+
+            _httpContext.HttpRequestConfiguration.RequestUrl = reference;
+
+            _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
+
+            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
+
+            StoreTheOrganization();
+
+            var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
+
+            returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
         }
 
         [Then(@"the Organization Metadata should be valid")]

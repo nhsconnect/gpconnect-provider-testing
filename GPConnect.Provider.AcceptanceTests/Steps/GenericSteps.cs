@@ -181,6 +181,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("IdentifierTypes ValueSet Not Found.");
             Log.WriteLine("{0} IdentifierTypes Loaded.", identifierTypes.CodeSystem.Concept.Count);
             GlobalContext.FhirIdentifierTypeValueSet = identifierTypes;
+
+            var serviceDeliveryLocationRoleTypes = resolver.GetValueSet(FhirConst.ValueSetSystems.kServDelLocationRoleType);
+            if (serviceDeliveryLocationRoleTypes == null)
+                Assert.Fail("serviceDeliveryLocationRoleTypes ValueSet Not Found.");
+            Log.WriteLine("{0} serviceDeliveryLocationRoleTypes Loaded.", serviceDeliveryLocationRoleTypes.CodeSystem?.Concept.Count);
+            GlobalContext.FhirServiceDeliveryLocationRoleTypeValueSet = serviceDeliveryLocationRoleTypes;
            
         }
 

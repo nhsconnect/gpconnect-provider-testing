@@ -2,6 +2,9 @@
 using GPConnect.Provider.AcceptanceTests.Data;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
+using Hl7.Fhir.Specification.Source;
+using NUnit.Framework;
 
 namespace GPConnect.Provider.AcceptanceTests.Context
 {
@@ -60,5 +63,51 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public static ValueSet FhirAppointmentBookingMethodValueSet { get; set; }
         public static ValueSet FhirAppointmentContactMethodValueSet { get; set; }
         public static ValueSet FhirIdentifierTypeValueSet { get; set; }
+        public static ValueSet FhirServiceDeliveryLocationRoleTypeValueSet { get; set; }
+
+        private static Dictionary<string, ValueSet> _fhirGpcValueSets { get; set; }
+        public static ValueSet GetFhirGpcValueSet(string system)
+        {
+            if (_fhirGpcValueSets.ContainsKey(system))
+            {
+                return _fhirGpcValueSets[system];
+            }
+
+            return FindFhirGpcValueSet(system);
+        }
+
+        private static ValueSet FindFhirGpcValueSet(string system)
+        {
+
+            var vsSources = new List<IArtifactSource>();
+
+            if (AppSettingsHelper.FhirCheckWeb && AppSettingsHelper.FhirCheckWebFirst)
+            {
+                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+            }
+
+            if (AppSettingsHelper.FhirCheckDisk)
+            {
+                vsSources.Add(new FileDirectoryArtifactSource(AppSettingsHelper.FhirDirectory, true));
+            }
+
+            if (AppSettingsHelper.FhirCheckWeb && !AppSettingsHelper.FhirCheckWebFirst)
+            {
+                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+            }
+
+            var resolver = new ArtifactResolver(new MultiArtifactSource(vsSources));
+
+            var valueSet = resolver.GetValueSet(system);
+            if (valueSet == null)
+            {
+                Assert.Fail($"{system} ValueSet Not Found.");
+            }
+
+            _fhirGpcValueSets.Add(system, valueSet);
+
+            return valueSet;
+        }
+
     }
 }
