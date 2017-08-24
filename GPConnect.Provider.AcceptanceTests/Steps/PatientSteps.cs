@@ -79,7 +79,9 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.MultipleBirth?.ShouldBeOfType<FhirBoolean>();
+                patient.MultipleBirth?.ShouldBeOfType<FhirBoolean>("Multiple Birth must be of type FhirBoolean");
+
+             
 
             });
         }
@@ -106,12 +108,12 @@
             {
                 patient.Contact.ForEach(contact =>
                 {
-                    contact.Name.Family.Count().ShouldBe(1);
+                    contact.Name.Family.Count().ShouldBe(1,"There should be 1 family name");
 
-                    contact.Name.Use.ShouldNotBeNull();
-                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>();
+                    contact.Name.Use.ShouldNotBeNull("Contact Name Use should not be null");
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Contact Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
                     if (contact.Gender != null) {
-                        contact.Gender.ShouldBeOfType<AdministrativeGender>();
+                        contact.Gender.ShouldBeOfType<AdministrativeGender>(string.Format("{0} Type is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kAdministrativeGender));
                         }
                     // Contact Relationship Checks
                 
@@ -124,10 +126,10 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.Name.ShouldNotBeNull();
+                patient.Name.ShouldNotBeNull("Patient name should not be null");
                 patient.Name.ForEach(name =>
                 {
-                    name.Family.Count().ShouldBeLessThanOrEqualTo(1);
+                    name.Family.Count().ShouldBe(1, "Patient Family Name cannot be null");
                     
                     
                 });
@@ -175,10 +177,10 @@
                 {
                     telecom.System.ShouldNotBeNull("The telecom system should not be null");
                     telecom.Value.ShouldNotBeNull("The telecom value element should not be null");
-                    telecom.System.ShouldBeOfType<ContactPoint.ContactPointSystem>();
-                    
+                    //telecom.System.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kContactPointSystem));
 
-                   
+
+
                 });
             });
         }
@@ -188,7 +190,7 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.MaritalStatus.Coding.ShouldNotBeNull();
+                patient.MaritalStatus.Coding.ShouldNotBeNull("Patient MaritalStatus coding cannot be null");
                 ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirMaritalStatusValueSet, patient.MaritalStatus.Coding);
 
 
@@ -304,6 +306,9 @@
                         ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
                     });
 
+                    contact.Name.ShouldBeNull();
+                    contact.Name.Use.ShouldNotBeNull("Patient Name Use cannot be null");
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
                     contact.Name.Family.Count().ShouldBeLessThanOrEqualTo(1);
                     // Contact Name Checks
                     // Contact Telecom Checks
@@ -424,8 +429,8 @@
                 {
                     // Contact Relationship Checks
 
-                    name.Use.ShouldNotBeNull();
-                    name.Use.ShouldBeOfType<HumanName.NameUse>();
+                    name.Use.ShouldNotBeNull("Patient Name Use cannot be null");
+                    name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
                 });
             });
         }
@@ -439,8 +444,8 @@
                 {
                     // Contact Relationship Checks
 
-                    name.Family.ShouldNotBeNull();
-                    name.Family.Count().ShouldBe(1);
+                    name.Family.ShouldNotBeNull("Patient Name Family cannot be null");
+                    name.Family.Count().ShouldBe(1,"Patient family must be populated");
                 });
             });
         }
@@ -450,8 +455,8 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.Gender.ShouldBeOfType<AdministrativeGender>();
-               
+                patient.Gender.ShouldBeOfType<AdministrativeGender>(string.Format("Patient Gender is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kAdministrativeGender));
+
             });
         }
     }

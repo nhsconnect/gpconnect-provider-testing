@@ -132,7 +132,7 @@
         {
             Practitioners.ForEach(practitioner =>
             {
-                CheckForValidMetaDataInResource(practitioner, "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
+                CheckForValidMetaDataInResource(practitioner, FhirConst.StructureDefinitionSystems.kPractitioner);
             });
         }
 
@@ -191,7 +191,7 @@
 
                 sdsRoleProfileIdentifiers.ForEach(identifier =>
                 {
-                    identifier.Value.ShouldNotBeNull();
+                    identifier.Value.ShouldNotBeNull("SDS Role Identifier Value should not be null");
                 });
             });
 
@@ -218,7 +218,7 @@
 
                 if (shouldBeSingle)
                 {
-                    sdsUserIdentifiers.Count.ShouldBe(1);
+                    sdsUserIdentifiers.Count.ShouldBe(1, "There should be 1 SDS User Identifier");
                 }
                 else
                 {
@@ -227,7 +227,7 @@
 
                 sdsUserIdentifiers.ForEach(identifier =>
                 {
-                    identifier.Value.ShouldNotBeNull();
+                    identifier.Value.ShouldNotBeNull("Identifier value should not be null");
 
                     if (!string.IsNullOrEmpty(practitionerName))
                     {

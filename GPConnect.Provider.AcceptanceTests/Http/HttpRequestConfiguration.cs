@@ -66,7 +66,7 @@
 
         public string FhirServerUrl { get; set; }
 
-        public string FhirServerPort { get; set; }
+        public string FhirServerPort => UseTls ? FhirServerHttpsPort : FhirServerHttpPort;
 
         public string FhirServerFhirBase { get; set; }
 
@@ -106,7 +106,9 @@
             Log.WriteLine("HttpContext->LoadAppConfig()");
            
             FhirServerUrl = AppSettingsHelper.ServerUrl;
-            FhirServerPort = AppSettingsHelper.ServerPort;
+            FhirServerHttpPort = AppSettingsHelper.ServerHttpPort;
+            FhirServerHttpsPort = AppSettingsHelper.ServerHttpsPort;
+           
             FhirServerFhirBase = AppSettingsHelper.ServerBase;
             UseWebProxy = AppSettingsHelper.UseWebProxy;
             WebProxyUrl = AppSettingsHelper.WebProxyUrl;
@@ -117,6 +119,10 @@
             ProviderASID = AppSettingsHelper.ProviderASID;
             ConsumerASID = AppSettingsHelper.ConsumerASID;
         }
+
+        public string FhirServerHttpPort { get; set; }
+
+        public string FhirServerHttpsPort { get; set; }
 
         public Parameters BodyParameters { get; set; }
 

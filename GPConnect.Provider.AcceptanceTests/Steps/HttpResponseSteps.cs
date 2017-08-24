@@ -138,5 +138,22 @@
             expires.ShouldBe("0", "The response payload should contain a resource.");
             pragma.ShouldBe("no-cache", "The response payload should contain a resource.");
         }
+
+        [Then("if redirected the Response Headers should contain a Strict-Transport-Security header")]
+        public void IfRedirectedTheResponseHeadersShouldContainAStrictTransportSecurityHeader()
+        {
+            if (_httpContext.HttpResponse.Redirected)
+            {
+                 _httpContext.HttpResponse.Headers.ShouldContainKey("Strict-Transport-Security", "The Response Headers should contain a Strict-Transport-Security header, but it wasn't found.");
+            }
+        }
+
+        [Then("the Response should indicate the connection was closed by the server or the Request was redirected")]
+        public void TheResponseShouldIndicateTheConnectionWasClosedByTheServerOrTheRequestWasRedirected()
+        {
+            var connectionClosedOrRedirected = _httpContext.HttpResponse.Redirected || _httpContext.HttpResponse.ConnectionClosed;
+
+            connectionClosedOrRedirected.ShouldBe(true, "The connection should have been closed by the server or the Request should have been redirected but neither occured.");
+        }
     }
 }

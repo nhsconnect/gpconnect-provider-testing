@@ -52,7 +52,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         {
             public const string kOrganisation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Organization-1";
             public const string kExtCcGpcMainLoc = "https://fhir.hl7.org.uk/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
-            public const string kOrgzPeriod = "http://hl7.org/fhir/StructureDefinition/organization-period";  
+            public const string kOrgzPeriod = "http://hl7.org/fhir/StructureDefinition/organization-period";
+            public const string kPractitioner = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Practitioner-1";
         }
     }
 }

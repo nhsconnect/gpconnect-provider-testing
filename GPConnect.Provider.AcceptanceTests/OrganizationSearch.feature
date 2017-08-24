@@ -307,6 +307,7 @@ Scenario: Organization search include count and sort parameters
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
+		#apointment.startdate
 
 Scenario: Organization search valid response check caching headers exist
 	Given I configure the default "OrganizationSearch" request

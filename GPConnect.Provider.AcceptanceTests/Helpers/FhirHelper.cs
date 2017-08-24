@@ -81,7 +81,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                     Family = new[] { "AssurancePractitioner" }
                 },
                 Identifier = {
-                    new Identifier("http://fhir.nhs.net/sds-user-id", "GCASDS0001"),
+                    new Identifier("https://fhir.nhs.uk/Id/sds-user-id", "GCASDS0001"),
                     new Identifier("LocalIdentifierSystem", "1")
                 },
                 PractitionerRole = GetPractitionerRoleComponent("http://fhir.nhs.net/ValueSet/sds-job-role-name-1", "AssuranceJobRole")
