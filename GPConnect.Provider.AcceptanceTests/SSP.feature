@@ -122,5 +122,32 @@ Scenario: Security - Connect with invalid secure Cipher
 		And I set the Cipher to "AES128-SHA256"
 	When I make the "MetadataRead" cURL request
 	Then the cURL Code should be "SslConnectError"
-# CORS Testing
-# Cipher Tests
+
+Scenario Outline: SSP - CORS
+	Given I configure the default "<Interaction>" request
+		And I am using the SSP
+		And I am using the client certificate
+		And I set the request Http Method to "OPTIONS"
+	When I make the "<Interaction>" request
+	Then the response status code should indicate success
+		And the Response Headers should contain an Access-Control-Request-Method header
+		Then the Access-Control-Request-Method header should contain the "<Method>" request methods
+	Examples: 
+	| Interaction        | Method   | Url (for reference only)			|
+	| GpcGetCareRecord   | POST     | Patient/$gpc.getcarerecord        |
+	| OrganizationSearch | GET      | Organization                      |
+	| OrganizationRead   | GET      | Organization/{id}                 |
+	| PractitionerSearch | GET      | Practitioner                      |
+	| PractitionerRead   | GET      | Practitioner/{id}                 |
+	| PatientSearch      | GET      | Patient                           |
+	| PatientRead        | GET      | Patient/{id}                      |
+	| LocationSearch     | GET      | Location                          |
+	| LocationRead       | GET      | Location/{id}                     |
+	| RegisterPatient    | POST     | Patient/$gpc.registerpatient      |
+	| GpcGetSchedule     | POST     | Organization/{id}/$gpcgetscehdule |
+	| AppointmentCreate  | POST     | Appointment                       |
+	| AppointmentSearch  | GET      | Patient/{id}/Appointment          |
+	| AppointmentAmend   | GET, PUT | Appointment/{id}                  |
+	| AppointmentCancel  | GET, PUT | Appointment/{id}                  |
+	| AppointmentRead    | GET, PUT | Appointment/{id}                  |
+	| MetadataRead       | GET      | metadata                          |

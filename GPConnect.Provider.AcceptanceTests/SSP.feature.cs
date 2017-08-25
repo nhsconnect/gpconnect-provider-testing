@@ -378,6 +378,51 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("SSP - CORS")]
+        [NUnit.Framework.TestCaseAttribute("GpcGetCareRecord", "POST", "Patient/$gpc.getcarerecord", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OrganizationSearch", "GET", "Organization", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("OrganizationRead", "GET", "Organization/{id}", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PractitionerSearch", "GET", "Practitioner", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PractitionerRead", "GET", "Practitioner/{id}", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PatientSearch", "GET", "Patient", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("PatientRead", "GET", "Patient/{id}", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("LocationSearch", "GET", "Location", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("LocationRead", "GET", "Location/{id}", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("RegisterPatient", "POST", "Patient/$gpc.registerpatient", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("GpcGetSchedule", "POST", "Organization/{id}/$gpcgetscehdule", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("AppointmentCreate", "POST", "Appointment", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("AppointmentSearch", "GET", "Patient/{id}/Appointment", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("AppointmentAmend", "GET, PUT", "Appointment/{id}", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("AppointmentCancel", "GET, PUT", "Appointment/{id}", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("AppointmentRead", "GET, PUT", "Appointment/{id}", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("MetadataRead", "GET", "metadata", new string[0])]
+        public virtual void SSP_CORS(string interaction, string method, string urlForReferenceOnly, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SSP - CORS", exampleTags);
+#line 126
+this.ScenarioSetup(scenarioInfo);
+#line 127
+ testRunner.Given(string.Format("I configure the default \"{0}\" request", interaction), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 128
+  testRunner.And("I am using the SSP", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
+  testRunner.And("I am using the client certificate", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 130
+  testRunner.And("I set the request Http Method to \"OPTIONS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 131
+ testRunner.When(string.Format("I make the \"{0}\" request", interaction), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 132
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 133
+  testRunner.And("the Response Headers should contain an Access-Control-Request-Method header", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 134
+  testRunner.Then(string.Format("the Access-Control-Request-Method header should contain the \"{0}\" request methods" +
+                        "", method), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
