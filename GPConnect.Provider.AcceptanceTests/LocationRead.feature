@@ -47,8 +47,7 @@ Scenario Outline: Location Read with missing mandatory header
 	Given I get the Location for Location Value "SIT1"
 		And I store the Location
 	Given I configure the default "LocationRead" request
-		And I do not send header "<Header>"
-	When I make the "LocationRead" request
+	When I make the "LocationRead" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
@@ -129,7 +128,6 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 		And the Location Identifier should be valid for Value "SIT2"
 		And the Location Metadata should be valid
 #		status // This is checked by the FHIR .NET library
-		And the Location Name should be valid
 		And the Location Type should be valid
 		And the Location Telecom should be valid
 #		address // This is checked by the FHIR .NET library

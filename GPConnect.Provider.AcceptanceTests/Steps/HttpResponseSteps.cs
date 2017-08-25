@@ -1,6 +1,8 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using Constants;
     using Context;
@@ -154,6 +156,32 @@
             var connectionClosedOrRedirected = _httpContext.HttpResponse.Redirected || _httpContext.HttpResponse.ConnectionClosed;
 
             connectionClosedOrRedirected.ShouldBe(true, "The connection should have been closed by the server or the Request should have been redirected but neither occured.");
+        }
+
+        [Then(@"the Response Headers should contain an Access-Control-Request-Method header")]
+        public void TheResponseHeadersShouldContainAnAccessControlRequestMethodHeader()
+        {
+            const string header = "Access-Control-Request-Method";
+            _httpContext.HttpResponse.Headers.ShouldContainKey(header, $"The Response Headers should have contained an {header} header, but did not.");
+        }
+
+        [Then(@"the Access-Control-Request-Method header should contain the ""(.*)"" request methods")]
+        public void TheAccessControlRequestMethodHeaderShouldContainTheRequestMethods(List<string> methods)
+        {
+            const string headerName = "Access-Control-Request-Method";
+
+            var headerValue = _httpContext.HttpResponse.Headers[headerName];
+
+            methods.ForEach(method =>
+            {
+                headerValue.ShouldContain(method, $"The {headerName} header should contain the {method} HTTP method, but did not.");
+            });
+        }
+
+        [StepArgumentTransformation]
+        public List<string> CommaSeperatedValuesTransform(string csv)
+        {
+            return csv.Split(',').Select(x => x.Trim()).ToList();
         }
     }
 }

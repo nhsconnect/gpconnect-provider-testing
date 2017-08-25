@@ -1,4 +1,5 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Constants;
+using GPConnect.Provider.AcceptanceTests.Extensions;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -16,15 +17,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     {
         private readonly HttpContext _httpContext;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
+
         private List<Location> Locations => _httpContext.FhirResponse.Locations;
         private readonly IFhirResourceRepository _fhirResourceRepository;
+        private readonly HttpResponseSteps _httpResponseSteps;
 
-        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository) 
+        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository, HttpResponseSteps httpResponseSteps) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
             _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
             _fhirResourceRepository = fhirResourceRepository;
+            _httpResponseSteps = httpResponseSteps;
         }
 
         [Given(@"I add a Location Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -43,6 +47,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             AddALocationIdentifierParameterWithSystemAndValue(FhirConst.IdentifierSystems.kOdsSiteCode, value);
         }
 
+        [Given(@"I add a Location Identifier parameter with local System and Value ""([^""]*)""")]
+        public void AddALocationIdentifierParameterWithLocalSystemAndValue(string value)
+        {
+            AddALocationIdentifierParameterWithSystemAndValue(FhirConst.IdentifierSystems.kLocalLocationCode, value);
+        }
+
         [Given(@"I add a Location ""([^""]*)"" parameter with default System and Value ""([^""]*)""")]
         public void AddALocationParameterWithDefaultSystemAndValue(string parameterName, string value)
         {
@@ -50,7 +60,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             GlobalContext.OdsCodeMap.TryGetValue(value, out locationCode);
 
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsSiteCode, GlobalContext.OdsCodeMap[value]));
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, $"{FhirConst.IdentifierSystems.kOdsSiteCode}|{GlobalContext.OdsCodeMap[value]}");
         }       
 
         [Given(@"I get the Location for Location Value ""([^""]*)""")]
@@ -108,27 +118,33 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"the Location Name should be valid")]
-        public void TheLocationNameShouldBeValid()
-        {
-            Locations.ForEach(location =>
-            {
-                location.Name.ShouldNotBeNull("Location resources must contain a Name element");
-            });
-        }
-
         [Then(@"the Location Type should be valid")]
         public void TheLocationTypeShouldBeValid()
         {
             Locations.ForEach(location =>
             {
-                if (location.Type?.Coding != null)
+                var locationType = location.Type;
+
+                if (locationType != null)
                 {
-                    location.Type.Coding.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one Location Type Coding within the Location Type.");
-                    foreach (var coding in location.Type.Coding)
+                    locationType.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Location Type has an invalid extension. Extensions must have a URL element."));
+
+                    // locationType codeable concept binding is extensible
+                    // ideally I would check if it was of FhirConst.ValueSetSystems.kServDelLocationRoleType
+                    // and if so check the code
+                    // as extensible is does not need to be of FhirConst.ValueSetSystems.kServDelLocationRoleType
+
+                    //var serviceDeliveryLocationRoleTypes = GlobalContext.GetFhirGpcValueSet(FhirConst.ValueSetSystems.kServDelLocationRoleType).WithComposeImports();
+
+                    foreach (var coding in locationType.Coding)
                     {
-                        // Need to pull in valueset from URL and validate against that
-                        coding.System.ShouldBe("http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType", "The Location Type Coding System is not valid.");
+                        coding.System.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a System Value.");
+
+                        //if (coding.System.Equals(FhirConst.ValueSetSystems.kServDelLocationRoleType) && serviceDeliveryLocationRoleTypes != null)
+                        //{
+                        //        coding.Code.ShouldBeOneOf(serviceDeliveryLocationRoleTypes.ToArray(), "The Location Type Coding should contain a Code.");
+                        //}
+
                         coding.Code.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a Code.");
                         coding.Display.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a Display.");
                     }
@@ -143,7 +159,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 if (location.PhysicalType?.Coding != null)
                 {
-                    location.PhysicalType.Coding.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one Location Physical Type Coding within the Location Physical Type.");
                     foreach (var coding in location.PhysicalType.Coding)
                     {
                         coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "The Location Physical Type Coding System is not valid.");
@@ -159,8 +174,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Locations.ForEach(location =>
             {
-                location.PartOf?.Reference.ShouldNotBeNullOrEmpty("The PartOf element within the location resource should contain a reference element.");
-                location.PartOf?.Reference.ShouldStartWith("Location/", "The reference element within the PartOf element of the Location resource should contain a relative Location reference.");
+                location.PartOf?.Reference?.ShouldStartWith("Location/", "The reference element within the PartOf element of the Location resource should contain a relative Location reference.");
             });
         }
 
@@ -169,8 +183,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Locations.ForEach(location =>
             {
-                location.ManagingOrganization?.Reference.ShouldNotBeNullOrEmpty("If a managing organization element is included in the location resource it should have a reference element.");
-                location.ManagingOrganization?.Reference.ShouldStartWith("Organization/", "The ManagingOrganization reference should be a relative url for an Organization.");
+                location.ManagingOrganization?.Reference?.ShouldStartWith("Organization/", "The ManagingOrganization reference should be a relative url for an Organization.");
             });
         }
 
@@ -179,18 +192,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Locations.ForEach(location =>
             {
-                CheckForValidMetaDataInResource(location, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
+                CheckForValidMetaDataInResource(location, FhirConst.StructureDefinitionSystems.kLocation);
             });
         }
 
         [Then(@"the Location Telecom should be valid")]
         public void TheLocationTelecomShouldBeValid()
         {
+
             Locations.ForEach(location =>
             {
-                location.Telecom?.ForEach(contactPoint => 
+                location.Telecom?.ForEach(contactPoint =>
                 {
-                    contactPoint.Period?.Start.ShouldNotBeNullOrWhiteSpace("Telecom Period Start field is mandatory");
+                    contactPoint.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", "Location Telecom")));
+                    contactPoint.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"Telecom System is invalid. Should be one of {System.Enum.GetNames(typeof(ContactPoint.ContactPointSystem))}");
+                    contactPoint.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"Telecom Use is invalid. Should be one of {System.Enum.GetNames(typeof(ContactPoint.ContactPointUse))}");
                 });
             });
         }
@@ -221,6 +237,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 siteCodeIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one ods site code in the location resource");
 
+                siteCodeIdentifiers.ForEach(si =>
+                {
+                    si.System.ShouldNotBeNullOrEmpty("Location Identifier System must have a value.");
+                    si.Value.ShouldNotBeNullOrEmpty("Location Identifier Value must have a value.");
+                });
+
                 if (!string.IsNullOrEmpty(locationName))
                 {
                      siteCodeIdentifiers.ForEach(siteCodeIdentifier =>
@@ -229,11 +251,46 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     });
                 }
 
-                var nonSiteCodeIdentifierCount = location.Identifier.Count - siteCodeIdentifiers.Count;
+                var localCodeIdentifiers = location.Identifier
+                    .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kLocalLocationCode))
+                    .ToList();
 
-                nonSiteCodeIdentifierCount.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one other identifier that can be included along with the ods site code in the location resource");
+                localCodeIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one local identifier code in the location resource");
+
+
+                localCodeIdentifiers.ForEach(li =>
+                {
+                    CheckForValidLocalIdentifier(li, () => ValidateAssignerRequest(location.PartOf.Reference));
+                });
 
             });
+        }
+
+        private void ValidateAssignerRequest(string reference)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
+
+            _httpContext.HttpRequestConfiguration.RequestUrl = reference;
+
+            _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
+
+            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
+
+            StoreTheOrganization();
+
+            var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
+
+            returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
+        }
+
+        private void StoreTheOrganization()
+        {
+            var organization = _httpContext.FhirResponse.Organizations.FirstOrDefault();
+            if (organization != null)
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
+                _fhirResourceRepository.Organization = organization;
+            }
         }
     }
 }
