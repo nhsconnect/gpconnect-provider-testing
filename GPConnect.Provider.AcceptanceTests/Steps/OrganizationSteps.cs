@@ -218,7 +218,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (extensions != null)
             {
                 var validExtensions = new [] { FhirConst.StructureDefinitionSystems.kExtCcGpcMainLoc, FhirConst.StructureDefinitionSystems.kOrgzPeriod };
-                extensions.Url.ShouldBeOneOf(validExtensions, string.Format("Organisation Extension is invalid. Extensions must be one of {0}", validExtensions.ToString()));
+                extensions.Url.ShouldBeOneOf(validExtensions, $"Organisation Extension is invalid. Extensions must be one of {validExtensions}");
             }
         }
 
@@ -233,18 +233,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (contactPurpose != null)
                 {
                     contactPurpose.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Organisation Contact Purpose Code has an invalid extension. Extensions must have a URL element."));
-                    //Valueset is not available so cannot check this yet
-                    //contactPurpose.Coding.ForEach(cd =>
-                    //{
-                    //    cd.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Organisation Contact Purpose has an invalid extension. Extensions must have a URL element."));
-                    //    if (cd.System.Equals(FhirConst.ValueSetSystems.kContactEntityType))
-                    //    {
-                    //        if (!string.IsNullOrEmpty(cd.Code))
-                    //        {
-                    //            cd.Code.ShouldBeOfType<>()
-                    //        }
-                    //    }
-                    //});
+
+                    var contactEntityTypes = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kContactEntityType).WithComposeImports().ToArray();
+
+                    contactPurpose.Coding.ForEach(cd =>
+                    {
+                        cd.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Organisation Contact Purpose has an invalid extension. Extensions must have a URL element."));
+                        if (cd.System.Equals(FhirConst.ValueSetSystems.kContactEntityType) && contactEntityTypes.Any() && !string.IsNullOrEmpty(cd.Code))
+                        {
+                            cd.Code.ShouldBeOneOf(contactEntityTypes, $"Organisation Contact Purpose System is {FhirConst.ValueSetSystems.kContactEntityType}, but the code provided is not valid for this ValueSet.");
+                        }
+                    });
 
                 }
 
@@ -252,7 +251,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 if (contactName != null)
                 {
-                    contactName.Use?.ShouldBeOfType<HumanName.NameUse>(string.Format("Organisation Contact Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
+                    contactName.Use?.ShouldBeOfType<HumanName.NameUse>($"Organisation Contact Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
 
                     contactName.Family.Count().ShouldBeLessThanOrEqualTo(1, "Organisation Contact Name Family Element should contain a maximum of 1.");
                 }
@@ -268,9 +267,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             if (address != null)
             {
-                address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", from)));
-                address.Type?.ShouldBeOfType<Address.AddressType>(string.Format("{0} Type is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kAddressType));
-                address.Use?.ShouldBeOfType<Address.AddressUse>(string.Format("{0} Use is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kAddressUse));
+                address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
+                address.Type?.ShouldBeOfType<Address.AddressType>($"{from} Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressType}");
+                address.Use?.ShouldBeOfType<Address.AddressUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressUse}");
             }
         }
 
@@ -278,9 +277,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             telecoms.ForEach(teleCom =>
             {
-                teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", from)));
-                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kContactPointSystem));
-                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>(string.Format("{0} Use is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kNContactPointUse));
+                teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
+                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"{from} System is not a valid value within the value set {FhirConst.ValueSetSystems.kContactPointSystem}");
+                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNContactPointUse}");
             });
         }
 

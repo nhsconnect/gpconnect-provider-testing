@@ -8,11 +8,11 @@ namespace GPConnect.Provider.AcceptanceTests.Extensions
     {
         public static IEnumerable<string> WithComposeImports(this ValueSet resource)
         {
-            var codes = resource.CodeSystem.Concept.Select(cs => cs.Code);
+            var codes = resource.CodeSystem?.Concept.Select(cs => cs.Code);
 
             if (resource.Compose != null && resource.Compose.Import.Any())
             {
-                codes = codes.Concat(resource.Compose.Import);
+                codes = (codes??new List<string>()).Concat(resource.Compose.Import);
             }
 
             return codes;

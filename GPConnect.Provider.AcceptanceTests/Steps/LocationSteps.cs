@@ -60,7 +60,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             GlobalContext.OdsCodeMap.TryGetValue(value, out locationCode);
 
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsSiteCode, GlobalContext.OdsCodeMap[value]));
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, $"{FhirConst.IdentifierSystems.kOdsSiteCode}|{GlobalContext.OdsCodeMap[value]}");
         }       
 
         [Given(@"I get the Location for Location Value ""([^""]*)""")]
@@ -127,19 +127,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 if (locationType != null)
                 {
-                    locationType.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", "Location Type")));
+                    locationType.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Location Type has an invalid extension. Extensions must have a URL element."));
 
+                    // locationType codeable concept binding is extensible
+                    // ideally I would check if it was of FhirConst.ValueSetSystems.kServDelLocationRoleType
+                    // and if so check the code
+                    // as extensible is does not need to be of FhirConst.ValueSetSystems.kServDelLocationRoleType
 
-                    var serviceDeliveryLocationRoleTypes = GlobalContext.FhirServiceDeliveryLocationRoleTypeValueSet.WithComposeImports().ToArray();
+                    //var serviceDeliveryLocationRoleTypes = GlobalContext.GetFhirGpcValueSet(FhirConst.ValueSetSystems.kServDelLocationRoleType).WithComposeImports();
 
                     foreach (var coding in locationType.Coding)
                     {
                         coding.System.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a System Value.");
 
-                        if (coding.System.Equals(FhirConst.ValueSetSystems.kServDelLocationRoleType))
-                        {
-                                coding.Code.ShouldBeOneOf(serviceDeliveryLocationRoleTypes, "The Location Type Coding should contain a Code.");
-                        }
+                        //if (coding.System.Equals(FhirConst.ValueSetSystems.kServDelLocationRoleType) && serviceDeliveryLocationRoleTypes != null)
+                        //{
+                        //        coding.Code.ShouldBeOneOf(serviceDeliveryLocationRoleTypes.ToArray(), "The Location Type Coding should contain a Code.");
+                        //}
 
                         coding.Code.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a Code.");
                         coding.Display.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a Display.");
@@ -155,7 +159,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 if (location.PhysicalType?.Coding != null)
                 {
-                    location.PhysicalType.Coding.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one Location Physical Type Coding within the Location Physical Type.");
                     foreach (var coding in location.PhysicalType.Coding)
                     {
                         coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "The Location Physical Type Coding System is not valid.");
@@ -171,8 +174,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Locations.ForEach(location =>
             {
-                location.PartOf?.Reference.ShouldNotBeNullOrEmpty("The PartOf element within the location resource should contain a reference element.");
-                location.PartOf?.Reference.ShouldStartWith("Location/", "The reference element within the PartOf element of the Location resource should contain a relative Location reference.");
+                location.PartOf?.Reference?.ShouldStartWith("Location/", "The reference element within the PartOf element of the Location resource should contain a relative Location reference.");
             });
         }
 
@@ -181,8 +183,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Locations.ForEach(location =>
             {
-                location.ManagingOrganization?.Reference.ShouldNotBeNullOrEmpty("If a managing organization element is included in the location resource it should have a reference element.");
-                location.ManagingOrganization?.Reference.ShouldStartWith("Organization/", "The ManagingOrganization reference should be a relative url for an Organization.");
+                location.ManagingOrganization?.Reference?.ShouldStartWith("Organization/", "The ManagingOrganization reference should be a relative url for an Organization.");
             });
         }
 
@@ -191,14 +192,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Locations.ForEach(location =>
             {
-                CheckForValidMetaDataInResource(location, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
+                CheckForValidMetaDataInResource(location, FhirConst.StructureDefinitionSystems.kLocation);
             });
         }
 
         [Then(@"the Location Telecom should be valid")]
         public void TheLocationTelecomShouldBeValid()
         {
-            var test = System.Enum.GetNames(typeof(ContactPoint.ContactPointSystem));
 
             Locations.ForEach(location =>
             {
