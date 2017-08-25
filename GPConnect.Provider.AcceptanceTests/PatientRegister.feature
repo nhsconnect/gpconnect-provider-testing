@@ -412,7 +412,7 @@ Scenario Outline: Register patient with invalid parameters name
 		And I add the Stored Patient as a parameter with name "<ParameterName>"
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
 	| ParameterName        |
 	| invalidName          |

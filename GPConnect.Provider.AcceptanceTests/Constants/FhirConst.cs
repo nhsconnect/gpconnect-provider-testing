@@ -44,6 +44,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kIdentifierType = "http://hl7.org/fhir/ValueSet/identifier-type";
             public const string kAdministrativeGender = "https://fhir.hl7.org.uk/ValueSet/CareConnect-AdministrativeGender-1";
             public const string kSDSJobRoleName = "https://fhir.hl7.org.uk/ValueSet/CareConnect-SDSJobRoleName-1";
+            public const string kRecordSectionValueSet = "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1";
         }
 
         internal static class StructureDefinitionSystems
