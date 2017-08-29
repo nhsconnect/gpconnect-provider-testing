@@ -159,7 +159,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"if the response bundle contains a location resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsALocationResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Locations, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Locations, "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Location-1");
         }
 
         public void CheckForValidMetaDataInResource<T>(List<T> resources, string profileId) where T : Resource
