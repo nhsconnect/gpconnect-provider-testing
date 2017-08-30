@@ -90,12 +90,12 @@ Scenario Outline: Organization Read with incorrect interaction id
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| interactionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioners     |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                   |
-		| null                                                              |
+		| interactionId                                                 |
+		| urn:nhs:names:servic3es:gpconnect:fhir:rest:read:practitioner |
+		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioners |
+		| urn:nhs:names:services:gpconnect:gpc.getcarerecord            |
+		|                                                               |
+		| null                                                          |
 
 Scenario Outline: Organization Read using the _format parameter to request response format
 	Given I get the Organization for Organization Code "ORG1"
