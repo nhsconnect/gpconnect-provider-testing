@@ -206,6 +206,9 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 		| 2044-10-23T11:08:32+00:00 | le     |
 	
 
+
+	
+
 Scenario Outline: Appointment retrieve send request with lower start date boundry and start prefix and upper end date boundary and end prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -322,6 +325,7 @@ Scenario Outline: Appointment retrieve send request with different upper end dat
 		| 2015-10-23T11:08:32+00:00 | gt     | 2018-10-05                | lt      |
 		| 2015-10-23T11:08:32+00:00 | gt     | 2044-05-01T11:08:32       | lt      |
 		| 2015-10-23T11:08:32+00:00 | gt     | 2018-05                   | lt      |
+
 
 Scenario Outline: Appointment retrieve send request with start date and invalid start prefix and end date and invalid end prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

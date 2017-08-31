@@ -85,11 +85,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         odsOrganizationCodeIdentifier?.Value.ShouldBe(odsCode, $"The Organization Identifier (Organization Code) Value should match the expected value {odsCode}.");
                     }
 
-                    var odsSiteCodeIdentifiers = organization.Identifier
-                        .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kOdsSiteCode))
-                        .ToList();
-
-                    odsSiteCodeIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, "There may only be a maximum one Site Identifier within the returned Organization.");
+         
 
                     var localOrgzCodeIdentifiers = organization.Identifier
                         .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kLocalOrgzCode))
@@ -330,13 +326,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap[value]));
         }
-
-        [Given(@"I add an Organization Identifier parameter with Site Code System and Value ""([^""]*)""")]
-        public void AddAnIdentifierParameterWithSiteCodeSystemAndValue(string value)
-        {
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsSiteCode, GlobalContext.OdsCodeMap[value]));
-        }
-
+              
         [Given(@"I add an Identifier parameter with the Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithTheValue(string value)
         {
@@ -379,16 +369,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             StoreTheOrganization(null);
         }
 
-        [Given(@"I store the Organization with site code ""([^""]*)""")]
-        public void StoreTheOrganization(string siteCode)
-        {
-            var organization = Organizations.FirstOrDefault(orgz => string.IsNullOrEmpty(siteCode) || (!string.IsNullOrEmpty(siteCode) && orgz.Identifier.Select(zi => zi.Value).ToList().Contains(GlobalContext.OdsCodeMap[siteCode])));
-            if (organization != null)
-            {
-                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
-                _fhirResourceRepository.Organization = organization;
-            }
-        }
+       
+      
 
         [Then(@"the Organization Identifiers are correct for Organization Code ""([^""]*)""")]
         public void OrganizationIdentifiersAreCorrectForOrganizationCode(string organizationCode)
@@ -398,62 +380,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 //Check if Organization Code Identifiers are valid.
                 OrganizationCodeIdentifiersAreValid(organizationCode, organization);
 
-                //Check if Site Code Identifiers are valid
-                SiteCodeIdentifiersAreValid(organizationCode, organization);
             });
-        }
-
-        [Then(@"the Organization Identifiers are correct for Site Code ""([^""]*)""")]
-        public void OrganizationIdentifiersAreCorrectForSiteCode(string siteCode)
-        {
-            //Get Organization Codes for Site Code
-            var organizationSiteCodeMap = GlobalContext.OrganizationSiteCodeMap[siteCode];
-
-            Organizations.ForEach(organization =>
-            {
-                organizationSiteCodeMap.ForEach(organizationCode =>
-                {
-                    //Check if Organization in Bundle contains Identifier for Organization Code
-                    var oganizationContainsIdentifier = organization.Identifier
-                        .Select(identifier => identifier.Value)
-                        .Contains(GlobalContext.OdsCodeMap[organizationCode]);
-
-                    if (oganizationContainsIdentifier)
-                    {
-                        //Check if Organization Code Identifiers are valid.
-                        OrganizationCodeIdentifiersAreValid(organizationCode, organization);
-
-                        //Check if Site Code Identifiers are valid
-                        SiteCodeIdentifiersAreValid(organizationCode, organization);
-                    }
-                });
-            });
-        }
-
-        private static void SiteCodeIdentifiersAreValid(string organizationCode, Organization organization)
-        {
-            //Get Site Codes for Organization Code
-            var siteCodesForOrganization = GlobalContext.OrganizationSiteCodeMap[organizationCode]
-                .Select(x => GlobalContext.OdsCodeMap[x])
-                .ToList();
-
-            //Get Site Code Identifier Values for Organization
-            var siteCodeIdentifierValues = organization.Identifier
-                .Where(identifier => identifier.System == FhirConst.IdentifierSystems.kOdsSiteCode)
-                .Select(identifier => identifier.Value)
-                .ToList();
-
-            //Check there are the correct amount of Site Code Identifiers
-            siteCodeIdentifierValues.Count.ShouldBe(siteCodesForOrganization.Count, $"There should be a total of {siteCodesForOrganization.Count} Site Code Identifiers for {organizationCode}");
-
-            //Check there are no duplicate Site Code Identifier Values
-            siteCodeIdentifierValues.Count.ShouldBe(siteCodeIdentifierValues.Distinct().Count(), $"There are duplicate Site Code Identifiers for {organizationCode}");
-
-            foreach (var siteCodeIdentifierValue in siteCodeIdentifierValues)
-            {
-                //Check each Site Code Identifier Value is in the expected Site Codes for Organization
-                siteCodesForOrganization.ShouldContain(siteCodeIdentifierValue, $"The Site Code {siteCodeIdentifierValue} was not expected for {organizationCode}");
-            }
         }
 
         private static void OrganizationCodeIdentifiersAreValid(string organizationCode, Organization organization)
@@ -491,14 +418,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             identifierFound.ShouldNotBeNull($"The expected identifier was not found in the returned organization resource, expected value {referenceValueLists}");
         }
 
-        [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)"" and ""([^""]*)"" ""([^""]*)"" system identifier with site code ""([^""]*)""")]
-        public void ThenAnOrganizationReturnedInTheBundleHasSystemIdentifierWithAndSystemIdentifierWithSiteCode(int orgCount, string orgSystem, string orgCode, int siteCount, string siteSystem, string siteCode)
+        [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)""")]
+        public void ThenAnOrganizationReturnedInTheBundleHasSystemIdentifier(int orgCount, string orgSystem, string orgCode)
         {
             var totalValidOrganisations = 0;
 
             Organizations.ForEach(organization =>
             {
-                var siteLoopCounter = 0;
                 var orgLoopCounter = 0;
 
                 foreach (var identifier in organization.Identifier)
@@ -510,22 +436,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         orgLoopCounter++;
                         continue;
                     }
-                    if (identifier.System == siteSystem)
-                    {
-                        var referenceValueLists = getIdentifiersInList(siteCode);
-                        referenceValueLists.ShouldContain(identifier.Value);
-                        siteLoopCounter++;
-                        continue;
-                    }
+                  
                 }
 
-                if ((orgLoopCounter == orgCount) && (siteLoopCounter == siteCount))
+                if ((orgLoopCounter == orgCount))
                 {
                     totalValidOrganisations++;
                 }
             });
 
-            totalValidOrganisations.ShouldBe(Organizations.Count, "The number of organizations or site codes are invalid");
+            totalValidOrganisations.ShouldBe(Organizations.Count, "The number of organizations codes are invalid");
         }
 
         private List<string> getIdentifiersInList(string code)
@@ -549,6 +469,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     filteredIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, string.Format("There may only be one Identifier with system of {0} within the returned Organization.", systemIdentifier));
                 }
+            }
+        }
+
+        public void StoreTheOrganization(string siteCode)
+        {
+            var organization = Organizations.FirstOrDefault(orgz => string.IsNullOrEmpty(siteCode) || (!string.IsNullOrEmpty(siteCode) && orgz.Identifier.Select(zi => zi.Value).ToList().Contains(GlobalContext.OdsCodeMap[siteCode])));
+            if (organization != null)
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
+                _fhirResourceRepository.Organization = organization;
             }
         }
     }

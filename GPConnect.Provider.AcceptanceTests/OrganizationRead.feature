@@ -25,19 +25,6 @@ Scenario Outline: Organization Read successful request validate all of response
 		| ORG2         |
 		| ORG3         |
 
-Scenario Outline: Organization Read successful request validate site codes returned are as expected
-	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization with site code "<ExpectedSiteCode>"
-	Given I configure the default "OrganizationRead" request
-	When I make the "OrganizationRead" request
-	Then the response status code should indicate success
-		And the returned organization contains an identifier of type "https://fhir.nhs.uk/Id/ods-site-code" with a value of "<ExpectedSiteCode>"
-	Examples:
-		| Organization | ExpectedSiteCode |
-		| ORG1         | SIT1             |
-		| ORG2         | SIT2             |
-		| ORG3         | SIT3             |
-
 Scenario Outline: Organization Read with valid identifier which does not exist on providers system
 	Given I configure the default "OrganizationRead" request
 		And I set the Read Operation logical identifier used in the request to "<LogicalId>"

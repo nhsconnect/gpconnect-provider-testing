@@ -33,7 +33,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public static Dictionary<string, string> PractionerCodeMap { get; set; }
         public static Dictionary<string, string> PatientNhsNumberMap { get; set; }
         public static Dictionary<string, string> OdsCodeMap { get; set; }
-        public static Dictionary<string, List<string>> OrganizationSiteCodeMap { get; set; }
         
         // FHIR
         public static ValueSet FhirGenderValueSet
