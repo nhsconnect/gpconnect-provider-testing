@@ -68,7 +68,7 @@ Scenario Outline: Practitioner search testing paramater validity and order sent 
 		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
-		And the Practitioner Communication should be valid
+		And the Practitioner nhsCommunication should be valid
 	Examples:
 		| Param1Name | Param1Value                                       | Param2Name | Param2Value                                       | BodyFormat |
 		| _format    | application/json+fhir                             | identifier | https://fhir.nhs.uk/Id/sds-user-id\|practitioner2 | JSON       |
@@ -88,7 +88,7 @@ Scenario Outline: Practitioner search add accept header to request and check for
 		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
-		And the Practitioner Communication should be valid
+		And the Practitioner nhsCommunication should be valid
 		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Header                | BodyFormat |
@@ -108,7 +108,7 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
-		And the Practitioner Communication should be valid
+		And the Practitioner nhsCommunication should be valid
 		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Header                | Parameter             | BodyFormat |
@@ -177,13 +177,13 @@ Scenario: Practitioner search should not contain photo or qualification informat
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner should exclude disallowed elements
 
-Scenario: Practitioner search contains communication element
+Scenario: Practitioner search contains nhsCommunication element
 	Given I configure the default "PractitionerSearch" request
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
 	When I make the "PractitionerSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the Practitioner Communication should be valid
+		And the Practitioner nhsCommunication should be valid
 
 Scenario: Practitioner search multiple identifier parameter failure
 	Given I configure the default "PractitionerSearch" request
