@@ -13,7 +13,7 @@ Scenario Outline: Organization search success
 		| System                                       | Value      | Entries |
 		| https://fhir.nhs.uk/Id/ods-organization-code | unknownORG | 0       | 
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1       | 1       |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG2       | 2       | 
+		| https://fhir.nhs.uk/Id/ods-organization-code | ORG2       | 1       | 
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG3       | 1       |
 
 Scenario: Organization search failure with two invalid parameters sent in the request
@@ -52,6 +52,8 @@ Scenario Outline: Organization search sending multiple identifiers resulting in 
 		| System1                                      | Value1 | System2                                      | Value2 |
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1   | https://fhir.nhs.uk/Id/ods-organization-code | ORG2   |
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG2   | https://fhir.nhs.uk/Id/ods-organization-code | ORG2   |
+		| badSystem                                    | ORG1   | https://fhir.nhs.uk/Id/ods-organization-code | ORG2   |
+		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1   | badSystem                                    | ORG2   |
 
 #Possible upgrade test to include a check for the identifier type of localIdentifier
 Scenario: Organization search by organization code successfully returns single result containing the correct fields
@@ -87,7 +89,7 @@ Scenario: Organization search by organization code successfully returns multiple
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain "2" entries
+		And the response bundle should contain "1" entries
 		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG2"
@@ -253,7 +255,7 @@ Scenario: Organization search valid response check caching headers exist
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain "2" entries
+		And the response bundle should contain "1" entries
 		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG2"
