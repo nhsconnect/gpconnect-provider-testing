@@ -2,6 +2,7 @@
 using System.Linq;
 using GPConnect.Provider.AcceptanceTests.Data;
 using GPConnect.Provider.AcceptanceTests.Helpers;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Hl7.Fhir.Specification.Source;
@@ -105,22 +106,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 Assert.Fail($"{system} ValueSet Not Found.");
             }
 
-            valueSet.Compose?.Include.ForEach(ci =>
-            {
-                var systemUri = ci.System;
-                if (!string.IsNullOrEmpty(systemUri))
-                {
-                    
-                    var systemSet = resolver.GetValueSet(systemUri);
+            Log.WriteLine("{0} Concepts loaded from {1}.", valueSet.CodeSystem.Concept.Count, system);
 
-                    var codes = systemSet?.CodeSystem?.Concept;
-
-                    if (codes != null)
-                    {
-                        valueSet.setCodeSystem().CodeSystem.Concept.AddRange(codes);
-                    }
-                }
-            });
 
             if (_fhirExtensibleValueSets == null)
             {
@@ -130,21 +117,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             _fhirExtensibleValueSets.Add(system, valueSet);
 
             return valueSet;
-        }
-
-        private static ValueSet setCodeSystem(this ValueSet vs)
-        {
-            if (vs.CodeSystem == null)
-            {
-                vs.CodeSystem = new ValueSet.CodeSystemComponent();
-            }
-
-            if (vs.CodeSystem.Concept == null)
-            {
-                vs.CodeSystem.Concept = new List<ValueSet.ConceptDefinitionComponent>();
-            }
-
-            return vs;
         }
 
     }
