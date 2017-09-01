@@ -211,6 +211,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
+        [Then(@"the Location Status should be valid")]
+        public void TheLocationStatusShouldBeValid()
+        {
+
+            Locations.ForEach(location =>
+            {
+                location.Status?.ShouldBeOfType<Location.LocationStatus>($"If a Location Status is supplied it must be one of {System.Enum.GetNames(typeof(Location.LocationStatus))}");
+            });
+        }
+
         [Then(@"the Location Id should match the GET request Id")]
         public void TheLocationIdShouldMarchTheGetRequestId()
         {

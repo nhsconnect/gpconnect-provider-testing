@@ -37,6 +37,7 @@ Scenario Outline: Location search success
 		And the Location Managing Organization should be valid
 		And the Location PartOf Location should be valid
 		And the Location Type should be valid
+		And the Location Status should be valid
 	Examples:
 		| Value | EntrySize |
 		| SIT1  | 1         |
@@ -173,6 +174,7 @@ Scenario: Conformance profile supports the Location search operation
 		And the Conformance REST Resources should contain the "Location" Resource with the "SearchType" Interaction
 
 #Will fail until demonstrator is upgraded to accept local identifiers
+#Also demonstrator will only accept one identifer
 Scenario: Location search send multiple identifiers in the request
 	Given I configure the default "LocationSearch" request
 		And I add a Location Identifier parameter with default System and Value "SIT1"
@@ -216,14 +218,14 @@ Scenario: Location search send additional invalid parameter
 
 Scenario: Location search include count and sort parameters
 	Given I configure the default "LocationSearch" request
-		And I add a Location Identifier parameter with default System and Value "SIT1"
-		And I add the parameter "_count" with the value "1"
+		And I add a Location Identifier parameter with default System and Value "SIT3"
+		And I add the parameter "_count" with the value "2"
 		And I add the parameter "_sort" with the value "status"
 	When I make the "LocationSearch" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain "1" entries
+		And the response bundle should contain "2" entries
 
 Scenario: Location search valid response check caching headers exist
 	Given I configure the default "LocationSearch" request
