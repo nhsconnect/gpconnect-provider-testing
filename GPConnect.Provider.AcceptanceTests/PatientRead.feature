@@ -93,8 +93,7 @@ Scenario Outline: Read patient failure due to missing header
 		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
-		And I do not send header "<Header>"
-	When I make the "PatientRead" request
+	When I make the "PatientRead" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:

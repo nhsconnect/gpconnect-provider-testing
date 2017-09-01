@@ -120,8 +120,7 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 Scenario Outline: Practitioner search failure due to missing header
 	Given I configure the default "PractitionerSearch" request
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-		And I do not send header "<Header>"
-	When I make the "PractitionerSearch" request
+	When I make the "PractitionerSearch" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:

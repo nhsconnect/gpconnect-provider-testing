@@ -170,8 +170,7 @@ Scenario Outline: Cancel appointment failure due to missing header
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I do not send header "<Header>"
-	When I make the "AppointmentCancel" request
+	When I make the "AppointmentCancel" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:

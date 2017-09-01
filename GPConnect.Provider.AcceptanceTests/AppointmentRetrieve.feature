@@ -54,11 +54,23 @@ Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 		And the response should be a OperationOutcome resource
 	Examples:
 		| id   |
-		| **   |
-		| dd   |
-		|      |
 		| null |
+		| dd   |
 
+Scenario Outline: Appointment retrieve fail due to unexpected identifier in request
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I configure the default "AppointmentSearch" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the request URL to "/fhir/Patient/<id>/Appointment"
+	When I make the "AppointmentSearch" request
+	Then the response status code should be "404"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource
+	Examples:
+		| id |
+		|    |
+		| ** |
+	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -194,6 +206,9 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 		| 2044-10-23T11:08:32+00:00 | le     |
 	
 
+
+	
+
 Scenario Outline: Appointment retrieve send request with lower start date boundry and start prefix and upper end date boundary and end prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -311,6 +326,7 @@ Scenario Outline: Appointment retrieve send request with different upper end dat
 		| 2015-10-23T11:08:32+00:00 | gt     | 2044-05-01T11:08:32       | lt      |
 		| 2015-10-23T11:08:32+00:00 | gt     | 2018-05                   | lt      |
 
+
 Scenario Outline: Appointment retrieve send request with start date and invalid start prefix and end date and invalid end prefix
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -355,8 +371,7 @@ Scenario Outline: Appointment retrieve failure due to missing header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I do not send header "<Header>"
-	When I make the "AppointmentSearch" request
+	When I make the "AppointmentSearch" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
