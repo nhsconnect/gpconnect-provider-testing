@@ -59,7 +59,10 @@
 
         private void ConfigureAppointmentCreateBody(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
+            if (_fhirResourceRepository.Appointment != null)
+            {
+                httpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
+            }
         }
 
         private static void ConfigureGpcGetCareRecordBody(HttpRequestConfiguration httpRequestConfiguration)
@@ -79,12 +82,18 @@
 
         private void ConfigureAppointmentAmendBody(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
+            if (_fhirResourceRepository.Appointment != null)
+            {
+                httpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
+            }
         }
 
         private void ConfigureAppointmentCancelBody(HttpRequestConfiguration httpRequestConfiguration)
         {
-            httpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
+            if (_fhirResourceRepository.Appointment != null)
+            {
+                httpRequestConfiguration.RequestBody = _serializer(_fhirResourceRepository.Appointment);
+            }
         }
 
         public void ConfigureInvalidResourceType(HttpRequestConfiguration httpRequestConfiguration)

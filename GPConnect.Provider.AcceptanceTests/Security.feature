@@ -3,89 +3,75 @@ Feature: Security
 
 #These tests expect some Apache/nginx specific http errors 495, 496 - need to consider providers not using Apache/nginx.
 
-Scenario: Security - non ssl request
-Given I configure the default "MetadataRead" request
+Scenario: Security - Non-SSL to SSL
+	Given I configure the default "MetadataRead" request
 		And I am not using the SSP
-		And I am using the SSP client certificate
+		And I am using the valid SSP client certificate
 		And I am not using TLS Connection
 	When I make the "MetadataRead" request
 	Then the Response should indicate the connection was closed by the server or the Request was redirected 
 		And if redirected the Response Headers should contain a Strict-Transport-Security header
 
-Scenario: Security - valid client certificate
-	Given I configure the default "GpcGetCareRecord" request
+Scenario: Security - SSP Client Certificate - Valid
+	Given I configure the default "MetadataRead" request
 		And I am not using the SSP
-		And I am using the SSP client certificate
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "SUM"
-	When I make the "GpcGetCareRecord" request
+		And I am using the valid SSP client certificate
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
+		And the Response Resource should be a Conformance
 
-Scenario: Security - client certificate invalid FQDN
-	Given I configure the default "GpcGetCareRecord" request
+Scenario: Security - SSP Client Certificate - Invalid - Expired
+	Given I configure the default "MetadataRead" request
+		And I am not using the SSP
+		And I am using the SSP client certificate which has expired
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
+	Then the Response Status Code should be one of "495, 496"
+		And the Response should indicate the connection was closed by the server
+
+Scenario: Security - SSP Client Certificate - Invalid - FQDN
+	Given I configure the default "MetadataRead" request
 		And I am not using the SSP
 		And I am using the SSP client certificate with invalid FQDN
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "SUM"
-	When I make the "GpcGetCareRecord" request
-	Then the response status code should be "495"
-		And the response should be a OperationOutcome resource
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
+	Then the Response Status Code should be one of "495, 496"
+		And the Response should indicate the connection was closed by the server
 
-Scenario: Security - client certificate not issued by the Spine CA
-	Given I configure the default "GpcGetCareRecord" request
+Scenario: Security - SSP Client Certificate - Invalid - Authority
+	Given I configure the default "MetadataRead" request
 		And I am not using the SSP
 		And I am using the SSP client certificate not signed by Spine CA
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "SUM"
-	When I make the "GpcGetCareRecord" request
-	Then the response status code should be "495"
-		And the response should be a OperationOutcome resource
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
+	Then the Response Status Code should be one of "495, 496"
+		And the Response should indicate the connection was closed by the server
 
-Scenario: Security - client certificate revoked
-	Given I configure the default "GpcGetCareRecord" request
+Scenario: Security - SSP Client Certificate - Invalid - Revoked
+	Given I configure the default "MetadataRead" request
 		And I am not using the SSP
 		And I am using the SSP client certificate which has been revoked
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "SUM"
-	When I make the "GpcGetCareRecord" request
-	Then the response status code should be "495"
-		And the response should be a OperationOutcome resource
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
+	Then the Response Status Code should be one of "495, 496"
+		And the Response should indicate the connection was closed by the server
 
-Scenario: Security - client certificate out of date
-	Given I configure the default "GpcGetCareRecord" request
-		And I am not using the SSP
-		And I am using the SSP client certificate which is out of date
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "SUM"
-	When I make the "GpcGetCareRecord" request
-	Then the response status code should be "495"
-		And the response should be a OperationOutcome resource
-
-Scenario: Security - no client certificate included in request
-	Given I configure the default "GpcGetCareRecord" request
+Scenario: Security - SSP Client Certificate - Invalid - Missing
+	Given I configure the default "MetadataRead" request
 		And I am not using the SSP
 		And I am not using a client certificate
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "SUM"
-	When I make the "GpcGetCareRecord" request
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
 	Then the response status code should be "496"
-		And the response should be a OperationOutcome resource
 
 Scenario Outline: Security - Connect with valid Cipher
 	Given I configure the default "MetadataRead" cURL request
 		And I am not using the SSP
-		And I am using the SSP client certificate
+		And I am using the valid SSP client certificate
 		And I set the Cipher to "<Cipher>"
 	When I make the "MetadataRead" cURL request
 	Then the cURL Code should be "Ok"
-		And the Response Resource should be a Conformance
 	Examples: 
 	| Cipher                      |
 	| ECDHE-RSA-AES128-GCM-SHA256 |
@@ -100,7 +86,7 @@ Scenario Outline: Security - Connect with valid Cipher
 Scenario: Security - Connect with invalid nonexistent Cipher
 	Given I configure the default "MetadataRead" cURL request
 		And I am not using the SSP
-		And I am using the SSP client certificate
+		And I am using the valid SSP client certificate
 		And I set the Cipher to "ABC-DEF"		
 	When I make the "MetadataRead" cURL request
 	Then the cURL Code should be "SslCipher"
@@ -108,7 +94,7 @@ Scenario: Security - Connect with invalid nonexistent Cipher
 Scenario: Security - Connect with invalid insecure Cipher
 	Given I configure the default "MetadataRead" cURL request
 		And I am not using the SSP
-		And I am using the SSP client certificate
+		And I am using the valid SSP client certificate
 		And I set the Cipher to "NULL-MD5"
 	When I make the "MetadataRead" cURL request
 	Then the cURL Code should be "SslConnectError"
@@ -116,7 +102,7 @@ Scenario: Security - Connect with invalid insecure Cipher
 Scenario: Security - Connect with invalid secure Cipher
 	Given I configure the default "MetadataRead" cURL request
 		And I am not using the SSP
-		And I am using the SSP client certificate
+		And I am using the valid SSP client certificate
 		And I set the Cipher to "AES128-SHA256"
 	When I make the "MetadataRead" cURL request
 	Then the cURL Code should be "SslConnectError"

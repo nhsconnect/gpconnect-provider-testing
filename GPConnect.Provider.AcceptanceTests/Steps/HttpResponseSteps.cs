@@ -150,6 +150,27 @@
             }
         }
 
+        [Then("the Response should indicate the connection was closed by the server")]
+        public void TheResponseShouldIndicateTheConnectionWasClosedByTheServer()
+        {
+            if (_httpContext.HttpResponse.StatusCode == 0)
+            {
+                _httpContext.HttpResponse.ConnectionClosed.ShouldBe(true, "The connection should have been closed by the server");
+            }
+        }
+
+        [Then(@"the Response Status Code should be one of ""(.*)""")]
+        public void TheResponseStatusCodeShouldBeOf(List<HttpStatusCode> statusCodes)
+        {
+            if (_httpContext.HttpResponse.StatusCode != 0)
+            {
+                var statusCode = _httpContext.HttpResponse.StatusCode;
+                var statusCodeList = string.Join(", ", statusCodes.Select(sc => (int)sc));
+
+                statusCodes.ShouldContain(statusCode, $"The Response Status Code should be one of {statusCodeList}, but it was {(int) statusCode}.");
+            }
+        }
+
         [Then("the Response should indicate the connection was closed by the server or the Request was redirected")]
         public void TheResponseShouldIndicateTheConnectionWasClosedByTheServerOrTheRequestWasRedirected()
         {
@@ -182,6 +203,15 @@
         public List<string> CommaSeperatedValuesTransform(string csv)
         {
             return csv.Split(',').Select(x => x.Trim()).ToList();
+        }
+
+        [StepArgumentTransformation]
+        public List<HttpStatusCode> CommaSeperatedHttpStatusCodeTransform(string httpStatusCodes)
+        {
+            return httpStatusCodes
+                .Split(',')
+                .Select(sc => (HttpStatusCode)int.Parse(sc.Trim()))
+                .ToList();
         }
     }
 }
