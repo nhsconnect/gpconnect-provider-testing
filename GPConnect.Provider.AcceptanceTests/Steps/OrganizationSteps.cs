@@ -85,11 +85,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         odsOrganizationCodeIdentifier?.Value.ShouldBe(odsCode, $"The Organization Identifier (Organization Code) Value should match the expected value {odsCode}.");
                     }
 
-                    var odsSiteCodeIdentifiers = organization.Identifier
-                        .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kOdsSiteCode))
-                        .ToList();
-
-                    odsSiteCodeIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, "There may only be a maximum one Site Identifier within the returned Organization.");
+         
 
                     var localOrgzCodeIdentifiers = organization.Identifier
                         .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kLocalOrgzCode))
@@ -97,47 +93,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     localOrgzCodeIdentifiers.ForEach(lOrgz =>
                     {
-                        lOrgz.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier has an invalid extension. Extensions must have a URL element."));
-                        lOrgz.Use?.ShouldBeOfType<Identifier.IdentifierUse>(string.Format("Local Identifier use is Invalid. But be from the value set: {0}", FhirConst.ValueSetSystems.kIdentifierUse));
-
-                        var localOrgzType = lOrgz.Type;
-
-                        if (localOrgzType != null)
-                        {
-                            localOrgzType.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Type has an invalid extension. Extensions must have a URL element."));
-
-                            var localOrgzTypeValues = GlobalContext.FhirIdentifierTypeValueSet.WithComposeImports();
-                            var localOrgzTypeCodes = localOrgzType.Coding.Where(lzc => lzc.System.Equals(FhirConst.ValueSetSystems.kIdentifierType)).ToList();
-                            localOrgzTypeCodes.ForEach(lztc =>
-                            {
-                                lztc.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Type Coding has an invalid extension. Extensions must have a URL element."));
-                                lztc.Code.ShouldBeOneOf(localOrgzTypeValues.ToArray());
-                            });
-                        }
-
-                        if (lOrgz.Assigner != null)
-                        {
-                            _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
-
-                            _httpContext.HttpRequestConfiguration.RequestUrl = organization.PartOf.Reference;
-
-                            _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
-
-                            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
-
-                            StoreTheOrganization();
-
-                            var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
-
-                            returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
-
-                            lOrgz.Assigner.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Assigner has an invalid extension. Extensions must have a URL element."));
-
-                        }
+                        CheckForValidLocalIdentifier(lOrgz, () => ValidateAssignerRequest(organization.PartOf.Reference));
                     });
 
                 }
             });
+        }
+
+        private void ValidateAssignerRequest(string reference)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
+
+            _httpContext.HttpRequestConfiguration.RequestUrl = reference;
+
+            _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
+
+            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
+
+            StoreTheOrganization();
+
+            var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
+
+            returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
         }
 
         [Then(@"the Organization Metadata should be valid")]
@@ -237,7 +214,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (extensions != null)
             {
                 var validExtensions = new [] { FhirConst.StructureDefinitionSystems.kExtCcGpcMainLoc, FhirConst.StructureDefinitionSystems.kOrgzPeriod };
-                extensions.Url.ShouldBeOneOf(validExtensions, string.Format("Organisation Extension is invalid. Extensions must be one of {0}", validExtensions.ToString()));
+                extensions.Url.ShouldBeOneOf(validExtensions, $"Organisation Extension is invalid. Extensions must be one of {validExtensions}");
             }
         }
 
@@ -252,18 +229,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (contactPurpose != null)
                 {
                     contactPurpose.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Organisation Contact Purpose Code has an invalid extension. Extensions must have a URL element."));
-                    //Valueset is not available so cannot check this yet
-                    //contactPurpose.Coding.ForEach(cd =>
-                    //{
-                    //    cd.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Organisation Contact Purpose has an invalid extension. Extensions must have a URL element."));
-                    //    if (cd.System.Equals(FhirConst.ValueSetSystems.kContactEntityType))
-                    //    {
-                    //        if (!string.IsNullOrEmpty(cd.Code))
-                    //        {
-                    //            cd.Code.ShouldBeOfType<>()
-                    //        }
-                    //    }
-                    //});
+
+                    var contactEntityTypes = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kContactEntityType).WithComposeImports().ToArray();
+
+                    contactPurpose.Coding.ForEach(cd =>
+                    {
+                        cd.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Organisation Contact Purpose has an invalid extension. Extensions must have a URL element."));
+                        if (cd.System.Equals(FhirConst.ValueSetSystems.kContactEntityType) && contactEntityTypes.Any() && !string.IsNullOrEmpty(cd.Code))
+                        {
+                            cd.Code.ShouldBeOneOf(contactEntityTypes, $"Organisation Contact Purpose System is {FhirConst.ValueSetSystems.kContactEntityType}, but the code provided is not valid for this ValueSet.");
+                        }
+                    });
 
                 }
 
@@ -271,7 +247,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 if (contactName != null)
                 {
-                    contactName.Use?.ShouldBeOfType<HumanName.NameUse>(string.Format("Organisation Contact Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
+                    contactName.Use?.ShouldBeOfType<HumanName.NameUse>($"Organisation Contact Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
 
                     contactName.Family.Count().ShouldBeLessThanOrEqualTo(1, "Organisation Contact Name Family Element should contain a maximum of 1.");
                 }
@@ -287,9 +263,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             if (address != null)
             {
-                address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", from)));
-                address.Type?.ShouldBeOfType<Address.AddressType>(string.Format("{0} Type is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kAddressType));
-                address.Use?.ShouldBeOfType<Address.AddressUse>(string.Format("{0} Use is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kAddressUse));
+                address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
+                address.Type?.ShouldBeOfType<Address.AddressType>($"{from} Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressType}");
+                address.Use?.ShouldBeOfType<Address.AddressUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressUse}");
             }
         }
 
@@ -297,9 +273,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             telecoms.ForEach(teleCom =>
             {
-                teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", from)));
-                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kContactPointSystem));
-                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>(string.Format("{0} Use is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kNContactPointUse));
+                teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
+                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"{from} System is not a valid value within the value set {FhirConst.ValueSetSystems.kContactPointSystem}");
+                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNContactPointUse}");
             });
         }
 
@@ -350,13 +326,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap[value]));
         }
-
-        [Given(@"I add an Organization Identifier parameter with Site Code System and Value ""([^""]*)""")]
-        public void AddAnIdentifierParameterWithSiteCodeSystemAndValue(string value)
-        {
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsSiteCode, GlobalContext.OdsCodeMap[value]));
-        }
-
+              
         [Given(@"I add an Identifier parameter with the Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithTheValue(string value)
         {
@@ -399,16 +369,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             StoreTheOrganization(null);
         }
 
-        [Given(@"I store the Organization with site code ""([^""]*)""")]
-        public void StoreTheOrganization(string siteCode)
-        {
-            var organization = Organizations.FirstOrDefault(orgz => string.IsNullOrEmpty(siteCode) || (!string.IsNullOrEmpty(siteCode) && orgz.Identifier.Select(zi => zi.Value).ToList().Contains(GlobalContext.OdsCodeMap[siteCode])));
-            if (organization != null)
-            {
-                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
-                _fhirResourceRepository.Organization = organization;
-            }
-        }
+       
+      
 
         [Then(@"the Organization Identifiers are correct for Organization Code ""([^""]*)""")]
         public void OrganizationIdentifiersAreCorrectForOrganizationCode(string organizationCode)
@@ -418,62 +380,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 //Check if Organization Code Identifiers are valid.
                 OrganizationCodeIdentifiersAreValid(organizationCode, organization);
 
-                //Check if Site Code Identifiers are valid
-                SiteCodeIdentifiersAreValid(organizationCode, organization);
             });
-        }
-
-        [Then(@"the Organization Identifiers are correct for Site Code ""([^""]*)""")]
-        public void OrganizationIdentifiersAreCorrectForSiteCode(string siteCode)
-        {
-            //Get Organization Codes for Site Code
-            var organizationSiteCodeMap = GlobalContext.OrganizationSiteCodeMap[siteCode];
-
-            Organizations.ForEach(organization =>
-            {
-                organizationSiteCodeMap.ForEach(organizationCode =>
-                {
-                    //Check if Organization in Bundle contains Identifier for Organization Code
-                    var oganizationContainsIdentifier = organization.Identifier
-                        .Select(identifier => identifier.Value)
-                        .Contains(GlobalContext.OdsCodeMap[organizationCode]);
-
-                    if (oganizationContainsIdentifier)
-                    {
-                        //Check if Organization Code Identifiers are valid.
-                        OrganizationCodeIdentifiersAreValid(organizationCode, organization);
-
-                        //Check if Site Code Identifiers are valid
-                        SiteCodeIdentifiersAreValid(organizationCode, organization);
-                    }
-                });
-            });
-        }
-
-        private static void SiteCodeIdentifiersAreValid(string organizationCode, Organization organization)
-        {
-            //Get Site Codes for Organization Code
-            var siteCodesForOrganization = GlobalContext.OrganizationSiteCodeMap[organizationCode]
-                .Select(x => GlobalContext.OdsCodeMap[x])
-                .ToList();
-
-            //Get Site Code Identifier Values for Organization
-            var siteCodeIdentifierValues = organization.Identifier
-                .Where(identifier => identifier.System == FhirConst.IdentifierSystems.kOdsSiteCode)
-                .Select(identifier => identifier.Value)
-                .ToList();
-
-            //Check there are the correct amount of Site Code Identifiers
-            siteCodeIdentifierValues.Count.ShouldBe(siteCodesForOrganization.Count, $"There should be a total of {siteCodesForOrganization.Count} Site Code Identifiers for {organizationCode}");
-
-            //Check there are no duplicate Site Code Identifier Values
-            siteCodeIdentifierValues.Count.ShouldBe(siteCodeIdentifierValues.Distinct().Count(), $"There are duplicate Site Code Identifiers for {organizationCode}");
-
-            foreach (var siteCodeIdentifierValue in siteCodeIdentifierValues)
-            {
-                //Check each Site Code Identifier Value is in the expected Site Codes for Organization
-                siteCodesForOrganization.ShouldContain(siteCodeIdentifierValue, $"The Site Code {siteCodeIdentifierValue} was not expected for {organizationCode}");
-            }
         }
 
         private static void OrganizationCodeIdentifiersAreValid(string organizationCode, Organization organization)
@@ -511,14 +418,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             identifierFound.ShouldNotBeNull($"The expected identifier was not found in the returned organization resource, expected value {referenceValueLists}");
         }
 
-        [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)"" and ""([^""]*)"" ""([^""]*)"" system identifier with site code ""([^""]*)""")]
-        public void ThenAnOrganizationReturnedInTheBundleHasSystemIdentifierWithAndSystemIdentifierWithSiteCode(int orgCount, string orgSystem, string orgCode, int siteCount, string siteSystem, string siteCode)
+        [Then(@"an organization returned in the bundle has ""([^""]*)"" ""([^""]*)"" system identifier with ""([^""]*)""")]
+        public void ThenAnOrganizationReturnedInTheBundleHasSystemIdentifier(int orgCount, string orgSystem, string orgCode)
         {
             var totalValidOrganisations = 0;
 
             Organizations.ForEach(organization =>
             {
-                var siteLoopCounter = 0;
                 var orgLoopCounter = 0;
 
                 foreach (var identifier in organization.Identifier)
@@ -530,22 +436,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         orgLoopCounter++;
                         continue;
                     }
-                    if (identifier.System == siteSystem)
-                    {
-                        var referenceValueLists = getIdentifiersInList(siteCode);
-                        referenceValueLists.ShouldContain(identifier.Value);
-                        siteLoopCounter++;
-                        continue;
-                    }
+                  
                 }
 
-                if ((orgLoopCounter == orgCount) && (siteLoopCounter == siteCount))
+                if ((orgLoopCounter == orgCount))
                 {
                     totalValidOrganisations++;
                 }
             });
 
-            totalValidOrganisations.ShouldBe(Organizations.Count, "The number of organizations or site codes are invalid");
+            totalValidOrganisations.ShouldBe(Organizations.Count, "The number of organizations codes are invalid");
         }
 
         private List<string> getIdentifiersInList(string code)
@@ -569,6 +469,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     filteredIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, string.Format("There may only be one Identifier with system of {0} within the returned Organization.", systemIdentifier));
                 }
+            }
+        }
+
+        public void StoreTheOrganization(string siteCode)
+        {
+            var organization = Organizations.FirstOrDefault(orgz => string.IsNullOrEmpty(siteCode) || (!string.IsNullOrEmpty(siteCode) && orgz.Identifier.Select(zi => zi.Value).ToList().Contains(GlobalContext.OdsCodeMap[siteCode])));
+            if (organization != null)
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
+                _fhirResourceRepository.Organization = organization;
             }
         }
     }

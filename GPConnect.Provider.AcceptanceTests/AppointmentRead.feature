@@ -38,8 +38,7 @@ Scenario Outline: Read appointment with missing mandatory header
 		And I store the Created Appointment
 	Given I configure the default "AppointmentRead" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I do not send header "<Header>"
-	When I make the "AppointmentRead" request
+	When I make the "AppointmentRead" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

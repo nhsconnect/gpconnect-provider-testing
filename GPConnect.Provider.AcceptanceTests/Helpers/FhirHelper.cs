@@ -13,7 +13,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
     {
         public static Identifier GetNHSNumberIdentifier(string nhsNumber)
         {
-            return GetIdentifier("https://fhir.nhs.uk/Id/nhs-number", nhsNumber);
+            return GetIdentifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber);
         }
 
         public static Identifier GetIdentifier(string system, string nhsNumber)
@@ -23,7 +23,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static CodeableConcept GetRecordSectionCodeableConcept(string recordSectionCode)
         {
-            return GetRecordSectionCodeableConcept("http://fhir.nhs.net/ValueSet/gpconnect-record-section-1", recordSectionCode);
+            return GetRecordSectionCodeableConcept(FhirConst.ValueSetSystems.kRecordSectionValueSet, recordSectionCode);
         }
 
         public static CodeableConcept GetRecordSectionCodeableConcept(string system, string recordSectionCode)
@@ -81,10 +81,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                     Family = new[] { "AssurancePractitioner" }
                 },
                 Identifier = {
-                    new Identifier("https://fhir.nhs.uk/Id/sds-user-id", "GCASDS0001"),
+                    new Identifier(FhirConst.IdentifierSystems.kPracSDSUserId, "GCASDS0001"),
                     new Identifier("LocalIdentifierSystem", "1")
                 },
-                PractitionerRole = GetPractitionerRoleComponent("http://fhir.nhs.net/ValueSet/sds-job-role-name-1", "AssuranceJobRole")
+                PractitionerRole = GetPractitionerRoleComponent(FhirConst.ValueSetSystems.kSDSJobRoleName, "AssuranceJobRole")
             };
         }
 

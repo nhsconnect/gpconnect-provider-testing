@@ -175,8 +175,7 @@ Scenario Outline: Patient search failure due to missing header
 	Given I configure the default "PatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I do not send header "<Header>"
-	When I make the "PatientSearch" request
+	When I make the "PatientSearch" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:

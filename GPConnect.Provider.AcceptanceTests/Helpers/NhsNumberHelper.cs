@@ -1,10 +1,11 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
+    using Constants;
     using Hl7.Fhir.Model;
 
     public static class NhsNumberHelper
     {
-        private static string DefaultSystem => "https://fhir.nhs.uk/Id/nhs-number";
+        private static string DefaultSystem => FhirConst.IdentifierSystems.kNHSNumber;
 
         private static string InvalidNhsNumber => "1234567891";
 

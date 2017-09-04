@@ -45,9 +45,8 @@ Scenario Outline: Register patient with missing header
 		And I set the Stored Patient Registration Period with Start Date "2017-04-12" and End Date "2018-12-24"
 		And I set the Stored Patient Registration Status with Value "A"
 		And I set the Stored Patient Registration Type with Value "T"
-		And I do not send header "<Header>"
 		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
+	When I make the "RegisterPatient" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
@@ -412,7 +411,7 @@ Scenario Outline: Register patient with invalid parameters name
 		And I add the Stored Patient as a parameter with name "<ParameterName>"
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
 	| ParameterName        |
 	| invalidName          |

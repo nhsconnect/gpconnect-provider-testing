@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GPConnect.Provider.AcceptanceTests.Data;
 using GPConnect.Provider.AcceptanceTests.Helpers;
+using GPConnect.Provider.AcceptanceTests.Logger;
 using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
+using Hl7.Fhir.Specification.Source;
+using NUnit.Framework;
 
 namespace GPConnect.Provider.AcceptanceTests.Context
 {
@@ -29,7 +34,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public static Dictionary<string, string> PractionerCodeMap { get; set; }
         public static Dictionary<string, string> PatientNhsNumberMap { get; set; }
         public static Dictionary<string, string> OdsCodeMap { get; set; }
-        public static Dictionary<string, List<string>> OrganizationSiteCodeMap { get; set; }
         
         // FHIR
         public static ValueSet FhirGenderValueSet
@@ -60,5 +64,60 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public static ValueSet FhirAppointmentBookingMethodValueSet { get; set; }
         public static ValueSet FhirAppointmentContactMethodValueSet { get; set; }
         public static ValueSet FhirIdentifierTypeValueSet { get; set; }
+        public static ValueSet FhirServiceDeliveryLocationRoleTypeValueSet { get; set; }
+
+        private static Dictionary<string, ValueSet> _fhirExtensibleValueSets { get; set; }
+        public static ValueSet GetExtensibleValueSet(string system)
+        {
+            if (_fhirExtensibleValueSets?.ContainsKey(system) != null)
+            {
+                return _fhirExtensibleValueSets[system];
+            }
+
+            return FindExtensibleValueSet(system);
+        }
+
+        private static ValueSet FindExtensibleValueSet(string system)
+        {
+
+            var vsSources = new List<IArtifactSource>();
+
+            if (AppSettingsHelper.FhirCheckWeb && AppSettingsHelper.FhirCheckWebFirst)
+            {
+                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+            }
+
+            if (AppSettingsHelper.FhirCheckDisk)
+            {
+                vsSources.Add(new FileDirectoryArtifactSource(AppSettingsHelper.FhirDirectory, true));
+            }
+
+            if (AppSettingsHelper.FhirCheckWeb && !AppSettingsHelper.FhirCheckWebFirst)
+            {
+                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+            }
+
+            //possible store resolver on the context
+            var resolver = new ArtifactResolver(new MultiArtifactSource(vsSources));
+
+            var valueSet = resolver.GetValueSet(system);
+            if (valueSet == null)
+            {
+                Assert.Fail($"{system} ValueSet Not Found.");
+            }
+
+            Log.WriteLine("{0} Concepts loaded from {1}.", valueSet.CodeSystem.Concept.Count, system);
+
+
+            if (_fhirExtensibleValueSets == null)
+            {
+                _fhirExtensibleValueSets = new Dictionary<string, ValueSet>();
+            }
+
+            _fhirExtensibleValueSets.Add(system, valueSet);
+
+            return valueSet;
+        }
+
     }
 }

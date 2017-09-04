@@ -299,7 +299,7 @@
             });
         }
 
-        [Then(@"the Practitioner Communication should be valid")]
+        [Then(@"the Practitioner nhsCommunication should be valid")]
         public void ThePractitionerCommunicationShouldBeValid()
         {
             Practitioners.ForEach(practitioner =>

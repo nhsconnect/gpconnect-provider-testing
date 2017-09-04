@@ -95,19 +95,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             GlobalContext.PractionerCodeMap = PractitionerCodeMapImporter.LoadCsv(practitionerCodeMapCSV);
         }
 
-        [BeforeTestRun(Order = 1)]
-        public static void LoadOrganizationSiteCodeMapData()
-        {
-            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
-            {
-                Assert.Fail("Data Directory Not Found.");
-            }
-
-            var organizationSiteCodeMapCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"OrganizationSiteCodeMap.csv");
-            Log.WriteLine("organizationSiteCodeMap CSV = '{0}'", organizationSiteCodeMapCSV);
-            GlobalContext.OrganizationSiteCodeMap = OrganizationSiteCodeMapImporter.LoadCsv(organizationSiteCodeMapCSV);
-        }
-
         [BeforeTestRun(Order = 2)]
         public static void LoadFhirDefinitions()
         {
@@ -181,7 +168,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("IdentifierTypes ValueSet Not Found.");
             Log.WriteLine("{0} IdentifierTypes Loaded.", identifierTypes.CodeSystem.Concept.Count);
             GlobalContext.FhirIdentifierTypeValueSet = identifierTypes;
-           
+
+            //var serviceDeliveryLocationRoleTypes = resolver.GetValueSet(FhirConst.ValueSetSystems.kServDelLocationRoleType);
+            //if (serviceDeliveryLocationRoleTypes == null)
+            //    Assert.Fail("serviceDeliveryLocationRoleTypes ValueSet Not Found.");
+            //Log.WriteLine("{0} serviceDeliveryLocationRoleTypes Loaded.", serviceDeliveryLocationRoleTypes.CodeSystem?.Concept.Count);
+            //GlobalContext.FhirServiceDeliveryLocationRoleTypeValueSet = serviceDeliveryLocationRoleTypes;
+
         }
 
         [BeforeScenario(Order = 0)]

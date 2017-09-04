@@ -55,8 +55,7 @@ Scenario Outline: Amend appointment failure due to missing header
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment Reason to "customComment"
-		And I do not send header "<Header>"
-	When I make the "AppointmentAmend" request
+	When I make the "AppointmentAmend" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:

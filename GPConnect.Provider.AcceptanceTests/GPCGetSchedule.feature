@@ -63,8 +63,7 @@ Scenario Outline: getSchedule failure due to missing header
 		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "6" days	
-		And I do not send header "<Header>"
-	When I make the "GpcGetSchedule" request
+	When I make the "GpcGetSchedule" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:

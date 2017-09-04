@@ -13,7 +13,7 @@ Scenario Outline: Practitioner read successful request validate all of response
 		And the Practitioner Identifiers should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner Communication should be valid
+		And the Practitioner nhsCommunication should be valid
 		And the Practitioner should exclude disallowed elements
 		And the practitioner Telecom should be valid
 		And the practitioner Address should be valid
@@ -58,8 +58,7 @@ Scenario Outline: Practitioner Read with missing mandatory header
 	Given I get the Practitioner for Practitioner Code "practitioner1"
 		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
-		And I do not send header "<Header>"
-	When I make the "PractitionerRead" request
+	When I make the "PractitionerRead" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:

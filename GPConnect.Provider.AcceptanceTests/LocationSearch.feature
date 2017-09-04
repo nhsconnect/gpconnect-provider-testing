@@ -33,11 +33,11 @@ Scenario Outline: Location search success
 		And the Location Id should be valid
 		And the Location Identifier should be valid
 		And the Location Metadata should be valid
-		And the Location Name should be valid
 		And the Location Physical Type should be valid
 		And the Location Managing Organization should be valid
 		And the Location PartOf Location should be valid
 		And the Location Type should be valid
+		And the Location Status should be valid
 	Examples:
 		| Value | EntrySize |
 		| SIT1  | 1         |
@@ -98,7 +98,6 @@ Scenario Outline: Location Search using the accept header to request response fo
 		And the Location Id should be valid
 		And the Location Metadata should be valid
 		And the Location Identifier should be valid
-		And the Location Name should be valid
 	Examples:
 		| Header                | ResponseFormat |
 		| application/json+fhir | JSON           |
@@ -116,7 +115,6 @@ Scenario Outline: Location Search using the _format parameter to request respons
 		And the Location Id should be valid
 		And the Location Metadata should be valid
 		And the Location Identifier should be valid
-		And the Location Name should be valid
 	Examples:
 		| Format                | ResponseFormat |
 		| application/json+fhir | JSON           |
@@ -135,7 +133,6 @@ Scenario Outline: Location Search using the accept header and _format parameter 
 		And the Location Id should be valid
 		And the Location Metadata should be valid
 		And the Location Identifier should be valid
-		And the Location Name should be valid
 	Examples:
 		| Header                | Format                | ResponseFormat |
 		| application/json+fhir | application/json+fhir | JSON           |
@@ -146,8 +143,7 @@ Scenario Outline: Location Search using the accept header and _format parameter 
 Scenario Outline: Location search failure due to missing header
 	Given I configure the default "LocationSearch" request
 		And I add a Location Identifier parameter with default System and Value "SIT1"
-		And I do not send header "<Header>"
-	When I make the "LocationSearch" request
+	When I make the "LocationSearch" request with missing Header "<Header>"
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
@@ -177,13 +173,17 @@ Scenario: Conformance profile supports the Location search operation
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Location" Resource with the "SearchType" Interaction
 
+#Will fail until demonstrator is upgraded to accept local identifiers
+#Also demonstrator will only accept one identifer
 Scenario: Location search send multiple identifiers in the request
 	Given I configure the default "LocationSearch" request
 		And I add a Location Identifier parameter with default System and Value "SIT1"
-		And I add a Location Identifier parameter with default System and Value "SIT2"
+		And I add a Location Identifier parameter with local System and Value "LOC1"
 	When I make the "LocationSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should indicate success
+		And the response should be the format FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the Location Identifier should be valid
 
 Scenario: Location search send duplicate siteCodes in the request
 	Given I configure the default "LocationSearch" request
@@ -218,14 +218,14 @@ Scenario: Location search send additional invalid parameter
 
 Scenario: Location search include count and sort parameters
 	Given I configure the default "LocationSearch" request
-		And I add a Location Identifier parameter with default System and Value "SIT1"
-		And I add the parameter "_count" with the value "1"
+		And I add a Location Identifier parameter with default System and Value "SIT3"
+		And I add the parameter "_count" with the value "2"
 		And I add the parameter "_sort" with the value "status"
 	When I make the "LocationSearch" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain "1" entries
+		And the response bundle should contain "2" entries
 
 Scenario: Location search valid response check caching headers exist
 	Given I configure the default "LocationSearch" request
