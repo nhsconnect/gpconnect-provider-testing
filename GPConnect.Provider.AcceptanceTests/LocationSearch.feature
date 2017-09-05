@@ -175,6 +175,7 @@ Scenario: Conformance profile supports the Location search operation
 
 #Will fail until demonstrator is upgraded to accept local identifiers
 #Also demonstrator will only accept one identifer
+@ignore
 Scenario: Location search send multiple identifiers in the request
 	Given I configure the default "LocationSearch" request
 		And I add a Location Identifier parameter with default System and Value "SIT1"
