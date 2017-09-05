@@ -42,20 +42,25 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static bool SendClientCert => Get<bool>("sendClientCert");
         public static bool ValidateServerCert => Get<bool>("validateServerCert");
         
-        // Certificates for testing SSP
-        public static string ClientCertThumbPrintValid => Get<string>("clientCertThumbPrintValid");
-        public static string clientCertThumbPrintFQDNDoesNotMatchSendingSystem => Get<string>("clientCertThumbPrintFQDNDoesNotMatchSendingSystem");
-        public static string clientCertThumbPrintNotIssuedBySpineCA => Get<string>("clientCertThumbPrintNotIssuedBySpineCA");
-        public static string clientCertThumbPrintRevoked => Get<string>("clientCertThumbPrintRevoked");
-        public static string clientCertThumbPrintOutOfDate => Get<string>("clientCertThumbPrintOutOfDate");
+        //Certificates to imitate the Consumer calling the SSP
+        public static string ThumbprintConsumerValid => Get<string>("Thumbprint:Consumer:Valid");
+        public static string ThumbprintConsumerInvalidFqdn => Get<string>("Thumbprint:Consumer:Invalid:Fqdn");
+        public static string ThumbprintConsumerInvalidAuthority => Get<string>("Thumbprint:Consumer:Invalid:Authority");
+        public static string ThumbprintConsumerInvalidRevoked => Get<string>("Thumbprint:Consumer:Invalid:Revoked");
+        public static string ThumbprintConsumerInvalidExpired => Get<string>("Thumbprint:Consumer:Invalid:Expired");
         
-        // Certificates for testing provider directly, bypassing the ssp
-        public static string sspAsClientCertThumbPrintValid => Get<string>("sspAsClientCertThumbPrintValid");
-        public static string sspAsClientCertThumbPrintFQDNNotSSPFQDN => Get<string>("sspAsClientCertThumbPrintFQDNNotSSPFQDN");
-        public static string sspAsClientCertThumbPrintNotIssuedBySpineCA => Get<string>("sspAsClientCertThumbPrintNotIssuedBySpineCA");
-        public static string sspAsClientCertThumbPrintRevoked => Get<string>("sspAsClientCertThumbPrintRevoked");
-        public static string sspAsClientCertThumbPrintOutOfDate => Get<string>("sspAsClientCertThumbPrintOutOfDate");
-        
+        //Certificates to imitate the SSP calling the Provider
+        public static string ThumbprintSspValid => Get<string>("Thumbprint:Ssp:Valid");
+
+        public static string ThumbprintSspInvalidExpired => Get<string>("Thumbprint:Ssp:Invalid:Expired");
+
+        public static string ThumbprintSspInvalidFqdn => Get<string>("Thumbprint:Ssp:Invalid:Fqdn");
+
+        public static string ThumbprintSspInvalidAuthority => Get<string>("Thumbprint:Ssp:Invalid:Authority");
+
+        public static string ThumbprintSspInvalidRevoked => Get<string>("Thumbprint:Ssp:Invalid:Revoked");
+
+
         // Consumer Settings
         public static string ConsumerASID => Get<string>("consumerASID");
 

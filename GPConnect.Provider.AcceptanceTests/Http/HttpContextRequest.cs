@@ -17,6 +17,8 @@
 
         public void MakeRequest()
         {
+            ServicePointManager.ServerCertificateValidationCallback = (a, b, c, d) => true;
+
             var httpClient = GetHttpClient();
   
             var requestMessage = GetHttpRequestMessage();
@@ -37,12 +39,15 @@
 
                 _httpContext.FhirResponse.Resource = _httpContext.HttpResponse.ParseFhirResource().Resource;
             }
-            catch (Exception exception)
+            catch (AggregateException exception)
             {
-                _httpContext.HttpResponse = new HttpResponse
+                _httpContext.HttpResponse = new HttpResponse();
+
+                var innerExceptionMessage = exception.InnerException?.InnerException?.Message ?? string.Empty;
+                if (!innerExceptionMessage.Contains("The remote name could not be resolved:"))
                 {
-                    ConnectionClosed = true
-                };
+                    _httpContext.HttpResponse.ConnectionClosed = true;
+                }
             }
         }
     }
