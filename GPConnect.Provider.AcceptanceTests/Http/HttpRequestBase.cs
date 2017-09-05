@@ -72,11 +72,9 @@
 
             if (_httpRequestConfiguration.RequestBody != null)
             {
-                requestMessage.Content = new StringContent(_httpRequestConfiguration.RequestBody, Encoding.UTF8, _httpRequestConfiguration.RequestContentType);
+                requestMessage.Content = new StringContent(_httpRequestConfiguration.RequestBody, Encoding.UTF8, _httpRequestConfiguration.RequestContentType);;
             }
 
-            // Add The Headers
-            _httpRequestConfiguration.RequestHeaders.AddHeader(HttpConst.Headers.kContentType, _httpRequestConfiguration.RequestContentType);
             foreach (var header in _httpRequestConfiguration.RequestHeaders.GetRequestHeaders())
             {
                 try
