@@ -78,12 +78,12 @@ Scenario Outline: Practitioner Read with incorrect interaction id
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| InteractionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioners     |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                   |
-		| null                                                              |
+		| InteractionId                                                  |
+		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3  |
+		| urn:nhs:namesz:services:gpconnect:fhir:rest:read:practitioners |
+		| urn:nhs:names:services:operation:gpc.getcarerecord             |
+		|                                                                |
+		| null                                                           |
 
 Scenario Outline: Practitioner Read using the _format parameter to request response format
 	Given I get the Practitioner for Practitioner Code "practitioner1"

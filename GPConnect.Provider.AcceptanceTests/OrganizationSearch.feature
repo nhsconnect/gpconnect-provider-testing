@@ -239,14 +239,13 @@ Scenario Outline: Organization search check organization response contains logic
 
 Scenario: Organization search include count and sort parameters
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
 		And I add the parameter "_count" with the value "1"
-		And I add the parameter "_sort" with the value "status"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-				#apointment.startdate
+				
 
 Scenario: Organization search valid response check caching headers exist
 	Given I configure the default "OrganizationSearch" request

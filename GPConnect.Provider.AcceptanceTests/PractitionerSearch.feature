@@ -55,26 +55,44 @@ Scenario Outline: Practitioner search where identifier contains the incorrect ca
 		| Identifier    |
 		| identifiers   |
 
-Scenario Outline: Practitioner search testing paramater validity and order sent in the request
+Scenario Outline: Practitioner search testing paramater validity before adding identifier
 	Given I configure the default "PractitionerSearch" request
 		And I add the parameter "<Param1Name>" with the value "<Param1Value>"
-		And I add the parameter "<Param2Name>" with the value "<Param2Value>"
+		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
 	When I make the "PractitionerSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid fixed values
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
-		| Param1Name | Param1Value                                       | Param2Name | Param2Value                                       | BodyFormat |
-		| _format    | application/json+fhir                             | identifier | https://fhir.nhs.uk/Id/sds-user-id\|practitioner2 | JSON       |
-		| _format    | application/xml+fhir                              | identifier | https://fhir.nhs.uk/Id/sds-user-id\|practitioner2 | XML        |
-		| identifier | https://fhir.nhs.uk/Id/sds-user-id\|practitioner2 | _format    | application/json+fhir                             | JSON       |
-		| identifier | https://fhir.nhs.uk/Id/sds-user-id\|practitioner2 | _format    | application/xml+fhir                              | XML        |
+		| Param1Name | Param1Value           | BodyFormat |
+		| _format    | application/json+fhir | JSON       |
+		| _format    | application/xml+fhir  | XML        |
+
+Scenario Outline: Practitioner search testing paramater validity after adding identifier
+	Given I configure the default "PractitionerSearch" request
+		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
+		And I add the parameter "<Param1Name>" with the value "<Param1Value>"
+	When I make the "PractitionerSearch" request
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the response should be a Bundle resource of type "searchset"
+		And the Practitioner Identifiers should be valid fixed values
+		And the Practitioner PractitionerRoles Roles should be valid
+		And the Practitioner Name should be valid
+		And the Practitioner should exclude disallowed elements
+		And the Practitioner nhsCommunication should be valid
+		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
+	Examples:
+		| Param1Name | Param1Value           | BodyFormat |
+		| _format    | application/json+fhir | JSON       |
+		| _format    | application/xml+fhir  | XML        |
+
 
 Scenario Outline: Practitioner search add accept header to request and check for correct response format
 	Given I configure the default "PractitionerSearch" request
@@ -220,8 +238,8 @@ Scenario: Practitioner search multiple multiple identifiers for different practi
 Scenario: Practitioner search include count and sort parameters
 	Given I configure the default "PractitionerSearch" request		
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner1"
+		And I add the parameter "_sort" with the value "practitioner.coding"
 		And I add the parameter "_count" with the value "1"
-		And I add the parameter "_sort" with the value "status"
 	When I make the "PractitionerSearch" request
 	Then the response status code should indicate success
 		And the response bundle should contain "1" entries

@@ -338,19 +338,11 @@
                         practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull("If a Practitioner has a Managing Organization it must have a reference");
                         practitionerRole.ManagingOrganization.Reference.ShouldStartWith("Organization/");
 
-                        _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
+                       var returnedResource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.OrganizationRead, practitionerRole.ManagingOrganization.Reference);//_fhirResourceRepository.Organization.ResourceIdentity().ToString();
 
-                        _httpContext.HttpRequestConfiguration.RequestUrl = practitionerRole.ManagingOrganization.Reference;
+                        var returnedOrg = (Organization)returnedResource;
 
-                        _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
-
-                        _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
-
-                        _organizationSteps.StoreTheOrganization();
-
-                        var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
-
-                        returnedReference.ShouldStartWith(practitionerRole.ManagingOrganization.Reference);
+                        returnedOrg.GetType().ShouldBe(typeof(Organization));
                     }
                 });
             });
@@ -383,7 +375,7 @@
             {
                 if (practitioner.Gender != null)
                 {
-                    practitioner.Gender.ShouldBeOfType<AdministrativeGender>(string.Format("{0} Type is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kAdministrativeGender));
+                    practitioner.Gender.ShouldBeOfType<AdministrativeGender>(string.Format("Type is not a valid value within the value set", FhirConst.ValueSetSystems.kAdministrativeGender));
                 }
             });
         }

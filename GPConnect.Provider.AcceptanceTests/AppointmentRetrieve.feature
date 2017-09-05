@@ -559,7 +559,6 @@ Scenario: Appointment retrieve sending additional valid parameters in the reques
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add the parameter "_sort" with the value "entry"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON

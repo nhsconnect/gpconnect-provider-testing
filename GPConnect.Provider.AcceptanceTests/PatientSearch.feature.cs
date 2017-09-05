@@ -750,17 +750,15 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 297
   testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 298
-  testRunner.And("all search response entities in bundle should contain a logical identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Amend appointment valid response check caching headers exist")]
-        public virtual void AmendAppointmentValidResponseCheckCachingHeadersExist()
+        [NUnit.Framework.DescriptionAttribute("Patient search valid response check caching headers exist")]
+        public virtual void PatientSearchValidResponseCheckCachingHeadersExist()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment valid response check caching headers exist", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient search valid response check caching headers exist", ((string[])(null)));
 #line 300
 this.ScenarioSetup(scenarioInfo);
 #line 301
@@ -786,10 +784,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Amend appointment invalid response check caching headers exist")]
-        public virtual void AmendAppointmentInvalidResponseCheckCachingHeadersExist()
+        [NUnit.Framework.DescriptionAttribute("Patient search invalid response check caching headers exist")]
+        public virtual void PatientSearchInvalidResponseCheckCachingHeadersExist()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment invalid response check caching headers exist", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient search invalid response check caching headers exist", ((string[])(null)));
 #line 311
 this.ScenarioSetup(scenarioInfo);
 #line 312
