@@ -93,7 +93,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         {
             Log.WriteLine("SecurityContext->LoadAppConfig()");
             UseTLS = AppSettingsHelper.UseTLS;
-            ClientCertThumbPrint = AppSettingsHelper.ThumbprintConsumerValid;
+            ClientCertThumbPrint = AppSettingsHelper.ThumbprintSspValid;
             SendClientCert = AppSettingsHelper.SendClientCert;
             ValidateServerCert = AppSettingsHelper.ValidateServerCert;
         }
