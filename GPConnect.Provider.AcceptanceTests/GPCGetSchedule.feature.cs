@@ -809,7 +809,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 339
   testRunner.And("the Practitioner should exclude disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 340
-  testRunner.And("the Practitioner Communication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner nhsCommunication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 341
   testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be valid and resol" +
                     "vable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

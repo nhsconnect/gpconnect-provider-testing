@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GPConnect.Provider.AcceptanceTests.Models;
 using Hl7.Fhir.Model;
 
 namespace GPConnect.Provider.AcceptanceTests.Extensions
@@ -17,5 +18,24 @@ namespace GPConnect.Provider.AcceptanceTests.Extensions
 
             return codes;
         }
+
+
+     public static IEnumerable<GpcCode> WithComposeIncludes(this ValueSet resource)
+      {
+         var codes = resource.CodeSystem?.Concept.Select(co => new GpcCode(co.Code, co.Display));
+            if (resource.Compose != null && resource.Compose.Include.Any())
+            {
+                resource.Compose.Include.ForEach(include => {
+                 codes = (codes ?? new List<GpcCode>()).Concat(include.Concept.Select(co => new GpcCode(co.Code, co.Display)));
+
+                });
+ 
+            }
+
+            return codes;
+     
+
+        }
+
     }
 }
