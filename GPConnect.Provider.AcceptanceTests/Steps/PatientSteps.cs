@@ -10,6 +10,9 @@
     using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
+    using Extensions;
+    using System;
+    using Models;
 
     [Binding]
     public class PatientSteps : BaseSteps
@@ -190,11 +193,21 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.MaritalStatus.Coding.ShouldNotBeNull("Patient MaritalStatus coding cannot be null");
-                ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirMaritalStatusValueSet, patient.MaritalStatus.Coding);
+            patient.MaritalStatus.Coding.ShouldNotBeNull("Patient MaritalStatus coding cannot be null");
+
+                // GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeImports(), patient.MaritalStatus.Coding.First().Code.First());
+                var maritalStatusList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes().ToArray();
+                patient.MaritalStatus.Coding.ForEach(coding =>
+            {
+                coding.System.ShouldNotBeNull("MaritalStatus System should not be null");
+                coding.Code.ShouldBeOneOf(maritalStatusList.Select(c => c.Code).ToArray());
+                coding.Display.ShouldBeOneOf(maritalStatusList.Select(c => c.Display).ToArray());
+
+            });
 
 
-                
+
+
             });
         }
 

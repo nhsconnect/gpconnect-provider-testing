@@ -337,7 +337,7 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the Practitioner Name should be valid
 		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner should exclude disallowed elements
-		And the Practitioner Communication should be valid
+		And the Practitioner nhsCommunication should be valid
 		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Organization | Days |
