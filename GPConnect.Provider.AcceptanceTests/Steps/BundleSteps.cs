@@ -132,6 +132,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 .ShouldBe(ResourceType.Composition);
         }
 
+        [Then(@"the response meta profile should be for ""([^""]*)""")]
+        public void ThenTheResponseMetaProfileShouldBe(string metaProfileType)
+        {
+            var profiles = _httpContext.FhirResponse.Resource.Meta.Profile.ToList();
+            profiles.ShouldNotBeNull();
+
+            if ("searchset".Equals(metaProfileType))
+            {
+                var requireProfile = profiles.FirstOrDefault(p => p.Equals(FhirConst.StructureDefinitionSystems.kGpcSearchSet));
+                requireProfile.ShouldNotBeNull();
+            }
+        }
+
         [Then(@"the patient resource in the bundle should contain meta data profile and version id")]
         public void ThenThePatientResourceInTheBundleShouldContainMetaDataProfileAndVersionId()
         {

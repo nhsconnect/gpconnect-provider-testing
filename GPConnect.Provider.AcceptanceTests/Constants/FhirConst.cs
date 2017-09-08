@@ -48,15 +48,28 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kRecordSectionValueSet = "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1";
             public const string kServDelLocationRoleType = "http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType";
             public const string kMaritalStatus = "https://fhir.nhs.uk/ValueSet/CareConnect-MaritalStatus-1";
+            public const string kCcGpcRegistrationType = "https://fhir.nhs.uk/ValueSet/CareConnect-RegistrationType-1";
+            public const string kCcGpcRegistrationStatus = "https://fhir.nhs.uk/ValueSet/CareConnect-RegistrationStatus-1";
         }
 
         internal static class StructureDefinitionSystems
         {
+            public const string kGpcSearchSet = "http://fhir.nhs.net/StructureDefinition/gpconnect-searchset-bundle-1";
+
             public const string kOrganisation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Organization-1";
-            public const string kExtCcGpcMainLoc = "https://fhir.hl7.org.uk/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
             public const string kOrgzPeriod = "http://hl7.org/fhir/StructureDefinition/organization-period";
             public const string kPractitioner = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Practitioner-1";
             public const string kLocation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Location-1";
+            public const string kPatient = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Patient-1";
+
+            public const string kExtCcGpcMainLoc = "https://fhir.hl7.org.uk/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
+            public const string kExtCcGpcRegDetails = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1";
+            public const string kExtRegistrationStatus = "https://fhir.nhs.uk/StructureDefinition/extension-registration-status-1";
+            public const string kExtRegistrationType = "https://fhir.nhs.uk/StructureDefinition/extension-registration-type-1";
+            public const string kExtRegistrationPeriod = "https://fhir.nhs.uk/StructureDefinition/extension-registration-period-1";
+            public const string kCCExtRegistrationStatus = "registrationStatus";
+            public const string kCCExtRegistrationType = "registrationType";
+            public const string kCCExtRegistrationPeriod = "registrationPeriod";
         }
     }
 }
