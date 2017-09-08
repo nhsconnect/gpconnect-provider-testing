@@ -396,9 +396,9 @@ Scenario: Book appointment for patient and send extra fields in the resource
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request with Invalid Additional Field in the Resource
-	Then the response status code should be "422"
+	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario Outline: Book appointment with invalid slot reference
 	Given I get the Patient for Patient Value "patient1"

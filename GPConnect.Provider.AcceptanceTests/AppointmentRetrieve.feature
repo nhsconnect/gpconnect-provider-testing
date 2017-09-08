@@ -184,24 +184,28 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 		| 2014-02                   | gt     |
 		| 2014-10-05                | gt     |
 		| 2014-05                   | gt     |
+		| 2016-08-05T08:16          | gt     |
 		| 2014-05-01T11:08:32       | gt     |
 		| 2015-10-23T11:08:32+00:00 | gt     |
 		| 2044                      | lt     |
 		| 2044-02                   | lt     |
 		| 2044-10-05                | lt     |
 		| 2044-05                   | lt     |
+		| 2016-08-05T08:16          | lt     |
 		| 2044-05-01T11:08:32       | lt     |
 		| 2044-10-23T11:08:32+00:00 | lt     |
 		| 2014                      | ge     |
 		| 2014-02                   | ge     |
 		| 2014-10-05                | ge     |
 		| 2014-05                   | ge     |
+		| 2016-08-05T08:16          | ge     |
 		| 2014-05-01T11:08:32       | ge     |
 		| 2015-10-23T11:08:32+00:00 | ge     |
 		| 2044                      | le     |
 		| 2044-02                   | le     |
 		| 2044-10-05                | le     |
 		| 2044-05                   | le     |
+		| 2016-08-05T08:16          | le     |
 		| 2044-05-01T11:08:32       | le     |
 		| 2044-10-23T11:08:32+00:00 | le     |
 	
@@ -559,6 +563,8 @@ Scenario: Appointment retrieve sending additional valid parameters in the reques
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I add the parameter "_count" with the value "1"
+		And I add the parameter "_sort" with the value "date"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -569,7 +575,6 @@ Scenario: Conformance profile supports the search appointment operation
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Appointment" Resource with the "SearchType" Interaction
-
 
 Scenario: Appointment retrieve valid response check caching headers exist
 Given I get the Patient for Patient Value "patient15"

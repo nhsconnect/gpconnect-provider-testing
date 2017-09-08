@@ -1546,7 +1546,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 771
   testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 772
-  testRunner.And("the Practitioner Communication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner nhsCommunication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

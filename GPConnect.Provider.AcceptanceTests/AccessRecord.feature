@@ -769,7 +769,7 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner Communication should be valid
+		And the Practitioner nhsCommunication should be valid
 	Examples:
 		| Code |
 		| ADM  |

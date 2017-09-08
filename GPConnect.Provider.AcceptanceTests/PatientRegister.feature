@@ -343,7 +343,7 @@ Scenario: Register patient with invalid patient resource type
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request with invalid parameter Resource type
 	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Register patient with invalid patient resource with additional element
 	Given I get the next Patient to register and store it
