@@ -328,8 +328,8 @@ Scenario: Cancel appointment missing cancellation extension reason
 		And I set the Created Appointment to Cancelled with Reason ""
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate failure
-	Then the response status code should be "403"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Cancel appointment verify resource is updated when an valid ETag value is provided
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

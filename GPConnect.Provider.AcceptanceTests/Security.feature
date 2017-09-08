@@ -70,6 +70,7 @@ Scenario Outline: Security - Connect with valid Cipher
 		And I am not using the SSP
 		And I am using the valid SSP client certificate
 		And I set the Cipher to "<Cipher>"
+		And I am using a TLS Connection
 	When I make the "MetadataRead" cURL request
 	Then the cURL Code should be "Ok"
 	Examples: 
@@ -88,6 +89,7 @@ Scenario: Security - Connect with invalid nonexistent Cipher
 		And I am not using the SSP
 		And I am using the valid SSP client certificate
 		And I set the Cipher to "ABC-DEF"		
+		And I am using a TLS Connection
 	When I make the "MetadataRead" cURL request
 	Then the cURL Code should be "SslCipher"
 
@@ -96,6 +98,7 @@ Scenario: Security - Connect with invalid insecure Cipher
 		And I am not using the SSP
 		And I am using the valid SSP client certificate
 		And I set the Cipher to "NULL-MD5"
+		And I am using a TLS Connection
 	When I make the "MetadataRead" cURL request
 	Then the cURL Code should be "SslConnectError"
 
@@ -104,5 +107,6 @@ Scenario: Security - Connect with invalid secure Cipher
 		And I am not using the SSP
 		And I am using the valid SSP client certificate
 		And I set the Cipher to "AES128-SHA256"
+		And I am using a TLS Connection
 	When I make the "MetadataRead" cURL request
 	Then the cURL Code should be "SslConnectError"

@@ -373,7 +373,6 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the Bundle should contain Slots
 		And the Location Metadata should be valid
 		And the Location Identifier should be valid
-		And the Location Name should be valid
 		And the Location Type should be valid
 		And the Location Physical Type should be valid
 		And the Location PartOf Location should be valid

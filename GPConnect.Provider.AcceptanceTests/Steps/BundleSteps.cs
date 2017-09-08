@@ -193,9 +193,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             const string customMessage = "The reference from the resource was not found in the bundle by fullUrl resource element.";
 
-            _httpContext.FhirResponse.Bundle
-                .Entry
-                .ShouldContain(entry => reference.Equals(entry.FullUrl) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
+            _httpContext.FhirResponse.Bundle.Entry.ShouldContain(entry => reference.Equals(entry.FullUrl) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
         }
     }
 }

@@ -769,7 +769,7 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid
 		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner Communication should be valid
+		And the Practitioner nhsCommunication should be valid
 	Examples:
 		| Code |
 		| ADM  |
@@ -1016,8 +1016,8 @@ Scenario: Request parameter patientNHSNumber values is empty
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
-	Then the response status code should be "400"		
-		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
+	Then the response status code should be "422"		
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Request parameter patientNHSNumber system is empty
 	Given I configure the default "GpcGetCareRecord" request
@@ -1025,8 +1025,8 @@ Scenario: Request parameter patientNHSNumber system is empty
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "GpcGetCareRecord" request
-	Then the response status code should be "400"		
-		And the response should be a OperationOutcome resource with error code "INVALID_IDENTIFIER_SYSTEM"
+	Then the response status code should be "422"		
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Request parameter recordSection values is empty
 	Given I configure the default "GpcGetCareRecord" request

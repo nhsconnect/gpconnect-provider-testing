@@ -94,7 +94,6 @@ Scenario Outline: Register patient with an invalid NHS number
 	Examples:
 		| nhsNumber   |
 		| 34555##4    |
-		|             |
 		| hello       |
 		| 999999999   |
 		| 9000000008  |
