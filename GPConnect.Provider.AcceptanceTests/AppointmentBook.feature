@@ -338,8 +338,8 @@ Scenario: Book appointment containing additional extension with only value popul
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+		And the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Book appointment containing additional extensions with only the system populated
 	Given I get the Patient for Patient Value "patient1"

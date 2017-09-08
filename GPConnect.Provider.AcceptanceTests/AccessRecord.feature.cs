@@ -1906,10 +1906,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 1018
  testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1019
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1020
-  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_NHS_N" +
-                    "UMBER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1932,10 +1932,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 1027
  testRunner.When("I make the \"GpcGetCareRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1028
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1029
-  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_IDENT" +
-                    "IFIER_SYSTEM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
