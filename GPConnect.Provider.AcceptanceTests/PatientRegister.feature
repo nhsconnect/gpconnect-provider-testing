@@ -265,8 +265,17 @@ Scenario Outline: Register patient with invalid parameters name
 	| ParameterName        |
 	| invalidName          |
 	| registerPatient test |
-	|                      |
 	| null                 |
+
+Scenario: Register patient with missing parameters name
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I add a Record Section parameter for "SUM"
+		And I add the Stored Patient as a parameter with name ""
+	When I make the "RegisterPatient" request
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Register patient which alread exists on the system as a normal patient
 	Given I get the Patient for Patient Value "patient1"

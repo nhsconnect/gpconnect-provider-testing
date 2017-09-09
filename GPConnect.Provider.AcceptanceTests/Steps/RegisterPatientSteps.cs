@@ -243,7 +243,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add a Deceased element to the Stored Patient")]
         public void AddADeceasedElementToStoredPatient()
         {
-            _fhirResourceRepository.Patient.Deceased = new FhirDateTime("2017-09-01 10:00:00");
+            _fhirResourceRepository.Patient.Deceased = new FhirDateTime("2017-09-01T10:00:00");
         }
 
         [Given(@"I add a Link element to the Stored Patient")]
@@ -505,7 +505,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I Set the Stored Patient Registration Details Extension")]
-        public void SetTheStoredPatientRegistrationDetailsExtension(string startDate)
+        public void GivenISetTheStoredPatientRegistrationDetailsExtension()
         {
             var extList = new List<Extension>
             {
