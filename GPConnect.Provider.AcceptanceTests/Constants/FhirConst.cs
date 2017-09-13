@@ -57,6 +57,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kCcHumanLanguage = "https://fhir.nhs.uk/ValueSet/CareConnect-HumanLanguage-1";
             public const string kCcLanguageAbilityMode = "https://fhir.nhs.uk/ValueSet/CareConnect-LanguageAbilityMode-1";
             public const string kCcLanguageAbilityProficiency = "https://fhir.nhs.uk/ValueSet/CareConnect-LanguageAbilityProficiency-1";
+            public const string kCcReligiousAffiliation = "https://fhir.nhs.uk/ValueSet/CareConnect-ReligiousAffiliation-1";
         }
 
         internal static class StructureDefinitionSystems
@@ -69,6 +70,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kLocation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Location-1";
             public const string kPatient = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Patient-1";
 
+            //EXTENSIONS
             public const string kExtCcGpcMainLoc = "https://fhir.hl7.org.uk/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
             public const string kExtCcGpcRegDetails = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1";
             public const string kExtRegistrationStatus = "https://fhir.nhs.uk/StructureDefinition/extension-registration-status-1";
@@ -78,7 +80,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kCCExtRegistrationType = "registrationType";
             public const string kCCExtRegistrationPeriod = "registrationPeriod";
             public const string kCCExtEthnicCategory = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-EthnicCategory-1";
-            public const string kCcExtReligiousAffiliation = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-ReligiousAffiliation-11";
+            public const string kCcExtReligiousAffiliation = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-ReligiousAffiliation-1";
             public const string kCCExtPatientCadaver = "http://hl7.org/fhir/StructureDefinition/patient-cadavericDonor";
             public const string kCCExtResidentialStatus = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-ResidentialStatus-1";
             public const string kCCExtTreatmentCategory = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-TreatmentCategory-1";
