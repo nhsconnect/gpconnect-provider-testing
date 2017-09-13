@@ -615,13 +615,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (interaction.Equals(GpConnectInteraction.OrganizationRead))
             {
                 StoreTheOrganization();
-                var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
+                var returnedReference = _fhirResourceRepository.Organization.Meta.Profile.FirstOrDefault();
                 returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
             }
             else if (interaction.Equals(GpConnectInteraction.PractitionerRead))
             {
                 StoreThePractitioner();
-                var returnedReference = _fhirResourceRepository.Practitioner.ResourceIdentity().ToString();
+                var returnedReference = _fhirResourceRepository.Practitioner.Meta.Profile.FirstOrDefault();
                 returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kPractitioner);
             }
 
@@ -753,7 +753,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 var val = exts.First();
                 val.Value.ShouldNotBeNull();
-                val.ShouldBeOfType<Boolean>();
+                val.Value.ShouldBeOfType<FhirBoolean>();
             }
 
         }
