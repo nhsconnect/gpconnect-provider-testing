@@ -1,4 +1,7 @@
-﻿using GPConnect.Provider.AcceptanceTests.Extensions;
+﻿using System;
+using GPConnect.Provider.AcceptanceTests.Enum;
+using GPConnect.Provider.AcceptanceTests.Extensions;
+using GPConnect.Provider.AcceptanceTests.Helpers;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -16,14 +19,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     {
         private readonly HttpContext _httpContext;
         private readonly PatientSteps _patientSteps;
+        private readonly HttpResponseSteps _httpResponseSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
-        public RegisterPatientSteps(HttpSteps httpSteps, HttpContext httpContext, PatientSteps patientSteps, IFhirResourceRepository fhirResourceRepository)
+        public RegisterPatientSteps(HttpSteps httpSteps, HttpContext httpContext, PatientSteps patientSteps, HttpResponseSteps httpResponseSteps, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
         {
             _httpContext = httpContext;
             _patientSteps = patientSteps;
+            _httpResponseSteps = httpResponseSteps;
             _fhirResourceRepository = fhirResourceRepository;
         }
 
@@ -378,7 +383,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the Patient Demographics should match the Stored Patient")]
         public void ThePatientDemographicsShouldMatchTheStoredPatient()
         {
-            var storedPatientNhsNumber = _fhirResourceRepository.Patient
+            var storedPatient = _fhirResourceRepository.Patient;
+            var storedPatientNhsNumber = storedPatient
                 .Identifier
                 .First(identifier => identifier.System == FhirConst.IdentifierSystems.kNHSNumber)
                 .Value;
@@ -386,28 +392,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Patients.ForEach(patient =>
             {
                 patient.BirthDate.ShouldNotBeNull("The returned patient resource should contain a birthDate element.");
-                patient.BirthDate.ShouldBe(_fhirResourceRepository.Patient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
+                patient.BirthDate.ShouldBe(storedPatient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
 
                 patient.Gender.ShouldNotBeNull("The patient resource should contain a gender element");
-                patient.Gender.ShouldBe(_fhirResourceRepository.Patient.Gender, "The returned patient gender does not match the creted patient gender");
+                patient.Gender.ShouldBe(storedPatient.Gender, "The returned patient gender does not match the creted patient gender");
 
-                var patientNames = _fhirResourceRepository.Patient.Name;
-
-                patientNames.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be at least one name element within the returned patient resource");
+                patient.Name.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be at least one name element within the returned patient resource");
                 
-                var unIndex = FindUsualNameIndex(patientNames);
+                var unIndex = FindUsualNameIndex(storedPatient.Name);
+                var rnIndex = FindUsualNameIndex(patient.Name);
+                rnIndex.ShouldBeGreaterThanOrEqualTo(0, "Could not find the required Patient name with a Use value of Usual.");
 
-                unIndex.ShouldBeGreaterThanOrEqualTo(0, "Could not find the required Patient name with a Use value of Usual.");
-
-                var usualName = _fhirResourceRepository.Patient.Name[unIndex];
+                var usualName = storedPatient.Name[unIndex];
                 var storedFamilyName = usualName.Family.First();
 
-                patientNames.ForEach(name =>
-                {
-                    name.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
-                    name.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
-                    name.Family.First().ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
-                });
+                var uPatientName = patient.Name[rnIndex];
+
+                uPatientName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
+                uPatientName.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
+                uPatientName.Family.First().ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
 
                 var nhsNumberIdentifiers = patient
                     .Identifier
@@ -420,6 +423,82 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 nhsNumberIdentifier.Value.ShouldNotBeNullOrEmpty("The NHS Number identifier must have a value element.");
                 nhsNumberIdentifier.Value.ShouldBe(storedPatientNhsNumber, "The returned NHS Number does not match the sent NHS Number");
+            });
+
+        }
+
+        [Then(@"the Patient Optional Elements should be valid")]
+        public void ThePatientOptionalElementsShouldBeValid()
+        {
+            Patients.ForEach(patient =>
+            {
+                //Would preferably check language as it has a binding strength of Required
+                patient.Language?.IsLanguageFormat().ShouldBe(true);
+
+                // EXTENSIONS
+                var extensions = patient.Extension;
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtEthnicCategory, FhirConst.ValueSetSystems.kCcEthnicCategory);
+                ValidateSingleExtension(extensions, FhirConst.StructureDefinitionSystems.kCcExtReligiousAffiliation); //Would preferably check codeable concept as it has a binding strength of Required
+                ValidateSingleBooleanExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtPatientCadaver);
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtResidentialStatus, FhirConst.ValueSetSystems.kCcResidentialStatus);
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtTreatmentCategory, FhirConst.ValueSetSystems.kCcTreatmentCategory);
+                ValidateNhsCommunicationExtension(extensions);
+
+
+                //IDENTIFIERS
+                var localCodeIdentifiers = patient.Identifier
+                    .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kLocalPatientCode))
+                    .ToList();
+
+                localCodeIdentifiers.ForEach(li =>
+                {
+                    CheckForValidLocalIdentifier(li, () => ValidateReferenceRequest(li.Assigner.Reference, GpConnectInteraction.OrganizationRead));
+                });
+
+                //GENDER
+                patient.Gender?.ShouldBeOfType<AdministrativeGender>();
+
+                //NAMES
+                patient.Name.ForEach(on =>
+                {
+                    on.Use.ShouldNotBeNull();
+                    on.Use.ShouldBeOfType<HumanName.NameUse>();
+                    //Only need to test names that are not USUAL
+                    if (!on.Use.Value.Equals(HumanName.NameUse.Usual))
+                    {
+                        on.Family.ToList().Count.ShouldBeLessThanOrEqualTo(1);
+                    }
+                });
+
+                //TELECOM
+                ValidateTelecom(patient.Telecom, "Patient Telecom", true);
+
+                //ADDRESS
+                patient.Address.ForEach(add => ValidateAddress(add, "Patient Address"));
+
+                //MARITAL STATUS
+                if (patient.MaritalStatus != null)
+                {
+                    patient.MaritalStatus.Coding.Count.ShouldBe(1);
+                    var vset = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes();
+                    ShouldBeSingleCodingWhichIsInCodeList(patient.MaritalStatus.Coding.First(), vset.ToList());
+                }
+
+                //CONTACT
+                patient.Contact.ForEach(ValidateContact);
+
+
+                if (patient.CareProvider.Any())
+                {
+                    patient.CareProvider.ForEach(cp => { ValidateReferenceRequest(cp.Reference, ResourceReferenceHelper.GetReadInteractionType(cp.Reference)); });
+                }
+
+                if (patient.ManagingOrganization != null)
+                {
+                    ValidateReferenceRequest(patient.ManagingOrganization.Reference, GpConnectInteraction.OrganizationRead);
+                }
+
+
             });
 
         }
@@ -519,6 +598,179 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             };
 
             _fhirResourceRepository.Patient.Extension.Add(registrationDetails);
+        }
+
+        private void ValidateReferenceRequest(string reference, GpConnectInteraction interaction)
+        {
+            if (!ResourceReferenceHelper.IsRelOrAbsReference(reference)) return;
+
+            _httpSteps.ConfigureRequest(interaction);
+
+            _httpContext.HttpRequestConfiguration.RequestUrl = reference;
+
+            _httpSteps.MakeRequest(interaction);
+
+            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
+
+            if (interaction.Equals(GpConnectInteraction.OrganizationRead))
+            {
+                StoreTheOrganization();
+                var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
+                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
+            }
+            else if (interaction.Equals(GpConnectInteraction.PractitionerRead))
+            {
+                StoreThePractitioner();
+                var returnedReference = _fhirResourceRepository.Practitioner.ResourceIdentity().ToString();
+                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kPractitioner);
+            }
+
+        }
+
+        private void StoreTheOrganization()
+        {
+            var organization = _httpContext.FhirResponse.Organizations.FirstOrDefault();
+            if (organization != null)
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
+                _fhirResourceRepository.Organization = organization;
+            }
+        }
+
+        private void StoreThePractitioner()
+        {
+            var practitioner = _httpContext.FhirResponse.Practitioners.FirstOrDefault();
+            if (practitioner != null)
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = practitioner.Id;
+                _fhirResourceRepository.Practitioner = practitioner;
+            }
+        }
+
+        private void ValidateContact(Patient.ContactComponent contact)
+        {
+            if (contact != null)
+            {
+                contact.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Patient Contact has an invalid extension. Extensions must have a URL element."));
+
+                var contactRelationship = contact.Relationship;
+
+                contactRelationship?.ForEach(rel =>
+                {
+                    rel.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Patient Contact Relationship Code has an invalid extension. Extensions must have a URL element."));
+
+                    rel.Coding.ForEach(cd =>
+                    {
+                        cd.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Patient Contact Relationship has an invalid extension. Extensions must have a URL element."));
+                        cd.System.ShouldNotBeNullOrEmpty();
+                        cd.Code.ShouldNotBeNullOrEmpty();
+                        cd.Display.ShouldNotBeNullOrEmpty();
+                    });
+                });
+
+                var contactName = contact.Name;
+
+                contactName.ShouldNotBeNull();
+                contactName.Use.ShouldNotBeNull();
+                contactName.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
+                contactName.Family.Count().ShouldBeLessThanOrEqualTo(1, "Patient Contact Name Family Element should contain a maximum of 1.");
+
+                ValidateTelecom(contact.Telecom, "Patient Contact Telecom");
+
+                ValidateAddress(contact.Address, "Patient Contact Address");
+
+                contact.Gender?.ShouldBeOfType<AdministrativeGender>();
+
+                if (contact.Organization != null)
+                {
+                    contact.Organization.Reference.ShouldNotBeNullOrEmpty();
+                    ValidateReferenceRequest(contact.Organization.Reference, GpConnectInteraction.OrganizationRead);
+                }
+
+            }
+        }
+
+        private void ValidateNhsCommunicationExtension(List<Extension> extensions)
+        {
+            var exts = extensions.Where(ece => ece.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtNhsCommunication)).ToList();
+            exts.Count.ShouldBeLessThanOrEqualTo(1);
+
+            if (exts.Any())
+            {
+                var ext = exts.First();
+
+                var subExtensions = ext.Extension;
+
+                ValidateExactSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommLanguage, FhirConst.ValueSetSystems.kCcHumanLanguage);
+                ValidateSingleBooleanExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommPreferred);
+                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommModeOfCommunication, FhirConst.ValueSetSystems.kCcLanguageAbilityMode);
+                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommCommProficiency, FhirConst.ValueSetSystems.kCcLanguageAbilityProficiency);
+                ValidateSingleBooleanExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommInterpreterRequired);
+            }
+        }
+
+        private void ValidateExactSingleCodeConceptExtension(List<Extension> extensions, string defUri, string vsetUri)
+        {
+            var exts = extensions.Where(ece => ece.Url.Equals(defUri)).ToList();
+            exts.Count.ShouldBe(1);
+
+            ValidateCodeConceptExtension(exts.First(), vsetUri);
+
+        }
+
+        private void ValidateMaxSingleCodeConceptExtension(List<Extension> extensions, string defUri, string vsetUri)
+        {
+
+            var exts = extensions.Where(
+                    ece => ece.Url.Equals(defUri)).ToList();
+            exts.Count.ShouldBeLessThanOrEqualTo(1);
+
+            if (exts.Any())
+            {
+                ValidateCodeConceptExtension(exts.First(), vsetUri);
+            }
+
+        }
+
+        private void ValidateCodeConceptExtension(Extension extension, string vsetUri)
+        {
+            extension.Value.ShouldNotBeNull();
+            extension.Value.ShouldBeOfType<CodeableConcept>();
+            var concept = (CodeableConcept)extension.Value;
+
+            var vset = GlobalContext.GetExtensibleValueSet(vsetUri);
+            ShouldBeExactSingleCodingWhichIsInValueSet(vset, concept.Coding);
+        }
+
+        private void ValidateSingleBooleanExtension(List<Extension> extensions, string defUri)
+        {
+
+            var exts = extensions.Where(
+                ece => ece.Url.Equals(defUri)).ToList();
+            exts.Count.ShouldBeLessThanOrEqualTo(1);
+
+            if (exts.Any())
+            {
+                var val = exts.First();
+                val.Value.ShouldNotBeNull();
+                val.ShouldBeOfType<Boolean>();
+            }
+
+        }
+
+        private void ValidateSingleExtension(List<Extension> extensions, string defUri)
+        {
+
+            var exts = extensions.Where(
+                ece => ece.Url.Equals(defUri)).ToList();
+            exts.Count.ShouldBeLessThanOrEqualTo(1);
+
+            if (exts.Any())
+            {
+                var val = exts.First();
+                val.Value.ShouldNotBeNull();
+            }
+
         }
 
         private HumanName CreateUsualName(string givenName, string familyName)

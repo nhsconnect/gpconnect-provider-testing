@@ -11,7 +11,8 @@
     <AssemblyName>GPConnect.Provider.AcceptanceTests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -158,6 +159,7 @@
     <Compile Include="Data\PDS.cs" />
     <Compile Include="Enum\GpConnectInteraction.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ValueSetExtensions.cs" />
     <Compile Include="Factories\HttpRequestConfigurationFactory.cs" />
     <Compile Include="Factories\JwtFactory.cs" />
@@ -174,6 +176,7 @@
     <Compile Include="Helpers\IGlobalContextHelper.cs" />
     <Compile Include="Helpers\NhsNumberHelper.cs" />
     <Compile Include="Helpers\RecordSectionHelper.cs" />
+    <Compile Include="Helpers\ResourceReferenceHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Helpers\TimePeriodHelper.cs" />
     <Compile Include="HTML.feature.cs">

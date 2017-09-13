@@ -148,7 +148,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the patient resource in the bundle should contain meta data profile and version id")]
         public void ThenThePatientResourceInTheBundleShouldContainMetaDataProfileAndVersionId()
         {
-            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Patients, "http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Patients,FhirConst.StructureDefinitionSystems.kPatient);
         }
 
         [Then(@"if the response bundle contains an organization resource it should contain meta data profile and version id")]

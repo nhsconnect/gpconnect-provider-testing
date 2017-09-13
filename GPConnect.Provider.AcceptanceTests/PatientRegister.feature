@@ -180,6 +180,7 @@ Scenario: Register patient and check all elements conform to the gp connect prof
 		And the Patient Metadata should be valid
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
+		And the Patient Optional Elements should be valid
 
 Scenario: Register patient with registration details extension
 	Given I get the next Patient to register and store it
@@ -375,7 +376,7 @@ Scenario: Register patient containing identifier without mandatory system elemen
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario Outline: Register patient with additional elements
+Scenario Outline: Register patient with additional valid elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient

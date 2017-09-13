@@ -1,5 +1,6 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Extensions;
+using GPConnect.Provider.AcceptanceTests.Helpers;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -202,12 +203,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             Locations.ForEach(location =>
             {
-                location.Telecom?.ForEach(contactPoint =>
-                {
-                    contactPoint.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", "Location Telecom")));
-                    contactPoint.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"Telecom System is invalid. Should be one of {System.Enum.GetNames(typeof(ContactPoint.ContactPointSystem))}");
-                    contactPoint.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"Telecom Use is invalid. Should be one of {System.Enum.GetNames(typeof(ContactPoint.ContactPointUse))}");
-                });
+                ValidateTelecom(location.Telecom, "Location Telecom");
             });
         }
 
@@ -278,6 +274,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private void ValidateAssignerRequest(string reference)
         {
+            if (!ResourceReferenceHelper.IsRelOrAbsReference(reference)) return;
+
             _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
 
             _httpContext.HttpRequestConfiguration.RequestUrl = reference;
