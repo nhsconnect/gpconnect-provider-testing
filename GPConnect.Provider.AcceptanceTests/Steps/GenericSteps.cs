@@ -17,9 +17,10 @@ using TechTalk.SpecFlow;
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using Repository;
+    using Steps = TechTalk.SpecFlow.Steps;
 
     [Binding]
-    public class GenericSteps : TechTalk.SpecFlow.Steps
+    public class GenericSteps : Steps
     {
         private readonly IObjectContainer _objectContainer;
         private readonly HttpContext _httpContext;
@@ -35,7 +36,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public static void CreateTraceFolder()
         {
             if (!Directory.Exists(AppSettingsHelper.TraceBaseDirectory)) return;
-            var folderName = DateTime.Now.ToString("s").Replace(":", string.Empty);
+            var folderName = DateTime.Now.ToString("s").Replace(":", String.Empty);
             var traceDirectory = Path.Combine(AppSettingsHelper.TraceBaseDirectory, folderName);
             Log.WriteLine("Create Trace Directory = '{0}'", traceDirectory);
             Directory.CreateDirectory(traceDirectory);
@@ -163,17 +164,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("{0} AppointmentContactMethod Loaded.", appointmentContactMethod.CodeSystem.Concept.Count);
             GlobalContext.FhirAppointmentContactMethodValueSet = appointmentContactMethod;
 
-            var identifierTypes = resolver.GetValueSet(FhirConst.ValueSetSystems.kIdentifierType);
-            if (identifierTypes == null)
-                Assert.Fail("IdentifierTypes ValueSet Not Found.");
-            Log.WriteLine("{0} IdentifierTypes Loaded.", identifierTypes.CodeSystem.Concept.Count);
-            GlobalContext.FhirIdentifierTypeValueSet = identifierTypes;
+            //var identifierTypes = resolver.GetValueSet(FhirConst.ValueSetSystems.kIdentifierType);
+            //if (identifierTypes == null)
+            //    Assert.Fail("IdentifierTypes ValueSet Not Found.");
+            //Log.WriteLine("{0} IdentifierTypes Loaded.", identifierTypes.CodeSystem.Concept.Count);
+            //GlobalContext.FhirIdentifierTypeValueSet = identifierTypes;
 
-            //var serviceDeliveryLocationRoleTypes = resolver.GetValueSet(FhirConst.ValueSetSystems.kServDelLocationRoleType);
-            //if (serviceDeliveryLocationRoleTypes == null)
-            //    Assert.Fail("serviceDeliveryLocationRoleTypes ValueSet Not Found.");
-            //Log.WriteLine("{0} serviceDeliveryLocationRoleTypes Loaded.", serviceDeliveryLocationRoleTypes.CodeSystem?.Concept.Count);
-            //GlobalContext.FhirServiceDeliveryLocationRoleTypeValueSet = serviceDeliveryLocationRoleTypes;
+            ////var serviceDeliveryLocationRoleTypes = resolver.GetValueSet(FhirConst.ValueSetSystems.kServDelLocationRoleType);
+            ////if (serviceDeliveryLocationRoleTypes == null)
+            ////    Assert.Fail("serviceDeliveryLocationRoleTypes ValueSet Not Found.");
+            ////Log.WriteLine("{0} serviceDeliveryLocationRoleTypes Loaded.", serviceDeliveryLocationRoleTypes.CodeSystem?.Concept.Count);
+            ////GlobalContext.FhirServiceDeliveryLocationRoleTypeValueSet = serviceDeliveryLocationRoleTypes;
 
         }
 
@@ -227,6 +228,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             catch (Exception e) {
                 Log.WriteLine("Exception writing FhirContext to Output File");
             }
+        }
+
+
+        [BeforeTestRun]
+        public static void SetTestRunId()
+        {
+            GlobalContext.TestRunId = Guid.NewGuid();
         }
     }
 }

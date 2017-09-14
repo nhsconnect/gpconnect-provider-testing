@@ -42,10 +42,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
             ReasonForRequest = JwtConst.Values.kDirectCare;
             AuthTokenURL = JwtConst.Values.kAuthTokenURL;
-            RequestingDevice = FhirHelper.GetDefaultDevice().ToJson();
-            RequestingOrganization = FhirHelper.GetDefaultOrganization().ToJson();
+            RequestingDevice = FhirHelper.GetDefaultDevice().ToFhirJson();
+            RequestingOrganization = FhirHelper.GetDefaultOrganization().ToFhirJson();
             RequestingIdentityId = FhirHelper.GetDefaultPractitioner().Id;
-            RequestingIdentity = FhirHelper.GetDefaultPractitioner().ToJson();
+            RequestingIdentity = FhirHelper.GetDefaultPractitioner().ToFhirJson();
             RequestedScope = JwtConst.Scope.kOrganizationRead;
             // TODO Check We're Using The Correct Scope For Metadata vs. GetCareRecord
             RequestedPatientNHSNumber = null;
@@ -92,11 +92,11 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
             if (RequestedPatientNHSNumber != null)
             {
-                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultPatient(RequestedPatientNHSNumber).ToJson(), JsonClaimValueTypes.Json));
+                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultPatient(RequestedPatientNHSNumber).ToFhirJson(), JsonClaimValueTypes.Json));
             }
             else if (RequestedOrganizationODSCode != null)
             {
-                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultOrganization(RequestedOrganizationODSCode).ToJson(), JsonClaimValueTypes.Json));
+                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultOrganization(RequestedOrganizationODSCode).ToFhirJson(), JsonClaimValueTypes.Json));
             }
 
             return new JwtPayload(claims);

@@ -302,6 +302,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppointmentAmend.feature</DependentUpon>
     </Compile>
+    <Compile Include="Reporting\ReportingConfiguration.cs" />
+    <Compile Include="Reporting\Report.cs" />
     <Compile Include="Repository\FhirResourceRepository.cs" />
     <Compile Include="Repository\IFhirResourceRepository.cs" />
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
@@ -328,6 +330,7 @@
     <Compile Include="Steps\ManualSteps.cs" />
     <Compile Include="Steps\PractitionerSteps.cs" />
     <Compile Include="Steps\RegisterPatientSteps.cs" />
+    <Compile Include="Steps\ReportingSteps.cs" />
     <Compile Include="Steps\SecuritySteps.cs" />
     <Compile Include="Steps\GenericSteps.cs" />
     <Compile Include="Steps\FhirSteps.cs" />
@@ -468,6 +471,7 @@
       <TargetPath>libcurl.dll</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

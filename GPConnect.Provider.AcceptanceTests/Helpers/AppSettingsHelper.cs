@@ -67,12 +67,18 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         // Provider Settings
         public static string ProviderASID => Get<string>("providerASID");
 
-        private static T Get<T>(string key)
+        public static T Get<T>(string key)
         {
             var appSetting = ConfigurationManager.AppSettings[key];
-            if (string.IsNullOrWhiteSpace(appSetting)) throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
+
+            if (string.IsNullOrWhiteSpace(appSetting))
+            {
+                throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
+            }
+
             var converter = TypeDescriptor.GetConverter(typeof(T));
-            return (T)(converter.ConvertFromInvariantString(appSetting));
+
+            return (T)converter.ConvertFromInvariantString(appSetting);
         }
     }
 }

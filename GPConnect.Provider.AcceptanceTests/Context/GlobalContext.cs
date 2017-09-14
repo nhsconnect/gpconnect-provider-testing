@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GPConnect.Provider.AcceptanceTests.Data;
-using GPConnect.Provider.AcceptanceTests.Helpers;
-using GPConnect.Provider.AcceptanceTests.Logger;
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Rest;
-using Hl7.Fhir.Specification.Source;
-using NUnit.Framework;
-
-namespace GPConnect.Provider.AcceptanceTests.Context
+﻿namespace GPConnect.Provider.AcceptanceTests.Context
 {
+    using System;
+    using System.Collections.Generic;
+    using Data;
+    using Helpers;
+    using Logger;
+    using Hl7.Fhir.Model;
+    using Hl7.Fhir.Rest;
+    using Hl7.Fhir.Specification.Source;
+    using NUnit.Framework;
+
     public static class GlobalContext
     {
         private static readonly GlobalContextHelper GlobalContextHelper = new GlobalContextHelper();
@@ -34,7 +34,9 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public static Dictionary<string, string> PractionerCodeMap { get; set; }
         public static Dictionary<string, string> PatientNhsNumberMap { get; set; }
         public static Dictionary<string, string> OdsCodeMap { get; set; }
-        
+
+        public static Guid TestRunId { get; set; }
+
         // FHIR
         public static ValueSet FhirGenderValueSet
         {
@@ -118,6 +120,5 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
             return valueSet;
         }
-
     }
 }

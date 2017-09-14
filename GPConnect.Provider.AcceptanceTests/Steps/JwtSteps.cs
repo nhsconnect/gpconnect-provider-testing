@@ -89,7 +89,7 @@
         [Given(@"I set the JWT Requesting Device as an invalid Device")]
         public void SetTheJwtRequestingDeviceAsAnInvalidDevice()
         {
-            _jwtHelper.RequestingDevice = FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultDevice().ToJson());
+            _jwtHelper.RequestingDevice = FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultDevice().ToFhirJson());
         }
 
         [Given(@"I set the JWT Requesting Device Resource Type as an invalid Resource Type")]
@@ -107,7 +107,7 @@
         [Given(@"I set the JWT Requesting Organization as an invalid Organization")]
         public void SetTheJwtRequestingOrganizationAsAnInvalidOrganization()
         {
-            _jwtHelper.RequestingOrganization = FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultOrganization().ToJson());
+            _jwtHelper.RequestingOrganization = FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultOrganization().ToFhirJson());
         }
 
         [Given(@"I set the JWT Requesting Organization Identifier with missing ODS Code")]
@@ -119,7 +119,7 @@
             var identifier = new Identifier("http://fhir.nhs.net/Id/someOtherCodingSystem", "NoOdsCode");
             organization.Identifier.Add(identifier);
 
-            _jwtHelper.RequestingOrganization = organization.ToJson();
+            _jwtHelper.RequestingOrganization = organization.ToFhirJson();
         }
 
         [Given(@"I set the JWT Requesting Organization with missing Identifier")]
@@ -128,7 +128,7 @@
             var organization = FhirHelper.GetDefaultOrganization();
             organization.Identifier.Clear();
 
-            _jwtHelper.RequestingOrganization = organization.ToJson();
+            _jwtHelper.RequestingOrganization = organization.ToFhirJson();
         }
 
         [Given(@"I set the JWT Requesting Organization Resource Type as an invalid Resource Type")]
@@ -146,7 +146,7 @@
         [Given(@"I set the JWT Requesting Identity as an invalid Identity")]
         public void SetTheJwtRequestingPractitionerAsAnInvalidPractitioner()
         {
-            _jwtHelper.SetRequestingPractitioner("1", FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultPractitioner().ToJson()));
+            _jwtHelper.SetRequestingPractitioner("1", FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultPractitioner().ToFhirJson()));
         }
 
         [Given(@"I set the JWT Requesting Practitioner with missing SDS Id")]
@@ -158,7 +158,7 @@
             var identifier = new Identifier("http://IdentifierServer/RandomId", "ABC123");
             practitioner.Identifier.Add(identifier);
 
-            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToJson());
+            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
         }
 
         [Given(@"I set the JWT Requesting Practitioner with missing Identifier")]
@@ -167,13 +167,13 @@
             var practitioner = FhirHelper.GetDefaultPractitioner();
             practitioner.Identifier.Clear();
 
-            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToJson());
+            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
         }
 
         [Given(@"I set the JWT Requesting Practitioner with User Id not matching")]
         public void SetTheJwtRequestingPractitionerWithUserIdNotMatching()
         {
-            _jwtHelper.SetRequestingPractitioner("2", FhirHelper.GetDefaultPractitioner().ToJson());
+            _jwtHelper.SetRequestingPractitioner("2", FhirHelper.GetDefaultPractitioner().ToFhirJson());
         }
 
         [Given(@"I set the JWT Requesting Practitioner with missing Name")]
@@ -182,7 +182,7 @@
             var practitioner = FhirHelper.GetDefaultPractitioner();
             practitioner.Name = null;
 
-            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToJson());
+            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
         }
 
         [Given(@"I set the JWT Requesting Practitioner with missing Practitioner Role")]
@@ -191,7 +191,7 @@
             var practitioner = FhirHelper.GetDefaultPractitioner();
             practitioner.PractitionerRole = null;
 
-            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToJson());
+            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
         }
 
         [Given(@"I set the JWT Requesting Practitioner Pratitioner Role with missing SDS Job Role")]
@@ -200,7 +200,7 @@
             var practitioner = FhirHelper.GetDefaultPractitioner();
             practitioner.PractitionerRole = FhirHelper.GetPractitionerRoleComponent("http://invalidValueSetServer.nhs.uk", "NonSDSJobRoleName");
 
-            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToJson());
+            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
         }
 
         [Given(@"I set the JWT Requesting Identity Resource Type as an invalid Resource Type")]
