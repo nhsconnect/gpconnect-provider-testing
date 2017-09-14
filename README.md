@@ -51,8 +51,8 @@ $ nunit3-console "GPConnect.Provider.AcceptanceTests\bin\Debug\GPConnect.Provide
 ```
 This will generate a TestResult.xml file containing the test results.
 
-# Reporting
-The test suite is also able to send results to external providers, when configured to do so. 
+# External Reporting
+The test suite is also able to send JSON test results to a configurable provider system endpoint. 
 
 #### Notes
 The current implementation:
@@ -83,7 +83,7 @@ http://localhost:14947/api/result
 #### JSON Body
 The structure of the JSON object sent in the request body is:
 
-```json
+```javascript
 {
   "TestRunId": "string", //TestRunId is a System.Guid 
   "ScenarioName": "string",
@@ -95,7 +95,7 @@ The structure of the JSON object sent in the request body is:
 ```
 For example:
 
-```json
+```javascript
 {
     "TestRunId": "dc312935-dbf6-45ba-ae64-0ba91482153f",
     "ScenarioName": "Location Read with invalid resource path in URL",
