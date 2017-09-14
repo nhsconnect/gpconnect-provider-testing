@@ -433,7 +433,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Patients.ForEach(patient =>
             {
                 //Would preferably check language as it has a binding strength of Required
-                patient.Language?.IsLanguageFormat().ShouldBe(true);
+                patient.Language?.IsLanguageFormat().ShouldBe(true, "A Patient Language has been provided but it does not conform to the required format. See: http://tools.ietf.org/html/bcp47");
 
                 // EXTENSIONS
                 var extensions = patient.Extension;
