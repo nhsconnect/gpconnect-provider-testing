@@ -132,10 +132,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 .ShouldBe(ResourceType.Composition);
         }
 
+        [Then(@"the response meta profile should be for ""([^""]*)""")]
+        public void ThenTheResponseMetaProfileShouldBe(string metaProfileType)
+        {
+            var profiles = _httpContext.FhirResponse.Resource.Meta.Profile.ToList();
+            profiles.ShouldNotBeNull();
+
+            if ("searchset".Equals(metaProfileType))
+            {
+                var requireProfile = profiles.FirstOrDefault(p => p.Equals(FhirConst.StructureDefinitionSystems.kGpcSearchSet));
+                requireProfile.ShouldNotBeNull();
+            }
+        }
+
         [Then(@"the patient resource in the bundle should contain meta data profile and version id")]
         public void ThenThePatientResourceInTheBundleShouldContainMetaDataProfileAndVersionId()
         {
-            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Patients, "http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Patients,FhirConst.StructureDefinitionSystems.kPatient);
         }
 
         [Then(@"if the response bundle contains an organization resource it should contain meta data profile and version id")]
@@ -180,9 +193,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             const string customMessage = "The reference from the resource was not found in the bundle by fullUrl resource element.";
 
-            _httpContext.FhirResponse.Bundle
-                .Entry
-                .ShouldContain(entry => reference.Equals(entry.FullUrl) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
+            _httpContext.FhirResponse.Bundle.Entry.ShouldContain(entry => reference.Equals(entry.FullUrl) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
         }
     }
 }

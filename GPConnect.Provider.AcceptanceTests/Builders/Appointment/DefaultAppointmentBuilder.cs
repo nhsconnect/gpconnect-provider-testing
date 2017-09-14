@@ -91,7 +91,7 @@
                 Status = ParticipationStatus.Accepted,
                 Type = new List<CodeableConcept>
                 {
-                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "subject", "subject")
+                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PART", "Participation", "Participation")
                 }
             };
         }
@@ -115,7 +115,7 @@
                 Status = ParticipationStatus.Accepted,
                 Type = new List<CodeableConcept>
                 {
-                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "SBJ", "subject", "subject")
+                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PART", "Participation", "Participation")
                 }
             };
         }

@@ -1,5 +1,6 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Extensions;
+using GPConnect.Provider.AcceptanceTests.Helpers;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -102,6 +103,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private void ValidateAssignerRequest(string reference)
         {
+            if (!ResourceReferenceHelper.IsRelOrAbsReference(reference)) return;
+
             _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
 
             _httpContext.HttpRequestConfiguration.RequestUrl = reference;
@@ -259,25 +262,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        private void ValidateAddress(Address address, string from)
-        {
-            if (address != null)
-            {
-                address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
-                address.Type?.ShouldBeOfType<Address.AddressType>($"{from} Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressType}");
-                address.Use?.ShouldBeOfType<Address.AddressUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressUse}");
-            }
-        }
-
-        private void ValidateTelecom(List<ContactPoint> telecoms, string from)
-        {
-            telecoms.ForEach(teleCom =>
-            {
-                teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
-                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"{from} System is not a valid value within the value set {FhirConst.ValueSetSystems.kContactPointSystem}");
-                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNContactPointUse}");
-            });
-        }
 
         [Then(@"the Organization PartOf Organization should be referenced in the Bundle")]
         public void TheOrganizationPartOfOrganizationShouldBeReferencedInTheBundle()

@@ -71,7 +71,9 @@
         private static Dictionary<string, ValueSet> _fhirExtensibleValueSets { get; set; }
         public static ValueSet GetExtensibleValueSet(string system)
         {
-            if (_fhirExtensibleValueSets?.ContainsKey(system) != null)
+            var hasKey = _fhirExtensibleValueSets?.ContainsKey(system);
+
+            if (hasKey.HasValue && hasKey.Value)
             {
                 return _fhirExtensibleValueSets[system];
             }

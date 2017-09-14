@@ -3,6 +3,7 @@ using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Enum;
 using GPConnect.Provider.AcceptanceTests.Extensions;
+using GPConnect.Provider.AcceptanceTests.Models;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -28,6 +29,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 ValueSetContainsCodeAndDisplay(valueSet, coding);
             });
+        }
+
+        public void ShouldBeExactSingleCodingWhichIsInValueSet(ValueSet valueSet, List<Coding> codingList)
+        {
+            codingList.Count.ShouldBe(1);
+            codingList.ForEach(coding =>
+            {
+                ValueSetContainsCodeAndDisplay(valueSet, coding);
+            });
+        }
+
+        public void ShouldBeSingleCodingWhichIsInCodeList(Coding code, List<GpcCode> codingList)
+        {
+            var validCode = codingList.FirstOrDefault(f => f.Code.Equals(code.Code) && f.Display.Equals(code.Display));
+
+            validCode.ShouldNotBeNull();
         }
 
         private static void ValueSetContainsCodeAndDisplay(ValueSet valueSet, Coding coding)
@@ -70,12 +87,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 localOrgzType.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Type has an invalid extension. Extensions must have a URL element."));
 
-                var localOrgzTypeValues = GlobalContext.FhirIdentifierTypeValueSet.WithComposeImports();
+                var localOrgzTypeValues = GlobalContext.FhirIdentifierTypeValueSet.WithComposeIncludes();
                 var localOrgzTypeCodes = localOrgzType.Coding.Where(lzc => lzc.System.Equals(FhirConst.ValueSetSystems.kIdentifierType)).ToList();
                 localOrgzTypeCodes.ForEach(lztc =>
                 {
                     lztc.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Type Coding has an invalid extension. Extensions must have a URL element."));
-                    lztc.Code.ShouldBeOneOf(localOrgzTypeValues.ToArray());
+                    ShouldBeSingleCodingWhichIsInCodeList(lztc, localOrgzTypeValues.ToList());
                 });
             }
 
@@ -87,5 +104,31 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             }
         }
+
+        public void ValidateTelecom(List<ContactPoint> telecoms, string from, bool svRequired = false)
+        {
+            telecoms.ForEach(teleCom =>
+            {
+                teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
+                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"{from} System is not a valid value within the value set {FhirConst.ValueSetSystems.kContactPointSystem}");
+                if (svRequired)
+                {
+                    teleCom.System.ShouldNotBeNull($"{from} System is required");
+                    teleCom.Value.ShouldNotBeNullOrEmpty($"{from} Value is required");
+                }
+                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNContactPointUse}");
+            });
+        }
+
+        public void ValidateAddress(Address address, string from)
+        {
+            if (address != null)
+            {
+                address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
+                address.Type?.ShouldBeOfType<Address.AddressType>($"{from} Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressType}");
+                address.Use?.ShouldBeOfType<Address.AddressUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressUse}");
+            }
+        }
+
     }
 }

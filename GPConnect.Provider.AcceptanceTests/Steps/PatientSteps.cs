@@ -64,7 +64,7 @@
         {
             Patients.ForEach(patient =>
             {
-                CheckForValidMetaDataInResource(patient, "http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
+                CheckForValidMetaDataInResource(patient, FhirConst.StructureDefinitionSystems.kPatient);
             });
         }
 

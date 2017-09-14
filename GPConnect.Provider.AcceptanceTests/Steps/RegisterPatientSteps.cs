@@ -1,4 +1,9 @@
-﻿namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿using System;
+using GPConnect.Provider.AcceptanceTests.Enum;
+using GPConnect.Provider.AcceptanceTests.Extensions;
+using GPConnect.Provider.AcceptanceTests.Helpers;
+
+namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -10,31 +15,32 @@
     using TechTalk.SpecFlow;
 
     [Binding]
-    public class RegisterPatientSteps : Steps
+    public class RegisterPatientSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
         private readonly PatientSteps _patientSteps;
+        private readonly HttpResponseSteps _httpResponseSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
-        public RegisterPatientSteps(HttpContext httpContext, PatientSteps patientSteps, IFhirResourceRepository fhirResourceRepository)
+        public RegisterPatientSteps(HttpSteps httpSteps, HttpContext httpContext, PatientSteps patientSteps, HttpResponseSteps httpResponseSteps, IFhirResourceRepository fhirResourceRepository)
+            : base(httpSteps)
         {
             _httpContext = httpContext;
             _patientSteps = patientSteps;
+            _httpResponseSteps = httpResponseSteps;
             _fhirResourceRepository = fhirResourceRepository;
         }
 
         [Given(@"I create a Patient which does not exist on PDS and store it")]
         public void CreateAPatientWhichDoesNoteExistOnPDSAndStoreIt()
         {
-            var name = new HumanName();
-
-            name.FamilyElement.Add(new FhirString("GPConnectFamilyName"));
-            name.GivenElement.Add(new FhirString("GPConnectGivenName"));
-
             var returnPatient = new Patient
             {
-                Name = new List<HumanName> {name},
+                Name = new List<HumanName>
+                {
+                    CreateUsualName("GPConnectGivenName", "GPConnectFamilyName")
+                },
                 Gender = AdministrativeGender.Other,
                 BirthDateElement = new Date("2017-05-05")
             };
@@ -47,44 +53,58 @@
         [Given(@"I set the Stored Patient Demographics to not match the NHS number")]
         public void SetTheStoredPatientDemographicsToNotMatchTheNhsNumber()
         {
-            var name = new HumanName();
-
-            name.FamilyElement.Add(new FhirString("GPConnectFamilyName"));
-            name.GivenElement.Add(new FhirString("GPConnectGivenName"));
 
             _fhirResourceRepository.Patient.Name = new List<HumanName>
             {
-                name
+                CreateUsualName("GPConnectGivenName", "GPConnectFamilyName")
             };
 
             _fhirResourceRepository.Patient.Gender = AdministrativeGender.Other;
 
             _fhirResourceRepository.Patient.BirthDateElement = new Date("2017-05-05");
         }
-        
+
+        [Given(@"I add a Usual Name to the Stored Patient")]
+        public void AddUsualNameToTheStoredPatient()
+        {
+
+            var name = CreateUsualName("AdditionalGivenName", "AdditionalFamilyName");
+
+            _fhirResourceRepository.Patient.Name.Add(name);
+        }
+
         [Given(@"I remove the Identifiers from the Stored Patient")]
         public void RemoveTheIdentifiersFromTheStoredPatient()
         {
             _fhirResourceRepository.Patient.Identifier = null;
         }
 
-        [Given(@"I remove the Name from the Stored Patient")]
-        public void RemoveTheNameFromTheStoredPatient()
+
+        [Given(@"I remove the Usual Name from the Stored Patient")]
+        public void RemoveTheUsualNameFromTheStoredPatient()
         {
-            _fhirResourceRepository.Patient.Name = null;
+            var unIndex = FindUsualNameIndex(_fhirResourceRepository.Patient.Name);
+            if (unIndex >= 0)
+            {
+                _fhirResourceRepository.Patient.Name[unIndex].Use = HumanName.NameUse.Anonymous;
+            }
         }
 
         [Given(@"I remove the Family Name from the Stored Patient")]
         public void RemoveTheFamilyNameFromTheStoredPatient()
         {
-            _fhirResourceRepository.Patient.Name[0].Family = null;
+            var unIndex = FindUsualNameIndex(_fhirResourceRepository.Patient.Name);
+            if (unIndex >= 0)
+            {
+                _fhirResourceRepository.Patient.Name[unIndex].Family = null;
+            }
         }
 
-        [Given(@"I remove the Given Name from the Stored Patient")]
-        public void RemoveTheGivenNameFromTheStoredPatient()
+        private int FindUsualNameIndex(List<HumanName> names)
         {
-            _fhirResourceRepository.Patient.Name[0].Given = null;
+            return names.FindIndex(n => n.Use.HasValue && n.Use.Value.Equals(HumanName.NameUse.Usual));
         }
+
 
         [Given(@"I remove the Gender from the Stored Patient")]
         public void RemoveTheGenderFromTheStoredPatient()
@@ -104,24 +124,7 @@
             _fhirResourceRepository.Patient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber));
         }
 
-        [Given(@"I set the Stored Patient Registration Period with Start Date ""([^""]*)"" and End Date ""([^""]*)""")]
-        public void SetTheStoredPatientRegistrationPeriodWithStartDateAndEndDate(string startDate, string endDate)
-        {
-            var period = new Period
-            {
-                Start = startDate,
-                End = endDate
-            };
-
-            var registrationPeriod = new Extension
-            {
-                Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1",
-                Value = period
-            };
-
-            _fhirResourceRepository.Patient.Extension.Add(registrationPeriod);
-        }
-        
+       
         [Given(@"I add the Stored Patient as a parameter")]
         public void AddTheStoredPatientAsAParameter()
         {
@@ -147,26 +150,6 @@
             {
                 name.FamilyElement.Add(new FhirString(familyName));
             }
-        }
-
-        [Given(@"I add the Given Name ""([^""]*)"" to the Stored Patient")]
-        public void AddTheGivenNameToTheStoredPatient(string givenName)
-        {
-            foreach (var name in _fhirResourceRepository.Patient.Name)
-            {
-                name.GivenElement.Add(new FhirString(givenName));
-            }
-        }
-
-        [Given(@"I add a Name with Given Name ""([^""]*)"" and Family Name ""([^""]*)"" to the Stored Patient")]
-        public void AddANameWithGivenNameAndFamilyNameToTheStoredPatient(string givenName, string familyName)
-        {
-            var name = new HumanName();
-
-            name.GivenElement.Add(new FhirString(givenName));
-            name.FamilyElement.Add(new FhirString(familyName));
-
-            _fhirResourceRepository.Patient.Name.Add(name);
         }
 
         [Given(@"I add an Identifier with missing System to the Stored Patient")]
@@ -209,7 +192,7 @@
 
             address.LineElement.Add(new FhirString("1 Trevelyan Square"));
             address.LineElement.Add(new FhirString("Boar Lane"));
-           
+
             _fhirResourceRepository.Patient.Address.Add(address);
         }
 
@@ -256,11 +239,8 @@
         {
             var contact = new Patient.ContactComponent
             {
-                Name = new HumanName()
+                Name = CreateName(HumanName.NameUse.Anonymous, "TestGiven", "TestFamily")
             };
-
-            contact.Name.GivenElement.Add(new FhirString("TestGiven"));
-            contact.Name.FamilyElement.Add(new FhirString("TestFamily"));
 
             _fhirResourceRepository.Patient.Contact.Add(contact);
         }
@@ -268,7 +248,7 @@
         [Given(@"I add a Deceased element to the Stored Patient")]
         public void AddADeceasedElementToStoredPatient()
         {
-            _fhirResourceRepository.Patient.Deceased = new FhirBoolean(false);
+            _fhirResourceRepository.Patient.Deceased = new FhirDateTime("2017-09-01T10:00:00");
         }
 
         [Given(@"I add a Link element to the Stored Patient")]
@@ -302,9 +282,9 @@
         [Given(@"I add a Marital element to the Stored Patient")]
         public void AddAMaritalElementToStoredPatient()
         {
-            _fhirResourceRepository.Patient.MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "M");
+            _fhirResourceRepository.Patient.MaritalStatus = new CodeableConcept(FhirConst.ValueSetSystems.kMaritalStatus, "M");
         }
-        
+
         [Given(@"I add a Photo element to the Stored Patient")]
         public void AddAPhotoElementToStoredPatient()
         {
@@ -315,66 +295,96 @@
 
             _fhirResourceRepository.Patient.Photo.Add(attachment);
         }
-    
+
         [Given(@"I add a Telecom element to the Stored Patient")]
         public void AddATelecomElementToStoredPatient()
         {
             _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
         }
 
-        [Then(@"the Patient Registration Type should be valid")]
-        public void ThePatientRegistrationTypeShouldBeValid()
+        [Then(@"the Patient Registration Details Extension should be valid")]
+        public void ThePatientRegistrationDetailsExtensioShouldBeValid()
         {
             Patients.ForEach(patient =>
             {
-                var registrationTypeExtensions = patient.Extension.Where(extension => extension.Url == "http://fhir.nhs.net/StructureDefinition/extension-registration-type-1").ToList();
+                var registrationDetailsExtensions = patient.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtCcGpcRegDetails)).ToList();
 
-                registrationTypeExtensions.ShouldNotBeEmpty("The patient resource should contain a registration type extension.");
+                registrationDetailsExtensions.Count.ShouldBe(1, "Incorrect number of registration details extension have been returned. This should be 1.");
 
-                registrationTypeExtensions.ForEach(registrationTypeExtension =>
+                var regDetailsExtension = registrationDetailsExtensions.First();
+                var regExtensions = regDetailsExtension.Extension;
+
+                ValidatePatientRegistrationType(regExtensions);
+                ValidatePatientRegistrationStatus(regExtensions);
+                ValidatePatientRegistrationPeriod(regExtensions);
+
+            });
+        }
+
+        private void ValidatePatientRegistrationType(List<Extension> extList)
+        {
+
+            var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationType)).ToList();
+
+            extensions.Count.ShouldBe(1, "The patient resource should contain a registration type extension.");
+
+            var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
+
+            extensions.ForEach(registrationTypeExtension =>
+            {
+                registrationTypeExtension.Value.ShouldNotBeNull("The registration type extension should have a value element.");
+                registrationTypeExtension.Value.ShouldBeOfType<CodeableConcept>("The registration type extension should be a CodeableConcept.");
+
+                var concept = (CodeableConcept)registrationTypeExtension.Value;
+
+                concept.Coding.ForEach(code =>
                 {
-                    registrationTypeExtension.Value.ShouldNotBeNull("The registration type extension should have a value element.");
+                    ShouldBeSingleCodingWhichIsInCodeList(code, codeList);
+                });
+            });
+
+        }
+
+        private void ValidatePatientRegistrationStatus(List<Extension> extList)
+        {
+            var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationStatus)).ToList();
+
+            extensions.Count.ShouldBe(1,"The patient resource should contain a registration status extension.");
+
+            var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationStatus).WithComposeIncludes().ToList();
+
+            extensions.ForEach(registrationStatusExtension =>
+            {
+                registrationStatusExtension.Value.ShouldNotBeNull("The registration status extension should have a value element.");
+                registrationStatusExtension.Value.ShouldBeOfType<CodeableConcept>("The registration status extension should be a CodeableConcept.");
+
+                var concept = (CodeableConcept)registrationStatusExtension.Value;
+
+                concept.Coding.ForEach(code =>
+                {
+                    ShouldBeSingleCodingWhichIsInCodeList(code, codeList);
                 });
             });
         }
 
-        [Then(@"the Patient Registration Status should be valid")]
-        public void ThePatientRegistrationStatusShouldBeValid()
+        private void ValidatePatientRegistrationPeriod(List<Extension> extList)
         {
-            Patients.ForEach(patient =>
+            var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationPeriod)).ToList();
+
+            extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 registration period extension.");
+
+            extensions.ForEach(registrationPeriodExtension =>
             {
-                var registrationStatusExtensions = patient.Extension.Where(extension => extension.Url == "http://fhir.nhs.net/StructureDefinition/extension-registration-status-1").ToList();
-
-                registrationStatusExtensions.ShouldNotBeEmpty("The patient resource should contain a registration status extension.");
-
-                registrationStatusExtensions.ForEach(registrationStatusExtension =>
-                {
-                    registrationStatusExtension.Value.ShouldNotBeNull("The registration status extension should have a value element.");
-                });
-            });
-        }
-
-
-        [Then(@"the Patient Registration Period should be valid")]
-        public void ThePatientRegistrationPeriodShouldBeValid()
-        {
-            Patients.ForEach(patient =>
-            {
-                var registrationPeriodExtensions = patient.Extension.Where(extension => extension.Url == "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1").ToList();
-
-                registrationPeriodExtensions.ShouldNotBeEmpty("The expected registration extension was not present in the returned patient resource.");
-
-                registrationPeriodExtensions.ForEach(registrationPeriodExtension =>
-                {
-                    registrationPeriodExtension.Value.ShouldNotBeNull("If an extension is included in the patient resource it must contain a value.");
-                });
+                registrationPeriodExtension.Value.ShouldNotBeNull("The registration period extension should have a value element.");
+                registrationPeriodExtension.Value.ShouldBeOfType<Period>("The registration status extension should be a Period.");
             });
         }
         
         [Then(@"the Patient Demographics should match the Stored Patient")]
         public void ThePatientDemographicsShouldMatchTheStoredPatient()
         {
-            var storedPatientNhsNumber = _fhirResourceRepository.Patient
+            var storedPatient = _fhirResourceRepository.Patient;
+            var storedPatientNhsNumber = storedPatient
                 .Identifier
                 .First(identifier => identifier.System == FhirConst.IdentifierSystems.kNHSNumber)
                 .Value;
@@ -382,27 +392,25 @@
             Patients.ForEach(patient =>
             {
                 patient.BirthDate.ShouldNotBeNull("The returned patient resource should contain a birthDate element.");
-                patient.BirthDate.ShouldBe(_fhirResourceRepository.Patient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
+                patient.BirthDate.ShouldBe(storedPatient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
 
                 patient.Gender.ShouldNotBeNull("The patient resource should contain a gender element");
-                patient.Gender.ShouldBe(_fhirResourceRepository.Patient.Gender, "The returned patient gender does not match the creted patient gender");
+                patient.Gender.ShouldBe(storedPatient.Gender, "The returned patient gender does not match the creted patient gender");
 
-                patient.Name.Count.ShouldBe(1, "There should be a single name element within the returned patient resource");
+                patient.Name.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be at least one name element within the returned patient resource");
+                
+                var unIndex = FindUsualNameIndex(storedPatient.Name);
+                var rnIndex = FindUsualNameIndex(patient.Name);
+                rnIndex.ShouldBeGreaterThanOrEqualTo(0, "Could not find the required Patient name with a Use value of Usual.");
 
-                var storedGivenName = _fhirResourceRepository.Patient.Name.First().Given.First();
-                var storedFamilyName = _fhirResourceRepository.Patient.Name.First().Family.First();
+                var usualName = storedPatient.Name[unIndex];
+                var storedFamilyName = usualName.Family.First();
 
-                patient.Name.ForEach(name =>
-                {
-                    name.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
-                    name.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
-                    name.Family.First().ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
+                var uPatientName = patient.Name[rnIndex];
 
-
-                    name.Given.ShouldNotBeNull("There should be a given name in the returned patient resource.");
-                    name.Given.Count().ShouldBe(1, "The returned Patient Resource should contain a single given name");
-                    name.Given.First().ShouldBe(storedGivenName, "Returned patient given name does not match created patient family name", StringCompareShould.IgnoreCase);
-                });
+                uPatientName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
+                uPatientName.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
+                uPatientName.Family.First().ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
 
                 var nhsNumberIdentifiers = patient
                     .Identifier
@@ -419,9 +427,86 @@
 
         }
 
+        [Then(@"the Patient Optional Elements should be valid")]
+        public void ThePatientOptionalElementsShouldBeValid()
+        {
+            Patients.ForEach(patient =>
+            {
+                //Would preferably check language as it has a binding strength of Required
+                patient.Language?.IsLanguageFormat().ShouldBe(true, "A Patient Language has been provided but it does not conform to the required format. See: http://tools.ietf.org/html/bcp47");
+
+                // EXTENSIONS
+                var extensions = patient.Extension;
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtEthnicCategory, FhirConst.ValueSetSystems.kCcEthnicCategory);
+                ValidateSingleExtension(extensions, FhirConst.StructureDefinitionSystems.kCcExtReligiousAffiliation); //Would preferably check codeable concept as it has a binding strength of Required
+                ValidateSingleBooleanExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtPatientCadaver);
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtResidentialStatus, FhirConst.ValueSetSystems.kCcResidentialStatus);
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtTreatmentCategory, FhirConst.ValueSetSystems.kCcTreatmentCategory);
+                ValidateNhsCommunicationExtension(extensions);
+
+
+                //IDENTIFIERS
+                var localCodeIdentifiers = patient.Identifier
+                    .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kLocalPatientCode))
+                    .ToList();
+
+                localCodeIdentifiers.ForEach(li =>
+                {
+                    CheckForValidLocalIdentifier(li, () => ValidateReferenceRequest(li.Assigner.Reference, GpConnectInteraction.OrganizationRead));
+                });
+
+                //GENDER
+                patient.Gender?.ShouldBeOfType<AdministrativeGender>();
+
+                //NAMES
+                patient.Name.ForEach(on =>
+                {
+                    on.Use.ShouldNotBeNull();
+                    on.Use.ShouldBeOfType<HumanName.NameUse>();
+                    //Only need to test names that are not USUAL
+                    if (!on.Use.Value.Equals(HumanName.NameUse.Usual))
+                    {
+                        on.Family.ToList().Count.ShouldBeLessThanOrEqualTo(1);
+                    }
+                });
+
+                //TELECOM
+                ValidateTelecom(patient.Telecom, "Patient Telecom", true);
+
+                //ADDRESS
+                patient.Address.ForEach(add => ValidateAddress(add, "Patient Address"));
+
+                //MARITAL STATUS
+                if (patient.MaritalStatus != null)
+                {
+                    patient.MaritalStatus.Coding.Count.ShouldBe(1);
+                    var vset = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes();
+                    ShouldBeSingleCodingWhichIsInCodeList(patient.MaritalStatus.Coding.First(), vset.ToList());
+                }
+
+                //CONTACT
+                patient.Contact.ForEach(ValidateContact);
+
+
+                if (patient.CareProvider.Any())
+                {
+                    patient.CareProvider.ForEach(cp => { ValidateReferenceRequest(cp.Reference, ResourceReferenceHelper.GetReadInteractionType(cp.Reference)); });
+                }
+
+                if (patient.ManagingOrganization != null)
+                {
+                    ValidateReferenceRequest(patient.ManagingOrganization.Reference, GpConnectInteraction.OrganizationRead);
+                }
+
+
+            });
+
+        }
+
         [Given(@"I get the next Patient to register and store it")]
         public void GetTheNextPatientToRegisterAndStoreIt()
         {
+            //Mimic PDS Trace
             var registerPatients = GlobalContext.RegisterPatients;
 
             foreach (var registerPatient in registerPatients)
@@ -432,18 +517,12 @@
 
                 if (!entries.Any())
                 {
-                    var name = new HumanName
-                    {
-                        FamilyElement = new List<FhirString> {new FhirString(registerPatient.NAME_FAMILY)},
-                        GivenElement = new List<FhirString> {new FhirString(registerPatient.NAME_GIVEN)}
-                    };
-
                     var patientToRegister = new Patient
                     {
                         BirthDateElement = new Date(registerPatient.DOB),
                         Name = new List<HumanName>
                         {
-                            name
+                            CreateUsualName(registerPatient.NAME_GIVEN, registerPatient.NAME_FAMILY)
                         },
                         Identifier = new List<Identifier>
                         {
@@ -495,15 +574,7 @@
 
             if (name != null)
             {
-                const string familyName = "GPConnectFamilyName";
-                const string givenName = "GPConnectGivenName";
-
-                var humanName = new HumanName();
-
-                humanName.FamilyElement.Add(new FhirString(familyName));
-                humanName.GivenElement.Add(new FhirString(givenName));
-
-                registerPatient.Name.Add(humanName);
+                registerPatient.Name.Add(CreateName(HumanName.NameUse.Usual, "GPConnectGivenName", "GPConnectFamilyName"));
             }
 
             registerPatient.Gender = patient.Gender ?? AdministrativeGender.Unknown;
@@ -512,57 +583,232 @@
             _fhirResourceRepository.Patient = registerPatient;
         }
 
-        [Given(@"I set the Stored Patient Registration Period with Start ""([^""]*)""")]
-        public void SetTheStoredPatientRegistrationPeriodWithStartDate(string startDate)
+        [Given(@"I Set the Stored Patient Registration Details Extension")]
+        public void GivenISetTheStoredPatientRegistrationDetailsExtension()
         {
-            var registrationPeriod = new Extension
+            var extList = new List<Extension>
             {
-                Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-period-1",
-                Value = new Period {Start = startDate }
-                
+                GetCodingExtension(FhirConst.StructureDefinitionSystems.kCCExtRegistrationStatus, FhirConst.ValueSetSystems.kCcGpcRegistrationStatus, "I", "Inactive")
             };
 
-            _fhirResourceRepository.Patient.Extension.Add(registrationPeriod);
+            var registrationDetails = new Extension
+            {
+                Url = FhirConst.StructureDefinitionSystems.kExtCcGpcRegDetails,
+                Extension = extList
+            };
+
+            _fhirResourceRepository.Patient.Extension.Add(registrationDetails);
         }
 
-        [Given(@"I set the Stored Patient Registration Status with Value ""([^""]*)""")]
-        public void SetTheStoredPatientRegistrationStatusTo(string code)
+        private void ValidateReferenceRequest(string reference, GpConnectInteraction interaction)
         {
-            var codableConcept = new CodeableConcept
+            if (!ResourceReferenceHelper.IsRelOrAbsReference(reference)) return;
+
+            _httpSteps.ConfigureRequest(interaction);
+
+            _httpContext.HttpRequestConfiguration.RequestUrl = reference;
+
+            _httpSteps.MakeRequest(interaction);
+
+            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
+
+            if (interaction.Equals(GpConnectInteraction.OrganizationRead))
             {
-                Coding = new List<Coding>
+                StoreTheOrganization();
+                var returnedReference = _fhirResourceRepository.Organization.Meta.Profile.FirstOrDefault();
+                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
+            }
+            else if (interaction.Equals(GpConnectInteraction.PractitionerRead))
+            {
+                StoreThePractitioner();
+                var returnedReference = _fhirResourceRepository.Practitioner.Meta.Profile.FirstOrDefault();
+                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kPractitioner);
+            }
+
+        }
+
+        private void StoreTheOrganization()
+        {
+            var organization = _httpContext.FhirResponse.Organizations.FirstOrDefault();
+            if (organization != null)
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
+                _fhirResourceRepository.Organization = organization;
+            }
+        }
+
+        private void StoreThePractitioner()
+        {
+            var practitioner = _httpContext.FhirResponse.Practitioners.FirstOrDefault();
+            if (practitioner != null)
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = practitioner.Id;
+                _fhirResourceRepository.Practitioner = practitioner;
+            }
+        }
+
+        private void ValidateContact(Patient.ContactComponent contact)
+        {
+            if (contact != null)
+            {
+                contact.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Patient Contact has an invalid extension. Extensions must have a URL element."));
+
+                var contactRelationship = contact.Relationship;
+
+                contactRelationship?.ForEach(rel =>
                 {
-                    new Coding { Code = code }
-                }
-            };
+                    rel.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Patient Contact Relationship Code has an invalid extension. Extensions must have a URL element."));
 
-            var registrationStatus = new Extension
-            {
-                Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-status-1",
-                Value = codableConcept
-            };
+                    rel.Coding.ForEach(cd =>
+                    {
+                        cd.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Patient Contact Relationship has an invalid extension. Extensions must have a URL element."));
+                        cd.System.ShouldNotBeNullOrEmpty();
+                        cd.Code.ShouldNotBeNullOrEmpty();
+                        cd.Display.ShouldNotBeNullOrEmpty();
+                    });
+                });
 
-            _fhirResourceRepository.Patient.Extension.Add(registrationStatus);
-        }
+                var contactName = contact.Name;
 
-        [Given(@"I set the Stored Patient Registration Type with Value ""([^""]*)""")]
-        public void SetTheStoredPatientRegistrationTypeTo(string code)
-        {
-            var codableConcept = new CodeableConcept
-            {
-                Coding = new List<Coding>
+                contactName.ShouldNotBeNull();
+                contactName.Use.ShouldNotBeNull();
+                contactName.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
+                contactName.Family.Count().ShouldBeLessThanOrEqualTo(1, "Patient Contact Name Family Element should contain a maximum of 1.");
+
+                ValidateTelecom(contact.Telecom, "Patient Contact Telecom");
+
+                ValidateAddress(contact.Address, "Patient Contact Address");
+
+                contact.Gender?.ShouldBeOfType<AdministrativeGender>();
+
+                if (contact.Organization != null)
                 {
-                    new Coding { Code = code }
+                    contact.Organization.Reference.ShouldNotBeNullOrEmpty();
+                    ValidateReferenceRequest(contact.Organization.Reference, GpConnectInteraction.OrganizationRead);
                 }
-            };
 
-            var registrationType = new Extension
-            {
-                Url = "http://fhir.nhs.net/StructureDefinition/extension-registration-type-1",
-                Value = codableConcept
-            };
-
-            _fhirResourceRepository.Patient.Extension.Add(registrationType);
+            }
         }
+
+        private void ValidateNhsCommunicationExtension(List<Extension> extensions)
+        {
+            var exts = extensions.Where(ece => ece.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtNhsCommunication)).ToList();
+            exts.Count.ShouldBeLessThanOrEqualTo(1);
+
+            if (exts.Any())
+            {
+                var ext = exts.First();
+
+                var subExtensions = ext.Extension;
+
+                ValidateExactSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommLanguage, FhirConst.ValueSetSystems.kCcHumanLanguage);
+                ValidateSingleBooleanExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommPreferred);
+                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommModeOfCommunication, FhirConst.ValueSetSystems.kCcLanguageAbilityMode);
+                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommCommProficiency, FhirConst.ValueSetSystems.kCcLanguageAbilityProficiency);
+                ValidateSingleBooleanExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommInterpreterRequired);
+            }
+        }
+
+        private void ValidateExactSingleCodeConceptExtension(List<Extension> extensions, string defUri, string vsetUri)
+        {
+            var exts = extensions.Where(ece => ece.Url.Equals(defUri)).ToList();
+            exts.Count.ShouldBe(1);
+
+            ValidateCodeConceptExtension(exts.First(), vsetUri);
+
+        }
+
+        private void ValidateMaxSingleCodeConceptExtension(List<Extension> extensions, string defUri, string vsetUri)
+        {
+
+            var exts = extensions.Where(
+                    ece => ece.Url.Equals(defUri)).ToList();
+            exts.Count.ShouldBeLessThanOrEqualTo(1);
+
+            if (exts.Any())
+            {
+                ValidateCodeConceptExtension(exts.First(), vsetUri);
+            }
+
+        }
+
+        private void ValidateCodeConceptExtension(Extension extension, string vsetUri)
+        {
+            extension.Value.ShouldNotBeNull();
+            extension.Value.ShouldBeOfType<CodeableConcept>();
+            var concept = (CodeableConcept)extension.Value;
+
+            var vset = GlobalContext.GetExtensibleValueSet(vsetUri);
+            ShouldBeExactSingleCodingWhichIsInValueSet(vset, concept.Coding);
+        }
+
+        private void ValidateSingleBooleanExtension(List<Extension> extensions, string defUri)
+        {
+
+            var exts = extensions.Where(
+                ece => ece.Url.Equals(defUri)).ToList();
+            exts.Count.ShouldBeLessThanOrEqualTo(1);
+
+            if (exts.Any())
+            {
+                var val = exts.First();
+                val.Value.ShouldNotBeNull();
+                val.Value.ShouldBeOfType<FhirBoolean>();
+            }
+
+        }
+
+        private void ValidateSingleExtension(List<Extension> extensions, string defUri)
+        {
+
+            var exts = extensions.Where(
+                ece => ece.Url.Equals(defUri)).ToList();
+            exts.Count.ShouldBeLessThanOrEqualTo(1);
+
+            if (exts.Any())
+            {
+                var val = exts.First();
+                val.Value.ShouldNotBeNull();
+            }
+
+        }
+
+        private HumanName CreateUsualName(string givenName, string familyName)
+        {
+
+            return CreateName(HumanName.NameUse.Usual, givenName, familyName);
+        }
+
+        private HumanName CreateName(HumanName.NameUse use, string givenName, string familyName)
+        {
+            var humanName = new HumanName()
+            {
+                FamilyElement = new List<FhirString> { new FhirString(familyName) },
+                GivenElement = new List<FhirString> { new FhirString(givenName) },
+                Use = use
+            };
+
+            return humanName;
+        }
+
+        private static Extension GetCodingExtension(string extensionUrl, string codingUrl, string code, string display)
+        {
+            var coding = new Coding
+            {
+                Code = code,
+                Display = display,
+                System = codingUrl
+            };
+
+            var reason = new CodeableConcept();
+            reason.Coding.Add(coding);
+
+            return new Extension
+            {
+                Url = extensionUrl,
+                Value = reason
+            };
+        }
+        
     }
 }
