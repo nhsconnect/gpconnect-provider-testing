@@ -58,6 +58,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kCcLanguageAbilityMode = "https://fhir.nhs.uk/ValueSet/CareConnect-LanguageAbilityMode-1";
             public const string kCcLanguageAbilityProficiency = "https://fhir.nhs.uk/ValueSet/CareConnect-LanguageAbilityProficiency-1";
             public const string kCcReligiousAffiliation = "https://fhir.nhs.uk/ValueSet/CareConnect-ReligiousAffiliation-1";
+            public const string kCcNhsNumVerification = "https://fhir.nhs.uk/ValueSet/CareConnect-NHSNumberVerificationStatus-1";
+            public const string kCcNhsNumVerificationSys = "https://fhir.nhs.uk/CareConnect-NHSNumberVerificationStatus-1";
         }
 
         internal static class StructureDefinitionSystems
@@ -71,6 +73,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kPatient = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Patient-1";
 
             //EXTENSIONS
+            public const string kExtCcGpcNhsNumVerification = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-NHSNumberVerificationStatus-1";
             public const string kExtCcGpcMainLoc = "https://fhir.hl7.org.uk/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
             public const string kExtCcGpcRegDetails = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1";
             public const string kExtRegistrationStatus = "https://fhir.nhs.uk/StructureDefinition/extension-registration-status-1";
