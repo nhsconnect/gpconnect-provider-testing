@@ -18,7 +18,7 @@
         }
 
         [Then(@"the Appointment Reason should equal ""(.*)""")]
-        public void TheAppointmentCommentShouldBeValidFor(string value)
+        public void TheAppointmentReasonShouldBeValidFor(string value)
         {
             Appointments.ForEach(appointment =>
             {
@@ -41,6 +41,15 @@
             Appointments.ForEach(appointment =>
             {
                 appointment.Description.ShouldBe(value, $@"The Appointment Description should be ""{value}"" but was ""{appointment.Description}"".");
+            });
+        }
+
+        [Then(@"the Appointment Comment should be valid for ""(.*)""")]
+        public void TheAppointmentCommentShouldBeValidFor(string value)
+        {
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Comment.ShouldBe(value, $@"The Appointment Description should be ""{value}"" but was ""{appointment.Comment}"".");
             });
         }
     }

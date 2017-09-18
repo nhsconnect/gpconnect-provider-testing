@@ -23,12 +23,34 @@ Scenario Outline: I perform a successful amend appointment and change the reason
 		| patient7 |
 		| patient8 |
 
-Scenario: Amend appointment and update element which cannot be updated
+Scenario: Amend appointment and change the comment to a custom message
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment Comment to "customComment"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Comment should be valid for "customComment"
+
+Scenario: Amend appointment and change the description to a custom message
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Created Appointment Description to "customComment"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Description should be valid for "customComment"
+
+Scenario: Amend appointment and update element which cannot be updated
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment Priority to "1"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
