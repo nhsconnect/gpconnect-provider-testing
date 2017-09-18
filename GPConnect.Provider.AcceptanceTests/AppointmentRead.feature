@@ -158,7 +158,7 @@ Scenario: Read appointment if resource contains identifier then the value is man
 		And the response body should be FHIR JSON
 		And the Appointment Identifiers should be valid
 
-Scenario: Read appointment if reason is included in response check that it conforms to one of the three valid types
+Scenario: Read appointment if reason is included in response check that it conforms to SNOMED valueset
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I get the Schedule for Organization Code "ORG1"

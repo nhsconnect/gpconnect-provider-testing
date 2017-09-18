@@ -72,22 +72,16 @@
                 if (appointment.Reason?.Coding != null)
                 {
                     const string snomed = "http://snomed.info/sct";
-                    const string readV2 = "http://read.info/readv2";
-                    const string ctv3 = "http://read.info/ctv3";
+         
 
                     appointment.Reason.Coding.ForEach(coding =>
                     {
-                        coding.System.ShouldBeOneOf(snomed, readV2, ctv3, $"The Appointment Reason Coding System should be one of {snomed}, {readV2}, {ctv3} but was {coding.System}.");
+                        coding.System.ShouldBeOneOf(snomed, $"The Appointment Reason Coding System should be one of {snomed} but was {coding.System}.");
                     });
 
                     var snomedCodingCount = appointment.Reason.Coding.Count(coding => coding.System == snomed);
                     snomedCodingCount.ShouldBeLessThanOrEqualTo(1, $"The Appointment Reason Coding Systems should contain a maximum of 1 SNOMED Coding Systems but contained {snomedCodingCount}.");
-
-                    var readV2Count = appointment.Reason.Coding.Count(coding => coding.System == readV2);
-                    readV2Count.ShouldBeLessThanOrEqualTo(1, $"The Appointment Reason Coding Systems should contain a maximum of 1 READV2 Coding Systems but contained {readV2Count}.");
-
-                    var ctv3Count = appointment.Reason.Coding.Count(coding => coding.System == ctv3);
-                    ctv3Count.ShouldBeLessThanOrEqualTo(1, $"The Appointment Reason Coding Systems should contain a maximum of 1 CTV3 Coding Systems but contained {ctv3Count}.");
+        
                 }
             });
         }
