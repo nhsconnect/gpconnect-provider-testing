@@ -390,12 +390,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Read appointment if reason is included in response check that it conforms to one " +
-            "of the three valid types")]
-        public virtual void ReadAppointmentIfReasonIsIncludedInResponseCheckThatItConformsToOneOfTheThreeValidTypes()
+        [NUnit.Framework.DescriptionAttribute("Read appointment if reason is included in response check that it conforms to SNOM" +
+            "ED valueset")]
+        public virtual void ReadAppointmentIfReasonIsIncludedInResponseCheckThatItConformsToSNOMEDValueset()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read appointment if reason is included in response check that it conforms to one " +
-                    "of the three valid types", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read appointment if reason is included in response check that it conforms to SNOM" +
+                    "ED valueset", ((string[])(null)));
 #line 161
 this.ScenarioSetup(scenarioInfo);
 #line 162

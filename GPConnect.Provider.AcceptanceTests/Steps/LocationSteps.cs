@@ -162,7 +162,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     foreach (var coding in location.PhysicalType.Coding)
                     {
-                        coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "The Location Physical Type Coding System is not valid.");
+                        coding.System.ShouldBeOneOf("http://snomed.info/sct", "The Location Physical Type Coding System is not valid.");
                         coding.Code.ShouldNotBeNullOrEmpty("The Location Physical Type Coding should contain a Code.");
                         coding.Display.ShouldNotBeNullOrEmpty("The Location Physical Type Coding should contain a Display.");
                     }
