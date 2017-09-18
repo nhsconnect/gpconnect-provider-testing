@@ -83,11 +83,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I remove the Usual Name from the Stored Patient")]
         public void RemoveTheUsualNameFromTheStoredPatient()
         {
-            var unIndex = FindUsualNameIndex(_fhirResourceRepository.Patient.Name);
-            if (unIndex >= 0)
+            _fhirResourceRepository.Patient.Name.ForEach(n =>
             {
-                _fhirResourceRepository.Patient.Name[unIndex].Use = HumanName.NameUse.Anonymous;
-            }
+                n.Use = HumanName.NameUse.Anonymous;
+            });
         }
 
         [Given(@"I remove the Family Name from the Stored Patient")]
@@ -233,6 +232,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _fhirResourceRepository.Patient.Communication.Add(com);
         }
 
+        [Given(@"I add a Name element to the Stored Patient")]
+        public void AddANameElementToStoredPatient()
+        {
+            _fhirResourceRepository.Patient.Name.Add(CreateName(HumanName.NameUse.Nickname, "AdditionalGiven", "AdditionalFamily"));
+        }
+
 
         [Given(@"I add a Contact element to the Stored Patient")]
         public void AddAContactElementToStoredPatient()
@@ -301,6 +306,38 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
         }
+
+        [Then(@"the Patient Nhs Number Identifer should be valid")]
+        public void ThePatientNhsNumberIdentiferShouldBeValid()
+        {
+            var storedPatient = _fhirResourceRepository.Patient;
+            var storedPatientNhsNumber = storedPatient
+                .Identifier
+                .First(identifier => identifier.System == FhirConst.IdentifierSystems.kNHSNumber)
+                .Value;
+
+            Patients.ForEach(patient =>
+            {
+                var nhsNumberIdentifiers = patient
+                    .Identifier
+                    .Where(identifier => identifier.System == FhirConst.IdentifierSystems.kNHSNumber)
+                    .ToList();
+
+                nhsNumberIdentifiers.Count.ShouldBe(1, "The returned Patient Resource should contain a single NHS Number identifier");
+
+                var nhsNumberIdentifier = nhsNumberIdentifiers.First();
+
+                nhsNumberIdentifier.Value.ShouldNotBeNullOrEmpty("The NHS Number identifier must have a value element.");
+                nhsNumberIdentifier.Value.ShouldBe(storedPatientNhsNumber, "The returned NHS Number does not match the sent NHS Number");
+
+                var numberExtensions = nhsNumberIdentifier.Extension.Where(nne => nne.Url.Equals(FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification));
+
+                numberExtensions.Count().ShouldBe(1,$"There can only be one extension on the NHS Number Identifer with a URL of {FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification}");
+
+                ValidateCodeConceptExtension(numberExtensions.First(), FhirConst.ValueSetSystems.kCcNhsNumVerification);
+            });
+        }
+
 
         [Then(@"the Patient Registration Details Extension should be valid")]
         public void ThePatientRegistrationDetailsExtensioShouldBeValid()
@@ -384,10 +421,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThePatientDemographicsShouldMatchTheStoredPatient()
         {
             var storedPatient = _fhirResourceRepository.Patient;
-            var storedPatientNhsNumber = storedPatient
-                .Identifier
-                .First(identifier => identifier.System == FhirConst.IdentifierSystems.kNHSNumber)
-                .Value;
+            var spUnIndex = FindUsualNameIndex(storedPatient.Name);
+            var storedUsualName = storedPatient.Name[spUnIndex];
+            var storedFamilyName = storedUsualName.Family.First();
 
             Patients.ForEach(patient =>
             {
@@ -398,31 +434,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 patient.Gender.ShouldBe(storedPatient.Gender, "The returned patient gender does not match the creted patient gender");
 
                 patient.Name.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be at least one name element within the returned patient resource");
-                
-                var unIndex = FindUsualNameIndex(storedPatient.Name);
+                                
                 var rnIndex = FindUsualNameIndex(patient.Name);
-                rnIndex.ShouldBeGreaterThanOrEqualTo(0, "Could not find the required Patient name with a Use value of Usual.");
-
-                var usualName = storedPatient.Name[unIndex];
-                var storedFamilyName = usualName.Family.First();
-
+                rnIndex.ShouldBeGreaterThanOrEqualTo(0, "Could not find the required Patient name with a Use value of Usual.");           
+                
                 var uPatientName = patient.Name[rnIndex];
 
                 uPatientName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
                 uPatientName.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
                 uPatientName.Family.First().ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
 
-                var nhsNumberIdentifiers = patient
-                    .Identifier
-                    .Where(identifier => identifier.System == FhirConst.IdentifierSystems.kNHSNumber)
-                    .ToList();
-
-                nhsNumberIdentifiers.Count.ShouldBe(1, "The returned Patient Resource should contain a single NHS Number identifier");
-
-                var nhsNumberIdentifier = nhsNumberIdentifiers.First();
-
-                nhsNumberIdentifier.Value.ShouldNotBeNullOrEmpty("The NHS Number identifier must have a value element.");
-                nhsNumberIdentifier.Value.ShouldBe(storedPatientNhsNumber, "The returned NHS Number does not match the sent NHS Number");
             });
 
         }
@@ -468,6 +489,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         on.Family.ToList().Count.ShouldBeLessThanOrEqualTo(1);
                     }
+                    else
+                    {
+                        on.Family.ToList().Count.ShouldBe(1);
+                    }
                 });
 
                 //TELECOM
@@ -488,15 +513,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 patient.Contact.ForEach(ValidateContact);
 
 
-                if (patient.CareProvider.Any())
-                {
-                    patient.CareProvider.ForEach(cp => { ValidateReferenceRequest(cp.Reference, ResourceReferenceHelper.GetReadInteractionType(cp.Reference)); });
-                }
+                //if (patient.CareProvider.Any())
+                //{
+                //    patient.CareProvider.ForEach(cp => { ValidateReferenceRequest(cp.Reference, ResourceReferenceHelper.GetReadInteractionType(cp.Reference)); });
+                //}
 
-                if (patient.ManagingOrganization != null)
-                {
-                    ValidateReferenceRequest(patient.ManagingOrganization.Reference, GpConnectInteraction.OrganizationRead);
-                }
+                //if (patient.ManagingOrganization != null)
+                //{
+                //    ValidateReferenceRequest(patient.ManagingOrganization.Reference, GpConnectInteraction.OrganizationRead);
+                //}
 
 
             });
@@ -517,6 +542,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 if (!entries.Any())
                 {
+                    var patientIdentifier = new Identifier(FhirConst.IdentifierSystems.kNHSNumber, registerPatient.SPINE_NHS_NUMBER);
+                    patientIdentifier.Extension.Add(new Extension
+                    {
+                        Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
+                        Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerificationSys, "01", "Number present and verified")
+                    });
+
                     var patientToRegister = new Patient
                     {
                         BirthDateElement = new Date(registerPatient.DOB),
@@ -526,7 +558,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         },
                         Identifier = new List<Identifier>
                         {
-                            new Identifier(FhirConst.IdentifierSystems.kNHSNumber, registerPatient.SPINE_NHS_NUMBER)
+                            patientIdentifier
                         }
                     };
 

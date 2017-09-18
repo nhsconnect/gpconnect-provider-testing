@@ -98,7 +98,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             if (identifier.Assigner != null)
             {
-                assignerRead?.Invoke();
+                //assignerRead?.Invoke();
 
                 identifier.Assigner.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Assigner has an invalid extension. Extensions must have a URL element."));
 

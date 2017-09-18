@@ -69,6 +69,7 @@ Scenario: Register patient without gender element
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
+		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
 
 Scenario: Register patient without date of birth element
@@ -112,6 +113,7 @@ Scenario Outline: Register Patient and use the Accept Header to request response
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
+		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
 	Examples:
@@ -132,6 +134,7 @@ Scenario Outline: Register Patient and use the _format parameter to request the 
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
+		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
 	Examples:
@@ -154,6 +157,7 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
+		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
 	Examples:
@@ -178,6 +182,7 @@ Scenario: Register patient and check all elements conform to the gp connect prof
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
+		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
 		And the Patient Optional Elements should be valid
@@ -257,7 +262,6 @@ Scenario Outline: Register patient with invalid parameters name
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add a Record Section parameter for "SUM"
 		And I add the Stored Patient as a parameter with name "<ParameterName>"
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
@@ -272,7 +276,6 @@ Scenario: Register patient with missing parameters name
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add a Record Section parameter for "SUM"
 		And I add the Stored Patient as a parameter with name ""
 	When I make the "RegisterPatient" request
 	Then the response status code should be "422"
@@ -325,16 +328,6 @@ Scenario: Register patient with demographics which do not match spine PDS trace
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient with an additional usual name
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add a Usual Name to the Stored Patient
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
 Scenario: Register patient with no usual name
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -344,6 +337,20 @@ Scenario: Register patient with no usual name
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with an additional usual name
+    Given I get the next Patient to register and store it
+    Given I configure the default "RegisterPatient" request
+        And I set the JWT Requested Record to the NHS Number of the Stored Patient
+        And I add a Usual Name to the Stored Patient
+        And I add the Stored Patient as a parameter
+    When I make the "RegisterPatient" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain a single Patient resource
+		And the Patient Metadata should be valid
+		And the Patient Nhs Number Identifer should be valid
+		And the Patient Registration Details Extension should be valid
 
 Scenario: Register patient no family names
 	Given I get the next Patient to register and store it
@@ -385,14 +392,15 @@ Scenario Outline: Register patient with additional valid elements
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		#And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
+		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
 	Examples:
-		| ElementToAdd  |
-		| Active        |
-		| Address       |
+		| ElementToAdd |
+		| Active       |
+		| Address      |
+		| Name         |
 		| Births        |
 		| CareProvider  |
 		| Contact       |
