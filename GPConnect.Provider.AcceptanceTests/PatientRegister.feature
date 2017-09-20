@@ -71,6 +71,7 @@ Scenario: Register patient without gender element
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
+		And the Patient Demographics should match the Stored Patient
 
 Scenario: Register patient without date of birth element
 	Given I get the next Patient to register and store it

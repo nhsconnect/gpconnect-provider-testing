@@ -454,8 +454,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 patient.BirthDate.ShouldNotBeNull("The returned patient resource should contain a birthDate element.");
                 patient.BirthDate.ShouldBe(storedPatient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
 
-                patient.Gender.ShouldNotBeNull("The patient resource should contain a gender element");
-                patient.Gender.ShouldBe(storedPatient.Gender, "The returned patient gender does not match the creted patient gender");
+                if (storedPatient.Gender != null)
+                {
+                    patient.Gender.ShouldBe(storedPatient.Gender, "The returned patient gender does not match the creted patient gender");
+                }
 
                 patient.Name.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be at least one name element within the returned patient resource");
                                 
