@@ -1,8 +1,4 @@
-﻿using System;
-using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Enum;
-using GPConnect.Provider.AcceptanceTests.Extensions;
+﻿using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Models;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
@@ -70,38 +66,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (resource.GetType() != typeof(Composition) && resource.GetType() != typeof(Bundle))
             {
                 resource.Meta.VersionId.ShouldNotBeNull();
-            }
-        }
-
-        public void CheckForValidLocalIdentifier(Identifier identifier, Action assignerRead)
-        {
-            identifier.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier has an invalid extension. Extensions must have a URL element."));
-            identifier.Use?.ShouldBeOfType<Identifier.IdentifierUse>(string.Format("Local Identifier use is Invalid. But be from the value set: {0}", FhirConst.ValueSetSystems.kIdentifierUse));
-
-            identifier.System.ShouldNotBeNullOrEmpty("The Identifier System should not be null or empty");
-            identifier.Value.ShouldNotBeNull("The included identifier should have a value.");
-
-            var localOrgzType = identifier.Type;
-
-            if (localOrgzType != null)
-            {
-                localOrgzType.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Type has an invalid extension. Extensions must have a URL element."));
-
-                var localOrgzTypeValues = GlobalContext.FhirIdentifierTypeValueSet.WithComposeIncludes();
-                var localOrgzTypeCodes = localOrgzType.Coding.Where(lzc => lzc.System.Equals(FhirConst.ValueSetSystems.kIdentifierType)).ToList();
-                localOrgzTypeCodes.ForEach(lztc =>
-                {
-                    lztc.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Type Coding has an invalid extension. Extensions must have a URL element."));
-                    ShouldBeSingleCodingWhichIsInCodeList(lztc, localOrgzTypeValues.ToList());
-                });
-            }
-
-            if (identifier.Assigner != null)
-            {
-                //assignerRead?.Invoke();
-
-                identifier.Assigner.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Local Identifier Assigner has an invalid extension. Extensions must have a URL element."));
-
             }
         }
 

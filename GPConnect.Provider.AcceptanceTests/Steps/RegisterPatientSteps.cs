@@ -474,16 +474,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 ValidateNhsCommunicationExtension(extensions);
 
 
-                //IDENTIFIERS
-                var localCodeIdentifiers = patient.Identifier
-                    .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kLocalPatientCode))
-                    .ToList();
-
-                localCodeIdentifiers.ForEach(li =>
-                {
-                    CheckForValidLocalIdentifier(li, () => ValidateReferenceRequest(li.Assigner.Reference, GpConnectInteraction.OrganizationRead));
-                });
-
                 //GENDER
                 patient.Gender?.ShouldBeOfType<AdministrativeGender>();
 
@@ -519,17 +509,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 //CONTACT
                 patient.Contact.ForEach(ValidateContact);
-
-
-                //if (patient.CareProvider.Any())
-                //{
-                //    patient.CareProvider.ForEach(cp => { ValidateReferenceRequest(cp.Reference, ResourceReferenceHelper.GetReadInteractionType(cp.Reference)); });
-                //}
-
-                //if (patient.ManagingOrganization != null)
-                //{
-                //    ValidateReferenceRequest(patient.ManagingOrganization.Reference, GpConnectInteraction.OrganizationRead);
-                //}
 
 
             });

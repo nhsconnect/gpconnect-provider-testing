@@ -1,6 +1,4 @@
 ﻿using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Extensions;
-using GPConnect.Provider.AcceptanceTests.Helpers;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -21,15 +19,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private List<Location> Locations => _httpContext.FhirResponse.Locations;
         private readonly IFhirResourceRepository _fhirResourceRepository;
-        private readonly HttpResponseSteps _httpResponseSteps;
 
-        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository, HttpResponseSteps httpResponseSteps) 
+        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
             _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
             _fhirResourceRepository = fhirResourceRepository;
-            _httpResponseSteps = httpResponseSteps;
         }
 
         [Given(@"I add a Location Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
@@ -257,48 +253,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     });
                 }
 
-                var localCodeIdentifiers = location.Identifier
-                    .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kLocalLocationCode))
-                    .ToList();
-
-                localCodeIdentifiers.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one local identifier code in the location resource");
-
-
-                localCodeIdentifiers.ForEach(li =>
-                {
-                    CheckForValidLocalIdentifier(li, () => ValidateAssignerRequest(location.PartOf.Reference));
-                });
-
             });
-        }
-
-        private void ValidateAssignerRequest(string reference)
-        {
-            if (!ResourceReferenceHelper.IsRelOrAbsReference(reference)) return;
-
-            _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
-
-            _httpContext.HttpRequestConfiguration.RequestUrl = reference;
-
-            _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
-
-            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
-
-            StoreTheOrganization();
-
-            var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
-
-            returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
-        }
-
-        private void StoreTheOrganization()
-        {
-            var organization = _httpContext.FhirResponse.Organizations.FirstOrDefault();
-            if (organization != null)
-            {
-                _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
-                _fhirResourceRepository.Organization = organization;
-            }
         }
     }
 }
