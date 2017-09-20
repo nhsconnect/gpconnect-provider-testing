@@ -351,6 +351,7 @@ Scenario: Register patient with an additional usual name
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
+		And the Patient Demographics should match the Stored Patient
 
 Scenario: Register patient no family names
 	Given I get the next Patient to register and store it
@@ -396,6 +397,7 @@ Scenario Outline: Register patient with additional valid elements
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
+		And the Patient Demographics should match the Stored Patient
 	Examples:
 		| ElementToAdd |
 		| Active       |
