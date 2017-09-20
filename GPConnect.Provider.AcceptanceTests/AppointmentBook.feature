@@ -184,6 +184,7 @@ Scenario: Book Appointment and check response contains the manadatory elements
 		And the Appointment End should be valid
 		And the Appointment Participants should be valid and resolvable
 		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
 
 Scenario: Book Appointment and check returned appointment resource contains meta data
 	Given I get the Patient for Patient Value "patient1"
@@ -213,71 +214,6 @@ Scenario: Book Appointment and appointment participant is valid
 		And the Response Resource should be an Appointment
 		And the Appointment Participants should be valid and resolvable
 		And the Appointment Participant Type and Actor should be valid
-
-#improve name to be more descriptive
-Scenario Outline: Book Appointment and check extensions are valid
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get the Schedule for Organization Code "ORG1"
-		And I store the Schedule
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I add the "<ExtensionCombination>" Extensions to the Created Appointment
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate created
-		And the Response Resource should be an Appointment
-		And the Appointment Category Extension should be valid
-		And the Appointment Booking Method Extension should be valid
-		And the Appointment Contact Method Extension should be valid
-		## Not sure why we're testing this... maybe check that it SHOULD NOT be there
-		And the Appointment Cancellation Reason Extension should be valid
-	Examples: 
-		| ExtensionCombination					| 
-		| Category								| 
-		| BookingMethod							| 
-		| ContactMethod							| 
-		| Category+BookingMethod				| 
-		| Category+ContactMethod				| 
-		| BookingMethod+ContactMethod			| 
-		| Category+BookingMethod+ContactMethod	| 
-
-#improve name to be more descriptive
-Scenario Outline: Book Appointment with invalid extensions
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get the Schedule for Organization Code "ORG1"
-		And I store the Schedule
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I add the "<ExtensionCombination>" Extensions to the Created Appointment
-	When I make the "AppointmentCreate" request
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
-	Examples: 
-		| ExtensionCombination					| 
-		| Category+InvalidMethod				| 
-
-#improve name to be more descriptive
-Scenario Outline: Book Appointment with invalid extension valueset codes
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get the Schedule for Organization Code "ORG1"
-		And I store the Schedule
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I add the "<ExtensionCombination>" Extensions to the Created Appointment
-	When I make the "AppointmentCreate" request
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
-	Examples: 
-		| ExtensionCombination									| 
-		| Category+InvalidContactMethod+InvalidBookingMethod	| 
-		| InvalidCategory+InvalidContactMethod+BookingMethod	| 
 
 Scenario: Book Appointment without practitioner participant
 	Given I get the Patient for Patient Value "patient1"

@@ -234,60 +234,6 @@
                 .RemoveAll(participant => participant.Actor.Reference.Contains(participantType));
         }
 
-        [Then("the Appointment Category Extension should be valid")]
-        public void TheAppointmentCategoryExtensionShouldBeValid()
-        {
-            Appointments.ForEach(appointment =>
-            {
-                const string categoryUrl =
-                    "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1";
-
-                var appointmentCategoryExtension = appointment.GetExtensionValue<CodeableConcept>(categoryUrl);
-
-                if (appointmentCategoryExtension?.Coding != null)
-                {
-                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirAppointmentCategoryValueSet,
-                        appointmentCategoryExtension.Coding);
-                }
-            });
-        }
-
-        [Then("the Appointment Booking Method Extension should be valid")]
-        public void TheAppointmentBookingMethodExtensionShouldBeValid()
-        {
-            Appointments.ForEach(appointment =>
-            {
-                const string bookinMethodUrl =
-                    "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1";
-
-                var appointmentBookingMethodExtension = appointment.GetExtensionValue<CodeableConcept>(bookinMethodUrl);
-
-                if (appointmentBookingMethodExtension?.Coding != null)
-                {
-                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirAppointmentBookingMethodValueSet,
-                        appointmentBookingMethodExtension.Coding);
-                }
-            });
-        }
-
-        [Then("the Appointment Contact Method Extension should be valid")]
-        public void TheAppointmentContactMethodExtensionShouldBeValid()
-        {
-            Appointments.ForEach(appointment =>
-            {
-                const string contactMethodUrl =
-                    "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1";
-
-                var appointmentContactMethodExtension = appointment.GetExtensionValue<CodeableConcept>(contactMethodUrl);
-
-                if (appointmentContactMethodExtension?.Coding != null)
-                {
-                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirAppointmentContactMethodValueSet,
-                        appointmentContactMethodExtension.Coding);
-                }
-            });
-        }
-
         [Then("the Appointment Cancellation Reason Extension should be valid")]
         public void TheAppointmentCancellationReasonExtensionShouldBeValid()
         {

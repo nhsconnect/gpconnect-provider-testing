@@ -190,64 +190,13 @@
             _fhirResourceRepository.Appointment.Status = AppointmentStatus.Cancelled;
         }
 
-        [Given(@"I add a Category Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
-        public void AddACategoryExtensionWithCodeAndDisplayToTheCreatedAppointment(string code, string display)
-        {
-            var extension = GetCategoryExtension(code, display);
-
-            if (_fhirResourceRepository.Appointment.Extension == null)
-                _fhirResourceRepository.Appointment.Extension = new List<Extension>();
-
-            _fhirResourceRepository.Appointment.Extension.Add(extension);
-        }
-
-        [Given(@"I add a Booking Method Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
-        public void AddABookingMethodExtensionWithCodeAndDisplayToTheCreatedAppointment(string code, string display)
-        {
-            var extension = GetBookingMethodExtension(code, display);
-
-            if (_fhirResourceRepository.Appointment.Extension == null)
-                _fhirResourceRepository.Appointment.Extension = new List<Extension>();
-
-            _fhirResourceRepository.Appointment.Extension.Add(extension);
-        }
-
-        [Given(@"I add a Contact Method Extension with Code ""([^""]*)"" and Display ""([^""]*)"" to the Created Appointment")]
-        public void AddAContactMethodExtensionWithCodeAndDisplayToTheCreatedAppointment(string code, string display)
-        {
-            var extension = GetContactMethodExtension(code, display);
-
-            if (_fhirResourceRepository.Appointment.Extension == null)
-                _fhirResourceRepository.Appointment.Extension = new List<Extension>();
-
-            _fhirResourceRepository.Appointment.Extension.Add(extension);
-        }
-
         [Given("I set the Created Appointment to a new Appointment")]
         public void SetTheCreatedAppointmentToANewAppointment()
         {
             _fhirResourceRepository.Appointment = new Appointment();
         }
 
-        private static Extension GetCategoryExtension(string code, string display)
-        {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-category-1",
-                                        "http://fhir.nhs.net/ValueSet/gpconnect-appointment-category-1", code, display);
-        }
-
-        private static Extension GetBookingMethodExtension(string code, string display)
-        {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-booking-method-1",
-                                        "http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1", code, display);
-        }
-
-        private static Extension GetContactMethodExtension(string code, string display)
-        {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-contact-method-1",
-                                        "http://fhir.nhs.net/ValueSet/gpconnect-appointment-contact-method-1", code, display);
-        }
-
-        private static Extension GetInvalidMethodExtension(string code, string display)
+         private static Extension GetInvalidMethodExtension(string code, string display)
         {
             return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-invalid-method-0000",
                 "http://fhir.nhs.net/ValueSet/gpconnect-appointment-invalid-method-0000", code, display);
@@ -313,65 +262,7 @@
                 CheckForValidMetaDataInResource(appointment, "http://fhir.nhs.net/StructureDefinition/gpconnect-appointment-1");
             });
         }
-
-        [Given(@"I add the ""([^""]*)"" Extensions to the Created Appointment")]
-        public void AddTheExtensionsToTheCreatedAppointment(string extensionCombination)
-        {
-            var extensions = GetExtensions(extensionCombination);
-
-            _fhirResourceRepository.Appointment.Extension.AddRange(extensions);
-        }
-
-        private static List<Extension> GetExtensions(string extensionCombination)
-        {
-            var extensions = new List<Extension>();
-            switch (extensionCombination)
-            {
-                case "Category":
-                    extensions.Add(GetCategoryExtension("CLI", "Clinical"));
-                    break;
-                case "BookingMethod":
-                    extensions.Add(GetBookingMethodExtension("ONL", "Online"));
-                    break;
-                case "ContactMethod":
-                    extensions.Add(GetContactMethodExtension("ONL", "Online"));
-                    break;
-                case "Category+BookingMethod":
-                    extensions.Add(GetCategoryExtension("ADM", "Administrative"));
-                    extensions.Add(GetBookingMethodExtension("TEL", "Telephone"));
-                    break;
-                case "Category+ContactMethod":
-                    extensions.Add(GetCategoryExtension("MSG", "Message"));
-                    extensions.Add(GetContactMethodExtension("PER", "In person"));
-                    break;
-                case "BookingMethod+ContactMethod":
-                    extensions.Add(GetBookingMethodExtension("LET", "Letter"));
-                    extensions.Add(GetContactMethodExtension("EMA", "Email"));
-                    break;
-                case "Category+BookingMethod+ContactMethod":
-                    extensions.Add(GetCategoryExtension("VIR", "Virtual"));
-                    extensions.Add(GetBookingMethodExtension("TEX", "Text"));
-                    extensions.Add(GetContactMethodExtension("LET", "Letter"));
-                    break;
-                case "Category+InvalidMethod":
-                    extensions.Add(GetCategoryExtension("VIR", "Virtual"));
-                    extensions.Add(GetInvalidMethodExtension("INV", "Invalid Method"));
-                    break;
-                case "Category+InvalidContactMethod+InvalidBookingMethod":
-                    extensions.Add(GetCategoryExtension("MSG", "Message"));
-                    extensions.Add(GetBookingMethodExtension("LET", "Letterer"));
-                    extensions.Add(GetContactMethodExtension("PERS", "In person"));
-                    break;
-                case "InvalidCategory+InvalidContactMethod+BookingMethod":
-                    extensions.Add(GetCategoryExtension("MSGED", "Message"));
-                    extensions.Add(GetBookingMethodExtension("LET", "Letter"));
-                    extensions.Add(GetContactMethodExtension("PERS", "In person"));
-                    break;
-            }
-
-            return extensions;
-        }
-
+      
         [Then(@"the Appointment Participant Type and Actor should be valid")]
         public void TheAppointmentParticipantTypeAndActorShouldBeValid()
         {
@@ -379,9 +270,8 @@
             {
                 appointment.Participant.ForEach(participant =>
                 {
-                    var hasActorOrType = participant.Actor == null && participant.Type == null;
 
-                    hasActorOrType.ShouldBeFalse("The Appointment Participant should have an Actor or Type, but has neither.");
+                    participant.Actor.ShouldNotBeNull("Participant Actor Should Not Be null");
 
                     if (participant.Type != null)
                     {

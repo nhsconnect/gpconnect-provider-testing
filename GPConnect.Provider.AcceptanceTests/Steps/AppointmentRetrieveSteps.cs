@@ -85,5 +85,14 @@
                 }
             });
         }
+
+        [Then(@"the Appointment Description must be valid")]
+        public void TheAppointmentDescriptionShouldNotBeNull()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Description.ShouldNotBeNull("Appointment description should not be null");
+            });
+        }
     }
 }
