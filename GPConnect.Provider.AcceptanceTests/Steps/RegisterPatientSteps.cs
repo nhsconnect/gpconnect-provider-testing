@@ -363,22 +363,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationType)).ToList();
 
-            extensions.Count.ShouldBe(1, "The patient resource should contain a registration type extension.");
+            extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a registration type extension.");
 
-            var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
-
-            extensions.ForEach(registrationTypeExtension =>
+            if (extensions.Any())
             {
-                registrationTypeExtension.Value.ShouldNotBeNull("The registration type extension should have a value element.");
-                registrationTypeExtension.Value.ShouldBeOfType<CodeableConcept>("The registration type extension should be a CodeableConcept.");
+                var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
 
-                var concept = (CodeableConcept)registrationTypeExtension.Value;
-
-                concept.Coding.ForEach(code =>
+                extensions.ForEach(registrationTypeExtension =>
                 {
-                    ShouldBeSingleCodingWhichIsInCodeList(code, codeList);
+                    registrationTypeExtension.Value.ShouldNotBeNull("The registration type extension should have a value element.");
+                    registrationTypeExtension.Value.ShouldBeOfType<CodeableConcept>("The registration type extension should be a CodeableConcept.");
+
+                    var concept = (CodeableConcept)registrationTypeExtension.Value;
+
+                    concept.Coding.ForEach(code =>
+                    {
+                        ShouldBeSingleCodingWhichIsInCodeList(code, codeList);
+                    });
                 });
-            });
+            }
+
 
         }
 
@@ -386,22 +390,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationStatus)).ToList();
 
-            extensions.Count.ShouldBe(1,"The patient resource should contain a registration status extension.");
+            extensions.Count.ShouldBeLessThanOrEqualTo(1,"The patient resource should contain a registration status extension.");
 
-            var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationStatus).WithComposeIncludes().ToList();
-
-            extensions.ForEach(registrationStatusExtension =>
+            if (extensions.Any())
             {
-                registrationStatusExtension.Value.ShouldNotBeNull("The registration status extension should have a value element.");
-                registrationStatusExtension.Value.ShouldBeOfType<CodeableConcept>("The registration status extension should be a CodeableConcept.");
+                var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationStatus).WithComposeIncludes().ToList();
 
-                var concept = (CodeableConcept)registrationStatusExtension.Value;
-
-                concept.Coding.ForEach(code =>
+                extensions.ForEach(registrationStatusExtension =>
                 {
-                    ShouldBeSingleCodingWhichIsInCodeList(code, codeList);
+                    registrationStatusExtension.Value.ShouldNotBeNull("The registration status extension should have a value element.");
+                    registrationStatusExtension.Value.ShouldBeOfType<CodeableConcept>("The registration status extension should be a CodeableConcept.");
+
+                    var concept = (CodeableConcept)registrationStatusExtension.Value;
+
+                    concept.Coding.ForEach(code =>
+                    {
+                        ShouldBeSingleCodingWhichIsInCodeList(code, codeList);
+                    });
                 });
-            });
+            }
+
         }
 
         private void ValidatePatientRegistrationPeriod(List<Extension> extList)

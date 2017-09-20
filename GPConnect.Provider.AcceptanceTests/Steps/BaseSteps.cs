@@ -42,7 +42,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         public void ShouldBeSingleCodingWhichIsInCodeList(Coding code, List<GpcCode> codingList)
         {
-            var validCode = codingList.FirstOrDefault(f => f.Code.Equals(code.Code) && f.Display.Equals(code.Display));
+            var validCode = codingList.FirstOrDefault(f => f.Code.Equals(code.Code) && f.Display.Equals(code.Display) && f.System.Equals(code.System));
 
             validCode.ShouldNotBeNull();
         }
