@@ -277,6 +277,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppointmentAmend.feature</DependentUpon>
     </Compile>
+    <Compile Include="Reporting\Report.cs" />
+    <Compile Include="Reporting\ReportingConfiguration.cs" />
     <Compile Include="Repository\FhirResourceRepository.cs" />
     <Compile Include="Repository\IFhirResourceRepository.cs" />
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
