@@ -1,5 +1,4 @@
-﻿using System;
-using GPConnect.Provider.AcceptanceTests.Enum;
+﻿using GPConnect.Provider.AcceptanceTests.Enum;
 using GPConnect.Provider.AcceptanceTests.Extensions;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 
@@ -354,6 +353,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 ValidatePatientRegistrationType(regExtensions);
                 ValidatePatientRegistrationStatus(regExtensions);
                 ValidatePatientRegistrationPeriod(regExtensions);
+                ValidatePatientUsualBranchSurgery(regExtensions);
 
             });
         }
@@ -424,7 +424,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 registrationPeriodExtension.Value.ShouldBeOfType<Period>("The registration status extension should be a Period.");
             });
         }
-        
+
+        private void ValidatePatientUsualBranchSurgery(List<Extension> extList)
+        {
+            var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtUsualBranchSurgery)).ToList();
+
+            extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 Usual Branch Surgery extension.");
+
+            extensions.ForEach(usualBranchSurgeryExtension =>
+            {
+                usualBranchSurgeryExtension.Value.ShouldNotBeNull("The registration period extension should have a value element.");
+                usualBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The registration status extension should be a Period.");
+
+                var reference = (ResourceReference) usualBranchSurgeryExtension.Value;
+                ValidateReferenceRequest(reference.Reference, GpConnectInteraction.LocationRead);
+            });
+        }
+
         [Then(@"the Patient Demographics should match the Stored Patient")]
         public void ThePatientDemographicsShouldMatchTheStoredPatient()
         {
@@ -643,6 +659,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 var returnedReference = _fhirResourceRepository.Practitioner.Meta.Profile.FirstOrDefault();
                 returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kPractitioner);
             }
+            else if (interaction.Equals(GpConnectInteraction.LocationRead))
+            {
+                StoreTheLocation();
+                var returnedReference = _fhirResourceRepository.Location.Meta.Profile.FirstOrDefault();
+                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kLocation);
+            }
 
         }
 
@@ -663,6 +685,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 _httpContext.HttpRequestConfiguration.GetRequestId = practitioner.Id;
                 _fhirResourceRepository.Practitioner = practitioner;
+            }
+        }
+
+        private void StoreTheLocation()
+        {
+            var location = _httpContext.FhirResponse.Locations.FirstOrDefault();
+            if (location != null)
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = location.Id;
+                _fhirResourceRepository.Location = location;
             }
         }
 

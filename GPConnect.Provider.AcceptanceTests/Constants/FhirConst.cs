@@ -82,6 +82,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kCCExtRegistrationStatus = "registrationStatus";
             public const string kCCExtRegistrationType = "registrationType";
             public const string kCCExtRegistrationPeriod = "registrationPeriod";
+            public const string kCCExtUsualBranchSurgery = "usualBranchSurgery";
             public const string kCCExtEthnicCategory = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-EthnicCategory-1";
             public const string kCcExtReligiousAffiliation = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-ReligiousAffiliation-1";
             public const string kCCExtPatientCadaver = "http://hl7.org/fhir/StructureDefinition/patient-cadavericDonor";
