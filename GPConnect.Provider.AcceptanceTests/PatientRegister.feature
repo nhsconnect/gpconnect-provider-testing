@@ -372,7 +372,7 @@ Scenario: Register patient no family names
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I remove the Family Name from the Stored Patient
+		And I remove the Family Name from the Active Given Name for the Stored Patient
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"

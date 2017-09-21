@@ -4,6 +4,7 @@ using GPConnect.Provider.AcceptanceTests.Helpers;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Constants;
@@ -106,8 +107,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I remove the Family Name from the Active Given Name for the Stored Patient")]
-        [Given(@"I remove the Family Name from the Stored Patient")]
-        public void RemoveTheFamilyNameFromTheStoredPatient()
+        public void RemoveTheFamilyNameFromTheActiveGivenNameForTheStoredPatient()
         { 
             foreach (var humanName in _fhirResourceRepository.Patient.Name.Where(IsActiveUsualName))
             {
