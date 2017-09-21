@@ -73,6 +73,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _fhirResourceRepository.Patient.Name.Add(name);
         }
 
+        [Given(@"I add ""(.*)"" Given Names to the Stored Patient Usual Name")]
+        public void AddGivenNamesToTheStoredPatientUsualName(int extraGivenNames)
+        {
+            const string givenName = "GivenName";
+            var givenNames = new List<FhirString>();
+
+            for (var i = 1; i <= extraGivenNames; i++)
+            {
+                givenNames.Add(new FhirString($"{givenName}-{i}"));
+            }
+
+            foreach (var name in _fhirResourceRepository.Patient.Name.Where(n => n.Use == HumanName.NameUse.Usual))
+            {
+                name.GivenElement.AddRange(givenNames);
+            }
+        }
+
         [Given(@"I remove the Identifiers from the Stored Patient")]
         public void RemoveTheIdentifiersFromTheStoredPatient()
         {
@@ -89,13 +106,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
+        [Given(@"I remove the Family Name from the Active Given Name for the Stored Patient")]
         [Given(@"I remove the Family Name from the Stored Patient")]
         public void RemoveTheFamilyNameFromTheStoredPatient()
-        {
-            var unIndex = FindUsualNameIndex(_fhirResourceRepository.Patient.Name);
-            if (unIndex >= 0)
+        { 
+            foreach (var humanName in _fhirResourceRepository.Patient.Name.Where(IsActiveUsualName))
             {
-                _fhirResourceRepository.Patient.Name[unIndex].Family = null;
+                humanName.Family = null;
             }
         }
 
@@ -434,15 +451,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 patient.Gender.ShouldBe(storedPatient.Gender, "The returned patient gender does not match the creted patient gender");
 
                 patient.Name.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be at least one name element within the returned patient resource");
-                                
-                var rnIndex = FindUsualNameIndex(patient.Name);
-                rnIndex.ShouldBeGreaterThanOrEqualTo(0, "Could not find the required Patient name with a Use value of Usual.");           
-                
-                var uPatientName = patient.Name[rnIndex];
 
-                uPatientName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
-                uPatientName.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
-                uPatientName.Family.First().ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
+                var activeUsualNames = patient.Name.Where(IsActiveUsualName).ToList();
+                var storedPatientActiveUsualName = storedPatient.Name.Where(IsActiveUsualName).First();
+
+                activeUsualNames.Count.ShouldBe(1, $"There should be a single Active Patient Name with a Use of Usual, but found {activeUsualNames.Count}.");
+
+                var activeUsualName = activeUsualNames.First();
+
+                //Given
+                activeUsualName.Given.Count().ShouldBe(storedPatientActiveUsualName.Given.Count());
+
+                foreach (var given in activeUsualName.Given)
+                {
+                    storedPatientActiveUsualName.Given.ShouldContain(given);
+                }
+
+                //Family
+                activeUsualName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
+                activeUsualName.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
+                activeUsualName.Family.First().ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
 
             });
 
@@ -841,6 +869,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Value = reason
             };
         }
-        
+
+        private static bool IsActiveUsualName(HumanName name)
+        {
+            var endDateIsValid = name.Period?.End == null || DateTime.Parse(name.Period.End) >= DateTime.UtcNow;
+            var startDateIsValid = name.Period?.Start == null || DateTime.Parse(name.Period.Start) <= DateTime.UtcNow;
+
+            return name.Use == HumanName.NameUse.Usual && endDateIsValid && startDateIsValid;
+        }
     }
 }

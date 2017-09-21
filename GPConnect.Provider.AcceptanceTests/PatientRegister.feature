@@ -353,6 +353,22 @@ Scenario: Register patient with an additional usual name
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
 
+Scenario Outline: Register Patient with multiple given names
+	Given I get the next Patient to register and store it
+    Given I configure the default "RegisterPatient" request
+        And I set the JWT Requested Record to the NHS Number of the Stored Patient
+        And I add "<ExtraGivenNames>" Given Names to the Stored Patient Usual Name
+        And I add the Stored Patient as a parameter
+    When I make the "RegisterPatient" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Patient Demographics should match the Stored Patient
+	Examples: 
+		| ExtraGivenNames |
+		| 1               |
+		| 2               |
+		| 5               |
+
 Scenario: Register patient no family names
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
