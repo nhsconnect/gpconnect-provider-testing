@@ -65,8 +65,6 @@
         public static ValueSet FhirAppointmentCategoryValueSet { get; set; }
         public static ValueSet FhirAppointmentBookingMethodValueSet { get; set; }
         public static ValueSet FhirAppointmentContactMethodValueSet { get; set; }
-        public static ValueSet FhirIdentifierTypeValueSet { get; set; }
-        public static ValueSet FhirServiceDeliveryLocationRoleTypeValueSet { get; set; }
 
         private static Dictionary<string, ValueSet> _fhirExtensibleValueSets { get; set; }
         public static ValueSet GetExtensibleValueSet(string system)

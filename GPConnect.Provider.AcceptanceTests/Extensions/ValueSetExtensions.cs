@@ -20,17 +20,27 @@ namespace GPConnect.Provider.AcceptanceTests.Extensions
         }
 
 
-     public static IEnumerable<GpcCode> WithComposeIncludes(this ValueSet resource)
-      {
-         var codes = resource.CodeSystem?.Concept.Select(co => new GpcCode(co.Code, co.Display));
-            if (resource.Compose != null && resource.Compose.Include.Any())
-            {
-                resource.Compose.Include.ForEach(include => {
-                 codes = (codes ?? new List<GpcCode>()).Concat(include.Concept.Select(co => new GpcCode(co.Code, co.Display)));
+        public static IEnumerable<GpcCode> WithComposeIncludes(this ValueSet resource)
+        {
+            var codes = new List<GpcCode>();
+            var codeSystem = resource.CodeSystem;
 
-                });
- 
+            if (codeSystem != null)
+            {
+                var system = codeSystem.System;
+                codes = codeSystem.Concept.Select(co => new GpcCode(co.Code, co.Display, system)).ToList();
+                if (resource.Compose != null && resource.Compose.Include.Any())
+                {
+                    resource.Compose.Include.ForEach(include =>
+                    {
+                        var incSystem = include.System;
+                        codes = codes.Concat(include.Concept.Select(co => new GpcCode(co.Code, co.Display, incSystem))).ToList();
+
+                    });
+
+                }
             }
+
 
             return codes;
      

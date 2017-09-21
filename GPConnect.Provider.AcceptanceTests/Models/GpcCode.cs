@@ -8,13 +8,15 @@ namespace GPConnect.Provider.AcceptanceTests.Models
 {
     public class GpcCode
     {
-        public GpcCode(string code, string display)
+        public GpcCode(string code, string display, string system = null)
         {
             Code = code;
             Display = display;
+            System = system;
         }
         public string Code;
         public string Display;
+        public string System;
 
 
     }

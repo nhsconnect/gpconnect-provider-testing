@@ -71,6 +71,7 @@ Scenario: Register patient without gender element
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
+		And the Patient Demographics should match the Stored Patient
 
 Scenario: Register patient without date of birth element
 	Given I get the next Patient to register and store it
@@ -307,7 +308,6 @@ Scenario: Register patient which alread exists on the system as a temporary pati
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-@ignore
 Scenario: Register patient which is not the Spine
 	Given I create a Patient which does not exist on PDS and store it
 	Given I configure the default "RegisterPatient" request
@@ -317,7 +317,6 @@ Scenario: Register patient which is not the Spine
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-@ignore
 Scenario: Register patient with demographics which do not match spine PDS trace
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
