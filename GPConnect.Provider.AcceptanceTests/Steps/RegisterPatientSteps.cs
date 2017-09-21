@@ -353,7 +353,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 ValidatePatientRegistrationType(regExtensions);
                 ValidatePatientRegistrationStatus(regExtensions);
                 ValidatePatientRegistrationPeriod(regExtensions);
-                ValidatePatientUsualBranchSurgery(regExtensions);
+                ValidatePatientPreferredBranchSurgery(regExtensions);
 
             });
         }
@@ -390,25 +390,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationStatus)).ToList();
 
-            extensions.Count.ShouldBeLessThanOrEqualTo(1,"The patient resource should contain a registration status extension.");
-
-            if (extensions.Any())
-            {
-                var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationStatus).WithComposeIncludes().ToList();
-
-                extensions.ForEach(registrationStatusExtension =>
-                {
-                    registrationStatusExtension.Value.ShouldNotBeNull("The registration status extension should have a value element.");
-                    registrationStatusExtension.Value.ShouldBeOfType<CodeableConcept>("The registration status extension should be a CodeableConcept.");
-
-                    var concept = (CodeableConcept)registrationStatusExtension.Value;
-
-                    concept.Coding.ForEach(code =>
-                    {
-                        ShouldBeSingleCodingWhichIsInCodeList(code, codeList);
-                    });
-                });
-            }
+            extensions.Count.ShouldBe(0,"The patient resource should NOT contain a registration status extension.");
 
         }
 
@@ -421,22 +403,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             extensions.ForEach(registrationPeriodExtension =>
             {
                 registrationPeriodExtension.Value.ShouldNotBeNull("The registration period extension should have a value element.");
-                registrationPeriodExtension.Value.ShouldBeOfType<Period>("The registration status extension should be a Period.");
+                registrationPeriodExtension.Value.ShouldBeOfType<Period>("The registration period extension should be a Period.");
             });
         }
 
-        private void ValidatePatientUsualBranchSurgery(List<Extension> extList)
+        private void ValidatePatientPreferredBranchSurgery(List<Extension> extList)
         {
-            var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtUsualBranchSurgery)).ToList();
+            var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtPreferredBranchSurgery)).ToList();
 
-            extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 Usual Branch Surgery extension.");
+            extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 Preferred Branch Surgery extension.");
 
-            extensions.ForEach(usualBranchSurgeryExtension =>
+            extensions.ForEach(preferredBranchSurgeryExtension =>
             {
-                usualBranchSurgeryExtension.Value.ShouldNotBeNull("The registration period extension should have a value element.");
-                usualBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The registration status extension should be a Period.");
+                preferredBranchSurgeryExtension.Value.ShouldNotBeNull("The Preferred Branch Surgery extension should have a value element.");
+                preferredBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The Preferred Branch Surgery extension should be a Period.");
 
-                var reference = (ResourceReference) usualBranchSurgeryExtension.Value;
+                var reference = (ResourceReference)preferredBranchSurgeryExtension.Value;
                 ValidateReferenceRequest(reference.Reference, GpConnectInteraction.LocationRead);
             });
         }
