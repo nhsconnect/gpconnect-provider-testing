@@ -143,6 +143,7 @@ Scenario Outline: Read appointment ensure response appointments contain the mana
 		And the Appointment End should be valid
 		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
+		And the Appointment Description must be valid
 	Examples:
 		| AppointmentStatus | Header                | BodyFormat |
 		| Booked            | application/json+fhir | JSON       |
@@ -201,7 +202,7 @@ Scenario: Read appointment containing a priority element and check that the prio
 		And the Response Resource should be an Appointment
 		And the Appointment Priority should be valid
 
-Scenario: Read appointment and all participants must have a type or actor element
+Scenario: Read appointment and all participants must have a actor element
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentRead" request
@@ -213,7 +214,7 @@ Scenario: Read appointment and all participants must have a type or actor elemen
 		And the Appointment Participant Type and Actor should be valid
 
 	
-Scenario: Read appointment if all participants must have a type or actor element
+Scenario: Read appointment if all participants must have a actor element
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I get the Schedule for Organization Code "ORG1"
@@ -231,31 +232,6 @@ Scenario: Read appointment if all participants must have a type or actor element
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
 		And the Appointment Participant Type and Actor should be valid
-
-Scenario: Read appointment if extensions are included they should be valid
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get the Schedule for Organization Code "ORG1"
-		And I store the Schedule
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I add a Category Extension with Code "CLI" and Display "Clinical" to the Created Appointment
-		And I add a Booking Method Extension with Code "ONL" and Display "Online" to the Created Appointment
-		And I add a Contact Method Extension with Code "ONL" and Display "Online" to the Created Appointment
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate created
-		And I store the Appointment
-		And the Response Resource should be an Appointment
-	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	When I make the "AppointmentRead" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointment Category Extension should be valid
-		And the Appointment Booking Method Extension should be valid
-		And the Appointment Contact Method Extension should be valid
-
 
 Scenario: Read appointment and response should contain an ETag header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

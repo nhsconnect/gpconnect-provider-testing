@@ -72,6 +72,10 @@
 
             };
 
+
+            appointment.Description = "Default Description";
+
+
             return appointment;
         }
 

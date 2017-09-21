@@ -465,8 +465,9 @@ Scenario: Appointment retrieve appointment which contains all mandatory resource
 		And the Appointment End should be valid
 		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
+		And the Appointment Description must be valid
 
-Scenario: Appointment retrieve bundle resource must contain participant with type or actor present
+Scenario: Appointment retrieve bundle resource must contain participant with actor present
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -512,17 +513,6 @@ Scenario: Appointment retrieve returned resources must contain coding with valid
 		And the response body should be FHIR JSON
 		And the Appointment Reason should be valid
 	
-Scenario: Appointment retrieve bundle contains extensions
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	When I make the "AppointmentSearch" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the Appointment Category Extension should be valid
-		And the Appointment Booking Method Extension should be valid
-		And the Appointment Contact Method Extension should be valid
-		And the Appointment Cancellation Reason Extension should be valid
 
 Scenario: Appointment retrieve bundle contains valid start and end dates
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

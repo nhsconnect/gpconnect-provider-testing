@@ -13,6 +13,7 @@ Scenario Outline: I perform a successful cancel appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Metadata should be valid
+		And the Appointment Description must be valid
 	Examples:
 		| PatientName |
 		| patient1    |
@@ -76,49 +77,6 @@ Scenario: I perform a successful cancel appointment and amend the reason
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Metadata should be valid
 
-Scenario Outline: I perform cancel appointment and update the category extension
-		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I add a Category Extension with Code "CLI" and Display "Clinical" to the Created Appointment
-	When I make the "AppointmentCancel" request
-	Then the response status code should be "403"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| PatientName |
-		| patient1    |
-
-Scenario Outline: I perform cancel appointment and update the booking method extension
-		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I add a Booking Method Extension with Code "ONL" and Display "Online" to the Created Appointment
-	When I make the "AppointmentCancel" request
-	Then the response status code should be "403"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| PatientName |
-		| patient1    |
-
-
-Scenario Outline: I perform cancel appointment and update the contact method extension
-		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I add a Contact Method Extension with Code "ONL" and Display "Online" to the Created Appointment
-	When I make the "AppointmentCancel" request
-	Then the response status code should be "403"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| PatientName |
-		| patient1    |
-
 Scenario Outline: I perform cancel appointment and add participants
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -134,8 +92,6 @@ Scenario Outline: I perform cancel appointment and add participants
 	Examples:
 		| PatientName |
 		| patient1    |
-
-
 
 Scenario Outline: I perform cancel appointment and update the priority
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
@@ -504,11 +460,10 @@ Scenario:Cancel appointment invalid response check caching headers exist
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I add a Category Extension with Code "CLI" and Display "Clinical" to the Created Appointment
+		And I set the Created Appointment to Cancelled with Reason ""
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "403"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 		And the required cacheing headers should be present in the response
 
 

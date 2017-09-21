@@ -244,6 +244,8 @@
 
                 appointment.Participant.ForEach(participant =>
                 {
+                    participant.Actor.ShouldNotBeNull("Participant actor should not be null");
+
                     if (participant.Actor.Reference.StartsWith("Practitioner/"))
                     {
                         var practitioner = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PractitionerRead, participant.Actor.Reference);
