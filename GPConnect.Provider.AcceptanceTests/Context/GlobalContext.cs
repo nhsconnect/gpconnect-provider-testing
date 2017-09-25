@@ -36,6 +36,8 @@
         public static Dictionary<string, string> OdsCodeMap { get; set; }
 
         public static Guid TestRunId { get; set; }
+        public static int ScenarioIndex { get; set; }
+        public static string PreviousScenarioTitle { get; set; }
 
         // FHIR
         public static ValueSet FhirGenderValueSet

@@ -8,18 +8,16 @@
     internal class Report
     {
         private readonly HttpContext _httpContext;
-        private readonly ScenarioContext _scenarioContext;
 
-        public Report(HttpContext httpContext, ScenarioContext scenarioContext)
+        public Report(HttpContext httpContext)
         {
             _httpContext = httpContext;
-            _scenarioContext = scenarioContext;
         }
 
         public Guid TestRunId => GlobalContext.TestRunId;
-        public string ScenarioName => _scenarioContext.ScenarioInfo.Title;
+        public string ScenarioName => $"{ScenarioContext.Current.ScenarioInfo.Title} ({GlobalContext.ScenarioIndex})";
         public string ScenarioOutcome => string.IsNullOrEmpty(ErrorMessage) ? "Pass" : "Fail";
-        public string ErrorMessage => _scenarioContext.TestError?.Message;
+        public string ErrorMessage => ScenarioContext.Current.TestError?.Message;
         public HttpRequestConfiguration HttpRequest => _httpContext.HttpRequestConfiguration;
         public HttpResponse HttpResponse => _httpContext.HttpResponse;
     }
