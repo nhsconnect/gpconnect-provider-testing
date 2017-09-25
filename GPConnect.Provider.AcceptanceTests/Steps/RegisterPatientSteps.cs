@@ -538,7 +538,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 //CONTACT
                 patient.Contact.ForEach(ValidateContact);
 
-
             });
 
         }
