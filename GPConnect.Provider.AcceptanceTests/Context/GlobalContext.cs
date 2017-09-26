@@ -36,6 +36,8 @@
         public static Dictionary<string, string> OdsCodeMap { get; set; }
 
         public static Guid TestRunId { get; set; }
+        public static int ScenarioIndex { get; set; }
+        public static string PreviousScenarioTitle { get; set; }
 
         // FHIR
         public static ValueSet FhirGenderValueSet
@@ -65,8 +67,6 @@
         public static ValueSet FhirAppointmentCategoryValueSet { get; set; }
         public static ValueSet FhirAppointmentBookingMethodValueSet { get; set; }
         public static ValueSet FhirAppointmentContactMethodValueSet { get; set; }
-        public static ValueSet FhirIdentifierTypeValueSet { get; set; }
-        public static ValueSet FhirServiceDeliveryLocationRoleTypeValueSet { get; set; }
 
         private static Dictionary<string, ValueSet> _fhirExtensibleValueSets { get; set; }
         public static ValueSet GetExtensibleValueSet(string system)

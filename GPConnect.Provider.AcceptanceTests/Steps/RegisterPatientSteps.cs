@@ -1,10 +1,10 @@
-﻿using System;
-using GPConnect.Provider.AcceptanceTests.Enum;
+﻿using GPConnect.Provider.AcceptanceTests.Enum;
 using GPConnect.Provider.AcceptanceTests.Extensions;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Constants;
@@ -73,6 +73,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _fhirResourceRepository.Patient.Name.Add(name);
         }
 
+        [Given(@"I add ""(.*)"" Given Names to the Stored Patient Usual Name")]
+        public void AddGivenNamesToTheStoredPatientUsualName(int extraGivenNames)
+        {
+            const string givenName = "GivenName";
+            var givenNames = new List<FhirString>();
+
+            for (var i = 1; i <= extraGivenNames; i++)
+            {
+                givenNames.Add(new FhirString($"{givenName}-{i}"));
+            }
+
+            foreach (var name in _fhirResourceRepository.Patient.Name.Where(n => n.Use == HumanName.NameUse.Usual))
+            {
+                name.GivenElement.AddRange(givenNames);
+            }
+        }
+
         [Given(@"I remove the Identifiers from the Stored Patient")]
         public void RemoveTheIdentifiersFromTheStoredPatient()
         {
@@ -89,13 +106,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Given(@"I remove the Family Name from the Stored Patient")]
-        public void RemoveTheFamilyNameFromTheStoredPatient()
-        {
-            var unIndex = FindUsualNameIndex(_fhirResourceRepository.Patient.Name);
-            if (unIndex >= 0)
+        [Given(@"I remove the Family Name from the Active Given Name for the Stored Patient")]
+        public void RemoveTheFamilyNameFromTheActiveGivenNameForTheStoredPatient()
+        { 
+            foreach (var humanName in _fhirResourceRepository.Patient.Name.Where(IsActiveUsualName))
             {
-                _fhirResourceRepository.Patient.Name[unIndex].Family = null;
+                humanName.Family = null;
             }
         }
 
@@ -360,6 +376,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 ValidatePatientRegistrationType(regExtensions);
                 ValidatePatientRegistrationStatus(regExtensions);
                 ValidatePatientRegistrationPeriod(regExtensions);
+                ValidatePatientPreferredBranchSurgery(regExtensions);
 
             });
         }
@@ -369,22 +386,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationType)).ToList();
 
-            extensions.Count.ShouldBe(1, "The patient resource should contain a registration type extension.");
+            extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a registration type extension.");
 
-            var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
-
-            extensions.ForEach(registrationTypeExtension =>
+            if (extensions.Any())
             {
-                registrationTypeExtension.Value.ShouldNotBeNull("The registration type extension should have a value element.");
-                registrationTypeExtension.Value.ShouldBeOfType<CodeableConcept>("The registration type extension should be a CodeableConcept.");
+                var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
 
-                var concept = (CodeableConcept)registrationTypeExtension.Value;
-
-                concept.Coding.ForEach(code =>
+                extensions.ForEach(registrationTypeExtension =>
                 {
-                    ShouldBeSingleCodingWhichIsInCodeList(code, codeList);
+                    registrationTypeExtension.Value.ShouldNotBeNull("The registration type extension should have a value element.");
+                    registrationTypeExtension.Value.ShouldBeOfType<CodeableConcept>("The registration type extension should be a CodeableConcept.");
+
+                    var concept = (CodeableConcept)registrationTypeExtension.Value;
+
+                    concept.Coding.ForEach(code =>
+                    {
+                        ShouldBeSingleCodingWhichIsInCodeList(code, codeList);
+                    });
                 });
-            });
+            }
+
 
         }
 
@@ -392,22 +413,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationStatus)).ToList();
 
-            extensions.Count.ShouldBe(1,"The patient resource should contain a registration status extension.");
+            extensions.Count.ShouldBe(0,"The patient resource should NOT contain a registration status extension.");
 
-            var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationStatus).WithComposeIncludes().ToList();
-
-            extensions.ForEach(registrationStatusExtension =>
-            {
-                registrationStatusExtension.Value.ShouldNotBeNull("The registration status extension should have a value element.");
-                registrationStatusExtension.Value.ShouldBeOfType<CodeableConcept>("The registration status extension should be a CodeableConcept.");
-
-                var concept = (CodeableConcept)registrationStatusExtension.Value;
-
-                concept.Coding.ForEach(code =>
-                {
-                    ShouldBeSingleCodingWhichIsInCodeList(code, codeList);
-                });
-            });
         }
 
         private void ValidatePatientRegistrationPeriod(List<Extension> extList)
@@ -419,10 +426,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             extensions.ForEach(registrationPeriodExtension =>
             {
                 registrationPeriodExtension.Value.ShouldNotBeNull("The registration period extension should have a value element.");
-                registrationPeriodExtension.Value.ShouldBeOfType<Period>("The registration status extension should be a Period.");
+                registrationPeriodExtension.Value.ShouldBeOfType<Period>("The registration period extension should be a Period.");
             });
         }
-        
+
+        private void ValidatePatientPreferredBranchSurgery(List<Extension> extList)
+        {
+            var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtPreferredBranchSurgery)).ToList();
+
+            extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 Preferred Branch Surgery extension.");
+
+            extensions.ForEach(preferredBranchSurgeryExtension =>
+            {
+                preferredBranchSurgeryExtension.Value.ShouldNotBeNull("The Preferred Branch Surgery extension should have a value element.");
+                preferredBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The Preferred Branch Surgery extension should be a Period.");
+
+                var reference = (ResourceReference)preferredBranchSurgeryExtension.Value;
+                ValidateReferenceRequest(reference.Reference, GpConnectInteraction.LocationRead);
+            });
+        }
+
         [Then(@"the Patient Demographics should match the Stored Patient")]
         public void ThePatientDemographicsShouldMatchTheStoredPatient()
         {
@@ -436,19 +459,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 patient.BirthDate.ShouldNotBeNull("The returned patient resource should contain a birthDate element.");
                 patient.BirthDate.ShouldBe(storedPatient.BirthDate, "The returned patient DOB does not match the creted patient DOB");
 
-                patient.Gender.ShouldNotBeNull("The patient resource should contain a gender element");
-                patient.Gender.ShouldBe(storedPatient.Gender, "The returned patient gender does not match the creted patient gender");
+                if (storedPatient.Gender != null)
+                {
+                    patient.Gender.ShouldBe(storedPatient.Gender, "The returned patient gender does not match the creted patient gender");
+                }
 
                 patient.Name.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be at least one name element within the returned patient resource");
-                                
-                var rnIndex = FindUsualNameIndex(patient.Name);
-                rnIndex.ShouldBeGreaterThanOrEqualTo(0, "Could not find the required Patient name with a Use value of Usual.");           
-                
-                var uPatientName = patient.Name[rnIndex];
 
-                uPatientName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
-                uPatientName.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
-                uPatientName.Family.First().ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
+                var activeUsualNames = patient.Name.Where(IsActiveUsualName).ToList();
+                var storedPatientActiveUsualName = storedPatient.Name.Where(IsActiveUsualName).First();
+
+                activeUsualNames.Count.ShouldBe(1, $"There should be a single Active Patient Name with a Use of Usual, but found {activeUsualNames.Count}.");
+
+                var activeUsualName = activeUsualNames.First();
+
+                //Given
+                activeUsualName.Given.Count().ShouldBe(storedPatientActiveUsualName.Given.Count());
+
+                foreach (var given in activeUsualName.Given)
+                {
+                    storedPatientActiveUsualName.Given.ShouldContain(given);
+                }
+
+                //Family
+                activeUsualName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
+                activeUsualName.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
+                activeUsualName.Family.First().ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
 
             });
 
@@ -471,16 +507,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtTreatmentCategory, FhirConst.ValueSetSystems.kCcTreatmentCategory);
                 ValidateNhsCommunicationExtension(extensions);
 
-
-                //IDENTIFIERS
-                var localCodeIdentifiers = patient.Identifier
-                    .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kLocalPatientCode))
-                    .ToList();
-
-                localCodeIdentifiers.ForEach(li =>
-                {
-                    CheckForValidLocalIdentifier(li, () => ValidateReferenceRequest(li.Assigner.Reference, GpConnectInteraction.OrganizationRead));
-                });
 
                 //GENDER
                 patient.Gender?.ShouldBeOfType<AdministrativeGender>();
@@ -517,18 +543,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 //CONTACT
                 patient.Contact.ForEach(ValidateContact);
-
-
-                //if (patient.CareProvider.Any())
-                //{
-                //    patient.CareProvider.ForEach(cp => { ValidateReferenceRequest(cp.Reference, ResourceReferenceHelper.GetReadInteractionType(cp.Reference)); });
-                //}
-
-                //if (patient.ManagingOrganization != null)
-                //{
-                //    ValidateReferenceRequest(patient.ManagingOrganization.Reference, GpConnectInteraction.OrganizationRead);
-                //}
-
 
             });
 
@@ -662,6 +676,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 var returnedReference = _fhirResourceRepository.Practitioner.Meta.Profile.FirstOrDefault();
                 returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kPractitioner);
             }
+            else if (interaction.Equals(GpConnectInteraction.LocationRead))
+            {
+                StoreTheLocation();
+                var returnedReference = _fhirResourceRepository.Location.Meta.Profile.FirstOrDefault();
+                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kLocation);
+            }
 
         }
 
@@ -682,6 +702,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 _httpContext.HttpRequestConfiguration.GetRequestId = practitioner.Id;
                 _fhirResourceRepository.Practitioner = practitioner;
+            }
+        }
+
+        private void StoreTheLocation()
+        {
+            var location = _httpContext.FhirResponse.Locations.FirstOrDefault();
+            if (location != null)
+            {
+                _httpContext.HttpRequestConfiguration.GetRequestId = location.Id;
+                _fhirResourceRepository.Location = location;
             }
         }
 
@@ -847,6 +877,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Value = reason
             };
         }
-        
+
+        private static bool IsActiveUsualName(HumanName name)
+        {
+            var endDateIsValid = name.Period?.End == null || DateTime.Parse(name.Period.End) >= DateTime.UtcNow;
+            var startDateIsValid = name.Period?.Start == null || DateTime.Parse(name.Period.Start) <= DateTime.UtcNow;
+
+            return name.Use == HumanName.NameUse.Usual && endDateIsValid && startDateIsValid;
+        }
     }
 }

@@ -22,7 +22,16 @@
             HttpContext = httpContext;
         }
 
-        [AfterScenario]
+        [BeforeScenario]
+        internal void SetOutlineIndex()
+        {
+            if (GlobalContext.PreviousScenarioTitle == ScenarioContext.Current.ScenarioInfo.Title)
+                GlobalContext.ScenarioIndex++;
+            else
+                GlobalContext.ScenarioIndex = 1;
+        }
+
+        [AfterScenario(Order = 1)]
         internal void SendReport()
         {
             if (ReportingConfiguration.Enabled)
@@ -47,9 +56,15 @@
             }
         }
 
-        private HttpRequestMessage GetHttpRequestMessage()
+        [AfterScenario(Order = 2)]
+        internal void SetPreviousTitle()
         {
-            var report = new Report(HttpContext, ScenarioContext).ToJson();
+            GlobalContext.PreviousScenarioTitle = ScenarioContext.Current.ScenarioInfo.Title;
+        }
+
+        private static HttpRequestMessage GetHttpRequestMessage()
+        {
+            var report = new Report(HttpContext).ToJson();
             var content = new StringContent(report, Encoding.UTF8, Constants.HttpConst.ContentTypes.kJson);
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, Url)

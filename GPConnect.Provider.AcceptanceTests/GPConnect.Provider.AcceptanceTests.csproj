@@ -305,6 +305,7 @@
     <Compile Include="Steps\ManualSteps.cs" />
     <Compile Include="Steps\PractitionerSteps.cs" />
     <Compile Include="Steps\RegisterPatientSteps.cs" />
+    <Compile Include="Steps\ReportingSteps.cs" />
     <Compile Include="Steps\SecuritySteps.cs" />
     <Compile Include="Steps\GenericSteps.cs" />
     <Compile Include="Steps\FhirSteps.cs" />

@@ -9,6 +9,12 @@ Scenario Outline: Organization search success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<Entries>" entries
 		And the response bundle Organization entries should contain a maximum of 1 "https://fhir.nhs.uk/Id/ods-organization-code" system identifier
+		And the Organization Type should be valid
+		And the Organization Name should be valid
+		And the Organization Telecom should be valid
+		And the Organization Address should be valid
+		And the Organization Contact should be valid
+		And the Organization Extensions should be valid
 	Examples:
 		| System                                       | Value      | Entries |
 		| https://fhir.nhs.uk/Id/ods-organization-code | unknownORG | 0       | 
@@ -55,7 +61,7 @@ Scenario Outline: Organization search sending multiple identifiers resulting in 
 		| badSystem                                    | ORG1   | https://fhir.nhs.uk/Id/ods-organization-code | ORG2   |
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1   | badSystem                                    | ORG2   |
 
-#Possible upgrade test to include a check for the identifier type of localIdentifier
+
 Scenario: Organization search by organization code successfully returns single result containing the correct fields
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"

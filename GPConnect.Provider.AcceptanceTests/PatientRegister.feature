@@ -71,6 +71,7 @@ Scenario: Register patient without gender element
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
+		And the Patient Demographics should match the Stored Patient
 
 Scenario: Register patient without date of birth element
 	Given I get the next Patient to register and store it
@@ -307,7 +308,6 @@ Scenario: Register patient which alread exists on the system as a temporary pati
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-@ignore
 Scenario: Register patient which is not the Spine
 	Given I create a Patient which does not exist on PDS and store it
 	Given I configure the default "RegisterPatient" request
@@ -317,7 +317,6 @@ Scenario: Register patient which is not the Spine
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-@ignore
 Scenario: Register patient with demographics which do not match spine PDS trace
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -353,11 +352,27 @@ Scenario: Register patient with an additional usual name
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
 
+Scenario Outline: Register Patient with multiple given names
+	Given I get the next Patient to register and store it
+    Given I configure the default "RegisterPatient" request
+        And I set the JWT Requested Record to the NHS Number of the Stored Patient
+        And I add "<ExtraGivenNames>" Given Names to the Stored Patient Usual Name
+        And I add the Stored Patient as a parameter
+    When I make the "RegisterPatient" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Patient Demographics should match the Stored Patient
+	Examples: 
+		| ExtraGivenNames |
+		| 1               |
+		| 2               |
+		| 5               |
+
 Scenario: Register patient no family names
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I remove the Family Name from the Stored Patient
+		And I remove the Family Name from the Active Given Name for the Stored Patient
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"

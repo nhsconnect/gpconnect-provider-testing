@@ -86,38 +86,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         odsOrganizationCodeIdentifier?.Value.ShouldBe(odsCode, $"The Organization Identifier (Organization Code) Value should match the expected value {odsCode}.");
                     }
 
-         
-
-                    var localOrgzCodeIdentifiers = organization.Identifier
-                        .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kLocalOrgzCode))
-                        .ToList();
-
-                    localOrgzCodeIdentifiers.ForEach(lOrgz =>
-                    {
-                        CheckForValidLocalIdentifier(lOrgz, () => ValidateAssignerRequest(organization.PartOf.Reference));
-                    });
-
                 }
             });
-        }
-
-        private void ValidateAssignerRequest(string reference)
-        {
-            if (!ResourceReferenceHelper.IsRelOrAbsReference(reference)) return;
-
-            _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationRead);
-
-            _httpContext.HttpRequestConfiguration.RequestUrl = reference;
-
-            _httpSteps.MakeRequest(GpConnectInteraction.OrganizationRead);
-
-            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
-
-            StoreTheOrganization();
-
-            var returnedReference = _fhirResourceRepository.Organization.ResourceIdentity().ToString();
-
-            returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
         }
 
         [Then(@"the Organization Metadata should be valid")]
