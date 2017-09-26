@@ -67,6 +67,7 @@ Scenario: Register patient without gender element
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
+		And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
@@ -112,6 +113,7 @@ Scenario Outline: Register Patient and use the Accept Header to request response
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
+		And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
@@ -133,6 +135,7 @@ Scenario Outline: Register Patient and use the _format parameter to request the 
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
+		And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
@@ -156,6 +159,7 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
 		And the response should be a Bundle resource of type "searchset"
+		And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
@@ -181,6 +185,7 @@ Scenario: Register patient and check all elements conform to the gp connect prof
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
+		And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
@@ -337,15 +342,26 @@ Scenario: Register patient with no usual name
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient with an additional usual name
+Scenario: Register patient with an additional active usual name
     Given I get the next Patient to register and store it
     Given I configure the default "RegisterPatient" request
         And I set the JWT Requested Record to the NHS Number of the Stored Patient
-        And I add a Usual Name to the Stored Patient
+        And I add an "active" Usual Name to the Stored Patient
+        And I add the Stored Patient as a parameter
+    When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with an additional inactive usual name
+    Given I get the next Patient to register and store it
+    Given I configure the default "RegisterPatient" request
+        And I set the JWT Requested Record to the NHS Number of the Stored Patient
+        And I add an "inactive" Usual Name to the Stored Patient
         And I add the Stored Patient as a parameter
     When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
+		And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
@@ -361,6 +377,7 @@ Scenario Outline: Register Patient with multiple given names
     When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
+		And the response meta profile should be for "searchset"
 		And the Patient Demographics should match the Stored Patient
 	Examples: 
 		| ExtraGivenNames |
@@ -408,6 +425,7 @@ Scenario Outline: Register patient with additional valid elements
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
+		And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
@@ -473,6 +491,7 @@ Scenario: Register pateient valid response check caching headers exist
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
+		And the response meta profile should be for "searchset"
 		And the required cacheing headers should be present in the response
 
 Scenario:Register pateient invalid response check caching headers exist
