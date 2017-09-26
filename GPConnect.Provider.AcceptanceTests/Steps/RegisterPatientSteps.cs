@@ -165,6 +165,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.BodyParameters.Add("appointment", _fhirResourceRepository.Appointment);
         }
 
+        [Given(@"I add the Stored Organization as a parameter")]
+        public void AddTheStoredOrganizationAsAParameterWithName()
+        {
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add("organization", _fhirResourceRepository.Organization);
+        }
+
         [Given(@"I add the Stored Patient as a parameter with name ""([^""]*)""")]
         public void AddTheStoredPatientAsAParameterWithName(string parameterName)
         {
