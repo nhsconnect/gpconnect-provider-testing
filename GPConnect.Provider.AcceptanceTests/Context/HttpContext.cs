@@ -1,6 +1,5 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Context
 {
-    using System.Net;
     using System.Xml.Linq;
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Serialization;
@@ -29,7 +28,6 @@
             HttpRequestConfiguration.RequestParameters.ClearParameters();
             HttpRequestConfiguration.RequestBody = null;
             HttpRequestConfiguration.BodyParameters = new Parameters();
-            HttpRequestConfiguration.DecompressionMethod = DecompressionMethods.None;
         }
 
         public void SaveToDisk(string filename)

@@ -175,11 +175,5 @@
         {
             _httpContext.HttpRequestConfiguration.RequestUrl = relativePath + "/" + _httpContext.HttpRequestConfiguration.GetRequestId;
         }
-
-        [Given("I set the Decompression Method to gzip")]
-        public void SetTheDecompressionMethodToGzip()
-        {
-            _httpContext.HttpRequestConfiguration.DecompressionMethod = DecompressionMethods.GZip;
-        }
     }
 }

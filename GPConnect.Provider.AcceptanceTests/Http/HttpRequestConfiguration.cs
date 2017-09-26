@@ -20,12 +20,9 @@
             RequestParameters.ClearParameters();
             RequestBody = null;
             BodyParameters = new Parameters();
-            DecompressionMethod = DecompressionMethods.None;
             LoadAppConfig();
             SetDefaultHeaders();
         }
-
-        public DecompressionMethods DecompressionMethod { get; set; }
 
         public bool UseTls => ScenarioContext.Current.Get<bool>("useTLS");
 
