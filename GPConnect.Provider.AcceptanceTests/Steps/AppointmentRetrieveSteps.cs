@@ -64,28 +64,6 @@
             });
         }
 
-        [Then(@"the Appointment Reason should be valid")]
-        public void TheAppointmentReasonShouldBeValid()
-        {
-            Appointments.ForEach(appointment =>
-            {
-                if (appointment.Reason?.Coding != null)
-                {
-                    const string snomed = "http://snomed.info/sct";
-         
-
-                    appointment.Reason.Coding.ForEach(coding =>
-                    {
-                        coding.System.ShouldBeOneOf(snomed, $"The Appointment Reason Coding System should be one of {snomed} but was {coding.System}.");
-                    });
-
-                    var snomedCodingCount = appointment.Reason.Coding.Count(coding => coding.System == snomed);
-                    snomedCodingCount.ShouldBeLessThanOrEqualTo(1, $"The Appointment Reason Coding Systems should contain a maximum of 1 SNOMED Coding Systems but contained {snomedCodingCount}.");
-        
-                }
-            });
-        }
-
         [Then(@"the Appointment Description must be valid")]
         public void TheAppointmentDescriptionShouldNotBeNull()
         {

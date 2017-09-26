@@ -161,7 +161,7 @@
             {
                 Coding = new List<Coding>
                 {
-                    new Coding("http://snomed.info/sct", reason, reason)
+                    new Coding("valueset", reason, reason)
                 }
             };
         }
