@@ -58,9 +58,6 @@
             var slots = new List<ResourceReference>();
             slots.Add(slot);
 
-
-            CodeableConcept reason = GetReason();
-
             var appointment = new Appointment
             {
                 Status = AppointmentStatus.Booked,
@@ -68,7 +65,7 @@
                 End = firstSlot.End,
                 Participant = participants,
                 Slot = slots,
-                Reason = reason
+              
 
             };
 
@@ -77,11 +74,6 @@
 
 
             return appointment;
-        }
-
-        private CodeableConcept GetReason()
-        {
-            return new CodeableConcept("http://snomed.info/sct", "http://snomed.info/sct", "subject", "subject");
         }
 
         private static ParticipantComponent GetLocation(string locationReference)

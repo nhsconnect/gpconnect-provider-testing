@@ -159,28 +159,6 @@ Scenario: Read appointment if resource contains identifier then the value is man
 		And the response body should be FHIR JSON
 		And the Appointment Identifiers should be valid
 
-Scenario: Read appointment if reason is included in response check that it conforms to SNOMED valueset
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get the Schedule for Organization Code "ORG1"
-		And I store the Schedule
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Reason to "customComment"
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate created
-		And I store the Appointment
-		And the Response Resource should be an Appointment
-	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment Reason to "customComment"
-	When I make the "AppointmentRead" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the Response Resource should be an Appointment
-		And the Appointment Reason should be valid
-
 Scenario: Read appointment containing a priority element and check that the priority is valid
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
