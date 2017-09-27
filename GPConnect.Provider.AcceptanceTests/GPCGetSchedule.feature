@@ -2,24 +2,22 @@
 Feature: GPCGetSchedule
 	
 Scenario Outline: I successfully perform a gpc.getschedule operation
-	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "<Days>" days
-	When I make the "GpcGetSchedule" request
+		And I set the JWT requested scope to "organization/*.read"
+		When I make the "GpcGetSchedule" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| Organization | Days |
-		| ORG1         | 14   |
-		| ORG2         | 0    |
-		| ORG3         | 8    |
-
+		| Days |
+		| 14   |
+		| 0    |
+		| 8    |    
+@ignore		
 Scenario Outline: I send an invalid date range to the getSchedule operation and should get an error
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "<Days>" days
+		And I add a query parameter to the Request URL with StartDate "2014" and EndDate "2015" and fb-type "free" and include "schedule"
 	When I make the "GpcGetSchedule" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
@@ -29,38 +27,20 @@ Scenario Outline: I send an invalid date range to the getSchedule operation and 
 		| 31   |
 		| -1   |
 
-Scenario Outline: I send a request to the getSchedule operation with invalid organization logic id
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
-	Given I configure the default "GpcGetSchedule" request
-		And I add a Time Period parameter with Start Date today and End Date in "6" days	
-		And I set the Read Operation logical identifier used in the request to "<LogicalIdentifier>"
-	When I make the "GpcGetSchedule" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "ORGANISATION_NOT_FOUND"
-	Examples:
-		| LogicalIdentifier         |
-		|                           |
-		| InvalidLogicalID123456789 |
-
 Scenario Outline: getSchedule failure due to invalid interactionId
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
-		And I add a Time Period parameter with Start Date today and End Date in "6" days	
+		And I add a query parameter to the Request URL with StartDate "2014" and EndDate "2015" and fb-type "free" and include "schedule"
 		And I set the Interaction Id header to "<InteractionId>"
 	When I make the "GpcGetSchedule" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| InteractionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
+		| urn:nhs:names:zservices:gpconnect:fhir:operation:gpc.getcarerecord |
 		| InvalidInteractionId                                              |
 		|                                                                   |
 
 Scenario Outline: getSchedule failure due to missing header
-	Given I get the Organization for Organization Code "ORG2"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "6" days	
 	When I make the "GpcGetSchedule" request with missing Header "<Header>"
@@ -73,46 +53,36 @@ Scenario Outline: getSchedule failure due to missing header
 		| Ssp-To            |
 		| Ssp-InteractionId |
 		| Authorization     |
-
+@ignore	
 Scenario: I try to getSchedule without a time period parameter
-	Given I get the Organization for Organization Code "ORG2"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 	When I make the "GpcGetSchedule" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
+@ignore	
 Scenario: I try to getSchedule with multiple time period parameter
-	Given I get the Organization for Organization Code "ORG2"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "6" days	
 		And I add a Time Period parameter with Start Date today and End Date in "7" days	
 	When I make the "GpcGetSchedule" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
-
+@ignore	
 Scenario: I try to getSchedule with a time period containing only a start date
-	Given I get the Organization for Organization Code "ORG2"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date only
 	When I make the "GpcGetSchedule" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
-
+@ignore	
 Scenario: I try to getSchedule with a time period containing only an end date
-	Given I get the Organization for Organization Code "ORG2"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with End Date only
 	When I make the "GpcGetSchedule" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
-
+@ignore	
 Scenario Outline: I perform a getSchedule with invalid end date and or start date parameters
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with "<StartDate>" and "<EndDate>"
 	When I make the "GpcGetSchedule" request
@@ -126,10 +96,8 @@ Scenario Outline: I perform a getSchedule with invalid end date and or start dat
 		| 2017-02-26       |                  |
 		|                  | 2017-02-28       |
 		| 2017-12-29T08:30 | 2017-12-29T18:22 |
-
+@ignore	
 Scenario Outline: I perform a getSchedule with valid partial dateTime strings
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date format "<StartDate>" and End Date format "<EndDate>" 
 	When I make the "GpcGetSchedule" request
@@ -142,11 +110,8 @@ Scenario Outline: I perform a getSchedule with valid partial dateTime strings
 		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-ddTHH:mm:ss |
 		| yyyy-MM-dd          | yyyy-MM-ddTHH:mm:ss |
 		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-dd          |
-
-
+@ignore	
 Scenario Outline: I perform a getSchedule with in-valid partial dateTime strings
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date format "<StartDate>" and End Date format "<EndDate>" 
 	When I make the "GpcGetSchedule" request
@@ -158,30 +123,24 @@ Scenario Outline: I perform a getSchedule with in-valid partial dateTime strings
 		| yyyy-MM-dd          | yyyy                |
 		| yyyy                | yyyy-MM             |
 		| yyyy-MM             | yyyy-MM-dd          |
-	
+@ignore		
 Scenario: I try to getSchedule with multiple parameters of which some are invalid
-	Given I get the Organization for Organization Code "ORG2"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "6" days	
 		And I add a Record Section parameter for "SUM"
 	When I make the "GpcGetSchedule" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
-
+@ignore	
 Scenario: I try to getSchedule with multiple parameters of which some are invalid different order
-	Given I get the Organization for Organization Code "ORG2"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Record Section parameter for "SUM"
 		And I add a Time Period parameter with Start Date today and End Date in "6" days	
 	When I make the "GpcGetSchedule" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
+@ignore	
 Scenario Outline: I successfully perform a gpc.getschedule operation and check the response bundle resources returned contains required meta data
-	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "<Days>" days	
 	When I make the "GpcGetSchedule" request
@@ -189,14 +148,12 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the response should be a Bundle resource of type "searchset"
 		And the Schedule Bundle Metadata should be valid
 	Examples:
-		| Organization | Days |
-		| ORG1         | 14   |
-		| ORG2         | 8    |
-		| ORG3         | 8    |
-
+		| Days |
+		| 14   |
+		| 8    |
+		| 8    |
+@ignore	
 Scenario Outline: I successfully perform a gpc.getschedule operation and check the slot resources returned are valid
-	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "<Days>" days	
 	When I make the "GpcGetSchedule" request
@@ -207,13 +164,11 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the Slot Metadata should be valid
 		And the Slot Identifiers should be valid
 	Examples:
-		| Organization | Days |
-		| ORG1         | 14   |
-		| ORG2         | 8    |
-
+		| Days |
+		| 14   |
+		| 8    |
+@ignore	
 Scenario Outline: I successfully perform a gpc.getschedule operation and check the slot references to schedule resource can be resolved in bundle
-	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "<DaysRange>" days	
 	When I make the "GpcGetSchedule" request
@@ -222,13 +177,11 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the Bundle should contain Slots
 		And the Slot Schedule should be referenced in the Bundle
 	Examples:
-		| Organization | DaysRange |
-		| ORG1         | 14        |
-		| ORG2         | 13        |
-
+		| DaysRange |
+		| 14        |
+		| 13        |
+@ignore	
 Scenario Outline: I successfully perform a gpc.getschedule operation using various content types XML and JSON in Accept header
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I set the request content type to "<RequestContentType>"
 		And I set the Accept header to "<AcceptHeaderValue>"
@@ -245,10 +198,8 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		| application/json+fhir | application/json+fhir | JSON             |
 		| application/xml+fhir  | application/json+fhir | JSON             |
 		| application/json+fhir | application/xml+fhir  | XML              |
-
+@ignore	
 Scenario Outline: I successfully perform a gpc.getschedule operation using various content types XML and JSON in format parameter
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I set the request content type to "<RequestContentType>"
 		And I add a Format parameter with the Value "<FormatParameterValue>"
@@ -265,10 +216,8 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		| application/json+fhir | application/json+fhir | JSON             |
 		| application/xml+fhir  | application/json+fhir | JSON             |
 		| application/json+fhir | application/xml+fhir  | XML              |
-
+@ignore	
 Scenario Outline: I successfully perform a gpc.getschedule operation using various content types XML and JSON in the Accept Header and format parameter
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I set the request content type to "<RequestContentType>"
 		And I set the Accept header to "<AcceptHeaderValue>"
@@ -290,10 +239,8 @@ Scenario Outline: I successfully perform a gpc.getschedule operation using vario
 		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON             |
 		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON             |
 		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML              |
-
+@ignore	
 Scenario: Send a request to an invalid endpoint for the gpc.getschedule operation
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "8" days
 		And I set the request URL to ""
@@ -301,10 +248,8 @@ Scenario: Send a request to an invalid endpoint for the gpc.getschedule operatio
 	Then the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
 
-
+@ignore	
 Scenario Outline: I successfully perform a gpc.getschedule operation and check the included schedule resources returned are valid
-	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "<Days>" days
 	When I make the "GpcGetSchedule" request
@@ -318,13 +263,11 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the Schedule Type should be valid
 		And the Schedule Practitioner Extensions should be valid and referenced in the Bundle
 	Examples:
-		| Organization | Days |
-		| ORG1         | 13   |
-		| ORG2         | 11   |
-
+		| Days |
+		| 13   |
+		| 11   |
+@ignore	
 Scenario Outline: I successfully perform a gpc.getschedule operation and check the included practitioner resources returned are valid
-	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "<Days>" days
 	When I make the "GpcGetSchedule" request
@@ -340,13 +283,11 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the Practitioner nhsCommunication should be valid
 		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
-		| Organization | Days |
-		| ORG1         | 10   |
-		| ORG2         | 13   |
-
+		| Days |
+		| 10   |
+		| 13   |
+@ignore	
 Scenario Outline: I successfully perform a gpc.getschedule operation and check the included organization resources returned are valid
-	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "<Days>" days
 	When I make the "GpcGetSchedule" request
@@ -358,13 +299,11 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the Organization Type should be valid
 		And the Organization PartOf Organization should be referenced in the Bundle
 	Examples:
-		| Organization | Days |
-		| ORG1         | 13   |
-		| ORG2         | 12   |
-
+		| Days |
+		| 13   |
+		| 12   |
+@ignore	
 Scenario Outline: I successfully perform a gpc.getschedule operation and check the included location resources returned are valid
-	Given I get the Organization for Organization Code "<Organization>"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "<Days>" days
 	When I make the "GpcGetSchedule" request
@@ -378,29 +317,25 @@ Scenario Outline: I successfully perform a gpc.getschedule operation and check t
 		And the Location PartOf Location should be valid
 		And the Location Managing Organization should be valid
 	Examples:
-		| Organization | Days |
-		| ORG1         | 13   |
-		| ORG2         | 13   |
-
+		| Days |
+		| 13   |
+		| 13   |
+@ignore	
 Scenario: Conformance profile supports the gpc.getSchedule operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the Conformance REST Operations should contain "gpc.getschedule"
-
+@ignore	
 Scenario:GPCGetSchedule valid response check caching headers exist
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "14" days
 	When I make the "GpcGetSchedule" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the required cacheing headers should be present in the response
-
+@ignore	
 Scenario:GPCGetSchedule invalid response check caching headers exist
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
 	Given I configure the default "GpcGetSchedule" request
 		And I add a Time Period parameter with Start Date today and End Date in "15" days
 	When I make the "GpcGetSchedule" request

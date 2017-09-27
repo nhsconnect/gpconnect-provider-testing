@@ -35,9 +35,6 @@
                 case GpConnectInteraction.RegisterPatient:
                     ConfigureRegisterPatientBody(httpRequestConfiguration);
                     break;
-                case GpConnectInteraction.GpcGetSchedule:
-                    ConfigureGpcGetSchedule(httpRequestConfiguration);
-                    break;
                 case GpConnectInteraction.AppointmentCreate:
                     ConfigureAppointmentCreateBody(httpRequestConfiguration);
                     break;
@@ -75,10 +72,6 @@
             httpRequestConfiguration.RequestBody = _serializer(httpRequestConfiguration.BodyParameters);
         }
 
-        private static void ConfigureGpcGetSchedule(HttpRequestConfiguration httpRequestConfiguration)
-        {
-            httpRequestConfiguration.RequestBody = _serializer(httpRequestConfiguration.BodyParameters);
-        }
 
         private void ConfigureAppointmentAmendBody(HttpRequestConfiguration httpRequestConfiguration)
         {

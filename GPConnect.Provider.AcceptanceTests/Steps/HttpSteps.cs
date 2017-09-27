@@ -10,6 +10,7 @@
     using Factories;
     using Http;
     using Repository;
+    using System;
 
     [Binding]
     public class HttpSteps : Steps
@@ -85,6 +86,14 @@
         [When(@"I make the ""(.*)"" request")]
         public void MakeRequest(GpConnectInteraction interaction)
         {
+           
+            if (interaction.ToString().Equals("GpcGetSchedule")) {
+               
+                var start = "2017-09-26T12:22:32.038Z";
+                var end = "2017-09-27T12:22:32.038Z";
+            
+                _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={start}&end={end}&fb-type=free&_include=Slot:schedule";
+        }
             _httpContext.HttpRequestConfiguration = GetRequestBody(interaction, _httpContext.HttpRequestConfiguration);
 
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());

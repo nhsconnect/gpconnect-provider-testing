@@ -37,6 +37,8 @@
             _organizationSteps.GetTheOrganizationForOrganizationCode(code);
             _organizationSteps.StoreTheOrganization();
 
+
+
             _httpSteps.ConfigureRequest(GpConnectInteraction.GpcGetSchedule);
 
             _accessRecordSteps.AddATimePeriodParameterWithStartDateTodayAndEndDateInDays(13);
@@ -187,6 +189,24 @@
         public void TheScheduleBundleMetadataShouldBeValid()
         {
             CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, "http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
+        }
+
+        [Given(@"I add a query parameter to the Request URL with StartDate ""([^""]*)"" and EndDate ""([^""]*)"" and fb-type ""([^""]*)"" and include ""([^""]*)""")]
+        public void AddAQueryParameterToTheRequestUrlWithPrefixForStart(string start, string end, string free, string schedule)
+        {
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={start}&end={end}&fb-type={free}&_include=Slot:{schedule}";
+        }
+
+        [Given(@"I add a query parameter to the Request URL called fb-type with value free")]
+        public void AddAQueryParameterToTheRequestUrlFbType()
+        {
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}&fb-type=free";
+        }
+
+        [Given(@"I add a query parameter to the Request URL called _include with value Slot:schedule")]
+        public void AddAQueryParameterToTheRequestUrlInclude()
+        {
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}&_include=Slot:schedule";
         }
     }
 }

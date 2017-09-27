@@ -30,6 +30,8 @@
             public static string AppointmentCancel => BaseInteraction + "rest:update:appointment";
             public static string AppointmentRead => BaseInteraction + "rest:read:appointment";
 
+            public static string SlotRead => BaseInteraction + "rest:search:slot";
+
             public static string MetadataRead => BaseInteraction + "rest:read:metadata";
 
             public const string kFhirPractitioner = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";

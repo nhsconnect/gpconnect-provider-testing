@@ -172,9 +172,9 @@
 
         private static HttpRequestConfiguration GetScheduleConfiguration()
         {
-            _httpRequestConfiguration.HttpMethod = HttpMethod.Post;
-            _httpRequestConfiguration.RequestUrl = "Organization/" + _httpRequestConfiguration.GetRequestId + "/$gpc.getschedule";
-            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetSchedule);
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Slot";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.SlotRead);
 
             return _httpRequestConfiguration;
         }
