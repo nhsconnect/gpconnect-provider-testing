@@ -92,7 +92,7 @@
         {
             _patientSteps.GetThePatientForPatientValue(patient);
             _patientSteps.StoreThePatient();
-
+          
             _searchForFreeSlotsSteps.GetTheScheduleForOrganizationCode(code);
             _searchForFreeSlotsSteps.StoreTheSchedule();
 

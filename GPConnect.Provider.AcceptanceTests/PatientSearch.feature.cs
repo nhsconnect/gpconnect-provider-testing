@@ -574,7 +574,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("patient4", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient5", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient6", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient17", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient18", new string[0])]
         public virtual void PatientSearchResponseConformsWithTheGPConnectSpecification(string patient, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient search response conforms with the GPConnect specification", exampleTags);

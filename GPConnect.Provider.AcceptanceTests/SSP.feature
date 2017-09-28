@@ -118,24 +118,24 @@ Scenario Outline: SSP - CORS
 		And the Response Headers should contain an Access-Control-Request-Method header
 		Then the Access-Control-Request-Method header should contain the "<Method>" request methods
 	Examples: 
-	| Interaction        | Method   | Url (for reference only)			|
-	| GpcGetCareRecord   | POST     | Patient/$gpc.getcarerecord        |
-	| OrganizationSearch | GET      | Organization                      |
-	| OrganizationRead   | GET      | Organization/{id}                 |
-	| PractitionerSearch | GET      | Practitioner                      |
-	| PractitionerRead   | GET      | Practitioner/{id}                 |
-	| PatientSearch      | GET      | Patient                           |
-	| PatientRead        | GET      | Patient/{id}                      |
-	| LocationSearch     | GET      | Location                          |
-	| LocationRead       | GET      | Location/{id}                     |
-	| RegisterPatient    | POST     | Patient/$gpc.registerpatient      |
+	| Interaction        | Method   | Url (for reference only)     |
+	| GpcGetCareRecord   | POST     | Patient/$gpc.getcarerecord   |
+	| OrganizationSearch | GET      | Organization                 |
+	| OrganizationRead   | GET      | Organization/{id}            |
+	| PractitionerSearch | GET      | Practitioner                 |
+	| PractitionerRead   | GET      | Practitioner/{id}            |
+	| PatientSearch      | GET      | Patient                      |
+	| PatientRead        | GET      | Patient/{id}                 |
+	| LocationSearch     | GET      | Location                     |
+	| LocationRead       | GET      | Location/{id}                |
+	| RegisterPatient    | POST     | Patient/$gpc.registerpatient |
 	| SearchForFreeSlots | GET      | Slot								|
-	| AppointmentCreate  | POST     | Appointment                       |
-	| AppointmentSearch  | GET      | Patient/{id}/Appointment          |
-	| AppointmentAmend   | GET, PUT | Appointment/{id}                  |
-	| AppointmentCancel  | GET, PUT | Appointment/{id}                  |
-	| AppointmentRead    | GET, PUT | Appointment/{id}                  |
-	| MetadataRead       | GET      | metadata                          |
+	| AppointmentCreate  | POST     | Appointment                  |
+	| AppointmentSearch  | GET      | Patient/{id}/Appointment     |
+	| AppointmentAmend   | GET, PUT | Appointment/{id}             |
+	| AppointmentCancel  | GET, PUT | Appointment/{id}             |
+	| AppointmentRead    | GET, PUT | Appointment/{id}             |
+	| MetadataRead       | GET      | metadata                     |
 
 Scenario: SSP - To ASID - Invalid
 	Given I configure the default "MetadataRead" request
