@@ -27,7 +27,7 @@
                 case GpConnectInteraction.PractitionerRead:
                 case GpConnectInteraction.LocationSearch:
                 case GpConnectInteraction.LocationRead:
-                case GpConnectInteraction.GpcGetSchedule:
+                case GpConnectInteraction.SearchForFreeSlots:
                     jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
                     break;
                 case GpConnectInteraction.GpcGetCareRecord:

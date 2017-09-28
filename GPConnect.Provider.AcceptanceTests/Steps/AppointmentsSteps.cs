@@ -17,7 +17,7 @@
         private readonly HttpContext _httpContext;
         private readonly JwtSteps _jwtSteps;
         private readonly PatientSteps _patientSteps;
-        private readonly GetScheduleSteps _getScheduleSteps;
+        private readonly SearchForFreeSlotsSteps _searchForFreeSlotsSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
 
@@ -27,8 +27,8 @@
             HttpSteps httpSteps,
             HttpContext httpContext,
             JwtSteps jwtSteps, 
-            PatientSteps patientSteps, 
-            GetScheduleSteps getScheduleSteps, 
+            PatientSteps patientSteps,
+            SearchForFreeSlotsSteps searchForFreeSlotsSteps, 
             HttpRequestConfigurationSteps httpRequestConfigurationSteps, 
             IFhirResourceRepository fhirResourceRepository) 
             : base(httpSteps)
@@ -36,7 +36,7 @@
             _httpContext = httpContext;
             _jwtSteps = jwtSteps;
             _patientSteps = patientSteps;
-            _getScheduleSteps = getScheduleSteps;
+            _searchForFreeSlotsSteps = searchForFreeSlotsSteps;
             _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
             _fhirResourceRepository = fhirResourceRepository;
         }
@@ -93,8 +93,8 @@
             _patientSteps.GetThePatientForPatientValue(patient);
             _patientSteps.StoreThePatient();
 
-            _getScheduleSteps.GetTheScheduleForOrganizationCode(code);
-            _getScheduleSteps.StoreTheSchedule();
+            _searchForFreeSlotsSteps.GetTheScheduleForOrganizationCode(code);
+            _searchForFreeSlotsSteps.StoreTheSchedule();
 
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
 

@@ -1,4 +1,7 @@
-﻿namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿using System.Linq;
+using GPConnect.Provider.AcceptanceTests.Constants;
+
+namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
     using Context;
@@ -10,24 +13,26 @@
     using static Hl7.Fhir.Model.Slot;
 
     [Binding]
-    public class GetScheduleSteps : BaseSteps
+    public class SearchForFreeSlotsSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
         private readonly AccessRecordSteps _accessRecordSteps;
         private readonly BundleSteps _bundleSteps;
         private readonly OrganizationSteps _organizationSteps;
+        private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
 
         private List<Slot> Slots => _httpContext.FhirResponse.Slots;
         private List<Schedule> Schedules => _httpContext.FhirResponse.Schedules;
 
-        public GetScheduleSteps(HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps, IFhirResourceRepository fhirResourceRepository)
+        public SearchForFreeSlotsSteps(HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
         {
             _httpContext = httpContext;
             _accessRecordSteps = accessRecordSteps;
             _bundleSteps = bundleSteps;
             _organizationSteps = organizationSteps;
+            _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
             _fhirResourceRepository = fhirResourceRepository;
         }
 
@@ -39,11 +44,11 @@
 
 
 
-            _httpSteps.ConfigureRequest(GpConnectInteraction.GpcGetSchedule);
+            _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
 
             _accessRecordSteps.AddATimePeriodParameterWithStartDateTodayAndEndDateInDays(13);
 
-            _httpSteps.MakeRequest(GpConnectInteraction.GpcGetSchedule);
+            _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }
 
         [Given(@"I store the Schedule")]
@@ -55,6 +60,23 @@
             {
                 _fhirResourceRepository.Bundle = schedule;
             }
+        }
+
+        [Given(@"I set the required parameters with a time period of ""(.*)"" days")]
+        public void SetRequiredParametersWithTimePeriod(int days)
+        {
+            _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingToday(days);
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("fb-type", "free");
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
+        }
+
+
+        [Then(@"the Bundle should not contain resources")]
+        public void TheBundleShouldNotContainResources()
+        {
+            Slots.Count.ShouldBe(0, "I require no slots to be returned so as to test the exclusion of other resources.");
+
+            _httpContext.FhirResponse.Entries.Count(entry => entry.Resource != null).ShouldBe(0, "No resources should be present in the bundle when no slots are returned.");
         }
 
         [Then(@"the Bundle should contain Slots")]
@@ -100,9 +122,10 @@
         {
             Slots.ForEach(slot =>
             {
-                slot.Schedule?.Reference.ShouldNotBeNullOrEmpty($"The Slot Schedule Reference should not be null or empty but was {slot.Schedule?.Reference}");
+                slot.Schedule.ShouldNotBeNull("The Slot Schedule should not be null");
+                slot.Schedule.Reference.ShouldNotBeNullOrEmpty($"The Slot Schedule Reference should not be null or empty but was {slot.Schedule.Reference}");
 
-                _bundleSteps.ResponseBundleContainsReferenceOfType(slot.Schedule?.Reference, ResourceType.Schedule);
+                _bundleSteps.ResponseBundleContainsReferenceOfType(slot.Schedule.Reference, ResourceType.Schedule);
             });
         }
 
@@ -170,7 +193,7 @@
             {
                 schedule.Extension.ForEach(extension =>
                 {
-                    const string url = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-practitioner-1";
+                    const string url = FhirConst.StructureDefinitionSystems.kExtGpcPractitioner;
                     extension.Url.ShouldBe(url, $"The Practitioner Extension Url should be {url} but was {extension.Url}.");
                     extension.Value.ShouldNotBeNull("The Practitioner Extension Value should not be null.");
 
@@ -185,28 +208,41 @@
             });
         }
 
-        [Then(@"the Schedule Bundle Metadata should be valid")]
+        [Then(@"the Bundle Metadata should be valid")]
         public void TheScheduleBundleMetadataShouldBeValid()
         {
             CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, "http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
         }
 
-        [Given(@"I add a query parameter to the Request URL with StartDate ""([^""]*)"" and EndDate ""([^""]*)"" and fb-type ""([^""]*)"" and include ""([^""]*)""")]
-        public void AddAQueryParameterToTheRequestUrlWithPrefixForStart(string start, string end, string free, string schedule)
+        [Then(@"the excluded actor ""(.*)"" should not be present in the Bundle")]
+        public void TheExcludedActorShouldNotBePresentInTheBundle(ResourceType excludedActor)
         {
-            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={start}&end={end}&fb-type={free}&_include=Slot:{schedule}";
+            _bundleSteps.ResponseBundleDoesNotContainReferenceOfType(excludedActor);
         }
 
-        [Given(@"I add a query parameter to the Request URL called fb-type with value free")]
-        public void AddAQueryParameterToTheRequestUrlFbType()
+        [Then(@"the Organization should be referenced in a resource")]
+        public void TheOrganizationShouldBeReferencedInResource()
         {
-            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}&fb-type=free";
-        }
+            var organizationEntries = _httpContext
+                .FhirResponse
+                .Entries
+                .Where(entry => entry.Resource.ResourceType == ResourceType.Organization)
+                .ToList();
 
-        [Given(@"I add a query parameter to the Request URL called _include with value Slot:schedule")]
-        public void AddAQueryParameterToTheRequestUrlInclude()
-        {
-            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}&_include=Slot:schedule";
+            List<Practitioner> practitionerEntries = _httpContext
+                .FhirResponse
+                .Entries
+                .Where(entry => entry.Resource.ResourceType == ResourceType.Practitioner).Select(e => (Practitioner)e.Resource)
+                .ToList();
+
+            organizationEntries.ForEach(organizationEntry =>
+            {
+                organizationEntry.FullUrl.ShouldNotBeNull();
+
+                var orgRef = practitionerEntries.FirstOrDefault(p => p.PractitionerRole.Any(r => r.ManagingOrganization != null && r.ManagingOrganization.Reference.Equals(organizationEntry.FullUrl)));
+
+                orgRef.ShouldNotBeNull("The Organization in the bundle was not found as a reference in another resource.");
+            });
         }
     }
 }

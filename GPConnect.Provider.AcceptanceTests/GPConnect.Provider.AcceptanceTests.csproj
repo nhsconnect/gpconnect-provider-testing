@@ -169,6 +169,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="SearchForFreeSlots.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchForFreeSlots.feature</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\AppSettingsHelper.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Helpers\FhirHelper.cs" />
@@ -267,11 +272,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PatientRegister.feature</DependentUpon>
     </Compile>
-    <Compile Include="GPCGetSchedule.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GPCGetSchedule.feature</DependentUpon>
-    </Compile>
     <Compile Include="AppointmentAmend.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -296,7 +296,7 @@
     <Compile Include="Steps\HttpRequestConfigurationSteps.cs" />
     <Compile Include="Steps\HttpResponseSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
-    <Compile Include="Steps\GetScheduleSteps.cs" />
+    <Compile Include="Steps\SearchForFreeSlotsSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />
     <Compile Include="Steps\PatientSteps.cs" />
     <Compile Include="Steps\HtmlSteps.cs" />
@@ -410,9 +410,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PatientRegister.feature.cs</LastGenOutput>
     </None>
-    <None Include="GPCGetSchedule.feature">
+    <None Include="SearchForFreeSlots.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>GPCGetSchedule1.feature.cs</LastGenOutput>
+      <LastGenOutput>SearchForFreeSlots.feature.cs</LastGenOutput>
     </None>
     <None Include="Security.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -184,6 +184,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
+        [Then(@"the Location should be valid")]
+        public void TheLocationShouldBeValid()
+        {
+            TheLocationMetadataShouldBeValid();
+            TheLocationIdentifierShouldBeValid();
+            TheLocationTypeShouldBeValid();
+            TheLocationPhysicalTypeShouldBeValid();
+            TheLocationPartOfLocationShouldBeValid();
+            TheLocationManagingOrganizationShouldBeValid();
+        }
+
         [Then(@"the Location Metadata should be valid")]
         public void TheLocationMetadataShouldBeValid()
         {

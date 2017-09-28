@@ -18,7 +18,7 @@
 
         RegisterPatient = 10,
 
-        GpcGetSchedule = 11,
+        SearchForFreeSlots = 11,
 
         AppointmentCreate = 12,
         AppointmentSearch = 13,

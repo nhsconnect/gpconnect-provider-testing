@@ -90,6 +90,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
+        [Then(@"the Organization should be valid")]
+        public void TheOrganizationShouldBeValid()
+        {
+            TheOrganizationMetadataShouldBeValid();
+            TheOrganizationIdentifiersShouldBeValid();
+            TheOrganizationTypeShouldBeValid();
+            TheLocationPartOfLocationShouldBeValid();
+        }
+
         [Then(@"the Organization Metadata should be valid")]
         public void TheOrganizationMetadataShouldBeValid()
         {
@@ -242,6 +251,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     _bundleSteps.ResponseBundleContainsReferenceOfType(organization.PartOf.Reference, ResourceType.Organization);
                 }
+            });
+        }
+
+        [Then(@"the Organization PartOf Organization should be valid")]
+        public void TheLocationPartOfLocationShouldBeValid()
+        {
+            Organizations.ForEach(organization =>
+            {
+                organization.PartOf?.Reference?.ShouldStartWith("Organization/", "The reference element within the PartOf element of the Organization resource should contain a relative Organization reference.");
             });
         }
 

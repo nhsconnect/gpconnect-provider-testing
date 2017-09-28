@@ -124,7 +124,19 @@
             ThePractitionerPractitionerRolesShouldBeValid();
             ThePractitionerCommunicationShouldBeValid();
             ThePractitionerPractitionerRolesManagingOrganizationShouldBeReferencedInTheBundle();
+        }
+
+        [Then(@"the Practitioner Entry should be valid")]
+        public void ThePractitionerShouldBeFullyValid()
+        {
+            ThePractitionerMetadataShouldBeValid();
+            ThePractitionerSdsUserIdentifierShouldBeValid();
+            ThePractitionerIdentifiersShouldBeFixedValues();
             ThePractitionerNameShouldBeValid();
+            ThePractitionerPractitionerRolesShouldBeValid();
+            ThePractitionerExcludeDisallowedElements();
+            ThePractitionerCommunicationShouldBeValid();
+            ThePractitionerPractitionerRolesManagingOrganizationShouldBeValidAndResolvable();
         }
 
         [Then(@"the Practitioner Metadata should be valid")]
