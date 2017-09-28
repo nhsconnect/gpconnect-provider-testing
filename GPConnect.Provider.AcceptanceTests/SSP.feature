@@ -129,7 +129,7 @@ Scenario Outline: SSP - CORS
 	| LocationSearch     | GET      | Location                          |
 	| LocationRead       | GET      | Location/{id}                     |
 	| RegisterPatient    | POST     | Patient/$gpc.registerpatient      |
-	| GpcGetSchedule     | POST     | Organization/{id}/$gpcgetscehdule |
+	| SearchForFreeSlots | GET      | Slot								|
 	| AppointmentCreate  | POST     | Appointment                       |
 	| AppointmentSearch  | GET      | Patient/{id}/Appointment          |
 	| AppointmentAmend   | GET, PUT | Appointment/{id}                  |

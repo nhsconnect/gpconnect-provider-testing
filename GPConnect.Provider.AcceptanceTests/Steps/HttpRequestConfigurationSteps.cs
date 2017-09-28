@@ -1,4 +1,7 @@
-﻿namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿using System.Linq;
+using GPConnect.Provider.AcceptanceTests.Helpers;
+
+namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System;
     using System.Net;
@@ -97,10 +100,43 @@
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfMatch, value);
         }
 
+        [Given(@"I add the time period parameters for ""(.*)"" days starting today")]
+        public void GivenIAddTheTimePeriodParametersforDaysStartingToday(int days)
+        {
+            var val = TimePeriodHelper.GetTimePeriodStartDateTodayEndDateDays(days);
+
+            Given($"I add the parameter \"start\" with the value \"{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{val.End}\"");
+        }
+
+        [Given(@"I add the time period parameter that is ""(.*)"" days in the future")]
+        public void GivenIAddTheTimePeriodParameterThatIsDaysInTheFuture(int days)
+        {
+            var dateStart = DateTime.UtcNow.AddDays(days);
+            var dateEnd = dateStart.AddDays(1);
+            var val = TimePeriodHelper.GetTimePeriod(dateStart.ToString("yyyy-MM-dd"), dateEnd.ToString("yyyy-MM-dd"));
+
+            Given($"I add the parameter \"start\" with the value \"{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{val.End}\"");
+        }
+
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
         public void GivenIAddTheParameterWithTheValue(string parameterName, string parameterValue)
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, parameterValue);
+        }
+
+        [Given(@"I remove the parameters ""(.*)""")]
+        public void GivenIRemoveTheParameters(string parameterCsv)
+        {
+            var keys = parameterCsv.Split(',').ToList();
+            keys.ForEach(k => _httpContext.HttpRequestConfiguration.RequestParameters.RemoveParameter(k));
+        }
+
+        [Given(@"I update the parameter ""(.*)"" with value ""(.*)""")]
+        public void GivenIUpdateTheParameters(string key, string value)
+        {
+             _httpContext.HttpRequestConfiguration.RequestParameters.UpdatetParameter(key, value);
         }
 
         [Given(@"I add the parameter ""(.*)"" with the value or sitecode ""(.*)""")]

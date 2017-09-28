@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GPConnect.Provider.AcceptanceTests.Logger;
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
@@ -19,7 +20,26 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             _parameters.Add(new KeyValuePair<string,string>(key, value));
             Log.WriteLine("Added Key='{0}' Value='{1}'", key, value);
         }
-        
+
+        public void RemoveParameter(string key)
+        {
+            var paramIndex = _parameters.FindIndex(i => i.Key.Equals(key));
+
+            if (paramIndex > -1)
+            {
+                _parameters.RemoveAt(paramIndex);
+                Log.WriteLine("Remove Key='{0}'", key);
+            }
+
+        }
+
+        public void UpdatetParameter(string key, string value)
+        {
+            RemoveParameter(key);
+            AddParameter(key, value);
+            Log.WriteLine("Updating Key='{0}'", key);
+        }
+
         public List<KeyValuePair<string, string>> GetRequestParameters()
         {
             Log.WriteLine("GetRequestParameters Count='{0}'", _parameters.Count);

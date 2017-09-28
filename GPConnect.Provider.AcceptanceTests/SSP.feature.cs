@@ -354,7 +354,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("LocationSearch", "GET", "Location", new string[0])]
         [NUnit.Framework.TestCaseAttribute("LocationRead", "GET", "Location/{id}", new string[0])]
         [NUnit.Framework.TestCaseAttribute("RegisterPatient", "POST", "Patient/$gpc.registerpatient", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("GpcGetSchedule", "POST", "Organization/{id}/$gpcgetscehdule", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SearchForFreeSlots", "GET", "Slot", new string[0])]
         [NUnit.Framework.TestCaseAttribute("AppointmentCreate", "POST", "Appointment", new string[0])]
         [NUnit.Framework.TestCaseAttribute("AppointmentSearch", "GET", "Patient/{id}/Appointment", new string[0])]
         [NUnit.Framework.TestCaseAttribute("AppointmentAmend", "GET, PUT", "Appointment/{id}", new string[0])]

@@ -42,8 +42,8 @@
                     return LocationReadConfiguration();
                 case GpConnectInteraction.RegisterPatient:
                     return RegisterPatientConfiguration();
-                case GpConnectInteraction.GpcGetSchedule:
-                    return GetScheduleConfiguration();
+                case GpConnectInteraction.SearchForFreeSlots:
+                    return SearchForFreeSlotsConfiguration();
                 case GpConnectInteraction.AppointmentCreate:
                     return AppointmentCreateConfiguration();
                 case GpConnectInteraction.AppointmentSearch:
@@ -170,11 +170,11 @@
             return _httpRequestConfiguration;
         }
 
-        private static HttpRequestConfiguration GetScheduleConfiguration()
+        private static HttpRequestConfiguration SearchForFreeSlotsConfiguration()
         {
             _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
             _httpRequestConfiguration.RequestUrl = "Slot";
-            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.SlotRead);
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.SlotSearch);
 
             return _httpRequestConfiguration;
         }

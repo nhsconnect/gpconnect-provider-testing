@@ -54,6 +54,8 @@
         
         public string RequestUrl { get; set; }
 
+        public string RequestUrlParameters { get; set; }
+
         public string RequestContentType { get; set; }
 
         public string RequestBody { get; set; }
