@@ -201,7 +201,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Searching for free slots should fail due to invalid parameters")]
         [NUnit.Framework.TestCaseAttribute("invalidParam", "something", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("start", "2017-12-29T18:22:00", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("started", "2017-12-29T18:22:00", new string[0])]
         public virtual void SearchingForFreeSlotsShouldFailDueToInvalidParameters(string key, string value, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots should fail due to invalid parameters", exampleTags);
@@ -218,10 +218,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 76
  testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 77
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 78
-  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
-                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
