@@ -275,11 +275,9 @@
     <Compile Include="Repository\FhirResourceRepository.cs" />
     <Compile Include="Repository\IFhirResourceRepository.cs" />
     <Compile Include="SearchForFreeSlots.feature.cs">
-    <Compile Include="SSP.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SearchForFreeSlots.feature</DependentUpon>
-      <DependentUpon>SSP.feature</DependentUpon>
     </Compile>
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
     <Compile Include="Steps\AppointmentReadSteps.cs" />
@@ -314,6 +312,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Security.feature</DependentUpon>
+    </Compile>
+    <Compile Include="SSP.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SSP.feature</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HttpHeaderHelper.cs" />
     <Compile Include="Helpers\HttpParameterHelper.cs" />

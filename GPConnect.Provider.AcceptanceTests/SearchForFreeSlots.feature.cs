@@ -201,7 +201,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Searching for free slots should fail due to invalid parameters")]
         [NUnit.Framework.TestCaseAttribute("invalidParam", "something", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("start", "2017-12-29T18:22:00", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("started", "2017-12-29T18:22:00", new string[0])]
         public virtual void SearchingForFreeSlotsShouldFailDueToInvalidParameters(string key, string value, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots should fail due to invalid parameters", exampleTags);
@@ -235,21 +235,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SearchingForFreeSlotsShouldFailDueToInvalidParameterValues(string key, string value, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots should fail due to invalid parameter values", exampleTags);
-#line 89
+#line 88
 this.ScenarioSetup(scenarioInfo);
-#line 90
+#line 89
  testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 91
+#line 90
   testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 91
   testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
+#line 92
   testRunner.And(string.Format("I update the parameter \"{0}\" with value \"{1}\"", key, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 94
+#line 93
  testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 95
+#line 94
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 96
+#line 95
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -257,66 +257,64 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I perform a getSchedule with valid partial dateTime strings")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.DescriptionAttribute("Searching for free slots with valid partial dateTime strings")]
         [NUnit.Framework.TestCaseAttribute("yyyy-MM-dd", "yyyy-MM-dd", new string[0])]
         [NUnit.Framework.TestCaseAttribute("yyyy", "yyyy", new string[0])]
         [NUnit.Framework.TestCaseAttribute("yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm:ss", new string[0])]
         [NUnit.Framework.TestCaseAttribute("yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss", new string[0])]
         [NUnit.Framework.TestCaseAttribute("yyyy-MM-ddTHH:mm:ss", "yyyy-MM-dd", new string[0])]
-        public virtual void IPerformAGetScheduleWithValidPartialDateTimeStrings(string startDate, string endDate, string[] exampleTags)
+        public virtual void SearchingForFreeSlotsWithValidPartialDateTimeStrings(string startDate, string endDate, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I perform a getSchedule with valid partial dateTime strings", @__tags);
-#line 106
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots with valid partial dateTime strings", exampleTags);
+#line 104
 this.ScenarioSetup(scenarioInfo);
-#line 107
+#line 105
  testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 106
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+  testRunner.And(string.Format("I add the time period parameters for \"3\" days starting today using the start form" +
+                        "at \"{0}\" and the end format \"{1}\"", startDate, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
-  testRunner.And(string.Format("I add a Time Period parameter with Start Date format \"{0}\" and End Date format \"{" +
-                        "1}\"", startDate, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"fb-type\" with the value \"free\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 109
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add the parameter \"_include\" with the value \"Slot:schedule\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 110
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 111
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 112
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I perform a getSchedule with in-valid partial dateTime strings")]
-        [NUnit.Framework.IgnoreAttribute("Ignored scenario")]
+        [NUnit.Framework.DescriptionAttribute("Searching for free slots with in-valid partial dateTime strings")]
         [NUnit.Framework.TestCaseAttribute("yyyy", "yyyy-MM-dd", new string[0])]
         [NUnit.Framework.TestCaseAttribute("yyyy-MM-dd", "yyyy", new string[0])]
         [NUnit.Framework.TestCaseAttribute("yyyy", "yyyy-MM", new string[0])]
-        public virtual void IPerformAGetScheduleWithIn_ValidPartialDateTimeStrings(string startDate, string endDate, string[] exampleTags)
+        public virtual void SearchingForFreeSlotsWithIn_ValidPartialDateTimeStrings(string startDate, string endDate, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I perform a getSchedule with in-valid partial dateTime strings", @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots with in-valid partial dateTime strings", exampleTags);
 #line 121
 this.ScenarioSetup(scenarioInfo);
 #line 122
  testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 123
-  testRunner.And(string.Format("I add a Time Period parameter with Start Date format \"{0}\" and End Date format \"{" +
-                        "1}\"", startDate, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 124
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I add the time period parameters for \"3\" days starting today using the start form" +
+                        "at \"{0}\" and the end format \"{1}\"", startDate, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 125
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I add the parameter \"fb-type\" with the value \"free\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
+  testRunner.And("I add the parameter \"_include\" with the value \"Slot:schedule\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 127
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 128
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 129
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -330,27 +328,27 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully search for free slots and check the slot resources returned are vali" +
                     "d", ((string[])(null)));
-#line 133
-this.ScenarioSetup(scenarioInfo);
-#line 134
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 135
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 136
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 137
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 138
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 139
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
-  testRunner.And("the Bundle Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 141
-  testRunner.And("the Slot FreeBusyType should be Free", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 142
-  testRunner.And("the Slot Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 143
+  testRunner.And("the Bundle Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 144
+  testRunner.And("the Slot FreeBusyType should be Free", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 145
+  testRunner.And("the Slot Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 146
   testRunner.And("the Slot Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -367,27 +365,27 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully search for free slots using various content types XML and JSON in Ac" +
                     "cept header", exampleTags);
-#line 145
-this.ScenarioSetup(scenarioInfo);
-#line 146
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 147
-  testRunner.And(string.Format("I set the request content type to \"{0}\"", requestContentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
-  testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeaderValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 149
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 150
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I set the request content type to \"{0}\"", requestContentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 151
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeaderValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 152
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 153
-  testRunner.And(string.Format("the response body should be FHIR {0}", responseShouldBe), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 154
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 155
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 156
+  testRunner.And(string.Format("the response body should be FHIR {0}", responseShouldBe), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 157
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 158
   testRunner.And("the Slot Schedule should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -404,27 +402,27 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully search for free slots using various content types XML and JSON in fo" +
                     "rmat parameter", exampleTags);
-#line 163
-this.ScenarioSetup(scenarioInfo);
-#line 164
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 165
-  testRunner.And(string.Format("I set the request content type to \"{0}\"", requestContentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 166
-  testRunner.And(string.Format("I add a Format parameter with the Value \"{0}\"", formatParameterValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 167
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 168
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I set the request content type to \"{0}\"", requestContentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 169
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I add a Format parameter with the Value \"{0}\"", formatParameterValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 170
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 171
-  testRunner.And(string.Format("the response body should be FHIR {0}", responseShouldBe), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 172
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 173
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 174
+  testRunner.And(string.Format("the response body should be FHIR {0}", responseShouldBe), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 175
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 176
   testRunner.And("the Slot Schedule should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -445,29 +443,29 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully search for free slots using various content types XML and JSON in th" +
                     "e Accept Header and format parameter", exampleTags);
-#line 181
-this.ScenarioSetup(scenarioInfo);
-#line 182
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 183
-  testRunner.And(string.Format("I set the request content type to \"{0}\"", requestContentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 184
-  testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeaderValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 185
-  testRunner.And(string.Format("I add a Format parameter with the Value \"{0}\"", formatParameterValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 186
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I set the request content type to \"{0}\"", requestContentType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 187
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeaderValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 188
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I add a Format parameter with the Value \"{0}\"", formatParameterValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 190
-  testRunner.And(string.Format("the response body should be FHIR {0}", responseShouldBe), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 191
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 192
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 193
+  testRunner.And(string.Format("the response body should be FHIR {0}", responseShouldBe), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 194
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 195
   testRunner.And("the Slot Schedule should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -478,21 +476,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SearchingForFreeSlotsShouldFailDueToAnInvalidEndpoint()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots should fail due to an invalid endpoint", ((string[])(null)));
-#line 204
-this.ScenarioSetup(scenarioInfo);
-#line 205
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 206
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 207
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 208
-  testRunner.And("I set the request URL to \"invalidRequestUrl\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 209
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 210
- testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 211
+  testRunner.And("I set the request URL to \"invalidRequestUrl\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 212
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 213
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 214
   testRunner.And("the response should be a OperationOutcome resource with error code \"REFERENCE_NOT" +
                     "_FOUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -506,45 +504,45 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully search for free slots and check the included schedule resources retu" +
                     "rned are valid", ((string[])(null)));
-#line 213
-this.ScenarioSetup(scenarioInfo);
-#line 214
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 215
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 216
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 217
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 218
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 219
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 220
   testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:actor:Practitione" +
                     "r\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 218
-  testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:actor:Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 219
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 220
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 221
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:actor:Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 222
-  testRunner.And("the Slot Schedule should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 223
-  testRunner.And("the Schedule Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 224
-  testRunner.And("the Schedule Location should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 225
-  testRunner.And("the Location should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Slot Schedule should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 226
-  testRunner.And("the Schedule Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Schedule Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 227
-  testRunner.And("the Schedule PlanningHorizon should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Schedule Location should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 228
-  testRunner.And("the Schedule Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 229
+  testRunner.And("the Schedule Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 230
+  testRunner.And("the Schedule PlanningHorizon should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 231
+  testRunner.And("the Schedule Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 232
   testRunner.And("the Schedule Practitioner Extensions should be valid and referenced in the Bundle" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 230
+#line 233
   testRunner.And("the Practitioner Entry should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 231
+#line 234
   testRunner.And("the Organization should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -559,27 +557,27 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots without actor parameter should return results without ac" +
                     "tor resource", exampleTags);
-#line 233
-this.ScenarioSetup(scenarioInfo);
-#line 234
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 235
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 236
-  testRunner.And("I set the required parameters with a time period of \"14\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 237
-  testRunner.And(string.Format("I add the parameter \"_include:recurse\" with the value \"{0}\"", includedActorValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 238
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 239
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the required parameters with a time period of \"14\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 240
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add the parameter \"_include:recurse\" with the value \"{0}\"", includedActorValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 241
-  testRunner.And("the Bundle should contain Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 242
-  testRunner.And("the Slot Schedule should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 243
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 244
+  testRunner.And("the Bundle should contain Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 245
+  testRunner.And("the Slot Schedule should be referenced in the Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 246
   testRunner.And(string.Format("the excluded actor \"{0}\" should not be present in the Bundle", excludedActor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -590,25 +588,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SearchingInTheFutureForNoFreeSlotsShouldResultInNoResourcesReturned()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching in the future for no free slots should result in no resources returned", ((string[])(null)));
-#line 249
-this.ScenarioSetup(scenarioInfo);
-#line 250
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 251
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 252
-  testRunner.And("I add the time period parameter that is \"500\" days in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 253
-  testRunner.And("I add the parameter \"fb-type\" with the value \"free\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 254
-  testRunner.And("I add the parameter \"_include\" with the value \"Slot:schedule\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 255
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add the time period parameter that is \"500\" days in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 256
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I add the parameter \"fb-type\" with the value \"free\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 257
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"_include\" with the value \"Slot:schedule\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 259
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 260
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 261
   testRunner.And("the Bundle should not contain resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -623,38 +621,38 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully search for free slots and check the included practitioner resources " +
                     "returned are valid", new string[] {
                         "ignore"});
-#line 261
-this.ScenarioSetup(scenarioInfo);
-#line 262
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 263
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 264
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 265
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 266
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 267
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 268
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 269
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 270
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 271
   testRunner.And("the Schedule Practitioner Extensions should be valid and referenced in the Bundle" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 269
-  testRunner.And("the Practitioner Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 270
-  testRunner.And("the Practitioner SDS User Identifier should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 271
-  testRunner.And("the Practitioner Identifiers should be valid fixed values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 272
-  testRunner.And("the Practitioner Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 273
-  testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner SDS User Identifier should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 274
-  testRunner.And("the Practitioner should exclude disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner Identifiers should be valid fixed values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 275
-  testRunner.And("the Practitioner nhsCommunication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Practitioner Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 276
+  testRunner.And("the Practitioner PractitionerRoles Roles should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 277
+  testRunner.And("the Practitioner should exclude disallowed elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 278
+  testRunner.And("the Practitioner nhsCommunication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 279
   testRunner.And("the Practitioner PractitionerRoles ManagingOrganization should be referenced in t" +
                     "he Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -670,27 +668,27 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully search for free slots and check the included organization resources " +
                     "returned are valid", new string[] {
                         "ignore"});
-#line 279
-this.ScenarioSetup(scenarioInfo);
-#line 280
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 281
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 282
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 283
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 284
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 285
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 286
-  testRunner.And("the Organization Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 287
-  testRunner.And("the Organization Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 288
-  testRunner.And("the Organization Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 289
+  testRunner.And("the Organization Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 290
+  testRunner.And("the Organization Identifiers should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 291
+  testRunner.And("the Organization Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 292
   testRunner.And("the Organization PartOf Organization should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -705,31 +703,31 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully search for free slots and check the included location resources retu" +
                     "rned are valid", new string[] {
                         "ignore"});
-#line 292
-this.ScenarioSetup(scenarioInfo);
-#line 293
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 294
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 295
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 296
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 297
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 298
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 299
-  testRunner.And("the Location Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 300
-  testRunner.And("the Location Identifier should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 301
-  testRunner.And("the Location Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 302
-  testRunner.And("the Location Physical Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 303
-  testRunner.And("the Location PartOf Location should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Identifier should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 304
+  testRunner.And("the Location Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 305
+  testRunner.And("the Location Physical Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 306
+  testRunner.And("the Location PartOf Location should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 307
   testRunner.And("the Location Managing Organization should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -740,15 +738,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConformanceProfileSupportsTheSlotSearchResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Slot Search Resource", ((string[])(null)));
-#line 306
-this.ScenarioSetup(scenarioInfo);
-#line 307
- testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 308
- testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 309
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 310
+ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 311
+ testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 312
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 313
   testRunner.And("the Conformance REST Resources should contain the \"Slot\" Resource with the \"Searc" +
                     "hType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -760,21 +758,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SearchForFreeSlotsValidResponseCheckCachingHeadersExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SearchForFreeSlots valid response check caching headers exist", ((string[])(null)));
-#line 312
-this.ScenarioSetup(scenarioInfo);
-#line 313
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 314
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 315
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 316
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 317
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 318
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 319
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 320
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 321
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 322
   testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -785,23 +783,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SearchForFreeSlotsInvalidResponseCheckCachingHeadersExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SearchForFreeSlots invalid response check caching headers exist", ((string[])(null)));
-#line 321
-this.ScenarioSetup(scenarioInfo);
-#line 322
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 323
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 324
-  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 325
-  testRunner.And("I set the Interaction Id header to \"InvalidInteractionId\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 326
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 327
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 328
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the Interaction Id header to \"InvalidInteractionId\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 329
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 330
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 331
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 332
   testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -818,19 +816,19 @@ this.ScenarioSetup(scenarioInfo);
                     "quest is after the start date of a slot but before the end date of the slot", new string[] {
                         "Manual",
                         "ignore"});
-#line 334
+#line 337
 this.ScenarioSetup(scenarioInfo);
-#line 335
+#line 338
  testRunner.Given("I search for free slots at organization \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 336
+#line 339
   testRunner.And("I search for slots using a date range I know there is a free slot which has a sta" +
                     "rt date before the request parameter start date but the slot end date is after t" +
                     "he requeste parameter start date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 337
+#line 340
  testRunner.When("I perform the gpc.getSchedule operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 338
+#line 341
  testRunner.Then("the response should be successful and return a FHIR Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 339
+#line 342
  testRunner.Then("the slot which straddles the request parameter start date should appear in the re" +
                     "sponse bundle.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -850,19 +848,19 @@ this.ScenarioSetup(scenarioInfo);
                     "lot", new string[] {
                         "Manual",
                         "ignore"});
-#line 344
+#line 347
 this.ScenarioSetup(scenarioInfo);
-#line 345
+#line 348
  testRunner.Given("I search for free slots at organization \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 346
+#line 349
   testRunner.And("I search for slots using a date range I know there is a free slot which has a sta" +
                     "rt date before the request parameter end date but the slot end date is after the" +
                     " requeste parameter end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 347
+#line 350
  testRunner.When("I perform the gpc.getSchedule operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 348
+#line 351
  testRunner.Then("the response should be successful and return a FHIR Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 349
+#line 352
  testRunner.Then("the slot which straddles the request parameter start date should appear in the re" +
                     "sponse bundle.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

@@ -244,15 +244,6 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		| patient6  |
 		| patient18 |
 
-Scenario Outline: Patient search decesed patient not returned
-	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient18"
-		And I add a Patient Identifier parameter with default System and Value "patient18"
-	When I make the "PatientSearch" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain "0" entries
 
 Scenario: Conformance profile supports the Patient search operation
 	Given I configure the default "MetadataRead" request
