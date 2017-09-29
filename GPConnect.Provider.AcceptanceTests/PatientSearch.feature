@@ -242,7 +242,7 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		| patient4  |
 		| patient5  |
 		| patient6  |
-		| patient17 |
+		| patient18 |
 
 
 Scenario: Conformance profile supports the Patient search operation

@@ -154,7 +154,7 @@
         [Given(@"I add a Time Period parameter with Start Date today and End Date in ""(.*)"" days")]
         public void AddATimePeriodParameterWithStartDateTodayAndEndDateInDays(int days)
         {
-            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetCareRecordParams.kTimePeriod, TimePeriodHelper.GetTimePeriodStartDateTodayEndDateDays(days));
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetCareRecordParams.kStartDate, TimePeriodHelper.GetTimePeriodStartDateTodayEndDateDays(days));
         }
 
         [Given(@"I add a Time Period parameter with Start Date format ""(.*)"" and End Date format ""(.*)""")]

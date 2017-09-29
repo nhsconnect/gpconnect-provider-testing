@@ -92,7 +92,7 @@ Scenario Outline: Searching for free slots should fail due to invalid parameter 
 		And I update the parameter "<Key>" with value "<Value>"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 	Examples:
 		| Key			| Value				|
 		| start			| invalidStartDate  |

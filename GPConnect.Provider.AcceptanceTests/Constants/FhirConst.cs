@@ -14,6 +14,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kPatientNHSNumber = "patientNHSNumber";
             public const string kRecordSection = "recordSection";
             public const string kTimePeriod = "timePeriod";
+            public const string kStartDate = "startDate";
+            public const string kEndDate = "endDate";
         }
 
         internal static class Resources
