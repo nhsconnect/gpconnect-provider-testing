@@ -79,10 +79,9 @@ Scenario Outline: Searching for free slots should fail due to invalid parameters
 	Examples:
 	| Key			| Value					|	
 	| invalidParam	| something				|	
-	| start			| 2017-12-29T18:22:00	|	
+	| started		| 2017-12-29T18:22:00	|	
 
 
-#test to check dates match?
 #test to check dates prefix?
 
 
@@ -102,10 +101,12 @@ Scenario Outline: Searching for free slots should fail due to invalid parameter 
 		| end			|					|
 		| fb-type		| busy				|
 
-@ignore
-Scenario Outline: I perform a getSchedule with valid partial dateTime strings
+Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
-		And I add a Time Period parameter with Start Date format "<StartDate>" and End Date format "<EndDate>" 
+		And I set the JWT Requested Scope to Organization Read
+		And I add the time period parameters for "3" days starting today using the start format "<StartDate>" and the end format "<EndDate>"
+		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "_include" with the value "Slot:schedule"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -117,14 +118,16 @@ Scenario Outline: I perform a getSchedule with valid partial dateTime strings
 		| yyyy-MM-dd          | yyyy-MM-ddTHH:mm:ss |
 		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-dd          |
 
-@ignore
-Scenario Outline: I perform a getSchedule with in-valid partial dateTime strings
+Scenario Outline: Searching for free slots with in-valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
-		And I add a Time Period parameter with Start Date format "<StartDate>" and End Date format "<EndDate>" 
+		And I set the JWT Requested Scope to Organization Read
+		And I add the time period parameters for "3" days starting today using the start format "<StartDate>" and the end format "<EndDate>"
+		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "_include" with the value "Slot:schedule"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
-		Examples: 
+	Examples: 
 		| StartDate           | EndDate             |
 		| yyyy                | yyyy-MM-dd          |
 		| yyyy-MM-dd          | yyyy                |

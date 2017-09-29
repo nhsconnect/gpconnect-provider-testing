@@ -100,6 +100,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kIfMatch, value);
         }
 
+        [Given(@"I add the time period parameters for ""(.*)"" days starting today using the start format ""(.*)"" and the end format ""(.*)""")]
+        public void GivenIAddTheTimePeriodParametersforDaysStartingTodayWithStartEndFormats(int days, string startFormat, string endFormat)
+        {
+            var val = TimePeriodHelper.GetTimePeriodStartDateFormatEndDateFormat(startFormat, endFormat, days);
+
+            Given($"I add the parameter \"start\" with the value \"{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{val.End}\"");
+        }
+
         [Given(@"I add the time period parameters for ""(.*)"" days starting today")]
         public void GivenIAddTheTimePeriodParametersforDaysStartingToday(int days)
         {
