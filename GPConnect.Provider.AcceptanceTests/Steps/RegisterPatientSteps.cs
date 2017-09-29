@@ -64,11 +64,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _fhirResourceRepository.Patient.BirthDateElement = new Date("2017-05-05");
         }
 
-        [Given(@"I add a Usual Name to the Stored Patient")]
-        public void AddUsualNameToTheStoredPatient()
+        [Given(@"I add an ""(.*)"" Usual Name to the Stored Patient")]
+        public void AddUsualNameToTheStoredPatient(string type)
         {
 
             var name = CreateUsualName("AdditionalGivenName", "AdditionalFamilyName");
+
+            name.Period = new Period();
+
+            var start = DateTime.Today.AddDays(-1);
+            DateTime? end = null;
+
+            if (type.Equals("inactive"))
+            {
+                start = DateTime.Today.AddDays(-99);
+                end = DateTime.Today.AddDays(-2);
+            }
+            name.Period.Start = start.ToString("yyyy-MM-dd");
+            name.Period.End = end?.ToString("yyyy-MM-dd");
 
             _fhirResourceRepository.Patient.Name.Add(name);
         }

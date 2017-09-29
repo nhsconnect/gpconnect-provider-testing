@@ -243,31 +243,14 @@ Scenario Outline: Request and response in XML
 		| REF |
 		| SUM |
 
-Scenario: endpoint should support gzip compression for metadata endpoint
-	Given I configure the default "MetadataRead" request
-		And I set the Accept-Encoding header to gzip
-	When I make the "MetadataRead" request
-	Then the response status code should indicate success
-		And the response should be gzip encoded
-
 Scenario: endpoint should support gzip compression for metadata endpoint and contain the correct payload
 	Given I configure the default "MetadataRead" request
 		And I set the Accept-Encoding header to gzip
-		And I set the Decompression Method to gzip
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
+		And the response should be gzip encoded
 		And the response body should be FHIR JSON
 		And the Response Resource should be a Conformance
-
-Scenario: endpoint should support gzip compression for getCareRecord operation
-	Given I configure the default "GpcGetCareRecord" request
-		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "SUM"
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I set the Accept-Encoding header to gzip
-	When I make the "GpcGetCareRecord" request
-	Then the response status code should indicate success
-		And the response should be gzip encoded
 
 Scenario: endpoint should support gzip compression for getCareRecord operation and contain correct payload
 	Given I configure the default "GpcGetCareRecord" request
@@ -275,9 +258,9 @@ Scenario: endpoint should support gzip compression for getCareRecord operation a
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I set the Accept-Encoding header to gzip
-		And I set the Decompression Method to gzip
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
+		And the response should be gzip encoded
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 
