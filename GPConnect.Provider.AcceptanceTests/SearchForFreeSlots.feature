@@ -74,8 +74,8 @@ Scenario Outline: Searching for free slots should fail due to invalid parameters
 		And I set the required parameters with a time period of "3" days
 		And I add the parameter "<Key>" with the value "<Value>"
 	When I make the "SearchForFreeSlots" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 	| Key			| Value					|	
 	| invalidParam	| something				|	
