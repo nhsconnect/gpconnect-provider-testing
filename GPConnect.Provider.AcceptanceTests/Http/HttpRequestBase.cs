@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -35,7 +36,14 @@
                 httpResponse.ContentType = result.Content.Headers.ContentType.MediaType;
             }
 
-            using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result, Encoding.UTF8))
+            var stream = result.Content.ReadAsStreamAsync().Result;
+
+            if (IsGZipRequestAndResponse(result))
+            {
+                stream = new GZipStream(stream, CompressionMode.Decompress);
+            }
+
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
                 httpResponse.Body = reader.ReadToEnd();
             }
@@ -113,7 +121,6 @@
         {
             var handler = new WebRequestHandler
             {
-                AutomaticDecompression = _httpRequestConfiguration.DecompressionMethod,
                 AllowAutoRedirect = true
             };
             
@@ -140,6 +147,12 @@
                 BaseAddress = new Uri(_httpRequestConfiguration.BaseUrl),
                 Timeout = new TimeSpan(0, 0, 10, 0)
             };
+        }
+
+        private bool IsGZipRequestAndResponse(HttpResponseMessage result)
+        {
+            return result.Content.Headers.ContentEncoding.Contains("gzip") && 
+                _httpRequestConfiguration.RequestHeaders.GetHeaderValue(HttpConst.Headers.kAcceptEncoding).Contains("gzip");
         }
     }
 }
