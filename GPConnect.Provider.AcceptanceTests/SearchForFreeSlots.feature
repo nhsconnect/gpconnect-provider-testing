@@ -83,7 +83,7 @@ Scenario Outline: Searching for free slots should fail due to invalid parameters
 
 
 #test to check dates prefix?
-
+#test to check returned slots are within requested time period
 
 Scenario Outline: Searching for free slots should fail due to invalid parameter values
 	Given I configure the default "SearchForFreeSlots" request
