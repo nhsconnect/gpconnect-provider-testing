@@ -331,23 +331,3 @@ Scenario: SearchForFreeSlots invalid response check caching headers exist
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		And the required cacheing headers should be present in the response
-
-@Manual
-@ignore
-# This is tested by "I perform a getSchedule with valid partial dateTime strings" but would benefit from additional manual testing
-Scenario: I successfully perform a gpc.getschedule operation where the start date in the request is after the start date of a slot but before the end date of the slot
-	Given I search for free slots at organization "ORG1"
-		And I search for slots using a date range I know there is a free slot which has a start date before the request parameter start date but the slot end date is after the requeste parameter start date
-	When I perform the gpc.getSchedule operation
-	Then the response should be successful and return a FHIR Bundle
-	Then the slot which straddles the request parameter start date should appear in the response bundle.
-
-@Manual
-@ignore
-# This is tested by "I perform a getSchedule with valid partial dateTime strings" but would benefit from additional manual testing
-Scenario: I successfully perform a gpc.getschedule operation where the end date parameter in the request is after the start date of a slot but before the end date of the slot
-	Given I search for free slots at organization "ORG1"
-		And I search for slots using a date range I know there is a free slot which has a start date before the request parameter end date but the slot end date is after the requeste parameter end date
-	When I perform the gpc.getSchedule operation
-	Then the response should be successful and return a FHIR Bundle
-	Then the slot which straddles the request parameter start date should appear in the response bundle.
