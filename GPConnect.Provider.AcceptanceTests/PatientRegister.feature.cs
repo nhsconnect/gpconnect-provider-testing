@@ -1058,7 +1058,6 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("Births", new string[0])]
         [NUnit.Framework.TestCaseAttribute("CareProvider", new string[0])]
         [NUnit.Framework.TestCaseAttribute("Contact", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Deceased", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ManagingOrg", new string[0])]
         [NUnit.Framework.TestCaseAttribute("Marital", new string[0])]
         [NUnit.Framework.TestCaseAttribute("Telecom", new string[0])]

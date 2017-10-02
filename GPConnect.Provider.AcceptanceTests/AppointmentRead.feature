@@ -162,8 +162,8 @@ Scenario: Read appointment if resource contains identifier then the value is man
 Scenario: Read appointment containing a priority element and check that the priority is valid
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
-	Given I get the Schedule for Organization Code "ORG1"
-		And I store the Schedule
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
@@ -195,8 +195,8 @@ Scenario: Read appointment and all participants must have a actor element
 Scenario: Read appointment if all participants must have a actor element
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
-	Given I get the Schedule for Organization Code "ORG1"
-		And I store the Schedule
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule

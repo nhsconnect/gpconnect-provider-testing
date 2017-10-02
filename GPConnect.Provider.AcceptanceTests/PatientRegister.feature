@@ -439,7 +439,7 @@ Scenario Outline: Register patient with additional valid elements
 		| Births        |
 		| CareProvider  |
 		| Contact       |
-		| Deceased      |
+		#| Deceased      |
 		| ManagingOrg   |
 		| Marital       |
 		| Telecom       |
