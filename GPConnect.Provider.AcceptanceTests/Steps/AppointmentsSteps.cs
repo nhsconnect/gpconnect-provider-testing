@@ -93,8 +93,8 @@
             _patientSteps.GetThePatientForPatientValue(patient);
             _patientSteps.StoreThePatient();
           
-            _searchForFreeSlotsSteps.GetTheScheduleForOrganizationCode(code);
-            _searchForFreeSlotsSteps.StoreTheSchedule();
+            _searchForFreeSlotsSteps.GetAvailableFreeSlots();
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
 
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
 

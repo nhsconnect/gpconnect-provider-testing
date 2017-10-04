@@ -439,7 +439,6 @@ Scenario Outline: Register patient with additional valid elements
 		| Births        |
 		| CareProvider  |
 		| Contact       |
-		| Deceased      |
 		| ManagingOrg   |
 		| Marital       |
 		| Telecom       |
@@ -459,6 +458,7 @@ Scenario Outline: Register patient with additional not allowed elements
 		| Communication |
 		| Link          |
 		| Photo         |
+		| Deceased      |
 
 Scenario Outline: Register patient setting JWT request type to invalid type
 	Given I get the next Patient to register and store it
