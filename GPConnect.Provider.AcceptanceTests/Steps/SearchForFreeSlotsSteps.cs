@@ -16,49 +16,44 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     public class SearchForFreeSlotsSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
-        private readonly AccessRecordSteps _accessRecordSteps;
         private readonly BundleSteps _bundleSteps;
-        private readonly OrganizationSteps _organizationSteps;
+        private readonly JwtSteps _jwtSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
 
         private List<Slot> Slots => _httpContext.FhirResponse.Slots;
         private List<Schedule> Schedules => _httpContext.FhirResponse.Schedules;
 
-        public SearchForFreeSlotsSteps(HttpContext httpContext, HttpSteps httpSteps, AccessRecordSteps accessRecordSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository)
+        public SearchForFreeSlotsSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, JwtSteps jwtSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
         {
             _httpContext = httpContext;
-            _accessRecordSteps = accessRecordSteps;
             _bundleSteps = bundleSteps;
-            _organizationSteps = organizationSteps;
+            _jwtSteps = jwtSteps;
             _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
             _fhirResourceRepository = fhirResourceRepository;
         }
 
-        [Given(@"I get the Schedule for Organization Code ""([^""]*)""")]
-        public void GetTheScheduleForOrganizationCode(string code)
+        [Given(@"I get Available Free Slots")]
+        public void GetAvailableFreeSlots()
         {
-            _organizationSteps.GetTheOrganizationForOrganizationCode(code);
-            _organizationSteps.StoreTheOrganization();
-
-
-
             _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
 
+            _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
             SetRequiredParametersWithTimePeriod(14);
+
 
             _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }
 
-        [Given(@"I store the Schedule")]
-        public void StoreTheSchedule()
+        [Given(@"I store the Free Slots Bundle")]
+        public void StoreTheFreeSlotsBundle()
         {
-            var schedule = _httpContext.FhirResponse.Bundle;
+            var bundle = _httpContext.FhirResponse.Bundle;
 
-            if (schedule != null)
+            if (bundle != null)
             {
-                _fhirResourceRepository.Bundle = schedule;
+                _fhirResourceRepository.Bundle = bundle;
             }
         }
 
