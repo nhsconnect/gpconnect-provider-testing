@@ -46,7 +46,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
 
-            _accessRecordSteps.AddATimePeriodParameterWithStartDateTodayAndEndDateInDays(13);
+            SetRequiredParametersWithTimePeriod(14);
 
             _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }

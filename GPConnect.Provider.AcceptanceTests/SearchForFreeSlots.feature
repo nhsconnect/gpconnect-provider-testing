@@ -82,8 +82,53 @@ Scenario Outline: Searching for free slots should fail due to invalid parameters
 	| started		| 2017-12-29T18:22:00	|	
 
 
-#test to check dates prefix?
+Scenario Outline: Searching for free slots with valid prefixes
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I add the time period parameters for "3" days starting today using the start date prefix "<startDatePrefix>" and the end date prefix "<endDatePrefix>"
+		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "_include" with the value "Slot:schedule"
+	When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+	Examples:
+		| startDatePrefix | endDatePrefix |
+		| eq              | eq            |
+		| gt              | lt            |
+		| ge              | le            |
+		
+Scenario Outline: Searching for free slots with invalid prefixes
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I add the time period parameters for "3" days starting today using the start date prefix "<startDatePrefix>" and the end date prefix "<endDatePrefix>"
+		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "_include" with the value "Slot:schedule"
+	When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate failure
+		And the response status code should be "422"
+	Examples:
+		| startDatePrefix | endDatePrefix |
+		| lt              | gt            |
+		| gt              | gt            |
+		| lt              | lt            |
+		| le              | ge            |
 
+Scenario Outline: Searching for free slots with unknown prefixes
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I add the time period parameters for "3" days starting today using the start date prefix "<startDatePrefix>" and the end date prefix "<endDatePrefix>"
+		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "_include" with the value "Slot:schedule"
+	When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate failure
+		And the response status code should be "400"
+	Examples:
+		| startDatePrefix | endDatePrefix |
+		| ne              | ne            |
+		| gt              | ne            |
+		| ne              | lt            |
+		| ge              | ne            |
+		| ne              | le            |
 
 Scenario Outline: Searching for free slots should fail due to invalid parameter values
 	Given I configure the default "SearchForFreeSlots" request

@@ -109,6 +109,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given($"I add the parameter \"end\" with the value \"{val.End}\"");
         }
 
+        [Given(@"I add the time period parameters for ""(.*)"" days starting today using the start date prefix ""(.*)"" and the end date prefix ""(.*)""")]
+        public void GivenIAddTheTimePeriodParametersforDaysStartingTodayWithStartEndPrefix(int days, string startDatePrefix, string endDatePrefix)
+        {
+            var val = TimePeriodHelper.GetTimePeriodStartDateTodayEndDateDays(days);
+
+            Given($"I add the parameter \"start\" with the value \"{startDatePrefix}{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{endDatePrefix}{val.End}\"");
+        }
+
         [Given(@"I add the time period parameters for ""(.*)"" days starting today")]
         public void GivenIAddTheTimePeriodParametersforDaysStartingToday(int days)
         {
