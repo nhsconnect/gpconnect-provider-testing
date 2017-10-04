@@ -310,6 +310,20 @@
             });
         }
 
+        [Then(@"the Appointment Reason should be valid")]
+        public void TheAppointmentReasonShouldBeValid()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Reason?.Coding?.ForEach(coding =>
+                {
+                    coding.System.ShouldNotBeNullOrEmpty("The Appointment Reason Coding System Should not be null.");
+                    coding.Code.ShouldNotBeNullOrEmpty("The Appointment Reason Coding Code Should not be null.");
+                    coding.Display.ShouldNotBeNullOrEmpty("The Appointment Reason Coding Display Should not be null.");
+                });
+            });
+        }
+
         [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for Start ""([^""]*)""")]
         public void AddAQueryParameterToTheRequestUrlWithPrefixForStart(string prefix, string start)
         {
