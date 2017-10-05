@@ -1,15 +1,15 @@
 ﻿@organization
 Feature: OrganizationRead
 
-Scenario Outline: Organization Read successful request validate all of response
-	Given I get the Organization for Organization Code "<Organization>"
+Scenario: Organization Read successful request validate all of response
+	Given I get the Organization for Organization Code "ORG1"
 		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
 		And the Response should contain the ETag header matching the Resource Version Id
 		And the Response Resource should be an Organization
-		And the Organization Identifiers should be valid for Organization "<Organization>"
+		And the Organization Identifiers should be valid for Organization "ORG1"
 		And the Organization Id should equal the Request Id
 		And the Organization Metadata should be valid
 		And the Organization PartOf Organization should be resolvable
@@ -19,11 +19,8 @@ Scenario Outline: Organization Read successful request validate all of response
 		And the Organization Address should be valid
 		And the Organization Contact should be valid
 		And the Organization Extensions should be valid
-	Examples:
-		| Organization |
-		| ORG1         |
-		| ORG2         |
-		| ORG3         |
+
+
 
 Scenario Outline: Organization Read with valid identifier which does not exist on providers system
 	Given I configure the default "OrganizationRead" request

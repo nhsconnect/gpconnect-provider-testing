@@ -19,13 +19,11 @@ Scenario Outline: Organization search success
 		| System                                       | Value      | Entries |
 		| https://fhir.nhs.uk/Id/ods-organization-code | unknownORG | 0       | 
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1       | 1       |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG2       | 1       | 
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG3       | 1       |
 
 Scenario: Organization search failure with two invalid parameters sent in the request
 	Given I configure the default "OrganizationSearch" request
 		And I add the parameter "incorrectParameter" with the value "incorrectParameter"
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 		And I add the parameter "invalidParameter" with the value "invalidParameter"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
@@ -34,14 +32,14 @@ Scenario: Organization search failure with two invalid parameters sent in the re
 Scenario: Organization search failure with invalid parameter before the identifier sent in the request
 	Given I configure the default "OrganizationSearch" request
 		And I add the parameter "incorrectParameter" with the value "incorrectParameter"
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Organization search failure with invalid parameter after the identifier sent in the request
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 		And I add the parameter "invalidParameter" with the value "invalidParameter"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
@@ -56,10 +54,9 @@ Scenario Outline: Organization search sending multiple identifiers resulting in 
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| System1                                      | Value1 | System2                                      | Value2 |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1   | https://fhir.nhs.uk/Id/ods-organization-code | ORG2   |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG2   | https://fhir.nhs.uk/Id/ods-organization-code | ORG2   |
-		| badSystem                                    | ORG1   | https://fhir.nhs.uk/Id/ods-organization-code | ORG2   |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1   | badSystem                                    | ORG2   |
+		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1   | https://fhir.nhs.uk/Id/ods-organization-code | ORG1   |
+		| badSystem                                    | ORG1   | https://fhir.nhs.uk/Id/ods-organization-code | ORG1   |
+		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1   | badSystem                                    | ORG1   |
 
 
 Scenario: Organization search by organization code successfully returns single result containing the correct fields
@@ -75,22 +72,17 @@ Scenario: Organization search by organization code successfully returns single r
 	
 #Ignored for now as seem like duplicates of [Then(@"an organization returned in the bundle has ""([^""]*)"" ......
 @ignore
-Scenario Outline: Organization - Identifier - have correct Organization Codes a when searching by Organization Code
+Scenario: Organization - Identifier - have correct Organization Codes a when searching by Organization Code
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with Organization Code System and Value "<OrganizationCode>"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the Organization Identifiers are correct for Organization Code "<OrganizationCode>"
-	Examples: 
-		| OrganizationCode |
-		| ORG1             |
-		| ORG2             |
-		| ORG3             |
+		And the Organization Identifiers are correct for Organization Code "ORG1"
 
 Scenario: Organization search by organization code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -98,7 +90,7 @@ Scenario: Organization search by organization code successfully returns multiple
 		And the response bundle should contain "1" entries
 		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG2"
+		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 		
 Scenario: Organization search failure due to no identifier parameter
 	Given I configure the default "OrganizationSearch" request
@@ -229,23 +221,17 @@ Scenario: Conformance profile supports the Organization search operation
 	Then the response status code should indicate success
 		And the Conformance REST Resources should contain the "Organization" Resource with the "SearchType" Interaction
 
-Scenario Outline: Organization search check organization response contains logical identifier
+Scenario: Organization search check organization response contains logical identifier
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
+		And I add an Organization Identifier parameter with System "https://fhir.nhs.uk/Id/ods-organization-code" and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Organization Identifiers should be valid
-	Examples:
-		| System                                       | Value |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG2  |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG3  |
-
 
 Scenario: Organization search include count and sort parameters
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 		And I add the parameter "_count" with the value "1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
@@ -255,7 +241,7 @@ Scenario: Organization search include count and sort parameters
 
 Scenario: Organization search valid response check caching headers exist
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -263,13 +249,13 @@ Scenario: Organization search valid response check caching headers exist
 		And the response bundle should contain "1" entries
 		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG2"
+		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 		And the required cacheing headers should be present in the response
 
 Scenario: Organization search invalid response check caching headers exist
 	Given I configure the default "OrganizationSearch" request
 		And I add the parameter "incorrectParameter" with the value "incorrectParameter"
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG2"
+		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 		And I add the parameter "invalidParameter" with the value "invalidParameter"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
