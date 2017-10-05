@@ -69,6 +69,8 @@
         public static ValueSet FhirAppointmentContactMethodValueSet { get; set; }
 
         private static Dictionary<string, ValueSet> _fhirExtensibleValueSets { get; set; }
+        public static Dictionary<string, string> LocationLogicalIdentifierMap { get; set; }
+
         public static ValueSet GetExtensibleValueSet(string system)
         {
             var hasKey = _fhirExtensibleValueSets?.ContainsKey(system);

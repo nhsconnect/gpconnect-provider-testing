@@ -36,8 +36,6 @@
                     return PatientSearchConfiguration();
                 case GpConnectInteraction.PatientRead:
                     return PatientReadConfiguration();
-                case GpConnectInteraction.LocationSearch:
-                    return LocationSearchConfiguration();
                 case GpConnectInteraction.LocationRead:
                     return LocationReadConfiguration();
                 case GpConnectInteraction.RegisterPatient:
@@ -139,15 +137,6 @@
             }
 
             _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.PatientRead);
-
-            return _httpRequestConfiguration;
-        }
-
-        private static HttpRequestConfiguration LocationSearchConfiguration()
-        {
-            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
-            _httpRequestConfiguration.RequestUrl = "Location";
-            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.LocationSearch);
 
             return _httpRequestConfiguration;
         }

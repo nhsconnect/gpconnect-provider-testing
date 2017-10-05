@@ -13,7 +13,6 @@
         PatientSearch = 6,
         PatientRead = 7,
 
-        LocationSearch = 8,
         LocationRead = 9,
 
         RegisterPatient = 10,

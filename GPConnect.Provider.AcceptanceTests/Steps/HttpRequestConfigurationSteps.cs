@@ -8,6 +8,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using System.Net.Http;
     using Constants;
     using Context;
+    using Shouldly;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -228,6 +229,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void SetTheReadOperationRelativePathToAndAppendTheResourceLogicalIdentifier(string relativePath)
         {
             _httpContext.HttpRequestConfiguration.RequestUrl = relativePath + "/" + _httpContext.HttpRequestConfiguration.GetRequestId;
+        }
+
+        [Given(@"I set the Get Request Id to the Logical Identifer for Location ""([^""]*)""")]
+        public void SetTheGetRequestIdToTheLogicalIdentiferForLocation(string location)
+        {
+            string logicalId;
+
+            GlobalContext.LocationLogicalIdentifierMap.TryGetValue(location, out logicalId).ShouldBe(true, $"There is no record in the map for {location}.");
+
+            logicalId.ShouldNotBeNullOrEmpty($"The LogicalId in the map for {location} should not be null or empty but was {logicalId}.");
+
+            _httpContext.HttpRequestConfiguration.GetRequestId = logicalId;
         }
     }
 }

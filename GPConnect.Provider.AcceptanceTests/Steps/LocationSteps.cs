@@ -1,94 +1,23 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
     using System.Linq;
     using Context;
-    using Enum;
     using Hl7.Fhir.Model;
-    using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
+    using Constants;
 
     [Binding]
     public class LocationSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
-        private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
-
         private List<Location> Locations => _httpContext.FhirResponse.Locations;
-        private readonly IFhirResourceRepository _fhirResourceRepository;
 
-        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository) 
+        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
-            _httpRequestConfigurationSteps = httpRequestConfigurationSteps;
-            _fhirResourceRepository = fhirResourceRepository;
-        }
-
-        [Given(@"I add a Location Identifier parameter with System ""([^""]*)"" and Value ""([^""]*)""")]
-        public void AddALocationIdentifierParameterWithSystemAndValue(string system, string value)
-        {
-            string locationCode;
-
-            GlobalContext.OdsCodeMap.TryGetValue(value, out locationCode);
-
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", system + '|' + locationCode);
-        }
-
-        [Given(@"I add a Location Identifier parameter with default System and Value ""([^""]*)""")]
-        public void AddALocationIdentifierParameterWithDefaultSystemAndValue(string value)
-        {
-            AddALocationIdentifierParameterWithSystemAndValue(FhirConst.IdentifierSystems.kOdsSiteCode, value);
-        }
-
-        [Given(@"I add a Location Identifier parameter with local System and Value ""([^""]*)""")]
-        public void AddALocationIdentifierParameterWithLocalSystemAndValue(string value)
-        {
-            AddALocationIdentifierParameterWithSystemAndValue(FhirConst.IdentifierSystems.kLocalLocationCode, value);
-        }
-
-        [Given(@"I add a Location ""([^""]*)"" parameter with default System and Value ""([^""]*)""")]
-        public void AddALocationParameterWithDefaultSystemAndValue(string parameterName, string value)
-        {
-            string locationCode;
-
-            GlobalContext.OdsCodeMap.TryGetValue(value, out locationCode);
-
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, $"{FhirConst.IdentifierSystems.kOdsSiteCode}|{GlobalContext.OdsCodeMap[value]}");
-        }       
-
-        [Given(@"I get the Location for Location Value ""([^""]*)""")]
-        public void GetThePatientForPatientValue(string value)
-        {
-            _httpSteps.ConfigureRequest(GpConnectInteraction.LocationSearch);
-
-            AddALocationIdentifierParameterWithDefaultSystemAndValue(value);
-
-            _httpSteps.MakeRequest(GpConnectInteraction.LocationSearch);
-        }
-
-        [Given(@"I store the Location")]
-        public void StoreTheLocation()
-        {
-            var location = Locations.FirstOrDefault();
-
-            if (location != null)
-            {
-                _httpContext.HttpRequestConfiguration.GetRequestId = location.Id;
-                _fhirResourceRepository.Location = location;
-            }
-        }
-
-        [Given(@"I set the If-None-Match header to the stored Location Id")]
-        public void SetTheIfNoneMatchHeaderToTheStoredLocationVerisionId()
-        {
-            var location = _fhirResourceRepository.Location;
-
-            if (location != null)
-                _httpRequestConfigurationSteps.GivenISetTheIfNoneMatchheaderHeaderTo("W/\"" + location.VersionId + "\"");
         }
 
         [Then(@"the Response Resource should be a Location")]

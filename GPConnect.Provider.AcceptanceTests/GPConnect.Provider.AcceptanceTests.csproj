@@ -151,6 +151,7 @@
     <Compile Include="Context\HttpContext.cs" />
     <Compile Include="Context\IHttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
+    <Compile Include="Data\LocationLogicalIdentifierMap.cs" />
     <Compile Include="Data\OrganizationSiteCodeMap.cs" />
     <Compile Include="Data\RegisterPatient.cs" />
     <Compile Include="Data\PractitionerCodeMap.cs" />
@@ -195,6 +196,8 @@
     <Compile Include="Http\HttpRequestConfiguration.cs" />
     <Compile Include="Http\HttpResourceRequest.cs" />
     <Compile Include="Http\HttpResponse.cs" />
+    <Compile Include="Importers\LocationLogicalIdentifierConverter.cs" />
+    <Compile Include="Importers\LocationLogicalIdentifierImporter.cs" />
     <Compile Include="Importers\RegisterPatientsImporter.cs" />
     <Compile Include="Importers\PractitionerCodeMapConverter.cs" />
     <Compile Include="Importers\PractitionerCodeMapImporter.cs" />
@@ -208,11 +211,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LocationRead.feature</DependentUpon>
-    </Compile>
-    <Compile Include="LocationSearch.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LocationSearch.feature</DependentUpon>
     </Compile>
     <Compile Include="Models\GpcCode.cs" />
     <Compile Include="OrganizationRead.feature.cs">
@@ -355,10 +353,6 @@
     <None Include="LocationRead.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>LocationRead.feature.cs</LastGenOutput>
-    </None>
-    <None Include="LocationSearch.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>LocationSearch.feature.cs</LastGenOutput>
     </None>
     <None Include="OrganizationRead.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

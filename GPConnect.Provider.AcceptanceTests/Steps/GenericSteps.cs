@@ -58,6 +58,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [BeforeTestRun(Order = 1)]
+        public static void LoadLogicalLocationIdentifierMap()
+        {
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
+                Assert.Fail("Data Directory Not Found.");
+            }
+
+            var csv = Path.Combine(AppSettingsHelper.DataDirectory, @"LocationLogicalIdentifierMap.csv");
+
+            Log.WriteLine("LocationLogicalIdentifierMap= '{0}'", csv);
+
+            GlobalContext.LocationLogicalIdentifierMap = LocationLogicalIdentifierImporter.LoadCsv(csv);
+        }
+
+        [BeforeTestRun(Order = 1)]
         public static void LoadNHSNoMapData()
         {
             if (!Directory.Exists(AppSettingsHelper.DataDirectory))
