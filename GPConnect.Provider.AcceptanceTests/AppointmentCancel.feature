@@ -62,20 +62,6 @@ Scenario: I perform cancel appointment and update the reason
 		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
-		
-
-Scenario: I perform a successful cancel appointment and amend the reason
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-	When I make the "AppointmentCancel" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointment Status should be Cancelled
-		And the Appointment Cancellation Reason Extension should be valid for "double booked"
-		And the Appointment Metadata should be valid
 
 Scenario Outline: I perform cancel appointment and add participants
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
