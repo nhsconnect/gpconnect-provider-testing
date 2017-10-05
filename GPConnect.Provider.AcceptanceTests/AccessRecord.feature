@@ -439,7 +439,7 @@ Scenario Outline: composition contains generic mandatory fields
 		And response bundle entry "Composition" should contain element "resource.title" with value "Patient Care Record"
 		And response bundle entry "Composition" should contain element "resource.status" with value "final"
 		And response bundle entry "Composition" should contain element "resource.section[0].title" with value "<Title>"
-		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].system" with value "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1"
+		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].system" with value "http://fhir.nhs.uk/ValueSet/gpconnect-record-section-1"
 		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].code" with value "<Code>"
 		And response bundle entry "Composition" should contain element "resource.section[0].code.coding[0].display" with value "<Display>"
 		And response bundle entry "Composition" should contain element "resource.section[0].code.text"

@@ -12,7 +12,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
     {
         public static Identifier GetNHSNumberIdentifier(string nhsNumber)
         {
-            return GetIdentifier("http://fhir.nhs.net/Id/nhs-number", nhsNumber);
+            return GetIdentifier("http://fhir.nhs.uk/Id/nhs-number", nhsNumber);
         }
 
         public static Identifier GetIdentifier(string system, string nhsNumber)
@@ -22,7 +22,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static CodeableConcept GetRecordSectionCodeableConcept(string recordSectionCode)
         {
-            return GetRecordSectionCodeableConcept("http://fhir.nhs.net/ValueSet/gpconnect-record-section-1", recordSectionCode);
+            return GetRecordSectionCodeableConcept("http://fhir.nhs.uk/ValueSet/gpconnect-record-section-1", recordSectionCode);
         }
 
         public static CodeableConcept GetRecordSectionCodeableConcept(string system, string recordSectionCode)
@@ -32,7 +32,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static Identifier GetODSCodeIdentifier(string odsCode)
         {
-            return new Identifier("http://fhir.nhs.net/Id/ods-organization-code", odsCode);
+            return new Identifier("http://fhir.nhs.uk/Id/ods-organization-code", odsCode);
         }
 
         public static Patient GetDefaultPatient(string nhsNumber = "123456")
@@ -80,10 +80,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                     Family = new[] { "AssurancePractitioner" }
                 },
                 Identifier = {
-                    new Identifier("http://fhir.nhs.net/sds-user-id", "GCASDS0001"),
+                    new Identifier("http://fhir.nhs.uk/sds-user-id", "GCASDS0001"),
                     new Identifier("LocalIdentifierSystem", "1")
                 },
-                PractitionerRole = GetPractitionerRoleComponent("http://fhir.nhs.net/ValueSet/sds-job-role-name-1", "AssuranceJobRole")
+                PractitionerRole = GetPractitionerRoleComponent("http://fhir.nhs.uk/ValueSet/sds-job-role-name-1", "AssuranceJobRole")
             };
         }
 

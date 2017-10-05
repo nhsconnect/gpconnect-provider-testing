@@ -101,7 +101,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var organization = FhirHelper.GetDefaultOrganization();
             organization.Identifier.Clear();
-            organization.Identifier.Add(new Identifier("http://fhir.nhs.net/Id/someOtherCodingSystem", "NoOdsCode"));
+            organization.Identifier.Add(new Identifier("http://fhir.nhs.uk/Id/someOtherCodingSystem", "NoOdsCode"));
             Jwt.RequestingOrganization = organization.ToJson();
             Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
         }

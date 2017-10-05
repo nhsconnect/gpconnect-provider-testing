@@ -78,7 +78,7 @@ Scenario: JWT reason for request is not directcare
 Scenario: JWT authorization server token incorrect
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I set the JWT authorization server token URL to "https://notValid.fhir.nhs.net/tokenEndpoint"
+		And I set the JWT authorization server token URL to "https://notValid.fhir.nhs.uk/tokenEndpoint"
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON

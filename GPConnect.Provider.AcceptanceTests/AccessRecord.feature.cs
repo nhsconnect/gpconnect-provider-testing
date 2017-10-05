@@ -1199,7 +1199,7 @@ this.FeatureBackground();
                         "itle\" with value \"{0}\"", title), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 442
   testRunner.And("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +
-                    "ode.coding[0].system\" with value \"http://fhir.nhs.net/ValueSet/gpconnect-record-" +
+                    "ode.coding[0].system\" with value \"http://fhir.nhs.uk/ValueSet/gpconnect-record-" +
                     "section-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 443
   testRunner.And(string.Format("response bundle entry \"Composition\" should contain element \"resource.section[0].c" +

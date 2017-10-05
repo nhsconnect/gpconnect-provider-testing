@@ -95,7 +95,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 foreach (string profile in operationOutcome.Meta.Profile)
                 {
-                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
+                    profile.ShouldBe("http://fhir.nhs.uk/StructureDefinition/gpconnect-operationoutcome-1");
                 }
             }
             else
@@ -110,7 +110,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         foreach (Coding coding in issue.Details.Coding)
                         {
-                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
+                            coding.System.ShouldBe("http://fhir.nhs.uk/ValueSet/gpconnect-error-or-warning-code-1");
                             coding.Code.ShouldNotBeNull();
                             coding.Display.ShouldNotBeNull();
                         }
@@ -134,7 +134,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 foreach (string profile in operationOutcome.Meta.Profile)
                 {
-                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
+                    profile.ShouldBe("http://fhir.nhs.uk/StructureDefinition/gpconnect-operationoutcome-1");
                 }
             }
             else
@@ -148,7 +148,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     {
                         foreach (Coding coding in issue.Details.Coding)
                         {
-                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
+                            coding.System.ShouldBe("http://fhir.nhs.uk/ValueSet/gpconnect-error-or-warning-code-1");
                             errorCodes.Add(coding.Code);
                             coding.Display.ShouldNotBeNull();
                         }
@@ -512,10 +512,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     var sdsRoleProfileIdCount = 0;
 
                     foreach (Identifier identifier in practitioner.Identifier) {
-                        if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-user-id")) {
+                        if (identifier.System.Equals("http://fhir.nhs.uk/Id/sds-user-id")) {
                             sdsUserIdCount++;
                             identifier.Value.ShouldNotBeNull();
-                        } else if (identifier.System.Equals("http://fhir.nhs.net/Id/sds-role-profile-id"))
+                        } else if (identifier.System.Equals("http://fhir.nhs.uk/Id/sds-role-profile-id"))
                         {
                             sdsRoleProfileIdCount++;
                             identifier.Value.ShouldNotBeNull();
@@ -540,7 +540,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             var codingCount = 0;
                             foreach (Coding coding in practitionerRole.Role.Coding) {
                                 codingCount++;
-                                coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
+                                coding.System.ShouldBe("http://fhir.nhs.uk/ValueSet/sds-job-role-name-1");
                                 coding.Code.ShouldNotBeNull();
                                 coding.Display.ShouldNotBeNull();
                             }
@@ -598,12 +598,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                     foreach (Identifier identifier in organization.Identifier)
                     {
-                        if (identifier.System.Equals("http://fhir.nhs.net/Id/ods-organization-code"))
+                        if (identifier.System.Equals("http://fhir.nhs.uk/Id/ods-organization-code"))
                         {
                             odsOrganizationCodeCount++;
                             identifier.Value.ShouldNotBeNull();
                         }
-                        else if (identifier.System.Equals("http://fhir.nhs.net/Id/ods-site-code"))
+                        else if (identifier.System.Equals("http://fhir.nhs.uk/Id/ods-site-code"))
                         {
                             identifier.Value.ShouldNotBeNull();
                         }
@@ -730,7 +730,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Composition composition = (Composition)entry.Resource;
                     composition.Meta.ShouldNotBeNull();
                     foreach (string profile in composition.Meta.Profile) {
-                        profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
+                        profile.ShouldBe("http://fhir.nhs.uk/StructureDefinition/gpconnect-carerecord-composition-1");
                     }
                 }
             }
@@ -739,31 +739,31 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the patient resource in the bundle should contain meta data profile and version id")]
         public void ThenThePatientResourceInTheBundleShouldContainMetaDataProfileAndVersionId()
         {
-            checkForValidMetaDataInResource(ResourceType.Patient, "http://fhir.nhs.net/StructureDefinition/gpconnect-patient-1");
+            checkForValidMetaDataInResource(ResourceType.Patient, "http://fhir.nhs.uk/StructureDefinition/gpconnect-patient-1");
         }
 
         [Then(@"if the response bundle contains an organization resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsAnOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            checkForValidMetaDataInResource(ResourceType.Organization, "http://fhir.nhs.net/StructureDefinition/gpconnect-organization-1");
+            checkForValidMetaDataInResource(ResourceType.Organization, "http://fhir.nhs.uk/StructureDefinition/gpconnect-organization-1");
         }
 
         [Then(@"if the response bundle contains a practitioner resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsAPractitionerResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            checkForValidMetaDataInResource(ResourceType.Practitioner, "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
+            checkForValidMetaDataInResource(ResourceType.Practitioner, "http://fhir.nhs.uk/StructureDefinition/gpconnect-practitioner-1");
         }
 
         [Then(@"if the response bundle contains a device resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsADeviceResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            checkForValidMetaDataInResource(ResourceType.Device, "http://fhir.nhs.net/StructureDefinition/gpconnect-device-1");
+            checkForValidMetaDataInResource(ResourceType.Device, "http://fhir.nhs.uk/StructureDefinition/gpconnect-device-1");
         }
 
         [Then(@"if the response bundle contains a location resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsALocationResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            checkForValidMetaDataInResource(ResourceType.Location, "http://fhir.nhs.net/StructureDefinition/gpconnect-location-1");
+            checkForValidMetaDataInResource(ResourceType.Location, "http://fhir.nhs.uk/StructureDefinition/gpconnect-location-1");
         }
 
         public void checkForValidMetaDataInResource(ResourceType resourceType, string profileId) {
