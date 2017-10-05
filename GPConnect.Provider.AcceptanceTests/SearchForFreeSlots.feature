@@ -82,21 +82,16 @@ Scenario Outline: Searching for free slots should fail due to invalid parameters
 	| started		| 2017-12-29T18:22:00	|	
 
 
-Scenario Outline: Searching for free slots with valid prefixes
+Scenario: Searching for free slots with valid prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
-		And I add the time period parameters for "3" days starting today using the start date prefix "<startDatePrefix>" and the end date prefix "<endDatePrefix>"
+		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
 		And I add the parameter "fb-type" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-	Examples:
-		| startDatePrefix | endDatePrefix |
-		| eq              | eq            |
-		| gt              | lt            |
-		| ge              | le            |
-		
+	
 Scenario Outline: Searching for free slots with invalid prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -112,6 +107,8 @@ Scenario Outline: Searching for free slots with invalid prefixes
 		| gt              | gt            |
 		| lt              | lt            |
 		| le              | ge            |
+		| eq              | eq            |
+		| gt              | lt            |
 
 Scenario Outline: Searching for free slots with unknown prefixes
 	Given I configure the default "SearchForFreeSlots" request
