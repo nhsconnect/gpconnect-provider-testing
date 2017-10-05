@@ -452,6 +452,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
                 _fhirResourceRepository.Organization = organization;
             }
+            else{
+                throw new Exception("Organization cannot be stored. Organization equal to null");
+            }
         }
     }
 }

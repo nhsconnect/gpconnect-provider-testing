@@ -179,18 +179,6 @@ Scenario: Read appointment containing a priority element and check that the prio
 		And the response body should be FHIR JSON
 		And the Response Resource should be an Appointment
 		And the Appointment Priority should be valid
-
-Scenario: Read appointment and all participants must have a actor element
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	When I make the "AppointmentRead" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the Response Resource should be an Appointment
-		And the Appointment Participant Type and Actor should be valid
-
 	
 Scenario: Read appointment if all participants must have a actor element
 	Given I get the Patient for Patient Value "patient1"
