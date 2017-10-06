@@ -105,11 +105,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAddTheTimePeriodParametersforDaysStartingTodayWithStartEndFormats(int days, string startFormat, string endFormat)
         {
            var val = TimePeriodHelper.GetTimePeriodStartDateFormatEndDateFormat(startFormat, endFormat, days);
-           var startDatePrefix = "ge";
-           var endDatePrefix = "le"; 
+     
 
-            Given($"I add the parameter \"start\" with the value \"{startDatePrefix}{val.Start}\"");
-            Given($"I add the parameter \"end\" with the value \"{endDatePrefix}{val.End}\"");
+            Given($"I add the parameter \"start\" with the value \"{FhirConst.Prefixs.kGreaterThanOrEqualTo}{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
         }
 
         [Given(@"I add the time period parameters for ""(.*)"" days starting today using the start date prefix ""(.*)"" and the end date prefix ""(.*)""")]
@@ -117,8 +116,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var val = TimePeriodHelper.GetTimePeriodStartDateTodayEndDateDays(days);
 
-            Given($"I add the parameter \"start\" with the value \"{startDatePrefix}{val.Start}\"");
-            Given($"I add the parameter \"end\" with the value \"{endDatePrefix}{val.End}\"");
+            Given($"I add the parameter \"start\" with the value \"{FhirConst.Prefixs.kGreaterThanOrEqualTo}{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
         }
 
         [Given(@"I add the time period parameters for ""(.*)"" days starting today")]
@@ -136,11 +135,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var dateStart = DateTime.UtcNow.AddDays(days);
             var dateEnd = dateStart.AddDays(1);
             var val = TimePeriodHelper.GetTimePeriod(dateStart.ToString("yyyy-MM-dd"), dateEnd.ToString("yyyy-MM-dd"));
-            var startDatePrefix = "ge";
-            var endDatePrefix = "le";
 
-            Given($"I add the parameter \"start\" with the value \"{startDatePrefix}{val.Start}\"");
-            Given($"I add the parameter \"end\" with the value \"{endDatePrefix}{val.End}\"");
+            Given($"I add the parameter \"start\" with the value \"{FhirConst.Prefixs.kGreaterThanOrEqualTo}{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
         }
 
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]

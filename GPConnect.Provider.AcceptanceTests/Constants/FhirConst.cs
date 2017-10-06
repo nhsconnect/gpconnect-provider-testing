@@ -98,5 +98,11 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kCCExtCommCommProficiency = "communicationProficiency";
             public const string kCCExtCommInterpreterRequired = "interpreterRequired";
         }
+
+        internal static class Prefixs
+        {
+            public const string kGreaterThanOrEqualTo = "ge";
+            public const string kLessThanOrEqualTo = "le";
+        }
     }
 }
