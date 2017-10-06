@@ -17,16 +17,9 @@
             _httpContext = httpContext;
         }
 
-        [Then(@"the Appointment Reason should equal ""(.*)""")]
-        public void TheAppointmentReasonShouldBeValidFor(string value)
-        {
-            Appointments.ForEach(appointment =>
-            {
-                appointment.Reason?.Text.ShouldBe(value, $@"The Appointment Comment should be ""{value} but was ""{appointment.Comment}"".");
-            });
-        }
+     
 
-        [Then(@"the Appointment Reason Text should be valid for ""(.*)""")]
+        [Then(@"the Appointment Reason text should equal ""(.*)""")]
         public void TheAppointmentReasonTextShouldBeValidFor(string value)
         {
             Appointments.ForEach(appointment =>

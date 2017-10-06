@@ -10,7 +10,7 @@ Scenario Outline: I perform a successful amend appointment and change the reason
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
-		And the Appointment Reason should equal "customComment"
+		And the Appointment Reason text should equal "customComment"
 		And the Appointment Metadata should be valid
 	Examples:
 		| Patient  |
@@ -117,7 +117,7 @@ Scenario Outline: Amend appointment using the _format parameter to request respo
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
-		And the Appointment Reason should equal "customComment"
+		And the Appointment Reason text should equal "customComment"
 	Examples:
 		| Format                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -135,7 +135,7 @@ Scenario Outline: Amend appointment using the accept header to request response 
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
 		And the Appointment Metadata should be valid
-		And the Appointment Reason should equal "customComment"
+		And the Appointment Reason text should equal "customComment"
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -154,7 +154,7 @@ Scenario Outline: Amend appointment using the _format and accept parameter to re
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
 		And the Appointment Metadata should be valid
-		And the Appointment Reason should equal "customComment"
+		And the Appointment Reason text should equal "customComment"
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -172,7 +172,7 @@ Scenario: Amend appointment and check the returned appointment resource conforms
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the Response Resource should be an Appointment
-		And the Appointment Reason should equal "customComment"
+		And the Appointment Reason text should equal "customComment"
 		And the Appointment Status should be valid
 		And the Appointment Start should be valid
 		And the Appointment End should be valid
@@ -231,7 +231,7 @@ Scenario: Amend appointment set etag and check etag is the same in the returned 
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
-		And the Appointment Reason should equal "customComment"
+		And the Appointment Reason text should equal "customComment"
 
 Scenario: Amend appointment and send an invalid bundle resource
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -269,7 +269,7 @@ Scenario: Amend appointment valid response check caching headers exist
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
-		And the Appointment Reason should equal "customComment"
+		And the Appointment Reason text should equal "customComment"
 		And the Appointment Metadata should be valid
 		And the required cacheing headers should be present in the response
 
