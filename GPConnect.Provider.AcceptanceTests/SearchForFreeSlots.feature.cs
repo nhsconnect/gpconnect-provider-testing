@@ -315,7 +315,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 120
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 121
-  testRunner.And("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -608,8 +608,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 261
   testRunner.And("I set the required parameters with a time period of \"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 262
-  testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:actor:Practitione" +
-                    "r\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:Practitioner\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 263
   testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:actor:Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 264
@@ -646,7 +645,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Searching for free slots without actor parameter should return results without ac" +
             "tor resource")]
-        [NUnit.Framework.TestCaseAttribute("Location", "Schedule:actor:Practitioner", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Location", "Schedule:Practitioner", new string[0])]
         [NUnit.Framework.TestCaseAttribute("Practitioner", "Schedule:actor:Location", new string[0])]
         public virtual void SearchingForFreeSlotsWithoutActorParameterShouldReturnResultsWithoutActorResource(string excludedActor, string includedActorValue, string[] exampleTags)
         {

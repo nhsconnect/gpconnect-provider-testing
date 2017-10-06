@@ -104,10 +104,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add the time period parameters for ""(.*)"" days starting today using the start format ""(.*)"" and the end format ""(.*)""")]
         public void GivenIAddTheTimePeriodParametersforDaysStartingTodayWithStartEndFormats(int days, string startFormat, string endFormat)
         {
-            var val = TimePeriodHelper.GetTimePeriodStartDateFormatEndDateFormat(startFormat, endFormat, days);
+           var val = TimePeriodHelper.GetTimePeriodStartDateFormatEndDateFormat(startFormat, endFormat, days);
+           var startDatePrefix = "ge";
+           var endDatePrefix = "le"; 
 
-            Given($"I add the parameter \"start\" with the value \"{val.Start}\"");
-            Given($"I add the parameter \"end\" with the value \"{val.End}\"");
+            Given($"I add the parameter \"start\" with the value \"{startDatePrefix}{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{endDatePrefix}{val.End}\"");
         }
 
         [Given(@"I add the time period parameters for ""(.*)"" days starting today using the start date prefix ""(.*)"" and the end date prefix ""(.*)""")]
@@ -134,9 +136,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var dateStart = DateTime.UtcNow.AddDays(days);
             var dateEnd = dateStart.AddDays(1);
             var val = TimePeriodHelper.GetTimePeriod(dateStart.ToString("yyyy-MM-dd"), dateEnd.ToString("yyyy-MM-dd"));
+            var startDatePrefix = "ge";
+            var endDatePrefix = "le";
 
-            Given($"I add the parameter \"start\" with the value \"{val.Start}\"");
-            Given($"I add the parameter \"end\" with the value \"{val.End}\"");
+            Given($"I add the parameter \"start\" with the value \"{startDatePrefix}{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{endDatePrefix}{val.End}\"");
         }
 
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
