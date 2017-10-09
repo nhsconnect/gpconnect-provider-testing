@@ -116,8 +116,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var val = TimePeriodHelper.GetTimePeriodStartDateTodayEndDateDays(days);
 
-            Given($"I add the parameter \"start\" with the value \"{FhirConst.Prefixs.kGreaterThanOrEqualTo}{val.Start}\"");
-            Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
+            Given($"I add the parameter \"start\" with the value \"{startDatePrefix}{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{endDatePrefix}{val.End}\"");
         }
 
         [Given(@"I add the time period parameters for ""(.*)"" days starting today")]
