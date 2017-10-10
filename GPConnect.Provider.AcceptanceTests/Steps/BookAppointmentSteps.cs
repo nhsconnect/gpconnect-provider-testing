@@ -278,5 +278,20 @@
                 });
             });
         }
+
+        [Then(@"the booked appointment extensions must be valid")]
+        public void ThenTheBookedAppointmentExtensionMustBeValid()
+        {
+
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Extension.ForEach(extension =>
+                {
+                    extension.Url.ShouldNotBeNull();
+                    extension.TypeName.ShouldBe("Extension");
+                });
+            });
+        }
     }
-}
+    }
+

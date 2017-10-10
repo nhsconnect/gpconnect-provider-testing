@@ -58,6 +58,8 @@
             var slots = new List<ResourceReference>();
             slots.Add(slot);
 
+
+
             var appointment = new Appointment
             {
                 Status = AppointmentStatus.Booked,
@@ -69,6 +71,15 @@
 
             };
 
+            appointment.Extension.Add(new Extension("created", FhirDateTime.Now()));
+
+            var orgRef = new ResourceReference();
+            orgRef.Reference = "#bookingOrg1";
+            appointment.Extension.Add(new Extension("bookingOrganization", orgRef));
+            Organization bookingOrg = new Organization();
+            bookingOrg.Id = "#bookingOrg1";
+            bookingOrg.Name = "Test Suite Validator, MyOdsCode, +44113 999 8888";
+            appointment.Contained.Add(bookingOrg);
 
             appointment.Description = "Default Description";
 
