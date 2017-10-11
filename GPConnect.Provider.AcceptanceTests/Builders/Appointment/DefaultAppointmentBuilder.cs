@@ -74,11 +74,12 @@
             appointment.Extension.Add(new Extension("created", FhirDateTime.Now()));
 
             var orgRef = new ResourceReference();
-            orgRef.Reference = "#bookingOrg1";
+            orgRef.Reference = "#1";
             appointment.Extension.Add(new Extension("bookingOrganization", orgRef));
             Organization bookingOrg = new Organization();
-            bookingOrg.Id = "#bookingOrg1";
-            bookingOrg.Name = "Test Suite Validator, MyOdsCode, +44113 999 8888";
+            bookingOrg.Id = "#1";
+            bookingOrg.Name = "Test Suite Validator";
+            bookingOrg.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01823938938"));
             appointment.Contained.Add(bookingOrg);
 
             appointment.Description = "Default Description";

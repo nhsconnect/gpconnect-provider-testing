@@ -279,18 +279,29 @@
             });
         }
 
-        [Then(@"the booked appointment extensions must be valid")]
+        [Then(@"the booking organization extension must be valid")]
         public void ThenTheBookedAppointmentExtensionMustBeValid()
         {
-
             Appointments.ForEach(appointment =>
             {
-                appointment.Extension.ForEach(extension =>
+                var bookingOrgExtensions = appointment
+                 .Extension
+                 .Where(extension => extension.Url == "bookingOrganization")
+                 .ToList();
+
+                if (bookingOrgExtensions.Count != 0)
                 {
-                    extension.Url.ShouldNotBeNull();
-                    extension.TypeName.ShouldBe("Extension");
-                });
-            });
+                    appointment.Contained.ForEach(contained =>
+                    {
+                        Organization org = (Organization)contained;
+                        org.Id.ShouldNotBeNull();
+                        org.Name.ShouldNotBeNull();
+                        org.Telecom.ShouldNotBeNull();
+
+                    });
+                }
+             });
+           
         }
     }
     }

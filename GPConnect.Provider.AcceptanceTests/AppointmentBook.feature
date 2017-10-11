@@ -12,9 +12,7 @@ Scenario: Book single appointment for patient
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
-	
-
-	
+		
 Scenario Outline: Book Appointment with invalid url for booking appointment
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -187,7 +185,7 @@ Scenario: Book Appointment and check response contains the manadatory elements
 		And the Appointment Participants should be valid and resolvable
 		And the Appointment Slots should be valid
 		And the Appointment Description must be valid
-		And the booked appointment extensions must be valid
+		And the booking organization extension must be valid
 
 Scenario: Book Appointment and check returned appointment resource contains meta data
 	Given I get the Patient for Patient Value "patient1"
