@@ -68,7 +68,7 @@
             _jwtHelper.SetCreationTimeSeconds(seconds);
         }
 
-        [Given(@"I ""(.*)"" JWT Creation Time and expirary time by ""(.*)"" seconds")]
+        [Given(@"I ""(.*)"" JWT Creation Time and expiry time by ""(.*)"" seconds")]
         public void SetTheJwtCreationTimeAndExpiraryTimeToSecondsInThePast(string symbol,double seconds)
         {
             if (symbol == "-")
