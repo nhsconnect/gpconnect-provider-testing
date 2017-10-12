@@ -68,6 +68,21 @@
             _jwtHelper.SetCreationTimeSeconds(seconds);
         }
 
+        [Given(@"I ""(.*)"" JWT Creation Time and expirary time by ""(.*)"" seconds")]
+        public void SetTheJwtCreationTimeAndExpiraryTimeToSecondsInThePast(string symbol,double seconds)
+        {
+            if (symbol == "-")
+            {
+                _jwtHelper.SetCreationTimeSecondsPast(seconds);
+                _jwtHelper.SetExpiryTimeInSecondsPast(seconds);
+            }
+            if (symbol == "+")
+            {
+                _jwtHelper.SetCreationTimeSeconds(seconds);
+                _jwtHelper.SetExpiryTimeInSeconds(seconds);
+            }
+        }
+
         [Given(@"I set the JWT Reason For Request to ""(.*)""")]
         public void SetTheJwtReasonForRequestTo(string reasonForRequest)
         {

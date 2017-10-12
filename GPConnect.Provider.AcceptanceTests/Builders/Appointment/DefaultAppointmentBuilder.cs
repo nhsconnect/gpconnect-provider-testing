@@ -6,6 +6,8 @@
     using Hl7.Fhir.Model;
     using Repository;
     using static Hl7.Fhir.Model.Appointment;
+    using Constants;
+    using Context;
 
     public class DefaultAppointmentBuilder
     {
@@ -77,6 +79,7 @@
             orgRef.Reference = "#1";
             appointment.Extension.Add(new Extension("bookingOrganization", orgRef));
             Organization bookingOrg = new Organization();
+            bookingOrg.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap["ORG1"]));
             bookingOrg.Id = "#1";
             bookingOrg.Name = "Test Suite Validator";
             bookingOrg.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01823938938"));

@@ -134,6 +134,18 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
         }
 
+        public void SetExpiryTimeInSecondsPast(double seconds)
+        {
+            Debug.Assert(CreationTime != null, "_jwtCreationTime != null");
+            ExpiryTime = CreationTime.Value.AddSeconds(-seconds);
+        }
+
+        public void SetCreationTimeSecondsPast(double seconds)
+        {
+            CreationTime = DateTime.UtcNow.AddSeconds(-seconds);
+            ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
+        }
+
         public void SetRequestingPractitioner(string practitionerId, string practitionerJson)
         {
             // TODO Make The RequestingPractitionerId Use The Business Identifier And Not The Logical Identifier 
