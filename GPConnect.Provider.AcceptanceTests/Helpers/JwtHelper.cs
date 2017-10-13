@@ -40,6 +40,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         {
             CreationTime = DateTime.UtcNow;
             ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
+            SetCreationTimeSecondsPast(2);
+            SetExpiryTimeInSecondsPast(2);
             ReasonForRequest = JwtConst.Values.kDirectCare;
             AuthTokenURL = JwtConst.Values.kAuthTokenURL;
             RequestingDevice = FhirHelper.GetDefaultDevice().ToFhirJson();
@@ -137,7 +139,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public void SetExpiryTimeInSecondsPast(double seconds)
         {
             Debug.Assert(CreationTime != null, "_jwtCreationTime != null");
-            ExpiryTime = CreationTime.Value.AddSeconds(-seconds);
+            ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
+            ExpiryTime.Value.AddSeconds(-seconds);
         }
 
         public void SetCreationTimeSecondsPast(double seconds)

@@ -73,11 +73,11 @@
 
             };
 
-            appointment.Extension.Add(new Extension("created", FhirDateTime.Now()));
+            appointment.Extension.Add(new Extension("https://fhir.nhs.uk/StructureDefinition/extension-gpconnect-appointment-created-1", FhirDateTime.Now()));
 
             var orgRef = new ResourceReference();
             orgRef.Reference = "#1";
-            appointment.Extension.Add(new Extension("bookingOrganization", orgRef));
+            appointment.Extension.Add(new Extension("https://fhir.nhs.uk/StructureDefinition/extension-gpconnect-booking-organisation-1", orgRef));
             Organization bookingOrg = new Organization();
             bookingOrg.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap["ORG1"]));
             bookingOrg.Id = "#1";
