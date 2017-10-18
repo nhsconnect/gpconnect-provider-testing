@@ -28,6 +28,11 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public string RequestedScope { get; set; }
         public string RequestedPatientNHSNumber { get; set; }
         public string RequestedOrganizationODSCode { get; set; }
+        public string RequestedOrganizationId { get; set; }
+
+        private bool RequestedRecordIsOrganization => !string.IsNullOrEmpty(RequestedOrganizationId) ||
+                                                      !string.IsNullOrEmpty(RequestedOrganizationODSCode);
+
         public string RequestingSystemUrl { get; set; }
 
         public JwtHelper()
@@ -52,7 +57,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             // TODO Check We're Using The Correct Scope For Metadata vs. GetCareRecord
             RequestedPatientNHSNumber = null;
             // TODO Move Dummy Data Out Into App.Config Or Somewhere Else
-            RequestedOrganizationODSCode = "OrgODSCode0001";
+
             RequestingSystemUrl = "https://ConsumerSystemURL";
         }
 
@@ -96,9 +101,16 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             {
                 claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultPatient(RequestedPatientNHSNumber).ToFhirJson(), JsonClaimValueTypes.Json));
             }
-            else if (RequestedOrganizationODSCode != null)
+            else if (RequestedRecordIsOrganization)
             {
-                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultOrganization(RequestedOrganizationODSCode).ToFhirJson(), JsonClaimValueTypes.Json));
+                var organization = FhirHelper.GetOrganization(RequestedOrganizationId, RequestedOrganizationODSCode);
+                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, organization.ToFhirJson(),
+                    JsonClaimValueTypes.Json));
+            }
+            else
+            {
+                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultOrganization().ToFhirJson(),
+                    JsonClaimValueTypes.Json));
             }
 
             return new JwtPayload(claims);

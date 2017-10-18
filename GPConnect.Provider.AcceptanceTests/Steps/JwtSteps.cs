@@ -16,13 +16,15 @@
         private readonly HttpHeaderHelper _headerHelper;
         private readonly JwtHelper _jwtHelper;
         private readonly IFhirResourceRepository _fhirResourceRepository;
+        private readonly HttpContext _httpContext;
 
-        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper, IFhirResourceRepository fhirResourceRepository)
+        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper, IFhirResourceRepository fhirResourceRepository, HttpContext httpContext)
         {
             Log.WriteLine("JwtSteps() Constructor");
             _headerHelper = headerHelper;
             _jwtHelper = jwtHelper;
             _fhirResourceRepository = fhirResourceRepository;
+            _httpContext = httpContext;
         }
 
         [Given(@"I set the JWT requested scope to ""(.*)""")]
@@ -265,6 +267,18 @@
         public void SetTheJwtRequestedRecordToTheNhsNumberFor(string patient)
         {
             _jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
+        }
+
+        [Given(@"I set the JWT Requested Record to the ODS Code for ""(.*)""")]
+        public void SetTheRequestedOrganizationOdsCodeToTheOdsCodeFor(string organization)
+        {
+            _jwtHelper.RequestedOrganizationODSCode = GlobalContext.OdsCodeMap[organization];
+        }
+
+        [Given(@"I set the JWT Requested Record Id to the Request Id")]
+        public void SetTheJwtRequestedRecordIdToTheRequestId()
+        {
+            _jwtHelper.RequestedOrganizationId = _httpContext.HttpRequestConfiguration.GetRequestId;
         }
 
         [Given(@"I set the JWT Requested Record to the NHS Number ""(.*)""")]

@@ -1,14 +1,12 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Extensions;
-using GPConnect.Provider.AcceptanceTests.Helpers;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Constants;
     using Context;
     using Enum;
+    using Extensions;
     using Hl7.Fhir.Model;
     using Repository;
     using Shouldly;
@@ -21,15 +19,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly BundleSteps _bundleSteps;
         private readonly HttpResponseSteps _httpResponseSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
+        private readonly JwtSteps _jwtSteps;
 
         private List<Organization> Organizations => _httpContext.FhirResponse.Organizations;
 
-        public OrganizationSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, HttpResponseSteps httpResponseSteps, IFhirResourceRepository fhirResourceRepository) : base(httpSteps)
+        public OrganizationSteps(HttpSteps httpSteps, HttpContext httpContext, BundleSteps bundleSteps, HttpResponseSteps httpResponseSteps, IFhirResourceRepository fhirResourceRepository, JwtSteps jwtSteps) : base(httpSteps)
         {
             _httpContext = httpContext;
             _bundleSteps = bundleSteps;
             _httpResponseSteps = httpResponseSteps;
             _fhirResourceRepository = fhirResourceRepository;
+            _jwtSteps = jwtSteps;
         }
 
         [Then(@"the Response Resource should be an Organization")]
@@ -322,6 +322,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationSearch);
 
+            _jwtSteps.SetTheRequestedOrganizationOdsCodeToTheOdsCodeFor(code);
             AddAnIdentifierParameterWithOrganizationsCodeSystemAndValue(code);
 
             _httpSteps.MakeRequest(GpConnectInteraction.OrganizationSearch);

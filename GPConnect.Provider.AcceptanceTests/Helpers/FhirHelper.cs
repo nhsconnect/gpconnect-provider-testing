@@ -9,7 +9,7 @@ using GPConnect.Provider.AcceptanceTests.Constants;
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
-    static public class FhirHelper
+    public static class FhirHelper
     {
         public static Identifier GetNHSNumberIdentifier(string nhsNumber)
         {
@@ -46,16 +46,22 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             };
         }
 
-        public static Organization GetDefaultOrganization(string odsCode = "GPCA0001")
+        public static Organization GetOrganization(string id, string odsCode)
         {
             return new Organization
             {
-                Id = "1",
-                Name = "GP Connect Assurance",
-                Identifier = {
-                        GetODSCodeIdentifier(odsCode)
-                    }
+                Id = id,
+                Identifier = new List<Identifier>
+                { 
+                    GetODSCodeIdentifier(odsCode)
+                }
             };
+        }
+
+        public static Organization GetDefaultOrganization(string odsCode = "GPCA0001")
+        {
+            return GetOrganization("1", odsCode);
+          
         }
 
         public static List<Practitioner.PractitionerRoleComponent> GetPractitionerRoleComponent(string system, string value)
