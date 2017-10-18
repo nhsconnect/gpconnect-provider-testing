@@ -3,6 +3,7 @@ Feature: OrganizationSearch
 
 Scenario Outline: Organization search success
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "<Value>"
 		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
 	When I make the "OrganizationSearch" request	
 	Then the response status code should indicate success
@@ -23,6 +24,7 @@ Scenario Outline: Organization search success
 Scenario: Organization search failure with two invalid parameters sent in the request
 	Given I configure the default "OrganizationSearch" request
 		And I add the parameter "incorrectParameter" with the value "incorrectParameter"
+		And I set the JWT Requested Record to the ODS Code for "ORG1"
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 		And I add the parameter "invalidParameter" with the value "invalidParameter"
 	When I make the "OrganizationSearch" request
@@ -32,6 +34,7 @@ Scenario: Organization search failure with two invalid parameters sent in the re
 Scenario: Organization search failure with invalid parameter before the identifier sent in the request
 	Given I configure the default "OrganizationSearch" request
 		And I add the parameter "incorrectParameter" with the value "incorrectParameter"
+		And I set the JWT Requested Record to the ODS Code for "ORG1"
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
@@ -39,6 +42,7 @@ Scenario: Organization search failure with invalid parameter before the identifi
 
 Scenario: Organization search failure with invalid parameter after the identifier sent in the request
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 		And I add the parameter "invalidParameter" with the value "invalidParameter"
 	When I make the "OrganizationSearch" request
@@ -47,20 +51,22 @@ Scenario: Organization search failure with invalid parameter after the identifie
 
 Scenario Outline: Organization search sending multiple identifiers resulting in failure
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with System "<System1>" and Value "<Value1>"
-		And I add an Organization Identifier parameter with System "<System2>" and Value "<Value2>"
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
+		And I add an Organization Identifier parameter with System "<System1>" and Value "ORG1"
+		And I add an Organization Identifier parameter with System "<System2>" and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| System1                                      | Value1 | System2                                      | Value2 |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1   | https://fhir.nhs.uk/Id/ods-organization-code | ORG1   |
-		| badSystem                                    | ORG1   | https://fhir.nhs.uk/Id/ods-organization-code | ORG1   |
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1   | badSystem                                    | ORG1   |
+		| System1                                      | System2                                      |
+		| https://fhir.nhs.uk/Id/ods-organization-code | https://fhir.nhs.uk/Id/ods-organization-code |
+		| badSystem                                    | https://fhir.nhs.uk/Id/ods-organization-code |
+		| https://fhir.nhs.uk/Id/ods-organization-code | badSystem                                    |
 
 
 Scenario: Organization search by organization code successfully returns single result containing the correct fields
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
@@ -74,6 +80,7 @@ Scenario: Organization search by organization code successfully returns single r
 @ignore
 Scenario: Organization - Identifier - have correct Organization Codes a when searching by Organization Code
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
@@ -82,6 +89,7 @@ Scenario: Organization - Identifier - have correct Organization Codes a when sea
 
 Scenario: Organization search by organization code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
@@ -94,12 +102,14 @@ Scenario: Organization search by organization code successfully returns multiple
 		
 Scenario: Organization search failure due to no identifier parameter
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario Outline: Organization search failure due to invalid identifier parameter name
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 		And I add a "<Parameter>" parameter with the Value "<Value>"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
@@ -113,6 +123,7 @@ Scenario Outline: Organization search failure due to invalid identifier paramete
 
 Scenario Outline: Organization search failure due to invalid interactionId
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 		And I set the Interaction Id header to "<InteractionId>"
 	When I make the "OrganizationSearch" request
@@ -126,6 +137,7 @@ Scenario Outline: Organization search failure due to invalid interactionId
 
 Scenario Outline: Organization search failure due to missing header
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request with missing Header "<Header>"
 	Then the response status code should be "400"
@@ -141,7 +153,8 @@ Scenario Outline: Organization search failure due to missing header
 
 Scenario Outline: Organization search add accept header to request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
+		And I add an Organization Identifier parameter with System "<System>" and Value "ORG1"
 		And I set the Accept header to "<Header>"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
@@ -149,14 +162,15 @@ Scenario Outline: Organization search add accept header to request and check for
 		And the response should be a Bundle resource of type "searchset"
 	And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 	Examples:
-		| Header                | BodyFormat | System                                       | Value |
-		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
-		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
+		| Header                | BodyFormat | System                                       |
+		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 
 
 Scenario Outline: Organization search add _format parameter to request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
+		And I add an Organization Identifier parameter with System "<System>" and Value "ORG1"
 		And I do not send header "Accept"
 		And I add a Format parameter with the Value "<Format>"
 	When I make the "OrganizationSearch" request
@@ -165,13 +179,14 @@ Scenario Outline: Organization search add _format parameter to request and check
 		And the response should be a Bundle resource of type "searchset"
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 	Examples: 
-		| Format                | BodyFormat | System                                       | Value |
-		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
-		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
+		| Format                | BodyFormat | System                                       | 
+		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code | 
+		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 
 Scenario Outline: Organization search add accept header and _format parameter to the request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
+		And I add an Organization Identifier parameter with System "<System>" and Value "ORG1"
 		And I set the Accept header to "<Header>"
 		And I add a Format parameter with the Value "<Format>"
 	When I make the "OrganizationSearch" request
@@ -181,38 +196,40 @@ Scenario Outline: Organization search add accept header and _format parameter to
 		And the response bundle should contain "1" entries
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 	Examples:
-		| Header                | Format                | BodyFormat | System                                       | Value |
-		| application/json+fhir | application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
-		| application/json+fhir | application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
+		| Header                | Format                | BodyFormat | System                                       |
+		| application/json+fhir | application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/json+fhir | application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 
 
 Scenario Outline: Organization search add _format parameter to request before the identifer and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 		And I add a Format parameter with the Value "<Format>"
-		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
+		And I add an Organization Identifier parameter with System "<System>" and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 	Examples:
-		| Format	            | BodyFormat | System                                       | Value |
-		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
-		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
+		| Format	            | BodyFormat | System                                       |
+		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 
 
 Scenario Outline: Organization search add _format parameter to request after the identifer and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
-		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
+		And I add an Organization Identifier parameter with System "<System>" and Value "ORG1"
 		And I add a Format parameter with the Value "<Format>"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| Format                | BodyFormat | System                                       | Value |
-		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
-		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code | ORG1  |
+		| Format                | BodyFormat | System                                       |
+		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 
 
 Scenario: Conformance profile supports the Organization search operation
@@ -223,6 +240,7 @@ Scenario: Conformance profile supports the Organization search operation
 
 Scenario: Organization search check organization response contains logical identifier
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 		And I add an Organization Identifier parameter with System "https://fhir.nhs.uk/Id/ods-organization-code" and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
@@ -231,6 +249,7 @@ Scenario: Organization search check organization response contains logical ident
 
 Scenario: Organization search include count and sort parameters
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 		And I add the parameter "_count" with the value "1"
 	When I make the "OrganizationSearch" request
@@ -241,6 +260,7 @@ Scenario: Organization search include count and sort parameters
 
 Scenario: Organization search valid response check caching headers exist
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should indicate success
@@ -254,6 +274,7 @@ Scenario: Organization search valid response check caching headers exist
 
 Scenario: Organization search invalid response check caching headers exist
 	Given I configure the default "OrganizationSearch" request
+		And I set the JWT Requested Record to the ODS Code for "ORG1"		
 		And I add the parameter "incorrectParameter" with the value "incorrectParameter"
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
 		And I add the parameter "invalidParameter" with the value "invalidParameter"
