@@ -199,6 +199,12 @@
                 jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
             }
 
+            if (relativeUrl.Contains("Organization"))
+            {
+                var organizationId = relativeUrl.Split('/')[1];
+                jwtHelper.RequestedOrganizationId = organizationId;
+            }
+
             httpRequestConfiguration.RequestUrl = relativeUrl;
 
             _securitySteps.ConfigureServerCertificatesAndSsl();
