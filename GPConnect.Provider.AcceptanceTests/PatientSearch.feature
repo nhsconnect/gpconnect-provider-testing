@@ -53,24 +53,10 @@ Scenario: Patient search should fail if no identifier parameter is include
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario Outline: The identifier parameter should be rejected if the case is incorrect
+Scenario: The identifier parameter should be rejected if the case is incorrect
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add a Patient Identifier parameter with identifier name "<ParameterName>" default System and Value "patient2"
-	When I make the "PatientSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-		Examples:
-		| ParameterName |
-		| idenddstifier |
-		| Idenddstifier |
-		| Identifier    |
-		| identifiers   |
-
-Scenario: The response should be an error if parameter is not identifier
-	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add a Patient Identifier parameter with identifier name "nhsNumberParam" default System and Value "patient2"
+		And I add a Patient Identifier parameter with identifier name "Identifier" default System and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
@@ -273,9 +259,6 @@ Scenario Outline: System should error if multiple parameters valid or invalid ar
 		| identifier       | patient2   | identifier        | patient2   |
 		| identifier       | patient1   | identifier        | patient2   |
 		| identifier       | patient2   | identifier        | patient1   |
-		| identifier       | patient2   | invalidIdentifier | patient2   |
-		| randomIdentifier | patient2   | identifier        | patient2   |
-		| identifier       | patient1   | identifiers       | patient2   |
 
 Scenario: JWT requesting scope claim should reflect the operation being performed
 	 Given I configure the default "PatientSearch" request

@@ -50,10 +50,7 @@ Scenario Outline: Practitioner search where identifier contains the incorrect ca
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| ParameterName |
-		| idenddstifier |
-		| Idenddstifier |
 		| Identifier    |
-		| identifiers   |
 
 Scenario Outline: Practitioner search testing paramater validity before adding identifier
 	Given I configure the default "PractitionerSearch" request
@@ -206,22 +203,6 @@ Scenario: Practitioner search contains nhsCommunication element
 Scenario: Practitioner search multiple identifier parameter failure
 	Given I configure the default "PractitionerSearch" request
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-	When I make the "PractitionerSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario: Practitioner search with multiple identifiers sending an invalid identifier after a valid identifier
-	Given I configure the default "PractitionerSearch" request
-		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-		And I add an Identifier parameter with the Value "INVALID SYSTEM|INVALID VALUE"
-	When I make the "PractitionerSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario: Practitioner search with multiple identifiers sending a valid identifier after an invalid identifier
-	Given I configure the default "PractitionerSearch" request
-		And I add an Identifier parameter with the Value "INVALID SYSTEM|INVALID VALUE"
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
 	When I make the "PractitionerSearch" request
 	Then the response status code should be "400"

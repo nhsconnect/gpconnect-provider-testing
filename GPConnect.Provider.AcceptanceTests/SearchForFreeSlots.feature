@@ -68,20 +68,6 @@ Scenario Outline: Searching for free slots should fail due to missing parameters
 	| start		|
 	| fb-type	|
 
-Scenario Outline: Searching for free slots should fail due to invalid parameters
-	Given I configure the default "SearchForFreeSlots" request
-		And I set the JWT Requested Scope to Organization Read
-		And I set the required parameters with a time period of "3" days
-		And I add the parameter "<Key>" with the value "<Value>"
-	When I make the "SearchForFreeSlots" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-	| Key			| Value					|	
-	| invalidParam	| something				|	
-	| started		| 2017-12-29T18:22:00	|	
-
-
 Scenario: Searching for free slots with valid prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read

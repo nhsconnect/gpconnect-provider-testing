@@ -240,53 +240,6 @@ Scenario: Register patient with duplicate patient resource parameters
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient with additional parameters but the valid patient parameter first
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add the Stored Patient as a parameter
-		And I add the Stored Appointment as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario: Register patient with duplicate parameters invalid first
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add the Stored Appointment as a parameter
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario Outline: Register patient with invalid parameters name
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add the Stored Patient as a parameter with name "<ParameterName>"
-	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-	Examples:
-	| ParameterName        |
-	| invalidName          |
-	| registerPatient test |
-	| null                 |
-
-Scenario: Register patient with missing parameters name
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add the Stored Patient as a parameter with name ""
-	When I make the "RegisterPatient" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-
 Scenario: Register patient which alread exists on the system as a normal patient
 	Given I get the Patient for Patient Value "patient1"
 		And I store the patient in the register patient resource format
