@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GPConnect.Provider.AcceptanceTests</RootNamespace>
     <AssemblyName>GPConnect.Provider.AcceptanceTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +31,42 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Develop\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Develop\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
@@ -52,21 +89,21 @@
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.0.0\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.0.5797.27534, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.0.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+    <Reference Include="Shaman.CurlSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0988ad0e0927f547, processorArchitecture=MSIL">
+      <HintPath>..\packages\Shaman.CurlSharp.0.6.3.1\lib\net46\Shaman.CurlSharp.dll</HintPath>
       <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Shouldly, Version=2.8.2.0, Culture=neutral, PublicKeyToken=6042cbcb05cbc941, processorArchitecture=MSIL">
-      <HintPath>..\packages\Shouldly.2.8.2\lib\net451\Shouldly.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Shouldly, Version=2.8.3.0, Culture=neutral, PublicKeyToken=6042cbcb05cbc941, processorArchitecture=MSIL">
+      <HintPath>..\packages\Shouldly.2.8.3\lib\net451\Shouldly.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -76,6 +113,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -93,56 +131,98 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessRecord.feature</DependentUpon>
     </Compile>
-    <Compile Include="Audit.feature.cs">
+    <Compile Include="AppointmentBook.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Audit.feature</DependentUpon>
+      <DependentUpon>AppointmentBook.feature</DependentUpon>
     </Compile>
+    <Compile Include="AppointmentCancel.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppointmentCancel.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Builders\Appointment\DefaultAppointmentBuilder.cs" />
     <Compile Include="Constants\SpineConst.cs" />
     <Compile Include="Constants\FhirConst.cs" />
     <Compile Include="Constants\HttpConst.cs" />
     <Compile Include="Constants\JwtConst.cs" />
     <Compile Include="Constants\SecurityConst.cs" />
     <Compile Include="Context\GlobalContext.cs" />
-    <Compile Include="Context\FhirContext.cs" />
     <Compile Include="Context\HttpContext.cs" />
+    <Compile Include="Context\IHttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
-    <Compile Include="Data\ODS.cs" />
+    <Compile Include="Data\LocationLogicalIdentifierMap.cs" />
+    <Compile Include="Data\OrganizationSiteCodeMap.cs" />
+    <Compile Include="Data\RegisterPatient.cs" />
+    <Compile Include="Data\PractitionerCodeMap.cs" />
+    <Compile Include="Data\ODSCodeMap.cs" />
     <Compile Include="Data\NHSNoMap.cs" />
     <Compile Include="Data\PDS.cs" />
+    <Compile Include="Enum\GpConnectInteraction.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
-    <Compile Include="FhirBase.feature.cs">
-      <DependentUpon>FhirBase.feature</DependentUpon>
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\ValueSetExtensions.cs" />
+    <Compile Include="Factories\HttpRequestConfigurationFactory.cs" />
+    <Compile Include="Factories\JwtFactory.cs" />
+    <Compile Include="Factories\RequestFactory.cs" />
+    <Compile Include="FHIR.feature.cs">
+      <DependentUpon>FHIR.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Helpers\AppSettingsHelper.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
-    <Compile Include="Foundation.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Foundation.feature</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\FhirHelper.cs" />
     <Compile Include="Helpers\GlobalContextHelper.cs" />
     <Compile Include="Helpers\IGlobalContextHelper.cs" />
+    <Compile Include="Helpers\NhsNumberHelper.cs" />
+    <Compile Include="Helpers\RecordSectionHelper.cs" />
+    <Compile Include="Helpers\ResourceReferenceHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
-    <Compile Include="Html1.feature.cs">
-      <DependentUpon>Html.feature</DependentUpon>
+    <Compile Include="Helpers\TimePeriodHelper.cs" />
+    <Compile Include="HTML.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>HTML.feature</DependentUpon>
     </Compile>
-    <Compile Include="Http.feature.cs">
+    <Compile Include="HTTP.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Http.feature</DependentUpon>
+      <DependentUpon>HTTP.feature</DependentUpon>
     </Compile>
-    <Compile Include="Importers\ODSImporter.cs" />
+    <Compile Include="Http\HttpContextRequest.cs" />
+    <Compile Include="Http\HttpRequestBase.cs" />
+    <Compile Include="Http\FhirResponse.cs" />
+    <Compile Include="Http\HttpRequestConfiguration.cs" />
+    <Compile Include="Http\HttpResourceRequest.cs" />
+    <Compile Include="Http\HttpResponse.cs" />
+    <Compile Include="Importers\LocationLogicalIdentifierConverter.cs" />
+    <Compile Include="Importers\LocationLogicalIdentifierImporter.cs" />
+    <Compile Include="Importers\RegisterPatientsImporter.cs" />
+    <Compile Include="Importers\PractitionerCodeMapConverter.cs" />
+    <Compile Include="Importers\PractitionerCodeMapImporter.cs" />
+    <Compile Include="Importers\ODSCodeMapImporter.cs" />
     <Compile Include="Importers\NHSNoMapImporter.cs" />
     <Compile Include="Importers\PDSImporter.cs" />
-    <Compile Include="Importers\ODSMap.cs" />
-    <Compile Include="Importers\NHSNoMapMap.cs" />
+    <Compile Include="Importers\ODSCodeMapConverter.cs" />
+    <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
+    <Compile Include="LocationRead.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocationRead.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GpcCode.cs" />
+    <Compile Include="OrganizationRead.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OrganizationRead.feature</DependentUpon>
+    </Compile>
+    <Compile Include="PractitionerSearch.feature.cs">
+      <DependentUpon>PractitionerSearch.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="JWT.feature.cs">
       <DependentUpon>JWT.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -150,10 +230,77 @@
     </Compile>
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Logger\TestListener.cs" />
+    <Compile Include="OrganizationSearch.feature.cs">
+      <DependentUpon>OrganizationSearch.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PatientSearch.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PatientSearch.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AppointmentRetrieve.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppointmentRetrieve.feature</DependentUpon>
+    </Compile>
+    <Compile Include="PractitionerRead.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PractitionerRead.feature</DependentUpon>
+    </Compile>
+    <Compile Include="PatientRead.feature.cs">
+      <DependentUpon>PatientRead.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppointmentRead.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppointmentRead.feature</DependentUpon>
+    </Compile>
+    <Compile Include="PatientRegister.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PatientRegister.feature</DependentUpon>
+    </Compile>
+    <Compile Include="AppointmentAmend.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppointmentAmend.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\FhirResourceRepository.cs" />
+    <Compile Include="Repository\IFhirResourceRepository.cs" />
+    <Compile Include="SearchForFreeSlots.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchForFreeSlots.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Steps\AmendAppointmentSteps.cs" />
+    <Compile Include="Steps\AppointmentReadSteps.cs" />
+    <Compile Include="Steps\AppointmentRetrieveSteps.cs" />
+    <Compile Include="Steps\AppointmentsSteps.cs" />
+    <Compile Include="Steps\BaseSteps.cs" />
+    <Compile Include="Steps\BookAppointmentSteps.cs" />
+    <Compile Include="Steps\BundleSteps.cs" />
+    <Compile Include="Steps\CancelAppointmentSteps.cs" />
+    <Compile Include="Steps\CurlSteps.cs" />
+    <Compile Include="Steps\CompositionSteps.cs" />
+    <Compile Include="Steps\ConformanceSteps.cs" />
+    <Compile Include="Steps\DeviceSteps.cs" />
+    <Compile Include="Steps\HttpRequestConfigurationSteps.cs" />
+    <Compile Include="Steps\HttpResponseSteps.cs" />
+    <Compile Include="Steps\LocationSteps.cs" />
+    <Compile Include="Steps\SearchForFreeSlotsSteps.cs" />
+    <Compile Include="Steps\OrganizationSteps.cs" />
+    <Compile Include="Steps\PatientSteps.cs" />
     <Compile Include="Steps\HtmlSteps.cs" />
     <Compile Include="Steps\AccessRecordSteps.cs" />
     <Compile Include="Steps\JwtSteps.cs" />
     <Compile Include="Steps\ManualSteps.cs" />
+    <Compile Include="Steps\PractitionerSteps.cs" />
+    <Compile Include="Steps\RegisterPatientSteps.cs" />
     <Compile Include="Steps\SecuritySteps.cs" />
     <Compile Include="Steps\GenericSteps.cs" />
     <Compile Include="Steps\FhirSteps.cs" />
@@ -164,10 +311,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Security.feature</DependentUpon>
     </Compile>
-    <Compile Include="SpineSecurityProxy.feature.cs">
+    <Compile Include="SSP.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SpineSecurityProxy.feature</DependentUpon>
+      <DependentUpon>SSP.feature</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HttpHeaderHelper.cs" />
     <Compile Include="Helpers\HttpParameterHelper.cs" />
@@ -179,39 +326,100 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AccessRecord.feature.cs</LastGenOutput>
     </None>
-    <None Include="App.config" />
-    <None Include="Audit.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Audit.feature.cs</LastGenOutput>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
     </None>
-    <None Include="FhirBase.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FhirBase.feature.cs</LastGenOutput>
+    <None Include="App.Debug.config">
+      <DependentUpon>App.config</DependentUpon>
     </None>
-    <None Include="Foundation.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Foundation.feature.cs</LastGenOutput>
+    <None Include="App.Develop.config">
+      <DependentUpon>App.config</DependentUpon>
     </None>
-    <None Include="Html.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Html1.feature.cs</LastGenOutput>
+    <None Include="App.Release.config">
+      <DependentUpon>App.config</DependentUpon>
     </None>
-    <None Include="Http.feature">
+    <None Include="AppointmentBook.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Http.feature.cs</LastGenOutput>
+      <LastGenOutput>AppointmentBook.feature.cs</LastGenOutput>
     </None>
-    <None Include="packages.config" />
+    <None Include="AppointmentCancel.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AppointmentCancel.feature.cs</LastGenOutput>
+    </None>
+    <None Include="FHIR.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FHIR.feature.cs</LastGenOutput>
+    </None>
+    <None Include="LocationRead.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>LocationRead.feature.cs</LastGenOutput>
+    </None>
+    <None Include="OrganizationRead.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OrganizationRead.feature.cs</LastGenOutput>
+    </None>
+    <None Include="PractitionerSearch.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PractitionerSearch.feature.cs</LastGenOutput>
+    </None>
+    <None Include="OrganizationSearch.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OrganizationSearch.feature.cs</LastGenOutput>
+    </None>
+    <None Include="PatientSearch.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PatientSearch.feature.cs</LastGenOutput>
+    </None>
+    <None Include="HTML.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>HTML1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="HTTP.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>HTTP1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="JWT.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>JWT.feature.cs</LastGenOutput>
+      <LastGenOutput>JWT1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="PractitionerRead.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PractitionerRead.feature.cs</LastGenOutput>
+    </None>
+    <None Include="PatientRead.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PatientRead.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AppointmentRead.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AppointmentRead.feature.cs</LastGenOutput>
+    </None>
+    <None Include="PatientRegister.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PatientRegister.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SearchForFreeSlots.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SearchForFreeSlots.feature.cs</LastGenOutput>
     </None>
     <None Include="Security.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Security.feature.cs</LastGenOutput>
     </None>
-    <None Include="SpineSecurityProxy.feature">
+    <None Include="AppointmentRetrieve.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SpineSecurityProxy.feature.cs</LastGenOutput>
+      <LastGenOutput>AppointmentRetrieve.feature.cs</LastGenOutput>
+    </None>
+    <None Include="AppointmentAmend.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AppointmentAmend.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SSP.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SSP.feature.cs</LastGenOutput>
     </None>
     <None Include="validation.xml.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -220,15 +428,16 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentWithTargetPath Include="Dependencies\libcurl.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>libcurl.dll</TargetPath>
+    </ContentWithTargetPath>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Pickles.MSBuild.2.11.0\build\Pickles.MSBuild.targets" Condition="Exists('..\packages\Pickles.MSBuild.2.11.0\build\Pickles.MSBuild.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Pickles.MSBuild.2.11.0\build\Pickles.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pickles.MSBuild.2.11.0\build\Pickles.MSBuild.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -241,5 +450,25 @@
       <Pickles_DocumentationFormat>dhtml</Pickles_DocumentationFormat>
       <Pickles_OutputDirectory>C:\Temp\GPConnect.Provider.AcceptanceTests.Doco</Pickles_OutputDirectory>
     </PropertyGroup>
+  </Target>
+  <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll" />
+  <Target Name="AfterCompile" Condition="Exists('App.$(Configuration).config')">
+    <!--Generate transformed app config in the intermediate directory-->
+    <TransformXml Source="App.config" Destination="$(IntermediateOutputPath)$(TargetFileName).config" Transform="App.$(Configuration).config" />
+    <!--Force build process to use the transformed configuration file from now on.-->
+    <ItemGroup>
+      <AppConfigWithTargetPath Remove="App.config" />
+      <AppConfigWithTargetPath Include="$(IntermediateOutputPath)$(TargetFileName).config">
+        <TargetPath>$(TargetFileName).config</TargetPath>
+      </AppConfigWithTargetPath>
+    </ItemGroup>
+  </Target>
+  <!--Override After Publish to support ClickOnce AfterPublish. Target replaces the untransformed config file copied to the deployment directory with the transformed one.-->
+  <Target Name="AfterPublish">
+    <PropertyGroup>
+      <DeployedConfig>$(_DeploymentApplicationDir)$(TargetName)$(TargetExt).config$(_DeploymentFileMappingExtension)</DeployedConfig>
+    </PropertyGroup>
+    <!--Publish copies the untransformed App.config to deployment directory so overwrite it-->
+    <Copy Condition="Exists('$(DeployedConfig)')" SourceFiles="$(IntermediateOutputPath)$(TargetFileName).config" DestinationFiles="$(DeployedConfig)" />
   </Target>
 </Project>

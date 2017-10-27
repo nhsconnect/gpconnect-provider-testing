@@ -22,11 +22,12 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         internal static class Values
         {
             public const string kDirectCare = "directcare";
-            public const string kAuthTokenURL = "https://authorize.fhir.nhs.net/token";
+            public const string kAuthTokenURL = "https://authorize.fhir.nhs.uk/token";
         }
 
         internal static class Scope
         {
+            public const string kPatientWrite = "patient/*.write";
             public const string kPatientRead = "patient/*.read";
             public const string kOrganizationRead = "organization/*.read";
         }

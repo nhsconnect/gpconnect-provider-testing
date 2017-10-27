@@ -1,298 +1,314 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Extensions;
-using GPConnect.Provider.AcceptanceTests.Helpers;
-using GPConnect.Provider.AcceptanceTests.Logger;
-using Hl7.Fhir.Model;
-using TechTalk.SpecFlow;
-
-// ReSharper disable InconsistentNaming
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System.Linq;
+    using Constants;
+    using Context;
+    using Extensions;
+    using Helpers;
+    using Hl7.Fhir.Model;
+    using Logger;
+    using Repository;
+    using TechTalk.SpecFlow;
+
     [Binding]
-    public class JwtSteps : TechTalk.SpecFlow.Steps
+    public class JwtSteps : Steps
     {
-        private readonly FhirContext FhirContext;
+        private readonly HttpHeaderHelper _headerHelper;
+        private readonly JwtHelper _jwtHelper;
+        private readonly IFhirResourceRepository _fhirResourceRepository;
+        private readonly HttpContext _httpContext;
 
-        // Headers Helper
-        public HttpHeaderHelper Headers { get; }
-
-        // JWT Helper
-        public JwtHelper Jwt { get; }
-
-        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper, FhirContext fhirContext)
+        public JwtSteps(HttpHeaderHelper headerHelper, JwtHelper jwtHelper, IFhirResourceRepository fhirResourceRepository, HttpContext httpContext)
         {
             Log.WriteLine("JwtSteps() Constructor");
-            FhirContext = fhirContext;
-            // Helpers
-            Headers = headerHelper;
-            Jwt = jwtHelper;
-        }
-
-        // Before Scenario
-
-        [BeforeScenario(Order = 3)]
-        public void SetDefaultJWTValues()
-        {
-            Log.WriteLine("SetDefaultJWTValues()");
-            Jwt.SetDefaultValues();
-        }
-
-        // JWT Configuration Steps
-
-        [Given(@"I set the default JWT")]
-        public void ISetTheDefaultJWT()
-        {
-            Jwt.SetDefaultValues();
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set the default JWT without base64 encoding")]
-        public void ISetTheJWTWithoutBase64Encoding()
-        {
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerTokenWithoutEncoding());
-        }
-
-        [Given(@"I set the JWT expiry time to ""(.*)"" seconds after creation time")]
-        public void ISetTheJWTExpiryTimeToSecondsAfterCreationTime(double expirySeconds)
-        {
-            Jwt.SetExpiryTimeInSeconds(expirySeconds);
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set the JWT creation time to ""(.*)"" seconds after the current time")]
-        public void ISetTheJWTCreationTimeToSecondsAfterTheCurrentTime(double secondsInFuture)
-        {
-            Jwt.SetCreationTimeSeconds(secondsInFuture);
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set the JWT reason for request to ""(.*)""")]
-        public void ISetTheJWTReasonForRequestTo(string reasonForRequest)
-        {
-            Jwt.ReasonForRequest = reasonForRequest;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set the JWT authorization server token URL to ""(.*)""")]
-        public void ISetTheJWTAuthorizationServerTokenTo(string autTokenUrl)
-        {
-            Jwt.AuthTokenURL = autTokenUrl;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set an invalid JWT requesting device resource")]
-        public void ISetAnInvalidJWTRequestingDeviceResource()
-        {
-            Jwt.RequestingDevice = FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultDevice().ToJson());
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set an invalid JWT requesting organization resource")]
-        public void ISetAnInvalidJWTRequestingOrganizationResource()
-        {
-            Jwt.RequestingOrganization = FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultOrganization().ToJson());
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set JWT requesting organization resource without ODS Code")]
-        public void ISetJWTRequestingOrganizaitonResourceWithoutODSCode()
-        {
-            var organization = FhirHelper.GetDefaultOrganization();
-            organization.Identifier.Clear();
-            organization.Identifier.Add(new Identifier("http://fhir.nhs.net/Id/someOtherCodingSystem", "NoOdsCode"));
-            Jwt.RequestingOrganization = organization.ToJson();
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set JWT requesting organization resource without identifier")]
-        public void ISetJWTRequestingOrganizaitonResourceWithoutIdentifier()
-        {
-            var organization = FhirHelper.GetDefaultOrganization();
-            organization.Identifier.Clear();
-            Jwt.RequestingOrganization = organization.ToJson();
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set an invalid JWT requesting practitioner resource")]
-        public void ISetAnInvalidJWTRequestingPractitionerResource()
-        {
-            Jwt.SetRequestingPractitioner("1", FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultPractitioner().ToJson()));
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set a JWT requesting practitioner without SDS id")]
-        public void ISetAJWTRequestingPractitionerWithoutSDSId()
-        {
-            var practitioner = FhirHelper.GetDefaultPractitioner();
-            practitioner.Identifier.Clear();
-            practitioner.Identifier.Add(new Identifier("http://IdentifierServer/RandomId", "ABC123"));
-            Jwt.SetRequestingPractitioner("1", practitioner.ToJson());
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set a JWT requesting practitioner without identifier")]
-        public void ISetAJWTRequestingPractitionerWithoutIdentifier()
-        {
-            var practitioner = FhirHelper.GetDefaultPractitioner();
-            practitioner.Identifier.Clear();
-            Jwt.SetRequestingPractitioner("1", practitioner.ToJson());
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set a JWT requesting practitioner with miss matched user id")]
-        public void ISetAJWTRequestingPractitionerWithMissMatchedUserId()
-        {
-            Jwt.SetRequestingPractitioner("2", FhirHelper.GetDefaultPractitioner().ToJson());
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set a JWT requesting practitioner with missing name element")]
-        public void ISetAJWTRequestingPractitionerWithMissingNameElement()
-        {
-            var practitioner = FhirHelper.GetDefaultPractitioner();
-            practitioner.Name = null;
-            Jwt.SetRequestingPractitioner("1", practitioner.ToJson());
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set a JWT requesting practitioner with missing Job Role")]
-        public void ISetAJWTRequestingPractitionerWithMissingJobRole()
-        {
-            var practitioner = FhirHelper.GetDefaultPractitioner();
-            practitioner.PractitionerRole = null;
-            Jwt.SetRequestingPractitioner("1", practitioner.ToJson());
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
-        }
-
-        [Given(@"I set a JWT requesting practitioner with missing SDS Job Role")]
-        public void ISetAJWTRequestingPractitionerWithMissingSDSJobRole()
-        {
-            var practitioner = FhirHelper.GetDefaultPractitioner();
-            practitioner.PractitionerRole = FhirHelper.GetPractitionerRoleComponent("http://invalidValueSetServer.nhs.uk", "NonSDSJobRoleName");
-            Jwt.SetRequestingPractitioner("1", practitioner.ToJson());
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _headerHelper = headerHelper;
+            _jwtHelper = jwtHelper;
+            _fhirResourceRepository = fhirResourceRepository;
+            _httpContext = httpContext;
         }
 
         [Given(@"I set the JWT requested scope to ""(.*)""")]
-        public void ISetTheJWTRequestedScopeTo(string requestedScope)
+        public void SetTheJwtRequestedScopeTo(string requestedScope)
         {
-            Jwt.RequestedScope = requestedScope;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.RequestedScope = requestedScope;
+            _headerHelper.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
         }
 
-        [Given(@"I set a JWT without iss claim")]
-        public void ISetAJWTWithoutIssClaim()
+        [Given(@"I set the JWT Requested Scope to Patient Read")]
+        public void SetTheJwtRequestedScopeToPatientRead()
         {
-            Jwt.RequestingSystemUrl = null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
         }
 
-        [Given(@"I set a JWT without sub claim")]
-        public void ISetAJWTWithoutSubClaim()
+        [Given(@"I set the JWT Requested Scope to Organization Read")]
+        public void SetTheJwtRequestedScopeToOrganizationRead()
         {
-            Jwt.RequestingPractitionerId = null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
         }
 
-        [Given(@"I set a JWT without aud claim")]
-        public void ISetAJWTWithoutAudClaim()
+        [Given(@"I set the JWT with missing Expiry Time")]
+        public void SetTheJwtWithMissingExpiryTime()
         {
-            Jwt.AuthTokenURL = null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.ExpiryTime = null;
         }
 
-        [Given(@"I set a JWT without exp claim")]
-        public void ISetAJWTWithoutExpClaim()
+        [Given(@"I set the JWT Expiry Time to ""(.*)"" seconds after Creation Time")]
+        public void SetTheJwtExpiryTimeToSecondsAfterCreationTime(double seconds)
         {
-            Jwt.ExpiryTime= null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.SetExpiryTimeInSeconds(seconds);
+        }
+        
+        [Given(@"I set the JWT with missing Creation Time")]
+        public void SetTheJwtWithMissingCreationTime()
+        {
+            _jwtHelper.CreationTime = null;
         }
 
-        [Given(@"I set a JWT without iat claim")]
-        public void ISetAJWTWithoutIatClaim()
+        [Given(@"I set the JWT Creation Time to ""(.*)"" seconds in the future")]
+        public void SetTheJwtCreationTimeToSecondsAfterTheCurrentTime(double seconds)
         {
-            Jwt.CreationTime = null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.SetCreationTimeSeconds(seconds);
         }
 
-        [Given(@"I set a JWT without reason for request claim")]
-        public void ISetAJWTWithoutReasonForRequestClaim()
+        [Given(@"I ""(.*)"" JWT Creation Time and expiry time by ""(.*)"" seconds")]
+        public void SetTheJwtCreationTimeAndExpiraryTimeToSecondsInThePast(string symbol,double seconds)
         {
-            Jwt.ReasonForRequest = null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            if (symbol == "-")
+            {
+                _jwtHelper.SetCreationTimeSecondsPast(seconds);
+                _jwtHelper.SetExpiryTimeInSecondsPast(seconds);
+            }
+            if (symbol == "+")
+            {
+                _jwtHelper.SetCreationTimeSeconds(seconds);
+                _jwtHelper.SetExpiryTimeInSeconds(seconds);
+            }
         }
 
-        [Given(@"I set a JWT without requested record claim")]
-        public void ISetAJWTWithoutRequestedRecordClaim()
+        [Given(@"I set the JWT Reason For Request to ""(.*)""")]
+        public void SetTheJwtReasonForRequestTo(string reasonForRequest)
         {
-            Jwt.RequestedPatientNHSNumber = null;
-            Jwt.RequestedOrganizationODSCode = null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.ReasonForRequest = reasonForRequest;
         }
 
-        [Given(@"I set a JWT without requested scope claim")]
-        public void ISetAJWTWithoutRequestedScopeClaim()
+        [Given(@"I set the JWT Authorization Server Token URL to ""(.*)""")]
+        public void SetTheJwtAuthorizationServerTokenTo(string url)
         {
-            Jwt.RequestedScope = null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.AuthTokenURL = url;
         }
 
-        [Given(@"I set a JWT without requesting device claim")]
-        public void ISetAJWTWithoutRequestingDeviceClaim()
+        [Given(@"I set the JWT with missing Requesting Device")]
+        public void SetTheJwtWithMissingRequestingDevice()
         {
-            Jwt.RequestingDevice = null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.RequestingDevice = null;
         }
 
-        [Given(@"I set a JWT without requesting organization claim")]
-        public void ISetAJWTWithoutRequestingOrganizationClaim()
+        [Given(@"I set the JWT Requesting Device as an invalid Device")]
+        public void SetTheJwtRequestingDeviceAsAnInvalidDevice()
         {
-            Jwt.RequestingOrganization = null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.RequestingDevice = FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultDevice().ToFhirJson());
         }
 
-        [Given(@"I set a JWT without requesting practitioner claim")]
-        public void ISetAJWTWithoutRequestingPractitionerClaim()
+        [Given(@"I set the JWT Requesting Device Resource Type as an invalid Resource Type")]
+        public void SetTheJwtRequestingDeviceResourceTypeAsAnInvalidResourceType()
         {
-            Jwt.RequestingPractitioner = null;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.RequestingDevice = FhirHelper.ChangeResourceTypeString(_jwtHelper.RequestingDevice, FhirConst.Resources.kInvalidResourceType);
         }
 
-        [Given(@"I change the JWT requesting device resource type to InvalidResourceType")]
-        public void IChangeTheJWTRequestingDeviceResourceTypeToInvalidResourceType()
+        [Given(@"I set the JWT with missing Requesting Organization")]
+        public void SetTheJwtWithMissingRequestingOrganization()
         {
-            Jwt.RequestingDevice = FhirHelper.ChangeResourceTypeString(Jwt.RequestingDevice, FhirConst.Resources.kInvalidResourceType);
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.RequestingOrganization = null;
         }
 
-        [Given(@"I change the JWT requesting organization resource type to InvalidResourceType")]
-        public void IChangeTheJWTRequestingOrganizationResourceTypeToInvalidResourceType()
+        [Given(@"I set the JWT Requesting Organization as an invalid Organization")]
+        public void SetTheJwtRequestingOrganizationAsAnInvalidOrganization()
         {
-            Jwt.RequestingOrganization = FhirHelper.ChangeResourceTypeString(Jwt.RequestingOrganization, FhirConst.Resources.kInvalidResourceType);
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.RequestingOrganization = FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultOrganization().ToFhirJson());
         }
 
-        [Given(@"I change the JWT requesting practitioner resource type to InvalidResourceType")]
-        public void IChangeTheJWTRequestingPractitionerResourceTypeToInvalidResourceType()
+        [Given(@"I set the JWT Requesting Organization Identifier with missing ODS Code")]
+        public void SetTheJwtRequestingOrganizationIdentifierWithMissingOdsCode()
         {
-            Jwt.SetRequestingPractitioner(Jwt.RequestingPractitionerId, FhirHelper.ChangeResourceTypeString(Jwt.RequestingPractitioner, FhirConst.Resources.kInvalidResourceType));
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            var organization = FhirHelper.GetDefaultOrganization();
+            organization.Identifier.Clear();
+
+            var identifier = new Identifier("http://fhir.nhs.net/Id/someOtherCodingSystem", "NoOdsCode");
+            organization.Identifier.Add(identifier);
+
+            _jwtHelper.RequestingOrganization = organization.ToFhirJson();
+        }
+
+        [Given(@"I set the JWT Requesting Organization with missing Identifier")]
+        public void SetTheJwtRequestingOrganizationWithMissingIdentifier()
+        {
+            var organization = FhirHelper.GetDefaultOrganization();
+            organization.Identifier.Clear();
+
+            _jwtHelper.RequestingOrganization = organization.ToFhirJson();
+        }
+
+        [Given(@"I set the JWT Requesting Organization Resource Type as an invalid Resource Type")]
+        public void SetTheJwtRequestingOrganizationResourceTypeAsAnInvalidResourceType()
+        {
+            _jwtHelper.RequestingOrganization = FhirHelper.ChangeResourceTypeString(_jwtHelper.RequestingOrganization, FhirConst.Resources.kInvalidResourceType);
+        }
+
+        [Given(@"I set the JWT with missing Requesting Identity")]
+        public void SetTheJwtWithMissingRequestingPractitioner()
+        {
+            _jwtHelper.RequestingIdentity = null;
+        }
+
+        [Given(@"I set the JWT Requesting Identity as an invalid Identity")]
+        public void SetTheJwtRequestingPractitionerAsAnInvalidPractitioner()
+        {
+            _jwtHelper.SetRequestingPractitioner("1", FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultPractitioner().ToFhirJson()));
+        }
+
+        [Given(@"I set the JWT Requesting Practitioner with missing SDS Id")]
+        public void SetTheJwtRequestingPractitionerWithMissingSdsId()
+        {
+            var practitioner = FhirHelper.GetDefaultPractitioner();
+            practitioner.Identifier.Clear();
+
+            var identifier = new Identifier("http://IdentifierServer/RandomId", "ABC123");
+            practitioner.Identifier.Add(identifier);
+
+            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
+        }
+
+        [Given(@"I set the JWT Requesting Practitioner with missing Identifier")]
+        public void SetTheJwtRequestingPractitionerWithMissingIdentifier()
+        {
+            var practitioner = FhirHelper.GetDefaultPractitioner();
+            practitioner.Identifier.Clear();
+
+            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
+        }
+
+        [Given(@"I set the JWT Requesting Practitioner with User Id not matching")]
+        public void SetTheJwtRequestingPractitionerWithUserIdNotMatching()
+        {
+            _jwtHelper.SetRequestingPractitioner("2", FhirHelper.GetDefaultPractitioner().ToFhirJson());
+        }
+
+        [Given(@"I set the JWT Requesting Practitioner with missing Name")]
+        public void SetTheJwtRequestingPractitionerWithMissingName()
+        {
+            var practitioner = FhirHelper.GetDefaultPractitioner();
+            practitioner.Name = null;
+
+            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
+        }
+
+        [Given(@"I set the JWT Requesting Practitioner with missing Practitioner Role")]
+        public void SetTheJwtRequestingPractitionerWithMissingPractitionerRole()
+        {
+            var practitioner = FhirHelper.GetDefaultPractitioner();
+            practitioner.PractitionerRole = null;
+
+            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
+        }
+
+        [Given(@"I set the JWT Requesting Practitioner Pratitioner Role with missing SDS Job Role")]
+        public void SetTheJwtRequestingPractitionerPractitionerRoleWithMissingSdsJobRole()
+        {
+            var practitioner = FhirHelper.GetDefaultPractitioner();
+            practitioner.PractitionerRole = FhirHelper.GetPractitionerRoleComponent("http://invalidValueSetServer.nhs.uk", "NonSDSJobRoleName");
+
+            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
+        }
+
+        [Given(@"I set the JWT Requesting Identity Resource Type as an invalid Resource Type")]
+        public void SetTheJwtRequestingPractitionerResourceTypeAsAnInvalidResourceType()
+        {
+            _jwtHelper.SetRequestingPractitioner(_jwtHelper.RequestingIdentityId, FhirHelper.ChangeResourceTypeString(_jwtHelper.RequestingIdentity, FhirConst.Resources.kInvalidResourceType));
+        }
+
+        [Given(@"I set the JWT with missing Requesting System URL")]
+        public void SetTheJwtWIthMissingRequestingSystemUrl()
+        {
+            _jwtHelper.RequestingSystemUrl = null;
+        }
+
+        [Given(@"I set the JWT with missing Requesting Practitioner Id")]
+        public void SetTheJwtWIthMissingRequestingPractitionerId()
+        {
+            _jwtHelper.RequestingIdentityId = null;
+        }
+
+        [Given(@"I set the JWT with missing Authorization Server Token URL")]
+        public void SetTheJwtWithMissingAuthorizationServerTokenUrl()
+        {
+            _jwtHelper.AuthTokenURL = null;
+        }
+
+        [Given(@"I set the JWT with missing Reason For Request")]
+        public void SetTheJwtWithMissingReasonForRequest()
+        {
+            _jwtHelper.ReasonForRequest = null;
+        }
+
+        [Given(@"I set the JWT with missing Requested Record")]
+        public void SetTheJwtWithMissingRequestedRecord()
+        {
+            _jwtHelper.RequestedPatientNHSNumber = null;
+            _jwtHelper.RequestedOrganizationODSCode = null;
+        }
+
+        [Given(@"I set the JWT with missing Requested Scope")]
+        public void SetTheJwtWithMissingRequestedScope()
+        {
+            _jwtHelper.RequestedScope = null;
+        }
+        
+        [Given(@"I set the JWT Requested Record to the NHS Number for ""(.*)""")]
+        public void SetTheJwtRequestedRecordToTheNhsNumberFor(string patient)
+        {
+            _jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
+        }
+
+        [Given(@"I set the JWT Requested Record to the ODS Code for ""(.*)""")]
+        public void SetTheRequestedOrganizationOdsCodeToTheOdsCodeFor(string organization)
+        {
+            _jwtHelper.RequestedOrganizationODSCode = GlobalContext.OdsCodeMap[organization];
+        }
+
+        [Given(@"I set the JWT Requested Record Id to the Request Id")]
+        public void SetTheJwtRequestedRecordIdToTheRequestId()
+        {
+            _jwtHelper.RequestedOrganizationId = _httpContext.HttpRequestConfiguration.GetRequestId;
+        }
+
+        [Given(@"I set the JWT Requested Record to the NHS Number ""(.*)""")]
+        public void SetTheJwtRequestedRecordToTheNhsNumber(string nhsNumber)
+        {
+            _jwtHelper.RequestedPatientNHSNumber = nhsNumber;
+        }
+
+        [Given(@"I set the JWT Requested Record to the NHS Number of the Stored Patient")]
+        public void SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient()
+        {
+            var patient = _fhirResourceRepository.Patient;
+
+            var identifier = patient.Identifier.FirstOrDefault(x => x.System == FhirConst.IdentifierSystems.kNHSNumber);
+       
+            _jwtHelper.RequestedPatientNHSNumber = identifier?.Value;
         }
 
         [Given(@"I set the JWT requested record patient NHS number to ""(.*)""")]
-        public void ISetTheJWTRequestedRecordPatientNHSNumberTo(string nhsNumber)
+        public void SetTheJwtRequestedRecordPatientNhsNumberTo(string nhsNumber)
         {
-            Jwt.RequestedPatientNHSNumber = nhsNumber;
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.RequestedPatientNHSNumber = nhsNumber;
+            _headerHelper.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
         }
 
         [Given(@"I set the JWT requested record NHS number to config patient ""(.*)""")]
-        public void ISetTheJWTRequestedRecordNHSnumberToConfigPatient(string patient)
+        public void SetTheJwtRequestedRecordNhsnumberToConfigPatient(string patient)
         {
-            Jwt.RequestedPatientNHSNumber = FhirContext.FhirPatients[patient];
-            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+            _jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
+            _headerHelper.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
         }
     }
 }

@@ -5,6 +5,7 @@ using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Logger
 {
+    using Hl7.Fhir.Model;
     using LogBuffer = List<string>;
 
     [Binding]
@@ -36,6 +37,26 @@ namespace GPConnect.Provider.AcceptanceTests.Logger
             var log = (LogBuffer)ScenarioContext.Current[ScenarioLogKey];
 
             log.Add(message);
+        }
+
+        internal static void WriteLine(Resource fhirResponseResource)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void WriteLine(ResourceType resourceType)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void WriteLine(Func<string> toString)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void WriteLine(Bundle.EntryComponent entry)
+        {
+            throw new NotImplementedException();
         }
 
         [AfterScenario]

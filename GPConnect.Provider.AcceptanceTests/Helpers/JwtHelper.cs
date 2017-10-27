@@ -23,14 +23,19 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public string AuthTokenURL { get; set; }
         public string RequestingDevice { get; set; }
         public string RequestingOrganization { get; set; }
-        public string RequestingPractitioner { get; set; }
-        public string RequestingPractitionerId { get; set; }
+        public string RequestingIdentity { get; set; }
+        public string RequestingIdentityId { get; set; }
         public string RequestedScope { get; set; }
         public string RequestedPatientNHSNumber { get; set; }
         public string RequestedOrganizationODSCode { get; set; }
+        public string RequestedOrganizationId { get; set; }
+
+        private bool RequestedRecordIsOrganization => !string.IsNullOrEmpty(RequestedOrganizationId) ||
+                                                      !string.IsNullOrEmpty(RequestedOrganizationODSCode);
+
         public string RequestingSystemUrl { get; set; }
 
-        private JwtHelper()
+        public JwtHelper()
         {
             Log.WriteLine("JwtHelper() Constructor");
             SetDefaultValues();
@@ -40,17 +45,19 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         {
             CreationTime = DateTime.UtcNow;
             ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
+            SetCreationTimeSecondsPast(2);
+            SetExpiryTimeInSecondsPast(2);
             ReasonForRequest = JwtConst.Values.kDirectCare;
             AuthTokenURL = JwtConst.Values.kAuthTokenURL;
-            RequestingDevice = FhirHelper.GetDefaultDevice().ToJson();
-            RequestingOrganization = FhirHelper.GetDefaultOrganization().ToJson();
-            RequestingPractitionerId = FhirHelper.GetDefaultPractitioner().Id;
-            RequestingPractitioner = FhirHelper.GetDefaultPractitioner().ToJson();
+            RequestingDevice = FhirHelper.GetDefaultDevice().ToFhirJson();
+            RequestingOrganization = FhirHelper.GetDefaultOrganization().ToFhirJson();
+            RequestingIdentityId = FhirHelper.GetDefaultPractitioner().Id;
+            RequestingIdentity = FhirHelper.GetDefaultPractitioner().ToFhirJson();
             RequestedScope = JwtConst.Scope.kOrganizationRead;
             // TODO Check We're Using The Correct Scope For Metadata vs. GetCareRecord
             RequestedPatientNHSNumber = null;
             // TODO Move Dummy Data Out Into App.Config Or Somewhere Else
-            RequestedOrganizationODSCode = "OrgODSCode0001";
+
             RequestingSystemUrl = "https://ConsumerSystemURL";
         }
 
@@ -71,8 +78,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
             if (RequestingSystemUrl != null)
                 claims.Add(new Claim(JwtConst.Claims.kRequestingSystemUrl, RequestingSystemUrl, ClaimValueTypes.String));
-            if (RequestingPractitionerId != null)
-                claims.Add(new Claim(JwtConst.Claims.kPractitionerId, RequestingPractitionerId, ClaimValueTypes.String));
+            if (RequestingIdentityId != null)
+                claims.Add(new Claim(JwtConst.Claims.kPractitionerId, RequestingIdentityId, ClaimValueTypes.String));
             if (AuthTokenURL != null)
                 claims.Add(new Claim(JwtConst.Claims.kAuthTokenURL, AuthTokenURL, ClaimValueTypes.String));
             if (ExpiryTime != null)
@@ -85,18 +92,25 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 claims.Add(new Claim(JwtConst.Claims.kRequestingDevice, RequestingDevice, JsonClaimValueTypes.Json));
             if (RequestingOrganization != null)
                 claims.Add(new Claim(JwtConst.Claims.kRequestingOrganization, RequestingOrganization, JsonClaimValueTypes.Json));
-            if (RequestingPractitioner != null)
-                claims.Add(new Claim(JwtConst.Claims.kRequestingPractitioner, RequestingPractitioner, JsonClaimValueTypes.Json));
+            if (RequestingIdentity != null)
+                claims.Add(new Claim(JwtConst.Claims.kRequestingPractitioner, RequestingIdentity, JsonClaimValueTypes.Json));
             if (RequestedScope != null)
                 claims.Add(new Claim(JwtConst.Claims.kRequestedScope, RequestedScope, ClaimValueTypes.String));
 
             if (RequestedPatientNHSNumber != null)
             {
-                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultPatient(RequestedPatientNHSNumber).ToJson(), JsonClaimValueTypes.Json));
+                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultPatient(RequestedPatientNHSNumber).ToFhirJson(), JsonClaimValueTypes.Json));
             }
-            else if (RequestedOrganizationODSCode != null)
+            else if (RequestedRecordIsOrganization)
             {
-                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultOrganization(RequestedOrganizationODSCode).ToJson(), JsonClaimValueTypes.Json));
+                var organization = FhirHelper.GetOrganization(RequestedOrganizationId, RequestedOrganizationODSCode);
+                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, organization.ToFhirJson(),
+                    JsonClaimValueTypes.Json));
+            }
+            else
+            {
+                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultOrganization().ToFhirJson(),
+                    JsonClaimValueTypes.Json));
             }
 
             return new JwtPayload(claims);
@@ -134,11 +148,24 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
         }
 
+        public void SetExpiryTimeInSecondsPast(double seconds)
+        {
+            Debug.Assert(CreationTime != null, "_jwtCreationTime != null");
+            ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
+            ExpiryTime.Value.AddSeconds(-seconds);
+        }
+
+        public void SetCreationTimeSecondsPast(double seconds)
+        {
+            CreationTime = DateTime.UtcNow.AddSeconds(-seconds);
+            ExpiryTime = CreationTime.Value.AddMinutes(MaxExpiryTimeInMinutes);
+        }
+
         public void SetRequestingPractitioner(string practitionerId, string practitionerJson)
         {
             // TODO Make The RequestingPractitionerId Use The Business Identifier And Not The Logical Identifier 
-            RequestingPractitionerId = practitionerId;
-            RequestingPractitioner = practitionerJson;
+            RequestingIdentityId = practitionerId;
+            RequestingIdentity = practitionerJson;
         }
     }
 }

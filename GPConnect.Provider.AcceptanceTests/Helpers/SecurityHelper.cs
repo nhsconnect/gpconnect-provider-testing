@@ -36,6 +36,13 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                     bool returnValue;
                     try
                     {
+                        Log.WriteLine("Server Certificate recieved = " + cert);
+                        Log.WriteLine("Store Certificate Size = " + store.Certificates.Count);
+                        foreach (var storedCert in store.Certificates)
+                        {
+                            Log.WriteLine("Store Certificate = " + storedCert);
+                        }
+
                         store.Open(OpenFlags.ReadOnly);
                         // TODO Fix The Validation Of The Server Certificate
                         returnValue = store.Certificates.Contains(cert);
