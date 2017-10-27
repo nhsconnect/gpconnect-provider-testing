@@ -22,7 +22,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         internal static class Values
         {
             public const string kDirectCare = "directcare";
-            public const string kAuthTokenURL = "https://authorize.fhir.nhs.uk/token";
+            public const string kAuthTokenURL = "https://authorize.fhir.nhs.net/token";
         }
 
         internal static class Scope
