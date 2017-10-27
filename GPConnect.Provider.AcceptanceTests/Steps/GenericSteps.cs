@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BoDi;
+using GPConnect.Provider.AcceptanceTests.Constants;
 using GPConnect.Provider.AcceptanceTests.Context;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using GPConnect.Provider.AcceptanceTests.Importers;
 using GPConnect.Provider.AcceptanceTests.Logger;
+using Hl7.Fhir.Rest;
 using Hl7.Fhir.Specification.Source;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -13,22 +16,27 @@ using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using Repository;
+    using Steps = TechTalk.SpecFlow.Steps;
+
     [Binding]
-    public class GenericSteps : TechTalk.SpecFlow.Steps
+    public class GenericSteps : Steps
     {
         private readonly IObjectContainer _objectContainer;
+        private readonly HttpContext _httpContext;
 
-        public GenericSteps(IObjectContainer objectContainer)
+        public GenericSteps(IObjectContainer objectContainer, HttpContext httpContext)
         {
             Log.WriteLine("GenericSteps() Constructor");
             _objectContainer = objectContainer;
+            _httpContext = httpContext;
         }
 
         [BeforeTestRun(Order = 1)]
         public static void CreateTraceFolder()
         {
             if (!Directory.Exists(AppSettingsHelper.TraceBaseDirectory)) return;
-            var folderName = DateTime.Now.ToString("s").Replace(":", string.Empty);
+            var folderName = DateTime.Now.ToString("s").Replace(":", String.Empty);
             var traceDirectory = Path.Combine(AppSettingsHelper.TraceBaseDirectory, folderName);
             Log.WriteLine("Create Trace Directory = '{0}'", traceDirectory);
             Directory.CreateDirectory(traceDirectory);
@@ -37,41 +45,98 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [BeforeTestRun(Order = 1)]
-        public static void LoadPDSData()
+        public static void LoadODSData()
         {
-            if (Directory.Exists(AppSettingsHelper.DataDirectory) == false)
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
                 Assert.Fail("Data Directory Not Found.");
-            var pdsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"PDS.csv");
-            Log.WriteLine("PDS CSV = '{0}'", pdsCSV);
-            GlobalContext.PDSData = PDSImporter.LoadCsv(pdsCSV);
+            }
+
+            var odsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"ODSCodeMap.csv");
+            Log.WriteLine("ODS CSV = '{0}'", odsCSV);
+            GlobalContext.OdsCodeMap = ODSCodeMapImporter.LoadCsv(odsCSV);
         }
 
         [BeforeTestRun(Order = 1)]
-        public static void LoadODSData()
+        public static void LoadLogicalLocationIdentifierMap()
         {
-            if (Directory.Exists(AppSettingsHelper.DataDirectory) == false)
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
                 Assert.Fail("Data Directory Not Found.");
-            var odsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"ODS.csv");
-            Log.WriteLine("ODS CSV = '{0}'", odsCSV);
-            GlobalContext.ODSData = ODSImporter.LoadCsv(odsCSV);
+            }
+
+            var csv = Path.Combine(AppSettingsHelper.DataDirectory, @"LocationLogicalIdentifierMap.csv");
+
+            Log.WriteLine("LocationLogicalIdentifierMap= '{0}'", csv);
+
+            GlobalContext.LocationLogicalIdentifierMap = LocationLogicalIdentifierImporter.LoadCsv(csv);
         }
 
         [BeforeTestRun(Order = 1)]
         public static void LoadNHSNoMapData()
         {
-            if (Directory.Exists(AppSettingsHelper.DataDirectory) == false)
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
                 Assert.Fail("Data Directory Not Found.");
+            }
+
             var nhsNoMapCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"NHSNoMap.csv");
             Log.WriteLine("NHSNoMap CSV = '{0}'", nhsNoMapCSV);
-            GlobalContext.NHSNoMapData = NHSNoMapImporter.LoadCsv(nhsNoMapCSV);
+            GlobalContext.PatientNhsNumberMap = NHSNoMapImporter.LoadCsv(nhsNoMapCSV);
+        }
+
+        [BeforeTestRun(Order = 1)]
+        public static void LoadRegisterPatientData()
+        {
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
+                Assert.Fail("Data Directory Not Found.");
+            }
+
+            var registerPatientsCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"RegisterPatients.csv");
+            Log.WriteLine("RegisterPatients CSV = '{0}'", registerPatientsCSV);
+            GlobalContext.RegisterPatients = RegisterPatientsImporter.LoadCsv(registerPatientsCSV);
+        }
+
+        [BeforeTestRun(Order = 1)]
+        public static void LoadPractitionerCodeMapData()
+        {
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
+                Assert.Fail("Data Directory Not Found.");
+            }
+
+            var practitionerCodeMapCSV = Path.Combine(AppSettingsHelper.DataDirectory, @"PractitionerCodeMap.csv");
+            Log.WriteLine("practitionerCodeMap CSV = '{0}'", practitionerCodeMapCSV);
+            GlobalContext.PractionerCodeMap = PractitionerCodeMapImporter.LoadCsv(practitionerCodeMapCSV);
         }
 
         [BeforeTestRun(Order = 2)]
         public static void LoadFhirDefinitions()
         {
-            if (Directory.Exists(AppSettingsHelper.FhirDirectory) == false)
-                Assert.Fail("FHIR Directory Not Found.");
-            var resolver = new ArtifactResolver(new FileDirectoryArtifactSource(AppSettingsHelper.FhirDirectory, true));
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
+                Assert.Fail("Data Directory Not Found.");
+            }
+
+            var vsSources = new List<IArtifactSource>();
+
+            if (AppSettingsHelper.FhirCheckWeb && AppSettingsHelper.FhirCheckWebFirst)
+            {
+                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+            }
+
+            if (AppSettingsHelper.FhirCheckDisk)
+            {
+                vsSources.Add(new FileDirectoryArtifactSource(AppSettingsHelper.FhirDirectory, true));
+            }
+
+            if (AppSettingsHelper.FhirCheckWeb && !AppSettingsHelper.FhirCheckWebFirst)
+            {
+                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+            }
+
+            var resolver = new ArtifactResolver(new MultiArtifactSource(vsSources));
             var gender = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/administrative-gender-1");
             if (gender == null)
                 Assert.Fail("Gender ValueSet Not Found.");
@@ -95,6 +160,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("HumanLanguage ValueSet Not Found.");
             Log.WriteLine("{0} HumanLanguage Loaded.", humanLanguage.CodeSystem.Concept.Count);
             GlobalContext.FhirHumanLanguageValueSet = humanLanguage;
+
+            var appointmentCategory = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-category-1");
+            if (appointmentCategory == null)
+                Assert.Fail("AppointmentCategory ValueSet Not Found.");
+            Log.WriteLine("{0} AppointmentCategory Loaded.", appointmentCategory.CodeSystem.Concept.Count);
+            GlobalContext.FhirAppointmentCategoryValueSet = appointmentCategory;
+
+            var appointmentBookingMethod = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1");
+            if (appointmentBookingMethod == null)
+                Assert.Fail("AppointmentBookingMethod ValueSet Not Found.");
+            Log.WriteLine("{0} AppointmentBookingMethod Loaded.", appointmentBookingMethod.CodeSystem.Concept.Count);
+            GlobalContext.FhirAppointmentBookingMethodValueSet = appointmentBookingMethod;
+
+            var appointmentContactMethod = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-contact-method-1");
+            if (appointmentContactMethod == null)
+                Assert.Fail("AppointmentContactMethod ValueSet Not Found.");
+            Log.WriteLine("{0} AppointmentContactMethod Loaded.", appointmentContactMethod.CodeSystem.Concept.Count);
+            GlobalContext.FhirAppointmentContactMethodValueSet = appointmentContactMethod;
+
         }
 
         [BeforeScenario(Order = 0)]
@@ -103,9 +187,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("InitializeContainer For Dependency Injection");
             _objectContainer.RegisterTypeAs<SecurityContext, ISecurityContext>();
             _objectContainer.RegisterTypeAs<HttpContext, IHttpContext>();
+            _objectContainer.RegisterTypeAs<FhirResourceRepository, IFhirResourceRepository>();
+            //_objectContainer.Resolve<HttpHeaderHelper>();
             // HACK To Be Able To See What We've Loaded In The BeforeTestRun Phase
-            Log.WriteLine("{0} Patients Loaded From PDS CSV File.", GlobalContext.PDSData.ToList().Count);
-            Log.WriteLine("{0} Organisations Loaded From ODS CSV File.", GlobalContext.ODSData.ToList().Count);
+            Log.WriteLine("{0} Organisations Loaded From ODS CSV File.", GlobalContext.OdsCodeMap.Count);
             Log.WriteLine("{0} Genders Loaded From FHIR ValueSet File.", GlobalContext.FhirGenderValueSet.CodeSystem.Concept.Count);
             Log.WriteLine("{0} MaritalStatus Loaded From FHIR ValueSet File.", GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept.Count);
             Log.WriteLine("{0} Relationship Loaded From FHIR ValueSet File.", GlobalContext.FhirRelationshipValueSet.CodeSystem.Concept.Count);
@@ -119,6 +204,40 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine(FeatureContext.Current.FeatureInfo.Description);
             Log.WriteLine("");
             Log.WriteLine("Scenario: " + ScenarioContext.Current.ScenarioInfo.Title);
+        }
+
+        [AfterScenario]
+        public void SaveLogOfOutput()
+        {
+            var traceDirectory = GlobalContext.TraceDirectory;
+            if (!Directory.Exists(traceDirectory)) return;
+            var scenarioDirectory = Path.Combine(traceDirectory, ScenarioContext.Current.ScenarioInfo.Title);
+            int fileIndex = 1;
+            while (Directory.Exists(scenarioDirectory + "-" + fileIndex)) fileIndex++;
+            scenarioDirectory = scenarioDirectory + "-" + fileIndex;
+            Directory.CreateDirectory(scenarioDirectory);
+            Log.WriteLine(scenarioDirectory);
+            try
+            {
+                _httpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
+            }
+            catch (Exception e) {
+                Log.WriteLine("Exception writing HttpContext to Output File");
+            }
+            try
+            {
+                _httpContext.SaveToFhirContextToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
+            }
+            catch (Exception e) {
+                Log.WriteLine("Exception writing FhirContext to Output File");
+            }
+        }
+
+
+        [BeforeTestRun]
+        public static void SetTestRunId()
+        {
+            GlobalContext.TestRunId = Guid.NewGuid();
         }
     }
 }

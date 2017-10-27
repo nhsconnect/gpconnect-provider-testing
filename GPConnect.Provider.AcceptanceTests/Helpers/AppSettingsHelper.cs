@@ -14,13 +14,18 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         // FHIR Settings
         public static string FhirDirectory => Get<string>("fhirDirectory");
+        public static string FhirWebDirectory => Get<string>("fhirWebDirectory");
+        public static bool FhirCheckWeb => Get<bool>("fhirCheckWeb");
+        public static bool FhirCheckDisk => Get<bool>("fhirCheckDisk");
+        public static bool FhirCheckWebFirst => Get<bool>("fhirCheckWebFirst");
         
         // Security Settings
         public static bool UseTLS => Get<bool>("useTLS");
 
         // Server Settings
         public static string ServerUrl => Get<string>("serverUrl");
-        public static string ServerPort => Get<string>("serverPort");
+        public static string ServerHttpsPort => Get<string>("serverHttpsPort");
+        public static string ServerHttpPort => Get<string>("serverHttpPort");
         public static string ServerBase => Get<string>("serverBase");
 
         // Web Proxy Settings
@@ -34,11 +39,27 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static string SpineProxyPort => Get<string>("spineProxyPort");
 
         // Certificate Settings
-        public static string ClientCertThumbPrint => Get<string>("clientCertThumbPrint");
-        public static string ClientInvalidCertThumbPrint => Get<string>("clientInvalidCertThumbPrint");
-        public static string ClientExpiredCertThumbPrint => Get<string>("clientExpiredCertThumbPrint");
         public static bool SendClientCert => Get<bool>("sendClientCert");
         public static bool ValidateServerCert => Get<bool>("validateServerCert");
+        
+        //Certificates to imitate the Consumer calling the SSP
+        public static string ThumbprintConsumerValid => Get<string>("Thumbprint:Consumer:Valid");
+        public static string ThumbprintConsumerInvalidFqdn => Get<string>("Thumbprint:Consumer:Invalid:Fqdn");
+        public static string ThumbprintConsumerInvalidAuthority => Get<string>("Thumbprint:Consumer:Invalid:Authority");
+        public static string ThumbprintConsumerInvalidRevoked => Get<string>("Thumbprint:Consumer:Invalid:Revoked");
+        public static string ThumbprintConsumerInvalidExpired => Get<string>("Thumbprint:Consumer:Invalid:Expired");
+        
+        //Certificates to imitate the SSP calling the Provider
+        public static string ThumbprintSspValid => Get<string>("Thumbprint:Ssp:Valid");
+
+        public static string ThumbprintSspInvalidExpired => Get<string>("Thumbprint:Ssp:Invalid:Expired");
+
+        public static string ThumbprintSspInvalidFqdn => Get<string>("Thumbprint:Ssp:Invalid:Fqdn");
+
+        public static string ThumbprintSspInvalidAuthority => Get<string>("Thumbprint:Ssp:Invalid:Authority");
+
+        public static string ThumbprintSspInvalidRevoked => Get<string>("Thumbprint:Ssp:Invalid:Revoked");
+
 
         // Consumer Settings
         public static string ConsumerASID => Get<string>("consumerASID");
@@ -46,12 +67,18 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         // Provider Settings
         public static string ProviderASID => Get<string>("providerASID");
 
-        private static T Get<T>(string key)
+        public static T Get<T>(string key)
         {
             var appSetting = ConfigurationManager.AppSettings[key];
-            if (string.IsNullOrWhiteSpace(appSetting)) throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
+
+            if (string.IsNullOrWhiteSpace(appSetting))
+            {
+                throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
+            }
+
             var converter = TypeDescriptor.GetConverter(typeof(T));
-            return (T)(converter.ConvertFromInvariantString(appSetting));
+
+            return (T)converter.ConvertFromInvariantString(appSetting);
         }
     }
 }

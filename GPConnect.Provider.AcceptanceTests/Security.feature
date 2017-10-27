@@ -1,63 +1,112 @@
 ﻿@security
 Feature: Security
 
-Scenario: Security reject a  non ssl request
-	Given I am using the default server
+#These tests expect some Apache/nginx specific http errors 495, 496 - need to consider providers not using Apache/nginx.
+
+Scenario: Security - Non-SSL to SSL
+	Given I configure the default "MetadataRead" request
+		And I am not using the SSP
+		And I am using the valid SSP client certificate
 		And I am not using TLS Connection
-		And I am connecting to server on port "80"
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate failure
+	When I make the "MetadataRead" request
+	Then the Response should indicate the connection was closed by the server or the Request was redirected 
+		And if redirected the Response Headers should contain a Strict-Transport-Security header
 
-Scenario: Security valid client certificate, ciper and SSL
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+Scenario: Security - SSP Client Certificate - Valid
+	Given I configure the default "MetadataRead" request
+		And I am not using the SSP
+		And I am using the valid SSP client certificate
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
 	Then the response status code should indicate success
+		And the Response Resource should be a Conformance
 
-Scenario: Security no client certificate sent
-	Given I am using the default server
+Scenario: Security - SSP Client Certificate - Invalid - Expired
+	Given I configure the default "MetadataRead" request
+		And I am not using the SSP
+		And I am using the SSP client certificate which has expired
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
+	Then the Response Status Code should be one of "495, 496"
+		And the Response should indicate the connection was closed by the server
+
+Scenario: Security - SSP Client Certificate - Invalid - FQDN
+	Given I configure the default "MetadataRead" request
+		And I am not using the SSP
+		And I am using the SSP client certificate with invalid FQDN
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
+	Then the Response Status Code should be one of "495, 496"
+		And the Response should indicate the connection was closed by the server
+
+Scenario: Security - SSP Client Certificate - Invalid - Authority
+	Given I configure the default "MetadataRead" request
+		And I am not using the SSP
+		And I am using the SSP client certificate not signed by Spine CA
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
+	Then the Response Status Code should be one of "495, 496"
+		And the Response should indicate the connection was closed by the server
+
+Scenario: Security - SSP Client Certificate - Invalid - Revoked
+	Given I configure the default "MetadataRead" request
+		And I am not using the SSP
+		And I am using the SSP client certificate which has been revoked
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
+	Then the Response Status Code should be one of "495, 496"
+		And the Response should indicate the connection was closed by the server
+
+Scenario: Security - SSP Client Certificate - Invalid - Missing
+	Given I configure the default "MetadataRead" request
+		And I am not using the SSP
 		And I am not using a client certificate
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
+		And I am using a TLS Connection
+	When I make the "MetadataRead" request
 	Then the response status code should be "496"
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
 
-Scenario: Security invalid client certificate sent
-	Given I am using the default server
-		And I am using an invalid client certificate
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
-	Then the response status code should be "495"
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+Scenario Outline: Security - Connect with valid Cipher
+	Given I configure the default "MetadataRead" cURL request
+		And I am not using the SSP
+		And I am using the valid SSP client certificate
+		And I set the Cipher to "<Cipher>"
+		And I am using a TLS Connection
+	When I make the "MetadataRead" cURL request
+	Then the cURL Code should be "Ok"
+	Examples: 
+	| Cipher                      |
+	| ECDHE-RSA-AES128-GCM-SHA256 |
+	| ECDHE-RSA-AES256-GCM-SHA384 |
+	| ECDHE-RSA-AES256-SHA384     |
+	| ECDHE-RSA-AES256-SHA        |
+	| DHE-RSA-AES128-GCM-SHA256   |
+	| DHE-RSA-AES256-GCM-SHA384   |
+	| DHE-RSA-AES256-SHA256       |
+	| DHE-RSA-AES256-SHA          |
 
-Scenario: Security Expired client certificate sent
-	Given I am using the default server
-		And I am using an expired client certificate
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-	When I make a GET request to "/metadata"
-	Then the response status code should be "495"
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+Scenario: Security - Connect with invalid nonexistent Cipher
+	Given I configure the default "MetadataRead" cURL request
+		And I am not using the SSP
+		And I am using the valid SSP client certificate
+		And I set the Cipher to "ABC-DEF"		
+		And I am using a TLS Connection
+	When I make the "MetadataRead" cURL request
+	Then the cURL Code should be "SslCipher"
 
-@ignore
-Scenario: Connect with Invalid Secure Cipher
-	# Connect to provider using a valid cipher which is secure but is not 256 AES
+Scenario: Security - Connect with invalid insecure Cipher
+	Given I configure the default "MetadataRead" cURL request
+		And I am not using the SSP
+		And I am using the valid SSP client certificate
+		And I set the Cipher to "NULL-MD5"
+		And I am using a TLS Connection
+	When I make the "MetadataRead" cURL request
+	Then the cURL Code should be "SslConnectError"
 
-@ignore
-Scenario: Connect with Invalid Broken Cipher
-	# Connect to a provider using a cipher which has been broken and is vunerable to attacks
-
-@ignore
-Scenario: Connect with Cipher AESGCM+EECDH
-
-@ignore
-Scenario: Connect with Cipher AESGCM+EDH
-
-@ignore
-Scenario: Connect with Cipher AES256+EECDH
-
-@ignore
-Scenario: Connect with Cipher AES256+EDH
+Scenario: Security - Connect with invalid secure Cipher
+	Given I configure the default "MetadataRead" cURL request
+		And I am not using the SSP
+		And I am using the valid SSP client certificate
+		And I set the Cipher to "AES128-SHA256"
+		And I am using a TLS Connection
+	When I make the "MetadataRead" cURL request
+	Then the cURL Code should be "SslConnectError"

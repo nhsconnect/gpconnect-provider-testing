@@ -9,7 +9,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
     {
         private readonly Dictionary<string, string> _requestHeaders;
 
-        private HttpHeaderHelper()
+        public HttpHeaderHelper()
         {
             Log.WriteLine("HttpHeaderHelper() Constructor");
             _requestHeaders = new Dictionary<string, string>();
@@ -38,6 +38,14 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         {
             Log.WriteLine("GetRequestHeaders Count='{0}'", _requestHeaders.Count);
             return _requestHeaders;
+        }
+
+        public void SetRequestHeaders(Dictionary<string, string> headers)
+        {
+            _requestHeaders.Clear();
+            foreach (var header in headers) {
+                _requestHeaders.Add(header.Key, header.Value);
+            }
         }
 
         public string GetHeaderValue(string key)

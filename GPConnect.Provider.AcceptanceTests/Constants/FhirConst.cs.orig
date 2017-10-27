@@ -1,0 +1,64 @@
+﻿// ReSharper disable ClassNeverInstantiated.Global
+namespace GPConnect.Provider.AcceptanceTests.Constants
+{
+    internal static class FhirConst
+    {
+        internal static class ContentTypes
+        {
+            public const string kJsonFhir = "application/json+fhir";
+            public const string kXmlFhir = "application/xml+fhir";
+        }
+
+        internal static class GetCareRecordParams
+        {
+            public const string kPatientNHSNumber = "patientNHSNumber";
+            public const string kRecordSection = "recordSection";
+            public const string kTimePeriod = "timePeriod";
+        }
+
+        internal static class Resources
+        {
+            public const string kInvalidResourceType = "InvalidResourceType";
+        }
+
+        internal static class IdentifierSystems
+        {
+            public const string kNHSNumber = "https://fhir.nhs.uk/Id/nhs-number";
+            public const string kOdsOrgzCode = "https://fhir.nhs.uk/Id/ods-organization-code";
+            public const string kOdsSiteCode = "https://fhir.nhs.uk/Id/ods-site-code";
+            public const string kLocalOrgzCode = "https://fhir.nhs.uk/Id/local-organization-code";
+            public const string kLocalLocationCode = "https://fhir.nhs.uk/Id/local-location-identifier";
+            public const string kPracSDSUserId = "https://fhir.nhs.uk/Id/sds-user-id";
+            public const string kPracRoleProfile = "https://fhir.nhs.uk/Id/sds-role-profile-id";
+        }
+
+        internal static class ValueSetSystems
+        {
+            public const string kOrgzType = "http://hl7.org/fhir/organization-type";
+            public const string kNameUse = "http://hl7.org/fhir/ValueSet/name-use";
+            public const string kContactPointSystem = "http://hl7.org/fhir/ValueSet/contact-point-system";
+            public const string kNContactPointUse = "http://hl7.org/fhir/ValueSet/contact-point-use";
+            public const string kAddressUse = "http://hl7.org/fhir/ValueSet/address-use";
+            public const string kAddressType = "http://hl7.org/fhir/ValueSet/address-type";
+            public const string kContactEntityType = "http://hl7.org/fhir/ValueSet/contactentity-type";
+            public const string kIdentifierUse = "http://hl7.org/fhir/ValueSet/identifier-use";
+            public const string kIdentifierType = "http://hl7.org/fhir/ValueSet/identifier-type";
+            public const string kAdministrativeGender = "https://fhir.hl7.org.uk/ValueSet/CareConnect-AdministrativeGender-1";
+            public const string kSDSJobRoleName = "https://fhir.hl7.org.uk/ValueSet/CareConnect-SDSJobRoleName-1";
+<<<<<<< HEAD
+            public const string kRecordSectionValueSet = "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1";
+=======
+            public const string kServDelLocationRoleType = "http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType";
+>>>>>>> 568838496c81ddcf513ca0fc9b72ed2291dce3cb
+        }
+
+        internal static class StructureDefinitionSystems
+        {
+            public const string kOrganisation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Organization-1";
+            public const string kExtCcGpcMainLoc = "https://fhir.hl7.org.uk/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
+            public const string kOrgzPeriod = "http://hl7.org/fhir/StructureDefinition/organization-period";
+            public const string kPractitioner = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Practitioner-1";
+            public const string kLocation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Location-1";
+        }
+    }
+}

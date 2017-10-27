@@ -5,14 +5,15 @@ using Hl7.Fhir.Model;
 using Newtonsoft.Json;
 using System;
 using System.Text.RegularExpressions;
+using GPConnect.Provider.AcceptanceTests.Constants;
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
-    static public class FhirHelper
+    public static class FhirHelper
     {
         public static Identifier GetNHSNumberIdentifier(string nhsNumber)
         {
-            return GetIdentifier("http://fhir.nhs.uk/Id/nhs-number", nhsNumber);
+            return GetIdentifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber);
         }
 
         public static Identifier GetIdentifier(string system, string nhsNumber)
@@ -22,7 +23,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static CodeableConcept GetRecordSectionCodeableConcept(string recordSectionCode)
         {
-            return GetRecordSectionCodeableConcept("http://fhir.nhs.uk/ValueSet/gpconnect-record-section-1", recordSectionCode);
+            return GetRecordSectionCodeableConcept(FhirConst.ValueSetSystems.kRecordSectionValueSet, recordSectionCode);
         }
 
         public static CodeableConcept GetRecordSectionCodeableConcept(string system, string recordSectionCode)
@@ -32,7 +33,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static Identifier GetODSCodeIdentifier(string odsCode)
         {
-            return new Identifier("http://fhir.nhs.uk/Id/ods-organization-code", odsCode);
+            return new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, odsCode);
         }
 
         public static Patient GetDefaultPatient(string nhsNumber = "123456")
@@ -45,16 +46,22 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             };
         }
 
-        public static Organization GetDefaultOrganization(string odsCode = "GPCA0001")
+        public static Organization GetOrganization(string id, string odsCode)
         {
             return new Organization
             {
-                Id = "1",
-                Name = "GP Connect Assurance",
-                Identifier = {
-                        GetODSCodeIdentifier(odsCode)
-                    }
+                Id = id,
+                Identifier = new List<Identifier>
+                { 
+                    GetODSCodeIdentifier(odsCode)
+                }
             };
+        }
+
+        public static Organization GetDefaultOrganization(string odsCode = "GPCA0001")
+        {
+            return GetOrganization("1", odsCode);
+          
         }
 
         public static List<Practitioner.PractitionerRoleComponent> GetPractitionerRoleComponent(string system, string value)
@@ -80,10 +87,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                     Family = new[] { "AssurancePractitioner" }
                 },
                 Identifier = {
-                    new Identifier("http://fhir.nhs.uk/sds-user-id", "GCASDS0001"),
+                    new Identifier(FhirConst.IdentifierSystems.kPracSDSUserId, "GCASDS0001"),
                     new Identifier("LocalIdentifierSystem", "1")
                 },
-                PractitionerRole = GetPractitionerRoleComponent("http://fhir.nhs.uk/ValueSet/sds-job-role-name-1", "AssuranceJobRole")
+                PractitionerRole = GetPractitionerRoleComponent(FhirConst.ValueSetSystems.kSDSJobRoleName, "AssuranceJobRole")
             };
         }
 
@@ -116,6 +123,29 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             Log.WriteLine("Incomming Json Object = " + jsonResource);
             dynamic dynamicDeviceObj = JsonConvert.DeserializeObject<ExpandoObject>(jsonResource);
             dynamicDeviceObj.resourceType = newResourceType;
+            Log.WriteLine("Converted Type Json Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
+            return JsonConvert.SerializeObject(dynamicDeviceObj);
+        }
+
+        public static string ChangeParameterResourceTypeString(string jsonResource, string newResourceType)
+        {
+            Log.WriteLine("Incomming Json Object = " + jsonResource);
+            dynamic dynamicDeviceObj = JsonConvert.DeserializeObject<ExpandoObject>(jsonResource);
+            foreach (var parameter in dynamicDeviceObj.parameter) {
+                parameter.resource.resourceType = newResourceType;
+            }
+            Log.WriteLine("Converted Type Json Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
+            return JsonConvert.SerializeObject(dynamicDeviceObj);
+        }
+
+        public static string AddFieldToParameterResource(string jsonResource, string newResourceType)
+        {
+            Log.WriteLine("Incomming Json Object = " + jsonResource);
+            dynamic dynamicDeviceObj = JsonConvert.DeserializeObject<ExpandoObject>(jsonResource);
+            foreach (var parameter in dynamicDeviceObj.parameter)
+            {
+                parameter.resource.invalidField = "Assurance Testing Invalid Field";
+            }
             Log.WriteLine("Converted Type Json Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
             return JsonConvert.SerializeObject(dynamicDeviceObj);
         }
@@ -169,15 +199,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 {
                     total = 0;
                 }
-                
-                if (total.Equals(checkNumber))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+
+                return total.Equals(checkNumber);
             }
             
         }

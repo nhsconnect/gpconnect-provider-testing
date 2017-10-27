@@ -21,7 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         private readonly ScenarioContext _scenarioContext;
 
         // Constructor
-
         public SecurityContext(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
@@ -88,11 +87,13 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             }
         }
 
+        public string Cipher { get; set; }
+
         public void LoadAppConfig()
         {
             Log.WriteLine("SecurityContext->LoadAppConfig()");
             UseTLS = AppSettingsHelper.UseTLS;
-            ClientCertThumbPrint = AppSettingsHelper.ClientCertThumbPrint;
+            ClientCertThumbPrint = AppSettingsHelper.ThumbprintSspValid;
             SendClientCert = AppSettingsHelper.SendClientCert;
             ValidateServerCert = AppSettingsHelper.ValidateServerCert;
         }
