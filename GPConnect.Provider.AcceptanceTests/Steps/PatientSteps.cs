@@ -483,8 +483,6 @@
                     link.Type.ShouldNotBeNull("The Patient Link Type should not be null, but was.");
                     link.Type.ShouldBeDefinedIn(typeof(Patient.LinkType), $"The Patient Link Type ({link.Type.ToString()}) was an invalid value.");
 
-                    Enum.IsDefined(typeof(Patient.LinkType), link.Type).ShouldBeTrue($"The Patient Link Type ({link.Type.ToString()}) was an invalid value.");
-                    
                     var reference = link.Other.Reference;
 
                     //Can't check RelatedPerson as endpoint doesn't exist
