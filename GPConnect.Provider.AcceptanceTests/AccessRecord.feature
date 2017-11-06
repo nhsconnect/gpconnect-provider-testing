@@ -670,7 +670,7 @@ Scenario Outline: if patient contains practitioner as care provider
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "searchset"
-		And the Patient CareProvider Practitioner should be referenced in the Bundle
+		And the Patient GeneralPractitioner Practitioner should be referenced in the Bundle
 	Examples:
 		| Code |
 		| ADM  |

@@ -13,6 +13,7 @@
     using Extensions;
     using System;
     using Models;
+    using Shouldly.ShouldlyExtensionMethods;
 
     [Binding]
     public class PatientSteps : BaseSteps
@@ -224,18 +225,18 @@
             });
         }
 
-        [Then(@"the Patient CareProvider Practitioner should be valid and resolvable")]
-        public void ThePatientCareProviderPractitionerShouldBeValidAndResolvable()
+        [Then(@"the Patient GeneralPractitioner Practitioner should be valid and resolvable")]
+        public void ThePatientGeneralPractitionerPractitionerShouldBeValidAndResolvable()
         {
             Patients.ForEach(patient =>
             {
-                if (patient.CareProvider != null)
+                if (patient.GeneralPractitioner != null)
                 {
-                    patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
+                    patient.GeneralPractitioner.Count.ShouldBeLessThanOrEqualTo(1);
 
-                    if (patient.CareProvider.Count.Equals(1))
+                    if (patient.GeneralPractitioner.Count.Equals(1))
                     {
-                        var reference = patient.CareProvider.First().Reference;
+                        var reference = patient.GeneralPractitioner.First().Reference;
 
                         reference.ShouldStartWith("Practitioner/");
 
@@ -247,18 +248,18 @@
             });
         }
 
-        [Then(@"the Patient CareProvider Practitioner should be referenced in the Bundle")]
-        public void ThePatientCareProviderShouldBeReferencedInTheBundle()
+        [Then(@"the Patient GeneralPractitioner Practitioner should be referenced in the Bundle")]
+        public void ThePatientGeneralPractitionerShouldBeReferencedInTheBundle()
         {
             Patients.ForEach(patient =>
             {
-                if (patient.CareProvider != null)
+                if (patient.GeneralPractitioner != null)
                 {
-                    patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
+                    patient.GeneralPractitioner.Count.ShouldBeLessThanOrEqualTo(1);
 
-                    if (patient.CareProvider.Count.Equals(1))
+                    if (patient.GeneralPractitioner.Count.Equals(1))
                     {
-                        _bundleSteps.ResponseBundleContainsReferenceOfType(patient.CareProvider.First().Reference, ResourceType.Practitioner);
+                        _bundleSteps.ResponseBundleContainsReferenceOfType(patient.GeneralPractitioner.First().Reference, ResourceType.Practitioner);
                     }
                 }
             });
@@ -468,8 +469,32 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.Gender.ShouldBeOfType<AdministrativeGender>(string.Format("Patient Gender is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kAdministrativeGender));
+                patient.Gender.ShouldBeOfType<AdministrativeGender>($"Patient Gender is not a valid value within the value set {FhirConst.ValueSetSystems.kAdministrativeGender}");
+            });
+        }
 
+        [Then(@"the Patient Link should be valid and resolvable")]
+        public void ThePatientLinkShouldBeValidAndResolvable()
+        {
+            Patients.ForEach(patient =>
+            {
+                patient.Link.ForEach(link =>
+                {
+                    link.Type.ShouldNotBeNull("The Patient Link Type should not be null, but was.");
+                    link.Type.ShouldBeDefinedIn(typeof(Patient.LinkType), $"The Patient Link Type ({link.Type.ToString()}) was an invalid value.");
+
+                    Enum.IsDefined(typeof(Patient.LinkType), link.Type).ShouldBeTrue($"The Patient Link Type ({link.Type.ToString()}) was an invalid value.");
+                    
+                    var reference = link.Other.Reference;
+
+                    //Can't check RelatedPerson as endpoint doesn't exist
+                    if (reference.StartsWith("Patient"))
+                    {
+                        var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PatientRead, reference);
+
+                        resource.GetType().ShouldBe(typeof(Patient));
+                    }
+                });
             });
         }
     }

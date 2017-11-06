@@ -143,13 +143,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("{0} Genders Loaded.", gender.CodeSystem.Concept.Count);
             GlobalContext.FhirGenderValueSet = gender;
 
-            var maritalStatus = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/marital-status-1");
+            var maritalStatus = resolver.GetValueSet("https://fhir.nhs.uk/STU3/ValueSet/CareConnect-MaritalStatus-1");
             if (maritalStatus == null)
                 Assert.Fail("MaritalStatus ValueSet Not Found.");
             Log.WriteLine("{0} MaritalStatus Loaded.", maritalStatus.CodeSystem.Concept.Count);
             GlobalContext.FhirMaritalStatusValueSet = maritalStatus;
 
-            var relationship = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/cda-person-relationship-type-1");
+            var relationship = resolver.GetValueSet("http://hl7.org/fhir/ValueSet/v2-0131");
             if (relationship == null)
                 Assert.Fail("Relationship ValueSet Not Found.");
             Log.WriteLine("{0} Relationship Loaded.", relationship.CodeSystem.Concept.Count);

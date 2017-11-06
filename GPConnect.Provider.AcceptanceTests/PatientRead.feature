@@ -136,7 +136,7 @@ Scenario: Read patient resurned should conform to the GPconnect specification
 		And the Patient Id should be valid
 		And the Patient Metadata should be valid
 		And the Patient Identifiers should be valid for Patient "patient1"
-		And the Patient CareProvider Practitioner should be valid and resolvable
+		And the Patient GeneralPractitioner Practitioner should be valid and resolvable
 		And the Patient ManagingOrganization Organization should be valid and resolvable
 		And the Patient Deceased should be valid
 		And the Patient MultipleBirth should be valid
@@ -149,6 +149,7 @@ Scenario: Read patient resurned should conform to the GPconnect specification
 		And the Patient Use should be valid
 		And the Patient Gender should be valid
 		And the Patient MaritalStatus should be valid
+		And the Patient Link should be valid and resolvable
 
 Scenario: Conformance profile supports the Patient read operation
 	Given I configure the default "MetadataRead" request
