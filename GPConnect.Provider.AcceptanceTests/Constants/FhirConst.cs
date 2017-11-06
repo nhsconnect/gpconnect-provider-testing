@@ -37,16 +37,17 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
 
         internal static class ValueSetSystems
         {
+
             public const string kOrgzType = "http://hl7.org/fhir/organization-type";
-            public const string kNameUse = "http://hl7.org/fhir/ValueSet/name-use";
-            public const string kContactPointSystem = "http://hl7.org/fhir/ValueSet/contact-point-system";
-            public const string kNContactPointUse = "http://hl7.org/fhir/ValueSet/contact-point-use";
-            public const string kAddressUse = "http://hl7.org/fhir/ValueSet/address-use";
-            public const string kAddressType = "http://hl7.org/fhir/ValueSet/address-type";
+            public const string kNameUse = "http://hl7.org/fhir/stu3/valueset-name-use.html";
+            public const string kContactPointSystem = "http://hl7.org/fhir/stu3/valueset-contact-point-system.html";
+            public const string kNContactPointUse = "http://hl7.org/fhir/stu3/valueset-contact-point-use.html";
+            public const string kAddressUse = "http://hl7.org/fhir/stu3/valueset-address-use.html";
+            public const string kAddressType = "http://hl7.org/fhir/stu3/valueset-address-type.html";
             public const string kContactEntityType = "http://hl7.org/fhir/ValueSet/contactentity-type";
             public const string kIdentifierUse = "http://hl7.org/fhir/ValueSet/identifier-use";
             public const string kIdentifierType = "http://hl7.org/fhir/ValueSet/identifier-type";
-            public const string kAdministrativeGender = "https://fhir.hl7.org.uk/ValueSet/CareConnect-AdministrativeGender-1";
+            public const string kAdministrativeGender = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-AdministrativeGender-1";
             public const string kSDSJobRoleName = "https://fhir.hl7.org.uk/ValueSet/CareConnect-SDSJobRoleName-1";
             public const string kRecordSectionValueSet = "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1";
             public const string kServDelLocationRoleType = "http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType";
@@ -70,7 +71,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
 
             public const string kOrganisation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Organization-1";
             public const string kOrgzPeriod = "http://hl7.org/fhir/StructureDefinition/organization-period";
-            public const string kPractitioner = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Practitioner-1";
+            public const string kPractitioner = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Practitioner-1";
             public const string kLocation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Location-1";
             public const string kPatient = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Patient-1";
 
@@ -91,7 +92,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kCCExtPatientCadaver = "http://hl7.org/fhir/StructureDefinition/patient-cadavericDonor";
             public const string kCCExtResidentialStatus = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-ResidentialStatus-1";
             public const string kCCExtTreatmentCategory = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-TreatmentCategory-1";
-            public const string kCCExtNhsCommunication = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-NHSCommunication-1";
+            public const string kCCExtNhsCommunication = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSCommunication-1";
             public const string kCCExtCommLanguage = "Language";
             public const string kCCExtCommPreferred = "Preferred";
             public const string kCCExtCommModeOfCommunication = "modeOfCommunication";

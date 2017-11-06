@@ -768,32 +768,7 @@ Scenario Outline: practitioner resource contains mandatory fields within optiona
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner nhsCommunication should be valid
-	Examples:
-		| Code |
-		| ADM  |
-		| ALL  |
-		| CLI  |
-		| ENC  |
-		| IMM  |
-		#| INV  |
-		| MED  |
-		| OBS  |
-		#| PAT  |
-		| PRB  |
-		| REF  |
-		| SUM  |
-
-Scenario Outline: if practitioner resource contains a managing organization it must reference an organization within the response bundle
-	Given I configure the default "GpcGetCareRecord" request
-		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "<Code>"
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-	When I make the "GpcGetCareRecord" request
-	Then the response status code should indicate success		
-		And the response should be a Bundle resource of type "searchset"
-		And the Practitioner PractitionerRoles ManagingOrganization should be referenced in the Bundle
 	Examples:
 		| Code |
 		| ADM  |

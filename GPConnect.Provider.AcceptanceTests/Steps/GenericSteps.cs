@@ -155,7 +155,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("{0} Relationship Loaded.", relationship.CodeSystem.Concept.Count);
             GlobalContext.FhirRelationshipValueSet = relationship;
 
-            var humanLanguage = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/human-language-1");
+            var humanLanguage = resolver.GetValueSet("http://hl7.org/fhir/stu3/valueset-languages.html");
             if (humanLanguage == null)
                 Assert.Fail("HumanLanguage ValueSet Not Found.");
             Log.WriteLine("{0} HumanLanguage Loaded.", humanLanguage.CodeSystem.Concept.Count);

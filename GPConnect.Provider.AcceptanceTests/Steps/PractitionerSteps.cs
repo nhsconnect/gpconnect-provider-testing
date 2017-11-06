@@ -14,20 +14,14 @@
     public class PractitionerSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
-        private readonly BundleSteps _bundleSteps;
-        private readonly OrganizationSteps _organizationSteps;
-        private readonly HttpResponseSteps _httpResponseSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
 
         private List<Practitioner> Practitioners => _httpContext.FhirResponse.Practitioners;
 
-        public PractitionerSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, OrganizationSteps organizationSteps, HttpResponseSteps httpResponseSteps, IFhirResourceRepository fhirResourceRepository)
+        public PractitionerSteps(HttpContext httpContext, HttpSteps httpSteps, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
         {
             _httpContext = httpContext;
-            _bundleSteps = bundleSteps;
-            _organizationSteps = organizationSteps;
-            _httpResponseSteps = httpResponseSteps;
             _fhirResourceRepository = fhirResourceRepository;
         }
 
@@ -121,9 +115,7 @@
             ThePractitionerIdentifiersShouldBeValid();
             ThePractitionerNameShouldBeValid();
             ThePractitionerExcludeDisallowedElements();
-            ThePractitionerPractitionerRolesShouldBeValid();
             ThePractitionerCommunicationShouldBeValid();
-            ThePractitionerPractitionerRolesManagingOrganizationShouldBeReferencedInTheBundle();
         }
 
         [Then(@"the Practitioner Entry should be valid")]
@@ -133,10 +125,8 @@
             ThePractitionerSdsUserIdentifierShouldBeValid();
             ThePractitionerIdentifiersShouldBeFixedValues();
             ThePractitionerNameShouldBeValid();
-            ThePractitionerPractitionerRolesShouldBeValid();
             ThePractitionerExcludeDisallowedElements();
             ThePractitionerCommunicationShouldBeValid();
-            ThePractitionerPractitionerRolesManagingOrganizationShouldBeValidAndResolvable();
         }
 
         [Then(@"the Practitioner Metadata should be valid")]
@@ -254,12 +244,12 @@
         {
             Practitioners.ForEach(practitioner =>
             {
-                practitioner.Name.ShouldNotBeNull("Practitioner resources must contain a name element");
-                practitioner.Name.Family?.Count().ShouldBe(1, "There must be 1 family name in the practitioner name.");
-                if (practitioner.Name.Use != null)
-                {
-                    practitioner.Name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Practitioner Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
-                }
+                practitioner.Name.Count.ShouldBe(1, $"There should be 1 Practitioner Name, but found {practitioner.Name}.");
+                var practionerName = practitioner.Name.First();
+
+                practionerName.Family?.Length.ShouldBe(1, "There should be 1 Family Name in the Practitioner name.");
+
+                practionerName.Use?.ShouldBeOfType<HumanName.NameUse>($"Practitioner Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
             });
         }
 
@@ -272,44 +262,9 @@
                 practitioner.Qualification?.Count.ShouldBe(0, "Practitioner should not contain a Qualification");
                 practitioner.BirthDate.ShouldBeNull("Practitioner should not contain a Birth Date");
                 practitioner.BirthDateElement.ShouldBeNull("Practitioner should not contain a Birth Date Element");
-
-                practitioner.PractitionerRole.ForEach(practitionerRole =>
-                {
-                    practitionerRole.HealthcareService?.Count.ShouldBe(0, "Practitioner Role should not contain a Healthcare Service");
-                    practitionerRole.Location?.Count.ShouldBe(0, "Practitioner Role should not contain a Location");
-                });
             });
         }
 
-
-        [Then(@"the Practitioner PractitionerRoles should be valid")]
-        public void ThePractitionerPractitionerRolesShouldBeValid()
-        {
-            ThePractitionerPractionerRolesRolesShouldBeValid();
-        }
-
-        [Then(@"the Practitioner PractitionerRoles Roles should be valid")]
-        public void ThePractitionerPractionerRolesRolesShouldBeValid()
-        {
-            Practitioners.ForEach(practitioner =>
-            {
-                practitioner.PractitionerRole.ForEach(practitionerRole =>
-                {
-                    if (practitionerRole.Role?.Coding != null)
-                    {
-                        practitionerRole.Role.Coding.Count.ShouldBeLessThanOrEqualTo(1, "There should be a maximum of one practitioner role coding in each practitioner role.");
-                        practitionerRole.Role.Coding.ForEach(coding =>
-                        {
-                            coding.System.ShouldBe(FhirConst.ValueSetSystems.kSDSJobRoleName);
-                            coding.Code.ShouldNotBeNull("The practitioner role code element should not be null");
-                            coding.Display.ShouldNotBeNull("The practitioner role display elemenet should not be null");
-                        });
-                    }
-
-                  
-                });
-            });
-        }
 
         [Then(@"the Practitioner nhsCommunication should be valid")]
         public void ThePractitionerCommunicationShouldBeValid()
@@ -319,43 +274,6 @@
                 practitioner.Communication.ForEach(codeableConcept =>
                 {
                     ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
-                });
-            });
-        }
-
-        [Then(@"the Practitioner PractitionerRoles ManagingOrganization should be referenced in the Bundle")]
-        public void ThePractitionerPractitionerRolesManagingOrganizationShouldBeReferencedInTheBundle()
-        {
-            Practitioners.ForEach(practitioner =>
-            {
-                practitioner.PractitionerRole.ForEach(practitionerRole =>
-                {
-                    if (practitionerRole.ManagingOrganization != null)
-                    {
-                        _bundleSteps.ResponseBundleContainsReferenceOfType(practitionerRole.ManagingOrganization.Reference, ResourceType.Organization);
-                    }
-                });
-            });
-        }
-
-        [Then(@"the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable")]
-        public void ThePractitionerPractitionerRolesManagingOrganizationShouldBeValidAndResolvable()
-        {
-            Practitioners.ForEach(practitioner =>
-            {
-                practitioner.PractitionerRole.ForEach(practitionerRole =>
-                {
-                    if (practitionerRole.ManagingOrganization != null)
-                    {
-                        practitionerRole.ManagingOrganization.Reference.ShouldNotBeNull("If a Practitioner has a Managing Organization it must have a reference");
-                        practitionerRole.ManagingOrganization.Reference.ShouldStartWith("Organization/");
-
-                       var returnedResource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.OrganizationRead, practitionerRole.ManagingOrganization.Reference);//_fhirResourceRepository.Organization.ResourceIdentity().ToString();
-
-                        var returnedOrg = (Organization)returnedResource;
-
-                        returnedOrg.GetType().ShouldBe(typeof(Organization));
-                    }
                 });
             });
         }
@@ -385,32 +303,29 @@
         {
             Practitioners.ForEach(practitioner =>
             {
-                if (practitioner.Gender != null)
-                {
-                    practitioner.Gender.ShouldBeOfType<AdministrativeGender>(string.Format("Type is not a valid value within the value set", FhirConst.ValueSetSystems.kAdministrativeGender));
-                }
+                practitioner.Gender?.ShouldBeOfType<AdministrativeGender>(string.Format($"Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAdministrativeGender}"));
             });
         }
 
 
-        private void ValidateAddress(List<Address> addressList, string from)
+        private static void ValidateAddress(List<Address> addressList, string from)
         {
             addressList.ForEach(address =>
             {
-                address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", from)));
-                address.Type?.ShouldBeOfType<Address.AddressType>(string.Format("{0} Type is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kAddressType));
-                address.Use?.ShouldBeOfType<Address.AddressUse>(string.Format("{0} Use is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kAddressUse));
+                address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
+                address.Type?.ShouldBeOfType<Address.AddressType>($"{from} Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressType}");
+                address.Use?.ShouldBeOfType<Address.AddressUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressUse}");
             });
         }
 
 
-        private void ValidateTelecom(List<ContactPoint> telecoms, string from)
+        private static void ValidateTelecom(List<ContactPoint> telecoms, string from)
         {
             telecoms.ForEach(teleCom =>
             {
-                teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty(string.Format("{0} has an invalid extension. Extensions must have a URL element.", from)));
-                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kContactPointSystem));
-                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>(string.Format("{0} Use is not a valid value within the value set {1}", from, FhirConst.ValueSetSystems.kNContactPointUse));
+                teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
+                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"{from} System is not a valid value within the value set {FhirConst.ValueSetSystems.kContactPointSystem}");
+                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNContactPointUse}");
             });
         }
     }

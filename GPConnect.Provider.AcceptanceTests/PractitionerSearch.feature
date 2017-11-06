@@ -61,11 +61,9 @@ Scenario Outline: Practitioner search testing paramater validity before adding i
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid fixed values
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Param1Name | Param1Value           | BodyFormat |
 		| _format    | application/json+fhir | JSON       |
@@ -80,11 +78,9 @@ Scenario Outline: Practitioner search testing paramater validity after adding id
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid fixed values
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Param1Name | Param1Value           | BodyFormat |
 		| _format    | application/json+fhir | JSON       |
@@ -100,11 +96,9 @@ Scenario Outline: Practitioner search add accept header to request and check for
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid fixed values
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Header                | BodyFormat |
 		| application/json+fhir | JSON       |
@@ -120,11 +114,9 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid fixed values
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/json+fhir | application/json+fhir | JSON       |
@@ -174,15 +166,6 @@ Scenario: Practitioner search returns back user with name element
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Name should be valid
-
-Scenario: Practitioner search returns practitioner role element with valid parameters
-	Given I configure the default "PractitionerSearch" request
-		  And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-	When I make the "PractitionerSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 
 Scenario: Practitioner search should not contain photo or qualification information
 	Given I configure the default "PractitionerSearch" request

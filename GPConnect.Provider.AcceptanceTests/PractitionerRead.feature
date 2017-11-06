@@ -12,7 +12,6 @@ Scenario Outline: Practitioner read successful request validate all of response
 		And the Practitioner Metadata should be valid
 		And the Practitioner Identifiers should be valid
 		And the Practitioner Name should be valid
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner nhsCommunication should be valid
 		And the Practitioner should exclude disallowed elements
 		And the practitioner Telecom should be valid

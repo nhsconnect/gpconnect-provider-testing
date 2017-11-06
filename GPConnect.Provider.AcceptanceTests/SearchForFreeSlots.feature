@@ -301,10 +301,8 @@ Scenario: Successfully search for free slots and check the included practitioner
 		And the Practitioner SDS User Identifier should be valid
 		And the Practitioner Identifiers should be valid fixed values
 		And the Practitioner Name should be valid
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be referenced in the Bundle
 
 @ignore
 Scenario: Successfully search for free slots and check the included organization resources returned are valid
