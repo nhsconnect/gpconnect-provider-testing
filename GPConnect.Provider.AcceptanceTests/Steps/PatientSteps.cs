@@ -11,9 +11,6 @@
     using Shouldly;
     using TechTalk.SpecFlow;
     using Extensions;
-    using System;
-    using Models;
-    using Shouldly.ShouldlyExtensionMethods;
 
     [Binding]
     public class PatientSteps : BaseSteps
@@ -115,13 +112,9 @@
                     contact.Name.Family.Count().ShouldBe(1,"There should be 1 family name");
 
                     contact.Name.Use.ShouldNotBeNull("Contact Name Use should not be null");
-                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Contact Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
-                    if (contact.Gender != null) {
-                        contact.Gender.ShouldBeOfType<AdministrativeGender>(string.Format("{0} Type is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kAdministrativeGender));
-                        }
-                    // Contact Relationship Checks
-                
-                    });
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
+                    contact.Gender?.ShouldBeOfType<AdministrativeGender>($"Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAdministrativeGender}");
+                });
             });
         }
 
@@ -168,6 +161,10 @@
                     {
                         identifier.Value.ShouldBe(GlobalContext.PatientNhsNumberMap[patientName]);
                     }
+
+                    var extension = identifier.Extension.First();
+
+                    ValidateCodeConceptExtension(extension, FhirConst.ValueSetSystems.kCcNhsNumVerification);
                 }
             });
         }

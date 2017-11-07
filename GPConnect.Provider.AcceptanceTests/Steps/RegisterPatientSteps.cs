@@ -813,16 +813,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
-        private void ValidateCodeConceptExtension(Extension extension, string vsetUri)
-        {
-            extension.Value.ShouldNotBeNull();
-            extension.Value.ShouldBeOfType<CodeableConcept>();
-            var concept = (CodeableConcept)extension.Value;
-
-            var vset = GlobalContext.GetExtensibleValueSet(vsetUri);
-            ShouldBeExactSingleCodingWhichIsInValueSet(vset, concept.Coding);
-        }
-
         private void ValidateSingleBooleanExtension(List<Extension> extensions, string defUri)
         {
 

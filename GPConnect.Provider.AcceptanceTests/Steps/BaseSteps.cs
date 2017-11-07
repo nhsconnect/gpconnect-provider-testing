@@ -5,6 +5,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Context;
     using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
@@ -92,6 +93,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 address.Type?.ShouldBeOfType<Address.AddressType>($"{from} Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressType}");
                 address.Use?.ShouldBeOfType<Address.AddressUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressUse}");
             }
+        }
+
+        protected void ValidateCodeConceptExtension(Extension extension, string vsetUri)
+        {
+            extension.Value.ShouldNotBeNull();
+            extension.Value.ShouldBeOfType<CodeableConcept>();
+            var concept = (CodeableConcept)extension.Value;
+
+            var vset = GlobalContext.GetExtensibleValueSet(vsetUri);
+            ShouldBeExactSingleCodingWhichIsInValueSet(vset, concept.Coding);
         }
 
     }
