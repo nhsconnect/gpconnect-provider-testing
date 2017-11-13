@@ -128,21 +128,8 @@
         {
             Organizations.ForEach(organization =>
             {
-                if (organization.Type?.Coding != null)
-                {
-                    var codingCount = organization.Type.Coding.Count;
-
-                    codingCount.ShouldBeLessThanOrEqualTo(1, $"There should only be 1 Coding within the Type, but found {codingCount}.");
-
-                    var coding = organization.Type.Coding.FirstOrDefault();
-
-                    if (coding != null)
-                    {
-                        coding.System.ShouldNotBeNullOrEmpty("The Coding System value should not be null or empty");
-                        coding.Code.ShouldNotBeNullOrEmpty("The Coding Code value should not be null or empty");
-                        coding.Display.ShouldNotBeNullOrEmpty("The Coding Display value should not be null or empty");
-                    }
-                }
+                organization.Type.Count.ShouldBe(1,
+                    $"There should only be 1 Organization Type, but found {organization.Type.Count}.");
             });
         }
 
@@ -187,16 +174,17 @@
         {
             Organizations.ForEach(organization =>
             {
-                organization.Extension.ForEach(ValidateExtensions);
+                organization.Extension.ForEach(ValidateExtension);
             });
         }
 
-        private void ValidateExtensions(Extension extensions)
+        private static void ValidateExtension(Extension extension)
         {
-            if (extensions != null)
+            if (extension != null)
             {
-                var validExtensions = new [] { FhirConst.StructureDefinitionSystems.kExtCcGpcMainLoc, FhirConst.StructureDefinitionSystems.kOrgzPeriod };
-                extensions.Url.ShouldBeOneOf(validExtensions, $"Organisation Extension is invalid. Extensions must be one of {validExtensions}");
+                var validExtensions = new List<string>{ FhirConst.StructureDefinitionSystems.kExtCcGpcMainLoc, FhirConst.StructureDefinitionSystems.kOrgzPeriod };
+
+                validExtensions.ShouldContain(extension.Url, $"The Organisation Extension is invalid. Extensions must be one of {validExtensions}.");
             }
         }
 
@@ -210,19 +198,15 @@
 
                 if (contactPurpose != null)
                 {
-                    contactPurpose.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Organisation Contact Purpose Code has an invalid extension. Extensions must have a URL element."));
-
                     var contactEntityTypes = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kContactEntityType).WithComposeImports().ToArray();
 
-                    contactPurpose.Coding.ForEach(cd =>
+                    contactPurpose.Coding.ForEach(coding =>
                     {
-                        cd.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Organisation Contact Purpose has an invalid extension. Extensions must have a URL element."));
-                        if (cd.System.Equals(FhirConst.ValueSetSystems.kContactEntityType) && contactEntityTypes.Any() && !string.IsNullOrEmpty(cd.Code))
+                        if (coding.System.Equals(FhirConst.ValueSetSystems.kContactEntityType) && contactEntityTypes.Any() && !string.IsNullOrEmpty(coding.Code))
                         {
-                            cd.Code.ShouldBeOneOf(contactEntityTypes, $"Organisation Contact Purpose System is {FhirConst.ValueSetSystems.kContactEntityType}, but the code provided is not valid for this ValueSet.");
+                            coding.Code.ShouldBeOneOf(contactEntityTypes, $"Organisation Contact Purpose System is {FhirConst.ValueSetSystems.kContactEntityType}, but the code provided is not valid for this ValueSet.");
                         }
                     });
-
                 }
 
                 var contactName = contact.Name;
@@ -421,7 +405,7 @@
             totalValidOrganisations.ShouldBe(Organizations.Count, "The number of organizations codes are invalid");
         }
 
-        private List<string> getIdentifiersInList(string code)
+        private static List<string> getIdentifiersInList(string code)
         {
             return code.Split('|').Select(element => GlobalContext.OdsCodeMap[element]).ToList();
         }
