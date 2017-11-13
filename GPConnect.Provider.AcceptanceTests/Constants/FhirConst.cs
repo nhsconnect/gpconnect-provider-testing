@@ -43,7 +43,6 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kIdentifierType = "http://hl7.org/fhir/ValueSet/identifier-type";
             public const string kSDSJobRoleName = "https://fhir.hl7.org.uk/ValueSet/CareConnect-SDSJobRoleName-1";
             public const string kRecordSectionValueSet = "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1";
-            public const string kServDelLocationRoleType = "http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType";
             public const string kCcGpcRegistrationType = "https://fhir.nhs.uk/ValueSet/CareConnect-RegistrationType-1";
             public const string kCcGpcRegistrationStatus = "https://fhir.nhs.uk/ValueSet/CareConnect-RegistrationStatus-1";
             public const string kCcEthnicCategory = "https://fhir.nhs.uk/ValueSet/CareConnect-EthnicCategory-1";
@@ -65,6 +64,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kAdministrativeGender = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-AdministrativeGender-1";
             public const string kMaritalStatus = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-MaritalStatus-1";
             public const string kContactEntityType = "http://hl7.org/fhir/stu3/valueset-contactentity-type.html";
+            public const string kServDelLocationRoleType = "http://hl7.org/fhir/stu3/ValueSet/v3-ServiceDeliveryLocationRoleType";
 
         }
 
@@ -72,7 +72,6 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         {
             public const string kGpcSearchSet = "http://fhir.nhs.net/StructureDefinition/gpconnect-searchset-bundle-1";
 
-            public const string kLocation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Location-1";
 
             //EXTENSIONS
             public const string kExtGpcPractitioner = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-practitioner-1";
@@ -95,6 +94,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kPractitioner = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Practitioner-1";
             public const string kPatient = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1";
             public const string kOrganisation = "http://fhir.nhs.net/STU3/StructureDefinition/CareConnect-GPC-Organization-1";
+            public const string kLocation = "http://fhir.nhs.net/STU3/StructureDefinition/CareConnect-GPC-Location-1";
 
             //Extensions
             public const string kCCExtNhsCommunication =        "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSCommunication-1";

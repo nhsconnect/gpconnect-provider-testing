@@ -53,8 +53,6 @@
 
                 if (locationType != null)
                 {
-                    locationType.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty("Location Type has an invalid extension. Extensions must have a URL element."));
-
                     // locationType codeable concept binding is extensible
                     // ideally I would check if it was of FhirConst.ValueSetSystems.kServDelLocationRoleType
                     // and if so check the code
@@ -87,7 +85,7 @@
                 {
                     foreach (var coding in location.PhysicalType.Coding)
                     {
-                       
+                        coding.System.ShouldNotBeNullOrEmpty("The Location PhysicalType Coding System should not be null or empty.");
                         coding.Code.ShouldNotBeNullOrEmpty("The Location Physical Type Coding should contain a Code.");
                         coding.Display.ShouldNotBeNullOrEmpty("The Location Physical Type Coding should contain a Display.");
                     }
