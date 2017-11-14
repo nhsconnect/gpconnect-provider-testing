@@ -556,10 +556,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conformance profile supports the Practitioner search operation")]
-        public virtual void ConformanceProfileSupportsThePractitionerSearchOperation()
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the Practitioner search operation")]
+        public virtual void CapabilityStatementProfileSupportsThePractitionerSearchOperation()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Practitioner search operation", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the Practitioner search operation", ((string[])(null)));
 #line 212
 this.ScenarioSetup(scenarioInfo);
 #line 213
@@ -569,8 +569,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 215
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 216
-  testRunner.And("the Conformance REST Resources should contain the \"Practitioner\" Resource with th" +
-                    "e \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"Practitioner\" Resource" +
+                    " with the \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -151,11 +151,11 @@ Scenario: Read patient resurned should conform to the GPconnect specification
 		And the Patient MaritalStatus should be valid
 		And the Patient Link should be valid and resolvable
 
-Scenario: Conformance profile supports the Patient read operation
+Scenario: CapabilityStatement profile supports the Patient read operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Patient" Resource with the "Read" Interaction
+		And the CapabilityStatement REST Resources should contain the "Patient" Resource with the "Read" Interaction
 
 Scenario: Patient read valid response check caching headers exist
 	Given I get the Patient for Patient Value "patient1"

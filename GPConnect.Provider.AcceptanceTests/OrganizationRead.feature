@@ -141,11 +141,11 @@ Scenario Outline: Organization Read sending the Accept header and _format parame
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
 
-Scenario: Conformance profile supports the Organization read operation
+Scenario: CapabilityStatement profile supports the Organization read operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Organization" Resource with the "Read" Interaction
+		And the CapabilityStatement REST Resources should contain the "Organization" Resource with the "Read" Interaction
 
 Scenario: Organization read valid response check caching headers exist
 	Given I get the Organization for Organization Code "ORG1"

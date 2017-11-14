@@ -345,10 +345,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conformance profile supports the Organization read operation")]
-        public virtual void ConformanceProfileSupportsTheOrganizationReadOperation()
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the Organization read operation")]
+        public virtual void CapabilityStatementProfileSupportsTheOrganizationReadOperation()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Organization read operation", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the Organization read operation", ((string[])(null)));
 #line 144
 this.ScenarioSetup(scenarioInfo);
 #line 145
@@ -358,8 +358,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 147
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 148
-  testRunner.And("the Conformance REST Resources should contain the \"Organization\" Resource with th" +
-                    "e \"Read\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"Organization\" Resource" +
+                    " with the \"Read\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

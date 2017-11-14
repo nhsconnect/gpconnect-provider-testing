@@ -240,11 +240,11 @@ Scenario: Patient search response does not return deceased patient
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "0" entries
 
-Scenario: Conformance profile supports the Patient search operation
+Scenario: CapabilityStatement profile supports the Patient search operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Patient" Resource with the "SearchType" Interaction
+		And the CapabilityStatement REST Resources should contain the "Patient" Resource with the "SearchType" Interaction
 
 Scenario Outline: System should error if multiple parameters valid or invalid are sent
 	 Given I configure the default "PatientSearch" request

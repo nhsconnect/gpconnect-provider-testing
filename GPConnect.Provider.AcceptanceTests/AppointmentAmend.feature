@@ -254,11 +254,11 @@ Scenario: Amend appointment and send an invalid appointment resource
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 				
-Scenario: Conformance profile support the Amend appointment operation
+Scenario: CapabilityStatement profile support the Amend appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction
+		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Update" Interaction
 
 Scenario: Amend appointment valid response check caching headers exist
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

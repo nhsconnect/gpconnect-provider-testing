@@ -267,10 +267,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conformance profile supports the Location read operation")]
-        public virtual void ConformanceProfileSupportsTheLocationReadOperation()
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the Location read operation")]
+        public virtual void CapabilityStatementProfileSupportsTheLocationReadOperation()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Location read operation", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the Location read operation", ((string[])(null)));
 #line 106
 this.ScenarioSetup(scenarioInfo);
 #line 107
@@ -280,8 +280,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 109
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 110
-  testRunner.And("the Conformance REST Resources should contain the \"Location\" Resource with the \"R" +
-                    "ead\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"Location\" Resource wit" +
+                    "h the \"Read\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

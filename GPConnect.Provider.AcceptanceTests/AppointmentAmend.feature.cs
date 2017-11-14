@@ -642,10 +642,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conformance profile support the Amend appointment operation")]
-        public virtual void ConformanceProfileSupportTheAmendAppointmentOperation()
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile support the Amend appointment operation")]
+        public virtual void CapabilityStatementProfileSupportTheAmendAppointmentOperation()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile support the Amend appointment operation", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile support the Amend appointment operation", ((string[])(null)));
 #line 257
 this.ScenarioSetup(scenarioInfo);
 #line 258
@@ -655,8 +655,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 260
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 261
-  testRunner.And("the Conformance REST Resources should contain the \"Appointment\" Resource with the" +
-                    " \"Update\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"Appointment\" Resource " +
+                    "with the \"Update\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

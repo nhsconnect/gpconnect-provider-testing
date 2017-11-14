@@ -332,11 +332,11 @@ Scenario: Successfully search for free slots and check the included location res
 		And the Location PartOf Location should be valid
 		And the Location Managing Organization should be valid
 
-Scenario: Conformance profile supports the Slot Search Resource
+Scenario: CapabilityStatement profile supports the Slot Search Resource
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Slot" Resource with the "SearchType" Interaction
+		And the CapabilityStatement REST Resources should contain the "Slot" Resource with the "SearchType" Interaction
 
 Scenario: SearchForFreeSlots valid response check caching headers exist
 	Given I configure the default "SearchForFreeSlots" request

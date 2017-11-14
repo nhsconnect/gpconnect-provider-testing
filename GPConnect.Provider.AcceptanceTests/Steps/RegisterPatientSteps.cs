@@ -182,7 +182,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             foreach (var name in _fhirResourceRepository.Patient.Name)
             {
-                name.FamilyElement.Add(new FhirString(familyName));
+                name.FamilyElement = new FhirString(familyName);
             }
         }
 
@@ -253,7 +253,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Display = "Test Care Provider"
             };
 
-            _fhirResourceRepository.Patient.CareProvider.Add(reference);
+            _fhirResourceRepository.Patient.GeneralPractitioner.Add(reference);
         }
 
         [Given(@"I add a Communication element to the Stored Patient")]
@@ -465,7 +465,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var storedPatient = _fhirResourceRepository.Patient;
             var spUnIndex = FindUsualNameIndex(storedPatient.Name);
             var storedUsualName = storedPatient.Name[spUnIndex];
-            var storedFamilyName = storedUsualName.Family.First();
+            var storedFamilyName = storedUsualName.Family;
 
             Patients.ForEach(patient =>
             {
@@ -497,7 +497,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 //Family
                 activeUsualName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
                 activeUsualName.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
-                activeUsualName.Family.First().ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
+                activeUsualName.Family.ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
 
             });
 
@@ -854,7 +854,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var humanName = new HumanName()
             {
-                FamilyElement = new List<FhirString> { new FhirString(familyName) },
+                FamilyElement = new FhirString(familyName),
                 GivenElement = new List<FhirString> { new FhirString(givenName) },
                 Use = use
             };

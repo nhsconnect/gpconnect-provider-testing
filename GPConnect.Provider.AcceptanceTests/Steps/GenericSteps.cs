@@ -119,61 +119,61 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("Data Directory Not Found.");
             }
 
-            var vsSources = new List<IArtifactSource>();
+            var vsSources = new List<IResourceResolver>();
 
             if (AppSettingsHelper.FhirCheckWeb && AppSettingsHelper.FhirCheckWebFirst)
             {
-                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+                vsSources.Add(new WebResolver(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
             }
 
             if (AppSettingsHelper.FhirCheckDisk)
             {
-                vsSources.Add(new FileDirectoryArtifactSource(AppSettingsHelper.FhirDirectory, true));
+                vsSources.Add(new DirectorySource(AppSettingsHelper.FhirDirectory, true));
             }
 
             if (AppSettingsHelper.FhirCheckWeb && !AppSettingsHelper.FhirCheckWebFirst)
             {
-                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+                vsSources.Add(new WebResolver(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
             }
 
-            var resolver = new ArtifactResolver(new MultiArtifactSource(vsSources));
-            var gender = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/administrative-gender-1");
+            var resolver = new MultiResolver(vsSources);
+            var gender = resolver.FindValueSet("http://fhir.nhs.net/ValueSet/administrative-gender-1");
             if (gender == null)
                 Assert.Fail("Gender ValueSet Not Found.");
             Log.WriteLine("{0} Genders Loaded.", gender.CodeSystem.Concept.Count);
             GlobalContext.FhirGenderValueSet = gender;
 
-            var maritalStatus = resolver.GetValueSet("https://fhir.nhs.uk/STU3/ValueSet/CareConnect-MaritalStatus-1");
+            var maritalStatus = resolver.FindValueSet("https://fhir.nhs.uk/STU3/ValueSet/CareConnect-MaritalStatus-1");
             if (maritalStatus == null)
                 Assert.Fail("MaritalStatus ValueSet Not Found.");
             Log.WriteLine("{0} MaritalStatus Loaded.", maritalStatus.CodeSystem.Concept.Count);
             GlobalContext.FhirMaritalStatusValueSet = maritalStatus;
 
-            var relationship = resolver.GetValueSet("http://hl7.org/fhir/ValueSet/v2-0131");
+            var relationship = resolver.FindValueSet("http://hl7.org/fhir/ValueSet/v2-0131");
             if (relationship == null)
                 Assert.Fail("Relationship ValueSet Not Found.");
             Log.WriteLine("{0} Relationship Loaded.", relationship.CodeSystem.Concept.Count);
             GlobalContext.FhirRelationshipValueSet = relationship;
 
-            var humanLanguage = resolver.GetValueSet("http://hl7.org/fhir/stu3/valueset-languages.html");
+            var humanLanguage = resolver.FindValueSet("http://hl7.org/fhir/stu3/valueset-languages.html");
             if (humanLanguage == null)
                 Assert.Fail("HumanLanguage ValueSet Not Found.");
             Log.WriteLine("{0} HumanLanguage Loaded.", humanLanguage.CodeSystem.Concept.Count);
             GlobalContext.FhirHumanLanguageValueSet = humanLanguage;
 
-            var appointmentCategory = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-category-1");
+            var appointmentCategory = resolver.FindValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-category-1");
             if (appointmentCategory == null)
                 Assert.Fail("AppointmentCategory ValueSet Not Found.");
             Log.WriteLine("{0} AppointmentCategory Loaded.", appointmentCategory.CodeSystem.Concept.Count);
             GlobalContext.FhirAppointmentCategoryValueSet = appointmentCategory;
 
-            var appointmentBookingMethod = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1");
+            var appointmentBookingMethod = resolver.FindValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1");
             if (appointmentBookingMethod == null)
                 Assert.Fail("AppointmentBookingMethod ValueSet Not Found.");
             Log.WriteLine("{0} AppointmentBookingMethod Loaded.", appointmentBookingMethod.CodeSystem.Concept.Count);
             GlobalContext.FhirAppointmentBookingMethodValueSet = appointmentBookingMethod;
 
-            var appointmentContactMethod = resolver.GetValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-contact-method-1");
+            var appointmentContactMethod = resolver.FindValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-contact-method-1");
             if (appointmentContactMethod == null)
                 Assert.Fail("AppointmentContactMethod ValueSet Not Found.");
             Log.WriteLine("{0} AppointmentContactMethod Loaded.", appointmentContactMethod.CodeSystem.Concept.Count);

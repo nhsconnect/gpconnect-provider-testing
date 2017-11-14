@@ -19,7 +19,7 @@ Scenario: Security - SSP Client Certificate - Valid
 		And I am using a TLS Connection
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Response Resource should be a Conformance
+		And the Response Resource should be a CapabilityStatement
 
 Scenario: Security - SSP Client Certificate - Invalid - Expired
 	Given I configure the default "MetadataRead" request

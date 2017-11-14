@@ -64,33 +64,25 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
           
         }
 
-        public static List<Practitioner.PractitionerRoleComponent> GetPractitionerRoleComponent(string system, string value)
-        {
-            var practitionerRoleList = new List<Practitioner.PractitionerRoleComponent>();
-            var practitionerRole = new Practitioner.PractitionerRoleComponent()
-            {
-                Role = new CodeableConcept(system, value)
-            };
-            practitionerRoleList.Add(practitionerRole);
-            return practitionerRoleList;
-        }
-
         public static Practitioner GetDefaultPractitioner()
         {
             return new Practitioner
             {
                 Id = "1",
-                Name = new HumanName()
+                Name = new List<HumanName>
                 {
-                    Prefix = new[] { "Mr" },
-                    Given = new[] { "AssuranceTest" },
-                    Family = new[] { "AssurancePractitioner" }
+                    new HumanName
+                    {
+                        Prefix = new[] { "Mr" },
+                        Given = new[] { "AssuranceTest" },
+                        Family = "AssurancePractitioner"
+                    }
                 },
-                Identifier = {
+                Identifier =
+                {
                     new Identifier(FhirConst.IdentifierSystems.kPracSDSUserId, "GCASDS0001"),
                     new Identifier("LocalIdentifierSystem", "1")
-                },
-                PractitionerRole = GetPractitionerRoleComponent(FhirConst.ValueSetSystems.kSDSJobRoleName, "AssuranceJobRole")
+                }
             };
         }
 

@@ -18,7 +18,7 @@ Scenario: SSP - Consumer Client Certificate - Valid
 		And I am using the valid Consumer client certificate
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Response Resource should be a Conformance
+		And the Response Resource should be a CapabilityStatement
 
 Scenario: SSP - Consumer Client Certificate - Invalid - FQDN
 	Given I configure the default "MetadataRead" request
@@ -72,7 +72,7 @@ Scenario Outline: SSP - Connect with valid Cipher
 		And I set the Cipher to "<Cipher>"
 	When I make the "MetadataRead" cURL request
 	Then the cURL Code should be "Ok"
-		And the Response Resource should be a Conformance
+		And the Response Resource should be a CapabilityStatement
 	Examples: 
 	| Cipher                      |
 	| ECDHE-RSA-AES128-GCM-SHA256 |

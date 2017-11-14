@@ -527,11 +527,11 @@ Scenario: Book appointment and send an invalid appointment resource
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-Scenario: Conformance profile supports the book appointment operation
+Scenario: CapabilityStatement profile supports the book appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction		
+		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Update" Interaction		
 
 Scenario: Book appointment valid response check caching headers exist
 	Given I get the Patient for Patient Value "patient1"

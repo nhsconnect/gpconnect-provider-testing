@@ -202,24 +202,6 @@
             _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
         }
 
-        [Given(@"I set the JWT Requesting Practitioner with missing Practitioner Role")]
-        public void SetTheJwtRequestingPractitionerWithMissingPractitionerRole()
-        {
-            var practitioner = FhirHelper.GetDefaultPractitioner();
-            practitioner.PractitionerRole = null;
-
-            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
-        }
-
-        [Given(@"I set the JWT Requesting Practitioner Pratitioner Role with missing SDS Job Role")]
-        public void SetTheJwtRequestingPractitionerPractitionerRoleWithMissingSdsJobRole()
-        {
-            var practitioner = FhirHelper.GetDefaultPractitioner();
-            practitioner.PractitionerRole = FhirHelper.GetPractitionerRoleComponent("http://invalidValueSetServer.nhs.uk", "NonSDSJobRoleName");
-
-            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
-        }
-
         [Given(@"I set the JWT Requesting Identity Resource Type as an invalid Resource Type")]
         public void SetTheJwtRequestingPractitionerResourceTypeAsAnInvalidResourceType()
         {

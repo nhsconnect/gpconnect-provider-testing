@@ -395,10 +395,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conformance profile supports the Patient read operation")]
-        public virtual void ConformanceProfileSupportsThePatientReadOperation()
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the Patient read operation")]
+        public virtual void CapabilityStatementProfileSupportsThePatientReadOperation()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Patient read operation", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the Patient read operation", ((string[])(null)));
 #line 154
 this.ScenarioSetup(scenarioInfo);
 #line 155
@@ -408,8 +408,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 157
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 158
-  testRunner.And("the Conformance REST Resources should contain the \"Patient\" Resource with the \"Re" +
-                    "ad\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"Patient\" Resource with" +
+                    " the \"Read\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

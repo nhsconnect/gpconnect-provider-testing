@@ -103,11 +103,11 @@ Scenario Outline: Location Read sending the Accept header and _format parameter 
 		| application/xml+fhir  | application/json+fhir | JSON           |
 		| application/xml+fhir  | application/xml+fhir  | XML            |
 
-Scenario: Conformance profile supports the Location read operation
+Scenario: CapabilityStatement profile supports the Location read operation
 	Given I configure the default "Metadataread" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Location" Resource with the "Read" Interaction
+		And the CapabilityStatement REST Resources should contain the "Location" Resource with the "Read" Interaction
 
 Scenario Outline: Location read resource conforms to GP-Connect specification
 	Given I set the Get Request Id to the Logical Identifer for Location "SIT2"

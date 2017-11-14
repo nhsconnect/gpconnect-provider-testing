@@ -5,31 +5,31 @@ Scenario: Fhir Get MetaData
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Response Resource should be a Conformance
+		And the Response Resource should be a CapabilityStatement
 
-Scenario: Conformance profile indicates acceptance of xml and json format
+Scenario: CapabilityStatement profile indicates acceptance of xml and json format
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance Format should contain XML and JSON
+		And the CapabilityStatement Format should contain XML and JSON
 
-Scenario: Conformance profile suppliers software versions present
+Scenario: CapabilityStatement profile suppliers software versions present
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance Software should be valid
+		And the CapabilityStatement Software should be valid
 
-Scenario: Conformance profile supported fhir version
+Scenario: CapabilityStatement profile supported fhir version
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance FHIR Version should be "1.0.2"
+		And the CapabilityStatement FHIR Version should be "1.0.2"
 
-Scenario: Conformance profile supports the gpc.getcarerecord operation
+Scenario: CapabilityStatement profile supports the gpc.getcarerecord operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Operations should contain "gpc.getcarerecord"
+		And the CapabilityStatement REST Operations should contain "gpc.getcarerecord"
 
 Scenario: FHIR request content type XML but no accept header or _format sent with request
 	Given I configure the default "GpcGetCareRecord" request
@@ -250,7 +250,7 @@ Scenario: endpoint should support gzip compression for metadata endpoint and con
 	Then the response status code should indicate success
 		And the response should be gzip encoded
 		And the response body should be FHIR JSON
-		And the Response Resource should be a Conformance
+		And the Response Resource should be a CapabilityStatement
 
 Scenario: endpoint should support gzip compression for getCareRecord operation and contain correct payload
 	Given I configure the default "GpcGetCareRecord" request

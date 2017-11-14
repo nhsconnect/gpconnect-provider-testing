@@ -796,10 +796,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conformance profile supports the Slot Search Resource")]
-        public virtual void ConformanceProfileSupportsTheSlotSearchResource()
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the Slot Search Resource")]
+        public virtual void CapabilityStatementProfileSupportsTheSlotSearchResource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the Slot Search Resource", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the Slot Search Resource", ((string[])(null)));
 #line 335
 this.ScenarioSetup(scenarioInfo);
 #line 336
@@ -809,8 +809,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 338
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 339
-  testRunner.And("the Conformance REST Resources should contain the \"Slot\" Resource with the \"Searc" +
-                    "hType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"Slot\" Resource with th" +
+                    "e \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

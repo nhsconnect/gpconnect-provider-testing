@@ -195,11 +195,11 @@ Scenario Outline: Organization search add _format parameter to request after the
 		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
 		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 
-Scenario: Conformance profile supports the Organization search operation
+Scenario: CapabilityStatement profile supports the Organization search operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Organization" Resource with the "SearchType" Interaction
+		And the CapabilityStatement REST Resources should contain the "Organization" Resource with the "SearchType" Interaction
 
 Scenario: Organization search check organization response contains logical identifier
 	Given I configure the default "OrganizationSearch" request

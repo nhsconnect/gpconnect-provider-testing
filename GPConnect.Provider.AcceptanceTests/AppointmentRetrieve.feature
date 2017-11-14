@@ -551,11 +551,11 @@ Scenario: Appointment retrieve sending additional valid parameters in the reques
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 
-Scenario: Conformance profile supports the search appointment operation
+Scenario: CapabilityStatement profile supports the search appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Appointment" Resource with the "SearchType" Interaction
+		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "SearchType" Interaction
 
 Scenario: Appointment retrieve valid response check caching headers exist
 Given I get the Patient for Patient Value "patient15"

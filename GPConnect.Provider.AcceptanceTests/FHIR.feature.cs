@@ -79,16 +79,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 8
-  testRunner.And("the Response Resource should be a Conformance", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be a CapabilityStatement", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conformance profile indicates acceptance of xml and json format")]
-        public virtual void ConformanceProfileIndicatesAcceptanceOfXmlAndJsonFormat()
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile indicates acceptance of xml and json format")]
+        public virtual void CapabilityStatementProfileIndicatesAcceptanceOfXmlAndJsonFormat()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile indicates acceptance of xml and json format", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile indicates acceptance of xml and json format", ((string[])(null)));
 #line 10
 this.ScenarioSetup(scenarioInfo);
 #line 11
@@ -98,16 +98,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 14
-  testRunner.And("the Conformance Format should contain XML and JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement Format should contain XML and JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conformance profile suppliers software versions present")]
-        public virtual void ConformanceProfileSuppliersSoftwareVersionsPresent()
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile suppliers software versions present")]
+        public virtual void CapabilityStatementProfileSuppliersSoftwareVersionsPresent()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile suppliers software versions present", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile suppliers software versions present", ((string[])(null)));
 #line 16
 this.ScenarioSetup(scenarioInfo);
 #line 17
@@ -117,16 +117,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 20
-  testRunner.And("the Conformance Software should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement Software should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conformance profile supported fhir version")]
-        public virtual void ConformanceProfileSupportedFhirVersion()
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supported fhir version")]
+        public virtual void CapabilityStatementProfileSupportedFhirVersion()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supported fhir version", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supported fhir version", ((string[])(null)));
 #line 22
 this.ScenarioSetup(scenarioInfo);
 #line 23
@@ -136,16 +136,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 26
-  testRunner.And("the Conformance FHIR Version should be \"1.0.2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement FHIR Version should be \"1.0.2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conformance profile supports the gpc.getcarerecord operation")]
-        public virtual void ConformanceProfileSupportsTheGpc_GetcarerecordOperation()
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the gpc.getcarerecord operation")]
+        public virtual void CapabilityStatementProfileSupportsTheGpc_GetcarerecordOperation()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conformance profile supports the gpc.getcarerecord operation", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the gpc.getcarerecord operation", ((string[])(null)));
 #line 28
 this.ScenarioSetup(scenarioInfo);
 #line 29
@@ -155,7 +155,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 31
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 32
-  testRunner.And("the Conformance REST Operations should contain \"gpc.getcarerecord\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement REST Operations should contain \"gpc.getcarerecord\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -738,7 +738,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 252
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 253
-  testRunner.And("the Response Resource should be a Conformance", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be a CapabilityStatement", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

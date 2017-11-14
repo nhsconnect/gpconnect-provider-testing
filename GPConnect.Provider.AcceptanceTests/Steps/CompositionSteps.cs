@@ -33,7 +33,7 @@
             }
 
             _composition.Title.ShouldBe("Patient Care Record");
-            _composition.Status.ShouldBe(Composition.CompositionStatus.Final);
+            _composition.Status.ShouldBe(CompositionStatus.Final);
 
             _composition.Section.Count.ShouldBe(1);
         }
