@@ -413,7 +413,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 171
   testRunner.And("the Bundle Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 172
-  testRunner.And("the Slot FreeBusyType should be Free", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Slot Status should be Free", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 173
   testRunner.And("the Slot Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 174
@@ -603,7 +603,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 258
   testRunner.And("the Schedule PlanningHorizon should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 259
-  testRunner.And("the Schedule Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Schedule ServiceType should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 260
   testRunner.And("the Schedule Practitioner Extensions should be valid and referenced in the Bundle" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

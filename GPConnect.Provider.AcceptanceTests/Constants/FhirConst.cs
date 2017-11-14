@@ -66,6 +66,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kContactEntityType = "http://hl7.org/fhir/stu3/valueset-contactentity-type.html";
             public const string kServDelLocationRoleType = "http://hl7.org/fhir/stu3/ValueSet/v3-ServiceDeliveryLocationRoleType";
             public const string kEncounterParticipantType = "http://hl7.org/fhir/stu3/valueset-encounter-participant-type.html";
+            public const string kSpineErrorOrWarningCode = "https://fhir.nhs.uk/STU3/ValueSet/Spine-ErrorOrWarningCode-1";
 
         }
 
@@ -96,6 +97,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kPatient = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1";
             public const string kOrganisation = "http://fhir.nhs.net/STU3/StructureDefinition/CareConnect-GPC-Organization-1";
             public const string kLocation = "http://fhir.nhs.net/STU3/StructureDefinition/CareConnect-GPC-Location-1";
+            public const string kOperationOutcome = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1";
 
             //Extensions
             public const string kCCExtNhsCommunication =        "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSCommunication-1";

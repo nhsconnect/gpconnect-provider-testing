@@ -34,7 +34,6 @@
             {
                 device.Status.ShouldBeNull();
                 device.ManufactureDate.ShouldBeNull();
-                device.Expiry.ShouldBeNull();
                 device.Udi.ShouldBeNull();
                 device.LotNumber.ShouldBeNull();
                 device.Patient.ShouldBeNull();

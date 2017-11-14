@@ -169,7 +169,7 @@ Scenario: Successfully search for free slots and check the slot resources return
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Bundle Metadata should be valid
-		And the Slot FreeBusyType should be Free
+		And the Slot Status should be Free
 		And the Slot Metadata should be valid
 		And the Slot Identifiers should be valid
 
@@ -256,7 +256,7 @@ Scenario: Successfully search for free slots and check the included schedule res
 		And the Location should be valid
 		And the Schedule Identifiers should be valid
 		And the Schedule PlanningHorizon should be valid
-		And the Schedule Type should be valid
+		And the Schedule ServiceType should be valid
 		And the Schedule Practitioner Extensions should be valid and referenced in the Bundle
 		And the Practitioner Entry should be valid
 		And the Organization should be valid
