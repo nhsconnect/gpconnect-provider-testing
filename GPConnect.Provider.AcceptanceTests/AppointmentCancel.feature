@@ -264,7 +264,7 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Url "<url>" and Reason "<reason>"
+		And I set the Created Appointment to Cancelled with Reason "<reason>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
@@ -272,10 +272,10 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 		And the Appointment Cancellation Reason Extension should be valid for "<reason>"
 		And the Appointment Metadata should be valid
 	Examples:
-		| url                                                                                           | reason      |
-		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1 | Too busy    |
-		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1 | Car crashed |
-		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1 | Too tired   |
+		| reason      |
+		| Too busy    |
+		| Car crashed |
+		| Too tired   |
 
 Scenario Outline: Cancel appointment invalid cancellation extension url
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -344,7 +344,8 @@ Scenario: Cancel appointment compare request appointment to returned appointment
 		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
 		And the Appointment Slots should equal the Created Appointment Slots
 		And the Appointment Reason should equal the Created Appointment Reason
-		And the Appointment Participants should be equal to the Created Appointment Participants		
+		And the Appointment Participants should be equal to the Created Appointment Participants
+		And the Appointment Created should be equal to the Created Appointment Created
 
 Scenario: Cancel appointment response body must contain valid slot reference
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -378,7 +379,6 @@ Scenario Outline: Cancel appointment prefer header set to representation
 		And the Appointment End should be valid
 		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
-		And the Appointment Reason should be valid
 		And the Appointment Metadata should be valid
 	Examples:
 		| PatientName |

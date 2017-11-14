@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Builders.Appointment;
+    using Constants;
     using Context;
     using Enum;
     using Hl7.Fhir.Model;
@@ -157,11 +158,14 @@
         [Given(@"I set the Created Appointment Reason to ""([^""]*)""")]
         public void SetTheCreatedAppointmentReasonTo(string reason)
         {
-            _fhirResourceRepository.Appointment.Reason = new CodeableConcept
+            _fhirResourceRepository.Appointment.Reason = new List<CodeableConcept>
             {
-                Coding = new List<Coding>
+                new CodeableConcept
                 {
-                    new Coding("valueset", reason, reason)
+                    Coding = new List<Coding>
+                    {
+                        new Coding("valueset", reason, reason)
+                    }
                 }
             };
         }
@@ -196,12 +200,6 @@
             _fhirResourceRepository.Appointment = new Appointment();
         }
 
-         private static Extension GetInvalidMethodExtension(string code, string display)
-        {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-invalid-method-0000",
-                "http://fhir.nhs.net/ValueSet/gpconnect-appointment-invalid-method-0000", code, display);
-        }
-
         private static Extension GetCodingExtension(string extensionUrl, string codingUrl, string code, string display)
         {
             var coding = new Coding
@@ -232,7 +230,7 @@
 
         private static Extension GetCancellationReasonExtension(string reason)
         {
-            return GetStringExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", reason);
+            return GetStringExtension(FhirConst.StructureDefinitionSystems.kAppointmentCancellationReason, reason);
         }
 
         [Given(@"I read the Stored Appointment")]
@@ -273,24 +271,20 @@
 
                     participant.Actor.ShouldNotBeNull("Participant Actor Should Not Be null");
 
-                    if (participant.Type != null)
+                    participant.Type?.ForEach(type =>
                     {
-                        participant.Type.Count.ShouldBeLessThanOrEqualTo(1, $"The Appointment Participant should contain a maximum of 1 Type, but found {participant.Type.Count}.");
-
-                        participant.Type.ForEach(type =>
+                        type.Coding.ForEach(coding =>
                         {
-                            type.Coding.Count.ShouldBeLessThanOrEqualTo(1, $"The Appointment Participant Type should contain a maximum of 1 Coding, but found {type.Coding.Count}.");
+                            const string codingSystem = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
 
-                            type.Coding.ForEach(coding =>
+                            if (coding.System == codingSystem)
                             {
-                                const string codingSystem = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
                                 coding.System.ShouldBe(codingSystem, $"The Appointment Participant Type Coding System should be {codingSystem}, but was {coding.System}.");
-
                                 ParticipantTypeDictionary.ShouldContainKey(coding.Code, $"The Appointment Appointment Participant Type Coding Code {coding.Code} was not valid.");
                                 ParticipantTypeDictionary.ShouldContainKeyAndValue(coding.Code, coding.Display, $"The Appointment Appointment Participant Type Coding Display {coding.Code} was not valid.");
-                            });
+                            }
                         });
-                    }
+                    });
 
                     if (participant.Actor?.Reference != null)
                     {
@@ -306,20 +300,6 @@
                        
                         shouldStartWith.ShouldBeTrue($"The Appointment Participant Actor Reference should start with one of {patient}, {practitioner} or {location}, but was {participant.Actor.Reference}.");
                     }
-                });
-            });
-        }
-
-        [Then(@"the Appointment Reason should be valid")]
-        public void TheAppointmentReasonShouldBeValid()
-        {
-            Appointments.ForEach(appointment =>
-            {
-                appointment.Reason?.Coding?.ForEach(coding =>
-                {
-                    coding.System.ShouldNotBeNullOrEmpty("The Appointment Reason Coding System Should not be null.");
-                    coding.Code.ShouldNotBeNullOrEmpty("The Appointment Reason Coding Code Should not be null.");
-                    coding.Display.ShouldNotBeNullOrEmpty("The Appointment Reason Coding Display Should not be null.");
                 });
             });
         }

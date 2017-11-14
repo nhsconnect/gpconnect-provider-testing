@@ -178,11 +178,11 @@ Scenario: Amend appointment and check the returned appointment resource conforms
 		And the Appointment End should be valid
 		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
-		And the Appointment Reason should be valid
 		And the Appointment Priority should be valid
 		And the Appointment Participant Type and Actor should be valid
 		And the Appointment Identifiers should be valid
 		And the Appointment Description must be valid
+		And the Appointment Created must be valid
 		
 Scenario: Amend appointment prefer header set to representation
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

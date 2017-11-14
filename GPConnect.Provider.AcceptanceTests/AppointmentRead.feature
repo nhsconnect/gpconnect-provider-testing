@@ -144,6 +144,7 @@ Scenario Outline: Read appointment ensure response appointments contain the mana
 		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
 		And the Appointment Description must be valid
+		And the Appointment Created must be valid
 	Examples:
 		| AppointmentStatus | Header                | BodyFormat |
 		| Booked            | application/json+fhir | JSON       |

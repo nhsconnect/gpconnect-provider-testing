@@ -5,9 +5,6 @@
     using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
-    using System.Linq;
-    using System;
-    using System.Globalization;
 
     [Binding]
     public class AppointmentRetrieveSteps : Steps
@@ -21,7 +18,7 @@
             _httpContext = httpContext;
         }
 
-        [Then(@"the Appointment Status should be valid")]
+        [Then(@"the Appointment Status should be valid")] 
         public void TheAppointmentStatusShouldBeValid()
         {
             Appointments.ForEach(appointment =>
@@ -70,6 +67,15 @@
             Appointments.ForEach(appointment =>
             {
                 appointment.Description.ShouldNotBeNull("Appointment description should not be null");
+            });
+        }
+
+        [Then(@"the Appointment Created must be valid")]
+        public void TheAppointmentCreatedMustBeValid()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Created.ShouldNotBeNullOrEmpty("The Appointment Created should not be null or empty, but was.");
             });
         }
     }

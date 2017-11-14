@@ -186,6 +186,7 @@ Scenario: Book Appointment and check response contains the manadatory elements
 		And the Appointment Slots should be valid
 		And the Appointment Description must be valid
 		And the booking organization extension must be valid
+		And the Appointment Created must be valid
 
 Scenario: Book Appointment and check returned appointment resource contains meta data
 	Given I get the Patient for Patient Value "patient1"

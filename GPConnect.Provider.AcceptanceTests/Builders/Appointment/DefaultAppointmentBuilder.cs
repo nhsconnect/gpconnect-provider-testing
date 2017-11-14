@@ -29,12 +29,10 @@
                 .First();
 
             var schedule = storedBundle.Entry
-                .Where(entry =>
-                        entry.Resource.ResourceType.Equals(ResourceType.Schedule) &&
-                        entry.FullUrl == firstSlot.Schedule.Reference)
+                .Where(entry => entry.Resource.ResourceType.Equals(ResourceType.Schedule) &&
+                                entry.FullUrl == firstSlot.Schedule.Reference)
                 .Select(entry => (Schedule)entry.Resource)
                 .First();
-
 
             //Patient
             var patient = GetPatient(storedPatient);
@@ -44,24 +42,32 @@
             var practitioners = GetPractitioners(practitionerReferences);
 
             //Location
-
-            var locationReference = schedule.Actor.Reference;
+            var locationReference = schedule.Actor.First(actor => actor.Reference.Contains("Location")).Reference;
             var location = GetLocation(locationReference);
-  
+
             //Participants
-            var participants = new List<ParticipantComponent>();
-            participants.Add(patient);
+            var participants = new List<ParticipantComponent>
+            {
+                patient
+            };
             participants.AddRange(practitioners);
             participants.Add(location);
 
             //Slots
             var slot = GetSlot(firstSlot);
 
-            var slots = new List<ResourceReference>();
-            slots.Add(slot);
+            var slots = new List<ResourceReference>
+            {
+                slot
+            };
 
+            //Extensions
+            var bookingOrganizationExtension = GetBookingOrganizationExtension();
 
-
+            //Contained Resources
+            var bookingOrganization = GetBookingOrganization();
+            
+            //Initialize Appointment
             var appointment = new Appointment
             {
                 Status = AppointmentStatus.Booked,
@@ -69,26 +75,35 @@
                 End = firstSlot.End,
                 Participant = participants,
                 Slot = slots,
-              
-
+                Description = "Default Description",
+                CreatedElement = new FhirDateTime(DateTime.UtcNow)
             };
 
-            appointment.Extension.Add(new Extension("https://fhir.nhs.uk/StructureDefinition/extension-gpconnect-appointment-created-1", FhirDateTime.Now()));
-
-            var orgRef = new ResourceReference();
-            orgRef.Reference = "#1";
-            appointment.Extension.Add(new Extension("https://fhir.nhs.uk/StructureDefinition/extension-gpconnect-booking-organisation-1", orgRef));
-            Organization bookingOrg = new Organization();
-            bookingOrg.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap["ORG1"]));
-            bookingOrg.Id = "#1";
-            bookingOrg.Name = "Test Suite Validator";
-            bookingOrg.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01823938938"));
-            appointment.Contained.Add(bookingOrg);
-
-            appointment.Description = "Default Description";
-
+            //Add Extensions & Contained Resources
+            appointment.Extension.Add(bookingOrganizationExtension);
+            appointment.Contained.Add(bookingOrganization);
 
             return appointment;
+        }
+
+        private static Organization GetBookingOrganization()
+        {
+            var bookingOrganization = new Organization
+            {
+                Id = "#1",
+                Name = "Test Suite Validator"
+            };
+
+            bookingOrganization.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap["ORG1"]));
+
+            bookingOrganization.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01823938938"));
+            return bookingOrganization;
+        }
+
+        private static Extension GetBookingOrganizationExtension()
+        {
+            var organizationReference = new ResourceReference { Reference = "#1" };
+            return new Extension(FhirConst.StructureDefinitionSystems.kAppointmentBookingOrganization, organizationReference);
         }
 
         private static ParticipantComponent GetLocation(string locationReference)
@@ -102,7 +117,7 @@
                 Status = ParticipationStatus.Accepted,
                 Type = new List<CodeableConcept>
                 {
-                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PART", "Participation", "Participation")
+                    new CodeableConcept(FhirConst.ValueSetSystems.kEncounterParticipantType, "PART", "Participation", "Participation")
                 }
             };
         }
@@ -126,7 +141,7 @@
                 Status = ParticipationStatus.Accepted,
                 Type = new List<CodeableConcept>
                 {
-                    new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PART", "Participation", "Participation")
+                    new CodeableConcept(FhirConst.ValueSetSystems.kEncounterParticipantType, "PART", "Participation", "Participation")
                 }
             };
         }
@@ -143,7 +158,7 @@
                     Status = ParticipationStatus.Accepted,
                     Type = new List<CodeableConcept>
                     {
-                        new CodeableConcept("http://hl7.org/fhir/ValueSet/encounter-participant-type", "PPRF", "primary performer", "primary performer")
+                        new CodeableConcept(FhirConst.ValueSetSystems.kEncounterParticipantType, "PPRF", "primary performer", "primary performer")
                     }
                 })
                 .ToList();

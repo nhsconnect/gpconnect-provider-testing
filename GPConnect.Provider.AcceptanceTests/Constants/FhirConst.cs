@@ -65,6 +65,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kMaritalStatus = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-MaritalStatus-1";
             public const string kContactEntityType = "http://hl7.org/fhir/stu3/valueset-contactentity-type.html";
             public const string kServDelLocationRoleType = "http://hl7.org/fhir/stu3/ValueSet/v3-ServiceDeliveryLocationRoleType";
+            public const string kEncounterParticipantType = "http://hl7.org/fhir/stu3/valueset-encounter-participant-type.html";
 
         }
 
@@ -108,6 +109,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kExtCcGpcMainLoc =              "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
             public const string kOrgzPeriod =                   "http://hl7.org/fhir/StructureDefinition/organization-period";
 
+            public const string kAppointmentCancellationReason = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-AppointmentCancellationReason-1";
+            public const string kAppointmentBookingOrganization = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-BookingOrganisation-1";
         }
 
         internal static class Prefixs

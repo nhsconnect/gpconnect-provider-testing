@@ -1,6 +1,7 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
+    using System.Data.SqlTypes;
     using System.Linq;
     using Context;
     using Enum;
@@ -52,7 +53,13 @@
         [Given(@"I set the Created Appointment Type Text to ""(.*)""")]
         public void SetTheCreatedAppointmentTypeTextTo(string value)
         {
-            _fhirResourceRepository.Appointment.Type.Text = value;
+            _fhirResourceRepository.Appointment.ServiceType = new List<CodeableConcept>
+            {
+                new CodeableConcept
+                {
+                    Text = value
+                }
+            };
         }
 
         [Given(@"I add an Appointment Identifier with default System and Value ""(.*)"" to the Created Appointment")]
@@ -225,9 +232,10 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentReason = _fhirResourceRepository.Appointment.Reason?.Text;
+                var createdAppointmentReason = _fhirResourceRepository.Appointment.Reason.First().Text;
+                var returnedAppointmentReason = appointment.Reason.First().Text;
 
-                appointment.Reason?.Text.ShouldBe(createdAppointmentReason, $"The Appointment Reason should be {createdAppointmentReason} but was {appointment.Reason?.Text}");
+                returnedAppointmentReason.ShouldBe(createdAppointmentReason, $"The Appointment Reason should be {createdAppointmentReason} but was {returnedAppointmentReason}");
             });
         }
 
@@ -282,6 +290,17 @@
                 var createdAppointmentVersionId = _fhirResourceRepository.Appointment.VersionId;
 
                 appointment.VersionId.ShouldNotBe(createdAppointmentVersionId, $"The Appointment Version Id and the Created Appointment Version Id were both {appointment.VersionId}");
+            });
+        }
+
+        [Then(@"the Appointment Created should be equal to the Created Appointment Created")]
+        public void TheAppointmentCreatedShouldBeEqualToTheCreatedApppointmentCreated()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                var createdAppointmentCreated = _fhirResourceRepository.Appointment.Created;
+
+                appointment.Created.ShouldBe(createdAppointmentCreated, $"The Appointment Created should be {createdAppointmentCreated}, but was {appointment.Created}.");
             });
         }
     }
