@@ -66,12 +66,12 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
 
         internal static class StructureDefinitionSystems
         {
-            public const string kGpcSearchSet = "http://fhir.nhs.net/StructureDefinition/gpconnect-searchset-bundle-1";
+            public const string kGpcSearchSet = "https://fhir.nhs.uk/StructureDefinition/gpconnect-searchset-bundle-1";
 
-            public const string kOrganisation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Organization-1";
+            public const string kOrganisation = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Organization-1";
             public const string kOrgzPeriod = "http://hl7.org/fhir/StructureDefinition/organization-period";
-            public const string kPractitioner = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Practitioner-1";
-            public const string kLocation = "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Location-1";
+            public const string kPractitioner = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Practitioner-1";
+            public const string kLocation = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Location-1";
             public const string kPatient = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Patient-1";
 
             //EXTENSIONS
