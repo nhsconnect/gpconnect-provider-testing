@@ -51,6 +51,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             return new Organization
             {
                 Id = id,
+                Name = "GP Connect Assurance",
                 Identifier = new List<Identifier>
                 { 
                     GetODSCodeIdentifier(odsCode)
