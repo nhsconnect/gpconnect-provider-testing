@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Data;
     using Helpers;
     using Logger;
@@ -86,33 +87,33 @@
         private static ValueSet FindExtensibleValueSet(string system)
         {
 
-            var vsSources = new List<IArtifactSource>();
+            var vsSources = new List<IResourceResolver>();
 
             if (AppSettingsHelper.FhirCheckWeb && AppSettingsHelper.FhirCheckWebFirst)
             {
-                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+                vsSources.Add(new WebResolver(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
             }
 
             if (AppSettingsHelper.FhirCheckDisk)
             {
-                vsSources.Add(new FileDirectoryArtifactSource(AppSettingsHelper.FhirDirectory, true));
+                vsSources.Add(new DirectorySource(AppSettingsHelper.FhirDirectory, true));
             }
 
             if (AppSettingsHelper.FhirCheckWeb && !AppSettingsHelper.FhirCheckWebFirst)
             {
-                vsSources.Add(new WebArtifactSource(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
+                vsSources.Add(new WebResolver(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
             }
 
             //possible store resolver on the context
-            var resolver = new ArtifactResolver(new MultiArtifactSource(vsSources));
+            var resolver = new MultiResolver(vsSources);
 
-            var valueSet = resolver.GetValueSet(system);
+            var valueSet = resolver.FindValueSet(system);
             if (valueSet == null)
             {
                 Assert.Fail($"{system} ValueSet Not Found.");
             }
 
-            Log.WriteLine("{0} Concepts loaded from {1}.", valueSet.CodeSystem.Concept.Count, system);
+            //Log.WriteLine("{0} Concepts loaded from {1}.", valueSet.CodeSystem.Concept.Count, system);
 
 
             if (_fhirExtensibleValueSets == null)

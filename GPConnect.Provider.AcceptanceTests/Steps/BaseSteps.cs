@@ -46,17 +46,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private static void ValueSetContainsCodeAndDisplay(ValueSet valueSet, Coding coding)
         {
-            coding.System.ShouldBe(valueSet.CodeSystem.System);
+            //coding.System.ShouldBe(valueSet.CodeSystem.System);
 
-            valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display));
+            //valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display));
         }
 
-        public static void ValueSetContainsCode(ValueSet valueSet, Coding coding)
-        {
-            coding.System.ShouldBe(valueSet.CodeSystem.System);
+        //public static void ValueSetContainsCode(ValueSet valueSet, Coding coding)
+        //{
+        //    coding.System.ShouldBe(valueSet.CodeSystem.System);
 
-            valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code));
-        }
+        //    valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code));
+        //}
 
         public void CheckForValidMetaDataInResource<T>(T resource, string profileId) where T : Resource
         {

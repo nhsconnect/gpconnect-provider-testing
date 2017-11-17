@@ -63,11 +63,12 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kAddressType = "http://hl7.org/fhir/stu3/valueset-address-type.html";
             public const string kAdministrativeGender = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-AdministrativeGender-1";
             public const string kMaritalStatus = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-MaritalStatus-1";
-            public const string kContactEntityType = "http://hl7.org/fhir/stu3/valueset-contactentity-type.html";
-            public const string kServDelLocationRoleType = "http://hl7.org/fhir/stu3/ValueSet/v3-ServiceDeliveryLocationRoleType";
-            public const string kEncounterParticipantType = "http://hl7.org/fhir/stu3/valueset-encounter-participant-type.html";
+            public const string kContactEntityType = "http://hl7.org/fhir/ValueSet/contactentity-type";
+            public const string kServDelLocationRoleType = "http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType";
+            public const string kEncounterParticipantType = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
             public const string kSpineErrorOrWarningCode = "https://fhir.nhs.uk/STU3/ValueSet/Spine-ErrorOrWarningCode-1";
-
+            public const string kRelationshipStatus = "http://hl7.org/fhir/ValueSet/v2-0131";
+            public const string kLanguage = "http://hl7.org/fhir/ValueSet/languages";
         }
 
         internal static class StructureDefinitionSystems

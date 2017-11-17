@@ -16,7 +16,10 @@ using TechTalk.SpecFlow;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using Hl7.Fhir.Model;
+    using Hl7.Fhir.Serialization;
     using Repository;
+    using Shouldly;
     using Steps = TechTalk.SpecFlow.Steps;
 
     [Binding]
@@ -111,74 +114,59 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             GlobalContext.PractionerCodeMap = PractitionerCodeMapImporter.LoadCsv(practitionerCodeMapCSV);
         }
 
-        [BeforeTestRun(Order = 2)]
-        public static void LoadFhirDefinitions()
+        private static MultiResolver _resolver => GetResolver();
+
+        private static MultiResolver GetResolver()
         {
-            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            var resolvers = new List<IResourceResolver>
             {
-                Assert.Fail("Data Directory Not Found.");
-            }
+                GetWebResolver()
+                //Add other resolvers here
+            };
 
-            var vsSources = new List<IResourceResolver>();
+            return new MultiResolver(resolvers);
+        }
 
-            if (AppSettingsHelper.FhirCheckWeb && AppSettingsHelper.FhirCheckWebFirst)
-            {
-                vsSources.Add(new WebResolver(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
-            }
+        private static WebResolver GetWebResolver()
+        {
+            return new WebResolver(GetFhirClientFactory());
+        }
 
-            if (AppSettingsHelper.FhirCheckDisk)
-            {
-                vsSources.Add(new DirectorySource(AppSettingsHelper.FhirDirectory, true));
-            }
+        [BeforeTestRun(Order = 2)]
+        public static void LoadValuesets()
+        {
+            var vs = LoadValueSet(FhirConst.ValueSetSystems.kContactEntityType);
 
-            if (AppSettingsHelper.FhirCheckWeb && !AppSettingsHelper.FhirCheckWebFirst)
-            {
-                vsSources.Add(new WebResolver(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
-            }
+            //vs.Compose.Include.ForEach(inc =>
+            //{
+            //    var codeSystem = _resolver.FindCodeSystem("http://hl7.org/fhir/contactentity-type");
 
-            var resolver = new MultiResolver(vsSources);
-            var gender = resolver.FindValueSet("http://fhir.nhs.net/ValueSet/administrative-gender-1");
-            if (gender == null)
-                Assert.Fail("Gender ValueSet Not Found.");
-            Log.WriteLine("{0} Genders Loaded.", gender.CodeSystem.Concept.Count);
-            GlobalContext.FhirGenderValueSet = gender;
+            //    //var codes = codeSystem.Concept.Select(x => x.CodeElement).ToList();
 
-            var maritalStatus = resolver.FindValueSet("https://fhir.nhs.uk/STU3/ValueSet/CareConnect-MaritalStatus-1");
-            if (maritalStatus == null)
-                Assert.Fail("MaritalStatus ValueSet Not Found.");
-            Log.WriteLine("{0} MaritalStatus Loaded.", maritalStatus.CodeSystem.Concept.Count);
-            GlobalContext.FhirMaritalStatusValueSet = maritalStatus;
+            //    //codes.AddRange(inc.Concept.Select(x => x.CodeElement).ToList());
 
-            var relationship = resolver.FindValueSet("http://hl7.org/fhir/ValueSet/v2-0131");
-            if (relationship == null)
-                Assert.Fail("Relationship ValueSet Not Found.");
-            Log.WriteLine("{0} Relationship Loaded.", relationship.CodeSystem.Concept.Count);
-            GlobalContext.FhirRelationshipValueSet = relationship;
+            //    //var a = codes;
+            //});
 
-            var humanLanguage = resolver.FindValueSet("http://hl7.org/fhir/stu3/valueset-languages.html");
-            if (humanLanguage == null)
-                Assert.Fail("HumanLanguage ValueSet Not Found.");
-            Log.WriteLine("{0} HumanLanguage Loaded.", humanLanguage.CodeSystem.Concept.Count);
-            GlobalContext.FhirHumanLanguageValueSet = humanLanguage;
+            var res = new ResourceIdentity("http://hl7.org/fhir/contactentity-type");
+            var cl = new FhirClient("http://hl7.org/fhir/");
+            var b = cl.Read<Resource>(res);
 
-            var appointmentCategory = resolver.FindValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-category-1");
-            if (appointmentCategory == null)
-                Assert.Fail("AppointmentCategory ValueSet Not Found.");
-            Log.WriteLine("{0} AppointmentCategory Loaded.", appointmentCategory.CodeSystem.Concept.Count);
-            GlobalContext.FhirAppointmentCategoryValueSet = appointmentCategory;
+            GlobalContext.FhirGenderValueSet = LoadValueSet(FhirConst.ValueSetSystems.kAdministrativeGender);
+            GlobalContext.FhirMaritalStatusValueSet = LoadValueSet(FhirConst.ValueSetSystems.kMaritalStatus);
+            GlobalContext.FhirRelationshipValueSet = LoadValueSet(FhirConst.ValueSetSystems.kRelationshipStatus);
+            GlobalContext.FhirHumanLanguageValueSet = LoadValueSet(FhirConst.ValueSetSystems.kLanguage);
+        }
 
-            var appointmentBookingMethod = resolver.FindValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1");
-            if (appointmentBookingMethod == null)
-                Assert.Fail("AppointmentBookingMethod ValueSet Not Found.");
-            Log.WriteLine("{0} AppointmentBookingMethod Loaded.", appointmentBookingMethod.CodeSystem.Concept.Count);
-            GlobalContext.FhirAppointmentBookingMethodValueSet = appointmentBookingMethod;
+        private static ValueSet LoadValueSet(string url)
+        {
+            var valueSet = _resolver.FindValueSet(url);
 
-            var appointmentContactMethod = resolver.FindValueSet("http://fhir.nhs.net/ValueSet/gpconnect-appointment-contact-method-1");
-            if (appointmentContactMethod == null)
-                Assert.Fail("AppointmentContactMethod ValueSet Not Found.");
-            Log.WriteLine("{0} AppointmentContactMethod Loaded.", appointmentContactMethod.CodeSystem.Concept.Count);
-            GlobalContext.FhirAppointmentContactMethodValueSet = appointmentContactMethod;
+            valueSet.ShouldNotBeNull($"There was no ValueSet found at {url}.");
 
+            Log.WriteLine($"{valueSet.Compose.Include.Sum(x => x.Concept.Count)} {valueSet.Name} Codes Loaded");
+
+            return valueSet;
         }
 
         [BeforeScenario(Order = 0)]
@@ -191,10 +179,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             //_objectContainer.Resolve<HttpHeaderHelper>();
             // HACK To Be Able To See What We've Loaded In The BeforeTestRun Phase
             Log.WriteLine("{0} Organisations Loaded From ODS CSV File.", GlobalContext.OdsCodeMap.Count);
-            Log.WriteLine("{0} Genders Loaded From FHIR ValueSet File.", GlobalContext.FhirGenderValueSet.CodeSystem.Concept.Count);
-            Log.WriteLine("{0} MaritalStatus Loaded From FHIR ValueSet File.", GlobalContext.FhirMaritalStatusValueSet.CodeSystem.Concept.Count);
-            Log.WriteLine("{0} Relationship Loaded From FHIR ValueSet File.", GlobalContext.FhirRelationshipValueSet.CodeSystem.Concept.Count);
-            Log.WriteLine("{0} HumanLanguage Loaded From FHIR ValueSet File.", GlobalContext.FhirHumanLanguageValueSet.CodeSystem.Concept.Count);
+            Log.WriteLine("{0} Genders Loaded From FHIR ValueSet File.", GlobalContext.FhirGenderValueSet.Compose.Include.Sum(x => x.Concept.Count));
+            Log.WriteLine("{0} MaritalStatus Loaded From FHIR ValueSet File.", GlobalContext.FhirMaritalStatusValueSet.Compose.Include.Sum(x => x.Concept.Count));
+            Log.WriteLine("{0} Relationship Loaded From FHIR ValueSet File.", GlobalContext.FhirRelationshipValueSet.Compose.Include.Sum(x => x.Concept.Count));
+            Log.WriteLine("{0} HumanLanguage Loaded From FHIR ValueSet File.", GlobalContext.FhirHumanLanguageValueSet.Compose.Include.Sum(x => x.Concept.Count));
         }
 
         [BeforeScenario(Order = 1)]
@@ -238,6 +226,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public static void SetTestRunId()
         {
             GlobalContext.TestRunId = Guid.NewGuid();
+        }
+
+        private static Func<Uri, FhirClient> GetFhirClientFactory()
+        {
+            return uri =>
+            {
+                var client = new FhirClient(uri)
+                {
+                    PreferredFormat = ResourceFormat.Json,
+                };
+
+                return client;
+            };
         }
     }
 }
