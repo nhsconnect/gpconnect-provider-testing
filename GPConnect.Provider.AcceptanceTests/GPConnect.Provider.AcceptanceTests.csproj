@@ -270,6 +270,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppointmentAmend.feature</DependentUpon>
     </Compile>
+    <Compile Include="Reporting\Report.cs" />
+    <Compile Include="Reporting\ReportingConfiguration.cs" />
     <Compile Include="Repository\FhirResourceRepository.cs" />
     <Compile Include="Repository\IFhirResourceRepository.cs" />
     <Compile Include="SearchForFreeSlots.feature.cs">
@@ -292,6 +294,7 @@
     <Compile Include="Steps\HttpRequestConfigurationSteps.cs" />
     <Compile Include="Steps\HttpResponseSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
+    <Compile Include="Steps\ReportingSteps.cs" />
     <Compile Include="Steps\SearchForFreeSlotsSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />
     <Compile Include="Steps\PatientSteps.cs" />
