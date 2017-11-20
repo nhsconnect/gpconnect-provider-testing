@@ -119,10 +119,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Read patient 404 if patient id not sent")]
-        public virtual void ReadPatient404IfPatientIdNotSent()
+        [NUnit.Framework.DescriptionAttribute("Read patient 400 or 404 if patient id not sent")]
+        public virtual void ReadPatient400Or404IfPatientIdNotSent()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read patient 404 if patient id not sent", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read patient 400 or 404 if patient id not sent", ((string[])(null)));
 #line 31
 this.ScenarioSetup(scenarioInfo);
 #line 32
@@ -132,7 +132,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
  testRunner.When("I make the \"PatientRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 35
- testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the Response Status Code should be one of \"400, 404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 36
   testRunner.And("the response should be a OperationOutcome resource with error code \"PATIENT_NOT_F" +
                     "OUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
