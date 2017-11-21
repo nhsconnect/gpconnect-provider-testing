@@ -273,7 +273,9 @@
             {
                 practitioner.Communication.ForEach(codeableConcept =>
                 {
-                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, codeableConcept.Coding);
+                    var valueSet = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kCcHumanLanguage);
+
+                    ShouldBeSingleCodingWhichIsInValueSet(valueSet, codeableConcept.Coding);
                 });
             });
         }

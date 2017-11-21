@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using BoDi;
-using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Context;
-using GPConnect.Provider.AcceptanceTests.Helpers;
-using GPConnect.Provider.AcceptanceTests.Importers;
-using GPConnect.Provider.AcceptanceTests.Logger;
-using Hl7.Fhir.Rest;
-using Hl7.Fhir.Specification.Source;
-using NUnit.Framework;
-using TechTalk.SpecFlow;
-// ReSharper disable UnusedMember.Global
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-    using Hl7.Fhir.Model;
-    using Hl7.Fhir.Serialization;
+    using System;
+    using System.IO;
+    using BoDi;
+    using Constants;
+    using Context;
+    using Helpers;
+    using Importers;
+    using Logger;
+    using NUnit.Framework;
     using Repository;
-    using Shouldly;
+    using TechTalk.SpecFlow;
     using Steps = TechTalk.SpecFlow.Steps;
 
     [Binding]
@@ -114,60 +105,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             GlobalContext.PractionerCodeMap = PractitionerCodeMapImporter.LoadCsv(practitionerCodeMapCSV);
         }
 
-        private static MultiResolver _resolver => GetResolver();
-
-        private static MultiResolver GetResolver()
+        [BeforeTestRun(Order = 1)]
+        public static void Test()
         {
-            var resolvers = new List<IResourceResolver>
-            {
-                GetWebResolver()
-                //Add other resolvers here
-            };
+            GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kMaritalStatus);
 
-            return new MultiResolver(resolvers);
         }
 
-        private static WebResolver GetWebResolver()
-        {
-            return new WebResolver(GetFhirClientFactory());
-        }
 
-        [BeforeTestRun(Order = 2)]
-        public static void LoadValuesets()
-        {
-            var vs = LoadValueSet(FhirConst.ValueSetSystems.kContactEntityType);
 
-            //vs.Compose.Include.ForEach(inc =>
-            //{
-            //    var codeSystem = _resolver.FindCodeSystem("http://hl7.org/fhir/contactentity-type");
-
-            //    //var codes = codeSystem.Concept.Select(x => x.CodeElement).ToList();
-
-            //    //codes.AddRange(inc.Concept.Select(x => x.CodeElement).ToList());
-
-            //    //var a = codes;
-            //});
-
-            var res = new ResourceIdentity("http://hl7.org/fhir/contactentity-type");
-            var cl = new FhirClient("http://hl7.org/fhir/");
-            var b = cl.Read<Resource>(res);
-
-            GlobalContext.FhirGenderValueSet = LoadValueSet(FhirConst.ValueSetSystems.kAdministrativeGender);
-            GlobalContext.FhirMaritalStatusValueSet = LoadValueSet(FhirConst.ValueSetSystems.kMaritalStatus);
-            GlobalContext.FhirRelationshipValueSet = LoadValueSet(FhirConst.ValueSetSystems.kRelationshipStatus);
-            GlobalContext.FhirHumanLanguageValueSet = LoadValueSet(FhirConst.ValueSetSystems.kLanguage);
-        }
-
-        private static ValueSet LoadValueSet(string url)
-        {
-            var valueSet = _resolver.FindValueSet(url);
-
-            valueSet.ShouldNotBeNull($"There was no ValueSet found at {url}.");
-
-            Log.WriteLine($"{valueSet.Compose.Include.Sum(x => x.Concept.Count)} {valueSet.Name} Codes Loaded");
-
-            return valueSet;
-        }
 
         [BeforeScenario(Order = 0)]
         public void InitializeContainer()
@@ -179,10 +125,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             //_objectContainer.Resolve<HttpHeaderHelper>();
             // HACK To Be Able To See What We've Loaded In The BeforeTestRun Phase
             Log.WriteLine("{0} Organisations Loaded From ODS CSV File.", GlobalContext.OdsCodeMap.Count);
-            Log.WriteLine("{0} Genders Loaded From FHIR ValueSet File.", GlobalContext.FhirGenderValueSet.Compose.Include.Sum(x => x.Concept.Count));
-            Log.WriteLine("{0} MaritalStatus Loaded From FHIR ValueSet File.", GlobalContext.FhirMaritalStatusValueSet.Compose.Include.Sum(x => x.Concept.Count));
-            Log.WriteLine("{0} Relationship Loaded From FHIR ValueSet File.", GlobalContext.FhirRelationshipValueSet.Compose.Include.Sum(x => x.Concept.Count));
-            Log.WriteLine("{0} HumanLanguage Loaded From FHIR ValueSet File.", GlobalContext.FhirHumanLanguageValueSet.Compose.Include.Sum(x => x.Concept.Count));
         }
 
         [BeforeScenario(Order = 1)]
@@ -198,26 +140,39 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void SaveLogOfOutput()
         {
             var traceDirectory = GlobalContext.TraceDirectory;
-            if (!Directory.Exists(traceDirectory)) return;
-            var scenarioDirectory = Path.Combine(traceDirectory, ScenarioContext.Current.ScenarioInfo.Title);
-            int fileIndex = 1;
-            while (Directory.Exists(scenarioDirectory + "-" + fileIndex)) fileIndex++;
-            scenarioDirectory = scenarioDirectory + "-" + fileIndex;
-            Directory.CreateDirectory(scenarioDirectory);
-            Log.WriteLine(scenarioDirectory);
-            try
+
+            if (Directory.Exists(traceDirectory))
             {
-                _httpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
-            }
-            catch (Exception e) {
-                Log.WriteLine("Exception writing HttpContext to Output File");
-            }
-            try
-            {
-                _httpContext.SaveToFhirContextToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
-            }
-            catch (Exception e) {
-                Log.WriteLine("Exception writing FhirContext to Output File");
+                var scenarioDirectory = Path.Combine(traceDirectory, ScenarioContext.Current.ScenarioInfo.Title);
+                var fileIndex = 1;
+
+                while (Directory.Exists($"{scenarioDirectory}-{fileIndex}"))
+                {
+                    fileIndex++;
+                }
+
+                scenarioDirectory = $"{scenarioDirectory}-{fileIndex}";
+
+                Directory.CreateDirectory(scenarioDirectory);
+
+                Log.WriteLine(scenarioDirectory);
+
+                try
+                {
+                    _httpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
+                }
+                catch 
+                {
+                    Log.WriteLine("Exception writing HttpContext to Output File");
+                }
+                try
+                {
+                    _httpContext.SaveToFhirContextToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
+                }
+                catch
+                {
+                    Log.WriteLine("Exception writing FhirContext to Output File");
+                }
             }
         }
 
@@ -226,19 +181,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public static void SetTestRunId()
         {
             GlobalContext.TestRunId = Guid.NewGuid();
-        }
-
-        private static Func<Uri, FhirClient> GetFhirClientFactory()
-        {
-            return uri =>
-            {
-                var client = new FhirClient(uri)
-                {
-                    PreferredFormat = ResourceFormat.Json,
-                };
-
-                return client;
-            };
         }
     }
 }

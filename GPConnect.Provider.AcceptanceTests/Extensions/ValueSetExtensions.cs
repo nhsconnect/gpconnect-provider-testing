@@ -9,26 +9,26 @@
     {
         public static IEnumerable<string> WithComposeImports(this ValueSet resource)
         {
-            return resource.Compose
-                .Include
-                .SelectMany(ConceptCodes);
+            return resource.Expansion
+                .Contains
+                .Select(ConceptCodes);
         }
         
         public static IEnumerable<GpcCode> WithComposeIncludes(this ValueSet resource)
         {
-            return resource.Compose
-                .Include
-                .SelectMany(GpcCodes);
+            return resource.Expansion
+                .Contains
+                .Select(GpcCodes);
         }
 
-        private static IEnumerable<GpcCode> GpcCodes(ValueSet.ConceptSetComponent include)
+        private static GpcCode GpcCodes(ValueSet.ContainsComponent contains)
         {
-            return include.Concept.Select(concept => new GpcCode(concept.Code, concept.Display, include.System));
+            return new GpcCode(contains.Code, contains.Display, contains.System);
         }
 
-        private static IEnumerable<string> ConceptCodes(ValueSet.ConceptSetComponent include)
+        private static string ConceptCodes(ValueSet.ContainsComponent contains)
         {
-            return include.Concept.Select(concept => concept.Code);
+            return contains.Code;
         }
     }
 }

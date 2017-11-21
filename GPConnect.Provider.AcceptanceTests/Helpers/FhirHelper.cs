@@ -21,16 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             return new Identifier(system, nhsNumber);
         }
 
-        public static CodeableConcept GetRecordSectionCodeableConcept(string recordSectionCode)
-        {
-            return GetRecordSectionCodeableConcept(FhirConst.ValueSetSystems.kRecordSectionValueSet, recordSectionCode);
-        }
-
-        public static CodeableConcept GetRecordSectionCodeableConcept(string system, string recordSectionCode)
-        {
-            return new CodeableConcept(system, recordSectionCode);
-        }
-
         public static Identifier GetODSCodeIdentifier(string odsCode)
         {
             return new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, odsCode);

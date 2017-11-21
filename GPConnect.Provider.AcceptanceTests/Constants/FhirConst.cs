@@ -37,12 +37,6 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
 
         internal static class ValueSetSystems
         {
-            public const string kOrgzType = "http://hl7.org/fhir/organization-type";
-      
-            public const string kIdentifierUse = "http://hl7.org/fhir/ValueSet/identifier-use";
-            public const string kIdentifierType = "http://hl7.org/fhir/ValueSet/identifier-type";
-            public const string kSDSJobRoleName = "https://fhir.hl7.org.uk/ValueSet/CareConnect-SDSJobRoleName-1";
-            public const string kRecordSectionValueSet = "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1";
             public const string kCcGpcRegistrationType = "https://fhir.nhs.uk/ValueSet/CareConnect-RegistrationType-1";
             public const string kCcGpcRegistrationStatus = "https://fhir.nhs.uk/ValueSet/CareConnect-RegistrationStatus-1";
             public const string kCcEthnicCategory = "https://fhir.nhs.uk/ValueSet/CareConnect-EthnicCategory-1";

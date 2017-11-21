@@ -5,11 +5,11 @@
     using System.Linq;
     using Data;
     using Helpers;
-    using Logger;
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Rest;
     using Hl7.Fhir.Specification.Source;
-    using NUnit.Framework;
+    using Hl7.Fhir.Specification.Terminology;
+    using Shouldly;
 
     public static class GlobalContext
     {
@@ -18,10 +18,6 @@
         private static class Context
         {
             public const string kTraceDirectory = "traceDirectory";
-            public const string kFhirGenderValueSet = "fhirGenderValueSet";
-            public const string kFhirMaritalStatusValueSet = "fhirMaritalStatusValueSet";
-            public const string kFhirRelationshipValueSet = "fhirRelationshipValueSet";
-            public const string kFhirHumanLanguageValueSet = "fhirHumanLanguageValueSet";
         }
 
         public static string TraceDirectory
@@ -40,39 +36,72 @@
         public static int ScenarioIndex { get; set; }
         public static string PreviousScenarioTitle { get; set; }
 
-        // FHIR
-        public static ValueSet FhirGenderValueSet
-        {
-            get { return GlobalContextHelper.GetValue<ValueSet>(Context.kFhirGenderValueSet); }
-            set { GlobalContextHelper.SaveValue(Context.kFhirGenderValueSet, value); }
-        }
-
-        public static ValueSet FhirMaritalStatusValueSet
-        {
-            get { return GlobalContextHelper.GetValue<ValueSet>(Context.kFhirMaritalStatusValueSet); }
-            set { GlobalContextHelper.SaveValue(Context.kFhirMaritalStatusValueSet, value); }
-        }
-        
-        public static ValueSet FhirRelationshipValueSet
-        {
-            get { return GlobalContextHelper.GetValue<ValueSet>(Context.kFhirRelationshipValueSet); }
-            set { GlobalContextHelper.SaveValue(Context.kFhirRelationshipValueSet, value); }
-        }
-
-        public static ValueSet FhirHumanLanguageValueSet
-        {
-            get { return GlobalContextHelper.GetValue<ValueSet>(Context.kFhirHumanLanguageValueSet); }
-            set { GlobalContextHelper.SaveValue(Context.kFhirHumanLanguageValueSet, value); }
-        }
-
-        public static ValueSet FhirAppointmentCategoryValueSet { get; set; }
-        public static ValueSet FhirAppointmentBookingMethodValueSet { get; set; }
-        public static ValueSet FhirAppointmentContactMethodValueSet { get; set; }
-
         private static Dictionary<string, ValueSet> _fhirExtensibleValueSets { get; set; }
         public static Dictionary<string, string> LocationLogicalIdentifierMap { get; set; }
 
-        public static ValueSet GetExtensibleValueSet(string system)
+        private static MultiResolver _resolver => GetResolver();
+
+        private static MultiResolver GetResolver()
+        {
+            var resolvers = new List<IResourceResolver>
+            {
+                GetWebResolver()
+                //Add other resolvers here
+            };
+
+            return new MultiResolver(resolvers);
+        }
+
+        private static WebResolver GetWebResolver()
+        {
+            return new WebResolver(GetFhirClientFactory());
+        }
+
+        private static ValueSet LoadValueSet(string uri)
+        {
+            var valueSet = _resolver.FindValueSet(uri);
+
+            valueSet.ShouldNotBeNull($"There was no ValueSet found at {uri}.");
+
+            ExpandValueSet(valueSet);
+
+           
+            if (_fhirExtensibleValueSets == null)
+            {
+                _fhirExtensibleValueSets = new Dictionary<string, ValueSet>();
+            }
+
+            _fhirExtensibleValueSets.Add(uri, valueSet);
+
+            return valueSet;
+        }
+
+        private static void ExpandValueSet(ValueSet valueSet)
+        {
+            var settings = new ValueSetExpanderSettings
+            {
+                ValueSetSource = new DirectorySource(AppSettingsHelper.FhirDirectory, true)
+            };
+
+            var expander = new ValueSetExpander(settings);
+
+            expander.Expand(valueSet);
+        }
+
+        private static Func<Uri, FhirClient> GetFhirClientFactory()
+        {
+            return uri =>
+            {
+                var client = new FhirClient(uri)
+                {
+                    PreferredFormat = ResourceFormat.Json,
+                };
+
+                return client;
+            };
+        }
+
+        public static ValueSet GetValueSet(string system)
         {
             var hasKey = _fhirExtensibleValueSets?.ContainsKey(system);
 
@@ -81,49 +110,7 @@
                 return _fhirExtensibleValueSets[system];
             }
 
-            return FindExtensibleValueSet(system);
-        }
-
-        private static ValueSet FindExtensibleValueSet(string system)
-        {
-
-            var vsSources = new List<IResourceResolver>();
-
-            if (AppSettingsHelper.FhirCheckWeb && AppSettingsHelper.FhirCheckWebFirst)
-            {
-                vsSources.Add(new WebResolver(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
-            }
-
-            if (AppSettingsHelper.FhirCheckDisk)
-            {
-                vsSources.Add(new DirectorySource(AppSettingsHelper.FhirDirectory, true));
-            }
-
-            if (AppSettingsHelper.FhirCheckWeb && !AppSettingsHelper.FhirCheckWebFirst)
-            {
-                vsSources.Add(new WebResolver(uri => new FhirClient(AppSettingsHelper.FhirWebDirectory)));
-            }
-
-            //possible store resolver on the context
-            var resolver = new MultiResolver(vsSources);
-
-            var valueSet = resolver.FindValueSet(system);
-            if (valueSet == null)
-            {
-                Assert.Fail($"{system} ValueSet Not Found.");
-            }
-
-            //Log.WriteLine("{0} Concepts loaded from {1}.", valueSet.CodeSystem.Concept.Count, system);
-
-
-            if (_fhirExtensibleValueSets == null)
-            {
-                _fhirExtensibleValueSets = new Dictionary<string, ValueSet>();
-            }
-
-            _fhirExtensibleValueSets.Add(system, valueSet);
-
-            return valueSet;
+            return LoadValueSet(system);
         }
     }
 }

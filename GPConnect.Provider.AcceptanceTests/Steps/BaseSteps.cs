@@ -46,17 +46,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private static void ValueSetContainsCodeAndDisplay(ValueSet valueSet, Coding coding)
         {
-            //coding.System.ShouldBe(valueSet.CodeSystem.System);
-
-            //valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display));
+            valueSet.Expansion.Contains.ShouldContain(component => component.Code.Equals(coding.Code) && component.Display.Equals(coding.Display));
         }
-
-        //public static void ValueSetContainsCode(ValueSet valueSet, Coding coding)
-        //{
-        //    coding.System.ShouldBe(valueSet.CodeSystem.System);
-
-        //    valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code));
-        //}
 
         public void CheckForValidMetaDataInResource<T>(T resource, string profileId) where T : Resource
         {
@@ -101,7 +92,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             extension.Value.ShouldBeOfType<CodeableConcept>();
             var concept = (CodeableConcept)extension.Value;
 
-            var vset = GlobalContext.GetExtensibleValueSet(vsetUri);
+            var vset = GlobalContext.GetValueSet(vsetUri);
             ShouldBeExactSingleCodingWhichIsInValueSet(vset, concept.Coding);
         }
 

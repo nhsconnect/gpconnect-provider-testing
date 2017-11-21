@@ -403,7 +403,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             if (extensions.Any())
             {
-                var codeList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
+                var codeList = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
 
                 extensions.ForEach(registrationTypeExtension =>
                 {
@@ -550,7 +550,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (patient.MaritalStatus != null)
                 {
                     patient.MaritalStatus.Coding.Count.ShouldBe(1);
-                    var vset = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes();
+                    var vset = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes();
                     ShouldBeSingleCodingWhichIsInCodeList(patient.MaritalStatus.Coding.First(), vset.ToList());
                 }
 

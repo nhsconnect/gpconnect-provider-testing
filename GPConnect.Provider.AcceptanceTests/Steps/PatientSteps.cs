@@ -96,7 +96,9 @@
                 {
                     contact.Relationship.ForEach(relationship =>
                     {
-                        ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
+                        var valueSet = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kRelationshipStatus);
+
+                        ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
                 });
             });
@@ -194,7 +196,7 @@
             patient.MaritalStatus.Coding.ShouldNotBeNull("Patient MaritalStatus coding cannot be null");
 
                 // GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeImports(), patient.MaritalStatus.Coding.First().Code.First());
-                var maritalStatusList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes().ToArray();
+                var maritalStatusList = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes().ToArray();
                 patient.MaritalStatus.Coding.ForEach(coding =>
             {
                 coding.System.ShouldNotBeNull("MaritalStatus System should not be null");
@@ -217,7 +219,10 @@
                 patient.Communication?.ForEach(communication =>
                 {
                     communication.Language.ShouldNotBeNull("The communication language element should not be null");
-                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, communication.Language.Coding);
+
+                    var valueSet = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kCcHumanLanguage);
+
+                    ShouldBeSingleCodingWhichIsInValueSet(valueSet, communication.Language.Coding);
                 });
             });
         }
@@ -314,12 +319,14 @@
                     // Contact Relationship Checks
                     contact.Relationship.ForEach(relationship =>
                     {
-                        ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
+                        var valueSet = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kRelationshipStatus);
+
+                        ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
 
                     contact.Name.ShouldBeNull();
                     contact.Name.Use.ShouldNotBeNull("Patient Name Use cannot be null");
-                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
                     contact.Name.Family.Count().ShouldBeLessThanOrEqualTo(1);
                     // Contact Name Checks
                     // Contact Telecom Checks

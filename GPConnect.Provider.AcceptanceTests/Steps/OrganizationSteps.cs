@@ -198,7 +198,7 @@
 
                 if (contactPurpose != null)
                 {
-                    var contactEntityTypes = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kContactEntityType).WithComposeImports().ToArray();
+                    var contactEntityTypes = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kContactEntityType).WithComposeImports().ToArray();
 
                     contactPurpose.Coding.ForEach(coding =>
                     {
