@@ -57,6 +57,11 @@
             return new WebResolver(GetFhirClientFactory());
         }
 
+        private static DirectorySource GetDirectorySource()
+        {
+            return new DirectorySource(AppSettingsHelper.FhirDirectory, true);
+        }
+
         private static ValueSet LoadValueSet(string uri)
         {
             var valueSet = _resolver.FindValueSet(uri);
@@ -76,11 +81,12 @@
             return valueSet;
         }
 
+
         private static void ExpandValueSet(ValueSet valueSet)
         {
             var settings = new ValueSetExpanderSettings
             {
-                ValueSetSource = new DirectorySource(AppSettingsHelper.FhirDirectory, true)
+                ValueSetSource = GetDirectorySource()
             };
 
             var expander = new ValueSetExpander(settings);

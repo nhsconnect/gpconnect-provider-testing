@@ -105,13 +105,6 @@
             GlobalContext.PractionerCodeMap = PractitionerCodeMapImporter.LoadCsv(practitionerCodeMapCSV);
         }
 
-        [BeforeTestRun(Order = 1)]
-        public static void Test()
-        {
-            GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kMaritalStatus);
-
-        }
-
 
 
 

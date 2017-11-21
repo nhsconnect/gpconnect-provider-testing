@@ -579,7 +579,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     patientIdentifier.Extension.Add(new Extension
                     {
                         Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
-                        Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerificationSys, "01", "Number present and verified")
+                        Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerification, "01", "Number present and verified")
                     });
 
                     var patientToRegister = new Patient
