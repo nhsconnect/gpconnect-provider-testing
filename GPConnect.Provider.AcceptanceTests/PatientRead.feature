@@ -33,7 +33,7 @@ Scenario: Read patient 400 or 404 if patient id not sent
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
 	Then the Response Status Code should be one of "400, 404"
-		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+		And the response should be a OperationOutcome resource
 
 Scenario Outline: Read patient using the Accept header to request response format
 	Given I get the Patient for Patient Value "patient1"
