@@ -3,8 +3,8 @@ Feature: PatientRead
 
 Scenario Outline: Read patient 404 if patient not found
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
-		And I set the GET request Id to "<id>"
+		And I set the JWT Requested Record to the NHS Number for "patient1"	
+		And I set the Read Operation logical identifier used in the request to "<id>"
 	When I make the "PatientRead" request
 	Then the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
