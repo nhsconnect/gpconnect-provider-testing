@@ -171,6 +171,6 @@ Scenario: Patient read invalid response check caching headers exist
 		And I set the GET request Id to "zzzz"
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "404"
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 		And the required cacheing headers should be present in the response
