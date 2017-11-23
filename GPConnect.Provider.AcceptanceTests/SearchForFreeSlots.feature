@@ -141,7 +141,6 @@ Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Examples:
 		| StartDate           | EndDate             |
 		| yyyy-MM-dd          | yyyy-MM-dd          |
-		| yyyy                | yyyy                |
 		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-ddTHH:mm:ss |
 		| yyyy-MM-dd          | yyyy-MM-ddTHH:mm:ss |
 		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-dd          |
