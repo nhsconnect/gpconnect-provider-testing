@@ -156,10 +156,9 @@ Scenario Outline: Searching for free slots with in-valid partial dateTime string
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 	Examples: 
-		| StartDate           | EndDate             |
-		| yyyy                | yyyy-MM-dd          |
-		| yyyy-MM-dd          | yyyy                |
-		| yyyy                | yyyy-MM             |
+		| StartDate | EndDate   |
+		| yyyy      | yyyy-MM   |
+		| yyyy-MM   | yyyy		|
 
 Scenario: Successfully search for free slots and check the slot resources returned are valid
 	Given I configure the default "SearchForFreeSlots" request
@@ -168,7 +167,6 @@ Scenario: Successfully search for free slots and check the slot resources return
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the Bundle Metadata should be valid
 		And the Slot FreeBusyType should be Free
 		And the Slot Metadata should be valid
 		And the Slot Identifiers should be valid
@@ -231,15 +229,6 @@ Scenario Outline: Successfully search for free slots using various content types
 		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON             |
 		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON             |
 		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML              |
-
-Scenario: Searching for free slots should fail due to an invalid endpoint
-	Given I configure the default "SearchForFreeSlots" request
-		And I set the JWT Requested Scope to Organization Read
-		And I set the required parameters with a time period of "3" days
-		And I set the request URL to "invalidRequestUrl"
-	When I make the "SearchForFreeSlots" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
 
 Scenario: Successfully search for free slots and check the included schedule resources returned are valid
 	Given I configure the default "SearchForFreeSlots" request
