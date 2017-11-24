@@ -42,7 +42,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kCcEthnicCategory = "https://fhir.nhs.uk/ValueSet/CareConnect-EthnicCategory-1";
             public const string kCcResidentialStatus = "https://fhir.nhs.uk/ValueSet/CareConnect-ResidentialStatus-1";
             public const string kCcTreatmentCategory = "https://fhir.nhs.uk/ValueSet/CareConnect-TreatmentCategory-1";
-            public const string kCcHumanLanguage = "https://fhir.nhs.uk/ValueSet/CareConnect-HumanLanguage-1";
+            public const string kCcHumanLanguage = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-HumanLanguage-1";
             public const string kCcLanguageAbilityMode = "https://fhir.nhs.uk/ValueSet/CareConnect-LanguageAbilityMode-1";
             public const string kCcLanguageAbilityProficiency = "https://fhir.nhs.uk/ValueSet/CareConnect-LanguageAbilityProficiency-1";
             public const string kCcReligiousAffiliation = "https://fhir.nhs.uk/ValueSet/CareConnect-ReligiousAffiliation-1";

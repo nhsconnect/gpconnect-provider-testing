@@ -247,7 +247,7 @@
                 practitioner.Name.Count.ShouldBe(1, $"There should be 1 Practitioner Name, but found {practitioner.Name}.");
                 var practionerName = practitioner.Name.First();
 
-                practionerName.Family?.Length.ShouldBe(1, "There should be 1 Family Name in the Practitioner name.");
+                practionerName.Family.ShouldNotBeNullOrEmpty("There should be 1 Family Name in the Practitioner name.");
 
                 practionerName.Use?.ShouldBeOfType<HumanName.NameUse>($"Practitioner Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
             });

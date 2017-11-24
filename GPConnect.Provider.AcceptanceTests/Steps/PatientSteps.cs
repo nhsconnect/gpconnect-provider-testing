@@ -128,9 +128,7 @@
                 patient.Name.ShouldNotBeNull("Patient name should not be null");
                 patient.Name.ForEach(name =>
                 {
-                    name.Family.Count().ShouldBe(1, "Patient Family Name cannot be null");
-                    
-                    
+                    name.Family.ShouldNotBeNullOrEmpty("Patient Family Name cannot be null");
                 });
             });
         }
