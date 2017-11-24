@@ -129,7 +129,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Schedules.ForEach(schedule =>
             {
-                CheckForValidMetaDataInResource(schedule, FhirConst.StructureDefinitionSystems.kSlot);
+                CheckForValidMetaDataInResource(schedule, FhirConst.StructureDefinitionSystems.kSchedule);
             });
         }
 
