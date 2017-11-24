@@ -476,7 +476,7 @@ Scenario: Book Appointment and remove participant status from the appointment bo
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 #Miss-leading test name - participant type coding element is not removed but nullified
 Scenario Outline: Book Appointment and remove participant type coding element from the appointment booking
@@ -490,7 +490,8 @@ Scenario Outline: Book Appointment and remove participant type coding element fr
 		And I set the Created Appointment Participant Type Coding "<CodingElement>" to null for "<Participant>" Participants
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
 		| Participant | CodingElement |
 		| Patient     | system        |

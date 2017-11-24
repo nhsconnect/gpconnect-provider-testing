@@ -257,7 +257,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                CheckForValidMetaDataInResource(appointment, "http://fhir.nhs.net/StructureDefinition/gpconnect-appointment-1");
+                CheckForValidMetaDataInResource(appointment, "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Appointment-1");
             });
         }
       
