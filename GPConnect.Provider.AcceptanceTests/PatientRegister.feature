@@ -192,6 +192,7 @@ Scenario: Register patient and check all elements conform to the gp connect prof
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
 		And the Patient Optional Elements should be valid
+		And the Patient Link should be valid and resolvable
 
 Scenario: Register patient with registration details extension
 	Given I get the next Patient to register and store it
@@ -409,7 +410,6 @@ Scenario Outline: Register patient with additional not allowed elements
 		| ElementToAdd  |
 		| Animal        |
 		| Communication |
-		| Link          |
 		| Photo         |
 		| Deceased      |
 
