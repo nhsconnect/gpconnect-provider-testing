@@ -495,9 +495,9 @@ Scenario Outline: composition contains subject referencing a patient resource in
 
 Scenario Outline: if composition contains author, the device reference can be found in the bundle
 	Given I configure the default "GpcGetCareRecord" request
-		And I add an NHS Number parameter for "patient2"		
+		And I add an NHS Number parameter for "patient1"		
 		And I add a Record Section parameter for "<Code>"
-		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "searchset"

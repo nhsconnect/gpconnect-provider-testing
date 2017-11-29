@@ -42,19 +42,26 @@
         private void TheCompositionClassShouldBeValid()
         {
             var compositionClass = _composition.Class;
-
-            if (compositionClass.Coding != null)
+            if (compositionClass == null)
             {
-                compositionClass.Coding.Count.ShouldBeLessThanOrEqualTo(1);
-                compositionClass.Coding.ForEach(coding =>
-                {
-                   // coding.System.ShouldBe("http://snomed.info/sct");
-                    coding.Code.ShouldBe("700232004");
-                    coding.Display.ShouldBe("general medical service (qualifier value)");
-                });
+                return;
             }
+            else
+            {
+                if (compositionClass.Coding != null)
+                {
+                    compositionClass.Coding.Count.ShouldBeLessThanOrEqualTo(1);
+                    compositionClass.Coding.ForEach(coding =>
+                    {
+                        // coding.System.ShouldBe("http://snomed.info/sct");
+                        coding.Code.ShouldBe("700232004");
+                        coding.Display.ShouldBe("general medical service (qualifier value)");
+                    });
+                }
 
-            compositionClass.Text?.ShouldBe("general medical service (qualifier value)");
+                compositionClass.Text?.ShouldBe("general medical service (qualifier value)");
+            }
+           
         }
 
         [Then("the Composition Type should be valid")]
@@ -109,13 +116,21 @@
         [Then("the Composition Author should be referenced in the Bundle")]
         public void TheCompositionAuthorShouldReferencedInTheBundle()
         {
-            var author = _composition.Author?[0];
 
-            if (author != null)
+            if (_composition.Author.Count.Equals(0))
             {
-                author.Reference.ShouldNotBeNull();
+                return;
+            }
+            else
+            {
+                var author = _composition.Author?[0];
 
-                _bundleSteps.ResponseBundleContainsReferenceOfType(author.Reference, ResourceType.Practitioner);
+                if (author != null)
+                {
+                    author.Reference.ShouldNotBeNull();
+
+                    _bundleSteps.ResponseBundleContainsReferenceOfType(author.Reference, ResourceType.Practitioner);
+                }
             }
         }
 

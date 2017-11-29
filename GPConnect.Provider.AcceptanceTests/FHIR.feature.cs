@@ -136,7 +136,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 26
-  testRunner.And("the CapabilityStatement FHIR Version should be \"1.0.2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the CapabilityStatement FHIR Version should be \"3.0.1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

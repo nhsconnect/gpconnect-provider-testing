@@ -90,7 +90,7 @@
         {
             var bookingOrganization = new Organization
             {
-                Id = "#1",
+                Id = "1",
                 Name = "Test Suite Validator"
             };
 

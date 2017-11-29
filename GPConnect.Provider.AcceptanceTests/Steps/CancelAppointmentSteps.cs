@@ -94,11 +94,15 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var cancellationReason = appointment.GetStringExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1");
-
-                cancellationReason.ShouldNotBeNull("The Appointment did not contain a Cancellation Reason Extension.");
-
-                cancellationReason.ShouldBe(value, $"The Cancellation Reason Extension value should be {value} but was {cancellationReason}.");
+                appointment.Extension.ForEach(extension =>
+                {
+                    if (extension.Url.ToString().Equals("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-AppointmentCancellationReason-1"))
+                        {
+                            extension.ShouldNotBeNull("The Appointment did not contain a Cancellation Reason Extension.");
+                            var result = extension.Value.ToString();
+                            result.ShouldBe(value, $"The Cancellation Reason Extension value should be {value} but was {result}.");
+                    }
+                });
             });
         }
 

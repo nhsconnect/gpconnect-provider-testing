@@ -323,7 +323,7 @@ Scenario: Book appointment and set an incorrect appointment id
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment for patient and send extra fields in the resource
 	Given I get the Patient for Patient Value "patient1"

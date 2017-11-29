@@ -23,7 +23,7 @@ Scenario: CapabilityStatement profile supported fhir version
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the CapabilityStatement FHIR Version should be "1.0.2"
+		And the CapabilityStatement FHIR Version should be "3.0.1"
 
 Scenario: CapabilityStatement profile supports the gpc.getcarerecord operation
 	Given I configure the default "MetadataRead" request
