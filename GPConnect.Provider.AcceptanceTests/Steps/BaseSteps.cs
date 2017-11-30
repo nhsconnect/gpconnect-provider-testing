@@ -32,7 +32,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             codingList.Count.ShouldBe(1);
             codingList.ForEach(coding =>
             {
-                ValueSetContainsCodeAndDisplay(valueSet, coding);
+                ValueSetContainsCode(valueSet, coding);
             });
         }
 
