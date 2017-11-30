@@ -4,6 +4,7 @@
     using System.Linq;
     using Builders.Appointment;
     using Context;
+    using Constants;
     using Enum;
     using Hl7.Fhir.Model;
     using Repository;
@@ -20,6 +21,7 @@
         private readonly SearchForFreeSlotsSteps _searchForFreeSlotsSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
+ 
 
         private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
@@ -259,7 +261,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                CheckForValidMetaDataInResource(appointment, "http://fhir.nhs.net/StructureDefinition/gpconnect-appointment-1");
+                CheckForValidMetaDataInResource(appointment, FhirConst.StructureDefinitionSystems.kAppointment);
             });
         }
       
@@ -280,15 +282,7 @@
                         participant.Type.ForEach(type =>
                         {
                             type.Coding.Count.ShouldBeLessThanOrEqualTo(1, $"The Appointment Participant Type should contain a maximum of 1 Coding, but found {type.Coding.Count}.");
-
-                            type.Coding.ForEach(coding =>
-                            {
-                                const string codingSystem = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
-                                coding.System.ShouldBe(codingSystem, $"The Appointment Participant Type Coding System should be {codingSystem}, but was {coding.System}.");
-
-                                ParticipantTypeDictionary.ShouldContainKey(coding.Code, $"The Appointment Appointment Participant Type Coding Code {coding.Code} was not valid.");
-                                ParticipantTypeDictionary.ShouldContainKeyAndValue(coding.Code, coding.Display, $"The Appointment Appointment Participant Type Coding Display {coding.Code} was not valid.");
-                            });
+   
                         });
                     }
 

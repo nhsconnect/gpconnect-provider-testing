@@ -8,6 +8,7 @@
     using static Hl7.Fhir.Model.Appointment;
     using Constants;
     using Context;
+    using static Hl7.Fhir.Model.Bundle;
 
     public class DefaultAppointmentBuilder
     {
@@ -31,10 +32,11 @@
             var schedule = storedBundle.Entry
                 .Where(entry =>
                         entry.Resource.ResourceType.Equals(ResourceType.Schedule) &&
-                        entry.FullUrl == firstSlot.Schedule.Reference)
+                        ComposeReferenceFromEntry(entry) == firstSlot.Schedule.Reference)
                 .Select(entry => (Schedule)entry.Resource)
                 .First();
-
+            
+         
 
             //Patient
             var patient = GetPatient(storedPatient);
@@ -90,6 +92,12 @@
 
             return appointment;
         }
+
+        private static string ComposeReferenceFromEntry(EntryComponent entry)
+        {
+            return $"{entry.Resource.TypeName}/{entry.Resource.Id}";
+        }
+
 
         private static ParticipantComponent GetLocation(string locationReference)
         {

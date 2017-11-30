@@ -263,52 +263,6 @@ Scenario: Book Appointment and remove all participants
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-Scenario: Book appointment containing additional extension with only value populated
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I add an Invalid Extension with Code only to the Created Appointment
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
-		And the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario: Book appointment containing additional extensions with only the system populated
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I add an Invalid Extension with Url only to the Created Appointment
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
-		And the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
-
-#This test passes but for the wrong reasons
-Scenario: Book single appointment for patient and send additional extensions with url and value populated
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I add an Invalid Extension with Url, Code and Display to the Created Appointment
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
-		And the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
-
 Scenario: Book appointment and set an incorrect appointment id
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -321,7 +275,7 @@ Scenario: Book appointment and set an incorrect appointment id
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response status code should be "422"
+		And the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Book appointment for patient and send extra fields in the resource
@@ -477,28 +431,6 @@ Scenario: Book Appointment and remove participant status from the appointment bo
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-#Miss-leading test name - participant type coding element is not removed but nullified
-Scenario Outline: Book Appointment and remove participant type coding element from the appointment booking
-		Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Participant Type Coding "<CodingElement>" to null for "<Participant>" Participants
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Participant | CodingElement |
-		| Patient     | system        |
-		| Patient     | code          |
-		| Patient     | display       |
-		| Location    | system        |
-		| Location    | code          |
-		| Location    | display       |
-
 Scenario: Book appointment and send an invalid bundle resource
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -559,6 +491,29 @@ Given I get the Patient for Patient Value "patient1"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 		And the required cacheing headers should be present in the response
+
+Scenario: Book appointment with name removed from booking organization
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I remove the booking organization name element
+	When I make the "AppointmentCreate" request
+
+
+Scenario: Book appointment with telecom removed from booking organization
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I remove the booking organization telecom element
+	When I make the "AppointmentCreate" request
 
 @ignore
 Scenario: Book appointment for temporary patient

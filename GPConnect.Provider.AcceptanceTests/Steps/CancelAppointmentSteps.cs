@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Context;
+    using Constants;
     using Enum;
     using Hl7.Fhir.Model;
     using Repository;
@@ -58,7 +59,7 @@
         [Given(@"I add an Appointment Identifier with default System and Value ""(.*)"" to the Created Appointment")]
         public void AddAnAppointmentIdentifierWithSystemAndValue(string value)
         {
-            _fhirResourceRepository.Appointment.Identifier.Add(new Identifier("http://fhir.nhs.net/Id/gpconnect-appointment-identifier", value));
+            _fhirResourceRepository.Appointment.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kAppointment, value));
         }
 
         [Given(@"I add a Participant with Reference ""(.*)"" to the Created Appointment")]

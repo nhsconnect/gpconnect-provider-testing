@@ -9,6 +9,7 @@
     using Enum;
     using Repository;
     using TechTalk.SpecFlow;
+    using Constants;
 
     [Binding]
     public class BookAppointmentSteps : BaseSteps
@@ -123,7 +124,7 @@
         {
             var identifiers = new List<Identifier>
             {
-                new Identifier("http://fhir.nhs.net/Id/gpconnect-appointment-identifier", null)
+                new Identifier(FhirConst.IdentifierSystems.kAppointment, null)
             };
 
             _fhirResourceRepository.Appointment.Identifier = identifiers;
@@ -300,9 +301,13 @@
 
                     });
                 }
-             });
-           
+            });
+
         }
-    }
+
+
+
+
+    } 
     }
 

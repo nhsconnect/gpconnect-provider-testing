@@ -33,6 +33,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kLocalPatientCode = "https://fhir.nhs.uk/Id/local-patient-identifier";
             public const string kPracSDSUserId = "https://fhir.nhs.uk/Id/sds-user-id";
             public const string kPracRoleProfile = "https://fhir.nhs.uk/Id/sds-role-profile-id";
+            public const string kAppointment = "https://fhir.nhs.uk/Id/gpconnect-appointment-identifier";
         }
 
         internal static class ValueSetSystems
@@ -67,8 +68,10 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         internal static class StructureDefinitionSystems
         {
             public const string kGpcSearchSet = "https://fhir.nhs.uk/StructureDefinition/gpconnect-searchset-bundle-1";
-
+            public const string kAppointment = "https://fhir.nhs.uk/StructureDefinition/GPConnect-Appointment-1";
             public const string kOrganisation = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Organization-1";
+
+     
             public const string kOrgzPeriod = "http://hl7.org/fhir/StructureDefinition/organization-period";
             public const string kPractitioner = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Practitioner-1";
             public const string kLocation = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Location-1";
