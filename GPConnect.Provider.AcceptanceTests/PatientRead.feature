@@ -3,8 +3,8 @@ Feature: PatientRead
 
 Scenario Outline: Read patient 404 if patient not found
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
-		And I set the GET request Id to "<id>"
+		And I set the JWT Requested Record to the NHS Number for "patient1"	
+		And I set the Read Operation logical identifier used in the request to "<id>"
 	When I make the "PatientRead" request
 	Then the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
@@ -28,12 +28,12 @@ Scenario Outline: Patient Read with valid identifier which does not exist on pro
 		| 40-9           |
 		| nd-skdm.mks--s |
 
-Scenario: Read patient 404 if patient id not sent
+Scenario: Read patient 400 or 404 if patient id not sent
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+	Then the Response Status Code should be one of "400, 404"
+		And the response should be a OperationOutcome resource
 
 Scenario Outline: Read patient using the Accept header to request response format
 	Given I get the Patient for Patient Value "patient1"
@@ -171,6 +171,6 @@ Scenario: Patient read invalid response check caching headers exist
 		And I set the GET request Id to "zzzz"
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "404"
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 		And the required cacheing headers should be present in the response

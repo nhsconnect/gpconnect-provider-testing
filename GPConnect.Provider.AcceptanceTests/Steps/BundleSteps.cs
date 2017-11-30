@@ -193,7 +193,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var customMessage = $"The {resourceType} reference from the resource was not found in the bundle by fullUrl resource element.";
 
-            _httpContext.FhirResponse.Bundle.Entry.ShouldContain(entry => reference.Equals(entry.FullUrl) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
+            var lowerReference = reference.ToLowerInvariant();
+
+            _httpContext.FhirResponse.Bundle.Entry.ShouldContain(entry => lowerReference.Equals(ComposeReferenceFromEntry(entry)) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
+        }
+
+        private static string ComposeReferenceFromEntry(EntryComponent entry)
+        {
+            return $"{entry.Resource.TypeName}/{entry.Resource.Id}".ToLowerInvariant();
         }
 
         public void ResponseBundleDoesNotContainReferenceOfType(ResourceType resourceType)

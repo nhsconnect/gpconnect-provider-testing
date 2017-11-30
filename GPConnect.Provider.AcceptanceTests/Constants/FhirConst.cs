@@ -67,6 +67,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
 
         internal static class StructureDefinitionSystems
         {
+            public const string kSlot = "https://fhir.nhs.uk/StructureDefinition/gpconnect-slot-1";
+            public const string kSchedule = "https://fhir.nhs.uk/StructureDefinition/gpconnect-schedule-1";
             public const string kGpcSearchSet = "https://fhir.nhs.uk/StructureDefinition/gpconnect-searchset-bundle-1";
             public const string kAppointment = "https://fhir.nhs.uk/StructureDefinition/GPConnect-Appointment-1";
             public const string kOrganisation = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Organization-1";
