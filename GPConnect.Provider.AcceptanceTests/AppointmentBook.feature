@@ -502,6 +502,9 @@ Scenario: Book appointment with name removed from booking organization
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the booking organization name element
 	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 
 Scenario: Book appointment with telecom removed from booking organization
@@ -514,6 +517,10 @@ Scenario: Book appointment with telecom removed from booking organization
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the booking organization telecom element
 	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
 
 @ignore
 Scenario: Book appointment for temporary patient

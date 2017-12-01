@@ -305,6 +305,28 @@
 
         }
 
+        [Given(@"I remove the booking organization telecom element")]
+        public void IRemoveTheBookingOrganizationTelecomElement()
+        {
+             _fhirResourceRepository.Appointment.Contained.ForEach(contained => 
+            {
+                Organization org = (Organization)contained;
+                org.Telecom = null;
+            });
+
+        }
+
+        [Given(@"I remove the booking organization name element")]
+        public void IRemoveTheBookingOrganizationNameElement()
+        {
+            _fhirResourceRepository.Appointment.Contained.ForEach(contained =>
+            {
+                Organization org = (Organization)contained;
+                org.Name = null;
+            });
+
+        }
+
 
 
 
