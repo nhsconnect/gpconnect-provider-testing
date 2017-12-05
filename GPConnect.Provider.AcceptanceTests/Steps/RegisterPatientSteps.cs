@@ -496,7 +496,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 //Family
                 activeUsualName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
-                activeUsualName.Family.Count().ShouldBe(1, "The returned Patient Resource should contain a single family name");
+                activeUsualName.Family.ShouldNotBeNullOrEmpty("The returned Patient Resource should contain a single family name");
                 activeUsualName.Family.ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
 
             });
