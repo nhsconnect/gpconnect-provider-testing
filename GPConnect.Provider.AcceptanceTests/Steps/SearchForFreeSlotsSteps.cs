@@ -206,7 +206,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the Bundle Metadata should be valid")]
         public void TheScheduleBundleMetadataShouldBeValid()
         {
-            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, "http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, "http://fhir.nhs.uk/StructureDefinition/gpconnect-getschedule-bundle-1");
         }
 
         [Then(@"the excluded actor ""(.*)"" should not be present in the Bundle")]

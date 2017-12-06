@@ -25,7 +25,7 @@
             public static string AppointmentCreate => BaseInteraction + "rest:create:appointment";
             public static string AppointmentSearch => BaseInteraction + "rest:search:patient_appointments";
             public static string AppointmentAmend => BaseInteraction + "rest:update:appointment";
-            public static string AppointmentCancel => BaseInteraction + "rest:update:appointment";
+            public static string AppointmentCancel => BaseInteraction + "rest:cancel:appointment";
             public static string AppointmentRead => BaseInteraction + "rest:read:appointment";
 
             public static string SlotSearch => BaseInteraction + "rest:search:slot";

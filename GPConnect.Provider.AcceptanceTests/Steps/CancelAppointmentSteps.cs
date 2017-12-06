@@ -88,7 +88,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var cancellationReason = appointment.GetStringExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1");
+                var cancellationReason = appointment.GetStringExtension(FhirConst.StructureDefinitionSystems.kAppointmentCancellationReason);
 
                 cancellationReason.ShouldNotBeNull("The Appointment did not contain a Cancellation Reason Extension.");
 
