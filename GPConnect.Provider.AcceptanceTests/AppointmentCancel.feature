@@ -264,7 +264,7 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Url "<url>" and Reason "<reason>"
+		And I set the Created Appointment to Cancelled with Reason "<reason>"
 	When I make the "AppointmentCancel" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
@@ -272,10 +272,10 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 		And the Appointment Cancellation Reason Extension should be valid for "<reason>"
 		And the Appointment Metadata should be valid
 	Examples:
-		| url                                                                                           | reason      |
-		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1 | Too busy    |
-		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1 | Car crashed |
-		| http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1 | Too tired   |
+		| reason      |
+		| Too busy    |
+		| Car crashed |
+		| Too tired   |
 
 Scenario Outline: Cancel appointment invalid cancellation extension url
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -290,8 +290,8 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 	Examples:
 		| url                                                                                                | reason   |
 		|                                                                                                    | Too busy |
-		| http://fhir.nhs.net/StructureDefinition/extension-gpINCORRECTect-appointment-cancellation-reason-1 | Too busy |
-		| http://fhir.nhs.net/StructuraeDefinition/extension-gpconnect-appointment-cancellation-reason-1-010 | Too busy |
+		| http://fhir.nhs.uk/StructureDefinition/extension-gpINCORRECTect-appointment-cancellation-reason-1 | Too busy |
+		| http://fhir.nhs.uk/StructuraeDefinition/extension-gpconnect-appointment-cancellation-reason-1-010 | Too busy |
 
 Scenario: Cancel appointment missing cancellation extension reason
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
