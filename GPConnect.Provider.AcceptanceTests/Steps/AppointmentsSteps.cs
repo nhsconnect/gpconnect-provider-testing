@@ -198,12 +198,6 @@
             _fhirResourceRepository.Appointment = new Appointment();
         }
 
-         private static Extension GetInvalidMethodExtension(string code, string display)
-        {
-            return GetCodingExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-invalid-method-0000",
-                "http://fhir.nhs.net/ValueSet/gpconnect-appointment-invalid-method-0000", code, display);
-        }
-
         private static Extension GetCodingExtension(string extensionUrl, string codingUrl, string code, string display)
         {
             var coding = new Coding
@@ -234,7 +228,7 @@
 
         private static Extension GetCancellationReasonExtension(string reason)
         {
-            return GetStringExtension("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1", reason);
+            return GetStringExtension(FhirConst.StructureDefinitionSystems.kAppointmentCancellationReason, reason);
         }
 
         [Given(@"I read the Stored Appointment")]

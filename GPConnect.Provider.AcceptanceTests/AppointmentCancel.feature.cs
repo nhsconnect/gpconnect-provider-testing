@@ -608,13 +608,10 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Cancel appointment check cancellation reason is equal to the request cancellation" +
             " reason")]
-        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellat" +
-            "ion-reason-1", "Too busy", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellat" +
-            "ion-reason-1", "Car crashed", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellat" +
-            "ion-reason-1", "Too tired", new string[0])]
-        public virtual void CancelAppointmentCheckCancellationReasonIsEqualToTheRequestCancellationReason(string url, string reason, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("Too busy", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Car crashed", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Too tired", new string[0])]
+        public virtual void CancelAppointmentCheckCancellationReasonIsEqualToTheRequestCancellationReason(string reason, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment check cancellation reason is equal to the request cancellation" +
                     " reason", exampleTags);
@@ -629,7 +626,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 266
   testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 267
-  testRunner.And(string.Format("I set the Created Appointment to Cancelled with Url \"{0}\" and Reason \"{1}\"", url, reason), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I set the Created Appointment to Cancelled with Reason \"{0}\"", reason), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 268
  testRunner.When("I make the \"AppointmentCancel\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 269
@@ -649,10 +646,10 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Cancel appointment invalid cancellation extension url")]
         [NUnit.Framework.TestCaseAttribute("", "Too busy", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/StructureDefinition/extension-gpINCORRECTect-appointment-canc" +
-            "ellation-reason-1", "Too busy", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.net/StructuraeDefinition/extension-gpconnect-appointment-cancella" +
-            "tion-reason-1-010", "Too busy", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.uk/StructureDefinition/extension-gpINCORRECTect-appointment-cance" +
+            "llation-reason-1", "Too busy", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("http://fhir.nhs.uk/StructuraeDefinition/extension-gpconnect-appointment-cancellat" +
+            "ion-reason-1-010", "Too busy", new string[0])]
         public virtual void CancelAppointmentInvalidCancellationExtensionUrl(string url, string reason, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel appointment invalid cancellation extension url", exampleTags);

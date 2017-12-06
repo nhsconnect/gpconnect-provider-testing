@@ -70,7 +70,7 @@
 
             var extension = new Extension
             {
-                Url = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-notanextension-1",
+                Url = "http://fhir.nhs.uk/StructureDefinition/extension-gpconnect-appointment-notanextension-1",
                 Value = codableConcept
             };
 
@@ -240,8 +240,7 @@
         {
             Appointments.ForEach(appointment =>
             {
-                const string cancellationReasonUrl =
-                    "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1";
+                const string cancellationReasonUrl = FhirConst.StructureDefinitionSystems.kAppointmentCancellationReason;
 
                 var appointmentCancellationReasonExtensions = appointment
                     .Extension
