@@ -208,6 +208,8 @@
             _jwtHelper.SetRequestingPractitioner(_jwtHelper.RequestingIdentityId, FhirHelper.ChangeResourceTypeString(_jwtHelper.RequestingIdentity, FhirConst.Resources.kInvalidResourceType));
         }
 
+
+       
         [Given(@"I set the JWT with missing Requesting System URL")]
         public void SetTheJwtWIthMissingRequestingSystemUrl()
         {
@@ -286,11 +288,15 @@
             _headerHelper.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
         }
 
-        [Given(@"I set the JWT requested record NHS number to config patient ""(.*)""")]
-        public void SetTheJwtRequestedRecordNhsnumberToConfigPatient(string patient)
+
+        [Given(@"I set the JWT Requesting Organization Identifier system to match the rc5 specification")]
+        public void SetJWTRequestingOrganizationToOldURL()
         {
-            _jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
-            _headerHelper.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+            var organization = FhirHelper.GetDefaultOrganization();
+            organization.Identifier[0].System = FhirConst.IdentifierSystems.kOdsOrgzCodeBackwardCom;
+
+            _jwtHelper.RequestingOrganization = organization.ToFhirJson();
         }
+              
     }
 }

@@ -11,6 +11,7 @@
     using Http;
     using Repository;
     using System;
+    using Extensions;
 
     [Binding]
     public class HttpSteps : Steps
@@ -77,7 +78,19 @@
             _httpContext.SetDefaults();
 
             _httpContext.HttpRequestConfiguration = GetHttpRequestConfiguration(interaction, _httpContext.HttpRequestConfiguration);
+  
+            _jwtHelper = GetJwtHelper(interaction, _jwtHelper);
 
+            _securitySteps.ConfigureServerCertificatesAndSsl();
+        }
+
+        [Given(@"I configure the default ""(.*)"" request with old URL")]
+        public void ConfigureRequestDefaultMetaDataRequestWithOldURL(GpConnectInteraction interaction)
+        {
+            _httpContext.SetDefaults();
+
+            _httpContext.HttpRequestConfiguration = GetHttpRequestConfiguration(interaction, _httpContext.HttpRequestConfiguration);
+            _jwtHelper.RequestedRecordUseOldUrls = true;
             _jwtHelper = GetJwtHelper(interaction, _jwtHelper);
 
             _securitySteps.ConfigureServerCertificatesAndSsl();
@@ -95,6 +108,7 @@
 
             httpRequest.MakeRequest();
         }
+
 
         [When(@"I make the ""(.*)"" request with missing Header ""(.*)""")]
         public void MakeRequestWithMissingHeader(GpConnectInteraction interaction, string headerKey)
@@ -173,6 +187,19 @@
             var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
             requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
             requestFactory.ConfigureParameterResourceWithAdditionalField(_httpContext.HttpRequestConfiguration);
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+
+            var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
+
+            httpRequest.MakeRequest();
+        }
+
+        [When(@"I make the ""(.*)"" request with depricated URLs")]
+        public void MakeRequestWithDepricatedURLs(GpConnectInteraction interaction)
+        {
+
+            _httpContext.HttpRequestConfiguration = GetRequestBody(interaction, _httpContext.HttpRequestConfiguration);
+
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
             var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
