@@ -487,8 +487,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 var activeUsualName = activeUsualNames.First();
 
                 //Given
-                activeUsualName.Given.Count().ShouldBe(storedPatientActiveUsualName.Given.Count());
-
+              
                 foreach (var given in activeUsualName.Given)
                 {
                     storedPatientActiveUsualName.Given.ShouldContain(given);
