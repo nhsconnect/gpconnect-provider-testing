@@ -33,7 +33,8 @@ Scenario Outline: Location Read with invalid resource path in URL
 	Given I configure the default "LocationRead" request
 		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
 	When I make the "LocationRead" request
-	Then the response status code should be "404"
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 	Examples:
 		| RelativePath |
 		| Locationss   |
@@ -63,12 +64,12 @@ Scenario Outline: Location Read with incorrect interaction id
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| interactionId                                                     |
+		| interactionId                                                      |
 		| urn:nhs:names:servxices:gpconnect:fhir:rest:read:location3         |
 		| urn:nhs:names:services:gpcsonnect:fhir:rest:read:locations         |
 		| urn:nhs:names:xservices:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                   |
-		| null                                                              |
+		|                                                                    |
+		| null                                                               |
 
 Scenario Outline: Location Read using the _format parameter to request response format
 	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"

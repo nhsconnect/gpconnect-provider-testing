@@ -397,12 +397,12 @@ Scenario Outline: Appointment retrieve interaction id incorrect fail
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
-		| interactionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
-		| urn:nh4s:names:se34rv4ices4:gpconnect3:fhir:re23st:seawwwwwwwww   |
+		| interactionId                                                       |
+		| urn:nhs:names:services:gpconnect:fhir:rest:search:organization      |
+		| urn:nh4s:names:se34rv4ices4:gpconnect3:fhir:re23st:seawwwwwwwww     |
 		| urn:nhs:namezzs:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                   |
-		| null                                                              |
+		|                                                                     |
+		| null                                                                |
 	
 Scenario Outline: Appointment retrieve accept header and _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

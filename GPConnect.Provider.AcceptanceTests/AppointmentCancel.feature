@@ -107,8 +107,6 @@ Scenario Outline: I perform cancel appointment and update the minutes duration
 		| PatientName |
 		| patient1    |
 
-
-
 Scenario Outline: I perform cancel appointment and update the type text
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -131,7 +129,8 @@ Scenario Outline: Cancel appointment making a request to an invalid URL
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the request URL to "<url>"
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "404"
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 	Examples:
 		| url              |
 		| appointmentqq/!  |
@@ -288,8 +287,8 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
-		| url                                                                                                | reason   |
-		|                                                                                                    | Too busy |
+		| url                                                                                               | reason   |
+		|                                                                                                   | Too busy |
 		| http://fhir.nhs.uk/StructureDefinition/extension-gpINCORRECTect-appointment-cancellation-reason-1 | Too busy |
 		| http://fhir.nhs.uk/StructuraeDefinition/extension-gpconnect-appointment-cancellation-reason-1-010 | Too busy |
 
