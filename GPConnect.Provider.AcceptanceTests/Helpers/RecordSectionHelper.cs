@@ -4,7 +4,7 @@
 
     public static class RecordSectionHelper
     {
-        private const string DefaultSystem = "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1";
+        private const string DefaultSystem = "http://fhir.nhs.uk/ValueSet/gpconnect-record-section-1";
 
         private const string InvalidSystem = "Invalid-System";
 

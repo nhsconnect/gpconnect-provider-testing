@@ -49,7 +49,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kIdentifierType = "http://hl7.org/fhir/ValueSet/identifier-type";
             public const string kAdministrativeGender = "https://fhir.hl7.org.uk/ValueSet/CareConnect-AdministrativeGender-1";
             public const string kSDSJobRoleName = "https://fhir.hl7.org.uk/ValueSet/CareConnect-SDSJobRoleName-1";
-            public const string kRecordSectionValueSet = "http://fhir.nhs.net/ValueSet/gpconnect-record-section-1";
+            public const string kRecordSectionValueSet = "http://fhir.nhs.uk/ValueSet/gpconnect-record-section-1";
             public const string kServDelLocationRoleType = "http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType";
             public const string kMaritalStatus = "https://fhir.nhs.uk/ValueSet/CareConnect-MaritalStatus-1";
             public const string kCcGpcRegistrationType = "https://fhir.nhs.uk/ValueSet/CareConnect-RegistrationType-1";
@@ -80,7 +80,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kPatient = "https://fhir.nhs.uk/StructureDefinition/CareConnect-GPC-Patient-1";
 
             //EXTENSIONS
-            public const string kExtGpcPractitioner = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-practitioner-1";
+            public const string kExtGpcPractitioner = "http://fhir.nhs.uk/StructureDefinition/extension-gpconnect-practitioner-1";
             public const string kExtCcGpcNhsNumVerification = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-NHSNumberVerificationStatus-1";
             public const string kExtCcGpcMainLoc = "https://fhir.hl7.org.uk/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
             public const string kExtCcGpcRegDetails = "https://fhir.nhs.uk/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1";
@@ -102,6 +102,9 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kCCExtCommModeOfCommunication = "modeOfCommunication";
             public const string kCCExtCommCommProficiency = "communicationProficiency";
             public const string kCCExtCommInterpreterRequired = "interpreterRequired";
+
+            public const string kAppointmentCancellationReason =
+                "https://fhir.nhs.uk/StructureDefinition/extension-gpconnect-appointment-cancellation-reason-1";
         }
 
         internal static class Prefixs
