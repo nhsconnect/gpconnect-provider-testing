@@ -150,6 +150,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void AddAnIdentifierWithValueToTheStoredPatient(string nhsNumber)
         {
             _fhirResourceRepository.Patient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber));
+            _fhirResourceRepository.Patient.Identifier[0].Extension.Add(new Extension
+            {
+                Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
+                Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerificationSys, "01", "Number present and verified")
+            });
         }
 
        
@@ -481,16 +486,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 var activeUsualNames = patient.Name.Where(IsActiveUsualName).ToList();
                 var storedPatientActiveUsualName = storedPatient.Name.Where(IsActiveUsualName).First();
+                var firstNamePatientReturned = patient.Name.Where(IsActiveUsualName).First();
 
                 activeUsualNames.Count.ShouldBe(1, $"There should be a single Active Patient Name with a Use of Usual, but found {activeUsualNames.Count}.");
-
+             
                 var activeUsualName = activeUsualNames.First();
 
                 //Given
               
-                foreach (var given in activeUsualName.Given)
+                foreach (var given in storedPatientActiveUsualName.Given)
                 {
-                    storedPatientActiveUsualName.Given.ShouldContain(given);
+                    firstNamePatientReturned.Given.ShouldContain(given);
                 }
 
                 //Family

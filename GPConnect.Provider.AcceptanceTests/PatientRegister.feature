@@ -359,16 +359,6 @@ Scenario: Register patient with multiple family names
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient containing identifier without mandatory system elements
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add an Identifier with missing System to the Stored Patient
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
 Scenario Outline: Register patient with additional valid elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
