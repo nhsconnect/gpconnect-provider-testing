@@ -64,6 +64,7 @@ Scenario Outline: Amend appointment making a request to an invalid URL
 		And I set the request URL to "<url>"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 	Examples:
 		| url                 |
 		| Appointment/!      |

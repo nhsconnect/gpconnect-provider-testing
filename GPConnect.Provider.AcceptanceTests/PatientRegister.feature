@@ -8,8 +8,8 @@ Scenario Outline: Register patient send request to incorrect URL
 		And I set the request URL to "<url>"
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 	Examples:
 		| StartDate		| url                            |
 		| 2017-05-05	| Patient/$gpc.registerpatien    |
@@ -354,16 +354,6 @@ Scenario: Register patient with multiple family names
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add the Family Name "AddedFamilyName" to the Stored Patient
 		And I add the Family Name "AddedFSecondamilyName" to the Stored Patient
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario: Register patient containing identifier without mandatory system elements
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add an Identifier with missing System to the Stored Patient
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"

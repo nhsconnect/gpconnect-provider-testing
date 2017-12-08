@@ -23,7 +23,8 @@ Scenario Outline: Book Appointment with invalid url for booking appointment
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the request URL to "<url>"
 	When I make the "AppointmentCreate" request
-	Then the response status code should be "404"
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 	Examples:
 		| url             |
 		| appointmentqq/! |
