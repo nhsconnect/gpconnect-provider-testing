@@ -82,7 +82,7 @@
             appointment.Extension.Add(new Extension("https://fhir.nhs.uk/StructureDefinition/extension-gpconnect-booking-organisation-1", orgRef));
             Organization bookingOrg = new Organization();
             bookingOrg.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap["ORG1"]));
-            bookingOrg.Id = "#1";
+            bookingOrg.Id = "1";
             bookingOrg.Name = "Test Suite Validator";
             bookingOrg.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01823938938"));
             appointment.Contained.Add(bookingOrg);
