@@ -87,7 +87,7 @@ Scenario: Register patient without date of birth element
 Scenario Outline: Register patient with an invalid NHS number
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the JWT Requested Record to the NHS Number "<nhsNumber>"
 		And I remove the Identifiers from the Stored Patient
 		And I add an Identifier with Value "<nhsNumber>" to the Stored Patient
 		And I add the Stored Patient as a parameter
