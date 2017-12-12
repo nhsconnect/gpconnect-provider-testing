@@ -35,6 +35,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I create a Patient which does not exist on PDS and store it")]
         public void CreateAPatientWhichDoesNoteExistOnPDSAndStoreIt()
         {
+            var patientIdentifier = new Identifier(FhirConst.IdentifierSystems.kNHSNumber, "9019546082");
+            patientIdentifier.Extension.Add(new Extension
+            {
+                Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
+                Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerification, "01", "Number present and verified")
+            });
+
             var returnPatient = new Patient
             {
                 Name = new List<HumanName>
@@ -42,10 +49,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     CreateUsualName("GPConnectGivenName", "GPConnectFamilyName")
                 },
                 Gender = AdministrativeGender.Other,
-                BirthDateElement = new Date("2017-05-05")
+                BirthDateElement = new Date("2017-05-05"),
+                Identifier = new List<Identifier>
+                {
+                    patientIdentifier
+                }
             };
-
-            returnPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, "9019546082"));
 
             _fhirResourceRepository.Patient = returnPatient;
         }
