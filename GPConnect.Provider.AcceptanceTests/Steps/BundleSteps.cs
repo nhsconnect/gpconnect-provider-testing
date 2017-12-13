@@ -61,7 +61,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var operationOutcome = (OperationOutcome)resource;
 
             operationOutcome.Meta.ShouldNotBeNull();
-            operationOutcome.Meta.Profile.ShouldAllBe(profile => profile.Equals("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1"));
+            //operationOutcome.Meta.Profile.ShouldAllBe(profile => profile.Equals("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1"));
 
             operationOutcome.Issue?.Count.ShouldBeGreaterThanOrEqualTo(1);
 
@@ -75,7 +75,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     var coding = issue.Details.Coding[0];
 
-                    coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
+                    //coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
                     coding.Code.ShouldNotBeNull();
                     coding.Display.ShouldNotBeNull();
 
