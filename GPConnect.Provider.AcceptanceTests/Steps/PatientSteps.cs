@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Cache;
     using Constants;
     using Context;
     using Enum;
@@ -96,7 +97,7 @@
                 {
                     contact.Relationship.ForEach(relationship =>
                     {
-                        var valueSet = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kRelationshipStatus);
+                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kRelationshipStatus);
 
                         ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
@@ -194,7 +195,7 @@
             patient.MaritalStatus.Coding.ShouldNotBeNull("Patient MaritalStatus coding cannot be null");
 
                 // GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeImports(), patient.MaritalStatus.Coding.First().Code.First());
-                var maritalStatusList = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes().ToArray();
+                var maritalStatusList = ValueSetCache.Get(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes().ToArray();
                 patient.MaritalStatus.Coding.ForEach(coding =>
             {
                 coding.System.ShouldNotBeNull("MaritalStatus System should not be null");
@@ -218,7 +219,7 @@
                 {
                     communication.Language.ShouldNotBeNull("The communication language element should not be null");
 
-                    var valueSet = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kCcHumanLanguage);
+                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kCcHumanLanguage);
 
                     ShouldBeSingleCodingWhichIsInValueSet(valueSet, communication.Language.Coding);
                 });
@@ -317,7 +318,7 @@
                     // Contact Relationship Checks
                     contact.Relationship.ForEach(relationship =>
                     {
-                        var valueSet = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kRelationshipStatus);
+                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kRelationshipStatus);
 
                         ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
