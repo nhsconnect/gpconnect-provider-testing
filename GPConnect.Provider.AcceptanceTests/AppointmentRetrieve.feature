@@ -27,6 +27,23 @@ Scenario Outline: Appointment retrieve success valid id where single appointment
 		| patient2 |
 		| patient3 |
 
+Scenario Outline: Appointment retrieve appointments returned must be in the future
+	Given I create an Appointment for Patient "<patient>" and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "<patient>"
+		And I store the Patient
+	Given I configure the default "AppointmentSearch" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+	When I make the "AppointmentSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Bundle should contain a minimum of "1" Appointments
+		And the Appointments must be in the future
+	Examples:
+		| patient  |
+		| patient1 |
+		| patient2 |
+		| patient3 |
+
 Scenario Outline: Appointment retrieve multiple appointment retrived
 	Given I create "<numberOfAppointments>" Appointments for Patient "<patient>" and Organization Code "ORG1"
 	Given I get the Patient for Patient Value "<patient>"
@@ -529,7 +546,7 @@ Scenario Outline: Appointment retrieve JWT patient type request invalid
 		| organization/*.read  |
 		| organization/*.write |
 		| patient/*.write      |
-
+@ignore
 Scenario: Appointment retrieve JWT patient reference must match payload patient nhs number
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request

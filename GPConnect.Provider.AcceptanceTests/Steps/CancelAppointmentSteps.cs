@@ -10,6 +10,7 @@
     using Shouldly;
     using TechTalk.SpecFlow;
     using static Hl7.Fhir.Model.Appointment;
+    using System;
 
     [Binding]
     public class CancelAppointmentSteps : BaseSteps
@@ -236,10 +237,13 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentReason = _fhirResourceRepository.Appointment.Reason.First().Text;
-                var returnedAppointmentReason = appointment.Reason.First().Text;
+                if (!_fhirResourceRepository.Appointment.Reason.Count.Equals(0))
+                {
+                    var createdAppointmentReason = _fhirResourceRepository.Appointment.Reason.First().Text;
+                    var returnedAppointmentReason = appointment.Reason.First().Text;
 
-                returnedAppointmentReason.ShouldBe(createdAppointmentReason, $"The Appointment Reason should be {createdAppointmentReason} but was {returnedAppointmentReason}");
+                    returnedAppointmentReason.ShouldBe(createdAppointmentReason, $"The Appointment Reason should be {createdAppointmentReason} but was {returnedAppointmentReason}");
+                }
             });
         }
 
@@ -303,9 +307,27 @@
             Appointments.ForEach(appointment =>
             {
                 var createdAppointmentCreated = _fhirResourceRepository.Appointment.Created;
+                DateTime dt = Convert.ToDateTime(createdAppointmentCreated);
+                DateTime dt2 = Convert.ToDateTime(appointment.Created);
+                bool dateComparison = compareDates(dt, dt2);
 
-                appointment.Created.ShouldBe(createdAppointmentCreated, $"The Appointment Created should be {createdAppointmentCreated}, but was {appointment.Created}.");
+
+                dateComparison.ShouldBe(true, $"The Appointment Created should be {createdAppointmentCreated}, but was {appointment.Created}.");
             });
+        }
+
+        private bool compareDates(DateTime storedDate, DateTime createdDate)
+        {
+            if (storedDate.Day.Equals(createdDate.Day) 
+                && storedDate.Minute.Equals(createdDate.Minute) 
+                && storedDate.Month.Equals(createdDate.Month)
+                && storedDate.Year.Equals(createdDate.Year))
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 }

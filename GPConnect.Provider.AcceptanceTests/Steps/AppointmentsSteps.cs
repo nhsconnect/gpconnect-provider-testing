@@ -11,6 +11,7 @@
     using Shouldly;
     using TechTalk.SpecFlow;
     using static Hl7.Fhir.Model.Appointment;
+    using System;
 
     [Binding]
     public class AppointmentsSteps : BaseSteps
@@ -320,6 +321,15 @@
         public void AddAQueryParameterToTheRequestUrlWithPrefixForStoredAppointmentStart(string prefix)
         {
             _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={prefix}{_fhirResourceRepository.Appointment.StartElement}";
+        }
+
+        [Then(@"the Appointments must be in the future")]
+        public void TheAppointmentMustBeInTheFuture()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Start.Value .ShouldBeGreaterThan(DateTime.UtcNow);
+            });
         }
 
         private static Dictionary<string, string> ParticipantTypeDictionary => new Dictionary<string, string>
