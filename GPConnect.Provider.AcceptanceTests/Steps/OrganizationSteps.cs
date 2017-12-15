@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Cache;
     using Constants;
     using Context;
     using Enum;
@@ -198,7 +199,8 @@
 
                 if (contactPurpose != null)
                 {
-                    var contactEntityTypes = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kContactEntityType).WithComposeImports().ToArray();
+                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kContactEntityType);
+                    var contactEntityTypes = valueSet.WithComposeImports().ToArray();
 
                     contactPurpose.Coding.ForEach(coding =>
                     {

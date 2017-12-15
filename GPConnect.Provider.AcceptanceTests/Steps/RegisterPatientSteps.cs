@@ -7,6 +7,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Cache;
     using Constants;
     using Context;
     using Hl7.Fhir.Model;
@@ -403,7 +404,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             if (extensions.Any())
             {
-                var codeList = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
+                var codeList = ValueSetCache.Get(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
 
                 extensions.ForEach(registrationTypeExtension =>
                 {
@@ -550,7 +551,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (patient.MaritalStatus != null)
                 {
                     patient.MaritalStatus.Coding.Count.ShouldBe(1);
-                    var vset = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes();
+                    var vset = ValueSetCache.Get(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes();
                     ShouldBeSingleCodingWhichIsInCodeList(patient.MaritalStatus.Coding.First(), vset.ToList());
                 }
 

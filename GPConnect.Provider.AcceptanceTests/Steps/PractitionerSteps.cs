@@ -7,6 +7,7 @@
     using Enum;
     using TechTalk.SpecFlow;
     using System.Linq;
+    using Cache;
     using Repository;
     using Constants;
 
@@ -273,7 +274,7 @@
             {
                 practitioner.Communication.ForEach(codeableConcept =>
                 {
-                    var valueSet = GlobalContext.GetValueSet(FhirConst.ValueSetSystems.kCcHumanLanguage);
+                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kCcHumanLanguage);
 
                     ShouldBeSingleCodingWhichIsInValueSet(valueSet, codeableConcept.Coding);
                 });

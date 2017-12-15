@@ -1,12 +1,11 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Models;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Context;
+    using Cache;
+    using Constants;
     using Hl7.Fhir.Model;
+    using Models;
     using Shouldly;
     using TechTalk.SpecFlow;
 
@@ -92,9 +91,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             extension.Value.ShouldBeOfType<CodeableConcept>();
             var concept = (CodeableConcept)extension.Value;
 
-            var vset = GlobalContext.GetValueSet(vsetUri);
+            var vset = ValueSetCache.Get(vsetUri);
             ShouldBeExactSingleCodingWhichIsInValueSet(vset, concept.Coding);
         }
-
     }
 }
