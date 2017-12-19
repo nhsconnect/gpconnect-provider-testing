@@ -7,6 +7,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         {
             public const string kJsonFhir = "application/json+fhir";
             public const string kXmlFhir = "application/xml+fhir";
+            public const string kJsonFhir3 = "application/fhir+json";
+            public const string kXmlFhir3 = "application/fhir+xml";
         }
 
         internal static class GetCareRecordParams
@@ -27,6 +29,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         {
             public const string kNHSNumber = "https://fhir.nhs.uk/Id/nhs-number";
             public const string kOdsOrgzCode = "https://fhir.nhs.uk/Id/ods-organization-code";
+            public const string kOdsOrgzCodeBackwardCom = "http://fhir.nhs.net/Id/ods-organization-code";
             public const string kOdsSiteCode = "https://fhir.nhs.uk/Id/ods-site-code";
             public const string kLocalOrgzCode = "https://fhir.nhs.uk/Id/local-organization-code";
             public const string kLocalLocationCode = "https://fhir.nhs.uk/Id/local-location-identifier";

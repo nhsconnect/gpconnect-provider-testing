@@ -18,6 +18,24 @@ Scenario Outline: I perform a successful Read appointment
 		| patient5    |
 		| patient6    |
 
+Scenario Outline: Read appointment responding appointment is in the future
+	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments must be in the future
+	Examples:
+		| PatientName |
+		| patient1    |
+		| patient2    |
+		| patient3    |
+		| patient4    |
+		| patient5    |
+		| patient6    |
+
 Scenario Outline: Read appointment invalid appointment id
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment

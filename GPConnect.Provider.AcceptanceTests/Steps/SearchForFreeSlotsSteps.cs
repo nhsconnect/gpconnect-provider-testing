@@ -94,7 +94,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Slots.ForEach(slot =>
             {
-                CheckForValidMetaDataInResource(slot, "http://fhir.nhs.net/StructureDefinition/gpconnect-slot-1");
+                CheckForValidMetaDataInResource(slot, "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Slot-1");
             });
         }
 
@@ -129,7 +129,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Schedules.ForEach(schedule =>
             {
-                CheckForValidMetaDataInResource(schedule, "http://fhir.nhs.net/StructureDefinition/gpconnect-schedule-1");
+                CheckForValidMetaDataInResource(schedule, "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Schedule-1");
             });
         }
 

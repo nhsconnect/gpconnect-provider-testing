@@ -318,7 +318,7 @@ Scenario: Book appointment and set an incorrect appointment id
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Id to "1111222233334444"
+		And I set the Created Appointment Id to "ZZ"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -477,29 +477,6 @@ Scenario: Book Appointment and remove participant status from the appointment bo
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
-
-#Miss-leading test name - participant type coding element is not removed but nullified
-Scenario Outline: Book Appointment and remove participant type coding element from the appointment booking
-		Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Participant Type Coding "<CodingElement>" to null for "<Participant>" Participants
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate failure
-		And the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
-	Examples:
-		| Participant | CodingElement |
-		| Patient     | system        |
-		| Patient     | code          |
-		| Patient     | display       |
-		| Location    | system        |
-		| Location    | code          |
-		| Location    | display       |
 
 Scenario: Book appointment and send an invalid bundle resource
 	Given I get the Patient for Patient Value "patient1"
