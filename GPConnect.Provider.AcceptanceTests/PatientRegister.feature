@@ -276,16 +276,6 @@ Scenario: Register patient which is not the Spine
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient with demographics which do not match spine PDS trace
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Stored Patient Demographics to not match the NHS number
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
 Scenario: Register patient with no usual name
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
