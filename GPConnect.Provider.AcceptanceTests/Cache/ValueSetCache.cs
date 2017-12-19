@@ -103,7 +103,9 @@
 
         private static DirectorySource GetDirectorySource()
         {
-            return new DirectorySource(AppSettingsHelper.FhirDirectory, true);
+            //var directory = AppSettingsHelper.FhirDirectory;
+            var directory = @"C:\Development\gpconnect-provider-testing\FHIR";
+            return new DirectorySource(directory, true);
         }
 
         private static Func<Uri, FhirClient> GetFhirClientFactory()
