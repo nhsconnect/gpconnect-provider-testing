@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using BoDi;
+    using Cache;
     using Constants;
     using Context;
     using Helpers;
@@ -174,6 +175,16 @@
         public static void SetTestRunId()
         {
             GlobalContext.TestRunId = Guid.NewGuid();
+        }
+
+        [BeforeTestRun(Order = 0)]
+        public static void PopulateCache()
+        {
+            const string system = FhirConst.ValueSetSystems.kEncounterParticipantType;
+
+            var valueSet = ValueSetCache.Get(system);
+
+
         }
     }
 }
