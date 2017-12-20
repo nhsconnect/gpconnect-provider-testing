@@ -157,7 +157,8 @@
       <DependentUpon>AppointmentCancel.feature</DependentUpon>
     </Compile>
     <Compile Include="Builders\Appointment\DefaultAppointmentBuilder.cs" />
-    <Compile Include="Cache\ValueSetCache.cs" />
+    <Compile Include="Cache\ValueSet\Resolvers\ValueSetResolvers.cs" />
+    <Compile Include="Cache\ValueSet\ValueSetCache.cs" />
     <Compile Include="Constants\SpineConst.cs" />
     <Compile Include="Constants\FhirConst.cs" />
     <Compile Include="Constants\HttpConst.cs" />
@@ -167,6 +168,8 @@
     <Compile Include="Context\HttpContext.cs" />
     <Compile Include="Context\IHttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
+    <Compile Include="Cache\ValueSet\ValueSetExpander\ConceptFilterFactory.cs" />
+    <Compile Include="Cache\ValueSet\ValueSetExpander\CustomValueSetExpander.cs" />
     <Compile Include="Data\LocationLogicalIdentifierMap.cs" />
     <Compile Include="Data\OrganizationSiteCodeMap.cs" />
     <Compile Include="Data\RegisterPatient.cs" />
@@ -457,7 +460,9 @@
       <TargetPath>libcurl.dll</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Custom\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
