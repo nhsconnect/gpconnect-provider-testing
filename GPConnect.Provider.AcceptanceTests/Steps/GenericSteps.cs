@@ -177,15 +177,6 @@
         {
             GlobalContext.TestRunId = Guid.NewGuid();
         }
-
-        [BeforeTestRun(Order = 0)]
-        public static void PopulateCache()
-        {
-            const string system = FhirConst.ValueSetSystems.kEncounterParticipantType;
-
-            var valueSet = ValueSetCache.Get(system);
-
-
-        }
+        
     }
 }

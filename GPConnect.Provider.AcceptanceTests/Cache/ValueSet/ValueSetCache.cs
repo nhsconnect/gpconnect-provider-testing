@@ -66,7 +66,7 @@
         {
             var settings = new ValueSetExpanderSettings
             {
-                ValueSetSource = ValueSetResolvers.GetResolver()
+                ValueSetSource = ValueSetResolvers.GetDirectorySource()
             };
 
             var expander = new CustomValueSetExpander(settings);

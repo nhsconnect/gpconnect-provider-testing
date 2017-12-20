@@ -31,7 +31,7 @@
 
         internal static DirectorySource GetDirectorySource()
         {
-            var directory = @"C:\Development\gpconnect-provider-testing\FHIR";
+            var directory = AppSettingsHelper.FhirDirectory;
             return new DirectorySource(directory, true);
         }
 
