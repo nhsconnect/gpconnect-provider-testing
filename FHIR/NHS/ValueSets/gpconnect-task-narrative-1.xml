@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+ 	<meta>
+		<lastUpdated value="2016-08-03T00:00:00+01:00"/>
+	</meta>
+  <url value="http://fhir.nhs.net/ValueSet/gpconnect-task-narrative-1"/>
+  <name value="GP Connect Task Narrative"/>
+  <status value="draft"/>
+  <description value="A vocabulary that identifies the Basic resource as a narrative for a GP Connect Task."/>
+  <codeSystem>
+    <system value="http://fhir.nhs.net/ValueSet/gpconnect-task-narrative-1"/>
+         <concept>
+        <code value="Task Narrative"/>
+        <display value="Task Narrative"/>
+      </concept>
+      </codeSystem>
+</ValueSet>

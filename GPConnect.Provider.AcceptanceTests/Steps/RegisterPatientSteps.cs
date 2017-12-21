@@ -531,15 +531,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     on.Use.ShouldNotBeNull();
                     on.Use.ShouldBeOfType<HumanName.NameUse>();
-                    //Only need to test names that are not USUAL
-                    if (!on.Use.Value.Equals(HumanName.NameUse.Usual))
-                    {
-                        on.Family.ToList().Count.ShouldBeLessThanOrEqualTo(1);
-                    }
-                    else
-                    {
-                        on.Family.ToList().Count.ShouldBe(1);
-                    }
                 });
 
                 //TELECOM

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+ 	<meta>
+		<lastUpdated value="2016-08-03T00:00:00+01:00"/>
+	</meta>
+  <url value="http://fhir.nhs.net/ValueSet/gpconnect-task-type-1"/>
+  <name value="GP Connect Reason Type"/>
+  <status value="draft"/>
+  <description value="A vocabulary that identifies the reason for the task that is being communicated."/>
+  <codeSystem>
+    <system value="http://fhir.nhs.net/ValueSet/gpconnect-task-type-1"/>
+         <concept>
+        <code value="1"/>
+        <display value="Information Only"/>
+      </concept>
+      <concept>
+        <code value="2"/>
+        <display value="Action Needed"/>
+      </concept>
+    </codeSystem>
+</ValueSet>
+
+  

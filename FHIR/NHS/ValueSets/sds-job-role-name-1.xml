@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+	<meta>
+		<lastUpdated value="2016-08-03T00:00:00+01:00"/>
+	</meta>
+	<extension url="http://hl7.org/fhir/StructureDefinition/valueset-oid">
+		<valueUri value="urn:oid:2.16.840.1.113883.2.1.3.2.4.17.196"/>
+	</extension>
+	<url value="http://fhir.nhs.net/ValueSet/sds-job-role-name-1"/>
+	<name value="SDS Job Role Name"/>
+	<status value="active"/>
+	<description value="A set of RBAC codes to indicate the job role associated with the person on the smart card. This code list is externally maintained."/>
+	<compose>
+		<import value="http://systems.hscic.gov.uk/rasmartcards/planning/rbacoutline"/>
+	</compose>
+</ValueSet>

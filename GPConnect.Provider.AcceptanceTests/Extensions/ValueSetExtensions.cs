@@ -18,12 +18,7 @@
         {
             return resource.Expansion
                 .Contains
-                .Select(GpcCodes);
-        }
-
-        private static GpcCode GpcCodes(ValueSet.ContainsComponent contains)
-        {
-            return new GpcCode(contains.Code, contains.Display, contains.System);
+                .Select(contains => new GpcCode(contains.Code, contains.Display, resource.Url));
         }
 
         private static string ConceptCodes(ValueSet.ContainsComponent contains)
