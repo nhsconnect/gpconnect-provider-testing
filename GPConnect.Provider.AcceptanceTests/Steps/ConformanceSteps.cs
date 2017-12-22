@@ -29,8 +29,8 @@
         {
             CapabilityStatements.ForEach(capabilityStatement =>
             {
-                capabilityStatement.Format.ShouldContain(FhirConst.ContentTypes.kJsonFhir3, $"The CapabilityStatement Format should contain {FhirConst.ContentTypes.kJsonFhir3} but did not.");
-                capabilityStatement.Format.ShouldContain(FhirConst.ContentTypes.kXmlFhir3, $"The CapabilityStatement Format should contain {FhirConst.ContentTypes.kXmlFhir3} but did not.");
+                capabilityStatement.Format.ShouldContain(ContentType.Application.FhirJson, $"The CapabilityStatement Format should contain {ContentType.Application.FhirJson} but did not.");
+                capabilityStatement.Format.ShouldContain(ContentType.Application.FhirXml, $"The CapabilityStatement Format should contain {ContentType.Application.FhirXml} but did not.");
             });
         }
 

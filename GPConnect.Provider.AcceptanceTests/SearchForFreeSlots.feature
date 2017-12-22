@@ -186,10 +186,10 @@ Scenario Outline: Successfully search for free slots using various content types
 		And the Slot Schedule should be referenced in the Bundle
 	Examples:
 		| RequestContentType    | AcceptHeaderValue     | ResponseShouldBe |
-		| application/xml+fhir  | application/xml+fhir  | XML              |
-		| application/json+fhir | application/json+fhir | JSON             |
-		| application/xml+fhir  | application/json+fhir | JSON             |
-		| application/json+fhir | application/xml+fhir  | XML              |
+		| application/fhir+xml  | application/fhir+xml  | XML              |
+		| application/fhir+json | application/fhir+json | JSON             |
+		| application/fhir+xml  | application/fhir+json | JSON             |
+		| application/fhir+json | application/fhir+xml  | XML              |
 
 Scenario Outline: Successfully search for free slots using various content types XML and JSON in format parameter
 	Given I configure the default "SearchForFreeSlots" request
@@ -204,10 +204,10 @@ Scenario Outline: Successfully search for free slots using various content types
 		And the Slot Schedule should be referenced in the Bundle
 	Examples:
 		| RequestContentType    | FormatParameterValue  | ResponseShouldBe |
-		| application/xml+fhir  | application/xml+fhir  | XML              |
-		| application/json+fhir | application/json+fhir | JSON             |
-		| application/xml+fhir  | application/json+fhir | JSON             |
-		| application/json+fhir | application/xml+fhir  | XML              |
+		| application/fhir+xml  | application/fhir+xml  | XML              |
+		| application/fhir+json | application/fhir+json | JSON             |
+		| application/fhir+xml  | application/fhir+json | JSON             |
+		| application/fhir+json | application/fhir+xml  | XML              |
 
 Scenario Outline: Successfully search for free slots using various content types XML and JSON in the Accept Header and format parameter
 	Given I configure the default "SearchForFreeSlots" request
@@ -223,14 +223,14 @@ Scenario Outline: Successfully search for free slots using various content types
 		And the Slot Schedule should be referenced in the Bundle
 	Examples:
 		| RequestContentType    | AcceptHeaderValue     | FormatParameterValue  | ResponseShouldBe |
-		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML              |
-		| application/json+fhir | application/json+fhir | application/json+fhir | JSON             |
-		| application/xml+fhir  | application/json+fhir | application/json+fhir | JSON             |
-		| application/json+fhir | application/xml+fhir  | application/xml+fhir  | XML              |
-		| application/xml+fhir  | application/json+fhir | application/xml+fhir  | XML              |
-		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON             |
-		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON             |
-		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML              |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+xml  | XML              |
+		| application/fhir+json | application/fhir+json | application/fhir+json | JSON             |
+		| application/fhir+xml  | application/fhir+json | application/fhir+json | JSON             |
+		| application/fhir+json | application/fhir+xml  | application/fhir+xml  | XML              |
+		| application/fhir+xml  | application/fhir+json | application/fhir+xml  | XML              |
+		| application/fhir+json | application/fhir+xml  | application/fhir+json | JSON             |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+json | JSON             |
+		| application/fhir+json | application/fhir+json | application/fhir+xml  | XML              |
 
 Scenario: Searching for free slots should fail due to an invalid endpoint
 	Given I configure the default "SearchForFreeSlots" request

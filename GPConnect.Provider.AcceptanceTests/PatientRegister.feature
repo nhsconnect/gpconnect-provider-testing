@@ -121,8 +121,8 @@ Scenario Outline: Register Patient and use the Accept Header to request response
 		And the Patient Demographics should match the Stored Patient
 	Examples:
 		| ContentType           | ResponseFormat |
-		| application/xml+fhir  | XML            |
-		| application/json+fhir | JSON           |
+		| application/fhir+xml  | XML            |
+		| application/fhir+json | JSON           |
 
 Scenario Outline: Register Patient and use the _format parameter to request the response format
 	Given I get the next Patient to register and store it
@@ -143,8 +143,8 @@ Scenario Outline: Register Patient and use the _format parameter to request the 
 		And the Patient Demographics should match the Stored Patient
 	Examples:
 		| ContentType           | ResponseFormat |
-		| application/xml+fhir  | XML            |
-		| application/json+fhir | JSON           |
+		| application/fhir+xml  | XML            |
+		| application/fhir+json | JSON           |
 
 Scenario Outline: Register Patient and use both the Accept header and _format parameter to request the response format
 	Given I get the next Patient to register and store it
@@ -167,14 +167,14 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 		And the Patient Demographics should match the Stored Patient
 	Examples:
 		| ContentType           | AcceptHeader          | Format                | ResponseFormat |
-		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML            |
-		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON           |
-		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML            |
-		| application/xml+fhir  | application/json+fhir | application/json+fhir | JSON           |
-		| application/json+fhir | application/xml+fhir  | application/xml+fhir  | XML            |
-		| application/json+fhir | application/json+fhir | application/json+fhir | JSON           |
-		| application/xml+fhir  | application/json+fhir | application/xml+fhir  | XML            |
-		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON           |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+xml  | XML            |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+json | JSON           |
+		| application/fhir+json | application/fhir+json | application/fhir+xml  | XML            |
+		| application/fhir+xml  | application/fhir+json | application/fhir+json | JSON           |
+		| application/fhir+json | application/fhir+xml  | application/fhir+xml  | XML            |
+		| application/fhir+json | application/fhir+json | application/fhir+json | JSON           |
+		| application/fhir+xml  | application/fhir+json | application/fhir+xml  | XML            |
+		| application/fhir+json | application/fhir+xml  | application/fhir+json | JSON           |
 
 
 Scenario: Register patient and check all elements conform to the gp connect profile

@@ -48,8 +48,8 @@ Scenario Outline: Read patient using the Accept header to request response forma
 		And the Patient Id should equal the Request Id
 	Examples:
 		| Header                | ResponseFormat |
-		| application/json+fhir | JSON           |
-		| application/xml+fhir  | XML            |
+		| application/fhir+json | JSON           |
+		| application/fhir+xml  | XML            |
 
 Scenario Outline: Read patient using the _format parameter to request response format
 	Given I get the Patient for Patient Value "patient1"
@@ -65,8 +65,8 @@ Scenario Outline: Read patient using the _format parameter to request response f
 		And the Patient Identifiers should be valid for Patient "patient1"
 	Examples:
 		| Format                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Read patient sending the Accept header and _format parameter to request response format
 	Given I get the Patient for Patient Value "patient1"
@@ -83,10 +83,10 @@ Scenario Outline: Read patient sending the Accept header and _format parameter t
 		And the Patient Identifiers should be valid for Patient "patient1"
 	Examples:
 		| Header                | Format                | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario Outline: Read patient failure due to missing header
 	Given I get the Patient for Patient Value "patient1"

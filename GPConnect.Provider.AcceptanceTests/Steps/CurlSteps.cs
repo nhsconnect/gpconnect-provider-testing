@@ -97,7 +97,7 @@
         private int HandleResponse(byte[] buf, int size, int nmemb, object extradata)
         {
             _httpContext.HttpResponse.Body = Encoding.UTF8.GetString(buf);
-            _httpContext.HttpResponse.ContentType = FhirConst.ContentTypes.kJsonFhir;
+            _httpContext.HttpResponse.ContentType = ContentType.Application.FhirJson;
             _httpContext.FhirResponse.Resource = _httpContext.HttpResponse.ParseFhirResource().Resource;
 
             return size * nmemb;

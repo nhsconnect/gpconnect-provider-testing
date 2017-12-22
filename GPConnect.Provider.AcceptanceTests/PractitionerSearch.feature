@@ -66,8 +66,8 @@ Scenario Outline: Practitioner search testing paramater validity before adding i
 		And the Practitioner nhsCommunication should be valid
 	Examples:
 		| Param1Name | Param1Value           | BodyFormat |
-		| _format    | application/json+fhir | JSON       |
-		| _format    | application/xml+fhir  | XML        |
+		| _format    | application/fhir+json | JSON       |
+		| _format    | application/fhir+xml  | XML        |
 
 Scenario Outline: Practitioner search testing paramater validity after adding identifier
 	Given I configure the default "PractitionerSearch" request
@@ -83,8 +83,8 @@ Scenario Outline: Practitioner search testing paramater validity after adding id
 		And the Practitioner nhsCommunication should be valid
 	Examples:
 		| Param1Name | Param1Value           | BodyFormat |
-		| _format    | application/json+fhir | JSON       |
-		| _format    | application/xml+fhir  | XML        |
+		| _format    | application/fhir+json | JSON       |
+		| _format    | application/fhir+xml  | XML        |
 
 
 Scenario Outline: Practitioner search add accept header to request and check for correct response format
@@ -101,8 +101,8 @@ Scenario Outline: Practitioner search add accept header to request and check for
 		And the Practitioner nhsCommunication should be valid
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Practitioner search add accept header and _format parameter to the request and check for correct response format
 	Given I configure the default "PractitionerSearch" request
@@ -119,10 +119,10 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 		And the Practitioner nhsCommunication should be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario Outline: Practitioner search failure due to missing header
 	Given I configure the default "PractitionerSearch" request

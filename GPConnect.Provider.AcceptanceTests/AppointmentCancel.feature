@@ -188,8 +188,8 @@ Scenario Outline: Cancel appointment using the _format parameter to request resp
 		And the Appointment Metadata should be valid
 	Examples:
 		| Parameter             | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Cancel appointment using the accept header to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -207,8 +207,8 @@ Scenario Outline: Cancel appointment using the accept header to request response
 		And the Appointment Metadata should be valid
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Cancel appointment using the accept header and _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -227,10 +227,10 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 		And the Appointment Metadata should be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 		
 Scenario Outline: Cancel appointment using the accept header and _format parameter and content-type to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -250,14 +250,14 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 		And the Appointment Metadata should be valid
 	Examples:
 		| ContentType           | AcceptHeader          | FormatParam           | Format |
-		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML    |
-		| application/json+fhir | application/json+fhir | application/json+fhir | JSON   |
-		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON   |
-		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML    |
-		| application/xml+fhir  | application/json+fhir | application/json+fhir | JSON   |
-		| application/json+fhir | application/xml+fhir  | application/xml+fhir  | XML    |
-		| application/xml+fhir  | application/json+fhir | application/xml+fhir  | XML    |
-		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON   |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+xml  | XML    |
+		| application/fhir+json | application/fhir+json | application/fhir+json | JSON   |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+json | JSON   |
+		| application/fhir+json | application/fhir+json | application/fhir+xml  | XML    |
+		| application/fhir+xml  | application/fhir+json | application/fhir+json | JSON   |
+		| application/fhir+json | application/fhir+xml  | application/fhir+xml  | XML    |
+		| application/fhir+xml  | application/fhir+json | application/fhir+xml  | XML    |
+		| application/fhir+json | application/fhir+xml  | application/fhir+json | JSON   |
 
 Scenario Outline: Cancel appointment check cancellation reason is equal to the request cancellation reason
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

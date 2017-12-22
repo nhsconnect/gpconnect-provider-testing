@@ -1,16 +1,7 @@
-﻿// ReSharper disable ClassNeverInstantiated.Global
-namespace GPConnect.Provider.AcceptanceTests.Constants
+﻿namespace GPConnect.Provider.AcceptanceTests.Constants
 {
     internal static class FhirConst
     {
-        internal static class ContentTypes
-        {
-            public const string kJsonFhir = "application/json+fhir";
-            public const string kXmlFhir = "application/xml+fhir";
-            public const string kJsonFhir3 = "application/fhir+json";
-            public const string kXmlFhir3 = "application/fhir+xml";
-        }
-
         internal static class GetCareRecordParams
         {
             public const string kPatientNHSNumber = "patientNHSNumber";

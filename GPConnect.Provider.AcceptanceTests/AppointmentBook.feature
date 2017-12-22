@@ -66,10 +66,10 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 		And the Appointment Status should be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario Outline: Book appointment _format parameter only but varying request content types
 	Given I get the Patient for Patient Value "patient1"
@@ -90,10 +90,10 @@ Scenario Outline: Book appointment _format parameter only but varying request co
 		And the Appointment Slots should be valid
 	Examples:
 		| ContentType           | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario Outline: Book appointment accept header to request response format
 	Given I get the Patient for Patient Value "patient1"
@@ -113,8 +113,8 @@ Scenario Outline: Book appointment accept header to request response format
 		And the Appointment Slots should be valid
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario: Book appointment prefer header set to representation
 	Given I get the Patient for Patient Value "patient1"

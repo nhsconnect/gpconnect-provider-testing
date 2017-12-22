@@ -130,8 +130,8 @@ Scenario Outline: Organization search add accept header to request and check for
 	And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 	Examples:
 		| Header                | BodyFormat | System                                       |
-		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
-		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/fhir+json | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/fhir+xml  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 
 Scenario Outline: Organization search add _format parameter to request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
@@ -146,8 +146,8 @@ Scenario Outline: Organization search add _format parameter to request and check
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 	Examples: 
 		| Format                | BodyFormat | System                                       | 
-		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code | 
-		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/fhir+json | JSON       | https://fhir.nhs.uk/Id/ods-organization-code | 
+		| application/fhir+xml  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 
 Scenario Outline: Organization search add accept header and _format parameter to the request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
@@ -163,8 +163,8 @@ Scenario Outline: Organization search add accept header and _format parameter to
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 	Examples:
 		| Header                | Format                | BodyFormat | System                                       |
-		| application/json+fhir | application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
-		| application/json+fhir | application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/fhir+json | application/fhir+json | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/fhir+json | application/fhir+xml  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 
 Scenario Outline: Organization search add _format parameter to request before the identifer and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
@@ -178,8 +178,8 @@ Scenario Outline: Organization search add _format parameter to request before th
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 	Examples:
 		| Format	            | BodyFormat | System                                       |
-		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
-		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/fhir+json | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/fhir+xml  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 		
 Scenario Outline: Organization search add _format parameter to request after the identifer and check for correct response format 
 	Given I configure the default "OrganizationSearch" request
@@ -192,8 +192,8 @@ Scenario Outline: Organization search add _format parameter to request after the
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
 		| Format                | BodyFormat | System                                       |
-		| application/json+fhir | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
-		| application/xml+fhir  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/fhir+json | JSON       | https://fhir.nhs.uk/Id/ods-organization-code |
+		| application/fhir+xml  | XML        | https://fhir.nhs.uk/Id/ods-organization-code |
 
 Scenario: CapabilityStatement profile supports the Organization search operation
 	Given I configure the default "MetadataRead" request

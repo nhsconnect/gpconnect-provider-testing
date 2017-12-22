@@ -345,8 +345,8 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Organization search add accept header to request and check for correct response f" +
             "ormat")]
-        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "JSON", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "XML", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/fhir+json", "JSON", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/fhir+xml", "XML", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
         public virtual void OrganizationSearchAddAcceptHeaderToRequestAndCheckForCorrectResponseFormat(string header, string bodyFormat, string system, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search add accept header to request and check for correct response f" +
@@ -379,8 +379,8 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Organization search add _format parameter to request and check for correct respon" +
             "se format")]
-        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "JSON", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "XML", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/fhir+json", "JSON", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/fhir+xml", "XML", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
         public virtual void OrganizationSearchAdd_FormatParameterToRequestAndCheckForCorrectResponseFormat(string format, string bodyFormat, string system, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search add _format parameter to request and check for correct respon" +
@@ -415,8 +415,8 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Organization search add accept header and _format parameter to the request and ch" +
             "eck for correct response format")]
-        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "application/json+fhir", "JSON", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "application/xml+fhir", "XML", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/fhir+json", "application/fhir+json", "JSON", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/fhir+json", "application/fhir+xml", "XML", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
         public virtual void OrganizationSearchAddAcceptHeaderAnd_FormatParameterToTheRequestAndCheckForCorrectResponseFormat(string header, string format, string bodyFormat, string system, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search add accept header and _format parameter to the request and ch" +
@@ -453,8 +453,8 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Organization search add _format parameter to request before the identifer and che" +
             "ck for correct response format")]
-        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "JSON", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "XML", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/fhir+json", "JSON", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/fhir+xml", "XML", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
         public virtual void OrganizationSearchAdd_FormatParameterToRequestBeforeTheIdentiferAndCheckForCorrectResponseFormat(string format, string bodyFormat, string system, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search add _format parameter to request before the identifer and che" +
@@ -487,8 +487,8 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Organization search add _format parameter to request after the identifer and chec" +
             "k for correct response format")]
-        [NUnit.Framework.TestCaseAttribute("application/json+fhir", "JSON", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("application/xml+fhir", "XML", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/fhir+json", "JSON", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("application/fhir+xml", "XML", "https://fhir.nhs.uk/Id/ods-organization-code", new string[0])]
         public virtual void OrganizationSearchAdd_FormatParameterToRequestAfterTheIdentiferAndCheckForCorrectResponseFormat(string format, string bodyFormat, string system, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organization search add _format parameter to request after the identifer and chec" +

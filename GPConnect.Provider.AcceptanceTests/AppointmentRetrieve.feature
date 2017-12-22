@@ -434,10 +434,10 @@ Scenario Outline: Appointment retrieve accept header and _format parameter to re
 		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| Header                | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario Outline: Appointment retrieve accept header to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -451,8 +451,8 @@ Scenario Outline: Appointment retrieve accept header to request response format
 		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Appointment retrieve _format parameter only to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -466,8 +466,8 @@ Scenario Outline: Appointment retrieve _format parameter only to request respons
 		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| Parameter             | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario: Appointment retrieve appointment which contains all mandatory resources
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

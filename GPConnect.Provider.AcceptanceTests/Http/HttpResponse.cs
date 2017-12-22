@@ -49,12 +49,12 @@
 
             switch (ContentType)
             {
-                case FhirConst.ContentTypes.kJsonFhir:
+                case Constants.ContentType.Application.FhirJson:
                     ResponseJSON = JObject.Parse(Body);
                     var jsonParser = new FhirJsonParser();
                     fhirResponse.Resource = jsonParser.Parse<Resource>(Body);
                     break;
-                case FhirConst.ContentTypes.kXmlFhir:
+                case Constants.ContentType.Application.FhirXml:
                     ResponseXML = XDocument.Parse(Body);
                     var xmlParser = new FhirXmlParser();
                     fhirResponse.Resource = xmlParser.Parse<Resource>(Body);

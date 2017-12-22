@@ -97,8 +97,8 @@ Scenario Outline: Read appointment using the _format parameter to request respon
 		And the Response Resource should be an Appointment
 	Examples:
 		| Parameter             | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Read appointment using the accept header to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -112,8 +112,8 @@ Scenario Outline: Read appointment using the accept header to request response f
 		And the Response Resource should be an Appointment
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 
 Scenario Outline: Read appointment using the _format parameter and accept header to request response format
@@ -129,10 +129,10 @@ Scenario Outline: Read appointment using the _format parameter and accept header
 		And the Response Resource should be an Appointment
 	Examples:
 		| Header                | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario: Read appointment valid request shall include id and structure definition profile
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -165,8 +165,8 @@ Scenario Outline: Read appointment ensure response appointments contain the mana
 		And the Appointment Created must be valid
 	Examples:
 		| AppointmentStatus | Header                | BodyFormat |
-		| Booked            | application/json+fhir | JSON       |
-		| Booked            | application/xml+fhir  | XML        |
+		| Booked            | application/fhir+json | JSON       |
+		| Booked            | application/fhir+xml  | XML        |
 
 Scenario: Read appointment if resource contains identifier then the value is mandatory
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

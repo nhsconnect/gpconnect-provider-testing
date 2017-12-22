@@ -420,8 +420,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     });
                 });
             }
-
-
         }
 
         private void ValidatePatientRegistrationStatus(List<Extension> extList)

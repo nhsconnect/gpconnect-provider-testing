@@ -120,8 +120,8 @@ Scenario Outline: Amend appointment using the _format parameter to request respo
 		And the Appointment Reason text should equal "customComment"
 	Examples:
 		| Format                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Amend appointment using the accept header to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -138,8 +138,8 @@ Scenario Outline: Amend appointment using the accept header to request response 
 		And the Appointment Reason text should equal "customComment"
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Amend appointment using the _format and accept parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -157,10 +157,10 @@ Scenario Outline: Amend appointment using the _format and accept parameter to re
 		And the Appointment Reason text should equal "customComment"
 	Examples:
 		| Header                | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario: Amend appointment and check the returned appointment resource conforms to the GPConnect specification
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

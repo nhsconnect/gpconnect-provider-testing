@@ -83,8 +83,8 @@ Scenario Outline: The patient search endpoint should accept the accept header
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | ResultFormat |
-		| application/xml+fhir  | XML          |
-		| application/json+fhir | JSON         |
+		| application/fhir+xml  | XML          |
+		| application/fhir+json | JSON         |
 
 Scenario Outline: The patient search endpoint should accept the format parameter
 	 Given I configure the default "PatientSearch" request
@@ -100,8 +100,8 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| FormatParam           | ResultFormat |
-		| application/xml+fhir  | XML          |
-		| application/json+fhir | JSON         |
+		| application/fhir+xml  | XML          |
+		| application/fhir+json | JSON         |
 
 Scenario Outline: The patient search endpoint should accept the format parameter after the identifier parameter
 	 Given I configure the default "PatientSearch" request
@@ -118,10 +118,10 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
-		| application/xml+fhir  | application/xml+fhir  | XML          |
-		| application/json+fhir | application/xml+fhir  | XML          |
-		| application/json+fhir | application/json+fhir | JSON         |
-		| application/xml+fhir  | application/json+fhir | JSON         |
+		| application/fhir+xml  | application/fhir+xml  | XML          |
+		| application/fhir+json | application/fhir+xml  | XML          |
+		| application/fhir+json | application/fhir+json | JSON         |
+		| application/fhir+xml  | application/fhir+json | JSON         |
 
 Scenario Outline: The patient search endpoint should accept the format parameter before the identifier parameter
 	Given I configure the default "PatientSearch" request
@@ -138,10 +138,10 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
-		| application/xml+fhir  | application/xml+fhir  | XML          |
-		| application/json+fhir | application/xml+fhir  | XML          |
-		| application/json+fhir | application/json+fhir | JSON         |
-		| application/xml+fhir  | application/json+fhir | JSON         |
+		| application/fhir+xml  | application/fhir+xml  | XML          |
+		| application/fhir+json | application/fhir+xml  | XML          |
+		| application/fhir+json | application/fhir+json | JSON         |
+		| application/fhir+xml  | application/fhir+json | JSON         |
 
 Scenario Outline: Patient search failure due to invalid interactionId
 	Given I configure the default "PatientSearch" request
@@ -185,7 +185,7 @@ Scenario: Patient resource should contain meta data elements
 Scenario Outline: Patient resource should contain NHS number identifier returned as XML
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
-		And I set the Accept header to "application/xml+fhir"
+		And I set the Accept header to "application/fhir+xml"
 		And I add a Patient Identifier parameter with default System and Value "<Patient>"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
