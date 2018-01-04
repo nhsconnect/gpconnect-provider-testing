@@ -88,6 +88,16 @@ Scenario Outline: Read patient sending the Accept header and _format parameter t
 		| application/fhir+xml  | application/fhir+json | JSON       |
 		| application/fhir+xml  | application/fhir+xml  | XML        |
 
+Scenario: Read patient should contain correct logical identifier
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I configure the default "PatientRead" request
+		And I set the JWT Requested Record to the NHS Number for "patient1"
+	When I make the "PatientRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a Patient
+		And the Patient Id should equal the Request Id
+
 Scenario Outline: Read patient failure due to missing header
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -104,15 +114,17 @@ Scenario Outline: Read patient failure due to missing header
 		| Ssp-InteractionId |
 		| Authorization     |
 
-Scenario: Read patient should contain correct logical identifier
+Scenario: Read patient if accept or format not sent then default to JSON
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
 	Then the response status code should indicate success
+		And the response body should be FHIR JSON
 		And the Response Resource should be a Patient
 		And the Patient Id should equal the Request Id
+		
 
 Scenario: Read patient response should contain an ETag header
 	Given I get the Patient for Patient Value "patient1"

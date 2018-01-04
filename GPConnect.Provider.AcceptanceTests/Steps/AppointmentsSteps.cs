@@ -323,7 +323,7 @@
             _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={prefix}{_fhirResourceRepository.Appointment.StartElement}";
         }
 
-        [Then(@"the Appointments must be in the future")]
+        [Then(@"the Appointments returned must be in the future")]
         public void TheAppointmentMustBeInTheFuture()
         {
             Appointments.ForEach(appointment =>

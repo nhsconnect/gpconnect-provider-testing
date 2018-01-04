@@ -157,7 +157,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 39
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
-  testRunner.And("the Appointments must be in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointments returned must be in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -447,30 +447,30 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve send request with lower start date boundry and start prefix " +
             "and upper end date boundary and end prefix")]
-        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2018", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2018-07", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2018-10-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05", "gt", "2044-05-01T11:08:32", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2018-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2018-10-23T11:08:32+00:00", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014", "ge", "2044", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "ge", "2044-02", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "ge", "2044-10-05", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05", "ge", "2044-05", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "ge", "2044-05-01T11:08:32", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "ge", "2044-10-23T11:08:32+00:00", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014", "gt", "2044", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2044-02", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2044-10-05", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05", "gt", "2044-05", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2044-05-01T11:08:32", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2044-10-23T11:08:32+00:00", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014", "ge", "2044", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "ge", "2044-02", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "ge", "2044-10-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05", "ge", "2044-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "ge", "2044-05-01T11:08:32", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "ge", "2044-10-23T11:08:32+00:00", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2020", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2020-07", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2020-10-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "gt", "2020-05-01T11:08:32", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2020-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2020-10-23T11:08:32+00:00", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "ge", "2020", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "ge", "2020-02", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "ge", "2020-10-05", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "ge", "2020-05", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "ge", "2020-05-01T11:08:32", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "ge", "2020-10-23T11:08:32+00:00", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "gt", "2020", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2020-02", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2020-10-05", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "gt", "2020-05", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2020-05-01T11:08:32", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2020-10-23T11:08:32+00:00", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "ge", "2020", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "ge", "2020-02", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "ge", "2020-10-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "ge", "2020-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "ge", "2020-05-01T11:08:32", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "ge", "2020-10-23T11:08:32+00:00", "lt", new string[0])]
         public virtual void AppointmentRetrieveSendRequestWithLowerStartDateBoundryAndStartPrefixAndUpperEndDateBoundaryAndEndPrefix(string startDate, string prefix, string endDate, string prefix2, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with lower start date boundry and start prefix " +
@@ -503,29 +503,29 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve send request with upper end date boundary and end prefix and" +
             " lower start date boundry and start prefix")]
-        [NUnit.Framework.TestCaseAttribute("2018", "lt", "2015", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2018-07", "lt", "2014-02", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2018-10-05", "lt", "2014-10-05", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-05-01T11:08:32", "lt", "2014-05", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2018-05", "lt", "2014-05-01T11:08:32", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2018-10-23T11:08:32+00:00", "lt", "2015-10-23T11:08:32+00:00", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044", "le", "2014", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-02", "le", "2014-02", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-10-05", "le", "2014-10-05", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-05", "le", "2014-05", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-05-01T11:08:32", "le", "2014-05-01T11:08:32", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-10-23T11:08:32+00:00", "le", "2015-10-23T11:08:32+00:00", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044", "le", "2014", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-02", "le", "2014-02", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-10-05", "le", "2014-10-05", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-05", "le", "2014-05", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-05-01T11:08:32", "le", "2014-05-01T11:08:32", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-10-23T11:08:32+00:00", "le", "2015-10-23T11:08:32+00:00", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044", "lt", "2014", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-02", "lt", "2014-02", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-10-05", "lt", "2014-10-05", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-05", "lt", "2014-05", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2044-05-01T11:08:32", "lt", "2014-05-01T11:08:32", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020", "lt", "2015", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-07", "lt", "2014-02", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-10-05", "lt", "2014-10-05", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-05-01T11:08:32", "lt", "2014-05", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-05", "lt", "2014-05-01T11:08:32", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-10-23T11:08:32+00:00", "lt", "2015-10-23T11:08:32+00:00", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020", "le", "2014", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-02", "le", "2014-02", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-10-05", "le", "2014-10-05", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-05", "le", "2014-05", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-05-01T11:08:32", "le", "2014-05-01T11:08:32", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-10-23T11:08:32+00:00", "le", "2015-10-23T11:08:32+00:00", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020", "le", "2014", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-02", "le", "2014-02", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-10-05", "le", "2014-10-05", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-05", "le", "2014-05", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-05-01T11:08:32", "le", "2014-05-01T11:08:32", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-10-23T11:08:32+00:00", "le", "2015-10-23T11:08:32+00:00", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020", "lt", "2014", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-02", "lt", "2014-02", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-10-05", "lt", "2014-10-05", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-05", "lt", "2014-05", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2020-05-01T11:08:32", "lt", "2014-05-01T11:08:32", "ge", new string[0])]
         public virtual void AppointmentRetrieveSendRequestWithUpperEndDateBoundaryAndEndPrefixAndLowerStartDateBoundryAndStartPrefix(string startDate, string prefix, string endDate, string prefix2, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with upper end date boundary and end prefix and" +
@@ -558,35 +558,35 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve send request with different upper end date boundary formats " +
             "and end prefix and different lower start date boundry formats and start prefix")]
-        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2018", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2018-07", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2018-10-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2044-05-01T11:08:32", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2018-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2018-10-23T11:08:32+00:00", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2018", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2018-07", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2018-10-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2044-05-01T11:08:32", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2018-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2018-10-23T11:08:32+00:00", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2018", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2018-07", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2018-10-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2044-05-01T11:08:32", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2018-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2018-10-23T11:08:32+00:00", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2018", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2018-07", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2018-10-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2044-05-01T11:08:32", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2018-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2018-10-23T11:08:32+00:00", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2018", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2018-07", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2018-10-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2044-05-01T11:08:32", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2018-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2020", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2020-07", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2020-10-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2020-05-01T11:08:32", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2020-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015", "gt", "2020-10-23T11:08:32+00:00", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2020", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2020-07", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2020-10-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2020-05-01T11:08:32", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2020-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2020-10-23T11:08:32+00:00", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2020", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2020-07", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2020-10-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2020-05-01T11:08:32", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2020-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2020-10-23T11:08:32+00:00", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2020", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2020-07", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2020-10-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2020-05-01T11:08:32", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2020-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2020-10-23T11:08:32+00:00", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2020", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2020-07", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2020-10-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2020-05-01T11:08:32", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2020-05", "lt", new string[0])]
         public virtual void AppointmentRetrieveSendRequestWithDifferentUpperEndDateBoundaryFormatsAndEndPrefixAndDifferentLowerStartDateBoundryFormatsAndStartPrefix(string startDate, string prefix, string endDate, string prefix2, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with different upper end date boundary formats " +
@@ -619,34 +619,34 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve send request with start date and invalid start prefix and en" +
             "d date and invalid end prefix")]
-        [NUnit.Framework.TestCaseAttribute("2015", "lf", "2018", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "lt", "2018-07", "l2", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "g1", "2018-10-05", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05", "gt", "2044-05-01T11:08:32", "g", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "tt", "2018-05", "lu", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "dd", "2018-10-23T11:08:32+00:00", "zz", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014", "gt", "2044", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2044-02", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2044-10-05", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05", "gt", "2044-05", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2044-05-01T11:08:32", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2044-10-23T11:08:32+00:00", "gt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014", "ge", "2044", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "ge", "2044-02", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "ge", "2044-10-05", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05", "ge", "2044-05", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "ge", "2044-05-01T11:08:32", "ge", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014", "lt", "2044", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "lt", "2044-02", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "lt", "2044-10-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05", "lt", "2044-05", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "lt", "2044-05-01T11:08:32", "lt", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014", "le", "2044", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-02", "le", "2044-02", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-10-05", "le", "2044-10-05", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05", "le", "2044-05", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "le", "2044-05-01T11:08:32", "le", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "le", "2044-10-23T11:08:32+00:00", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015", "lf", "2020", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "lt", "2020-07", "l2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "g1", "2020-10-05", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "gt", "2020-05-01T11:08:32", "g", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "tt", "2020-05", "lu", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "dd", "2020-10-23T11:08:32+00:00", "zz", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "gt", "2020", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "gt", "2020-02", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "gt", "2020-10-05", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "gt", "2020-05", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "gt", "2020-05-01T11:08:32", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "gt", "2020-10-23T11:08:32+00:00", "gt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "ge", "2020", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "ge", "2020-02", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "ge", "2020-10-05", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "ge", "2020-05", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "ge", "2020-05-01T11:08:32", "ge", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "lt", "2020", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "lt", "2020-02", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "lt", "2020-10-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "lt", "2020-05", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "lt", "2020-05-01T11:08:32", "lt", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014", "le", "2020", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-02", "le", "2020-02", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-10-05", "le", "2020-10-05", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05", "le", "2020-05", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2014-05-01T11:08:32", "le", "2020-05-01T11:08:32", "le", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", "le", "2020-10-23T11:08:32+00:00", "le", new string[0])]
         public virtual void AppointmentRetrieveSendRequestWithStartDateAndInvalidStartPrefixAndEndDateAndInvalidEndPrefix(string startDate, string prefix, string endDate, string prefix2, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve send request with start date and invalid start prefix and en" +
@@ -1170,6 +1170,32 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 597
   testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Appointment retrieve and response should contain valid booking orgainzation")]
+        public virtual void AppointmentRetrieveAndResponseShouldContainValidBookingOrgainzation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve and response should contain valid booking orgainzation", ((string[])(null)));
+#line 599
+this.ScenarioSetup(scenarioInfo);
+#line 600
+ testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 601
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 602
+  testRunner.And("I set the JWT Requested Record to the NHS Number of the Stored Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 603
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 604
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 605
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 606
+  testRunner.And("the Appointment booking organization extension and contained resource must be val" +
+                    "id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

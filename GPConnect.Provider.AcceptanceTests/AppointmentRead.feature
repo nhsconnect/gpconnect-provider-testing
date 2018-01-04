@@ -26,7 +26,7 @@ Scenario Outline: Read appointment responding appointment is in the future
 	When I make the "AppointmentRead" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
-		And the Appointments must be in the future
+		And the Appointments returned must be in the future
 	Examples:
 		| PatientName |
 		| patient1    |
@@ -217,6 +217,7 @@ Scenario: Read appointment if all participants must have a actor element
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
 		And the Appointment Participant Type and Actor should be valid
+		
 
 Scenario: Read appointment and response should contain an ETag header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -248,3 +249,23 @@ Scenario:Read appointment invalid response check caching headers exist
 	When I make the "AppointmentRead" request
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
+
+
+Scenario: Read appointment and response should contain valid booking orgainzation
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And I store the Appointment
+		And the Response Resource should be an Appointment
+	Given I configure the default "AppointmentRead" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment booking organization extension and contained resource must be valid

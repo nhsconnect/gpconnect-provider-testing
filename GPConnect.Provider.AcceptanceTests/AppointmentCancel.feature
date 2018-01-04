@@ -22,6 +22,25 @@ Scenario Outline: I perform a successful cancel appointment
 		| patient8    |
 		| patient9    |
 
+Scenario Outline: I perform a successful cancel appointment and all returned appointments must be in the future	
+	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+	When I make the "AppointmentCancel" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Status should be Cancelled
+		And the Appointments returned must be in the future
+	Examples:
+		| PatientName |
+		| patient1    |
+		| patient2    |
+		| patient3    |
+		| patient8    |
+		| patient9    |
+
 Scenario: I perform a successful cancel appointment and amend the comment
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
