@@ -476,4 +476,9 @@
     <!--Publish copies the untransformed App.config to deployment directory so overwrite it-->
     <Copy Condition="Exists('$(DeployedConfig)')" SourceFiles="$(IntermediateOutputPath)$(TargetFileName).config" DestinationFiles="$(DeployedConfig)" />
   </Target>
+  <PropertyGroup>
+    <SpecFlowTasksPath>..\packages\SpecFlow.2.1.0\tools\specflow.exe</SpecFlowTasksPath>
+  </PropertyGroup>
+  <Import Project="..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.tasks"  Condition="Exists('..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.tasks')" />
+  <Import Project="..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.targets" Condition="Exists('..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.targets')" />
 </Project>
