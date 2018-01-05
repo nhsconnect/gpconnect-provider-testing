@@ -142,6 +142,7 @@
       <DependentUpon>AppointmentCancel.feature</DependentUpon>
     </Compile>
     <Compile Include="Builders\Appointment\DefaultAppointmentBuilder.cs" />
+    <Compile Include="Builders\Patient\DefaultRegisterPatientBuilder.cs" />
     <Compile Include="Constants\SpineConst.cs" />
     <Compile Include="Constants\FhirConst.cs" />
     <Compile Include="Constants\HttpConst.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Helpers\FhirHelper.cs" />
     <Compile Include="Helpers\GlobalContextHelper.cs" />
     <Compile Include="Helpers\IGlobalContextHelper.cs" />
+    <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Helpers\NhsNumberHelper.cs" />
     <Compile Include="Helpers\RecordSectionHelper.cs" />
     <Compile Include="Helpers\ResourceReferenceHelper.cs" />
