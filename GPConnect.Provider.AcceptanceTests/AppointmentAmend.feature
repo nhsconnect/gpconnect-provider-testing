@@ -23,6 +23,29 @@ Scenario Outline: I perform a successful amend appointment and change the reason
 		| patient7 |
 		| patient8 |
 
+Scenario Outline: I perform a successful amend appointment and check the returned appointment resources are in the future
+	Given I create an Appointment for Patient "<Patient>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment Reason to "customComment"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Reason text should equal "customComment"
+		And the Appointments returned must be in the future
+		And the Appointment Metadata should be valid
+	Examples:
+		| Patient  |
+		| patient1 |
+		| patient2 |
+		| patient3 |
+		| patient4 |
+		| patient5 |
+		| patient6 |
+		| patient7 |
+		| patient8 |
+
 Scenario: Amend appointment and change the comment to a custom message
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment

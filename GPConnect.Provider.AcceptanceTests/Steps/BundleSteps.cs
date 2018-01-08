@@ -192,8 +192,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ResponseBundleContainsReferenceOfType(string reference, ResourceType resourceType)
         {
             var customMessage = $"The {resourceType} reference from the resource was not found in the bundle by fullUrl resource element.";
-
-            _httpContext.FhirResponse.Bundle.Entry.ShouldContain(entry => reference.Equals(entry.FullUrl) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
+            
+            _httpContext.FhirResponse.Bundle.Entry.ShouldContain(entry => !string.IsNullOrWhiteSpace(entry.FullUrl) && entry.FullUrl.Contains(reference) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
         }
 
         public void ResponseBundleDoesNotContainReferenceOfType(ResourceType resourceType)
