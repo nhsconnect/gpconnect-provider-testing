@@ -143,35 +143,6 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		| application/fhir+json | application/fhir+json | JSON         |
 		| application/fhir+xml  | application/fhir+json | JSON         |
 
-Scenario Outline: Patient search failure due to invalid interactionId
-	Given I configure the default "PatientSearch" request
-		And I add a Patient Identifier parameter with default System and Value "patient2"
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I set the Interaction Id header to "<InteractionId>"
-	When I make the "PatientSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| InteractionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		| InvalidInteractionId                                              |
-		|                                                                   |
-
-Scenario Outline: Patient search failure due to missing header
-	Given I configure the default "PatientSearch" request
-		And I add a Patient Identifier parameter with default System and Value "patient2"
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-	When I make the "PatientSearch" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
 Scenario: Patient resource should contain meta data elements
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "patient2"

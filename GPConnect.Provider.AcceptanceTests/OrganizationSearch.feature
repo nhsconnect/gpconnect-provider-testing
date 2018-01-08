@@ -88,35 +88,6 @@ Scenario Outline: Organization search failure due to invalid identifier paramete
 	Examples:
 		| Parameter     | Value                                              |
 		| Identifier    | https://fhir.nhs.uk/Id/ods-organization-code\|ORG1 |
-    
-Scenario Outline: Organization search failure due to invalid interactionId
-	Given I configure the default "OrganizationSearch" request
-		And I set the JWT Requested Record to the ODS Code for "ORG1"		
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
-		And I set the Interaction Id header to "<InteractionId>"
-	When I make the "OrganizationSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| InteractionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		| InvalidInteractionId                                              |
-		|                                                                   |
-
-Scenario Outline: Organization search failure due to missing header
-	Given I configure the default "OrganizationSearch" request
-		And I set the JWT Requested Record to the ODS Code for "ORG1"
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
-	When I make the "OrganizationSearch" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
 
 Scenario Outline: Organization search add accept header to request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request

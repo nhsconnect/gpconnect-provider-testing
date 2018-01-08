@@ -27,33 +27,6 @@ Scenario Outline: Searching for free slots with invalid date range should return
 		| 31   |
 		| -1   |
 
-Scenario Outline: Searching for free slots should fail due to invalid interactionId
-	Given I configure the default "SearchForFreeSlots" request
-		And I set the JWT Requested Scope to Organization Read
-		And I set the Interaction Id header to "<InteractionId>"
-	When I make the "SearchForFreeSlots" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| InteractionId                                                     |
-		| urn:nhs:names:zservices:gpconnect:fhir:operation:gpc.getcarerecord |
-		| InvalidInteractionId                                              |
-		|                                                                   |
-
-Scenario Outline: Searching for free slots should fail due to missing header
-	Given I configure the default "SearchForFreeSlots" request
-		And I set the JWT Requested Scope to Organization Read
-	When I make the "SearchForFreeSlots" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
 Scenario Outline: Searching for free slots should fail due to missing parameters
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read

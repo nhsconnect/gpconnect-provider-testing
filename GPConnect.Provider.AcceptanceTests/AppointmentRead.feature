@@ -51,40 +51,6 @@ Scenario Outline: Read appointment invalid appointment id
 		| 8888888888  |
 		|             |
 
-Scenario Outline: Read appointment with missing mandatory header
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	When I make the "AppointmentRead" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
-Scenario Outline: Read appointment failure with incorrect interaction id
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentRead" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Interaction Id header to "<interactionId>"
-	When I make the "AppointmentRead" request
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| interactionId                                                     |
-		| urn:nhs:naames:services:gpconnect:fhir:rest:search:organization   |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                   |
-		| null                                                              |
-
 Scenario Outline: Read appointment using the _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment

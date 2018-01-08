@@ -94,41 +94,6 @@ Scenario Outline: Amend appointment making a request to an invalid URL
 		| Appointment/#      |
 		| Appointment/update |
 
-Scenario Outline: Amend appointment failure due to missing header
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentAmend" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment Reason to "customComment"
-	When I make the "AppointmentAmend" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
-Scenario Outline: Amend appointment failure with incorrect interaction id
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentAmend" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment Reason to "customComment"
-		And I set the Interaction Id header to "<interactionId>" 
-	When I make the "AppointmentAmend" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| interactionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:update:appointmentt    |
-		| urn:nSs:namEs:servIces:gpconnect:fhir:rest:update:appointmenT     |
-		| urn:nhs:ncames:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                   |
-		| null                                                              |
-
 Scenario Outline: Amend appointment using the _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment	

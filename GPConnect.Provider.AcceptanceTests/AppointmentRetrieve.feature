@@ -387,39 +387,6 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 		| 2014-05                   | le     | 2020-05                   | le      |
 		| 2014-05-01T11:08:32       | le     | 2020-05-01T11:08:32       | le      |
 		| 2015-10-23T11:08:32+00:00 | le     | 2020-10-23T11:08:32+00:00 | le      |
-
-Scenario Outline: Appointment retrieve failure due to missing header
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	When I make the "AppointmentSearch" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
-Scenario Outline: Appointment retrieve interaction id incorrect fail
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Interaction Id header to "<interactionId>"
-	When I make the "AppointmentSearch" request
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| interactionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
-		| urn:nh4s:names:se34rv4ices4:gpconnect3:fhir:re23st:seawwwwwwwww   |
-		| urn:nhs:namezzs:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                   |
-		| null                                                              |
 	
 Scenario Outline: Appointment retrieve accept header and _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

@@ -28,26 +28,6 @@ Scenario Outline: Book Appointment with invalid url for booking appointment
 		| url             |
 		| appointmentqq/! |
 
-Scenario Outline: Book appointment failure due to missing header
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-	When I make the "AppointmentCreate" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
 Scenario Outline: Book appointment accept header and _format parameter to request response format
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
@@ -144,28 +124,7 @@ Scenario: Book appointment prefer header set to minimal
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response body should be empty
-		And the content-type should be equal to null
-
-#testCaseId is a random parameter which forces VS Test Explorer to identify each example as a unique test
-Scenario Outline: Book appointment with invalid interaction id
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Interaction Id header to "<interactionId>" 
-	When I make the "AppointmentCreate" request
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| testCaseId | interactionId |
-		| 1          | urn:nhs:names:services:gpconnect:fhir:rest:search:organization    |
-		| 2          | urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		| 3          |                                                                   |
-		| 4          | null                                                              |
+		And the content-type should be equal to null                                                            |
 
 Scenario: Book Appointment and check response contains the manadatory elements
 	Given I get the Patient for Patient Value "patient1"

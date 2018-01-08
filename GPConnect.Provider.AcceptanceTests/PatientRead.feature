@@ -98,22 +98,6 @@ Scenario: Read patient should contain correct logical identifier
 		And the Response Resource should be a Patient
 		And the Patient Id should equal the Request Id
 
-Scenario Outline: Read patient failure due to missing header
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
-	When I make the "PatientRead" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
 Scenario: Read patient if accept or format not sent then default to JSON
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
