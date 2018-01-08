@@ -15,39 +15,6 @@ Scenario Outline: Register patient send request to incorrect URL
 		| 2017-05-05	| Patient/$gpc.registerpatien    |
 		| 1999-01-22	| Patient/$gpc.registerpati#ent  |
 
-Scenario Outline: Register patient with invalid interactionIds
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Interaction Id header to "<InteractionId>"
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| InteractionId                                                          |
-		| urn:nhs:names:services:gpconnect:fhir:rest:search:patient_appointments |
-		| urn:nhs:nxames:services:gpconnect:fhir:operation:gpc.registerpatsssient |
-		| urn:nhs:names:sservices:gpconnect:fhir:rest:create:appointment          |
-		|                                                                        |
-		| null                                                                   |
-
-Scenario Outline: Register patient with missing header
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
 Scenario: Register patient without sending identifier within patient
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request

@@ -54,37 +54,6 @@ Scenario Outline: Practitioner Read with invalid resource path in URL
 		| Practitioner2 |
 		| practitioners |
 
-Scenario Outline: Practitioner Read with missing mandatory header
-	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner
-	Given I configure the default "PractitionerRead" request
-	When I make the "PractitionerRead" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
-Scenario Outline: Practitioner Read with incorrect interaction id
-	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner
-	Given I configure the default "PractitionerRead" request
-		And I set the Interaction Id header to "<InteractionId>"
-	When I make the "PractitionerRead" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| InteractionId                                                  |
-		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3  |
-		| urn:nhs:namesz:services:gpconnect:fhir:rest:read:practitioners |
-		| urn:nhs:names:services:operation:gpc.getcarerecord             |
-		|                                                                |
-		| null                                                           |
-
 Scenario Outline: Practitioner Read using the _format parameter to request response format
 	Given I get the Practitioner for Practitioner Code "practitioner1"
 		And I store the Practitioner

@@ -136,41 +136,6 @@ Scenario Outline: Cancel appointment making a request to an invalid URL
 		| appointmentqq/!  |
 		| Appointments/#   |
 
-Scenario Outline: Cancel appointment failure due to missing header
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-	When I make the "AppointmentCancel" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
-Scenario Outline: Cancel appointment failure with incorrect interaction id
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I set the Interaction Id header to "<InteractionId>`"
-	When I make the "AppointmentCancel" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| InteractionId                                                      |
-		| urn:nhs:names:aservices:gpconnect:fhir:rest:update:appointmentss   |
-		| urn:nhs:names:servisces:gpconnect:fhir:rest:update:appointmenT     |
-		| urn:nhs:nazmes:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                    |
-		| null                                                               |
-
 Scenario Outline: Cancel appointment using the _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
