@@ -8,17 +8,22 @@
     using System.Linq;
     using System;
     using System.Globalization;
+    using Enum;
 
     [Binding]
     public class AppointmentRetrieveSteps : Steps
     {
         private readonly HttpContext _httpContext;
+        private readonly HttpSteps _httpSteps;
+        private readonly JwtSteps _jwtSteps;
 
         private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
-        public AppointmentRetrieveSteps(HttpContext httpContext)
+        public AppointmentRetrieveSteps(HttpContext httpContext, HttpSteps httpSteps, JwtSteps jwtSteps)
         {
             _httpContext = httpContext;
+            _httpSteps = httpSteps;
+            _jwtSteps = jwtSteps;
         }
 
         [Then(@"the Appointment Status should be valid")]
@@ -71,6 +76,15 @@
             {
                 appointment.Description.ShouldNotBeNull("Appointment description should not be null");
             });
+        }
+
+        public void RetrieveAppoinmentsForNhsNumber(string nhsNumber)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentSearch);
+
+            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumber(nhsNumber);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentSearch);
         }
     }
 }
