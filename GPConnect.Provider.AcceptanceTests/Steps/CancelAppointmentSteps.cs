@@ -16,14 +16,19 @@
     {
         private readonly HttpContext _httpContext;
         private readonly IFhirResourceRepository _fhirResourceRepository;
-
+        private readonly JwtSteps _jwtSteps;
+        private readonly AppointmentsSteps _appointmentsSteps;
         private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
+        private readonly HttpRequestConfigurationSteps _httpRequestConfiguration;
 
-        public CancelAppointmentSteps(HttpSteps httpSteps, HttpContext httpContext, IFhirResourceRepository fhirResourceRepository) 
+        public CancelAppointmentSteps(HttpSteps httpSteps, HttpContext httpContext, IFhirResourceRepository fhirResourceRepository, JwtSteps jwtSteps, AppointmentsSteps appointmentsSteps, HttpRequestConfigurationSteps httpRequestConfiguration) 
             : base(httpSteps)
         {
             _httpContext = httpContext;
             _fhirResourceRepository = fhirResourceRepository;
+            _jwtSteps = jwtSteps;
+            _appointmentsSteps = appointmentsSteps;
+            _httpRequestConfiguration = httpRequestConfiguration;
         }
 
         [Given(@"I set the Created Appointment Description to ""(.*)""")]
@@ -284,6 +289,21 @@
 
                 appointment.VersionId.ShouldNotBe(createdAppointmentVersionId, $"The Appointment Version Id and the Created Appointment Version Id were both {appointment.VersionId}");
             });
+        }
+
+        [Given(@"I cancel the Appointment with Logical Id and NHS Number")]
+        public void CancelTheAppointmentWithLogicalId(Appointment appointment, string nhsNumber)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCancel);
+
+            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumber(nhsNumber);
+            //_jwtSteps.SetTheJwtRequestedRecordNhsnumberToConfigPatient("patient1");
+            _httpRequestConfiguration.SetTheReadOperationLogicalIdentifierUsedInTheRequestTo(appointment.Id);
+
+            _fhirResourceRepository.Appointment = appointment;
+            _appointmentsSteps.SetTheCreatedAppointmentToCancelledWithReason("double booked");
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCancel);
         }
     }
 }

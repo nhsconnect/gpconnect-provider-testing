@@ -253,3 +253,6 @@ paket-files/
 
 #Ignore trusted certs etc.
 /Certificates/Trusted
+
+#Ignore .feature.cs
+/GPConnect.Provider.AcceptanceTests/*.feature.cs

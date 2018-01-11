@@ -324,6 +324,7 @@
     <Compile Include="Helpers\HttpHeaderHelper.cs" />
     <Compile Include="Helpers\HttpParameterHelper.cs" />
     <Compile Include="Helpers\JwtHelper.cs" />
+    <Compile Include="Steps\TeardownSteps.cs" />
     <Compile Include="Tables\CareRecordSection.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -443,11 +444,11 @@
     </ContentWithTargetPath>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+    <!--To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.-->
   <Target Name="BeforeBuild">
-  </Target>
-  -->
+    <TechTalk.SpecFlow.Tools.MsBuild.GenerateAll ProjectPath=".\$(ProjectFileName)" />
+  </Target>  
   <Target Name="AfterBuild">
     <PropertyGroup>
       <Pickles_Generate>True</Pickles_Generate>
@@ -476,4 +477,9 @@
     <!--Publish copies the untransformed App.config to deployment directory so overwrite it-->
     <Copy Condition="Exists('$(DeployedConfig)')" SourceFiles="$(IntermediateOutputPath)$(TargetFileName).config" DestinationFiles="$(DeployedConfig)" />
   </Target>
+  <PropertyGroup>
+    <SpecFlowTasksPath>..\packages\SpecFlow.2.1.0\tools\specflow.exe</SpecFlowTasksPath>
+  </PropertyGroup>
+  <Import Project="..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.tasks" Condition="Exists('..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.tasks')" />
+  <Import Project="..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.targets" Condition="Exists('..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.targets')" />
 </Project>
