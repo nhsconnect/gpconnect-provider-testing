@@ -71,6 +71,8 @@
         private static Dictionary<string, ValueSet> _fhirExtensibleValueSets { get; set; }
         public static Dictionary<string, string> LocationLogicalIdentifierMap { get; set; }
 
+        public static Dictionary<string, List<Appointment>> CreatedAppointments { get; set; }
+
         public static ValueSet GetExtensibleValueSet(string system)
         {
             var hasKey = _fhirExtensibleValueSets?.ContainsKey(system);

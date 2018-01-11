@@ -67,7 +67,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static string CurlClientPassword => Get<string>($"Curl:{CurlClientCertificateLocator}:Password");
 
         private static string CurlClientCertificateLocator => FeatureContext.Current.FeatureInfo.Title == "ssp" ? "Consumer" : "Ssp";
- 
+
+        public static bool TeardownEnabled => Get<bool>("Teardown:Enabled");
 
         // Consumer Settings
         public static string ConsumerASID => Get<string>("consumerASID");
