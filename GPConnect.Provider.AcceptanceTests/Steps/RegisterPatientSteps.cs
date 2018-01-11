@@ -73,28 +73,6 @@
             _fhirResourceRepository.Patient.BirthDateElement = new Date("2017-05-05");
         }
 
-        [Given(@"I add an ""(.*)"" Usual Name to the Stored Patient")]
-        public void AddUsualNameToTheStoredPatient(string type)
-        {
-
-            var name = NameHelper.CreateUsualName("AdditionalGivenName", "AdditionalFamilyName");
-
-            name.Period = new Period();
-
-            var start = DateTime.Today.AddDays(-1);
-            DateTime? end = null;
-
-            if (type.Equals("inactive"))
-            {
-                start = DateTime.Today.AddDays(-99);
-                end = DateTime.Today.AddDays(-2);
-            }
-            name.Period.Start = start.ToString("yyyy-MM-dd");
-            name.Period.End = end?.ToString("yyyy-MM-dd");
-
-            _fhirResourceRepository.Patient.Name.Add(name);
-        }
-
         [Given(@"I add ""(.*)"" Given Names to the Stored Patient Usual Name")]
         public void AddGivenNamesToTheStoredPatientUsualName(int extraGivenNames)
         {
@@ -106,10 +84,8 @@
                 givenNames.Add(new FhirString($"{givenName}-{i}"));
             }
 
-            foreach (var name in _fhirResourceRepository.Patient.Name.Where(n => n.Use == HumanName.NameUse.Usual))
-            {
-                name.GivenElement.AddRange(givenNames);
-            }
+            var name = _fhirResourceRepository.Patient.Name.First(n => n.Use == HumanName.NameUse.Usual);
+            name.GivenElement.AddRange(givenNames);
         }
 
         [Given(@"I remove the Identifiers from the Stored Patient")]
