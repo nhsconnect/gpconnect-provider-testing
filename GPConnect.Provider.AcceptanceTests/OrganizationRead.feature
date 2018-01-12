@@ -52,39 +52,6 @@ Scenario Outline: Organization Read with invalid resource path in URL
 		| Organization2 |
 		| organizations |
 
-Scenario Outline: Organization Read with missing mandatory header
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
-	Given I configure the default "OrganizationRead" request
-		And I set the JWT Requested Record Id to the Request Id
-	When I make the "OrganizationRead" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
-Scenario Outline: Organization Read with incorrect interaction id
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
-	Given I configure the default "OrganizationRead" request
-		And I set the Interaction Id header to "<interactionId>"
-		And I set the JWT Requested Record Id to the Request Id
-	When I make the "OrganizationRead" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| interactionId                                                 |
-		| urn:nhs:names:servic3es:gpconnect:fhir:rest:read:practitioner |
-		| urn:nhs:names:services:gpconnect:fhir:rest:read:practitioners |
-		| urn:nhs:names:services:gpconnect:gpc.getcarerecord            |
-		|                                                               |
-		| null                                                          |
-
 Scenario Outline: Organization Read using the _format parameter to request response format
 	Given I get the Organization for Organization Code "ORG1"
 		And I store the Organization

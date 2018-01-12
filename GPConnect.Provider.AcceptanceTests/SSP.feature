@@ -129,7 +129,7 @@ Scenario Outline: SSP - CORS
 	| LocationSearch     | GET      | Location                     |
 	| LocationRead       | GET      | Location/{id}                |
 	| RegisterPatient    | POST     | Patient/$gpc.registerpatient |
-	| SearchForFreeSlots | GET      | Slot								|
+	| SearchForFreeSlots | GET      | Slot						   |
 	| AppointmentCreate  | POST     | Appointment                  |
 	| AppointmentSearch  | GET      | Patient/{id}/Appointment     |
 	| AppointmentAmend   | GET, PUT | Appointment/{id}             |
@@ -143,5 +143,35 @@ Scenario: SSP - To ASID - Invalid
 		And I am using the valid Consumer client certificate
 		And I am connecting to accredited system "123456789123"
 	When I make the "MetadataRead" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario Outline: SSP - Header - missing
+	Given I configure the default "GpcGetCareRecord" request
+		And I am using the SSP
+		And I am using the valid Consumer client certificate
+		And I add an NHS Number parameter for "patient2"		
+		And I add a Record Section parameter for "ADM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+	When I make the "GpcGetCareRecord" request with missing Header "<Header>"
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| Header            |
+		| Ssp-TraceID       |
+		| Ssp-From          |
+		| Ssp-To            |
+		| Ssp-InteractionId |
+		| Authorization     |
+
+Scenario: SSP - interaction id incorrect
+	Given I configure the default "GpcGetCareRecord" request
+		And I am using the SSP
+		And I am using the valid Consumer client certificate
+		And I add an NHS Number parameter for "patient2"
+		And I add a Record Section parameter for "ADM"
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:carerecordd"
+	When I make the "GpcGetCareRecord" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

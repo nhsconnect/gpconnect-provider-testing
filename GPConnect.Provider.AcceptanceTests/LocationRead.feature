@@ -42,35 +42,6 @@ Scenario Outline: Location Read with invalid resource path in URL
 		| Location2    |
 		| locations    |
 
-Scenario Outline: Location Read with missing mandatory header
-	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"
-	Given I configure the default "LocationRead" request
-	When I make the "LocationRead" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
-Scenario Outline: Location Read with incorrect interaction id
-	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"
-	Given I configure the default "LocationRead" request
-		And I set the Interaction Id header to "<interactionId>"
-	When I make the "LocationRead" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| interactionId                                                      |
-		| urn:nhs:names:servxices:gpconnect:fhir:rest:read:location3         |
-		| urn:nhs:names:services:gpcsonnect:fhir:rest:read:locations         |
-		| urn:nhs:names:xservices:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                    |
-		| null                                                               |
-
 Scenario Outline: Location Read using the _format parameter to request response format
 	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"
 	Given I configure the default "LocationRead" request

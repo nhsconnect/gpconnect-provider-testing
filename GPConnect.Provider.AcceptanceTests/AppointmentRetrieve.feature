@@ -342,67 +342,34 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 		And the response should be a OperationOutcome resource
 	Examples:
 		| startDate                 | prefix | endDate                   | prefix2 |
-		| 2015                      | lf     | 2018                      | lt      |
-		| 2014-02                   | lt     | 2018-07                   | l2      |
-		| 2014-10-05                | g1     | 2018-10-05                | gt      |
-		| 2014-05                   | gt     | 2044-05-01T11:08:32       | g       |
-		| 2014-05-01T11:08:32       | tt     | 2018-05                   | lu      |
-		| 2015-10-23T11:08:32+00:00 | dd     | 2018-10-23T11:08:32+00:00 | zz      |
-		| 2014                      | gt     | 2044                      | gt      |
-		| 2014-02                   | gt     | 2044-02                   | gt      |
-		| 2014-10-05                | gt     | 2044-10-05                | gt      |
-		| 2014-05                   | gt     | 2044-05                   | gt      |
-		| 2014-05-01T11:08:32       | gt     | 2044-05-01T11:08:32       | gt      |
-		| 2015-10-23T11:08:32+00:00 | gt     | 2044-10-23T11:08:32+00:00 | gt      |
-		| 2014                      | ge     | 2044                      | ge      |
-		| 2014-02                   | ge     | 2044-02                   | ge      |
-		| 2014-10-05                | ge     | 2044-10-05                | ge      |
-		| 2014-05                   | ge     | 2044-05                   | ge      |
-		| 2014-05-01T11:08:32       | ge     | 2044-05-01T11:08:32       | ge      |
-		| 2014                      | lt     | 2044                      | lt      |
-		| 2014-02                   | lt     | 2044-02                   | lt      |
-		| 2014-10-05                | lt     | 2044-10-05                | lt      |
-		| 2014-05                   | lt     | 2044-05                   | lt      |
-		| 2014-05-01T11:08:32       | lt     | 2044-05-01T11:08:32       | lt      |
-		| 2014                      | le     | 2044                      | le      |
-		| 2014-02                   | le     | 2044-02                   | le      |
-		| 2014-10-05                | le     | 2044-10-05                | le      |
-		| 2014-05                   | le     | 2044-05                   | le      |
-		| 2014-05-01T11:08:32       | le     | 2044-05-01T11:08:32       | le      |
-		| 2015-10-23T11:08:32+00:00 | le     | 2044-10-23T11:08:32+00:00 | le      |
-
-Scenario Outline: Appointment retrieve failure due to missing header
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	When I make the "AppointmentSearch" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
-Scenario Outline: Appointment retrieve interaction id incorrect fail
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Interaction Id header to "<interactionId>"
-	When I make the "AppointmentSearch" request
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| interactionId                                                       |
-		| urn:nhs:names:services:gpconnect:fhir:rest:search:organization      |
-		| urn:nh4s:names:se34rv4ices4:gpconnect3:fhir:re23st:seawwwwwwwww     |
-		| urn:nhs:namezzs:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		|                                                                     |
-		| null                                                                |
+		| 2015                      | lf     | 2020                      | lt      |
+		| 2014-02                   | lt     | 2020-07                   | l2      |
+		| 2014-10-05                | g1     | 2020-10-05                | gt      |
+		| 2014-05                   | gt     | 2020-05-01T11:08:32       | g       |
+		| 2014-05-01T11:08:32       | tt     | 2020-05                   | lu      |
+		| 2015-10-23T11:08:32+00:00 | dd     | 2020-10-23T11:08:32+00:00 | zz      |
+		| 2014                      | gt     | 2020                      | gt      |
+		| 2014-02                   | gt     | 2020-02                   | gt      |
+		| 2014-10-05                | gt     | 2020-10-05                | gt      |
+		| 2014-05                   | gt     | 2020-05                   | gt      |
+		| 2014-05-01T11:08:32       | gt     | 2020-05-01T11:08:32       | gt      |
+		| 2015-10-23T11:08:32+00:00 | gt     | 2020-10-23T11:08:32+00:00 | gt      |
+		| 2014                      | ge     | 2020                      | ge      |
+		| 2014-02                   | ge     | 2020-02                   | ge      |
+		| 2014-10-05                | ge     | 2020-10-05                | ge      |
+		| 2014-05                   | ge     | 2020-05                   | ge      |
+		| 2014-05-01T11:08:32       | ge     | 2020-05-01T11:08:32       | ge      |
+		| 2014                      | lt     | 2020                      | lt      |
+		| 2014-02                   | lt     | 2020-02                   | lt      |
+		| 2014-10-05                | lt     | 2020-10-05                | lt      |
+		| 2014-05                   | lt     | 2020-05                   | lt      |
+		| 2014-05-01T11:08:32       | lt     | 2020-05-01T11:08:32       | lt      |
+		| 2014                      | le     | 2020                      | le      |
+		| 2014-02                   | le     | 2020-02                   | le      |
+		| 2014-10-05                | le     | 2020-10-05                | le      |
+		| 2014-05                   | le     | 2020-05                   | le      |
+		| 2014-05-01T11:08:32       | le     | 2020-05-01T11:08:32       | le      |
+		| 2015-10-23T11:08:32+00:00 | le     | 2020-10-23T11:08:32+00:00 | le      |
 	
 Scenario Outline: Appointment retrieve accept header and _format parameter to request response format
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"

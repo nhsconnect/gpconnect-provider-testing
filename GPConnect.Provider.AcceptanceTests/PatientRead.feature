@@ -88,22 +88,6 @@ Scenario Outline: Read patient sending the Accept header and _format parameter t
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
 
-Scenario Outline: Read patient failure due to missing header
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
-	When I make the "PatientRead" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
 Scenario: Read patient should contain correct logical identifier
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
