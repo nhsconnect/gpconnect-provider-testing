@@ -45,6 +45,7 @@ Scenario Outline: Practitioner Read with invalid resource path in URL
 		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
 		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
+	When I make the "PractitionerRead" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 	Examples:

@@ -21,7 +21,6 @@ Scenario Outline: Practitioner search success and validate the practitioner iden
 		| practitioner1 | 1         | 0        |
 		| practitioner2 | 1         | 1        |
 		| practitioner3 | 1         | 2        |
-		| practitioner4 | 0         | 0        |
 		| practitioner5 | 2         | 3        |
 
 Scenario Outline: Practitioner search with failure due to invalid identifier
