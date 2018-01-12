@@ -132,33 +132,6 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 		| application/xml+fhir  | application/json+fhir | JSON       |
 		| application/xml+fhir  | application/xml+fhir  | XML        |
 
-Scenario Outline: Practitioner search failure due to missing header
-	Given I configure the default "PractitionerSearch" request
-		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-	When I make the "PractitionerSearch" request with missing Header "<Header>"
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Header            |
-		| Ssp-TraceID       |
-		| Ssp-From          |
-		| Ssp-To            |
-		| Ssp-InteractionId |
-		| Authorization     |
-
-Scenario Outline: Practitioner search failure due to invalid interactionId
-	Given I configure the default "PractitionerSearch" request
-		And I set the Interaction Id header to "<InteractionId>"
-		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-	When I make the "PractitionerSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| InteractionId                                                     |
-		| urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord |
-		| InvalidInteractionId                                              |
-		|                                                                   |
-
 Scenario: Practitioner search multiple practitioners contains metadata and populated fields
 	Given I configure the default "PractitionerSearch" request
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
