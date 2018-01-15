@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Data;
     using Helpers;
+    using Hl7.Fhir.Model;
 
     public static class GlobalContext
     {
@@ -31,5 +32,7 @@
         public static string PreviousScenarioTitle { get; set; }
 
         public static Dictionary<string, string> LocationLogicalIdentifierMap { get; set; }
+
+        public static Dictionary<string, List<Appointment>> CreatedAppointments { get; set; }
     }
 }
