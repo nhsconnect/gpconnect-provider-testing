@@ -3,6 +3,8 @@ using System.Configuration;
 
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
+    using TechTalk.SpecFlow;
+
     public static class AppSettingsHelper
     {
         // Trace Log Settings
@@ -60,6 +62,13 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static string ThumbprintSspInvalidRevoked => Get<string>("Thumbprint:Ssp:Invalid:Revoked");
 
+        public static string CurlClientCertificate => Get<string>($"Curl:{CurlClientCertificateLocator}:Certificate");
+        public static string CurlClientKey => Get<string>($"Curl:{CurlClientCertificateLocator}:Key");
+        public static string CurlClientPassword => Get<string>($"Curl:{CurlClientCertificateLocator}:Password");
+
+        private static string CurlClientCertificateLocator => FeatureContext.Current.FeatureInfo.Title == "ssp" ? "Consumer" : "Ssp";
+
+        public static bool TeardownEnabled => Get<bool>("Teardown:Enabled");
 
         // Consumer Settings
         public static string ConsumerASID => Get<string>("consumerASID");

@@ -27,6 +27,7 @@
             public const string kLocalPatientCode = "https://fhir.nhs.uk/Id/local-patient-identifier";
             public const string kPracSDSUserId = "https://fhir.nhs.uk/Id/sds-user-id";
             public const string kPracRoleProfile = "https://fhir.nhs.uk/Id/sds-role-profile-id";
+            public const string kAppointment = "https://fhir.nhs.uk/Id/gpconnect-appointment-identifier";
         }
 
         internal static class ValueSetSystems
@@ -51,6 +52,10 @@
             public const string kAdministrativeGender = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-AdministrativeGender-1";
             public const string kMaritalStatus = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-MaritalStatus-1";
             public const string kContactEntityType = "http://hl7.org/fhir/ValueSet/contactentity-type";
+            public const string kIdentifierUse = "http://hl7.org/fhir/ValueSet/identifier-use";
+            public const string kIdentifierType = "http://hl7.org/fhir/ValueSet/identifier-type";
+            public const string kSDSJobRoleName = "https://fhir.hl7.org.uk/ValueSet/CareConnect-SDSJobRoleName-1";
+            public const string kRecordSectionValueSet = "http://fhir.nhs.uk/ValueSet/gpconnect-record-section-1";
             public const string kServDelLocationRoleType = "http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType";
             public const string kEncounterParticipantType = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
             public const string kSpineErrorOrWarningCode = "https://fhir.nhs.uk/STU3/ValueSet/Spine-ErrorOrWarningCode-1";
@@ -60,11 +65,13 @@
 
         internal static class StructureDefinitionSystems
         {
-            public const string kGpcSearchSet = "http://fhir.nhs.net/StructureDefinition/gpconnect-searchset-bundle-1";
-
+            public const string kSlot = "https://fhir.nhs.uk/StructureDefinition/gpconnect-slot-1";
+            public const string kSchedule = "https://fhir.nhs.uk/StructureDefinition/gpconnect-schedule-1";
+            public const string kGpcSearchSet = "https://fhir.nhs.uk/StructureDefinition/gpconnect-searchset-bundle-1";
+            public const string kAppointment = "https://fhir.nhs.uk/StructureDefinition/gpconnect-appointment-1";
 
             //EXTENSIONS
-            public const string kExtGpcPractitioner = "http://fhir.nhs.net/StructureDefinition/extension-gpconnect-practitioner-1";
+            public const string kExtGpcPractitioner = "http://fhir.nhs.uk/StructureDefinition/extension-gpconnect-practitioner-1";
             public const string kExtRegistrationStatus = "https://fhir.nhs.uk/StructureDefinition/extension-registration-status-1";
             public const string kExtRegistrationType = "https://fhir.nhs.uk/StructureDefinition/extension-registration-type-1";
             public const string kExtRegistrationPeriod = "https://fhir.nhs.uk/StructureDefinition/extension-registration-period-1";

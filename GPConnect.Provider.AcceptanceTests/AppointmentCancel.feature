@@ -92,7 +92,7 @@ Scenario Outline: I perform cancel appointment and add participants
 		And I add a Participant with Reference "Patient/2" to the Created Appointment
 		And I add a Participant with Reference "Practitioner/2" to the Created Appointment		
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "403"
+	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| PatientName |
@@ -106,7 +106,7 @@ Scenario Outline: I perform cancel appointment and update the priority
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Priority to "3"
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "403"
+	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| PatientName |
@@ -120,13 +120,11 @@ Scenario Outline: I perform cancel appointment and update the minutes duration
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Minutes Duration to "20"
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "403"
+	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| PatientName |
 		| patient1    |
-
-
 
 Scenario Outline: I perform cancel appointment and update the type text
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
@@ -136,7 +134,7 @@ Scenario Outline: I perform cancel appointment and update the type text
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Type Text to "RANDOM TYPE TEXT"
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "403"
+	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| PatientName |
@@ -150,7 +148,8 @@ Scenario Outline: Cancel appointment making a request to an invalid URL
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the request URL to "<url>"
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "404"
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 	Examples:
 		| url              |
 		| appointmentqq/!  |
@@ -272,10 +271,10 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
-		| url                                                                                                | reason   |
-		|                                                                                                    | Too busy |
-		| http://fhir.nhs.net/StructureDefinition/extension-gpINCORRECTect-appointment-cancellation-reason-1 | Too busy |
-		| http://fhir.nhs.net/StructuraeDefinition/extension-gpconnect-appointment-cancellation-reason-1-010 | Too busy |
+		| url                                                                                               | reason   |
+		|                                                                                                   | Too busy |
+		| http://fhir.nhs.uk/StructureDefinition/extension-gpINCORRECTect-appointment-cancellation-reason-1 | Too busy |
+		| http://fhir.nhs.uk/StructuraeDefinition/extension-gpconnect-appointment-cancellation-reason-1-010 | Too busy |
 
 Scenario: Cancel appointment missing cancellation extension reason
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -310,7 +309,8 @@ Scenario: Cancel appointment verify resource is not updated when an out of date 
 		And I set the If-Match header to "invalidEtag"
 	When I make the "AppointmentCancel" request	
 	Then the response status code should be "409"
-		
+		And the response should be a OperationOutcome resource with error code "FHIR_CONSTRAINT_VIOLATION"
+
 Scenario: Cancel appointment compare request appointment to returned appointment
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment

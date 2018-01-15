@@ -8,8 +8,8 @@ Scenario Outline: Register patient send request to incorrect URL
 		And I set the request URL to "<url>"
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "REFERENCE_NOT_FOUND"
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 	Examples:
 		| StartDate		| url                            |
 		| 2017-05-05	| Patient/$gpc.registerpatien    |
@@ -54,7 +54,7 @@ Scenario: Register patient without date of birth element
 Scenario Outline: Register patient with an invalid NHS number
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the JWT Requested Record to the NHS Number "<nhsNumber>"
 		And I remove the Identifiers from the Stored Patient
 		And I add an Identifier with Value "<nhsNumber>" to the Stored Patient
 		And I add the Stored Patient as a parameter
@@ -253,32 +253,6 @@ Scenario: Register patient with no usual name
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient with an additional active usual name
-    Given I get the next Patient to register and store it
-    Given I configure the default "RegisterPatient" request
-        And I set the JWT Requested Record to the NHS Number of the Stored Patient
-        And I add an "active" Usual Name to the Stored Patient
-        And I add the Stored Patient as a parameter
-    When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario: Register patient with an additional inactive usual name
-    Given I get the next Patient to register and store it
-    Given I configure the default "RegisterPatient" request
-        And I set the JWT Requested Record to the NHS Number of the Stored Patient
-        And I add an "inactive" Usual Name to the Stored Patient
-        And I add the Stored Patient as a parameter
-    When I make the "RegisterPatient" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the response meta profile should be for "searchset"
-		And the response bundle should contain a single Patient resource
-		And the Patient Metadata should be valid
-		And the Patient Nhs Number Identifer should be valid
-		And the Patient Registration Details Extension should be valid
-		And the Patient Demographics should match the Stored Patient
-
 Scenario Outline: Register Patient with multiple given names
 	Given I get the next Patient to register and store it
     Given I configure the default "RegisterPatient" request
@@ -301,6 +275,17 @@ Scenario: Register patient no family names
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I remove the Family Name from the Active Given Name for the Stored Patient
+		And I add the Stored Patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario: Register patient with multiple family names
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I add the Family Name "AddedFamilyName" to the Stored Patient
+		And I add the Family Name "AddedFSecondamilyName" to the Stored Patient
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"

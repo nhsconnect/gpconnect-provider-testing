@@ -223,7 +223,17 @@
             if (relativeUrl.Contains("Patient"))
             {
                 var patient = relativeUrl.ToLower().Replace("/", string.Empty);
-                jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
+                try
+                {
+                    jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
+                }
+                catch (Exception)
+                {
+                  
+                    Patient patientResource = _fhirResourceRepository.Patient;
+                    var nhsNumber = patientResource.Identifier[0].Value;
+                    jwtHelper.RequestedPatientNHSNumber = nhsNumber;
+                }
             }
 
             if (relativeUrl.Contains("Organization"))

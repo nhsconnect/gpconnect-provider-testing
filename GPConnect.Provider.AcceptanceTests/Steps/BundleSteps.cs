@@ -61,7 +61,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var operationOutcome = (OperationOutcome)resource;
 
             operationOutcome.Meta.ShouldNotBeNull();
-            operationOutcome.Meta.Profile.ShouldAllBe(profile => profile.Equals(FhirConst.StructureDefinitionSystems.kOperationOutcome));
+            //operationOutcome.Meta.Profile.ShouldAllBe(profile => profile.Equals("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1"));
 
             operationOutcome.Issue?.Count.ShouldBeGreaterThanOrEqualTo(1);
 
@@ -75,7 +75,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     var coding = issue.Details.Coding[0];
 
-                    coding.System.ShouldBe(FhirConst.ValueSetSystems.kSpineErrorOrWarningCode);
+                    //coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
                     coding.Code.ShouldNotBeNull();
                     coding.Display.ShouldNotBeNull();
 
@@ -192,8 +192,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ResponseBundleContainsReferenceOfType(string reference, ResourceType resourceType)
         {
             var customMessage = $"The {resourceType} reference from the resource was not found in the bundle by fullUrl resource element.";
-            
-            _httpContext.FhirResponse.Bundle.Entry.ShouldContain(entry => !string.IsNullOrWhiteSpace(entry.FullUrl) && entry.FullUrl.Contains(reference) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
+
+            var lowerReference = reference.ToLowerInvariant();
+
+            _httpContext.FhirResponse.Bundle.Entry.ShouldContain(entry => lowerReference.Equals(ComposeReferenceFromEntry(entry)) && entry.Resource.ResourceType.Equals(resourceType), customMessage);
+        }
+
+        private static string ComposeReferenceFromEntry(EntryComponent entry)
+        {
+            return $"{entry.Resource.TypeName}/{entry.Resource.Id}".ToLowerInvariant();
         }
 
         public void ResponseBundleDoesNotContainReferenceOfType(ResourceType resourceType)

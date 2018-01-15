@@ -94,7 +94,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Slots.ForEach(slot =>
             {
-                CheckForValidMetaDataInResource(slot, "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Slot-1");
+                CheckForValidMetaDataInResource(slot, FhirConst.StructureDefinitionSystems.kSlot);
             });
         }
 
@@ -129,7 +129,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Schedules.ForEach(schedule =>
             {
-                CheckForValidMetaDataInResource(schedule, "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Schedule-1");
+                CheckForValidMetaDataInResource(schedule, FhirConst.StructureDefinitionSystems.kSchedule);
             });
         }
 
@@ -209,7 +209,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"the Bundle Metadata should be valid")]
         public void TheScheduleBundleMetadataShouldBeValid()
         {
-            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, "http://fhir.nhs.net/StructureDefinition/gpconnect-getschedule-bundle-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, "http://fhir.nhs.uk/StructureDefinition/gpconnect-getschedule-bundle-1");
         }
 
         [Then(@"the excluded actor ""(.*)"" should not be present in the Bundle")]

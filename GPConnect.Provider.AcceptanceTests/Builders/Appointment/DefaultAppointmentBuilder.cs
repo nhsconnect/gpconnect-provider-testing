@@ -8,6 +8,7 @@
     using static Hl7.Fhir.Model.Appointment;
     using Constants;
     using Context;
+    using static Hl7.Fhir.Model.Bundle;
 
     public class DefaultAppointmentBuilder
     {
@@ -29,10 +30,13 @@
                 .First();
 
             var schedule = storedBundle.Entry
-                .Where(entry => entry.Resource.ResourceType.Equals(ResourceType.Schedule) &&
-                                entry.FullUrl == firstSlot.Schedule.Reference)
+                .Where(entry =>
+                        entry.Resource.ResourceType.Equals(ResourceType.Schedule) &&
+                        ComposeReferenceFromEntry(entry) == firstSlot.Schedule.Reference)
                 .Select(entry => (Schedule)entry.Resource)
                 .First();
+            
+         
 
             //Patient
             var patient = GetPatient(storedPatient);
@@ -95,8 +99,8 @@
             };
 
             bookingOrganization.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap["ORG1"]));
-
             bookingOrganization.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01823938938"));
+
             return bookingOrganization;
         }
 
@@ -105,6 +109,12 @@
             var organizationReference = new ResourceReference { Reference = "#1" };
             return new Extension(FhirConst.StructureDefinitionSystems.kAppointmentBookingOrganization, organizationReference);
         }
+
+        private static string ComposeReferenceFromEntry(EntryComponent entry)
+        {
+            return $"{entry.Resource.TypeName}/{entry.Resource.Id}";
+        }
+
 
         private static ParticipantComponent GetLocation(string locationReference)
         {

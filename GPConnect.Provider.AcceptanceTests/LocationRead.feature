@@ -33,7 +33,8 @@ Scenario Outline: Location Read with invalid resource path in URL
 	Given I configure the default "LocationRead" request
 		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
 	When I make the "LocationRead" request
-	Then the response status code should be "404"
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 	Examples:
 		| RelativePath |
 		| Locationss   |

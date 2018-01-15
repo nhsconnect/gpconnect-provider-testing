@@ -1,16 +1,16 @@
-﻿using GPConnect.Provider.AcceptanceTests.Enum;
-using GPConnect.Provider.AcceptanceTests.Extensions;
-using GPConnect.Provider.AcceptanceTests.Helpers;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using Cache;
     using Cache.ValueSet;
+    using Builders.Patient;
     using Constants;
     using Context;
+    using Enum;
+    using Extensions;
+    using Helpers;
     using Hl7.Fhir.Model;
     using Repository;
     using Shouldly;
@@ -37,17 +37,26 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I create a Patient which does not exist on PDS and store it")]
         public void CreateAPatientWhichDoesNoteExistOnPDSAndStoreIt()
         {
+            var patientIdentifier = new Identifier(FhirConst.IdentifierSystems.kNHSNumber, "9019546082");
+            patientIdentifier.Extension.Add(new Extension
+            {
+                Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
+                Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerification, "01", "Number present and verified")
+            });
+
             var returnPatient = new Patient
             {
                 Name = new List<HumanName>
                 {
-                    CreateUsualName("GPConnectGivenName", "GPConnectFamilyName")
+                    NameHelper.CreateUsualName("GPConnectGivenName", "GPConnectFamilyName")
                 },
                 Gender = AdministrativeGender.Other,
-                BirthDateElement = new Date("2017-05-05")
+                BirthDateElement = new Date("2017-05-05"),
+                Identifier = new List<Identifier>
+                {
+                    patientIdentifier
+                }
             };
-
-            returnPatient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, "9019546082"));
 
             _fhirResourceRepository.Patient = returnPatient;
         }
@@ -58,34 +67,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             _fhirResourceRepository.Patient.Name = new List<HumanName>
             {
-                CreateUsualName("GPConnectGivenName", "GPConnectFamilyName")
+                NameHelper.CreateUsualName("GPConnectGivenName", "GPConnectFamilyName")
             };
 
             _fhirResourceRepository.Patient.Gender = AdministrativeGender.Other;
 
             _fhirResourceRepository.Patient.BirthDateElement = new Date("2017-05-05");
-        }
-
-        [Given(@"I add an ""(.*)"" Usual Name to the Stored Patient")]
-        public void AddUsualNameToTheStoredPatient(string type)
-        {
-
-            var name = CreateUsualName("AdditionalGivenName", "AdditionalFamilyName");
-
-            name.Period = new Period();
-
-            var start = DateTime.Today.AddDays(-1);
-            DateTime? end = null;
-
-            if (type.Equals("inactive"))
-            {
-                start = DateTime.Today.AddDays(-99);
-                end = DateTime.Today.AddDays(-2);
-            }
-            name.Period.Start = start.ToString("yyyy-MM-dd");
-            name.Period.End = end?.ToString("yyyy-MM-dd");
-
-            _fhirResourceRepository.Patient.Name.Add(name);
         }
 
         [Given(@"I add ""(.*)"" Given Names to the Stored Patient Usual Name")]
@@ -99,10 +86,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 givenNames.Add(new FhirString($"{givenName}-{i}"));
             }
 
-            foreach (var name in _fhirResourceRepository.Patient.Name.Where(n => n.Use == HumanName.NameUse.Usual))
-            {
-                name.GivenElement.AddRange(givenNames);
-            }
+            var name = _fhirResourceRepository.Patient.Name.First(n => n.Use == HumanName.NameUse.Usual);
+            name.GivenElement.AddRange(givenNames);
         }
 
         [Given(@"I remove the Identifiers from the Stored Patient")]
@@ -152,6 +137,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void AddAnIdentifierWithValueToTheStoredPatient(string nhsNumber)
         {
             _fhirResourceRepository.Patient.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber));
+            _fhirResourceRepository.Patient.Identifier[0].Extension.Add(new Extension
+            {
+                Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
+                Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerificationSys, "01", "Number present and verified")
+            });
         }
 
        
@@ -272,7 +262,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add a Name element to the Stored Patient")]
         public void AddANameElementToStoredPatient()
         {
-            _fhirResourceRepository.Patient.Name.Add(CreateName(HumanName.NameUse.Nickname, "AdditionalGiven", "AdditionalFamily"));
+            _fhirResourceRepository.Patient.Name.Add(NameHelper.CreateName(HumanName.NameUse.Nickname, "AdditionalGiven", "AdditionalFamily"));
         }
 
 
@@ -281,7 +271,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             var contact = new Patient.ContactComponent
             {
-                Name = CreateName(HumanName.NameUse.Anonymous, "TestGiven", "TestFamily")
+                Name = NameHelper.CreateName(HumanName.NameUse.Anonymous, "TestGiven", "TestFamily")
             };
 
             _fhirResourceRepository.Patient.Contact.Add(contact);
@@ -367,7 +357,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 nhsNumberIdentifier.Value.ShouldNotBeNullOrEmpty("The NHS Number identifier must have a value element.");
                 nhsNumberIdentifier.Value.ShouldBe(storedPatientNhsNumber, "The returned NHS Number does not match the sent NHS Number");
 
-                var numberExtensions = nhsNumberIdentifier.Extension.Where(nne => nne.Url.Equals(FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification));
+                var numberExtensions = nhsNumberIdentifier.Extension.Where(nne => nne.Url.Equals(FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification)).ToList();
 
                 numberExtensions.Count().ShouldBe(1,$"There can only be one extension on the NHS Number Identifer with a URL of {FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification}");
 
@@ -481,17 +471,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 var activeUsualNames = patient.Name.Where(IsActiveUsualName).ToList();
                 var storedPatientActiveUsualName = storedPatient.Name.Where(IsActiveUsualName).First();
+                var firstNamePatientReturned = patient.Name.Where(IsActiveUsualName).First();
 
                 activeUsualNames.Count.ShouldBe(1, $"There should be a single Active Patient Name with a Use of Usual, but found {activeUsualNames.Count}.");
-
+             
                 var activeUsualName = activeUsualNames.First();
 
                 //Given
-                activeUsualName.Given.Count().ShouldBe(storedPatientActiveUsualName.Given.Count());
-
-                foreach (var given in activeUsualName.Given)
+              
+                foreach (var given in storedPatientActiveUsualName.Given)
                 {
-                    storedPatientActiveUsualName.Given.ShouldContain(given);
+                    firstNamePatientReturned.Given.ShouldContain(given);
                 }
 
                 //Family
@@ -556,52 +546,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GetTheNextPatientToRegisterAndStoreIt()
         {
             //Mimic PDS Trace
-            var registerPatients = GlobalContext.RegisterPatients;
+            var registerPatients = GlobalContext.RegisterPatients.OrderBy(a => Guid.NewGuid());
 
-            foreach (var registerPatient in registerPatients)
+            foreach (var registerPatient in registerPatients.Where(rp => !rp.IsRegistered))
             {
                 _patientSteps.GetThePatientForPatientNhsNumber(registerPatient.SPINE_NHS_NUMBER);
 
                 var entries = _httpContext.FhirResponse.Entries;
 
-                if (!entries.Any())
+                if (entries.Any())
                 {
-                    var patientIdentifier = new Identifier(FhirConst.IdentifierSystems.kNHSNumber, registerPatient.SPINE_NHS_NUMBER);
-                    patientIdentifier.Extension.Add(new Extension
-                    {
-                        Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
-                        Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerification, "01", "Number present and verified")
-                    });
-
-                    var patientToRegister = new Patient
-                    {
-                        BirthDateElement = new Date(registerPatient.DOB),
-                        Name = new List<HumanName>
-                        {
-                            CreateUsualName(registerPatient.NAME_GIVEN, registerPatient.NAME_FAMILY)
-                        },
-                        Identifier = new List<Identifier>
-                        {
-                            patientIdentifier
-                        }
-                    };
-
-                    switch (registerPatient.GENDER)
-                    {
-                        case "MALE":
-                            patientToRegister.Gender = AdministrativeGender.Male;
-                            break;
-                        case "FEMALE":
-                            patientToRegister.Gender = AdministrativeGender.Female;
-                            break;
-                        case "OTHER":
-                            patientToRegister.Gender = AdministrativeGender.Other;
-                            break;
-                        case "UNKNOWN":
-                            patientToRegister.Gender = AdministrativeGender.Unknown;
-                            break;
-                    }
-
+                    registerPatient.IsRegistered = true;
+                }
+                else
+                {
+                    var patientToRegister = new DefaultRegisterPatientBuilder(registerPatient).BuildPatient();
 
                     _fhirResourceRepository.Patient = patientToRegister;
 
@@ -630,7 +589,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             if (name != null)
             {
-                registerPatient.Name.Add(CreateName(HumanName.NameUse.Usual, "GPConnectGivenName", "GPConnectFamilyName"));
+                registerPatient.Name.Add(NameHelper.CreateName(HumanName.NameUse.Usual, "GPConnectGivenName", "GPConnectFamilyName"));
             }
 
             registerPatient.Gender = patient.Gender ?? AdministrativeGender.Unknown;
@@ -835,23 +794,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
-        private HumanName CreateUsualName(string givenName, string familyName)
-        {
-
-            return CreateName(HumanName.NameUse.Usual, givenName, familyName);
-        }
-
-        private HumanName CreateName(HumanName.NameUse use, string givenName, string familyName)
-        {
-            var humanName = new HumanName()
-            {
-                FamilyElement = new FhirString(familyName),
-                GivenElement = new List<FhirString> { new FhirString(givenName) },
-                Use = use
-            };
-
-            return humanName;
-        }
 
         private static Extension GetCodingExtension(string extensionUrl, string codingUrl, string code, string display)
         {

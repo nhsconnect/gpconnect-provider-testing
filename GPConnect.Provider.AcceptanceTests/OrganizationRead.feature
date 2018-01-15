@@ -21,8 +21,6 @@ Scenario: Organization Read successful request validate all of response
 		And the Organization Contact should be valid
 		And the Organization Extensions should be valid
 
-
-
 Scenario Outline: Organization Read with valid identifier which does not exist on providers system
 	Given I configure the default "OrganizationRead" request
 		And I set the Read Operation logical identifier used in the request to "<LogicalId>"
@@ -45,7 +43,8 @@ Scenario Outline: Organization Read with invalid resource path in URL
 		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
 		And I set the JWT Requested Record Id to the Request Id
 	When I make the "OrganizationRead" request
-	Then the response status code should be "404"
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 	Examples:
 		| RelativePath  |
 		| Organizations |

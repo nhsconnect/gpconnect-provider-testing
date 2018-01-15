@@ -85,11 +85,12 @@
             };
 
             //TODO: Add certificates to cURL tests SslVerifyPeer
-            //if (_securityContext.SendClientCert)
-            //{
-            //    curlEasy.SslVerifyPeer = true;
-            //    curlEasy.CaInfo = @"C:\path\to\certs";
-            //}
+            if (_securityContext.SendClientCert)
+            {
+                curlEasy.SslCert = AppSettingsHelper.CurlClientCertificate;
+                curlEasy.SslKey = AppSettingsHelper.CurlClientKey;
+                curlEasy.SslKeyPasswd = AppSettingsHelper.CurlClientPassword;
+            }
 
             return curlEasy;
         }

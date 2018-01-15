@@ -29,6 +29,7 @@ namespace GPConnect.Provider.AcceptanceTests.Importers
             Map(p => p.NAME_GIVEN).Name("NAME_GIVEN");
             Map(p => p.GENDER).Name("GENDER");
             Map(p => p.DOB).Name("DOB");
+            Map(p => p.IsRegistered).Ignore(true);
         }
     }
 }

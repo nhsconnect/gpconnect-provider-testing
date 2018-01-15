@@ -3,8 +3,8 @@ Feature: PatientRead
 
 Scenario Outline: Read patient 404 if patient not found
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
-		And I set the GET request Id to "<id>"
+		And I set the JWT Requested Record to the NHS Number for "patient1"	
+		And I set the Read Operation logical identifier used in the request to "<id>"
 	When I make the "PatientRead" request
 	Then the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
@@ -28,12 +28,12 @@ Scenario Outline: Patient Read with valid identifier which does not exist on pro
 		| 40-9           |
 		| nd-skdm.mks--s |
 
-Scenario: Read patient 404 if patient id not sent
+Scenario: Read patient 400 or 404 if patient id not sent
 	Given I configure the default "PatientRead" request
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+	Then the Response Status Code should be one of "400, 404"
+		And the response should be a OperationOutcome resource
 
 Scenario Outline: Read patient using the Accept header to request response format
 	Given I get the Patient for Patient Value "patient1"
@@ -89,16 +89,6 @@ Scenario Outline: Read patient sending the Accept header and _format parameter t
 		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario: Read patient should contain correct logical identifier
-	Given I get the Patient for Patient Value "patient1"
-		And I store the Patient
-	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
-	When I make the "PatientRead" request
-	Then the response status code should indicate success
-		And the Response Resource should be a Patient
-		And the Patient Id should equal the Request Id
-
-Scenario: Read patient if accept or format not sent then default to JSON
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "PatientRead" request
@@ -165,6 +155,7 @@ Scenario: Patient read valid response check caching headers exist
 	
 Scenario: Patient read invalid response check caching headers exist
 	Given I configure the default "PatientRead" request
+		And I set the GET request Id to "zzzz"
 		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
 	Then the response status code should be "404"

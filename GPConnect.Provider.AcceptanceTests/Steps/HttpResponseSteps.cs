@@ -131,11 +131,7 @@
         public void ThenTheRequiredCacheingHeadersShouldBePresentInTheResponse()
         {
             string cacheControl;
-            string expires;
-            string pragma;
             _httpContext.HttpResponse.Headers.TryGetValue("Cache-Control", out cacheControl);
-            _httpContext.HttpResponse.Headers.TryGetValue("Expires", out expires);
-            _httpContext.HttpResponse.Headers.TryGetValue("Pragma", out pragma);
             cacheControl.ShouldBe("no-store", "The response payload should contain a resource.");
     
         }
