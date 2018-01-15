@@ -140,7 +140,7 @@
             _fhirResourceRepository.Patient.Identifier[0].Extension.Add(new Extension
             {
                 Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
-                Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerificationSys, "01", "Number present and verified")
+                Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerification, "01", "Number present and verified")
             });
         }
 

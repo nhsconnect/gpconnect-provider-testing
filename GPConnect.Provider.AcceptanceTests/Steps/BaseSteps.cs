@@ -33,7 +33,7 @@
             codingList.Count.ShouldBe(1);
             codingList.ForEach(coding =>
             {
-                ValueSetContainsCode(valueSet, coding);
+                ValueSetContainsCodeAndDisplay(valueSet, coding);
             });
         }
 

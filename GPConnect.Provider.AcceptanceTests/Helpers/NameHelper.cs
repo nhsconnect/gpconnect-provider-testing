@@ -15,7 +15,7 @@
         {
             var humanName = new HumanName()
             {
-                FamilyElement = new List<FhirString> { new FhirString(familyName) },
+                FamilyElement = new FhirString(familyName),
                 GivenElement = new List<FhirString> { new FhirString(givenName) },
                 Use = use
             };
