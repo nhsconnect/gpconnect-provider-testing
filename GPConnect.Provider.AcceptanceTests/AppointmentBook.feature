@@ -390,7 +390,7 @@ Scenario: Book Appointment and remove participant status from the appointment bo
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment and send an invalid bundle resource
 	Given I get the Patient for Patient Value "patient1"

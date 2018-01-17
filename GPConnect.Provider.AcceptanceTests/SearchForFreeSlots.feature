@@ -219,7 +219,6 @@ Scenario: Successfully search for free slots and check the included schedule res
 		And the Schedule Identifiers should be valid
 		And the Schedule PlanningHorizon should be valid
 		And the Schedule ServiceType should be valid
-		And the Schedule Practitioner Extensions should be valid and referenced in the Bundle
 		And the Practitioner Entry should be valid
 		And the Organization should be valid
 
@@ -258,7 +257,6 @@ Scenario: Successfully search for free slots and check the included practitioner
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the Schedule Practitioner Extensions should be valid and referenced in the Bundle
 		And the Practitioner Metadata should be valid
 		And the Practitioner SDS User Identifier should be valid
 		And the Practitioner Identifiers should be valid fixed values

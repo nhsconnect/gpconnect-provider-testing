@@ -65,13 +65,8 @@
 
         internal static class StructureDefinitionSystems
         {
-            public const string kSlot = "https://fhir.nhs.uk/StructureDefinition/gpconnect-slot-1";
-            public const string kSchedule = "https://fhir.nhs.uk/StructureDefinition/gpconnect-schedule-1";
-            public const string kGpcSearchSet = "https://fhir.nhs.uk/StructureDefinition/gpconnect-searchset-bundle-1";
-            public const string kAppointment = "https://fhir.nhs.uk/StructureDefinition/gpconnect-appointment-1";
-
             //EXTENSIONS
-            public const string kExtGpcPractitioner = "http://fhir.nhs.uk/StructureDefinition/extension-gpconnect-practitioner-1";
+            public const string kExtGpcPractitioner = "https://fhir.nhs.uk/STU3/StructureDefinition/extension-gpconnect-practitioner-1";
             public const string kExtRegistrationStatus = "https://fhir.nhs.uk/StructureDefinition/extension-registration-status-1";
             public const string kExtRegistrationType = "https://fhir.nhs.uk/StructureDefinition/extension-registration-type-1";
             public const string kExtRegistrationPeriod = "https://fhir.nhs.uk/StructureDefinition/extension-registration-period-1";
@@ -93,6 +88,10 @@
             public const string kOrganisation = "https://fhir.nhs.net/STU3/StructureDefinition/CareConnect-GPC-Organization-1";
             public const string kLocation = "https://fhir.nhs.net/STU3/StructureDefinition/CareConnect-GPC-Location-1";
             public const string kOperationOutcome = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1";
+            public const string kAppointment = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Appointment-1";
+            public const string kSlot = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Slot-1";
+            public const string kSchedule = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Schedule-1";
+            public const string kGpcSearchSet = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Searchset-Bundle-1";
 
             //Extensions
             public const string kCCExtNhsCommunication =        "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSCommunication-1";

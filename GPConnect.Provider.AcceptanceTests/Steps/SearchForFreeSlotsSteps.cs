@@ -184,32 +184,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then("the Schedule Practitioner Extensions should be valid and referenced in the Bundle")]
-        public void TheSchedulePractitionerExtensionsShouldBeValidAndReferencedInTheBundle()
-        {
-            Schedules.ForEach(schedule =>
-            {
-                schedule.Extension.ForEach(extension =>
-                {
-                    const string url = FhirConst.StructureDefinitionSystems.kExtGpcPractitioner;
-                    extension.Url.ShouldBe(url, $"The Practitioner Extension Url should be {url} but was {extension.Url}.");
-                    extension.Value.ShouldNotBeNull("The Practitioner Extension Value should not be null.");
-
-                    var reference = ((ResourceReference)extension.Value).Reference;
-                    reference.ShouldNotBeNullOrEmpty($"The Practitioner Reference should not be null or empty but was {reference}.");
-
-                    const string shouldStartWith = "Practitioner/";
-                    reference.ShouldStartWith(shouldStartWith, $"The Practitioner Reference should start with {shouldStartWith} but was {reference}.");
-
-                    _bundleSteps.ResponseBundleContainsReferenceOfType(reference, ResourceType.Practitioner);
-                });
-            });
-        }
-
         [Then(@"the Bundle Metadata should be valid")]
         public void TheScheduleBundleMetadataShouldBeValid()
         {
-            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, "http://fhir.nhs.uk/StructureDefinition/gpconnect-getschedule-bundle-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, FhirConst.StructureDefinitionSystems.kGpcSearchSet);
         }
 
         [Then(@"the excluded actor ""(.*)"" should not be present in the Bundle")]
