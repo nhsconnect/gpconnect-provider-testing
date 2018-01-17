@@ -169,15 +169,6 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(parameterName, _fhirResourceRepository.Patient);
         }
 
-        [Given(@"I add the Family Name ""([^""]*)"" to the Stored Patient")]
-        public void AddTheFamilyNameToTheStoredPatient(string familyName)
-        {
-            foreach (var name in _fhirResourceRepository.Patient.Name)
-            {
-                name.FamilyElement = new FhirString(familyName);
-            }
-        }
-
         [Given(@"I add an Identifier with missing System to the Stored Patient")]
         public void AddAnIdentifierWithMissingSystemToTheStoredPatient()
         {
