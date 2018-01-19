@@ -10,6 +10,7 @@
     using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
+    using static System.Net.WebUtility;
     using static Hl7.Fhir.Model.Appointment;
 
     [Binding]
@@ -315,19 +316,29 @@
         [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for Start ""([^""]*)""")]
         public void AddAQueryParameterToTheRequestUrlWithPrefixForStart(string prefix, string start)
         {
-            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={prefix}{start}";
+            var startKey = UrlEncode("start");
+            var startValue = UrlEncode($"{prefix}{start}");
+
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?${startKey}={startValue}";
         }
 
         [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for Start ""([^""]*)"" and Prefix ""([^""]*)"" for End ""([^""]*)""")]
         public void AddAQueryParameterToTheRequestUrlWithPrefixForStartAndPrefixForEnd(string prefix, string start, string endPrefix, string end)
         {
-            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={prefix}{start}&start={endPrefix}{end}";
+            var startKey = UrlEncode("start");
+            var startValue = UrlEncode($"{prefix}{start}");
+            var endValue = UrlEncode($"{endPrefix}{end}");
+
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?{startKey}={startValue}&{startKey}={endValue}";
         }
 
         [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for the Created Appointment Start")]
         public void AddAQueryParameterToTheRequestUrlWithPrefixForStoredAppointmentStart(string prefix)
         {
-            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?start={prefix}{_fhirResourceRepository.Appointment.StartElement}";
+            var startKey = UrlEncode("start");
+            var startValue = UrlEncode($"{prefix}{_fhirResourceRepository.Appointment.StartElement}");
+
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?{startKey}={startValue}";
         }
 
         private static Dictionary<string, string> ParticipantTypeDictionary => new Dictionary<string, string>
