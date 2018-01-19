@@ -30,11 +30,8 @@ Scenario: I perform a successful cancel appointment and amend the comment
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Comment to "RANDOM COMMENT"
 	When I make the "AppointmentCancel" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointment Status should be Cancelled
-		And the Appointment Cancellation Reason Extension should be valid for "double booked"
-
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: I perform cancel appointment and update the description
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -44,11 +41,8 @@ Scenario: I perform cancel appointment and update the description
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Description to "RANDOM DESCRIPTION"
 	When I make the "AppointmentCancel" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointment Status should be Cancelled
-		And the Appointment Cancellation Reason Extension should be valid for "double booked"
-	
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
 
 Scenario: I perform cancel appointment and update the reason
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
@@ -58,10 +52,8 @@ Scenario: I perform cancel appointment and update the reason
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Reason to "RANDOM REASON"
 	When I make the "AppointmentCancel" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointment Status should be Cancelled
-		And the Appointment Cancellation Reason Extension should be valid for "double booked"
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario Outline: I perform cancel appointment and add participants
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
