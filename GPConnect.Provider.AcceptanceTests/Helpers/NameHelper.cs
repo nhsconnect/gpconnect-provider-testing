@@ -5,18 +5,20 @@
 
     public static class NameHelper
     {
-        public static HumanName CreateUsualName(string givenName, string familyName)
+        public static HumanName CreateOfficialName(string givenName, string familyName)
         {
-
-            return CreateName(HumanName.NameUse.Usual, givenName, familyName);
+            return CreateName(HumanName.NameUse.Official, givenName, familyName);
         }
 
         public static HumanName CreateName(HumanName.NameUse use, string givenName, string familyName)
         {
-            var humanName = new HumanName()
+            var humanName = new HumanName
             {
                 FamilyElement = new FhirString(familyName),
-                GivenElement = new List<FhirString> { new FhirString(givenName) },
+                GivenElement = new List<FhirString>
+                {
+                    new FhirString(givenName)
+                },
                 Use = use
             };
 

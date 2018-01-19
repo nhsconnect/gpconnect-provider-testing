@@ -48,7 +48,7 @@
             {
                 Name = new List<HumanName>
                 {
-                    NameHelper.CreateUsualName("GPConnectGivenName", "GPConnectFamilyName")
+                    NameHelper.CreateOfficialName("GPConnectGivenName", "GPConnectFamilyName")
                 },
                 Gender = AdministrativeGender.Other,
                 BirthDateElement = new Date("2017-05-05"),
@@ -67,7 +67,7 @@
 
             _fhirResourceRepository.Patient.Name = new List<HumanName>
             {
-                NameHelper.CreateUsualName("GPConnectGivenName", "GPConnectFamilyName")
+                NameHelper.CreateOfficialName("GPConnectGivenName", "GPConnectFamilyName")
             };
 
             _fhirResourceRepository.Patient.Gender = AdministrativeGender.Other;
@@ -75,8 +75,8 @@
             _fhirResourceRepository.Patient.BirthDateElement = new Date("2017-05-05");
         }
 
-        [Given(@"I add ""(.*)"" Given Names to the Stored Patient Usual Name")]
-        public void AddGivenNamesToTheStoredPatientUsualName(int extraGivenNames)
+        [Given(@"I add ""(.*)"" Given Names to the Stored Patient Official Name")]
+        public void AddGivenNamesToTheStoredPatientOfficialName(int extraGivenNames)
         {
             const string givenName = "GivenName";
             var givenNames = new List<FhirString>();
@@ -86,7 +86,7 @@
                 givenNames.Add(new FhirString($"{givenName}-{i}"));
             }
 
-            var name = _fhirResourceRepository.Patient.Name.First(n => n.Use == HumanName.NameUse.Usual);
+            var name = _fhirResourceRepository.Patient.Name.First(n => n.Use == HumanName.NameUse.Official);
             name.GivenElement.AddRange(givenNames);
         }
 
@@ -97,8 +97,8 @@
         }
 
 
-        [Given(@"I remove the Usual Name from the Stored Patient")]
-        public void RemoveTheUsualNameFromTheStoredPatient()
+        [Given(@"I remove the Official Name from the Stored Patient")]
+        public void RemoveTheOfficialNameFromTheStoredPatient()
         {
             _fhirResourceRepository.Patient.Name.ForEach(n =>
             {
@@ -109,15 +109,10 @@
         [Given(@"I remove the Family Name from the Active Given Name for the Stored Patient")]
         public void RemoveTheFamilyNameFromTheActiveGivenNameForTheStoredPatient()
         { 
-            foreach (var humanName in _fhirResourceRepository.Patient.Name.Where(IsActiveUsualName))
+            foreach (var humanName in _fhirResourceRepository.Patient.Name.Where(IsActiveOfficialName))
             {
                 humanName.Family = null;
             }
-        }
-
-        private int FindUsualNameIndex(List<HumanName> names)
-        {
-            return names.FindIndex(n => n.Use.HasValue && n.Use.Value.Equals(HumanName.NameUse.Usual));
         }
 
 
@@ -444,9 +439,11 @@
         public void ThePatientDemographicsShouldMatchTheStoredPatient()
         {
             var storedPatient = _fhirResourceRepository.Patient;
-            var spUnIndex = FindUsualNameIndex(storedPatient.Name);
-            var storedUsualName = storedPatient.Name[spUnIndex];
-            var storedFamilyName = storedUsualName.Family;
+
+            var storedPatientFamilyName = storedPatient
+                .Name
+                .First(x => x.Use == HumanName.NameUse.Official)
+                .Family;
 
             Patients.ForEach(patient =>
             {
@@ -460,25 +457,26 @@
 
                 patient.Name.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be at least one name element within the returned patient resource");
 
-                var activeUsualNames = patient.Name.Where(IsActiveUsualName).ToList();
-                var storedPatientActiveUsualName = storedPatient.Name.Where(IsActiveUsualName).First();
-                var firstNamePatientReturned = patient.Name.Where(IsActiveUsualName).First();
+                var activeOfficialNames = patient.Name.Where(IsActiveOfficialName).ToList();
 
-                activeUsualNames.Count.ShouldBe(1, $"There should be a single Active Patient Name with a Use of Usual, but found {activeUsualNames.Count}.");
+                var storedPatientActiveOfficialName = storedPatient.Name.Where(IsActiveOfficialName).First();
+                var firstNamePatientReturned = patient.Name.Where(IsActiveOfficialName).First();
+
+                activeOfficialNames.Count.ShouldBe(1, $"There should be a single Active Patient Name with a Use of Official, but found {activeOfficialNames.Count}.");
              
-                var activeUsualName = activeUsualNames.First();
+                var activeOfficialName = activeOfficialNames.First();
 
                 //Given
               
-                foreach (var given in storedPatientActiveUsualName.Given)
+                foreach (var given in storedPatientActiveOfficialName.Given)
                 {
                     firstNamePatientReturned.Given.ShouldContain(given);
                 }
 
                 //Family
-                activeUsualName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
-                activeUsualName.Family.ShouldNotBeNullOrEmpty("The returned Patient Resource should contain a single family name");
-                activeUsualName.Family.ShouldBe(storedFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
+                activeOfficialName.Family.ShouldNotBeNull("There should be a family name in the returned patient resource.");
+                activeOfficialName.Family.ShouldNotBeNullOrEmpty("The returned Patient Resource should contain a single family name");
+                activeOfficialName.Family.ShouldBe(storedPatientFamilyName, "Returned patient family name does not match created patient family name", StringCompareShould.IgnoreCase);
 
             });
 
@@ -580,7 +578,7 @@
 
             if (name != null)
             {
-                registerPatient.Name.Add(NameHelper.CreateName(HumanName.NameUse.Usual, "GPConnectGivenName", "GPConnectFamilyName"));
+                registerPatient.Name.Add(NameHelper.CreateOfficialName("GPConnectGivenName", "GPConnectFamilyName"));
             }
 
             registerPatient.Gender = patient.Gender ?? AdministrativeGender.Unknown;
@@ -805,12 +803,12 @@
             };
         }
 
-        private static bool IsActiveUsualName(HumanName name)
+        private static bool IsActiveOfficialName(HumanName name)
         {
             var endDateIsValid = name.Period?.End == null || DateTime.Parse(name.Period.End) >= DateTime.UtcNow;
             var startDateIsValid = name.Period?.Start == null || DateTime.Parse(name.Period.Start) <= DateTime.UtcNow;
 
-            return name.Use == HumanName.NameUse.Usual && endDateIsValid && startDateIsValid;
+            return name.Use == HumanName.NameUse.Official && endDateIsValid && startDateIsValid;
         }
     }
 }

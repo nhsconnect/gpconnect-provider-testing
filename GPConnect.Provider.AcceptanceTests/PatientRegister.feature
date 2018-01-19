@@ -243,11 +243,11 @@ Scenario: Register patient which is not the Spine
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient with no usual name
+Scenario: Register patient with no official name
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I remove the Usual Name from the Stored Patient
+		And I remove the Official Name from the Stored Patient
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
@@ -257,7 +257,7 @@ Scenario Outline: Register Patient with multiple given names
 	Given I get the next Patient to register and store it
     Given I configure the default "RegisterPatient" request
         And I set the JWT Requested Record to the NHS Number of the Stored Patient
-        And I add "<ExtraGivenNames>" Given Names to the Stored Patient Usual Name
+        And I add "<ExtraGivenNames>" Given Names to the Stored Patient Official Name
         And I add the Stored Patient as a parameter
     When I make the "RegisterPatient" request
 	Then the response status code should indicate success

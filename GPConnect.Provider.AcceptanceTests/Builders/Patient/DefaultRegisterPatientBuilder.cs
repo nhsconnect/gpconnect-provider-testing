@@ -30,7 +30,7 @@
                 BirthDateElement = new Date(_registerPatient.DOB),
                 Name = new List<HumanName>
                 {
-                    NameHelper.CreateUsualName(_registerPatient.NAME_GIVEN, _registerPatient.NAME_FAMILY)
+                    NameHelper.CreateOfficialName(_registerPatient.NAME_GIVEN, _registerPatient.NAME_FAMILY)
                 },
                 Identifier = new List<Identifier>
                 {
