@@ -127,6 +127,10 @@
         {
             Patients.ForEach(patient =>
             {
+                var officialNameCount = patient.Name.Count(name => name.Use == HumanName.NameUse.Official);
+
+                officialNameCount.ShouldBe(1, $"The Patient Name should contain 1 Official name but found {officialNameCount}.");
+
                 patient.Name.ShouldNotBeNull("Patient name should not be null");
                 patient.Name.ForEach(name =>
                 {
