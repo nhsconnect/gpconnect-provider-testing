@@ -47,7 +47,7 @@ Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the request URL to "/fhir/Patient/<id>/Appointment"
+		And I set the request URL to "/Patient/<id>/Appointment"
 	When I make the "AppointmentSearch" request
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
@@ -61,7 +61,7 @@ Scenario Outline: Appointment retrieve fail due to unexpected identifier in requ
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the request URL to "/fhir/Patient/<id>/Appointment"
+		And I set the request URL to "/Patient/<id>/Appointment"
 	When I make the "AppointmentSearch" request
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
