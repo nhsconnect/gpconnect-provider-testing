@@ -63,13 +63,13 @@ Scenario Outline: Appointment retrieve fail due to unexpected identifier in requ
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the request URL to "Patient/<id>/Appointment"
 	When I make the "AppointmentSearch" request
-	Then the response status code should be "404"
+	Then the response status code should be "<statusCode>"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource
 	Examples:
-		| id |
-		|    |
-		| ** |
+		| id | statusCode |
+		|    | 404        |
+		| ** | 400        |
 	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
