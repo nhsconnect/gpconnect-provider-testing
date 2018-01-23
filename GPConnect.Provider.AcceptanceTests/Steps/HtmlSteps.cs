@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Cryptography;
     using System.Text.RegularExpressions;
     using System.Xml.Linq;
     using Context;
@@ -93,19 +95,41 @@
         }
 
         [Then(@"the html should contain headers in coma seperated list ""([^""]*)""")]
-        public void ThenTheHTMLShouldNotContainHeadersInComaSeperatedList(string listOfHeaders)
+        public void ThenTheHTMLShouldNotContainHeadersInComaSeperatedList(string expectedHeaders)
         {
+            const string h1 = "h1";
+            const string h2 = "h2";
+
+            var headers = expectedHeaders
+                .Split(',')
+                .ToList();
+
+            var hasSingleHeader = headers.Count == 1;
+
             Compositions.ForEach(composition =>
             {
-                foreach (Composition.SectionComponent section in composition.Section)
+                composition.Section.ForEach(section =>
                 {
                     var html = section.Text.Div;
-                    var headers = listOfHeaders.Split(',');
-                    foreach (string header in headers)
+                  
+                    if (hasSingleHeader)    
                     {
-                        html.ShouldContain("<h2>" + header + "</h2>");
+                        var headerHtml = $"<{h1}>{headers[0]}</{h1}>";
+
+                        html.ShouldContain(headerHtml, $"The Section HTML should contain the <{h1}> header {headerHtml}, but did not.");
                     }
-                }
+                    else
+                    {
+                        html.ShouldContain(h1, $"The Section HTML should contain a <{h1}> header, but did not.");
+
+                        headers.ForEach(header =>
+                        {
+                            var headerHtml = $"<{h2}>{header}</{h2}>";
+
+                            html.ShouldContain(headerHtml, $"The Section HTML should contain the <{h2}> header {headerHtml}, but did not.");
+                        });
+                    }
+                });
             });
         }
 
