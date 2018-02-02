@@ -382,7 +382,6 @@ Scenario: Cancel appointment prefer header set to minimal
 	When I make the "AppointmentCancel" request	
 	Then the response status code should indicate success
 		And the response body should be empty
-		And the content-type should be equal to null
 
 Scenario Outline: Cancel appointment check the version id of the cancelled resource is different
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"

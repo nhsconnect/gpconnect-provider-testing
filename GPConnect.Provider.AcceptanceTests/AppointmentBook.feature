@@ -125,7 +125,6 @@ Scenario: Book appointment prefer header set to minimal
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response body should be empty
-		And the content-type should be equal to null
 
 Scenario: Book Appointment and check response contains the manadatory elements
 	Given I get the Patient for Patient Value "patient1"

@@ -196,7 +196,6 @@ Scenario: Amend appointment prefer header set to minimal
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the response body should be empty
-		And the content-type should be equal to null
 
 Scenario: Amend appointment send an update with an invalid if-match header
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
