@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using Builders.Appointment;
-    using Context;
     using Constants;
+    using Context;
     using Enum;
     using Hl7.Fhir.Model;
     using Repository;
@@ -12,6 +12,8 @@
     using TechTalk.SpecFlow;
     using static System.Net.WebUtility;
     using static Hl7.Fhir.Model.Appointment;
+    using System;
+    using GPConnect.Provider.AcceptanceTests.Helpers;
 
     [Binding]
     public class AppointmentsSteps : BaseSteps
@@ -106,6 +108,33 @@
             CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
 
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
+        }
+
+        [Given(@"I create an Appointment for an existing Patient and Organization Code ""([^""]*)""")]
+        public void CreateAnAppointmentForRandomPatientAndOrganizationCode(string code)
+        { 
+
+             var patient = "patient1";
+
+            if (AppSettingsHelper.RandomPatientEnabled == true) {
+                 patient = RandomPatientSteps.ReturnRandomPatient();
+            }
+        
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _searchForFreeSlotsSteps.GetAvailableFreeSlots();
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
+
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+
+            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient();
+
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
         }
 
         [Given(@"I store the Created Appointment")]
@@ -160,11 +189,14 @@
         [Given(@"I set the Created Appointment Reason to ""([^""]*)""")]
         public void SetTheCreatedAppointmentReasonTo(string reason)
         {
-            _fhirResourceRepository.Appointment.Reason = new CodeableConcept
+            _fhirResourceRepository.Appointment.Reason = new List<CodeableConcept>
             {
-                Coding = new List<Coding>
+                new CodeableConcept
                 {
-                    new Coding("valueset", reason, reason)
+                    Coding = new List<Coding>
+                    {
+                        new Coding("valueset", reason, reason)
+                    }
                 }
             };
         }
@@ -270,16 +302,15 @@
 
                     participant.Actor.ShouldNotBeNull("Participant Actor Should Not Be null");
 
-                    if (participant.Type != null)
+                    participant.Type?.ForEach(type =>
                     {
-                        participant.Type.Count.ShouldBeLessThanOrEqualTo(1, $"The Appointment Participant should contain a maximum of 1 Type, but found {participant.Type.Count}.");
-
-                        participant.Type.ForEach(type =>
+                        type.Coding.ForEach(coding =>
                         {
-                            type.Coding.Count.ShouldBeLessThanOrEqualTo(1, $"The Appointment Participant Type should contain a maximum of 1 Coding, but found {type.Coding.Count}.");
-   
+                            type.Coding.Count.ShouldBeLessThanOrEqualTo(1,
+                                $"The Appointment Participant Type should contain a maximum of 1 Coding, but found {type.Coding.Count}.");
+
                         });
-                    }
+                    });
 
                     if (participant.Actor?.Reference != null)
                     {
@@ -295,20 +326,6 @@
                        
                         shouldStartWith.ShouldBeTrue($"The Appointment Participant Actor Reference should start with one of {patient}, {practitioner} or {location}, but was {participant.Actor.Reference}.");
                     }
-                });
-            });
-        }
-
-        [Then(@"the Appointment Reason should be valid")]
-        public void TheAppointmentReasonShouldBeValid()
-        {
-            Appointments.ForEach(appointment =>
-            {
-                appointment.Reason?.Coding?.ForEach(coding =>
-                {
-                    coding.System.ShouldNotBeNullOrEmpty("The Appointment Reason Coding System Should not be null.");
-                    coding.Code.ShouldNotBeNullOrEmpty("The Appointment Reason Coding Code Should not be null.");
-                    coding.Display.ShouldNotBeNullOrEmpty("The Appointment Reason Coding Display Should not be null.");
                 });
             });
         }
@@ -339,6 +356,15 @@
             var startValue = UrlEncode($"{prefix}{_fhirResourceRepository.Appointment.StartElement}");
 
             _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?{startKey}={startValue}";
+        }
+
+        [Then(@"the Appointments returned must be in the future")]
+        public void TheAppointmentMustBeInTheFuture()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Start.Value .ShouldBeGreaterThan(DateTime.UtcNow);
+            });
         }
 
         private static Dictionary<string, string> ParticipantTypeDictionary => new Dictionary<string, string>

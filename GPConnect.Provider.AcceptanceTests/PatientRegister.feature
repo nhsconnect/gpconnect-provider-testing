@@ -88,8 +88,8 @@ Scenario Outline: Register Patient and use the Accept Header to request response
 		And the Patient Demographics should match the Stored Patient
 	Examples:
 		| ContentType           | ResponseFormat |
-		| application/xml+fhir  | XML            |
-		| application/json+fhir | JSON           |
+		| application/fhir+xml  | XML            |
+		| application/fhir+json | JSON           |
 
 Scenario Outline: Register Patient and use the _format parameter to request the response format
 	Given I get the next Patient to register and store it
@@ -110,8 +110,8 @@ Scenario Outline: Register Patient and use the _format parameter to request the 
 		And the Patient Demographics should match the Stored Patient
 	Examples:
 		| ContentType           | ResponseFormat |
-		| application/xml+fhir  | XML            |
-		| application/json+fhir | JSON           |
+		| application/fhir+xml  | XML            |
+		| application/fhir+json | JSON           |
 
 Scenario Outline: Register Patient and use both the Accept header and _format parameter to request the response format
 	Given I get the next Patient to register and store it
@@ -134,14 +134,14 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 		And the Patient Demographics should match the Stored Patient
 	Examples:
 		| ContentType           | AcceptHeader          | Format                | ResponseFormat |
-		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML            |
-		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON           |
-		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML            |
-		| application/xml+fhir  | application/json+fhir | application/json+fhir | JSON           |
-		| application/json+fhir | application/xml+fhir  | application/xml+fhir  | XML            |
-		| application/json+fhir | application/json+fhir | application/json+fhir | JSON           |
-		| application/xml+fhir  | application/json+fhir | application/xml+fhir  | XML            |
-		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON           |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+xml  | XML            |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+json | JSON           |
+		| application/fhir+json | application/fhir+json | application/fhir+xml  | XML            |
+		| application/fhir+xml  | application/fhir+json | application/fhir+json | JSON           |
+		| application/fhir+json | application/fhir+xml  | application/fhir+xml  | XML            |
+		| application/fhir+json | application/fhir+json | application/fhir+json | JSON           |
+		| application/fhir+xml  | application/fhir+json | application/fhir+xml  | XML            |
+		| application/fhir+json | application/fhir+xml  | application/fhir+json | JSON           |
 
 
 Scenario: Register patient and check all elements conform to the gp connect profile
@@ -159,6 +159,7 @@ Scenario: Register patient and check all elements conform to the gp connect prof
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
 		And the Patient Optional Elements should be valid
+		And the Patient Link should be valid and resolvable
 
 Scenario: Register patient with registration details extension
 	Given I get the next Patient to register and store it
@@ -208,7 +209,7 @@ Scenario: Register patient with duplicate patient resource parameters
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Register patient which alread exists on the system as a normal patient
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the patient in the register patient resource format
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -242,21 +243,11 @@ Scenario: Register patient which is not the Spine
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient with demographics which do not match spine PDS trace
+Scenario: Register patient with no official name
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Stored Patient Demographics to not match the NHS number
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario: Register patient with no usual name
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I remove the Usual Name from the Stored Patient
+		And I remove the Official Name from the Stored Patient
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
@@ -266,7 +257,7 @@ Scenario Outline: Register Patient with multiple given names
 	Given I get the next Patient to register and store it
     Given I configure the default "RegisterPatient" request
         And I set the JWT Requested Record to the NHS Number of the Stored Patient
-        And I add "<ExtraGivenNames>" Given Names to the Stored Patient Usual Name
+        And I add "<ExtraGivenNames>" Given Names to the Stored Patient Official Name
         And I add the Stored Patient as a parameter
     When I make the "RegisterPatient" request
 	Then the response status code should indicate success
@@ -289,12 +280,11 @@ Scenario: Register patient no family names
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: Register patient with multiple family names
+Scenario: Register patient containing identifier without mandatory system elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add the Family Name "AddedFamilyName" to the Stored Patient
-		And I add the Family Name "AddedFSecondamilyName" to the Stored Patient
+		And I add an Identifier with missing System to the Stored Patient
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
@@ -340,7 +330,6 @@ Scenario Outline: Register patient with additional not allowed elements
 		| ElementToAdd  |
 		| Animal        |
 		| Communication |
-		| Link          |
 		| Photo         |
 		| Deceased      |
 

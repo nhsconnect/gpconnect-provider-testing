@@ -1,11 +1,12 @@
-﻿using GPConnect.Provider.AcceptanceTests.Constants;
-using GPConnect.Provider.AcceptanceTests.Models;
-
-namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Cache;
+    using Cache.ValueSet;
+    using Constants;
     using Hl7.Fhir.Model;
+    using Models;
     using Shouldly;
     using TechTalk.SpecFlow;
 
@@ -32,7 +33,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             codingList.Count.ShouldBe(1);
             codingList.ForEach(coding =>
             {
-                ValueSetContainsCode(valueSet, coding);
+                ValueSetContainsCodeAndDisplay(valueSet, coding);
             });
         }
 
@@ -45,16 +46,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private static void ValueSetContainsCodeAndDisplay(ValueSet valueSet, Coding coding)
         {
-            coding.System.ShouldBe(valueSet.CodeSystem.System);
-
-            valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code) && valueSetConcept.Display.Equals(coding.Display));
-        }
-
-        public static void ValueSetContainsCode(ValueSet valueSet, Coding coding)
-        {
-            coding.System.ShouldBe(valueSet.CodeSystem.System);
-
-            valueSet.CodeSystem.Concept.ShouldContain(valueSetConcept => valueSetConcept.Code.Equals(coding.Code));
+            valueSet.Expansion.Contains.ShouldContain(component => component.Code.Equals(coding.Code) && component.Display.Equals(coding.Display));
         }
 
         public void CheckForValidMetaDataInResource<T>(T resource, string profileId) where T : Resource
@@ -94,5 +86,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        protected void ValidateCodeConceptExtension(Extension extension, string vsetUri)
+        {
+            extension.Value.ShouldNotBeNull();
+            extension.Value.ShouldBeOfType<CodeableConcept>();
+            var concept = (CodeableConcept)extension.Value;
+
+            var vset = ValueSetCache.Get(vsetUri);
+            ShouldBeExactSingleCodingWhichIsInValueSet(vset, concept.Coding);
+        }
     }
 }

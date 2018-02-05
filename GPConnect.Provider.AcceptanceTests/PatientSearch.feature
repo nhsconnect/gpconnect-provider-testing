@@ -83,8 +83,8 @@ Scenario Outline: The patient search endpoint should accept the accept header
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | ResultFormat |
-		| application/xml+fhir  | XML          |
-		| application/json+fhir | JSON         |
+		| application/fhir+xml  | XML          |
+		| application/fhir+json | JSON         |
 
 Scenario Outline: The patient search endpoint should accept the format parameter
 	 Given I configure the default "PatientSearch" request
@@ -100,8 +100,8 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| FormatParam           | ResultFormat |
-		| application/xml+fhir  | XML          |
-		| application/json+fhir | JSON         |
+		| application/fhir+xml  | XML          |
+		| application/fhir+json | JSON         |
 
 Scenario Outline: The patient search endpoint should accept the format parameter after the identifier parameter
 	 Given I configure the default "PatientSearch" request
@@ -118,10 +118,10 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
-		| application/xml+fhir  | application/xml+fhir  | XML          |
-		| application/json+fhir | application/xml+fhir  | XML          |
-		| application/json+fhir | application/json+fhir | JSON         |
-		| application/xml+fhir  | application/json+fhir | JSON         |
+		| application/fhir+xml  | application/fhir+xml  | XML          |
+		| application/fhir+json | application/fhir+xml  | XML          |
+		| application/fhir+json | application/fhir+json | JSON         |
+		| application/fhir+xml  | application/fhir+json | JSON         |
 
 Scenario Outline: The patient search endpoint should accept the format parameter before the identifier parameter
 	Given I configure the default "PatientSearch" request
@@ -138,10 +138,10 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		And the Patient Identifiers should be valid for Patient "patient2"
 	Examples:
 		| AcceptHeader          | FormatParam           | ResultFormat |
-		| application/xml+fhir  | application/xml+fhir  | XML          |
-		| application/json+fhir | application/xml+fhir  | XML          |
-		| application/json+fhir | application/json+fhir | JSON         |
-		| application/xml+fhir  | application/json+fhir | JSON         |
+		| application/fhir+xml  | application/fhir+xml  | XML          |
+		| application/fhir+json | application/fhir+xml  | XML          |
+		| application/fhir+json | application/fhir+json | JSON         |
+		| application/fhir+xml  | application/fhir+json | JSON         |
 
 Scenario: Patient resource should contain meta data elements
 	Given I configure the default "PatientSearch" request
@@ -156,7 +156,7 @@ Scenario: Patient resource should contain meta data elements
 Scenario Outline: Patient resource should contain NHS number identifier returned as XML
 	Given I configure the default "PatientSearch" request
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
-		And I set the Accept header to "application/xml+fhir"
+		And I set the Accept header to "application/fhir+xml"
 		And I add a Patient Identifier parameter with default System and Value "<Patient>"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
@@ -179,7 +179,6 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And the Patient CareProvider Practitioner should be valid and resolvable
 		And the Patient Name should be valid
 		And the Patient Use should be valid
 		And the Patient Communication should be valid
@@ -189,8 +188,9 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And the Patient Deceased should be valid
 		And the Patient Telecom should be valid
 		And the Patient ManagingOrganization Organization should be valid and resolvable
-		And the Patient CareProvider Practitioner should be valid and resolvable
+		And the Patient GeneralPractitioner Practitioner should be valid and resolvable
 		And the Patient should exclude disallowed fields
+		And the Patient Link should be valid and resolvable
 	Examples:
 		| Patient   |
 		| patient1  |
@@ -211,11 +211,11 @@ Scenario: Patient search response does not return deceased patient
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "0" entries
 
-Scenario: Conformance profile supports the Patient search operation
+Scenario: CapabilityStatement profile supports the Patient search operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Patient" Resource with the "SearchType" Interaction
+		And the CapabilityStatement REST Resources should contain the "Patient" Resource with the "SearchType" Interaction
 
 Scenario Outline: System should error if multiple parameters valid or invalid are sent
 	 Given I configure the default "PatientSearch" request

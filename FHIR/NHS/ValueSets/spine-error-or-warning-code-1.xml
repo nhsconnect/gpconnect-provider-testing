@@ -1,0 +1,124 @@
+<ValueSet xmlns="http://hl7.org/fhir">
+	<meta>
+		<lastUpdated value="2016-12-03T00:00:00+00:00"/>
+	</meta>
+	<url value="https://fhir.nhs.uk/ValueSet/spine-error-or-warning-code-1"/>
+	<name value="Spine Error or Warning Code"/>
+	<status value="draft"/>
+	<description value="Spine error or warning code in response to a request."/>
+	<codeSystem>
+		<system value="https://fhir.nhs.uk/spine-error-or-warning-code-1"/>
+		<concept>
+			<code value="NO_RECORD_FOUND"/>
+			<display value="No record found"/>
+		</concept>
+		<concept>
+			<code value="PATIENT_NOT_FOUND"/>
+			<display value="Patient not found"/>
+		</concept>
+		<concept>
+			<code value="INVALID_NHS_NUMBER"/>
+			<display value="Invalid NHS number"/>
+		</concept>
+		<concept>
+			<code value="INVALID_CODE_SYSTEM"/>
+			<display value="Invalid code system"/>
+		</concept>
+		<concept>
+			<code value="INVALID_CODE_VALUE"/>
+			<display value="Invalid code value"/>
+		</concept>
+		<concept>
+			<code value="INVALID_VALUE"/>
+			<display value="An input field has an invalid value for its type"/>
+		</concept>
+		<concept>
+			<code value="INVALID_IDENTIFIER_SYSTEM"/>
+			<display value="Invalid identifier system"/>
+		</concept>
+		<concept>
+			<code value="INVALID_IDENTIFIER_VALUE"/>
+			<display value="Invalid identifier value"/>
+		</concept>
+		<concept>
+			<code value="CONFLICTING_VALUES"/>
+			<display value="Conflicting values have been specified in different fields"/>
+		</concept>
+		<concept>
+			<code value="INVALID_ELEMENT"/>
+			<display value="Invalid element"/>
+		</concept>
+		<concept>
+			<code value="AUTHOR_CREDENTIALS_ERROR"/>
+			<display value="Author credentials error"/>
+		</concept>
+		<concept>
+			<code value="INVALID_PARAMETER"/>
+			<display value="Invalid parameter"/>
+		</concept>
+		<concept>
+			<code value="REQUEST_UNMATCHED"/>
+			<display value="Request does not match authorisation token"/>
+		</concept>
+		<concept>
+			<code value="MESSAGE_NOT_WELL_FORMED"/>
+			<display value="Message not well formed"/>
+		</concept>
+		<concept>
+			<code value="NO_PATIENT_CONSENT"/>
+			<display value="Patient has not provided consent to share data"/>
+		</concept>
+		<concept>
+			<code value="NO_ORGANISATIONAL_CONSENT"/>
+			<display value="Organisation has not provided consent to share data"/>
+		</concept>
+		<concept>
+			<code value="BAD_REQUEST"/>
+			<display value="Bad request"/>
+		</concept>
+		<concept>
+			<code value="INVALID_RESOURCE"/>
+			<display value="Invalid validation of resource"/>
+		</concept>
+		<concept>
+			<code value="ORGANISATION_NOT_FOUND"/>
+			<display value="Organisation not found"/>
+		</concept>
+		<concept>
+			<code value="PRACTITIONER_NOT_FOUND"/>
+			<display value="Practitioner not found"/>
+		</concept>
+		<concept>
+			<code value="PATIENT_SENSITIVE"/>
+			<display value="Patient sensitive"/>
+		</concept>
+		<concept>
+			<code value="NO_RELATIONSHIP"/>
+			<display value="No legitimate relationship exists with this patient"/>
+		</concept>
+		<concept>
+			<code value="FHIR_CONSTRAINT_VIOLATION"/>
+			<display value="FHIR constraint violated"/>
+		</concept>
+		<concept>
+			<code value="FLAG_ALREADY_SET"/>
+			<display value="Flag value was already set"/>
+		</concept>
+		<concept>
+			<code value="INVALID_REQUEST_STATE"/>
+			<display value="The request exists but is not in an appropriate state for the call to succeed"/>
+		</concept>
+		<concept>
+			<code value="INVALID_REQUEST_TYPE"/>
+			<display value="The type of request is not supported by the API call"/>
+		</concept>
+		<concept>
+			<code value="ACCESS DENIED"/>
+			<display value="Access has been denied to process this request"/>
+		</concept>
+		<concept>
+			<code value="ASID_CHECK_FAILED"/>
+			<display value="The sender or receiver's ASID is not authorised for this interaction"/>
+		</concept>
+	</codeSystem>
+</ValueSet>

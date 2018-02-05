@@ -5,38 +5,38 @@ Scenario: Fhir Get MetaData
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Response Resource should be a Conformance
+		And the Response Resource should be a CapabilityStatement
 
-Scenario: Conformance profile indicates acceptance of xml and json format
+Scenario: CapabilityStatement profile indicates acceptance of xml and json format
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance Format should contain XML and JSON
+		And the CapabilityStatement Format should contain XML and JSON
 
-Scenario: Conformance profile suppliers software versions present
+Scenario: CapabilityStatement profile suppliers software versions present
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance Software should be valid
+		And the CapabilityStatement Software should be valid
 
-Scenario: Conformance profile supported fhir version
+Scenario: CapabilityStatement profile supported fhir version
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance FHIR Version should be "1.0.2"
+		And the CapabilityStatement FHIR Version should be "3.0.1"
 
-Scenario: Conformance profile supports the gpc.getcarerecord operation
+Scenario: CapabilityStatement profile supports the gpc.getcarerecord operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Operations should contain "gpc.getcarerecord"
+		And the CapabilityStatement REST Operations should contain "gpc.getcarerecord"
 
 Scenario: FHIR request content type XML but no accept header or _format sent with request
 	Given I configure the default "GpcGetCareRecord" request
 		And I add an NHS Number parameter for "patient2"		
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I set the request content type to "application/xml+fhir"
+		And I set the request content type to "application/fhir+xml"
 		And I do not send header "Accept"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
@@ -47,7 +47,7 @@ Scenario: FHIR request content type JSON but no accept header or _format sent wi
 		And I add an NHS Number parameter for "patient2"		
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I set the request content type to "application/json+fhir"
+		And I set the request content type to "application/fhir+json"
 		And I do not send header "Accept"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
@@ -58,8 +58,8 @@ Scenario: Fhir content type test where Accept header is JSON and request payload
 		And I add an NHS Number parameter for "patient2"		
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I set the request content type to "application/json+fhir"
-		And I set the Accept header to "application/json+fhir"
+		And I set the request content type to "application/fhir+json"
+		And I set the Accept header to "application/fhir+json"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -69,96 +69,96 @@ Scenario: Fhir content type test where Accept header is XML and request payload 
 		And I add an NHS Number parameter for "patient2"		
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I set the request content type to "application/xml+fhir"
-		And I set the Accept header to "application/xml+fhir"
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+xml"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
 Scenario: Fhir content type test where Accept header is JSON and request payload is XML
 	Given I configure the default "MetadataRead" request
-		And I set the request content type to "application/xml+fhir"
-		And I set the Accept header to "application/json+fhir"
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+json"
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
 Scenario: Fhir content type test where Accept header is XML and request payload is JSON
 	Given I configure the default "MetadataRead" request
-		And I set the request content type to "application/json+fhir"
-		And I set the Accept header to "application/xml+fhir"
+		And I set the request content type to "application/fhir+json"
+		And I set the Accept header to "application/fhir+xml"
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
 Scenario: Fhir content type test where _format parameter is JSON and request payload is JSON
 	Given I configure the default "MetadataRead" request
-		And I set the request content type to "application/json+fhir"
+		And I set the request content type to "application/fhir+json"
 		And I do not send header "Accept"
-		And I add a Format parameter with the Value "application/json+fhir"
+		And I add a Format parameter with the Value "application/fhir+json"
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
 Scenario: Fhir content type test where _format parameter is JSON and request payload is XML
 	Given I configure the default "MetadataRead" request
-		And I set the request content type to "application/xml+fhir"
+		And I set the request content type to "application/fhir+xml"
 		And I do not send header "Accept"
-		And I add a Format parameter with the Value "application/json+fhir"
+		And I add a Format parameter with the Value "application/fhir+json"
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
 Scenario: Fhir content type test where _format parameter is XML and request payload is XML
 	Given I configure the default "MetadataRead" request
-		And I set the request content type to "application/xml+fhir"
+		And I set the request content type to "application/fhir+xml"
 		And I do not send header "Accept"
-		And I add a Format parameter with the Value "application/xml+fhir"
+		And I add a Format parameter with the Value "application/fhir+xml"
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
 Scenario: Fhir content type test where _format parameter is XML and request payload is JSON
 	Given I configure the default "MetadataRead" request
-		And I set the request content type to "application/json+fhir"
+		And I set the request content type to "application/fhir+json"
 		And I do not send header "Accept"
-		And I add a Format parameter with the Value "application/xml+fhir"
+		And I add a Format parameter with the Value "application/fhir+xml"
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
 Scenario: Fhir content type test where Accept header is XML and _format parameter is XML
 	Given I configure the default "MetadataRead" request
-		And I set the request content type to "application/xml+fhir"
-		And I set the Accept header to "application/xml+fhir"
-		And I add a Format parameter with the Value "application/xml+fhir"
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+xml"
+		And I add a Format parameter with the Value "application/fhir+xml"
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
 Scenario: Fhir content type test where Accept header is XML and _format parameter is JSON
 	Given I configure the default "MetadataRead" request
-		And I set the request content type to "application/xml+fhir"
-		And I set the Accept header to "application/xml+fhir"
-		And I add a Format parameter with the Value "application/json+fhir"
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+xml"
+		And I add a Format parameter with the Value "application/fhir+json"
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
 Scenario: Fhir content type test where Accept header is JSON and _format parameter is JSON
 	Given I configure the default "MetadataRead" request
-		And I set the request content type to "application/json+fhir"
-		And I set the Accept header to "application/json+fhir"
-		And I add a Format parameter with the Value "application/json+fhir"
+		And I set the request content type to "application/fhir+json"
+		And I set the Accept header to "application/fhir+json"
+		And I add a Format parameter with the Value "application/fhir+json"
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
 Scenario: Fhir content type test where Accept header is JSON and _format parameter is XML
 	Given I configure the default "MetadataRead" request
-		And I set the request content type to "application/json+fhir"
-		And I set the Accept header to "application/json+fhir"
-		And I add a Format parameter with the Value "application/xml+fhir"
+		And I set the request content type to "application/fhir+json"
+		And I set the Accept header to "application/fhir+json"
+		And I add a Format parameter with the Value "application/fhir+xml"
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
@@ -201,7 +201,7 @@ Scenario: Fhir content type test where Accept header is unsupported media type a
 		And I add an NHS Number parameter for "patient2"		
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I set the request content type to "application/json+fhir"
+		And I set the request content type to "application/fhir+json"
 		And I set the Accept header to "text/xml"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate unsupported media type error
@@ -211,8 +211,8 @@ Scenario: Fhir content type test where _format parameter is an unsupported media
 		And I add an NHS Number parameter for "patient2"		
 		And I add a Record Section parameter for "SUM"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I set the request content type to "application/xml+fhir"
-		And I set the Accept header to "application/xml+fhir"
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+xml"
 		And I add a Format parameter with the Value "text/xml"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate unsupported media type error
@@ -222,8 +222,8 @@ Scenario Outline: Request and response in XML
 		And I add an NHS Number parameter for "patient2"		
 		And I add a Record Section parameter for "<Code>"
 		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I set the request content type to "application/xml+fhir"
-		And I set the Accept header to "application/xml+fhir"
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+xml"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
@@ -250,7 +250,7 @@ Scenario: endpoint should support gzip compression for metadata endpoint and con
 	Then the response status code should indicate success
 		And the response should be gzip encoded
 		And the response body should be FHIR JSON
-		And the Response Resource should be a Conformance
+		And the Response Resource should be a CapabilityStatement
 
 Scenario: endpoint should support gzip compression for getCareRecord operation and contain correct payload
 	Given I configure the default "GpcGetCareRecord" request

@@ -12,7 +12,6 @@ Scenario Outline: Practitioner read successful request validate all of response
 		And the Practitioner Metadata should be valid
 		And the Practitioner Identifiers should be valid
 		And the Practitioner Name should be valid
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner nhsCommunication should be valid
 		And the Practitioner should exclude disallowed elements
 		And the practitioner Telecom should be valid
@@ -68,8 +67,8 @@ Scenario Outline: Practitioner Read using the _format parameter to request respo
 		And the Practitioner SDS User Identifier should be valid for Value "practitioner1"
 	Examples:
 		| Parameter             | ResponseFormat |
-		| application/json+fhir | JSON           |
-		| application/xml+fhir  | XML            |
+		| application/fhir+json | JSON           |
+		| application/fhir+xml  | XML            |
 
 Scenario Outline: Practitioner Read using the Accept header to request response format
 	Given I get the Practitioner for Practitioner Code "practitioner1"
@@ -84,8 +83,8 @@ Scenario Outline: Practitioner Read using the Accept header to request response 
 		And the Practitioner SDS User Identifier should be valid for Value "practitioner1"
 	Examples:
 		| Header                | ResponseFormat |
-		| application/json+fhir | JSON           |
-		| application/xml+fhir  | XML            |
+		| application/fhir+json | JSON           |
+		| application/fhir+xml  | XML            |
 
 Scenario Outline: Practitioner Read sending the Accept header and _format parameter to request response format
 	Given I get the Practitioner for Practitioner Code "practitioner2"
@@ -101,16 +100,16 @@ Scenario Outline: Practitioner Read sending the Accept header and _format parame
 		And the Practitioner SDS User Identifier should be valid for Value "practitioner2"
 	Examples:
 		| Header                | Parameter             | ResponseFormat |
-		| application/json+fhir | application/json+fhir | JSON           |
-		| application/json+fhir | application/xml+fhir  | XML            |
-		| application/xml+fhir  | application/json+fhir | JSON           |
-		| application/xml+fhir  | application/xml+fhir  | XML            |
+		| application/fhir+json | application/fhir+json | JSON           |
+		| application/fhir+json | application/fhir+xml  | XML            |
+		| application/fhir+xml  | application/fhir+json | JSON           |
+		| application/fhir+xml  | application/fhir+xml  | XML            |
 
-Scenario: Conformance profile supports the Practitioner read operation
+Scenario: CapabilityStatement profile supports the Practitioner read operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Practitioner" Resource with the "Read" Interaction
+		And the CapabilityStatement REST Resources should contain the "Practitioner" Resource with the "Read" Interaction
 
 Scenario: Practitioner read response should contain an ETag header
 	Given I get the Practitioner for Practitioner Code "practitioner1"

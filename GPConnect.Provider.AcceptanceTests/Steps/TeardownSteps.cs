@@ -14,6 +14,7 @@
         private static CancelAppointmentSteps _cancelAppointmentSteps;
         private static PatientSteps _patientSteps;
         private static AppointmentRetrieveSteps _appointmentRetrieveSteps;
+        private static bool appointmentCreated;
 
         public TeardownSteps(
             HttpContext httpContext, 
@@ -27,6 +28,11 @@
             _patientSteps = patientSteps;
             _appointmentRetrieveSteps = appointmentRetrieveSteps;
         }
+        [BeforeScenario]
+        public void SetFlagToFalse()
+        {
+            appointmentCreated = false;
+        }
 
         [AfterScenario]
         public void Dummy()
@@ -37,11 +43,16 @@
         [AfterTestRun]
         public static void CancelCreatedAppointments()
         {
-            if (AppSettingsHelper.TeardownEnabled)
+            if (AppSettingsHelper.TeardownEnabled && appointmentCreated == true)
             {
                 StoreAllCreatedAppointments();
                 CancelAllCreatedAppointments();
             }
+        }
+
+        public static void AppointmentCreated()
+        {
+            appointmentCreated = true;
         }
 
         private static void CancelAllCreatedAppointments()

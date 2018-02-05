@@ -27,6 +27,23 @@ Scenario Outline: Appointment retrieve success valid id where single appointment
 		| patient2 |
 		| patient3 |
 
+Scenario Outline: Appointment retrieve appointments returned must be in the future
+	Given I create an Appointment for Patient "<patient>" and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "<patient>"
+		And I store the Patient
+	Given I configure the default "AppointmentSearch" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+	When I make the "AppointmentSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Bundle should contain a minimum of "1" Appointments
+		And the Appointments returned must be in the future
+	Examples:
+		| patient  |
+		| patient1 |
+		| patient2 |
+		| patient3 |
+
 Scenario Outline: Appointment retrieve multiple appointment retrived
 	Given I create "<numberOfAppointments>" Appointments for Patient "<patient>" and Organization Code "ORG1"
 	Given I get the Patient for Patient Value "<patient>"
@@ -44,7 +61,7 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 		| patient6 | 3                    |
 
 Scenario Outline: Appointment retrieve fail due to invalid patient logical id
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the request URL to "Patient/<id>/Appointment"
@@ -58,7 +75,7 @@ Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 		| dd   |
 
 Scenario Outline: Appointment retrieve fail due to unexpected identifier in request
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the request URL to "Patient/<id>/Appointment"
@@ -72,7 +89,7 @@ Scenario Outline: Appointment retrieve fail due to unexpected identifier in requ
 		| ** | 400        |
 	
 Scenario Outline: Appointment retrieve send request with date variations which are invalid
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>"
@@ -151,7 +168,7 @@ Scenario Outline: Appointment retrieve send request with date variations which a
 
 
 Scenario Outline: Appointment retrieve send request and find request using equal to prefix
-	Given I create "1" Appointments for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add a query parameter to the Request URL with Prefix "<prefix>" for the Created Appointment Start
@@ -169,7 +186,7 @@ Scenario Outline: Appointment retrieve send request and find request using equal
 		|        |
 
 Scenario Outline: Appointment retrieve send request with date variations and greater than and less than prefix
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>"
@@ -214,7 +231,7 @@ Scenario Outline: Appointment retrieve send request with date variations and gre
 	
 
 Scenario Outline: Appointment retrieve send request with lower start date boundry and start prefix and upper end date boundary and end prefix
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
@@ -251,7 +268,7 @@ Scenario Outline: Appointment retrieve send request with lower start date boundr
 		| 2015-10-23T11:08:32+00:00 | ge     | 2020-10-23T11:08:32+00:00 | lt      |
 
 Scenario Outline: Appointment retrieve send request with upper end date boundary and end prefix and lower start date boundry and start prefix
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
@@ -289,7 +306,7 @@ Scenario Outline: Appointment retrieve send request with upper end date boundary
 
 
 Scenario Outline: Appointment retrieve send request with different upper end date boundary formats and end prefix and different lower start date boundry formats and start prefix
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
@@ -332,7 +349,7 @@ Scenario Outline: Appointment retrieve send request with different upper end dat
 
 
 Scenario Outline: Appointment retrieve send request with start date and invalid start prefix and end date and invalid end prefix
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add a query parameter to the Request URL with Prefix "<prefix>" for Start "<startDate>" and Prefix "<prefix2>" for End "<endDate>"
@@ -372,7 +389,7 @@ Scenario Outline: Appointment retrieve send request with start date and invalid 
 		| 2015-10-23T11:08:32+00:00 | le     | 2020-10-23T11:08:32+00:00 | le      |
 	
 Scenario Outline: Appointment retrieve accept header and _format parameter to request response format
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Accept header to "<Header>"
@@ -384,13 +401,13 @@ Scenario Outline: Appointment retrieve accept header and _format parameter to re
 		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| Header                | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario Outline: Appointment retrieve accept header to request response format
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Accept header to "<Header>"
@@ -401,11 +418,11 @@ Scenario Outline: Appointment retrieve accept header to request response format
 		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Appointment retrieve _format parameter only to request response format
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add the parameter "_format" with the value "<Parameter>"
@@ -416,11 +433,11 @@ Scenario Outline: Appointment retrieve _format parameter only to request respons
 		And the Bundle should contain a minimum of "1" Appointments
 	Examples:
 		| Parameter             | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario: Appointment retrieve appointment which contains all mandatory resources
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
@@ -433,9 +450,10 @@ Scenario: Appointment retrieve appointment which contains all mandatory resource
 		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
 		And the Appointment Description must be valid
+		And the Appointment Created must be valid
 
 Scenario: Appointment retrieve bundle resource must contain participant with actor present
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
@@ -445,7 +463,7 @@ Scenario: Appointment retrieve bundle resource must contain participant with act
 		And the Appointment Participant Type and Actor should be valid
 
 Scenario: Appointment retrieve bundle valid resources returned in the response
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
@@ -454,7 +472,7 @@ Scenario: Appointment retrieve bundle valid resources returned in the response
 		And the Appointment Participants should be valid and resolvable
 
 Scenario: Appointment retrieve bundle contains appointment with identifer with correct system and value
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
@@ -463,26 +481,16 @@ Scenario: Appointment retrieve bundle contains appointment with identifer with c
 		And the Appointment Identifiers should be valid
 
 Scenario: Appointment retrieve appointment response should contain meta data profile and version id
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the Appointment Metadata should be valid
-	
-Scenario: Appointment retrieve returned resources must contain coding with valid system code and display
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-	When I make the "AppointmentSearch" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the Appointment Reason should be valid
-	
 
 Scenario: Appointment retrieve bundle contains valid start and end dates
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 	When I make the "AppointmentSearch" request
@@ -492,7 +500,7 @@ Scenario: Appointment retrieve bundle contains valid start and end dates
 		And the Appointment End should be valid
 
 Scenario Outline: Appointment retrieve JWT patient type request invalid
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the JWT requested scope to "<JWTType>"
@@ -505,19 +513,19 @@ Scenario Outline: Appointment retrieve JWT patient type request invalid
 		| organization/*.read  |
 		| organization/*.write |
 		| patient/*.write      |
-
+@ignore
 Scenario: Appointment retrieve JWT patient reference must match payload patient nhs number
 	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the JWT requested record NHS number to config patient "patient2"
+		And I set the JWT Requested Record to the NHS Number "patient2"
 	When I make the "AppointmentSearch" request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Appointment retrieve sending additional valid parameters in the request
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add the parameter "_count" with the value "1"
@@ -527,11 +535,11 @@ Scenario: Appointment retrieve sending additional valid parameters in the reques
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 
-Scenario: Conformance profile supports the search appointment operation
+Scenario: CapabilityStatement profile supports the search appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Appointment" Resource with the "SearchType" Interaction
+		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "SearchType" Interaction
 
 Scenario: Appointment retrieve valid response check caching headers exist
 Given I get the Patient for Patient Value "patient15"
@@ -545,7 +553,7 @@ Given I get the Patient for Patient Value "patient15"
 		And the required cacheing headers should be present in the response
 
 Scenario: Appointment retrieve invalid response check caching headers exist
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:search:organization "
@@ -554,3 +562,12 @@ Scenario: Appointment retrieve invalid response check caching headers exist
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		And the required cacheing headers should be present in the response
+
+Scenario: Appointment retrieve and response should contain valid booking orgainzation
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+	Given I configure the default "AppointmentSearch" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+	When I make the "AppointmentSearch" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the Appointment booking organization extension and contained resource must be valid

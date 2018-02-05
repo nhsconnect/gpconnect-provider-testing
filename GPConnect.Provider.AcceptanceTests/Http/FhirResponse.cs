@@ -21,7 +21,7 @@
         public List<Slot> Slots => GetResources<Slot>();
         public List<Appointment> Appointments => GetResources<Appointment>();
         public List<Schedule> Schedules => GetResources<Schedule>();
-        public List<Conformance> Conformances => GetResources<Conformance>();
+        public List<CapabilityStatement> CapabilityStatements => GetResources<CapabilityStatement>();
 
         private List<T> GetResources<T>() where T : Resource
         {
@@ -53,7 +53,7 @@
             {typeof(Slot), ResourceType.Slot},
             {typeof(Appointment), ResourceType.Appointment},
             {typeof(Schedule), ResourceType.Schedule},
-            {typeof(Conformance), ResourceType.Conformance}
+            {typeof(CapabilityStatement), ResourceType.CapabilityStatement}
         };
     }
 }

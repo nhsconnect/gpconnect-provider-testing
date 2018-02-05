@@ -1,6 +1,7 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
+    using System.Data.SqlTypes;
     using System.Linq;
     using Context;
     using Constants;
@@ -10,6 +11,7 @@
     using Shouldly;
     using TechTalk.SpecFlow;
     using static Hl7.Fhir.Model.Appointment;
+    using System;
 
     [Binding]
     public class CancelAppointmentSteps : BaseSteps
@@ -58,7 +60,13 @@
         [Given(@"I set the Created Appointment Type Text to ""(.*)""")]
         public void SetTheCreatedAppointmentTypeTextTo(string value)
         {
-            _fhirResourceRepository.Appointment.Type.Text = value;
+            _fhirResourceRepository.Appointment.ServiceType = new List<CodeableConcept>
+            {
+                new CodeableConcept
+                {
+                    Text = value
+                }
+            };
         }
 
         [Given(@"I add an Appointment Identifier with default System and Value ""(.*)"" to the Created Appointment")]
@@ -93,11 +101,15 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var cancellationReason = appointment.GetStringExtension(FhirConst.StructureDefinitionSystems.kAppointmentCancellationReason);
-
-                cancellationReason.ShouldNotBeNull("The Appointment did not contain a Cancellation Reason Extension.");
-
-                cancellationReason.ShouldBe(value, $"The Cancellation Reason Extension value should be {value} but was {cancellationReason}.");
+                appointment.Extension.ForEach(extension =>
+                {
+                    if (extension.Url.ToString().Equals("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-AppointmentCancellationReason-1"))
+                        {
+                            extension.ShouldNotBeNull("The Appointment did not contain a Cancellation Reason Extension.");
+                            var result = extension.Value.ToString();
+                            result.ShouldBe(value, $"The Cancellation Reason Extension value should be {value} but was {result}.");
+                    }
+                });
             });
         }
 
@@ -231,9 +243,13 @@
         {
             Appointments.ForEach(appointment =>
             {
-                var createdAppointmentReason = _fhirResourceRepository.Appointment.Reason?.Text;
+                if (!_fhirResourceRepository.Appointment.Reason.Count.Equals(0))
+                {
+                    var createdAppointmentReason = _fhirResourceRepository.Appointment.Reason.First().Text;
+                    var returnedAppointmentReason = appointment.Reason.First().Text;
 
-                appointment.Reason?.Text.ShouldBe(createdAppointmentReason, $"The Appointment Reason should be {createdAppointmentReason} but was {appointment.Reason?.Text}");
+                    returnedAppointmentReason.ShouldBe(createdAppointmentReason, $"The Appointment Reason should be {createdAppointmentReason} but was {returnedAppointmentReason}");
+                }
             });
         }
 
@@ -289,6 +305,35 @@
 
                 appointment.VersionId.ShouldNotBe(createdAppointmentVersionId, $"The Appointment Version Id and the Created Appointment Version Id were both {appointment.VersionId}");
             });
+        }
+
+        [Then(@"the Appointment Created should be equal to the Created Appointment Created")]
+        public void TheAppointmentCreatedShouldBeEqualToTheCreatedApppointmentCreated()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                var createdAppointmentCreated = _fhirResourceRepository.Appointment.Created;
+                DateTime dt = Convert.ToDateTime(createdAppointmentCreated);
+                DateTime dt2 = Convert.ToDateTime(appointment.Created);
+                bool dateComparison = compareDates(dt, dt2);
+
+
+                dateComparison.ShouldBe(true, $"The Appointment Created should be {createdAppointmentCreated}, but was {appointment.Created}.");
+            });
+        }
+
+        private bool compareDates(DateTime storedDate, DateTime createdDate)
+        {
+            if (storedDate.Day.Equals(createdDate.Day) 
+                && storedDate.Minute.Equals(createdDate.Minute) 
+                && storedDate.Month.Equals(createdDate.Month)
+                && storedDate.Year.Equals(createdDate.Year))
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
 
         [Given(@"I cancel the Appointment with Logical Id and NHS Number")]

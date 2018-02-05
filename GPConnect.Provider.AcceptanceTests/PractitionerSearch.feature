@@ -60,15 +60,13 @@ Scenario Outline: Practitioner search testing paramater validity before adding i
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid fixed values
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Param1Name | Param1Value           | BodyFormat |
-		| _format    | application/json+fhir | JSON       |
-		| _format    | application/xml+fhir  | XML        |
+		| _format    | application/fhir+json | JSON       |
+		| _format    | application/fhir+xml  | XML        |
 
 Scenario Outline: Practitioner search testing paramater validity after adding identifier
 	Given I configure the default "PractitionerSearch" request
@@ -79,15 +77,13 @@ Scenario Outline: Practitioner search testing paramater validity after adding id
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid fixed values
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Param1Name | Param1Value           | BodyFormat |
-		| _format    | application/json+fhir | JSON       |
-		| _format    | application/xml+fhir  | XML        |
+		| _format    | application/fhir+json | JSON       |
+		| _format    | application/fhir+xml  | XML        |
 
 
 Scenario Outline: Practitioner search add accept header to request and check for correct response format
@@ -99,15 +95,13 @@ Scenario Outline: Practitioner search add accept header to request and check for
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid fixed values
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Practitioner search add accept header and _format parameter to the request and check for correct response format
 	Given I configure the default "PractitionerSearch" request
@@ -119,17 +113,15 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Identifiers should be valid fixed values
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 	Examples:
 		| Header                | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario: Practitioner search multiple practitioners contains metadata and populated fields
 	Given I configure the default "PractitionerSearch" request
@@ -146,15 +138,6 @@ Scenario: Practitioner search returns back user with name element
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Name should be valid
-
-Scenario: Practitioner search returns practitioner role element with valid parameters
-	Given I configure the default "PractitionerSearch" request
-		  And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-	When I make the "PractitionerSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Practitioner PractitionerRoles Roles should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be valid and resolvable
 
 Scenario: Practitioner search should not contain photo or qualification information
 	Given I configure the default "PractitionerSearch" request
@@ -198,11 +181,11 @@ Scenario: Practitioner search include count and sort parameters
 		And the response bundle should contain "1" entries
 		And the response should be a Bundle resource of type "searchset" 
 
-Scenario: Conformance profile supports the Practitioner search operation
+Scenario: CapabilityStatement profile supports the Practitioner search operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Practitioner" Resource with the "SearchType" Interaction
+		And the CapabilityStatement REST Resources should contain the "Practitioner" Resource with the "SearchType" Interaction
 
 Scenario:Practitioner search valid response check caching headers exist
 	Given I configure the default "PractitionerSearch" request		

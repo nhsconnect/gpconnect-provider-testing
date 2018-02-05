@@ -25,7 +25,7 @@
         [Then(@"the response body should be FHIR JSON")]
         public void ThenTheResponseBodyShouldBeFHIRJSON()
         {
-            _httpContext.HttpResponse.ContentType.ShouldStartWith(FhirConst.ContentTypes.kJsonFhir);
+            _httpContext.HttpResponse.ContentType.ShouldStartWith(ContentType.Application.FhirJson);
             Log.WriteLine("Response ContentType={0}", _httpContext.HttpResponse.ContentType);
             _httpContext.HttpResponse.ResponseJSON = JObject.Parse(_httpContext.HttpResponse.Body);
             FhirJsonParser fhirJsonParser = new FhirJsonParser();
@@ -35,13 +35,13 @@
         [Then(@"the response should be the format FHIR JSON")]
         public void TheResponseShouldBeTheFormatFHIRJSON()
         {
-            _httpContext.HttpResponse.ContentType.ShouldStartWith(FhirConst.ContentTypes.kJsonFhir);
+            _httpContext.HttpResponse.ContentType.ShouldStartWith(ContentType.Application.FhirJson);
         }
 
         [Then(@"the response should be the format FHIR XML")]
         public void TheResponseShouldBeTheFormatXMLJSON()
         {
-            _httpContext.HttpResponse.ContentType.ShouldStartWith(FhirConst.ContentTypes.kXmlFhir);
+            _httpContext.HttpResponse.ContentType.ShouldStartWith(ContentType.Application.FhirXml);
         }
 
         [Then(@"the response body should be empty")]
@@ -53,7 +53,7 @@
         [Then(@"the response body should be FHIR XML")]
         public void ThenTheResponseBodyShouldBeFHIRXML()
         {
-            _httpContext.HttpResponse.ContentType.ShouldStartWith(FhirConst.ContentTypes.kXmlFhir);
+            _httpContext.HttpResponse.ContentType.ShouldStartWith(ContentType.Application.FhirXml);
             Log.WriteLine("Response ContentType={0}", _httpContext.HttpResponse.ContentType);
             // TODO Move XML Parsing Out Of Here
             _httpContext.HttpResponse.ResponseXML = XDocument.Parse(_httpContext.HttpResponse.Body);

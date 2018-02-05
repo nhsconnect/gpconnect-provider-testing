@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+  <meta>
+		<lastUpdated value="2016-08-03T00:00:00+01:00"/>
+	</meta>
+ <extension url="http://hl7.org/fhir/StructureDefinition/valueset-oid">
+		<valueUri value="urn:oid:2.16.840.1.113883.2.1.3.2.4.16.25"/>
+</extension>
+  <url value="http://fhir.nhs.net/ValueSet/administrative-gender-ddmap-1"/>
+  <name value="Administrative Gender NHS Data Model and Dictionary"/>
+<status value="active"/>
+<description value="Classification of the sex of a Person. The classification is phenotypical rather than genotypical, i.e. it does not provide codes for medical or scientific purposes. Note that '0 Not Known' means that the sex of a person has not been recorded. '9 Not Specified' means indeterminate, i.e. unable to be classified as either male or female."/>
+  <codeSystem>
+    <system value="http://fhir.nhs.net/ValueSet/administrative-gender-ddmap-1"/>
+    <concept>
+      <code value="1"/>
+      <display value="Male"/>
+    </concept>
+    <concept>
+      <code value="2"/>
+      <display value="Female"/>
+    </concept>
+    <concept>
+      <code value="9"/>
+      <display value="Not Specified"/>
+    </concept>
+    <concept>
+      <code value="0"/>
+      <display value="Not Known"/>
+    </concept>
+  </codeSystem>
+</ValueSet>

@@ -30,7 +30,7 @@
 
             public static string SlotSearch => BaseInteraction + "rest:search:slot";
 
-            public static string MetadataRead => BaseInteraction + "rest:read:metadata";
+            public static string MetadataRead => BaseInteraction + "rest:read:metadata-1";
 
             public const string kFhirPractitioner = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner";
 

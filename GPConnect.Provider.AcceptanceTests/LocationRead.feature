@@ -54,8 +54,8 @@ Scenario Outline: Location Read using the _format parameter to request response 
 		And the Location Identifier should be valid for Value "SIT1"
 	Examples:
 		| Format	            | ResponseFormat |
-		| application/json+fhir | JSON           |
-		| application/xml+fhir  | XML            |
+		| application/fhir+json | JSON           |
+		| application/fhir+xml  | XML            |
 
 Scenario Outline: Location Read sending the Accept header and _format parameter to request response format
 	Given I set the Get Request Id to the Logical Identifer for Location "SIT3"
@@ -70,16 +70,16 @@ Scenario Outline: Location Read sending the Accept header and _format parameter 
 		And the Location Identifier should be valid for Value "SIT3"
 	Examples:
 		| Header                | Format                | ResponseFormat |
-		| application/json+fhir | application/json+fhir | JSON           |
-		| application/json+fhir | application/xml+fhir  | XML            |
-		| application/xml+fhir  | application/json+fhir | JSON           |
-		| application/xml+fhir  | application/xml+fhir  | XML            |
+		| application/fhir+json | application/fhir+json | JSON           |
+		| application/fhir+json | application/fhir+xml  | XML            |
+		| application/fhir+xml  | application/fhir+json | JSON           |
+		| application/fhir+xml  | application/fhir+xml  | XML            |
 
-Scenario: Conformance profile supports the Location read operation
+Scenario: CapabilityStatement profile supports the Location read operation
 	Given I configure the default "Metadataread" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Location" Resource with the "Read" Interaction
+		And the CapabilityStatement REST Resources should contain the "Location" Resource with the "Read" Interaction
 
 Scenario Outline: Location read resource conforms to GP-Connect specification
 	Given I set the Get Request Id to the Logical Identifer for Location "SIT2"
@@ -101,8 +101,8 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 		And the Location PartOf Location should be valid
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario: Location read should contain ETag
 	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"

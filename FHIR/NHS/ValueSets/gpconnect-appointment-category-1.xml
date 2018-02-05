@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+<meta>
+		<lastUpdated value="2016-08-03T00:00:00+01:00"/>
+</meta>
+<url value="http://fhir.nhs.net/ValueSet/gpconnect-appointment-category-1"/>
+<name value="GP Connect Appointment Category"/>
+<status value="draft"/>
+<description value="The category of the appointment."/>
+<codeSystem>
+<system value="http://fhir.nhs.net/ValueSet/gpconnect-appointment-category-1"/>
+<concept>
+<code value="CLI"/>
+<display value="Clinical"/>
+</concept>
+<concept>
+<code value="ADM"/>
+<display value="Administrative"/>
+</concept>
+<concept>
+<code value="VIR"/>
+<display value="Virtual"/>
+</concept>
+<concept>
+<code value="REM"/>
+<display value="Reminder"/>
+</concept>
+<concept>
+<code value="MSG"/>
+<display value="Message"/>
+</concept>
+</codeSystem>
+</ValueSet>

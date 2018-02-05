@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+	<meta>
+		<lastUpdated value="2016-08-03T00:00:00+01:00"/>
+	</meta>
+	<url value="https://fhir.nhs.uk/ValueSet/gpconnect-error-or-warning-code-1"/>
+	<version value="1.0.0"/>
+	<name value="GP Connect Error or Warning Code Code"/>
+	<status value="active"/>
+	<publisher value="NHS Digital"/>
+	<description value="GP Connect error or warning code in response to a request."/>
+	<copyright value="Copyright © 2017 Health and Social Care Information Centre"/>
+	<codeSystem>
+		<system value="https://fhir.nhs.uk/gpconnect-error-or-warning-code-1"/>
+		<concept>
+			<code value="GPC-001"/>
+			<display value="Not found"/>
+		</concept>
+		<concept>
+			<code value="GPC-002"/>
+			<display value="Invalid element"/>
+		</concept>
+		<concept>
+			<code value="GPC-003"/>
+			<display value="Missing element"/>
+		</concept>
+	</codeSystem>
+</ValueSet>

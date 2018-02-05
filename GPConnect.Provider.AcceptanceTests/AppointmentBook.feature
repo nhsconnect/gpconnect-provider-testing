@@ -2,7 +2,7 @@
 Feature: AppointmentBook
 
 Scenario: Book single appointment for patient
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -14,7 +14,7 @@ Scenario: Book single appointment for patient
 		And the Response Resource should be an Appointment
 		
 Scenario Outline: Book Appointment with invalid url for booking appointment
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -30,7 +30,7 @@ Scenario Outline: Book Appointment with invalid url for booking appointment
 		| appointmentqq/! |
 
 Scenario Outline: Book appointment accept header and _format parameter to request response format
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -47,13 +47,13 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 		And the Appointment Status should be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario Outline: Book appointment _format parameter only but varying request content types
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -71,13 +71,13 @@ Scenario Outline: Book appointment _format parameter only but varying request co
 		And the Appointment Slots should be valid
 	Examples:
 		| ContentType           | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario Outline: Book appointment accept header to request response format
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -94,11 +94,11 @@ Scenario Outline: Book appointment accept header to request response format
 		And the Appointment Slots should be valid
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario: Book appointment prefer header set to representation
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -114,7 +114,7 @@ Scenario: Book appointment prefer header set to representation
 		And the content-length should not be equal to zero
 
 Scenario: Book appointment prefer header set to minimal
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -125,10 +125,9 @@ Scenario: Book appointment prefer header set to minimal
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the response body should be empty
-		And the content-type should be equal to null
 
 Scenario: Book Appointment and check response contains the manadatory elements
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -146,9 +145,10 @@ Scenario: Book Appointment and check response contains the manadatory elements
 		And the Appointment Slots should be valid
 		And the Appointment Description must be valid
 		And the booking organization extension must be valid
+		And the Appointment Created must be valid
 
 Scenario: Book Appointment and check returned appointment resource contains meta data
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -163,7 +163,7 @@ Scenario: Book Appointment and check returned appointment resource contains meta
 
 #improve name to be more descriptive
 Scenario: Book Appointment and appointment participant is valid
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -177,7 +177,7 @@ Scenario: Book Appointment and appointment participant is valid
 		And the Appointment Participant Type and Actor should be valid
 
 Scenario: Book Appointment without practitioner participant
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -190,7 +190,7 @@ Scenario: Book Appointment without practitioner participant
 		And the Response Resource should be an Appointment
 
 Scenario Outline: Book Appointment and remove manadatory resources from the appointment booking
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -208,7 +208,7 @@ Scenario Outline: Book Appointment and remove manadatory resources from the appo
 		| Location            |
 
 Scenario: Book Appointment and remove all participants
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -224,14 +224,14 @@ Scenario: Book Appointment and remove all participants
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment and set an incorrect appointment id
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Id to "1111222233334444"
+		And I set the Created Appointment Id to "ZZ"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
@@ -239,7 +239,7 @@ Scenario: Book appointment and set an incorrect appointment id
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Book appointment for patient and send extra fields in the resource
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -252,7 +252,7 @@ Scenario: Book appointment for patient and send extra fields in the resource
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario Outline: Book appointment with invalid slot reference
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -272,7 +272,7 @@ Scenario Outline: Book appointment with invalid slot reference
 		| Slot/hello       |
 
 Scenario: Book single appointment for patient and check the location reference is valid
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -286,7 +286,7 @@ Scenario: Book single appointment for patient and check the location reference i
 		And the Appointment Location Participant should be valid and resolvable
 	
 Scenario: Book appointment with missing start element in appointment resource
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -300,7 +300,7 @@ Scenario: Book appointment with missing start element in appointment resource
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment with missing end element in appointment resource
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -314,7 +314,7 @@ Scenario: Book appointment with missing end element in appointment resource
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment with missing status element in appointment resource
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -328,7 +328,7 @@ Scenario: Book appointment with missing status element in appointment resource
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment with missing slot element in appointment resource
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -342,7 +342,7 @@ Scenario: Book appointment with missing slot element in appointment resource
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book Appointment and remove identifier value from the appointment booking
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -356,7 +356,7 @@ Scenario: Book Appointment and remove identifier value from the appointment book
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario Outline: Book Appointment and remove reason coding element from the appointment booking
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -376,7 +376,7 @@ Scenario Outline: Book Appointment and remove reason coding element from the app
 
 #Miss-leading test name - participant status is not removed but nullified
 Scenario: Book Appointment and remove participant status from the appointment booking
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -389,10 +389,10 @@ Scenario: Book Appointment and remove participant status from the appointment bo
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment and send an invalid bundle resource
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -405,7 +405,7 @@ Scenario: Book appointment and send an invalid bundle resource
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Book appointment and send an invalid appointment resource
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -418,14 +418,14 @@ Scenario: Book appointment and send an invalid appointment resource
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-Scenario: Conformance profile supports the book appointment operation
+Scenario: CapabilityStatement profile supports the book appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction		
+		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Update" Interaction		
 
 Scenario: Book appointment valid response check caching headers exist
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -438,7 +438,7 @@ Scenario: Book appointment valid response check caching headers exist
 		And the required cacheing headers should be present in the response
 
 Scenario: Book appointment invalid response check caching headers exist
-Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -453,7 +453,7 @@ Given I get the Patient for Patient Value "patient1"
 		And the required cacheing headers should be present in the response
 
 Scenario: Book appointment with name removed from booking organization
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -468,7 +468,7 @@ Scenario: Book appointment with name removed from booking organization
 
 
 Scenario: Book appointment with telecom removed from booking organization
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle

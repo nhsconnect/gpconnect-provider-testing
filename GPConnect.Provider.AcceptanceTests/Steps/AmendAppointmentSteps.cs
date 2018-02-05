@@ -1,6 +1,7 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Context;
     using Hl7.Fhir.Model;
     using Shouldly;
@@ -16,15 +17,13 @@
         {
             _httpContext = httpContext;
         }
-
-     
-
+        
         [Then(@"the Appointment Reason text should equal ""(.*)""")]
         public void TheAppointmentReasonTextShouldBeValidFor(string value)
         {
             Appointments.ForEach(appointment =>
             {
-                appointment.Reason?.Text.ShouldBe(value, $@"The Appointment Reason Text should be ""{value}"" but was ""{appointment.Reason?.Text}"".");
+                appointment.Reason.Select(reason => reason.Text).ShouldContain(value, $@"The Appointment Reason Text should contain ""{value}"" but did not.");
             });
         }
         

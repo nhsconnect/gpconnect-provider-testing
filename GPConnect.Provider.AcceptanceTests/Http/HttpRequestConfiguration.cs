@@ -137,9 +137,8 @@
             RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspFrom, ConsumerASID);
             RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTo, ProviderASID);
 
-            RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, FhirConst.ContentTypes.kJsonFhir);
-            RequestContentType = FhirConst.ContentTypes.kJsonFhir;
+            RequestHeaders.ReplaceHeader(HttpConst.Headers.kAccept, ContentType.Application.FhirJson);
+            RequestContentType = ContentType.Application.FhirJson;
         }
-
     }
 }

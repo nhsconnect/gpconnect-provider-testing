@@ -130,13 +130,16 @@
             _fhirResourceRepository.Appointment.Identifier = identifiers;
         }
 
-        private static CodeableConcept GetReason(string system, string code, string display)
+        private static List<CodeableConcept> GetReason(string system, string code, string display)
         {
-            return new CodeableConcept
+            return new List<CodeableConcept>
             {
-                Coding = new List<Coding>
+                new CodeableConcept
                 {
-                    new Coding(system, code, display)
+                    Coding = new List<Coding>
+                    {
+                        new Coding(system, code, display)
+                    }
                 }
             };
         }
