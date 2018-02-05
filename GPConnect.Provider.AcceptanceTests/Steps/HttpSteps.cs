@@ -106,6 +106,8 @@
 
             var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
+            TeardownSteps.AppointmentCreated();
+
             httpRequest.MakeRequest();
         }
 
