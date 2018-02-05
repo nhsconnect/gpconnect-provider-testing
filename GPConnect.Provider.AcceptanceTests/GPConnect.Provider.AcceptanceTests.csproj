@@ -73,12 +73,20 @@
       <HintPath>..\packages\CsvHelper.2.16.3.0\lib\net45\CsvHelper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Hl7.Fhir.DSTU2.Core, Version=0.90.5.2, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hl7.Fhir.DSTU2.0.90.5\lib\net45\Hl7.Fhir.DSTU2.Core.dll</HintPath>
+    <Reference Include="Hl7.Fhir.STU3.Core, Version=0.93.5.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.STU3.0.93.5\lib\net45\Hl7.Fhir.STU3.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Hl7.Fhir.DSTU2.Specification, Version=0.90.5.2, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hl7.Fhir.Specification.DSTU2.0.90.5\lib\net45\Hl7.Fhir.DSTU2.Specification.dll</HintPath>
+    <Reference Include="Hl7.Fhir.STU3.Specification, Version=0.93.5.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.Specification.STU3.0.93.5\lib\net45\Hl7.Fhir.STU3.Specification.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hl7.Fhir.Support, Version=0.4.4.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.Support.0.4.4\lib\net45\Hl7.Fhir.Support.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hl7.FhirPath, Version=0.4.4.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.FhirPath.0.4.4\lib\net45\Hl7.FhirPath.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Logging, Version=1.0.0.127, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -106,18 +114,25 @@
       <HintPath>..\packages\Shouldly.2.8.3\lib\net451\Shouldly.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.0.0.127, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.0.0\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="TechTalk.SpecFlow, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
@@ -143,6 +158,9 @@
     </Compile>
     <Compile Include="Builders\Appointment\DefaultAppointmentBuilder.cs" />
     <Compile Include="Builders\Patient\DefaultRegisterPatientBuilder.cs" />
+    <Compile Include="Cache\ValueSet\Resolvers\ValueSetResolvers.cs" />
+    <Compile Include="Cache\ValueSet\ValueSetCache.cs" />
+    <Compile Include="Constants\ContentType.cs" />
     <Compile Include="Constants\SpineConst.cs" />
     <Compile Include="Constants\FhirConst.cs" />
     <Compile Include="Constants\HttpConst.cs" />
@@ -152,6 +170,8 @@
     <Compile Include="Context\HttpContext.cs" />
     <Compile Include="Context\IHttpContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
+    <Compile Include="Cache\ValueSet\ValueSetExpander\ConceptFilterFactory.cs" />
+    <Compile Include="Cache\ValueSet\ValueSetExpander\CustomValueSetExpander.cs" />
     <Compile Include="Data\LocationLogicalIdentifierMap.cs" />
     <Compile Include="Data\OrganizationSiteCodeMap.cs" />
     <Compile Include="Data\RegisterPatient.cs" />
@@ -161,6 +181,7 @@
     <Compile Include="Data\PDS.cs" />
     <Compile Include="Enum\GpConnectInteraction.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ValueSetExtensions.cs" />
     <Compile Include="Factories\HttpRequestConfigurationFactory.cs" />
@@ -442,6 +463,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>libcurl.dll</TargetPath>
     </ContentWithTargetPath>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Custom\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!--To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+	<meta>
+		<lastUpdated value="2016-08-03T00:00:00+01:00"/>
+	</meta>
+	<extension url="http://hl7.org/fhir/StructureDefinition/valueset-oid">
+		<valueUri value="urn:oid:2.16.840.1.113883.2.1.3.2.4.15.11.87"/>
+	</extension>
+	<url value="http://fhir.nhs.net/ValueSet/cda-encounter-type-snct-1"/>
+	<name value="CDA Encounter Type SnCT"/>
+	<status value="active"/>
+	<description value="A code from the SNOMED Clinical Terminology UK coding system that describes an encounter between a care professional and the patient (or patient's record). The patient may be represented by a third party such as a carer or family member. Any code from the SNOMED CT UK 'CDA Encounter Type' subset with subset original id 1341000000130; the corresponding SNOMED CT UK Refset fully specified name is 'Clinical document architecture encounter type simple reference set (foundation metadata concept)' with Refset Id 999000351000000101."/>
+	<copyright value="This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (IHTSDO), and distributed by agreement between IHTSDO and HL7. Implementer use of SNOMED CT is not covered by this agreement."/>
+	<compose>
+		<include>
+			<system value="http://snomed.info/sct"/>
+			<filter>
+				<property value="concept"/>
+				<op value="in"/>
+				<value value="999000351000000101"/>
+			</filter>
+		</include>
+	</compose>
+</ValueSet>

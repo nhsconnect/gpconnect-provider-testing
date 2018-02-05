@@ -22,8 +22,27 @@ Scenario Outline: I perform a successful cancel appointment
 		| patient8    |
 		| patient9    |
 
+Scenario Outline: I perform a successful cancel appointment and all returned appointments must be in the future	
+	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+	When I make the "AppointmentCancel" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Status should be Cancelled
+		And the Appointments returned must be in the future
+	Examples:
+		| PatientName |
+		| patient1    |
+		| patient2    |
+		| patient3    |
+		| patient8    |
+		| patient9    |
+
 Scenario: I perform a successful cancel appointment and amend the comment
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -34,7 +53,7 @@ Scenario: I perform a successful cancel appointment and amend the comment
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: I perform cancel appointment and update the description
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -45,7 +64,7 @@ Scenario: I perform cancel appointment and update the description
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
 
 Scenario: I perform cancel appointment and update the reason
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -55,8 +74,8 @@ Scenario: I perform cancel appointment and update the reason
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario Outline: I perform cancel appointment and add participants
-		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+Scenario: I perform cancel appointment and add participants
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -67,12 +86,9 @@ Scenario Outline: I perform cancel appointment and add participants
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| PatientName |
-		| patient1    |
 
-Scenario Outline: I perform cancel appointment and update the priority
-		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+Scenario: I perform cancel appointment and update the priority
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -81,12 +97,9 @@ Scenario Outline: I perform cancel appointment and update the priority
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| PatientName |
-		| patient1    |
 
-Scenario Outline: I perform cancel appointment and update the minutes duration
-		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+Scenario: I perform cancel appointment and update the minutes duration
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -95,12 +108,10 @@ Scenario Outline: I perform cancel appointment and update the minutes duration
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| PatientName |
-		| patient1    |
 
-Scenario Outline: I perform cancel appointment and update the type text
-		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
+
+Scenario: I perform cancel appointment and update the type text
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -109,12 +120,9 @@ Scenario Outline: I perform cancel appointment and update the type text
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| PatientName |
-		| patient1    |
 
 Scenario Outline: Cancel appointment making a request to an invalid URL
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -129,7 +137,7 @@ Scenario Outline: Cancel appointment making a request to an invalid URL
 		| Appointments/#   |
 
 Scenario Outline: Cancel appointment using the _format parameter to request response format
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -144,11 +152,11 @@ Scenario Outline: Cancel appointment using the _format parameter to request resp
 		And the Appointment Metadata should be valid
 	Examples:
 		| Parameter             | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Cancel appointment using the accept header to request response format
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -163,11 +171,11 @@ Scenario Outline: Cancel appointment using the accept header to request response
 		And the Appointment Metadata should be valid
 	Examples:
 		| Header                | BodyFormat |
-		| application/json+fhir | JSON       |
-		| application/xml+fhir  | XML        |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
 
 Scenario Outline: Cancel appointment using the accept header and _format parameter to request response format
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -183,13 +191,13 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 		And the Appointment Metadata should be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 		
 Scenario Outline: Cancel appointment using the accept header and _format parameter and content-type to request response format
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -206,17 +214,17 @@ Scenario Outline: Cancel appointment using the accept header and _format paramet
 		And the Appointment Metadata should be valid
 	Examples:
 		| ContentType           | AcceptHeader          | FormatParam           | Format |
-		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML    |
-		| application/json+fhir | application/json+fhir | application/json+fhir | JSON   |
-		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON   |
-		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML    |
-		| application/xml+fhir  | application/json+fhir | application/json+fhir | JSON   |
-		| application/json+fhir | application/xml+fhir  | application/xml+fhir  | XML    |
-		| application/xml+fhir  | application/json+fhir | application/xml+fhir  | XML    |
-		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON   |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+xml  | XML    |
+		| application/fhir+json | application/fhir+json | application/fhir+json | JSON   |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+json | JSON   |
+		| application/fhir+json | application/fhir+json | application/fhir+xml  | XML    |
+		| application/fhir+xml  | application/fhir+json | application/fhir+json | JSON   |
+		| application/fhir+json | application/fhir+xml  | application/fhir+xml  | XML    |
+		| application/fhir+xml  | application/fhir+json | application/fhir+xml  | XML    |
+		| application/fhir+json | application/fhir+xml  | application/fhir+json | JSON   |
 
 Scenario Outline: Cancel appointment check cancellation reason is equal to the request cancellation reason
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -234,7 +242,7 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 		| Too tired   |
 
 Scenario Outline: Cancel appointment invalid cancellation extension url
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -250,7 +258,7 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 		| http://fhir.nhs.uk/StructuraeDefinition/extension-gpconnect-appointment-cancellation-reason-1-010 | Too busy |
 
 Scenario: Cancel appointment missing cancellation extension reason
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -261,7 +269,7 @@ Scenario: Cancel appointment missing cancellation extension reason
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 Scenario: Cancel appointment verify resource is updated when an valid ETag value is provided
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -274,7 +282,7 @@ Scenario: Cancel appointment verify resource is updated when an valid ETag value
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"	
 		
 Scenario: Cancel appointment verify resource is not updated when an out of date ETag value is provided
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -285,7 +293,7 @@ Scenario: Cancel appointment verify resource is not updated when an out of date 
 		And the response should be a OperationOutcome resource with error code "FHIR_CONSTRAINT_VIOLATION"
 
 Scenario: Cancel appointment compare request appointment to returned appointment
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -301,10 +309,11 @@ Scenario: Cancel appointment compare request appointment to returned appointment
 		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
 		And the Appointment Slots should equal the Created Appointment Slots
 		And the Appointment Reason should equal the Created Appointment Reason
-		And the Appointment Participants should be equal to the Created Appointment Participants		
+		And the Appointment Participants should be equal to the Created Appointment Participants
+		And the Appointment Created should be equal to the Created Appointment Created
 
 Scenario: Cancel appointment response body must contain valid slot reference
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -317,8 +326,8 @@ Scenario: Cancel appointment response body must contain valid slot reference
 		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
 
-Scenario Outline: Cancel appointment prefer header set to representation
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+Scenario: Cancel appointment prefer header set to representation
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -335,18 +344,10 @@ Scenario Outline: Cancel appointment prefer header set to representation
 		And the Appointment End should be valid
 		And the Appointment Slots should be valid
 		And the Appointment Participants should be valid and resolvable
-		And the Appointment Reason should be valid
 		And the Appointment Metadata should be valid
-	Examples:
-		| PatientName |
-		| patient1    |
-		| patient2    |
-		| patient3    |
-		| patient8    |
-		| patient9    |
 
 Scenario: Cancel appointment prefer header set to minimal
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -355,7 +356,6 @@ Scenario: Cancel appointment prefer header set to minimal
 	When I make the "AppointmentCancel" request	
 	Then the response status code should indicate success
 		And the response body should be empty
-		And the content-type should be equal to null
 
 Scenario Outline: Cancel appointment check the version id of the cancelled resource is different
 		Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
@@ -378,14 +378,14 @@ Scenario Outline: Cancel appointment check the version id of the cancelled resou
 		| patient10   |
 		| patient12   |
 
-Scenario: Conformance profile supports the cancel appointment operation
+Scenario: CapabilityStatement profile supports the cancel appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Appointment" Resource with the "Update" Interaction		
+		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Update" Interaction		
 
 Scenario: Cancel appointment valid response check caching headers exist
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -399,7 +399,7 @@ Scenario: Cancel appointment valid response check caching headers exist
 		And the required cacheing headers should be present in the response
 
 Scenario:Cancel appointment invalid response check caching headers exist
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient

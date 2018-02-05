@@ -202,30 +202,14 @@
             _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
         }
 
-        [Given(@"I set the JWT Requesting Practitioner with missing Practitioner Role")]
-        public void SetTheJwtRequestingPractitionerWithMissingPractitionerRole()
-        {
-            var practitioner = FhirHelper.GetDefaultPractitioner();
-            practitioner.PractitionerRole = null;
-
-            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
-        }
-
-        [Given(@"I set the JWT Requesting Practitioner Pratitioner Role with missing SDS Job Role")]
-        public void SetTheJwtRequestingPractitionerPractitionerRoleWithMissingSdsJobRole()
-        {
-            var practitioner = FhirHelper.GetDefaultPractitioner();
-            practitioner.PractitionerRole = FhirHelper.GetPractitionerRoleComponent("http://invalidValueSetServer.nhs.uk", "NonSDSJobRoleName");
-
-            _jwtHelper.SetRequestingPractitioner("1", practitioner.ToFhirJson());
-        }
-
         [Given(@"I set the JWT Requesting Identity Resource Type as an invalid Resource Type")]
         public void SetTheJwtRequestingPractitionerResourceTypeAsAnInvalidResourceType()
         {
             _jwtHelper.SetRequestingPractitioner(_jwtHelper.RequestingIdentityId, FhirHelper.ChangeResourceTypeString(_jwtHelper.RequestingIdentity, FhirConst.Resources.kInvalidResourceType));
         }
 
+
+       
         [Given(@"I set the JWT with missing Requesting System URL")]
         public void SetTheJwtWIthMissingRequestingSystemUrl()
         {
@@ -297,18 +281,22 @@
             _jwtHelper.RequestedPatientNHSNumber = identifier?.Value;
         }
 
-        [Given(@"I set the JWT requested record patient NHS number to ""(.*)""")]
+        [Given(@"I set the JWT Requested Record to the NHS Number ""(.*)""")]
         public void SetTheJwtRequestedRecordPatientNhsNumberTo(string nhsNumber)
         {
             _jwtHelper.RequestedPatientNHSNumber = nhsNumber;
             _headerHelper.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
         }
 
-        [Given(@"I set the JWT requested record NHS number to config patient ""(.*)""")]
-        public void SetTheJwtRequestedRecordNhsnumberToConfigPatient(string patient)
+
+        [Given(@"I set the JWT Requesting Organization Identifier system to match the rc5 specification")]
+        public void SetJWTRequestingOrganizationToOldURL()
         {
-            _jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
-            _headerHelper.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+            var organization = FhirHelper.GetDefaultOrganization();
+            organization.Identifier[0].System = FhirConst.IdentifierSystems.kOdsOrgzCodeBackwardCom;
+
+            _jwtHelper.RequestingOrganization = organization.ToFhirJson();
         }
+              
     }
 }

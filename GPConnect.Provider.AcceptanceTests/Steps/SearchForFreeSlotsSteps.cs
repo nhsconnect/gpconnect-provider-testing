@@ -80,12 +80,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Slots.Count.ShouldBeGreaterThanOrEqualTo(1, "There should should be at least 1 Slot in the Bundle but found 0.");
         }
 
-        [Then(@"the Slot FreeBusyType should be Free")]
+        [Then(@"the Slot Status should be Free")]
         public void TheSlotFreeBusyTypeShouldBeFree()
         {
             Slots.ForEach(slot =>
             {
-                slot.FreeBusyType.ShouldBe(SlotStatus.Free, $"The Slot FreeBusyType should be {SlotStatus.Free.ToString()}, but was {slot.FreeBusyType?.ToString()}");
+                slot.Status.ShouldBe(SlotStatus.Free, $"The Slot Status should be {SlotStatus.Free.ToString()}, but was {slot.Status?.ToString()}");
             });
         }
 
@@ -140,9 +140,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Schedules.ForEach(schedule =>
             {
                 schedule.Actor.ShouldNotBeNull();
-                schedule.Actor.Reference.ShouldNotBeNull();
-                schedule.Actor.Reference.ShouldStartWith("Location/");
-                _bundleSteps.ResponseBundleContainsReferenceOfType(schedule.Actor.Reference, ResourceType.Location);
+
+                var locationReference = schedule.Actor.FirstOrDefault(actor => actor.Reference.StartsWith("Location/"))?.Reference;
+
+                locationReference.ShouldNotBeNullOrEmpty("The Schedule Actors should contain a Location Reference, but did not.");
+
+                _bundleSteps.ResponseBundleContainsReferenceOfType(locationReference, ResourceType.Location);
             });
         }
 
@@ -172,72 +175,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then("the Schedule Type should be valid")]
-        public void TheScheduleTypeShouldBeValid()
+        [Then("the Schedule ServiceType should be valid")]
+        public void TheScheduleServiceTypeShouldBeValid()
         {
             Schedules.ForEach(schedule =>
             {
-                schedule.Type?.Count.ShouldBeLessThanOrEqualTo(1, $"The Schedule should have a maximum of 1 Type but found {schedule.Type?.Count}.");
-            });
-        }
-
-        [Then("the Schedule Practitioner Extensions should be valid and referenced in the Bundle")]
-        public void TheSchedulePractitionerExtensionsShouldBeValidAndReferencedInTheBundle()
-        {
-            Schedules.ForEach(schedule =>
-            {
-                schedule.Extension.ForEach(extension =>
-                {
-                    const string url = FhirConst.StructureDefinitionSystems.kExtGpcPractitioner;
-                    extension.Url.ShouldBe(url, $"The Practitioner Extension Url should be {url} but was {extension.Url}.");
-                    extension.Value.ShouldNotBeNull("The Practitioner Extension Value should not be null.");
-
-                    var reference = ((ResourceReference)extension.Value).Reference;
-                    reference.ShouldNotBeNullOrEmpty($"The Practitioner Reference should not be null or empty but was {reference}.");
-
-                    const string shouldStartWith = "Practitioner/";
-                    reference.ShouldStartWith(shouldStartWith, $"The Practitioner Reference should start with {shouldStartWith} but was {reference}.");
-
-                    _bundleSteps.ResponseBundleContainsReferenceOfType(reference, ResourceType.Practitioner);
-                });
+                schedule.ServiceType?.Count.ShouldBeLessThanOrEqualTo(1, $"The Schedule should have a maximum of 1 ServiceType but found {schedule.ServiceType?.Count}.");
             });
         }
 
         [Then(@"the Bundle Metadata should be valid")]
         public void TheScheduleBundleMetadataShouldBeValid()
         {
-            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, "http://fhir.nhs.uk/StructureDefinition/gpconnect-getschedule-bundle-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, FhirConst.StructureDefinitionSystems.kGpcSearchSet);
         }
 
         [Then(@"the excluded actor ""(.*)"" should not be present in the Bundle")]
         public void TheExcludedActorShouldNotBePresentInTheBundle(ResourceType excludedActor)
         {
             _bundleSteps.ResponseBundleDoesNotContainReferenceOfType(excludedActor);
-        }
-
-        [Then(@"the Organization should be referenced in a resource")]
-        public void TheOrganizationShouldBeReferencedInResource()
-        {
-            var organizationEntries = _httpContext
-                .FhirResponse
-                .Entries
-                .Where(entry => entry.Resource.ResourceType == ResourceType.Organization)
-                .ToList();
-
-            List<Practitioner> practitionerEntries = _httpContext
-                .FhirResponse
-                .Entries
-                .Where(entry => entry.Resource.ResourceType == ResourceType.Practitioner).Select(e => (Practitioner)e.Resource)
-                .ToList();
-
-            organizationEntries.ForEach(organizationEntry =>
-            {
-                organizationEntry.FullUrl.ShouldNotBeNull();
-
-                var orgRef = practitionerEntries.FirstOrDefault(p => p.PractitionerRole.Any(r => r.ManagingOrganization != null && r.ManagingOrganization.Reference.Equals(organizationEntry.FullUrl)));
-
-                orgRef.ShouldNotBeNull("The Organization in the bundle was not found as a reference in another resource.");
-            });
         }
     }
 }

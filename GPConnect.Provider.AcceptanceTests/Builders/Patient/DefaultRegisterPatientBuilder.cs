@@ -22,7 +22,7 @@
             patientIdentifier.Extension.Add(new Extension
             {
                 Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
-                Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerificationSys, "01", "Number present and verified")
+                Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerification, "01", "Number present and verified")
             });
 
             var patientToRegister = new Patient
@@ -30,7 +30,7 @@
                 BirthDateElement = new Date(_registerPatient.DOB),
                 Name = new List<HumanName>
                 {
-                    NameHelper.CreateUsualName(_registerPatient.NAME_GIVEN, _registerPatient.NAME_FAMILY)
+                    NameHelper.CreateOfficialName(_registerPatient.NAME_GIVEN, _registerPatient.NAME_FAMILY)
                 },
                 Identifier = new List<Identifier>
                 {

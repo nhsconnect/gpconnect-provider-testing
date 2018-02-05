@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+	<meta>
+		<lastUpdated value="2016-08-03T00:00:00+01:00"/>
+	</meta>
+	<url value="http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1"/>
+	<name value="GP Connect Appointment Booking Method"/>
+	<status value="draft"/>
+	<description value="The method used to book the appointment."/>
+	<codeSystem>
+		<system value="http://fhir.nhs.net/ValueSet/gpconnect-appointment-booking-method-1"/>
+		<concept>
+			<code value="ONL"/>
+			<display value="Online"/>
+		</concept>
+		<concept>
+			<code value="PER"/>
+			<display value="In person"/>
+		</concept>
+		<concept>
+			<code value="TEL"/>
+			<display value="Telephone"/>
+		</concept>
+		<concept>
+			<code value="EMA"/>
+			<display value="Email"/>
+		</concept>
+		<concept>
+			<code value="LET"/>
+			<display value="Letter"/>
+		</concept>
+		<concept>
+			<code value="TEX"/>
+			<display value="Text"/>
+		</concept>
+	</codeSystem>
+</ValueSet>

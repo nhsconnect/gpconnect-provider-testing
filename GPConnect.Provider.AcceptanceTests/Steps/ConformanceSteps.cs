@@ -9,78 +9,78 @@
     using TechTalk.SpecFlow;
 
     [Binding]
-    public class ConformanceSteps 
+    public class CapabilityStatementSteps
     {
         private readonly HttpContext _httpContext;
-        private List<Conformance> Conformances => _httpContext.FhirResponse.Conformances;
-        public ConformanceSteps(HttpContext httpContext)
+        private List<CapabilityStatement> CapabilityStatements => _httpContext.FhirResponse.CapabilityStatements;
+        public CapabilityStatementSteps(HttpContext httpContext)
         {
             _httpContext = httpContext;
         }
 
-        [Then("the Response Resource should be a Conformance")]
-        public void TheResponseResourceShouldBeALocation()
+        [Then("the Response Resource should be a CapabilityStatement")]
+        public void TheResponseResourceShouldBeACapabilityStatement()
         {
-            _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Conformance);
+            _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.CapabilityStatement);
         }
 
-        [Then("the Conformance Format should contain XML and JSON")]
-        public void TheConformanceFormatShouldContainXmlAndJson()
+        [Then("the CapabilityStatement Format should contain XML and JSON")]
+        public void TheCapabilityStatementFormatShouldContainXmlAndJson()
         {
-            Conformances.ForEach(conformance =>
+            CapabilityStatements.ForEach(capabilityStatement =>
             {
-                conformance.Format.ShouldContain(FhirConst.ContentTypes.kJsonFhir, $"The Conformance Format should contain {FhirConst.ContentTypes.kJsonFhir} but did not.");
-                conformance.Format.ShouldContain(FhirConst.ContentTypes.kXmlFhir, $"The Conformance Format should contain {FhirConst.ContentTypes.kXmlFhir} but did not.");
+                capabilityStatement.Format.ShouldContain(ContentType.Application.FhirJson, $"The CapabilityStatement Format should contain {ContentType.Application.FhirJson} but did not.");
+                capabilityStatement.Format.ShouldContain(ContentType.Application.FhirXml, $"The CapabilityStatement Format should contain {ContentType.Application.FhirXml} but did not.");
             });
         }
 
-        [Then("the Conformance Software should be valid")]
-        public void TheConformanceSoftwareShouldBeValid()
+        [Then("the CapabilityStatement Software should be valid")]
+        public void TheCapabilityStatementSoftwareShouldBeValid()
         {
-            Conformances.ForEach(conformance =>
+            CapabilityStatements.ForEach(capabilityStatement =>
             {
-                conformance.Software.Name.ShouldNotBeNullOrEmpty($"The Conformance Software Name should not be be null or empty but was {conformance.Software.Name}.");
-                conformance.Software.Version.ShouldNotBeNullOrEmpty($"The Conformance Software Version should not be be null or empty but was {conformance.Software.Version}.");
+                capabilityStatement.Software.Name.ShouldNotBeNullOrEmpty($"The CapabilityStatement Software Name should not be be null or empty but was {capabilityStatement.Software.Name}.");
+                capabilityStatement.Software.Version.ShouldNotBeNullOrEmpty($"The CapabilityStatement Software Version should not be be null or empty but was {capabilityStatement.Software.Version}.");
             });
         }
 
-        [Then(@"the Conformance FHIR Version should be ""([^""]*)""")]
-        public void TheConformanceFhirVerionShouldBe(string version)
+        [Then(@"the CapabilityStatement FHIR Version should be ""([^""]*)""")]
+        public void TheCapabilityStatementFhirVerionShouldBe(string version)
         {
-            Conformances.ForEach(conformance =>
+            CapabilityStatements.ForEach(capabilityStatement =>
             {
-                conformance.FhirVersion.ShouldBe(version, $"The Conformance FHIR Version should be {version} but was {conformance.FhirVersion}.");
+                capabilityStatement.FhirVersion.ShouldBe(version, $"The CapabilityStatement FHIR Version should be {version} but was {capabilityStatement.FhirVersion}.");
             });
         }
-
-        [Then(@"the Conformance REST Operations should contain ""([^""]*)""")]
-        public void TheConformanceRestOperationsShouldContain(string operation)
+        
+        [Then(@"the CapabilityStatement REST Operations should contain ""([^""]*)""")]
+        public void TheCapabilityStatementRestOperationsShouldContain(string operation)
         {
-            Conformances.ForEach(conformance =>
+            CapabilityStatements.ForEach(capabilityStatement =>
             {
-                conformance.Rest.ForEach(rest =>
+                capabilityStatement.Rest.ForEach(rest =>
                 {
                     rest.Operation
                         .Select(op => op.Name)
-                        .ShouldContain(operation, $"The Conformance REST Operations should contain {operation} but did not.");
+                        .ShouldContain(operation, $"The CapabilityStatement REST Operations should contain {operation} but did not.");
                 });
             });
         }
 
-        [Then(@"the Conformance REST Resources should contain the ""([^""]*)"" Resource with the ""([^""]*)"" Interaction")]
-        public void TheConformanceRestResourcesShouldContainAResourceWithInteraction(ResourceType resourceType, Conformance.TypeRestfulInteraction interaction)
+        [Then(@"the CapabilityStatement REST Resources should contain the ""([^""]*)"" Resource with the ""([^""]*)"" Interaction")]
+        public void TheCapabilityStatementRestResourcesShouldContainAResourceWithInteraction(ResourceType resourceType, CapabilityStatement.TypeRestfulInteraction interaction)
         {
-            Conformances.ForEach(conformance =>
+            CapabilityStatements.ForEach(capabilityStatement =>
             {
-                conformance.Rest.ForEach(rest =>
+                capabilityStatement.Rest.ForEach(rest =>
                 {
                     var resource = rest.Resource.FirstOrDefault(r => r.Type == resourceType);
 
-                    resource.ShouldNotBeNull($"The Conformance REST Resources should contain {resourceType.ToString()} but did not.");
+                    resource.ShouldNotBeNull($"The CapabilityStatement REST Resources should contain {resourceType.ToString()} but did not.");
 
                     var interactions = resource.Interaction.Where(i => i.Code == interaction);
 
-                    interactions.ShouldNotBeNull($"The Conformance REST {resourceType.ToString()} Resource Interactions should contain the {interaction.ToString()} Interaction but did not.");
+                    interactions.ShouldNotBeNull($"The CapabilityStatement REST {resourceType.ToString()} Resource Interactions should contain the {interaction.ToString()} Interaction but did not.");
                 });
             });
         }

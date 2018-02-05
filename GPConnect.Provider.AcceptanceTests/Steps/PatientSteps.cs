@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Cache;
+    using Cache.ValueSet;
     using Constants;
     using Context;
     using Enum;
@@ -12,7 +14,6 @@
     using TechTalk.SpecFlow;
     using Extensions;
     using System;
-    using Models;
 
     [Binding]
     public class PatientSteps : BaseSteps
@@ -22,6 +23,9 @@
         private readonly JwtSteps _jwtSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
+     
+ 
+        
 
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
@@ -98,7 +102,9 @@
                 {
                     contact.Relationship.ForEach(relationship =>
                     {
-                        ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
+                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kRelationshipStatus);
+
+                        ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
                 });
             });
@@ -114,13 +120,9 @@
                     contact.Name.Family.Count().ShouldBe(1,"There should be 1 family name");
 
                     contact.Name.Use.ShouldNotBeNull("Contact Name Use should not be null");
-                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Contact Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
-                    if (contact.Gender != null) {
-                        contact.Gender.ShouldBeOfType<AdministrativeGender>(string.Format("{0} Type is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kAdministrativeGender));
-                        }
-                    // Contact Relationship Checks
-                
-                    });
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
+                    contact.Gender?.ShouldBeOfType<AdministrativeGender>($"Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAdministrativeGender}");
+                });
             });
         }
 
@@ -129,12 +131,14 @@
         {
             Patients.ForEach(patient =>
             {
+                var officialNameCount = patient.Name.Count(name => name.Use == HumanName.NameUse.Official);
+
+                officialNameCount.ShouldBe(1, $"The Patient Name should contain 1 Official name but found {officialNameCount}.");
+
                 patient.Name.ShouldNotBeNull("Patient name should not be null");
                 patient.Name.ForEach(name =>
                 {
-                    name.Family.Count().ShouldBe(1, "Patient Family Name cannot be null");
-                    
-                    
+                    name.Family.ShouldNotBeNullOrEmpty("Patient Family Name cannot be null");
                 });
             });
         }
@@ -167,6 +171,10 @@
                     {
                         identifier.Value.ShouldBe(GlobalContext.PatientNhsNumberMap[patientName]);
                     }
+
+                    var extension = identifier.Extension.First();
+
+                    ValidateCodeConceptExtension(extension, FhirConst.ValueSetSystems.kCcNhsNumVerification);
                 }
             });
         }
@@ -197,13 +205,13 @@
                 {
                     patient.MaritalStatus.Coding.ShouldNotBeNull("Patient MaritalStatus coding cannot be null");
 
-                    // GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeImports(), patient.MaritalStatus.Coding.First().Code.First());
-                    var maritalStatusList = GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes().ToArray();
-                    patient.MaritalStatus.Coding.ForEach(coding =>
-                    {
-                        coding.System.ShouldNotBeNull("MaritalStatus System should not be null");
-                        coding.Code.ShouldBeOneOf(maritalStatusList.Select(c => c.Code).ToArray());
-                        coding.Display.ShouldBeOneOf(maritalStatusList.Select(c => c.Display).ToArray());
+                // GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeImports(), patient.MaritalStatus.Coding.First().Code.First());
+                var maritalStatusList = ValueSetCache.Get(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes().ToArray();
+                patient.MaritalStatus.Coding.ForEach(coding =>
+            {
+                coding.System.ShouldNotBeNull("MaritalStatus System should not be null");
+                coding.Code.ShouldBeOneOf(maritalStatusList.Select(c => c.Code).ToArray());
+                coding.Display.ShouldBeOneOf(maritalStatusList.Select(c => c.Display).ToArray());
 
                     });
                 }
@@ -218,23 +226,26 @@
                 patient.Communication?.ForEach(communication =>
                 {
                     communication.Language.ShouldNotBeNull("The communication language element should not be null");
-                    ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirHumanLanguageValueSet, communication.Language.Coding);
+
+                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kCcHumanLanguage);
+
+                    ShouldBeSingleCodingWhichIsInValueSet(valueSet, communication.Language.Coding);
                 });
             });
         }
 
-        [Then(@"the Patient CareProvider Practitioner should be valid and resolvable")]
-        public void ThePatientCareProviderPractitionerShouldBeValidAndResolvable()
+        [Then(@"the Patient GeneralPractitioner Practitioner should be valid and resolvable")]
+        public void ThePatientGeneralPractitionerPractitionerShouldBeValidAndResolvable()
         {
             Patients.ForEach(patient =>
             {
-                if (patient.CareProvider != null)
+                if (patient.GeneralPractitioner != null)
                 {
-                    patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
+                    patient.GeneralPractitioner.Count.ShouldBeLessThanOrEqualTo(1);
 
-                    if (patient.CareProvider.Count.Equals(1))
+                    if (patient.GeneralPractitioner.Count.Equals(1))
                     {
-                        var reference = patient.CareProvider.First().Reference;
+                        var reference = patient.GeneralPractitioner.First().Reference;
 
                         reference.ShouldStartWith("Practitioner/");
 
@@ -246,18 +257,18 @@
             });
         }
 
-        [Then(@"the Patient CareProvider Practitioner should be referenced in the Bundle")]
-        public void ThePatientCareProviderShouldBeReferencedInTheBundle()
+        [Then(@"the Patient GeneralPractitioner Practitioner should be referenced in the Bundle")]
+        public void ThePatientGeneralPractitionerShouldBeReferencedInTheBundle()
         {
             Patients.ForEach(patient =>
             {
-                if (patient.CareProvider != null)
+                if (patient.GeneralPractitioner != null)
                 {
-                    patient.CareProvider.Count.ShouldBeLessThanOrEqualTo(1);
+                    patient.GeneralPractitioner.Count.ShouldBeLessThanOrEqualTo(1);
 
-                    if (patient.CareProvider.Count.Equals(1))
+                    if (patient.GeneralPractitioner.Count.Equals(1))
                     {
-                        _bundleSteps.ResponseBundleContainsReferenceOfType(patient.CareProvider.First().Reference, ResourceType.Practitioner);
+                        _bundleSteps.ResponseBundleContainsReferenceOfType(patient.GeneralPractitioner.First().Reference, ResourceType.Practitioner);
                     }
                 }
             });
@@ -315,12 +326,14 @@
                     // Contact Relationship Checks
                     contact.Relationship.ForEach(relationship =>
                     {
-                        ShouldBeSingleCodingWhichIsInValueSet(GlobalContext.FhirRelationshipValueSet, relationship.Coding);
+                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kRelationshipStatus);
+
+                        ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
 
                     contact.Name.ShouldBeNull();
                     contact.Name.Use.ShouldNotBeNull("Patient Name Use cannot be null");
-                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
                     contact.Name.Family.Count().ShouldBeLessThanOrEqualTo(1);
                     // Contact Name Checks
                     // Contact Telecom Checks
@@ -369,6 +382,25 @@
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", GlobalContext.PatientNhsNumberMap[value]);
         }
+
+        [Given(@"I get an existing patients nshNumber")]
+        public void GetTheRandomPatientValue()
+        {
+            var value= "patient1";
+
+            if (AppSettingsHelper.RandomPatientEnabled == true) {
+                 value = RandomPatientSteps.ReturnRandomPatient();
+            }
+           
+            _httpSteps.ConfigureRequest(GpConnectInteraction.PatientSearch);
+
+            AddAPatientIdentifierParameterWithDefaultSystemAndValue(value);
+
+            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberFor(value);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
+        }
+
 
         [Given(@"I get the Patient for Patient Value ""([^""]*)""")]
         public void GetThePatientForPatientValue(string value)
@@ -467,8 +499,30 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.Gender.ShouldBeOfType<AdministrativeGender>(string.Format("Patient Gender is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kAdministrativeGender));
+                patient.Gender.ShouldBeOfType<AdministrativeGender>($"Patient Gender is not a valid value within the value set {FhirConst.ValueSetSystems.kAdministrativeGender}");
+            });
+        }
 
+        [Then(@"the Patient Link should be valid and resolvable")]
+        public void ThePatientLinkShouldBeValidAndResolvable()
+        {
+            Patients.ForEach(patient =>
+            {
+                patient.Link.ForEach(link =>
+                {
+                    link.Type.ShouldNotBeNull("The Patient Link Type should not be null, but was.");
+                    link.Type.ShouldBeDefinedIn(typeof(Patient.LinkType), $"The Patient Link Type ({link.Type.ToString()}) was an invalid value.");
+
+                    var reference = link.Other.Reference;
+
+                    //Can't check RelatedPerson as endpoint doesn't exist
+                    if (reference.StartsWith("Patient"))
+                    {
+                        var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PatientRead, reference);
+
+                        resource.GetType().ShouldBe(typeof(Patient));
+                    }
+                });
             });
         }
     }

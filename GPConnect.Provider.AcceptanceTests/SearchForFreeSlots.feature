@@ -139,7 +139,8 @@ Scenario: Successfully search for free slots and check the slot resources return
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the Slot FreeBusyType should be Free
+		And the Bundle Metadata should be valid
+		And the Slot Status should be Free
 		And the Slot Metadata should be valid
 		And the Slot Identifiers should be valid
 
@@ -156,10 +157,10 @@ Scenario Outline: Successfully search for free slots using various content types
 		And the Slot Schedule should be referenced in the Bundle
 	Examples:
 		| RequestContentType    | AcceptHeaderValue     | ResponseShouldBe |
-		| application/xml+fhir  | application/xml+fhir  | XML              |
-		| application/json+fhir | application/json+fhir | JSON             |
-		| application/xml+fhir  | application/json+fhir | JSON             |
-		| application/json+fhir | application/xml+fhir  | XML              |
+		| application/fhir+xml  | application/fhir+xml  | XML              |
+		| application/fhir+json | application/fhir+json | JSON             |
+		| application/fhir+xml  | application/fhir+json | JSON             |
+		| application/fhir+json | application/fhir+xml  | XML              |
 
 Scenario Outline: Successfully search for free slots using various content types XML and JSON in format parameter
 	Given I configure the default "SearchForFreeSlots" request
@@ -174,10 +175,10 @@ Scenario Outline: Successfully search for free slots using various content types
 		And the Slot Schedule should be referenced in the Bundle
 	Examples:
 		| RequestContentType    | FormatParameterValue  | ResponseShouldBe |
-		| application/xml+fhir  | application/xml+fhir  | XML              |
-		| application/json+fhir | application/json+fhir | JSON             |
-		| application/xml+fhir  | application/json+fhir | JSON             |
-		| application/json+fhir | application/xml+fhir  | XML              |
+		| application/fhir+xml  | application/fhir+xml  | XML              |
+		| application/fhir+json | application/fhir+json | JSON             |
+		| application/fhir+xml  | application/fhir+json | JSON             |
+		| application/fhir+json | application/fhir+xml  | XML              |
 
 Scenario Outline: Successfully search for free slots using various content types XML and JSON in the Accept Header and format parameter
 	Given I configure the default "SearchForFreeSlots" request
@@ -193,14 +194,14 @@ Scenario Outline: Successfully search for free slots using various content types
 		And the Slot Schedule should be referenced in the Bundle
 	Examples:
 		| RequestContentType    | AcceptHeaderValue     | FormatParameterValue  | ResponseShouldBe |
-		| application/xml+fhir  | application/xml+fhir  | application/xml+fhir  | XML              |
-		| application/json+fhir | application/json+fhir | application/json+fhir | JSON             |
-		| application/xml+fhir  | application/json+fhir | application/json+fhir | JSON             |
-		| application/json+fhir | application/xml+fhir  | application/xml+fhir  | XML              |
-		| application/xml+fhir  | application/json+fhir | application/xml+fhir  | XML              |
-		| application/json+fhir | application/xml+fhir  | application/json+fhir | JSON             |
-		| application/xml+fhir  | application/xml+fhir  | application/json+fhir | JSON             |
-		| application/json+fhir | application/json+fhir | application/xml+fhir  | XML              |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+xml  | XML              |
+		| application/fhir+json | application/fhir+json | application/fhir+json | JSON             |
+		| application/fhir+xml  | application/fhir+json | application/fhir+json | JSON             |
+		| application/fhir+json | application/fhir+xml  | application/fhir+xml  | XML              |
+		| application/fhir+xml  | application/fhir+json | application/fhir+xml  | XML              |
+		| application/fhir+json | application/fhir+xml  | application/fhir+json | JSON             |
+		| application/fhir+xml  | application/fhir+xml  | application/fhir+json | JSON             |
+		| application/fhir+json | application/fhir+json | application/fhir+xml  | XML              |
 
 Scenario: Successfully search for free slots and check the included schedule resources returned are valid
 	Given I configure the default "SearchForFreeSlots" request
@@ -217,8 +218,7 @@ Scenario: Successfully search for free slots and check the included schedule res
 		And the Location should be valid
 		And the Schedule Identifiers should be valid
 		And the Schedule PlanningHorizon should be valid
-		And the Schedule Type should be valid
-		And the Schedule Practitioner Extensions should be valid and referenced in the Bundle
+		And the Schedule ServiceType should be valid
 		And the Practitioner Entry should be valid
 		And the Organization should be valid
 
@@ -257,15 +257,12 @@ Scenario: Successfully search for free slots and check the included practitioner
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the Schedule Practitioner Extensions should be valid and referenced in the Bundle
 		And the Practitioner Metadata should be valid
 		And the Practitioner SDS User Identifier should be valid
 		And the Practitioner Identifiers should be valid fixed values
 		And the Practitioner Name should be valid
-		And the Practitioner PractitionerRoles Roles should be valid
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
-		And the Practitioner PractitionerRoles ManagingOrganization should be referenced in the Bundle
 
 @ignore
 Scenario: Successfully search for free slots and check the included organization resources returned are valid
@@ -295,11 +292,11 @@ Scenario: Successfully search for free slots and check the included location res
 		And the Location PartOf Location should be valid
 		And the Location Managing Organization should be valid
 
-Scenario: Conformance profile supports the Slot Search Resource
+Scenario: CapabilityStatement profile supports the Slot Search Resource
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Slot" Resource with the "SearchType" Interaction
+		And the CapabilityStatement REST Resources should contain the "Slot" Resource with the "SearchType" Interaction
 
 Scenario: SearchForFreeSlots valid response check caching headers exist
 	Given I configure the default "SearchForFreeSlots" request

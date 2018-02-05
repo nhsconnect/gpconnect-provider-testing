@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+ 	<meta>
+		<lastUpdated value="2016-08-03T00:00:00+01:00"/>
+	</meta>
+  <url value="https://fhir.nhs.uk/ValueSet/gpconnect-record-section-1"/>
+  <version value="1.0.0"/>
+  <name value="GP Connect Record Section"/>
+  <status value="active"/>
+  <description value="A set of codes to classify a section of a composition/document."/>
+    <codeSystem>
+    <system value="https://fhir.nhs.uk/gpconnect-record-section-1"/>
+     <concept>
+        <code value="ADM"/>
+        <display value="Administrative Items"/>
+      </concept>
+      <concept>
+        <code value="ALL"/>
+        <display value="Allergies and Sensitivities"/>
+      </concept>
+      <concept>
+        <code value="CLI"/>
+        <display value="Clinical Items"/>
+      </concept>
+      <concept>
+        <code value="ENC"/>
+        <display value="Encounters"/>
+      </concept>
+      <concept>
+        <code value="IMM"/>
+        <display value="Immunisations"/>
+      </concept>
+      <concept>
+        <code value="INV"/>
+        <display value="Investigations"/>
+      </concept>
+      <concept>
+        <code value="MED"/>
+        <display value="Medications"/>
+      </concept>
+      <concept>
+        <code value="OBS"/>
+        <display value="Observations"/>
+      </concept>
+      <concept>
+        <code value="PAT"/>
+        <display value="Patient Details"/>
+      </concept>
+      <concept>
+        <code value="PRB"/>
+        <display value="Problems"/>
+      </concept>
+      <concept>
+        <code value="REF"/>
+        <display value="Referrals"/>
+      </concept>
+      <concept>
+        <code value="SUM"/>
+        <display value="Summary"/>
+      </concept>
+  </codeSystem>
+</ValueSet>

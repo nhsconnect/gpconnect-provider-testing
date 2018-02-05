@@ -29,6 +29,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public string RequestedPatientNHSNumber { get; set; }
         public string RequestedOrganizationODSCode { get; set; }
         public string RequestedOrganizationId { get; set; }
+        public string RequestedRecordPatientUrl { get; set; }
+        public Boolean RequestedRecordUseOldUrls { get; set; }
 
         private bool RequestedRecordIsOrganization => !string.IsNullOrEmpty(RequestedOrganizationId) ||
                                                       !string.IsNullOrEmpty(RequestedOrganizationODSCode);
@@ -57,6 +59,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             // TODO Check We're Using The Correct Scope For Metadata vs. GetCareRecord
             RequestedPatientNHSNumber = null;
             // TODO Move Dummy Data Out Into App.Config Or Somewhere Else
+         
 
             RequestingSystemUrl = "https://ConsumerSystemURL";
         }
@@ -73,6 +76,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         private JwtPayload BuildPayload()
         {
+            var here = RequestedRecordUseOldUrls;
 
             var claims = new List<Claim>();
 
@@ -99,19 +103,55 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
             if (RequestedPatientNHSNumber != null)
             {
-                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultPatient(RequestedPatientNHSNumber).ToFhirJson(), JsonClaimValueTypes.Json));
+
+                if (RequestedRecordUseOldUrls.Equals(true))
+                {
+
+                    var patient = FhirHelper.GetDefaultPatient(RequestedPatientNHSNumber);
+                    patient.Identifier[0].System = "http://fhir.nhs.net/Id/nhs-number";
+
+                    claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, patient.ToFhirJson(), JsonClaimValueTypes.Json));
+                }
+                else
+                {
+                    claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultPatient(RequestedPatientNHSNumber).ToFhirJson(), JsonClaimValueTypes.Json));
+
+                }
+
             }
             else if (RequestedRecordIsOrganization)
             {
-                var organization = FhirHelper.GetOrganization(RequestedOrganizationId, RequestedOrganizationODSCode);
-                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, organization.ToFhirJson(),
-                    JsonClaimValueTypes.Json));
+                if (RequestedRecordUseOldUrls.Equals(true))
+                {
+                    var organization = FhirHelper.GetOrganization(RequestedOrganizationId, RequestedOrganizationODSCode);
+                    organization.Identifier[0].System = "http://fhir.nhs.net/Id/ods-organization-code";
+                    claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, organization.ToFhirJson(),
+                        JsonClaimValueTypes.Json));
+
+                }
+                else
+                {
+                    var organization = FhirHelper.GetOrganization(RequestedOrganizationId, RequestedOrganizationODSCode);
+                    claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, organization.ToFhirJson(), JsonClaimValueTypes.Json));
+                }
+
             }
             else
             {
-                claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultOrganization().ToFhirJson(),
-                    JsonClaimValueTypes.Json));
+                if (RequestedRecordUseOldUrls.Equals(true))
+                {
+                    var defaultOrg = FhirHelper.GetDefaultOrganization();
+                    defaultOrg.Identifier[0].System = "http://fhir.nhs.net/Id/ods-organization-code";
+                    claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, defaultOrg.ToFhirJson(),
+                        JsonClaimValueTypes.Json));
+                }
+                else
+                {
+                    claims.Add(new Claim(JwtConst.Claims.kRequestedRecord, FhirHelper.GetDefaultOrganization().ToFhirJson() , JsonClaimValueTypes.Json));
+                }
+
             }
+
 
             return new JwtPayload(claims);
         }

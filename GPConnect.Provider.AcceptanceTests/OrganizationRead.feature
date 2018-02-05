@@ -67,8 +67,8 @@ Scenario Outline: Organization Read using the _format parameter to request respo
 		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
 		| Parameter             | ResponseFormat |
-		| application/json+fhir | JSON           |
-		| application/xml+fhir  | XML            |
+		| application/fhir+json | JSON           |
+		| application/fhir+xml  | XML            |
 
 Scenario Outline: Organization Read using the Accept header to request response format
 	Given I get the Organization for Organization Code "ORG1"
@@ -84,8 +84,8 @@ Scenario Outline: Organization Read using the Accept header to request response 
 		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
 		| Header                | ResponseFormat |
-		| application/json+fhir | JSON           |
-		| application/xml+fhir  | XML            |
+		| application/fhir+json | JSON           |
+		| application/fhir+xml  | XML            |
 
 Scenario Outline: Organization Read sending the Accept header and _format parameter to request response format
 	Given I get the Organization for Organization Code "ORG1"
@@ -102,16 +102,16 @@ Scenario Outline: Organization Read sending the Accept header and _format parame
 		And the Organization Identifiers should be valid for Organization "ORG1"
 	Examples:
 		| Header                | Parameter             | ResponseFormat |
-		| application/json+fhir | application/json+fhir | JSON       |
-		| application/json+fhir | application/xml+fhir  | XML        |
-		| application/xml+fhir  | application/json+fhir | JSON       |
-		| application/xml+fhir  | application/xml+fhir  | XML        |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 
-Scenario: Conformance profile supports the Organization read operation
+Scenario: CapabilityStatement profile supports the Organization read operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the Conformance REST Resources should contain the "Organization" Resource with the "Read" Interaction
+		And the CapabilityStatement REST Resources should contain the "Organization" Resource with the "Read" Interaction
 
 Scenario: Organization read valid response check caching headers exist
 	Given I get the Organization for Organization Code "ORG1"
