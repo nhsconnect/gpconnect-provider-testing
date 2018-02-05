@@ -50,23 +50,9 @@
             }
         }
 
-
         public static void AppointmentCreated()
         {
             appointmentCreated = true;
-        }
-
-        private static int GetNumberOfAppointments()
-        {
-            var patients = GlobalContext.PatientNhsNumberMap;
-            int count = 0;
-            foreach (var patient in patients)
-            {
-                var patientAppointments = GetAppointments(patient.Key, patient.Value);
-
-                count++;
-            }
-            return count;
         }
 
         private static void CancelAllCreatedAppointments()
