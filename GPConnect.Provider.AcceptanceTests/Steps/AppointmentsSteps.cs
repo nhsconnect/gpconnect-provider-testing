@@ -5,7 +5,6 @@
     using Builders.Appointment;
     using Constants;
     using Context;
-    using Constants;
     using Enum;
     using Hl7.Fhir.Model;
     using Repository;
@@ -13,6 +12,7 @@
     using TechTalk.SpecFlow;
     using static Hl7.Fhir.Model.Appointment;
     using System;
+    using GPConnect.Provider.AcceptanceTests.Helpers;
 
     [Binding]
     public class AppointmentsSteps : BaseSteps
@@ -107,6 +107,33 @@
             CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
 
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
+        }
+
+        [Given(@"I create an Appointment for an existing Patient and Organization Code ""([^""]*)""")]
+        public void CreateAnAppointmentForRandomPatientAndOrganizationCode(string code)
+        { 
+
+             var patient = "patient1";
+
+            if (AppSettingsHelper.RandomPatientEnabled == true) {
+                 patient = RandomPatientSteps.ReturnRandomPatient();
+            }
+        
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _searchForFreeSlotsSteps.GetAvailableFreeSlots();
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
+
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+
+            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient();
+
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
         }
 
         [Given(@"I store the Created Appointment")]

@@ -209,7 +209,7 @@ Scenario: Register patient with duplicate patient resource parameters
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Register patient which alread exists on the system as a normal patient
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the patient in the register patient resource format
 	Given I configure the default "RegisterPatient" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient

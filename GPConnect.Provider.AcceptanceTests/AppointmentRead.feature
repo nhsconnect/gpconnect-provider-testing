@@ -145,7 +145,7 @@ Scenario: Read appointment if resource contains identifier then the value is man
 		And the Appointment Identifiers should be valid
 
 Scenario: Read appointment containing a priority element and check that the priority is valid
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -166,7 +166,7 @@ Scenario: Read appointment containing a priority element and check that the prio
 		And the Appointment Priority should be valid
 	
 Scenario: Read appointment if all participants must have a actor element
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
@@ -218,7 +218,7 @@ Scenario:Read appointment invalid response check caching headers exist
 
 
 Scenario: Read appointment and response should contain valid booking orgainzation
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle

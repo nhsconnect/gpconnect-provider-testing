@@ -281,7 +281,7 @@
             _jwtHelper.RequestedPatientNHSNumber = identifier?.Value;
         }
 
-        [Given(@"I set the JWT requested record patient NHS number to ""(.*)""")]
+        [Given(@"I set the JWT Requested Record to the NHS Number ""(.*)""")]
         public void SetTheJwtRequestedRecordPatientNhsNumberTo(string nhsNumber)
         {
             _jwtHelper.RequestedPatientNHSNumber = nhsNumber;

@@ -47,7 +47,7 @@ Scenario Outline: I perform a successful amend appointment and check the returne
 		| patient8 |
 
 Scenario: Amend appointment and change the comment to a custom message
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -58,7 +58,7 @@ Scenario: Amend appointment and change the comment to a custom message
 		And the Appointment Comment should be valid for "customComment"
 
 Scenario: Amend appointment and change the description to a custom message
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -69,7 +69,7 @@ Scenario: Amend appointment and change the description to a custom message
 		And the Appointment Description should be valid for "customComment"
 
 Scenario: Amend appointment and update element which cannot be updated
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -79,7 +79,7 @@ Scenario: Amend appointment and update element which cannot be updated
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	
 Scenario Outline: Amend appointment making a request to an invalid URL
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -96,7 +96,7 @@ Scenario Outline: Amend appointment making a request to an invalid URL
 		| Appointment/update |
 
 Scenario Outline: Amend appointment using the _format parameter to request response format
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -113,7 +113,7 @@ Scenario Outline: Amend appointment using the _format parameter to request respo
 		| application/fhir+xml  | XML        |
 
 Scenario Outline: Amend appointment using the accept header to request response format
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -131,7 +131,7 @@ Scenario Outline: Amend appointment using the accept header to request response 
 		| application/fhir+xml  | XML        |
 
 Scenario Outline: Amend appointment using the _format and accept parameter to request response format
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -152,7 +152,7 @@ Scenario Outline: Amend appointment using the _format and accept parameter to re
 		| application/fhir+xml  | application/fhir+xml  | XML        |
 
 Scenario: Amend appointment and check the returned appointment resource conforms to the GPConnect specification
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -174,7 +174,7 @@ Scenario: Amend appointment and check the returned appointment resource conforms
 		And the Appointment Created must be valid
 		
 Scenario: Amend appointment prefer header set to representation
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -188,7 +188,7 @@ Scenario: Amend appointment prefer header set to representation
 		And the content-length should not be equal to zero
 
 Scenario: Amend appointment prefer header set to minimal
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -198,7 +198,7 @@ Scenario: Amend appointment prefer header set to minimal
 		And the response body should be empty
 
 Scenario: Amend appointment send an update with an invalid if-match header
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -208,7 +208,7 @@ Scenario: Amend appointment send an update with an invalid if-match header
 	Then the response status code should be "409"
 
 Scenario: Amend appointment set etag and check etag is the same in the returned amended appointment
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"		
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"		
 		And I store the Created Appointment			
 	Given I read the Stored Appointment
 		And I store the Appointment 
@@ -222,7 +222,7 @@ Scenario: Amend appointment set etag and check etag is the same in the returned 
 		And the Appointment Reason text should equal "customComment"
 
 Scenario: Amend appointment and send an invalid bundle resource
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -232,7 +232,7 @@ Scenario: Amend appointment and send an invalid bundle resource
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: Amend appointment and send an invalid appointment resource
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -249,7 +249,7 @@ Scenario: CapabilityStatement profile support the Amend appointment operation
 		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Update" Interaction
 
 Scenario: Amend appointment valid response check caching headers exist
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -262,7 +262,7 @@ Scenario: Amend appointment valid response check caching headers exist
 		And the required cacheing headers should be present in the response
 
 Scenario:Amend appointment invalid response check caching headers exist
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient

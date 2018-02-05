@@ -23,6 +23,7 @@
         private readonly JwtSteps _jwtSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
+     
  
         
 
@@ -388,7 +389,7 @@
             var value= "patient1";
 
             if (AppSettingsHelper.RandomPatientEnabled == true) {
-                 value = RandomPatient.ReturnRandomPatient();
+                 value = RandomPatientSteps.ReturnRandomPatient();
             }
            
             _httpSteps.ConfigureRequest(GpConnectInteraction.PatientSearch);
@@ -400,7 +401,7 @@
             _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
         }
 
-      
+
         [Given(@"I get the Patient for Patient Value ""([^""]*)""")]
         public void GetThePatientForPatientValue(string value)
         {
