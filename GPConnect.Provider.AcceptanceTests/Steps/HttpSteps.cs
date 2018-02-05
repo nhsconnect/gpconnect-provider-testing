@@ -99,14 +99,16 @@
         [When(@"I make the ""(.*)"" request")]
         public void MakeRequest(GpConnectInteraction interaction)
         {
-           
+            if (interaction.Equals(GpConnectInteraction.AppointmentCreate))
+            {
+                TeardownSteps.AppointmentCreated();
+            }
+            
             _httpContext.HttpRequestConfiguration = GetRequestBody(interaction, _httpContext.HttpRequestConfiguration);
 
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
 
             var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
-
-            TeardownSteps.AppointmentCreated();
 
             httpRequest.MakeRequest();
         }
