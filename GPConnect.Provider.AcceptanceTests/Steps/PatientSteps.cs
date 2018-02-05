@@ -13,6 +13,7 @@
     using Shouldly;
     using TechTalk.SpecFlow;
     using Extensions;
+    using System;
 
     [Binding]
     public class PatientSteps : BaseSteps
@@ -22,6 +23,8 @@
         private readonly JwtSteps _jwtSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
+ 
+        
 
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
@@ -379,6 +382,25 @@
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", GlobalContext.PatientNhsNumberMap[value]);
         }
 
+        [Given(@"I get an existing patients nshNumber")]
+        public void GetTheRandomPatientValue()
+        {
+            var value= "patient1";
+
+            if (AppSettingsHelper.RandomPatientEnabled == true) {
+                 value = RandomPatient.ReturnRandomPatient();
+            }
+           
+            _httpSteps.ConfigureRequest(GpConnectInteraction.PatientSearch);
+
+            AddAPatientIdentifierParameterWithDefaultSystemAndValue(value);
+
+            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberFor(value);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
+        }
+
+      
         [Given(@"I get the Patient for Patient Value ""([^""]*)""")]
         public void GetThePatientForPatientValue(string value)
         {

@@ -30,7 +30,7 @@ Scenario Outline: Book Appointment with invalid url for booking appointment
 		| appointmentqq/! |
 
 Scenario Outline: Book appointment accept header and _format parameter to request response format
-	Given I get the Patient for Patient Value "patient1"
+	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle

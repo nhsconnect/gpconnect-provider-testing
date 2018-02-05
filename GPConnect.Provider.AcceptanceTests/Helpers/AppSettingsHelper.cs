@@ -70,6 +70,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static bool TeardownEnabled => Get<bool>("Teardown:Enabled");
 
+        public static bool RandomPatientEnabled => Get<bool>("RandomPatient:Enabled");
+
         // Consumer Settings
         public static string ConsumerASID => Get<string>("consumerASID");
 
