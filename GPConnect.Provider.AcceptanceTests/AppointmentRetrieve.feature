@@ -556,7 +556,7 @@ Scenario: Appointment retrieve invalid response check caching headers exist
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:search:organization "
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:search:organization-1 "
 	When I make the "AppointmentSearch" request
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
