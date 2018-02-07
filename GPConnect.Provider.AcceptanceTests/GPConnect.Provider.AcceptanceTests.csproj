@@ -317,6 +317,7 @@
     <Compile Include="Steps\HttpRequestConfigurationSteps.cs" />
     <Compile Include="Steps\HttpResponseSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
+    <Compile Include="Steps\RandomPatientSteps.cs" />
     <Compile Include="Steps\ReportingSteps.cs" />
     <Compile Include="Steps\SearchForFreeSlotsSteps.cs" />
     <Compile Include="Steps\OrganizationSteps.cs" />
@@ -468,11 +469,11 @@
     <Folder Include="Custom\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <!--To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!--To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->
   <Target Name="BeforeBuild">
     <TechTalk.SpecFlow.Tools.MsBuild.GenerateAll ProjectPath=".\$(ProjectFileName)" />
-  </Target>  
+  </Target>
   <Target Name="AfterBuild">
     <PropertyGroup>
       <Pickles_Generate>True</Pickles_Generate>
