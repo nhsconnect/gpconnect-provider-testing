@@ -87,7 +87,7 @@
             var section = _composition.Section.First();
 
             section.Title.ShouldBe(title);
-            section.Code.Coding[0].System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-record-section-1");
+            section.Code.Coding[0].System.ShouldBe("https://fhir.nhs.uk/STU3/ValueSet/GPConnect-RecordSection-1");
             section.Code.Coding[0].Code.ShouldBe(code);
             section.Code.Coding[0].Display.ShouldBe(display);
             section.Code.Text.ShouldNotBeNull();
@@ -98,7 +98,7 @@
         [Then(@"the Composition Metadata should be valid")]
         public void TheCompositionMetadataShouldBeValid()
         {
-            CheckForValidMetaDataInResource(_composition, "http://fhir.nhs.net/StructureDefinition/gpconnect-carerecord-composition-1");
+            CheckForValidMetaDataInResource(_composition, "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-CareRecord-Composition-1");
         }
 
         [Then("the Composition Subject should be referenced in the Bundle")]

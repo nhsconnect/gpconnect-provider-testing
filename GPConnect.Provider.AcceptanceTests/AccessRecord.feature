@@ -688,9 +688,9 @@ Scenario Outline: if patient contains practitioner as care provider
 
 Scenario Outline: if patient contains managingOrganizaiton
 	Given I configure the default "GpcGetCareRecord" request
-		And I add an NHS Number parameter for "patient2"		
+		And I add an NHS Number parameter for "patient6"		
 		And I add a Record Section parameter for "<Code>"
-		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I set the JWT Requested Record to the NHS Number for "patient6"
 	When I make the "GpcGetCareRecord" request
 	Then the response status code should indicate success		
 		And the response should be a Bundle resource of type "searchset"

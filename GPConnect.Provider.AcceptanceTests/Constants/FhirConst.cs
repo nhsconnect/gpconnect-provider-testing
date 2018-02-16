@@ -55,7 +55,7 @@
             public const string kIdentifierUse = "http://hl7.org/fhir/ValueSet/identifier-use";
             public const string kIdentifierType = "http://hl7.org/fhir/ValueSet/identifier-type";
             public const string kSDSJobRoleName = "https://fhir.hl7.org.uk/ValueSet/CareConnect-SDSJobRoleName-1";
-            public const string kRecordSectionValueSet = "http://fhir.nhs.uk/ValueSet/gpconnect-record-section-1";
+            public const string kRecordSectionValueSet = "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-RecordSection-1";
             public const string kServDelLocationRoleType = "http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType";
             public const string kEncounterParticipantType = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
             public const string kSpineErrorOrWarningCode = "https://fhir.nhs.uk/STU3/ValueSet/Spine-ErrorOrWarningCode-1";
@@ -85,8 +85,8 @@
             //Structures
             public const string kPractitioner = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Practitioner-1";
             public const string kPatient = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1";
-            public const string kOrganisation = "https://fhir.nhs.net/STU3/StructureDefinition/CareConnect-GPC-Organization-1";
-            public const string kLocation = "https://fhir.nhs.net/STU3/StructureDefinition/CareConnect-GPC-Location-1";
+            public const string kOrganisation = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1";
+            public const string kLocation = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Location-1";
             public const string kOperationOutcome = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1";
             public const string kAppointment = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Appointment-1";
             public const string kSlot = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Slot-1";
