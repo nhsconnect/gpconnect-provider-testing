@@ -155,9 +155,8 @@ Scenario: Patient read valid response check caching headers exist
 	
 Scenario: Patient read invalid response check caching headers exist
 	Given I configure the default "PatientRead" request
-		And I set the GET request Id to "zzzz"
 		And I set the JWT Requested Record to the NHS Number for "patient1"
+		And I set the Read Operation logical identifier used in the request to "AABa"
 	When I make the "PatientRead" request
 	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 		And the required cacheing headers should be present in the response
