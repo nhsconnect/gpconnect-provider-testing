@@ -71,7 +71,7 @@ Scenario: Empty request
 	When I make a POST request to "/Patient/$gpc.getcarerecord"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the JSON response should be a basic OperationOutcome resource
 
 Scenario: No record section requested
 	Given I am using the default server
@@ -121,7 +121,7 @@ Scenario: Record section with invalid system for codable concept
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the JSON response should be a basic OperationOutcome resource
 
 Scenario: Request record sections with String type rather than CodableConcept
 	Given I am using the default server
@@ -235,7 +235,7 @@ Scenario Outline: Time period specified for a care record section that must not 
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+		And the JSON response should be a basic OperationOutcome resource
 	Examples:
 		| Code |
 		| ALL |
