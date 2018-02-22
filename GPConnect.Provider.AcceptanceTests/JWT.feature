@@ -119,15 +119,6 @@ Scenario: JWT - Requested Scope - missing
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource
 
-Scenario: JWT - Requested Scope - GetCareRecord - incorrect
-	Given I configure the default "GpcGetCareRecord" request
-		And I add an NHS Number parameter for "patient2"		
-		And I add a Record Section parameter for "SUM"
-		And I set the JWT Requested Scope to Organization Read
-	When I make the "GpcGetCareRecord" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource
-
 Scenario: JWT - Requested Scope - Metadata - incorrect
 	Given I configure the default "MetadataRead" request
 		And I set the JWT Requested Scope to Patient Read

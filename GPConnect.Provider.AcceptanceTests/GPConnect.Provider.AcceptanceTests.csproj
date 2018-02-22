@@ -141,11 +141,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessRecord.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AccessRecord.feature</DependentUpon>
-    </Compile>
     <Compile Include="AppointmentBook.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -203,12 +198,7 @@
     <Compile Include="Helpers\ResourceReferenceHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Helpers\TimePeriodHelper.cs" />
-    <Compile Include="HTML.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HTML.feature</DependentUpon>
-    </Compile>
-    <Compile Include="HTTP.feature.cs">
+    <Compile Include="HTTP1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HTTP.feature</DependentUpon>
@@ -230,6 +220,11 @@
     <Compile Include="Importers\ODSCodeMapConverter.cs" />
     <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
+    <Compile Include="JWT1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JWT.feature</DependentUpon>
+    </Compile>
     <Compile Include="LocationRead.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -243,11 +238,6 @@
     </Compile>
     <Compile Include="PractitionerSearch.feature.cs">
       <DependentUpon>PractitionerSearch.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="JWT.feature.cs">
-      <DependentUpon>JWT.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -302,6 +292,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SearchForFreeSlots.feature</DependentUpon>
     </Compile>
+    <Compile Include="SSP.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SSP.feature</DependentUpon>
+    </Compile>
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
     <Compile Include="Steps\AppointmentReadSteps.cs" />
     <Compile Include="Steps\AppointmentRetrieveSteps.cs" />
@@ -338,11 +333,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Security.feature</DependentUpon>
     </Compile>
-    <Compile Include="SSP.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SSP.feature</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\HttpHeaderHelper.cs" />
     <Compile Include="Helpers\HttpParameterHelper.cs" />
     <Compile Include="Helpers\JwtHelper.cs" />
@@ -350,10 +340,6 @@
     <Compile Include="Tables\CareRecordSection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AccessRecord.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AccessRecord.feature.cs</LastGenOutput>
-    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -397,10 +383,6 @@
     <None Include="PatientSearch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PatientSearch.feature.cs</LastGenOutput>
-    </None>
-    <None Include="HTML.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>HTML1.feature.cs</LastGenOutput>
     </None>
     <None Include="HTTP.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
