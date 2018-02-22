@@ -186,21 +186,6 @@
             _fhirResourceRepository.Appointment = appointmentBuilder.BuildAppointment();
         }
 
-        [Given(@"I set the Created Appointment Reason to ""([^""]*)""")]
-        public void SetTheCreatedAppointmentReasonTo(string reason)
-        {
-            _fhirResourceRepository.Appointment.Reason = new List<CodeableConcept>
-            {
-                new CodeableConcept
-                {
-                    Coding = new List<Coding>
-                    {
-                        new Coding("valueset", reason, reason)
-                    }
-                }
-            };
-        }
-
         [Given(@"I set the Created Appointment to Cancelled with Reason ""([^""]*)""")]
         public void SetTheCreatedAppointmentToCancelledWithReason(string reason)
         {

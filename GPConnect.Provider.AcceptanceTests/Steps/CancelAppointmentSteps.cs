@@ -238,21 +238,6 @@
             });
         }
 
-        [Then("the Appointment Reason should equal the Created Appointment Reason")]
-        public void TheAppointmentReasonShouldEqualTheCreatedAppointmentReason()
-        {
-            Appointments.ForEach(appointment =>
-            {
-                if (!_fhirResourceRepository.Appointment.Reason.Count.Equals(0))
-                {
-                    var createdAppointmentReason = _fhirResourceRepository.Appointment.Reason.First().Text;
-                    var returnedAppointmentReason = appointment.Reason.First().Text;
-
-                    returnedAppointmentReason.ShouldBe(createdAppointmentReason, $"The Appointment Reason should be {createdAppointmentReason} but was {returnedAppointmentReason}");
-                }
-            });
-        }
-
         [Then("the Appointment Participants should be valid and resolvable")]
         public void TheAppointmentParticipantsShouldBeValidAndResolvable()
         {

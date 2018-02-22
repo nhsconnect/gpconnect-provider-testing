@@ -130,38 +130,6 @@
             _fhirResourceRepository.Appointment.Identifier = identifiers;
         }
 
-        private static List<CodeableConcept> GetReason(string system, string code, string display)
-        {
-            return new List<CodeableConcept>
-            {
-                new CodeableConcept
-                {
-                    Coding = new List<Coding>
-                    {
-                        new Coding(system, code, display)
-                    }
-                }
-            };
-        }
-
-        [Given(@"I set the Created Appointment Reason Coding System to null")]
-        public void SetTheCreatedAppointmentReasonCodingSystemToNull()
-        {
-            _fhirResourceRepository.Appointment.Reason = GetReason(null, "Code", "Display");
-        }
-
-        [Given(@"I set the Created Appointment Reason Coding Code to null")]
-        public void SetTheCreatedAppointmentReasonCodingCodeToNull()
-        {
-            _fhirResourceRepository.Appointment.Reason = GetReason("http://snomed.info/sct", null, "Display");
-        }
-
-        [Given(@"I set the Created Appointment Reason Coding Display to null")]
-        public void SetTheCreatedAppointmentReasonCodingDisplayToNull()
-        {
-            _fhirResourceRepository.Appointment.Reason = GetReason("http://snomed.info/sct", "Code", null);
-        }
-
         [Given(@"I set the Created Appointment Patient Participant Status to null")]
         public void SetTheCreatedAppointmentPatientParticipantStatusToNull()
         {
