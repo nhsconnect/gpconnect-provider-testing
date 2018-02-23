@@ -64,7 +64,7 @@ Scenario: Authorization header not included in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the JSON response should be a basic OperationOutcome resource
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: Mismatched interactionId and endpoint in request
 	Given I am using the default server
@@ -80,7 +80,7 @@ Scenario: invalid interactionId in request
 	When I make a GET request to "/metadata"
 	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the JSON response should be a basic OperationOutcome resource
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: Send to endpoint with incorrect To asid for the provider endpoint
 	Given I am using the default server

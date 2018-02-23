@@ -217,21 +217,21 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("patient1", "REF", "Referrals", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "REF", "Referrals", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient1", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient3", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient4", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient5", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient6", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient7", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient8", "SUM", "Active Problems and Issues,Current Medication Issues,Current Repeat Medications,C" +
-            "urrent Allergies and Adverse Reactions,Last 3 Encounters", new string[0])]
+            "urrent Allergies and Adverse Reactions,Encounters", new string[0])]
         public virtual void HtmlSectionHeadersPresent(string patient, string code, string headers, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("html section headers present", exampleTags);
@@ -268,7 +268,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("patient2", "CLI", "Date,Entry,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "ENC", "Date,Title,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "IMM", "Date,Vaccination,Part,Contents,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Start Date,Medication Item,Type,Scheduled End,Days Duration,Details", "1", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
             "ls", "2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issues," +
@@ -278,7 +278,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "Start Date,End Date,Entry,Significance,Details", "2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "REF", "Date,From,To,Priority,Details", "1", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Start Date,Entry,Significance,Details", "1", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Start Date,Medication Item,Type,Scheduled End,Days Duration,Details", "2", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details", "2", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Detai" +
             "ls", "3", new string[0])]
         [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Start Date,Details", "4", new string[0])]
@@ -472,7 +472,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Medication Issues", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Repeat Medications", new string[0])]
         [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Current Allergies and Adverse Reactions", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Last 3 Encounters", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("SUM", "patient1", "Encounters", new string[0])]
         [NUnit.Framework.TestCaseAttribute("REF", "patient1", "Referrals", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ALL", "patient1", "Current Allergies and Adverse Reactions", new string[0])]
         [NUnit.Framework.TestCaseAttribute("ALL", "patient1", "Historical Allergies and Adverse Reactions", new string[0])]

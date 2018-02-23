@@ -112,39 +112,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         {
                             coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
                             coding.Code.ShouldNotBeNull();
+                            coding.Display.ShouldNotBeNull();
                         }
                     }
                     else
                     {
                         issue.Details.ShouldNotBeNull();
-                    }
-                }
-            }
-        }
-
-        [Then(@"the JSON response should be a basic OperationOutcome resource")]
-        public void ThenTheJSONResponseShouldBeABasicOperationOutcomeResource()
-        {
-            FhirContext.FhirResponseResource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
-            OperationOutcome operationOutcome = (OperationOutcome)FhirContext.FhirResponseResource;
-            if (operationOutcome.Meta != null)
-            {
-                foreach (string profile in operationOutcome.Meta.Profile)
-                {
-                    profile.ShouldBe("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1");
-                }
-            }
-
-            foreach (OperationOutcome.IssueComponent issue in operationOutcome.Issue)
-            {
-                {
-                    if (issue.Details != null)
-                    {
-                        foreach (Coding coding in issue.Details.Coding)
-                        {
-                            coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
-                            coding.Code.ShouldNotBeNull();
-                        }
                     }
                 }
             }
@@ -568,6 +541,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                 codingCount++;
                                 coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/sds-job-role-name-1");
                                 coding.Code.ShouldNotBeNull();
+                                coding.Display.ShouldNotBeNull();
                             }
                             codingCount.ShouldBeLessThanOrEqualTo(1);
                         }

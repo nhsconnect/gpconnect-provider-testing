@@ -46,7 +46,7 @@ Scenario: JWT not base64 encoded
 	When I make a GET request to "/metadata"
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
-		And the JSON response should be a basic OperationOutcome resource
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: JWT expiry time before creation time
 	Given I am using the default server
@@ -82,7 +82,7 @@ Scenario: JWT requesting device is not valid FHIR device resource
 	When I make a GET request to "/metadata"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a basic OperationOutcome resource
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: JWT requesting organization is not valid FHIR organization resource
 	Given I am using the default server
@@ -91,7 +91,7 @@ Scenario: JWT requesting organization is not valid FHIR organization resource
 	When I make a GET request to "/metadata"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a basic OperationOutcome resource
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: JWT requesting organization identifier does not contain an ODS code
 	Given I am using the default server
@@ -118,7 +118,7 @@ Scenario: JWT requesting practitioner is not valid FHIR practitioner resource
 	When I make a GET request to "/metadata"
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
-		And the JSON response should be a basic OperationOutcome resource
+		And the JSON response should be a OperationOutcome resource
 
 Scenario: JWT requesting practitioner identifier does not contain an SDS Id
 	Given I am using the default server
