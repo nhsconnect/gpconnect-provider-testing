@@ -41,17 +41,6 @@ Scenario Outline: I perform a successful cancel appointment and all returned app
 		| patient8    |
 		| patient9    |
 
-Scenario: I perform a successful cancel appointment and amend the comment
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I set the Created Appointment Comment to "RANDOM COMMENT"
-	When I make the "AppointmentCancel" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
 Scenario: I perform cancel appointment and update the description
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -62,17 +51,6 @@ Scenario: I perform cancel appointment and update the description
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
-
-Scenario: I perform cancel appointment and update the reason
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I set the Created Appointment Reason to "RANDOM REASON"
-	When I make the "AppointmentCancel" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: I perform cancel appointment and add participants
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -308,7 +286,6 @@ Scenario: Cancel appointment compare request appointment to returned appointment
 		And the Appointment Description should equal the Created Appointment Description
 		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
 		And the Appointment Slots should equal the Created Appointment Slots
-		And the Appointment Reason should equal the Created Appointment Reason
 		And the Appointment Participants should be equal to the Created Appointment Participants
 		And the Appointment Created should be equal to the Created Appointment Created
 
@@ -408,5 +385,3 @@ Scenario:Cancel appointment invalid response check caching headers exist
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 		And the required cacheing headers should be present in the response
-
-

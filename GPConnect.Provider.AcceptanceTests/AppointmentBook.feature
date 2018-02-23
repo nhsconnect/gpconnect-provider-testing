@@ -355,25 +355,6 @@ Scenario: Book Appointment and remove identifier value from the appointment book
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-Scenario Outline: Book Appointment and remove reason coding element from the appointment booking
-	Given I get an existing patients nshNumber
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Reason Coding <CodingElement> to null
-	When I make the "AppointmentCreate" request
-	Then the response status code should be "422"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
-	Examples:
-		| CodingElement |
-		| System        |
-		| Code          |
-		| Display       |
-
 #Miss-leading test name - participant status is not removed but nullified
 Scenario: Book Appointment and remove participant status from the appointment booking
 	Given I get an existing patients nshNumber
@@ -481,6 +462,19 @@ Scenario: Book appointment with telecom removed from booking organization
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
+Scenario: Book appointment with a comment
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I set the Created Appointment Comment to "customComment"
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment Comment should be valid for "customComment"
 
 @ignore
 Scenario: Book appointment for temporary patient

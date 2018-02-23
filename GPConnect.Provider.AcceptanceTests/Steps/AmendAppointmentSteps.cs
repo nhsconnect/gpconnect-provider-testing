@@ -18,15 +18,6 @@
             _httpContext = httpContext;
         }
         
-        [Then(@"the Appointment Reason text should equal ""(.*)""")]
-        public void TheAppointmentReasonTextShouldBeValidFor(string value)
-        {
-            Appointments.ForEach(appointment =>
-            {
-                appointment.Reason.Select(reason => reason.Text).ShouldContain(value, $@"The Appointment Reason Text should contain ""{value}"" but did not.");
-            });
-        }
-        
         [Then(@"the Appointment Description should be valid for ""(.*)""")]
         public void TheAppointmentDescriptionShouldBeValidFor(string value)
         {
