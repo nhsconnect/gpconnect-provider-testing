@@ -62,6 +62,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTodayWithStartEndPrefix(days,"ge","le");
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("fb-type", "free");
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("searchFilter", "free");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + "ORG1");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
         }
 
