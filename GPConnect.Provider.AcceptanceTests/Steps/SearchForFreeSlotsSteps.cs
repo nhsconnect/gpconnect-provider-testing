@@ -68,6 +68,29 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
         }
 
+        [Given(@"I add a single searchFilter paramater with value equal to ""(.*)""")]
+        public void ISetASingleTheSearchFilterParameterTo(string invalidValue)
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + "ORG1");
+
+        }
+
+        [Given(@"I add two searchFilter paramaters with values equal to ""(.*)"" and ""(.*)""")]
+        public void IAddTwoSearchFilterParametersWithValuesEqualToAnd(string firstInvalidValue, string secondInvalidValue)
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", firstInvalidValue);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter",secondInvalidValue);
+
+        }
+
+        [Given(@"I add three valid searchFilter paramaters")]
+        public void IAddThreeValidSearchFilterParamaters(string firstInvalidValue, string secondInvalidValue)
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + "ORG1");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Other");
+        }
+
 
         [Then(@"the Bundle should not contain resources")]
         public void TheBundleShouldNotContainResources()

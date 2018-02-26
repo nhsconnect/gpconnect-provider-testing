@@ -36,10 +36,12 @@ Scenario Outline: Searching for free slots should fail due to missing parameters
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples: 
-	| Keys		|
-	| start,end |
-	| start		|
-	| fb-type	|
+	| Keys                      |
+	| start,end                 |
+	| start                     |
+	| fb-type                   |
+	| searchFilter              |
+	| searchFilter,searchFilter |
 
 Scenario: Searching for free slots with valid prefixes
 	Given I configure the default "SearchForFreeSlots" request
@@ -95,12 +97,39 @@ Scenario Outline: Searching for free slots should fail due to invalid parameter 
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 	Examples:
-		| Key			| Value				|
-		| start			| invalidStartDate  |
-		| start			|					|
-		| end			| invalidEnddate	|
-		| end			|					|
-		| fb-type		| busy				|
+		| Key          | Value            |
+		| start        | invalidStartDate |
+		| start        |                  |
+		| end          | invalidEnddate   |
+		| end          |                  |
+		| fb-type      | busy             |
+
+Scenario: Searching for free slots should fail due to one invalid searchFilter paramater
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters with a time period of "3" days
+		And I add a single searchFilter paramater with value equal to "invalidValue"
+	When I make the "SearchForFreeSlots" request
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
+
+Scenario: Searching for free slots should fail due to two invalid searchFilter paramaters
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters with a time period of "3" days
+		And I add two searchFilter paramaters with values equal to "firstInvalidValue" and "secondInvalidValue"
+	When I make the "SearchForFreeSlots" request
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
+
+Scenario: Searching for free slots should fail due to three valid searchFilter paramaters
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters with a time period of "3" days
+		And I add three valid searchFilter paramaters
+	When I make the "SearchForFreeSlots" request
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 
 Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
