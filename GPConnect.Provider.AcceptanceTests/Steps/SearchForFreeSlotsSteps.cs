@@ -181,7 +181,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Schedules.ForEach(schedule =>
             {
                 schedule.Actor.ShouldNotBeNull();
-
+                
                 var locationReference = schedule.Actor.FirstOrDefault(actor => actor.Reference.StartsWith("Location/"))?.Reference;
 
                 locationReference.ShouldNotBeNullOrEmpty("The Schedule Actors should contain a Location Reference, but did not.");
@@ -222,6 +222,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Schedules.ForEach(schedule =>
             {
                 schedule.ServiceType?.Count.ShouldBeLessThanOrEqualTo(1, $"The Schedule should have a maximum of 1 ServiceType but found {schedule.ServiceType?.Count}.");
+            });
+        }
+
+        [Then("the Schedule Extensions should be populated and valid")]
+        public void TheScheduleExtensionsShouldBePopulatedAndValid()
+        {
+            Schedules.ForEach(schedule =>
+            {
+                var practitionerRoleExtensions = schedule.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kPractitionerRoleExt)).ToList();
+                practitionerRoleExtensions.Count.ShouldBe(1, "Incorrect number of practitionerRole Extensions have been returned. This should be 1.");
+
+                var deliveryChannelExtensions = schedule.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kDeliveryChannelExt)).ToList();
+                deliveryChannelExtensions.Count.ShouldBe(1, "Incorrect number of delivery Channel Extensions have been returned. This should be 1.");
+
             });
         }
 
