@@ -39,16 +39,16 @@ Scenario Outline: Searching for free slots should fail due to missing parameters
 	| Keys                      |
 	| start,end                 |
 	| start                     |
-	| fb-type                   |
-	| searchFilter              |
+	| status                    |
 	| searchFilter,searchFilter |
 
 Scenario: Searching for free slots with valid prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add three valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -57,8 +57,9 @@ Scenario Outline: Searching for free slots with invalid prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start date prefix "<startDatePrefix>" and the end date prefix "<endDatePrefix>"
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add three valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate failure
 		And the response status code should be "422"
@@ -75,8 +76,9 @@ Scenario Outline: Searching for free slots with unknown prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start date prefix "<startDatePrefix>" and the end date prefix "<endDatePrefix>"
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add three valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate failure
 		And the response status code should be "422"
@@ -102,13 +104,13 @@ Scenario Outline: Searching for free slots should fail due to invalid parameter 
 		| start        |                  |
 		| end          | invalidEnddate   |
 		| end          |                  |
-		| fb-type      | busy             |
+		| status      | busy             |
 
 Scenario: Searching for free slots should fail due to one invalid searchFilter paramater
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "3" days
-		And I add a single searchFilter paramater with value equal to "invalidValue"
+		And I add a single searchFilter paramater with value equal to ""
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
@@ -117,26 +119,19 @@ Scenario: Searching for free slots should fail due to two invalid searchFilter p
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "3" days
-		And I add two searchFilter paramaters with values equal to "firstInvalidValue" and "secondInvalidValue"
+		And I add two searchFilter paramaters with values equal to "" and ""
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 
-Scenario: Searching for free slots should fail due to three valid searchFilter paramaters
-	Given I configure the default "SearchForFreeSlots" request
-		And I set the JWT Requested Scope to Organization Read
-		And I set the required parameters with a time period of "3" days
-		And I add three valid searchFilter paramaters
-	When I make the "SearchForFreeSlots" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 
 Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start format "<StartDate>" and the end format "<EndDate>"
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add three valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -151,8 +146,9 @@ Scenario Outline: Searching for free slots with in-valid partial dateTime string
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start format "<StartDate>" and the end format "<EndDate>"
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add three valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
@@ -271,8 +267,9 @@ Scenario: Searching in the future for no free slots should result in no resource
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameter that is "500" days in the future
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add three valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"

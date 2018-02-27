@@ -61,9 +61,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void SetRequiredParametersWithTimePeriod(int days)
         {
             _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTodayWithStartEndPrefix(days,"ge","le");
-            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("fb-type", "free");
-            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("searchFilter", "free");
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + "ORG1");
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("status", "free");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
         }
@@ -71,7 +70,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add a single searchFilter paramater with value equal to ""(.*)""")]
         public void ISetASingleTheSearchFilterParameterTo(string invalidValue)
         {
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + "ORG1");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
 
         }
 
@@ -84,9 +83,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I add three valid searchFilter paramaters")]
-        public void IAddThreeValidSearchFilterParamaters(string firstInvalidValue, string secondInvalidValue)
+        public void IAddThreeValidSearchFilterParamaters()
         {
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + "ORG1");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Other");
         }
