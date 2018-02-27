@@ -77,9 +77,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add two searchFilter paramaters with values equal to ""(.*)"" and ""(.*)""")]
         public void IAddTwoSearchFilterParametersWithValuesEqualToAnd(string firstInvalidValue, string secondInvalidValue)
         {
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", firstInvalidValue);
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter",secondInvalidValue);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["OG1"]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "");
 
+        }
+
+        [Given(@"I add two valid searchFilter paramaters")]
+        public void IAddTwoValidSearchFilterParamaters()
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            
         }
 
         [Given(@"I add three valid searchFilter paramaters")]
@@ -88,6 +96,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Other");
+        }
+
+        [Given(@"I add a invalid searchFilter paramater with system equal to ""(.*)""")]
+        public void IAddInvalidSystemSearchFilterParamaters(string invalidSystem)
+        {
+           
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", invalidSystem + '|' + "Urgent Care");
+          
         }
 
 
