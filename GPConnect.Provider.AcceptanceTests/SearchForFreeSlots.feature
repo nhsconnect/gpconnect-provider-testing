@@ -254,6 +254,7 @@ Scenario: Successfully search for free slots and check the included schedule res
 		And the Schedule Identifiers should be valid
 		And the Schedule PlanningHorizon should be valid
 		And the Schedule ServiceType should be valid
+		And the Schedule Extensions should be populated and valid
 		And the Practitioner Entry should be valid
 		And the Organization should be valid
 
