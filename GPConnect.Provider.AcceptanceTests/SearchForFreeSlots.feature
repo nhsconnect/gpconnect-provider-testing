@@ -48,7 +48,7 @@ Scenario: Searching for free slots with valid prefixes
 		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
-		And I add three valid searchFilter paramaters
+		And I add two valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -59,7 +59,7 @@ Scenario Outline: Searching for free slots with invalid prefixes
 		And I add the time period parameters for "3" days starting today using the start date prefix "<startDatePrefix>" and the end date prefix "<endDatePrefix>"
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
-		And I add three valid searchFilter paramaters
+		And I add two valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate failure
 		And the response status code should be "422"
@@ -78,7 +78,7 @@ Scenario Outline: Searching for free slots with unknown prefixes
 		And I add the time period parameters for "3" days starting today using the start date prefix "<startDatePrefix>" and the end date prefix "<endDatePrefix>"
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
-		And I add three valid searchFilter paramaters
+		And I add two valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate failure
 		And the response status code should be "422"
@@ -105,6 +105,16 @@ Scenario Outline: Searching for free slots should fail due to invalid parameter 
 		| end    | invalidEnddate   |
 		| end    |                  |
 		| status | busy             |
+
+Scenario: Searching for free slots with invalid searchFilter system
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters with a time period of "3" days
+		And I add a invalid searchFilter paramater with system equal to "invalidSystem"
+		When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+
 @ignore
 Scenario: Searching for free slots should fail due to one invalid searchFilter paramater
 	Given I configure the default "SearchForFreeSlots" request
@@ -131,7 +141,7 @@ Scenario Outline: Searching for free slots with valid partial dateTime strings
 		And I add the time period parameters for "3" days starting today using the start format "<StartDate>" and the end format "<EndDate>"
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
-		And I add three valid searchFilter paramaters
+		And I add two valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -148,7 +158,7 @@ Scenario Outline: Searching for free slots with in-valid partial dateTime string
 		And I add the time period parameters for "3" days starting today using the start format "<StartDate>" and the end format "<EndDate>"
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
-		And I add three valid searchFilter paramaters
+		And I add two valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
@@ -269,7 +279,7 @@ Scenario: Searching in the future for no free slots should result in no resource
 		And I add the time period parameter that is "500" days in the future
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
-		And I add three valid searchFilter paramaters
+		And I add two valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
