@@ -95,12 +95,12 @@ Scenario Outline: Searching for free slots should fail due to invalid parameter 
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 	Examples:
-		| Key			| Value				|
-		| start			| invalidStartDate  |
-		| start			|					|
-		| end			| invalidEnddate	|
-		| end			|					|
-		| fb-type		| busy				|
+		| Key    | Value            |
+		| start  | invalidStartDate |
+		| start  |                  |
+		| end    | invalidEnddate   |
+		| end    |                  |
+		| status | busy             |
 
 Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
@@ -207,7 +207,7 @@ Scenario: Successfully search for free slots and check the included schedule res
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "3" days
-		And I add the parameter "_include:recurse" with the value "Schedule:Practitioner"
+		And I add the parameter "_include:recurse" with the value "Schedule:actor:Practitioner"
 		And I add the parameter "_include:recurse" with the value "Schedule:actor:Location"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
@@ -225,7 +225,7 @@ Scenario: Successfully search for free slots and check the included schedule res
 Scenario Outline: Searching for free slots without actor parameter should return results without actor resource 
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
-		And I set the required parameters with a time period of "14" days
+		And I set the required parameters with a time period of "3" days
 		And I add the parameter "_include:recurse" with the value "<IncludedActorValue>"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
@@ -234,9 +234,9 @@ Scenario Outline: Searching for free slots without actor parameter should return
 		And the Slot Schedule should be referenced in the Bundle
 		And the excluded actor "<ExcludedActor>" should not be present in the Bundle
 	Examples:
-	| ExcludedActor | IncludedActorValue      |
-	| Location      | Schedule:Practitioner   |
-	| Practitioner  | Schedule:actor:Location |
+	| ExcludedActor | IncludedActorValue          |
+	| Location      | Schedule:actor:Practitioner |
+	| Practitioner  | Schedule:actor:Location     |
 
 Scenario: Searching in the future for no free slots should result in no resources returned
 	Given I configure the default "SearchForFreeSlots" request
