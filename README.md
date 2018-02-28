@@ -1,4 +1,4 @@
-<img src="images/logo.png" height=72>
+<img src="logo.png" height=72>
 
 # GP Connect Provider Automated Test Suite
 
