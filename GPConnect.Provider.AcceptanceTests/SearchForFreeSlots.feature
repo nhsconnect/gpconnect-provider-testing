@@ -146,11 +146,11 @@ Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 	Examples:
-		| StartDate           | EndDate             |
-		| yyyy-MM-dd          | yyyy-MM-dd          |
-		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-ddTHH:mm:ss |
-		| yyyy-MM-dd          | yyyy-MM-ddTHH:mm:ss |
-		| yyyy-MM-ddTHH:mm:ss | yyyy-MM-dd          |
+		| StartDate            | EndDate              |
+		| yyyy-MM-dd           | yyyy-MM-dd           |
+		| yyyy-MM-ddTHH:mm:ssZ | yyyy-MM-ddTHH:mm:ssZ |
+		| yyyy-MM-dd           | yyyy-MM-ddTHH:mm:ssZ |
+		| yyyy-MM-ddTHH:mm:ssZ | yyyy-MM-dd           |
 
 Scenario Outline: Searching for free slots with in-valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
