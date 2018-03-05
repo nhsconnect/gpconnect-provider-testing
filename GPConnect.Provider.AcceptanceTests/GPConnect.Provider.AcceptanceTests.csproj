@@ -198,11 +198,6 @@
     <Compile Include="Helpers\ResourceReferenceHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Helpers\TimePeriodHelper.cs" />
-    <Compile Include="HTTP1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HTTP.feature</DependentUpon>
-    </Compile>
     <Compile Include="Http\HttpContextRequest.cs" />
     <Compile Include="Http\HttpRequestBase.cs" />
     <Compile Include="Http\FhirResponse.cs" />
@@ -220,11 +215,6 @@
     <Compile Include="Importers\ODSCodeMapConverter.cs" />
     <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
-    <Compile Include="JWT1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JWT.feature</DependentUpon>
-    </Compile>
     <Compile Include="LocationRead.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -383,10 +373,6 @@
     <None Include="PatientSearch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PatientSearch.feature.cs</LastGenOutput>
-    </None>
-    <None Include="HTTP.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>HTTP1.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
