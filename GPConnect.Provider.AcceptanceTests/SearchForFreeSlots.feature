@@ -151,8 +151,9 @@ Scenario Outline: Searching for free slots with valid partial dateTime strings
 		| yyyy-MM-ddTHH:mm:ssZ | yyyy-MM-ddTHH:mm:ssZ |
 		| yyyy-MM-dd           | yyyy-MM-ddTHH:mm:ssZ |
 		| yyyy-MM-ddTHH:mm:ssZ | yyyy-MM-dd           |
+		| yyyy-MM              | yyyy-MM              |
 
-Scenario Outline: Searching for free slots with in-valid partial dateTime strings
+Scenario Outline: Searching for free slots with invalid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start format "<StartDate>" and the end format "<EndDate>"
@@ -161,11 +162,14 @@ Scenario Outline: Searching for free slots with in-valid partial dateTime string
 		And I add two valid searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
-	Examples: 
-		| StartDate | EndDate   |
-		| yyyy      | yyyy-MM   |
-		| yyyy-MM   | yyyy		|
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+	Examples:
+		| StartDate            | EndDate              |
+		| yyyy-MM-ddTHH:mm:ss  | yyyy-MM-ddTHH:mm:ss  |
+		| yyyy-MM-ddTHH:mm:ssZ | yyyy-MM-ddTHH:mm:ss  |
+		| yyyy-MM-ddTHH:mm:ss  | yyyy-MM-ddTHH:mm:ssZ |
+		| yyyy                 | yyyy-MM              |
+		| yyyy-MM              | yyyy	              |
 
 Scenario: Successfully search for free slots and check the slot resources returned are valid
 	Given I configure the default "SearchForFreeSlots" request
