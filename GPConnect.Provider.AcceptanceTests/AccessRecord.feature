@@ -1041,6 +1041,25 @@ Scenario Outline: check all dateTime format variations are allowed
 		| PRB  | 2014-05                   | 2016-09-14                |
 		| PRB  | 2015-10-23T11:08:32+00:00 | 2016-12-08T23:59:59+00:00 |
 
+Scenario Outline: check invalid dateTime format variations
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient2"
+		And I set a time period parameter start date to "<StartDateTime>" and end date to "<EndDateTime>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
+	Examples:
+		| Code | StartDateTime       | EndDateTime         |
+		| ADM  | 2015-10-23T11:08:32 | 2016-12-08T23:59:59 |
+		| CLI  | 2015-03-14T03:14:11 | 2016-08-03T18:32:43 |
+		| ENC  | 2014-04-03T22:03:25 | 2016-03-13T17:13:12 |
+		| REF  | 2015-03-14T03:14:11 | 2016-08-03T18:32:43 |
+		| MED  | 2015-10-23T11:08:32 | 2016-12-08T23:59:59 |
+		| OBS  | 2015-10-23T11:08:32 | 2016-12-08T23:59:59 |
+		| PRB  | 2015-10-23T11:08:32 | 2016-12-08T23:59:59 |
+
 Scenario Outline: invalid request parameter names and case
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
