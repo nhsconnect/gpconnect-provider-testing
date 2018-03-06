@@ -332,6 +332,8 @@ Scenario: Successfully search for free slots and check the included location res
 		And the Location Physical Type should be valid
 		And the Location PartOf Location should be valid
 		And the Location Managing Organization should be valid
+		And the Location Name should be valid
+		And the Location Address should be valid
 
 Scenario: CapabilityStatement profile supports the Slot Search Resource
 	Given I configure the default "MetadataRead" request
