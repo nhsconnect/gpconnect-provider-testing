@@ -125,8 +125,6 @@
             TheLocationPhysicalTypeShouldBeValid();
             TheLocationPartOfLocationShouldBeValid();
             TheLocationManagingOrganizationShouldBeValid();
-            TheLocationNameShouldBeValid();
-            TheLocationAddressShouldBeValid();
         }
 
         [Then(@"the Location Metadata should be valid")]
