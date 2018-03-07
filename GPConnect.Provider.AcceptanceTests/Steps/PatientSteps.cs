@@ -196,6 +196,33 @@
             });
         }
 
+        [Then(@"the Patient RegistrationDetails should include preferredBranchSurgery")]
+        public void ThePatientRegistrationDetailsShouldIncludePreferredBranchSurgery()
+        {
+            Patients.ForEach(patient =>
+            {
+                var registrationDetailsExtensions = patient.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtCcGpcRegDetails)).ToList();
+
+                registrationDetailsExtensions.Count.ShouldBe(1, "Incorrect number of registration details extension have been returned. This should be 1.");
+
+                var regDetailsExtension = registrationDetailsExtensions.First();
+                var regExtensions = regDetailsExtension.Extension;
+
+                var extensions = regExtensions.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtPreferredBranchSurgery)).ToList();
+
+                extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 Preferred Branch Surgery extension.");
+
+                extensions.ForEach(preferredBranchSurgeryExtension =>
+                {
+                    preferredBranchSurgeryExtension.Value.ShouldNotBeNull("The Preferred Branch Surgery extension should have a value element.");
+                    preferredBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The Preferred Branch Surgery extension should be a Period.");
+
+                    preferredBranchSurgeryExtension.Value.ShouldNotBeNull();
+                });
+
+            });
+        }
+
         [Then(@"the Patient MaritalStatus should be valid")]
         public void ThePatientMaritalStatusShouldbeValid()
         {

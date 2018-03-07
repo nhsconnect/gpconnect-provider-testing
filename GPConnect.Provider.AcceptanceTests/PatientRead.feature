@@ -160,3 +160,13 @@ Scenario: Patient read invalid response check caching headers exist
 	When I make the "PatientRead" request
 	Then the response status code should be "404"
 		And the required cacheing headers should be present in the response
+
+Scenario: Patient read valid response check preferred branch
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I configure the default "PatientRead" request
+		And I set the JWT Requested Record to the NHS Number for "patient1"
+	When I make the "PatientRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a Patient
+		And the Patient RegistrationDetails should include preferredBranchSurgery
