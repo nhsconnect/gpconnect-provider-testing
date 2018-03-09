@@ -1,17 +1,23 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using Cache.ValueSet;
     using Constants;
     using Context;
     using Helpers;
-    using Hl7.Fhir.Model;
     using TechTalk.SpecFlow;
+    using Shouldly;
+    using Hl7.Fhir.Model;
     using System.Collections.Generic;
     using System;
+    using Extensions;
+    using System.Linq;
 
     [Binding]
     public sealed class AccessRecordSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
+
+        private List<AllergyIntolerance> AllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
 
         public AccessRecordSteps(HttpSteps httpSteps, HttpContext httpContext) 
             : base(httpSteps)
@@ -72,6 +78,108 @@
         {
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(Boolean.Parse(partValue))) };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
+        }
+
+        [Then(@"the AllergyIntolerance Metadata should be valid")]
+        public void ThePatientMetadataShouldBeValid()
+        {
+            AllergyIntolerances.ForEach(allergyIntolerance =>
+            {
+                CheckForValidMetaDataInResource(allergyIntolerance, FhirConst.StructureDefinitionSystems.kAllergyIntolerance);
+            });
+        }
+
+        [Then(@"the Bundle should contain ""(.*)"" allergies")]
+        public void TheBundleShouldContainAllergies(int number)
+        {
+            AllergyIntolerances.Count.ShouldBe(number, "An incorrect number of allergies was returned for the patient.");
+        }
+
+        [Then(@"the AllergyIntolerance Id should be valid")]
+        public void TheAllergyIntoleranceIdShouldBeValid()
+        {
+            AllergyIntolerances.ForEach(allergy =>
+            {
+                allergy.Id.ShouldNotBeNullOrWhiteSpace("Id must be set");
+            });
+        }
+
+        [Then(@"the AllergyIntolerance clinicalStatus should be valid")]
+        public void TheAllergyIntoleranceClinicalStatusShouldbeValid()
+        {
+            AllergyIntolerances.ForEach(allergy =>
+            {
+                if (allergy.ClinicalStatus != null)
+                {
+                    allergy.ClinicalStatus.ShouldNotBeNull("AllergyIntolerance ClinicalStatus cannot be null");
+                    allergy.ClinicalStatus.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceClinicalStatus>($"AllergyIntolerance ClinicalStatus is not a valid value within the value set {FhirConst.ValueSetSystems.kAllergyIntoleranceClinicalStatus}");
+                }
+            });
+        }
+
+        [Then(@"the AllergyIntolerance verificationStatus should be valid")]
+        public void TheAllergyIntoleranceVerificationStatusShouldbeValid()
+        {
+            AllergyIntolerances.ForEach(allergy =>
+            {
+                if (allergy.VerificationStatus != null)
+                {
+                    allergy.VerificationStatus.ShouldNotBeNull("AllergyIntolerance VerificationStatus cannot be null");
+                    allergy.VerificationStatus.ShouldBe(AllergyIntolerance.AllergyIntoleranceVerificationStatus.Unconfirmed);
+                }
+            });
+        }
+
+        [Then(@"the AllergyIntolerance category should be valid")]
+        public void TheAllergyIntoleranceCategoryShouldbeValid()
+        {
+            AllergyIntolerances.ForEach(allergy =>
+            {
+                if (allergy.Category != null)
+                {
+                    allergy.Category.ShouldNotBeNull("AllergyIntolerance Category cannot be null");
+                    allergy.Category.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceCategory>($"AllergyIntolerance Category is not a valid value within the value set {FhirConst.ValueSetSystems.kAllergyIntoleranceCategory}");
+                    allergy.Category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Biologic);
+                    allergy.Category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Food);
+                }
+            });
+        }
+
+        [Then(@"the AllergyIntolerance Code should be valid")]
+        public void TheAllergyIntoleranceCodeShouldbeValid()
+        {
+            AllergyIntolerances.ForEach(allergy =>
+            {
+                if (allergy.Code != null)
+                {
+                    allergy.Code.Coding.ShouldNotBeNull("AllergyIntolerance Code coding cannot be null");
+
+                    var codeList = ValueSetCache.Get(FhirConst.ValueSetSystems.kAllergyIntoleranceCode).WithComposeIncludes().ToArray();
+                    allergy.Code.Coding.ForEach(coding =>
+                    {
+                        coding.System.ShouldNotBeNull("Code should not be null");
+                        coding.Code.ShouldBeOneOf(codeList.Select(c => c.Code).ToArray());
+                        coding.Display.ShouldBeOneOf(codeList.Select(c => c.Display).ToArray());
+
+                    });
+                }
+            });
+        }
+
+        [Then(@"the AllergyIntolerance assertedDate should be valid")]
+        public void TheAllergyIntoleranceAssertedDateShouldBeValid()
+        {
+            AllergyIntolerances.ForEach(allergy =>
+            {
+                allergy.AssertedDate.ShouldBeOfType<FhirDateTime>();
+            });
+        }
+
+        [Given(@"I add the medication parameter with prescriptionIssues set to ""(.*)""")]
+        public void GivenIAddTheMedicationParameterWithPrescriptionIssuesSetTo(string partValue)
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(Boolean.Parse(partValue))) };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
         #endregion

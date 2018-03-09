@@ -34,6 +34,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             {
                 _httpContext.FhirResponse.Bundle.Type.ShouldBe(BundleType.Searchset);
             }
+            else if ("collection".Equals(resourceType))
+            {
+                _httpContext.FhirResponse.Bundle.Type.ShouldBe(BundleType.Collection);
+            }
             else
             {
                 Assert.Fail("Invalid resourceType: " + resourceType);
@@ -139,6 +143,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             profiles.ShouldNotBeNull();
 
             if ("searchset".Equals(metaProfileType))
+            {
+                var requireProfile = profiles.FirstOrDefault(p => p.Equals(FhirConst.StructureDefinitionSystems.kGpcSearchSet));
+                requireProfile.ShouldNotBeNull();
+            }
+            else if ("structured".Equals(metaProfileType))
             {
                 var requireProfile = profiles.FirstOrDefault(p => p.Equals(FhirConst.StructureDefinitionSystems.kGpcSearchSet));
                 requireProfile.ShouldNotBeNull();
