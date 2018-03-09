@@ -32,6 +32,9 @@
                 case GpConnectInteraction.GpcGetCareRecord:
                     ConfigureGpcGetCareRecordBody(httpRequestConfiguration);
                     break;
+                case GpConnectInteraction.GpcGetStructuredRecord:
+                    ConfigureGpcGetStructuredRecordBody(httpRequestConfiguration);
+                    break;
                 case GpConnectInteraction.RegisterPatient:
                     ConfigureRegisterPatientBody(httpRequestConfiguration);
                     break;
@@ -63,6 +66,11 @@
         }
 
         private static void ConfigureGpcGetCareRecordBody(HttpRequestConfiguration httpRequestConfiguration)
+        {
+            httpRequestConfiguration.RequestBody = _serializer(httpRequestConfiguration.BodyParameters);
+        }
+
+        private static void ConfigureGpcGetStructuredRecordBody(HttpRequestConfiguration httpRequestConfiguration)
         {
             httpRequestConfiguration.RequestBody = _serializer(httpRequestConfiguration.BodyParameters);
         }

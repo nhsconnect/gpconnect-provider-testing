@@ -7,6 +7,7 @@
             private const string BaseInteraction = "urn:nhs:names:services:gpconnect:fhir:";
 
             public const string GpcGetCareRecord = BaseInteraction + "operation:gpc.getcarerecord-1";
+            public const string GpcGetStructuredRecord = BaseInteraction + "operation:gpc.getstructuredrecord-1";
 
             public const string OrganizationSearch = BaseInteraction + "rest:search:organization-1";
             public const string OrganizationRead = BaseInteraction + "rest:read:organization-1";

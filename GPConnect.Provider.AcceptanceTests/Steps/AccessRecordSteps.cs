@@ -5,6 +5,8 @@
     using Helpers;
     using Hl7.Fhir.Model;
     using TechTalk.SpecFlow;
+    using System.Collections.Generic;
+    using System;
 
     [Binding]
     public sealed class AccessRecordSteps : BaseSteps
@@ -63,6 +65,13 @@
         {
             var nhsNumber = GlobalContext.PatientNhsNumberMap[patient];
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, new FhirString(nhsNumber));
+        }
+        
+        [Given(@"I add the allergies parameter with resolvedAllergies set to ""(.*)""")]
+        public void GivenIAddTheAllergiesParameterWithResolvedAllergiesSetTo(string partValue)
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(Boolean.Parse(partValue))) };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
         }
 
         #endregion

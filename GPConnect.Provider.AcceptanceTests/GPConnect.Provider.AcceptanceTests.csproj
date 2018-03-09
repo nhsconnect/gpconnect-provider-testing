@@ -141,6 +141,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessStructuredRecordAllergies.feature.cs">
+      <DependentUpon>AccessStructuredRecordAllergies.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AppointmentBook.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -215,6 +220,11 @@
     <Compile Include="Importers\ODSCodeMapConverter.cs" />
     <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
+    <Compile Include="JWT1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JWT.feature</DependentUpon>
+    </Compile>
     <Compile Include="LocationRead.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -341,6 +351,10 @@
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="AccessStructuredRecordAllergies.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AccessStructuredRecordAllergies.feature.cs</LastGenOutput>
     </None>
     <None Include="AppointmentBook.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -11,6 +11,18 @@
             public const string kEndDate = "endDate";
         }
 
+        internal static class GetStructuredRecordParams
+        {
+            public const string kPatientNHSNumber = "patientNHSNumber";
+            public const string kAllergies = "includeAllergies";
+            public const string kMedication = "inlcudeMedication";
+            public const string kStartDate = "start";
+            public const string kEndDate = "end";
+            public const string kResolvedAllergies = "includeResolvedAllergies";
+            public const string kPrescriptionIssues  = "includePrescriptionIssues";
+            public const string kPeriod = "period";
+        }
+
         internal static class Resources
         {
             public const string kInvalidResourceType = "InvalidResourceType";
