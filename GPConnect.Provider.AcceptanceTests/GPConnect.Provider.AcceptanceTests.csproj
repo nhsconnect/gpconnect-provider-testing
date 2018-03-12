@@ -297,6 +297,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SSP.feature</DependentUpon>
     </Compile>
+    <Compile Include="Steps\AccessStructuredAllergySteps.cs" />
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
     <Compile Include="Steps\AppointmentReadSteps.cs" />
     <Compile Include="Steps\AppointmentRetrieveSteps.cs" />

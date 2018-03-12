@@ -23,6 +23,7 @@
         public List<Schedule> Schedules => GetResources<Schedule>();
         public List<CapabilityStatement> CapabilityStatements => GetResources<CapabilityStatement>();
         public List<AllergyIntolerance> AllergyIntolerances => GetResources<AllergyIntolerance>();
+        public List<List> Lists => GetResources<List>();
 
         private List<T> GetResources<T>() where T : Resource
         {
