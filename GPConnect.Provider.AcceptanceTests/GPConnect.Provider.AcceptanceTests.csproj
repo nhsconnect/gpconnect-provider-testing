@@ -141,6 +141,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessStructuredRecordMedications.feature.cs">
+      <DependentUpon>AccessStructuredRecordMedications.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AccessStructuredRecordAllergies.feature.cs">
       <DependentUpon>AccessStructuredRecordAllergies.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -297,6 +302,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SSP.feature</DependentUpon>
     </Compile>
+    <Compile Include="Steps\AccessStructuredMedicationSteps.cs" />
     <Compile Include="Steps\AccessStructuredAllergySteps.cs" />
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
     <Compile Include="Steps\AppointmentReadSteps.cs" />
@@ -341,6 +347,10 @@
     <Compile Include="Tables\CareRecordSection.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AccessStructuredRecordMedications.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AccessStructuredRecordMedications.feature.cs</LastGenOutput>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
