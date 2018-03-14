@@ -51,7 +51,7 @@
         public void GivenIAddAnInvalidMedicationsParameter()
         {
             ParameterComponent param = new ParameterComponent();
-            param.Name = "inlcudeInvalidMedications";
+            param.Name = "includeInvalidMedications";
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
@@ -65,15 +65,21 @@
         [Given(@"I add the medications parameter with a start date")]
         public void GivenIAddTheMedicationsParameterWithAStartPeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnly()) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnlyFormatted("dd-MM-yyyy")) };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
         [Given(@"I add the medications parameter with an end date")]
         public void GivenIAddTheMedicationsParameterWithAnEndPeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodEndDateOnly()) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodEndDateOnlyFormatted("dd-MM-yyyy")) };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
+        }
+
+        [Given(@"I set a medications period parameter start date to ""(.*)"" and end date to ""(.*)""")]
+        public void GivenISetAMedicationsTimeAParameterStartDateToAndEndDateTo(string startDate, string endDate)
+        {
+
         }
 
         #endregion

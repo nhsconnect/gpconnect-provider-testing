@@ -15,7 +15,7 @@
         {
             public const string kPatientNHSNumber = "patientNHSNumber";
             public const string kAllergies = "includeAllergies";
-            public const string kMedication = "inlcudeMedication";
+            public const string kMedication = "includeMedication";
             public const string kStartDate = "start";
             public const string kEndDate = "end";
             public const string kResolvedAllergies = "includeResolvedAllergies";

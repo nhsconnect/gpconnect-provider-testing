@@ -199,3 +199,23 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient4 |
 		| patient5 |
 		| patient6 |
+
+Scenario Outline: Retrieve the medication structured record section for a patient with invalid time period
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I set the JWT Requested Record to the NHS Number for "<Patient>"
+		And I add an NHS Number parameter for "<Patient>"
+		And I set a medications period parameter start date to "<StartDate>" and end date to "<EndDate>"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
+	Examples:
+		| StartDate                 | EndDate                   |
+		| 2014                      | 2016-02-02                |
+		| 2014-02                   | 2016-02-02                |
+		| 2015-10-23T11:08:32       | 2016-02-02                |
+		| 2015-10-23T11:08:32+00:00 | 2016-02-02                |
+		| 2016-02-02                | 2017                      |
+		| 2016-02-02                | 2017-02                   |
+		| 2016-02-02                | 2017-10-23T11:08:32       |
+		| 2016-02-02                | 2017-10-23T11:08:32+00:00 |
+		| 2014-02-02                | 2012-02-02                |
