@@ -20,6 +20,7 @@
             public const string kEndDate = "end";
             public const string kResolvedAllergies = "includeResolvedAllergies";
             public const string kPrescriptionIssues  = "includePrescriptionIssues";
+            public const string kMedicationDatePeriod = "medicationDatePeriod";
             public const string kTimePeriod = "timePeriod";
         }
 
@@ -114,7 +115,7 @@
             public const string kSlot = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Slot-1";
             public const string kSchedule = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Schedule-1";
             public const string kGpcSearchSet = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Searchset-Bundle-1";
-            public const string kGpcStructuredREcordBundle = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-GetStructuredRecord-Bundle-1";
+            public const string kGpcStructuredRecordBundle = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-GetStructuredRecord-Bundle-1";
             public const string kAllergyIntolerance = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-AllergyIntolerance-1";
             public const string kMedication = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Medication-1";
             public const string kMedicationStatement = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1";

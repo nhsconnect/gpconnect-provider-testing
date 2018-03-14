@@ -149,7 +149,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             else if ("structured".Equals(metaProfileType))
             {
-                var requireProfile = profiles.FirstOrDefault(p => p.Equals(FhirConst.StructureDefinitionSystems.kGpcSearchSet));
+                var requireProfile = profiles.FirstOrDefault(p => p.Equals(FhirConst.StructureDefinitionSystems.kGpcStructuredRecordBundle));
                 requireProfile.ShouldNotBeNull();
             }
         }

@@ -58,21 +58,21 @@
         [Given(@"I add the medications parameter with a timePeriod")]
         public void GivenIAddTheMedicationsParameterWithATimePeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetDefaultTimePeriod())};
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodFormatted("dd-MM-yyyy"))};
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
         [Given(@"I add the medications parameter with a start date")]
         public void GivenIAddTheMedicationsParameterWithAStartPeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnly()) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnly()) };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
         [Given(@"I add the medications parameter with an end date")]
         public void GivenIAddTheMedicationsParameterWithAnEndPeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodEndDateOnly()) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodEndDateOnly()) };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
@@ -258,9 +258,10 @@
                 list.Status.ShouldBe(List.ListStatus.Current);
                 list.Mode.ShouldBeOfType<ListMode>("Mode of medications list is of wrong type.");
                 list.Mode.ShouldBe(ListMode.Snapshot);
-
+                list.Code.ShouldNotBeNull();
+                list.Subject.ShouldNotBeNull();
+                list.Subject.Reference.StartsWith("Patient");
             });
-            
         }
 
         #endregion
