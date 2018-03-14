@@ -81,6 +81,8 @@
             public const string kMedicationStatementTaken = "http://hl7.org/fhir/stu3/valueset-medication-statement-taken.html";
             public const string kMedicationRequestIntent = "http://hl7.org/fhir/stu3/valueset-medication-request-intent.html";
             public const string kMedicationPrescriptionType = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-PrescriptionType-1";
+            public const string kListStatus = "http://hl7.org/fhir/stu3/valueset-list-status.html";
+            public const string kListMode = "http://hl7.org/fhir/stu3/valueset-list-mode.html";
         }
 
         internal static class StructureDefinitionSystems
@@ -141,6 +143,9 @@
             public const string kMedicationPrescriptionType = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-PrescriptionType-1";
             public const string kMedicationRepeatInformation = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MedicationRepeatInformation-1";
             public const string kMedicationRequestEndReason = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MedicationStatusReason-1";
+
+            public const string kList = " https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1";
+
         }
 
         internal static class Prefixs

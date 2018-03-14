@@ -249,7 +249,18 @@
         public void TheListOfMedicationStatementsShouldBeValid()
         {
             Lists.ShouldHaveSingleItem();
-            MedicationStatements.Count().Equals(Lists.First().Entry.Count());
+            Lists.ForEach(list =>
+            {
+                MedicationStatements.Count().Equals(list.Entry.Count());
+                list.Id.ShouldNotBeNull();
+                CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+                list.Status.ShouldBeOfType<List.ListStatus>("Status of medications list is of wrong type.");
+                list.Status.ShouldBe(List.ListStatus.Current);
+                list.Mode.ShouldBeOfType<ListMode>("Mode of medications list is of wrong type.");
+                list.Mode.ShouldBe(ListMode.Snapshot);
+
+            });
+            
         }
 
         #endregion

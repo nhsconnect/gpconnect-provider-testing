@@ -26,7 +26,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient5 |
 		| patient6 |
 		
-Scenario Outline: Retrieve the medication structured record section for a patient including prescirption issues
+Scenario Outline: Retrieve the medication structured record section for a patient including prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I add an NHS Number parameter for "<Patient>"
@@ -51,7 +51,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient5 |
 		| patient6 |
 
-Scenario Outline: Retrieve the medication structured record section for a patient including prescirption issues
+Scenario Outline: Retrieve the medication structured record section for a patient excluding prescirption issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I add an NHS Number parameter for "<Patient>"
