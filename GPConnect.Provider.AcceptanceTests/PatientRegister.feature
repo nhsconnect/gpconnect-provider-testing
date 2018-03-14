@@ -377,3 +377,15 @@ Scenario:Register pateient invalid response check caching headers exist
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
 		And the required cacheing headers should be present in the response
+
+Scenario: Register patient and check preferred branch 
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I set the JWT Requested Record to the NHS Number of the Stored Patient
+		And I add the Stored Patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the response meta profile should be for "searchset"
+		And the response bundle should contain a single Patient resource
+		And the Patient Registration Details Extension should be valid

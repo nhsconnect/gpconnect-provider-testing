@@ -42,7 +42,7 @@
             var patient = GetPatient(storedPatient);
 
             //Practitioners
-            var practitionerReferences = schedule.Extension.Select(extension => ((ResourceReference)extension.Value).Reference);
+            var practitionerReferences = schedule.Extension.Where(extension => extension is ResourceReference).Select(extension => ((ResourceReference)extension.Value).Reference);
             var practitioners = GetPractitioners(practitionerReferences);
 
             //Location

@@ -24,6 +24,11 @@
         public void TheResponseResourceShouldBeALocation()
         {
             _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Location);
+
+            var location = (Location)_httpContext.FhirResponse.Resource;
+
+            location.Name.ShouldNotBeNullOrEmpty();
+            location.Address.ShouldNotBeNull();
         }
 
         [Then(@"the Location Id should be valid")]
@@ -128,6 +133,24 @@
             Locations.ForEach(location =>
             {
                 CheckForValidMetaDataInResource(location, FhirConst.StructureDefinitionSystems.kLocation);
+            });
+        }
+
+        [Then(@"the Location Name should be valid")]
+        public void TheLocationNameShouldBeValid()
+        {
+            Locations.ForEach(location =>
+            {
+                location.Name.ShouldNotBeNullOrEmpty();
+            });
+        }
+
+        [Then(@"the Location Address should be valid")]
+        public void TheLocationAddressShouldBeValid()
+        {
+            Locations.ForEach(location =>
+            {
+                location.Address.ShouldNotBeNull();
             });
         }
 

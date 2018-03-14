@@ -280,6 +280,15 @@ Given I configure the default "PatientSearch" request
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		And the required cacheing headers should be present in the response
 
+Scenario: Returned patients should contain a preferred branch
+	Given I configure the default "PatientSearch" request
+		And I set the JWT Requested Record to the NHS Number for "patient2"
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+	When I make the "PatientSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And the Patient RegistrationDetails should include preferredBranchSurgery
 
 @Manual
 @ignore
