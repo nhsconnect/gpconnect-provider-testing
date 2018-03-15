@@ -108,7 +108,7 @@
             public const string kSlot = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Slot-1";
             public const string kSchedule = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Schedule-1";
             public const string kGpcSearchSet = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Searchset-Bundle-1";
-            public const string kGpcStructuredREcordBundle = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-GetStructuredRecord-Bundle-1";
+            public const string kGpcStructuredRecordBundle = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-GetStructuredRecord-Bundle-1";
             public const string kAllergyIntolerance = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-AllergyIntolerance-1";
 
             //Extensions

@@ -149,7 +149,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
             else if ("structured".Equals(metaProfileType))
             {
-                var requireProfile = profiles.FirstOrDefault(p => p.Equals(FhirConst.StructureDefinitionSystems.kGpcSearchSet));
+                var requireProfile = profiles.FirstOrDefault(p => p.Equals(FhirConst.StructureDefinitionSystems.kGpcStructuredRecordBundle));
                 requireProfile.ShouldNotBeNull();
             }
         }
@@ -169,7 +169,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"if the response bundle contains a practitioner resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsAPractitionerResourceItShouldContainMetaDataProfileAndVersionId()
         {
-            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Practitioners, "http://fhir.nhs.net/StructureDefinition/gpconnect-practitioner-1");
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Practitioners, FhirConst.StructureDefinitionSystems.kPractitioner);
         }
 
         [Then(@"if the response bundle contains a device resource it should contain meta data profile and version id")]
