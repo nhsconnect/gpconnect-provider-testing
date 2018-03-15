@@ -1,6 +1,5 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-    using Cache.ValueSet;
     using Constants;
     using Context;
     using TechTalk.SpecFlow;
@@ -8,7 +7,6 @@
     using Hl7.Fhir.Model;
     using System.Collections.Generic;
     using System;
-    using Extensions;
     using System.Linq;
     using GPConnect.Provider.AcceptanceTests.Enum;
     using static Hl7.Fhir.Model.Parameters;
@@ -101,7 +99,7 @@
             Lists.ForEach(list =>
             {
                 list.Id.ShouldNotBeNull();
-                CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+                //CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
                 list.Status.ShouldBeOfType<List.ListStatus>("Status of allergies list is of wrong type.");
                 list.Status.ShouldBe(List.ListStatus.Current);
                 list.Mode.ShouldBeOfType<ListMode>("Mode of allergies list is of wrong type.");
