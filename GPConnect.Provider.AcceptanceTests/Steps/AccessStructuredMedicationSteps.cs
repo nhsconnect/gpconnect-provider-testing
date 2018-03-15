@@ -1,6 +1,5 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-    using Cache.ValueSet;
     using Constants;
     using Context;
     using TechTalk.SpecFlow;
@@ -8,9 +7,7 @@
     using Hl7.Fhir.Model;
     using System.Collections.Generic;
     using System;
-    using Extensions;
     using System.Linq;
-    using GPConnect.Provider.AcceptanceTests.Enum;
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
 
@@ -24,7 +21,7 @@
         private List<MedicationRequest> MedicationRequests => _httpContext.FhirResponse.MedicationRequests;
         private List<List> Lists => _httpContext.FhirResponse.Lists;
 
-        public AccessStructuredMedicationSteps(HttpSteps httpSteps, HttpContext httpContext) 
+        public AccessStructuredMedicationSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
         {
             _httpContext = httpContext;
@@ -47,6 +44,18 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
+        [Given(@"I add the medications parameter incorrectly")]
+        public void GivenIAddTheMedicationsParameterIncorrectly()
+        {
+            ParameterComponent param = new ParameterComponent();
+            param.Name = FhirConst.GetStructuredRecordParams.kMedication;
+            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+
+            ParameterComponent partParam = new ParameterComponent();
+            partParam.Name = FhirConst.GetStructuredRecordParams.kPrescriptionIssues;
+            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(partParam);
+        }
+
         [Given(@"I add an invalid medications parameter")]
         public void GivenIAddAnInvalidMedicationsParameter()
         {
@@ -58,7 +67,7 @@
         [Given(@"I add the medications parameter with a timePeriod")]
         public void GivenIAddTheMedicationsParameterWithATimePeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodFormatted("dd-MM-yyyy"))};
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodFormatted("dd-MM-yyyy")) };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
@@ -76,15 +85,24 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
-        [Given(@"I set a medications period parameter start date to ""(.*)"" and end date to ""(.*)""")]
+        [Given(@"I set a medications period parameter start date to ""([^ ""]*)"" and end date to ""([^ ""]*)""")]
         public void GivenISetAMedicationsTimeAParameterStartDateToAndEndDateTo(string startDate, string endDate)
         {
-
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetTimePeriod(startDate, endDate)) };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
         #endregion
 
         #region Medication Checks
+
+        [Then(@"the response bundle should not contain any medications data")]
+        public void TheResponseBundleShouldNotContainAnyMedicationsData()
+        {
+            Medications.ShouldBeEmpty();
+            MedicationStatements.ShouldBeEmpty();
+            MedicationRequests.ShouldBeEmpty();
+        }
 
         [Then(@"the Medications should be valid")]
         public void TheMedicationsShouldBeValid()
@@ -270,9 +288,133 @@
             });
         }
 
+        [Then(@"the MedicationStatement dates are with the default period with start ""(.*)"" and end ""(.*)""")]
+        private void TheMedicationStatementDatesAreWithinTheDefaultPeriod(Boolean useStart, Boolean useEnd)
+        {
+            MedicationStatements.ForEach(medStatement =>
+            {
+                Extension lastIssueDateExt = medStatement.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationStatementLastIssueDate);
+                if (lastIssueDateExt != null)
+                {
+                    FhirDateTime lastIssueDateFhir = (FhirDateTime)lastIssueDateExt.Value;
+                    checkDateIsInRange(useStart, useEnd, (DateTime)lastIssueDateFhir.ToDateTime());
+
+                }
+                else if (medStatement.Effective != null)
+                {
+                    if (medStatement.Effective.TypeName.Contains("Period"))
+                    {
+                        Period effectivePeriod = (Period)medStatement.Effective;
+                        checkPeriodIsInRange(useStart, useEnd, effectivePeriod);
+                    }
+                    else
+                    {
+                        FhirDateTime effectiveDateTime = (FhirDateTime)medStatement.Effective;
+                        checkDateIsInRange(useStart, useEnd, (DateTime)effectiveDateTime.ToDateTime());
+                    }
+
+                }
+                else
+                {
+                    medStatement.DateAsserted.ShouldNotBeNull();
+                    DateTime dateAsserted = DateTime.Parse(medStatement.DateAsserted);
+                    checkDateIsInRange(useStart, useEnd, dateAsserted);
+                }
+            });
+        }
+
+        private void checkDateIsInRange(Boolean useStart, Boolean useEnd, DateTime toCheck) {
+            DateTime start = DateTime.UtcNow.AddYears(-2);
+            DateTime end = DateTime.UtcNow;
+
+            if (useStart)
+            {
+                toCheck.ShouldBeGreaterThanOrEqualTo(start);
+            }
+            if (useEnd)
+            {
+                toCheck.ShouldBeLessThanOrEqualTo(end);
+            }
+        }
+
+        private void checkPeriodIsInRange(Boolean useStart, Boolean useEnd, Period period)
+        {
+            DateTime startPeriod = DateTime.Parse(period.Start);
+            DateTime endPeriod = DateTime.Parse(period.End);
+            DateTime start = DateTime.UtcNow.AddYears(-2);
+            DateTime end = DateTime.UtcNow;
+
+            if (useStart)
+            {
+                if (startPeriod < start)
+                {
+                    endPeriod.ShouldBeGreaterThanOrEqualTo(start);
+                }
+                else
+                {
+                    startPeriod.ShouldBeGreaterThanOrEqualTo(start);
+                }
+            }
+            if (useEnd)
+            {
+                if (endPeriod > end)
+                {
+                    startPeriod.ShouldBeLessThanOrEqualTo(end);
+                }
+                else
+                {
+                    endPeriod.ShouldBeLessThanOrEqualTo(end);
+                }
+            }
+        }
+
         #endregion
 
         #region Medication Request Checks
+
+        [Then(@"order requests should have the same authoredOn date as their plan")]
+        public void TheRelatedMedicationRequestsShouldHaveTheSameAuthoredOnDates()
+        {
+            var plans = MedicationRequests.Where(req => req.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan)).ToList();
+            plans.ForEach(plan =>
+            {
+                List<MedicationRequest> allRelatedRequests = (List<MedicationRequest>)MedicationRequests.Where(
+                    relatedReq => relatedReq.GroupIdentifier.Value.Equals(plan.GroupIdentifier.Value)
+                );
+
+                allRelatedRequests.ForEach(relatedRequest =>
+                {
+                    relatedRequest.AuthoredOn.ShouldBe(plan.AuthoredOn);
+                });
+            });
+        }
+
+        [Then(@"there should only be one plan request for acute prescriptions")]
+        public void ThereShouldOnlyBeOnePlanRequestForAcutePrescriptions()
+        {
+            List<MedicationRequest> acuteRequests = MedicationRequests.Where(req => isRequestAnAcutePlan(req).Equals(true)).ToList();
+            acuteRequests.ForEach(acuteRequest =>
+            {
+                List<MedicationRequest> acuteRelatedRequests = MedicationRequests.Where(req => req.GroupIdentifier.Value.Equals(acuteRequest.GroupIdentifier.Value)).ToList();
+                acuteRelatedRequests.Count.ShouldBeLessThanOrEqualTo(2); //Acute should be one plan and one order at most
+            });
+        }
+
+        private Boolean isRequestAnAcutePlan(MedicationRequest request)
+        {
+            CodeableConcept prescriptionType = (CodeableConcept)request.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
+            if (prescriptionType.Coding.First().Display.Contains("Acute"))
+            {
+                return request.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan);
+            }
+            return false;
+        }
+
+        [Then(@"the Medication Requests should not contain any issues")]
+        public void TheMedicationRequestsShouldNotContainAnyIssues()
+        {
+            MedicationRequests.Where(req => req.Intent.Equals(MedicationRequest.MedicationRequestIntent.Order)).ToList().ShouldBeEmpty();  
+        }
 
         [Then(@"the Medication Requests should be valid")]
         public void TheMedicationRequestsShouldBeValid()
@@ -292,6 +434,7 @@
             TheMedicationRequestDosageInstructionsTextShouldbeValid();
             TheMedicationRequestRecorderShouldbeValid();
             TheMedicationRequestAuthoredOnShouldbeValid();
+            ThereShouldBeAtLeastOneMedicationRequestWithIntentToPlan();
         }
 
         [Then(@"the MedicationRequest Id should be valid")]
@@ -301,6 +444,17 @@
             {
                 medRequest.Id.ShouldNotBeNullOrEmpty();
             });
+        }
+
+        [Then(@"there should be at least one medication request with intent to plan")]
+        public void ThereShouldBeAtLeastOneMedicationRequestWithIntentToPlan()
+        {
+            if (MedicationStatements.Count > 0)
+            {
+                var planRequests = MedicationRequests.Where(req => req.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan)).ToList();
+                planRequests.ShouldNotBeNull();
+                planRequests.Count.ShouldBeGreaterThan(0);
+            }
         }
 
         [Then(@"the MedicationRequest Metadata should be valid")]
