@@ -19,13 +19,18 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And the Bundle should not contain a list with the title "Resolved Allergies"
 		And the Bundle should contain the correct number of allergies
 	Examples:
-		| Patient  |
-		| patient1 |
-		| patient2 |
-		| patient3 |
-		| patient4 |
-		| patient5 |
-		| patient6 |
+		| Patient   |
+		| patient2  |
+		| patient3  |
+		| patient4  |
+		| patient9  |
+		| patient10 |
+		| patient11 |
+		| patient12 |
+		| patient13 |
+		| patient14 |
+		| patient15 |
+
 
 Scenario Outline: Retrieve the allergy structured record section for a patient excluding resolved allergies
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -45,13 +50,17 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		And the AllergyIntolerance should be valid
 		And the Bundle should contain the correct number of allergies
 	Examples:
-		| Patient  |
-		| patient1 |
-		| patient2 |
-		| patient3 |
-		| patient4 |
-		| patient5 |
-		| patient6 |
+		| Patient   |
+		| patient2  |
+		| patient3  |
+		| patient4  |
+		| patient9  |
+		| patient10 |
+		| patient11 |
+		| patient12 |
+		| patient13 |
+		| patient14 |
+		| patient15 |
 
 Scenario Outline: Retrieve the allergy structured record section for a patient without the resolved allergies parameter
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -71,13 +80,17 @@ Scenario Outline: Retrieve the allergy structured record section for a patient w
 		And the AllergyIntolerance should be valid
 		And the Bundle should contain the correct number of allergies
 	Examples:
-		| Patient  | 
-		| patient1 |
-		| patient2 |
-		| patient3 |
-		| patient4 |
-		| patient5 |
-		| patient6 |
+		| Patient   |
+		| patient2  |
+		| patient3  |
+		| patient4  |
+		| patient9  |
+		| patient10 |
+		| patient11 |
+		| patient12 |
+		| patient13 |
+		| patient14 |
+		| patient15 |
 
 Scenario: Retrieve the allergy structured record section for a patient with an invalid include parameter
 	Given I configure the default "GpcGetStructuredRecord" request
