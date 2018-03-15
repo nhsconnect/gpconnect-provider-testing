@@ -95,7 +95,6 @@
         [Then(@"the List of AllergyIntolerances should be valid")]
         public void TheListOfAllergyIntolerancesShouldBeValid()
         {
-            Lists.ShouldHaveSingleItem();
             Lists.ForEach(list =>
             {
                 list.Id.ShouldNotBeNull();
@@ -136,7 +135,7 @@
         }
 
         [Then(@"the Bundle should contain a list with the title ""(.*)""")]
-        public void TheBundleShouldContainAListWithTheTitleAndEntries(string title, int entries)
+        public void TheBundleShouldContainAListWithTheTitleAndEntries(string title)
         {
             getListsWithTitle(title).ShouldHaveSingleItem();
         }

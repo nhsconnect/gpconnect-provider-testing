@@ -14,9 +14,9 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the AllergyIntolerance should be valid
-		And the Bundle should contain "1" lists
+		And the Bundle should contain "2" lists
 		And the Bundle should contain a list with the title "Active Allergies"
-		And the Bundle should not contain a list with the title "Resolved Allergies"
+		And the Bundle should contain a list with the title "Resolved Allergies"
 		And the Bundle should contain the correct number of allergies
 	Examples:
 		| Patient   |
@@ -44,9 +44,9 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should contain "2" lists
+		And the Bundle should contain "1" lists
 		And the Bundle should contain a list with the title "Active Allergies"
-		And the Bundle should contain a list with the title "Resolved Allergies"
+		And the Bundle should not contain a list with the title "Resolved Allergies"
 		And the AllergyIntolerance should be valid
 		And the Bundle should contain the correct number of allergies
 	Examples:

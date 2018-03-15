@@ -56,7 +56,8 @@
             {typeof(Appointment), ResourceType.Appointment},
             {typeof(Schedule), ResourceType.Schedule},
             {typeof(CapabilityStatement), ResourceType.CapabilityStatement},
-            {typeof(AllergyIntolerance), ResourceType.AllergyIntolerance}
+            {typeof(AllergyIntolerance), ResourceType.AllergyIntolerance},
+            {typeof(List), ResourceType.List}
         };
     }
 }
