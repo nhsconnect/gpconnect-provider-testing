@@ -12,41 +12,6 @@ Scenario: Appointment retrieve success valid id where appointment resource retur
 		And the response should be a Bundle resource of type "searchset"
 		And the Bundle should contain no Appointments
 
-Scenario Outline: Appointment retrieve success valid id where single appointment resource should be returned
-	Given I create an Appointment for Patient "<patient>" and Organization Code "ORG1"
-	Given I get the Patient for Patient Value "<patient>"
-		And I store the Patient
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add start query parameters to the Request URL for Period starting today for "14" days
-	When I make the "AppointmentSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Bundle should contain a minimum of "1" Appointments
-	Examples:
-		| patient  |
-		| patient1 |
-		| patient2 |
-		| patient3 |
-
-Scenario Outline: Appointment retrieve appointments returned must be in the future
-	Given I create an Appointment for Patient "<patient>" and Organization Code "ORG1"
-	Given I get the Patient for Patient Value "<patient>"
-		And I store the Patient
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add start query parameters to the Request URL for Period starting today for "14" days
-	When I make the "AppointmentSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Bundle should contain a minimum of "1" Appointments
-		And the Appointments returned must be in the future
-	Examples:
-		| patient  |
-		| patient1 |
-		| patient2 |
-		| patient3 |
-
 Scenario Outline: Appointment retrieve multiple appointment retrived
 	Given I create "<numberOfAppointments>" Appointments for Patient "<patient>" and Organization Code "ORG1"
 	Given I get the Patient for Patient Value "<patient>"
@@ -58,14 +23,27 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Bundle should contain a minimum of "<numberOfAppointments>" Appointments
+		And the Appointments returned must be in the future
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Slots should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Description must be valid
+		And the Appointment Created must be valid
+		And the Appointment Participant Type and Actor should be valid
+		And the Appointment Metadata should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
 	Examples:
 		| patient  | numberOfAppointments |
-		| patient4 | 2                    |
-		| patient5 | 4                    |
-		| patient6 | 3                    |
+		| patient4 | 1                    |
+		| patient5 | 3                    |
+		| patient6 | 2                    |
 
 Scenario Outline: Appointment retrieve fail due to invalid patient logical id
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "patient4"
+		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I set the request URL to "Patient/<id>/Appointment?start=ge2030-03-30&start=le2030-04-30"
@@ -77,21 +55,6 @@ Scenario Outline: Appointment retrieve fail due to invalid patient logical id
 		| id   |
 		| null |
 		| dd   |
-
-Scenario Outline: Appointment retrieve fail due to unexpected identifier in request
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add the start time period parameters for "14" days starting today using the prefixes "ge" and "le" and formats "yyyy-MM-dd" and "yyyy-MM-dd"
-		And I set the request URL to "Patient/<id>/Appointment"
-	When I make the "AppointmentSearch" request
-	Then the response status code should be "<statusCode>"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource
-	Examples:
-		| id | statusCode |
-		|    | 404        |
-		| ** | 404        |
 	
 Scenario Outline: Appointment retrieve accept header and _format parameter to request response format
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -145,7 +108,8 @@ Scenario Outline: Appointment retrieve _format parameter only to request respons
 		| application/fhir+xml  | XML        |
 
 Scenario Outline: Appointment retrieve invalid date format
-Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "patient4"
+		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add the start time period parameters for "14" days starting today using the prefixes "ge" and "le" and formats "<StartFormat>" and "<EndFormat>"
@@ -165,7 +129,8 @@ Given I create an Appointment for an existing Patient and Organization Code "ORG
 		| yyyy-MM-ddTHH:mm:ssZ | yyyy-MM-dd           |
 
 Scenario Outline: Appointment retrieve invalid date prefix
-Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "patient5"
+		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add the start time period parameters for "14" days starting today using the prefixes "<StartPrefix>" and "<EndPrefix>" and formats "yyyy-MM-dd" and "yyyy-MM-dd"
@@ -186,7 +151,8 @@ Given I create an Appointment for an existing Patient and Organization Code "ORG
 		| random123   | random123 |
 
 Scenario Outline: Appointment retrieve with only one start parameter
-Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "patient5"
+		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add the parameter "start" with the value "<Parameter>"
@@ -200,7 +166,8 @@ Given I create an Appointment for an existing Patient and Organization Code "ORG
 		| ge2030-03-03 |
 
 Scenario Outline: Appointment retreive with date parameters in the past
-Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "patient3"
+		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add the parameter "start" with the value "<StartDate>"
@@ -211,7 +178,7 @@ Given I create an Appointment for an existing Patient and Organization Code "ORG
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	Examples:
 		| StartDate  | EndDate    |
-		| 2030-03-03 | 2010-03-30 |
+		| 2010-02-03 | 2010-03-03 |
 		| 2010-03-03 | 2030-03-30 |
 
 Scenario: Appointment retreive with end date before start date
@@ -225,34 +192,6 @@ Given I create an Appointment for an existing Patient and Organization Code "ORG
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-Scenario: Appointment retrieve appointment which contains all mandatory resources
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add start query parameters to the Request URL for Period starting today for "14" days
-	When I make the "AppointmentSearch" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-		And the Appointment Status should be valid
-		And the Appointment Start should be valid
-		And the Appointment End should be valid
-		And the Appointment Slots should be valid
-		And the Appointment Participants should be valid and resolvable
-		And the Appointment Description must be valid
-		And the Appointment Created must be valid
-
-Scenario: Appointment retrieve bundle resource must contain participant with actor present
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add start query parameters to the Request URL for Period starting today for "14" days
-	When I make the "AppointmentSearch" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the response should be a Bundle resource of type "searchset"
-		And the Appointment Participant Type and Actor should be valid
-
 Scenario: Appointment retrieve bundle valid resources returned in the response
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
@@ -262,37 +201,6 @@ Scenario: Appointment retrieve bundle valid resources returned in the response
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the Appointment Participants should be valid and resolvable
-
-Scenario: Appointment retrieve bundle contains appointment with identifer with correct system and value
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add start query parameters to the Request URL for Period starting today for "14" days
-	When I make the "AppointmentSearch" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the Appointment Identifiers should be valid
-
-Scenario: Appointment retrieve appointment response should contain meta data profile and version id
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add start query parameters to the Request URL for Period starting today for "14" days
-	When I make the "AppointmentSearch" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the Appointment Metadata should be valid
-
-Scenario: Appointment retrieve bundle contains valid start and end dates
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I add start query parameters to the Request URL for Period starting today for "14" days
-	When I make the "AppointmentSearch" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the Appointment Start should be valid
-		And the Appointment End should be valid
 
 Scenario Outline: Appointment retrieve JWT patient type request invalid
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -309,25 +217,14 @@ Scenario Outline: Appointment retrieve JWT patient type request invalid
 		| organization/*.read  |
 		| organization/*.write |
 		| patient/*.write      |
-@ignore
-Scenario: Appointment retrieve JWT patient reference must match payload patient nhs number
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
-	Given I configure the default "AppointmentSearch" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
-		And I set the JWT Requested Record to the NHS Number "patient2"
-		And I add start query parameters to the Request URL for Period starting today for "14" days
-	When I make the "AppointmentSearch" request
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Appointment retrieve sending additional valid parameters in the request
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "patient5"
+		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add the parameter "start" with the value "ge2030-03-03"
 		And I add the parameter "start" with the value "le2030-03-30"
-		And I add the parameter "_count" with the value "1"
 		And I add the parameter "_sort" with the value "date"
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
@@ -341,7 +238,7 @@ Scenario: CapabilityStatement profile supports the search appointment operation
 		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "SearchType" Interaction
 
 Scenario: Appointment retrieve valid response check caching headers exist
-Given I get the Patient for Patient Value "patient15"
+	Given I get the Patient for Patient Value "patient15"
 		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
@@ -353,7 +250,8 @@ Given I get the Patient for Patient Value "patient15"
 		And the required cacheing headers should be present in the response
 
 Scenario: Appointment retrieve invalid response check caching headers exist
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+	Given I get the Patient for Patient Value "patient4"
+		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add start query parameters to the Request URL for Period starting today for "14" days
