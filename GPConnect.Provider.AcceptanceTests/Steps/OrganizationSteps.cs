@@ -308,8 +308,7 @@
         public void GetTheOrganizationForOrganizationCode(string code)
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationSearch);
-
-            _jwtSteps.SetTheRequestedOrganizationOdsCodeToTheOdsCodeFor(code);
+            
             AddAnIdentifierParameterWithOrganizationsCodeSystemAndValue(code);
 
             _httpSteps.MakeRequest(GpConnectInteraction.OrganizationSearch);
