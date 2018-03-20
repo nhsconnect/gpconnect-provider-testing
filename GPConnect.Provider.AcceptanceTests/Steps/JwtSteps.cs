@@ -234,60 +234,11 @@
             _jwtHelper.ReasonForRequest = null;
         }
 
-        [Given(@"I set the JWT with missing Requested Record")]
-        public void SetTheJwtWithMissingRequestedRecord()
-        {
-            _jwtHelper.RequestedPatientNHSNumber = null;
-            _jwtHelper.RequestedOrganizationODSCode = null;
-        }
-
         [Given(@"I set the JWT with missing Requested Scope")]
         public void SetTheJwtWithMissingRequestedScope()
         {
             _jwtHelper.RequestedScope = null;
         }
-        
-        [Given(@"I set the JWT Requested Record to the NHS Number for ""(.*)""")]
-        public void SetTheJwtRequestedRecordToTheNhsNumberFor(string patient)
-        {
-            _jwtHelper.RequestedPatientNHSNumber = GlobalContext.PatientNhsNumberMap[patient];
-        }
-
-        [Given(@"I set the JWT Requested Record to the ODS Code for ""(.*)""")]
-        public void SetTheRequestedOrganizationOdsCodeToTheOdsCodeFor(string organization)
-        {
-            _jwtHelper.RequestedOrganizationODSCode = GlobalContext.OdsCodeMap[organization];
-        }
-
-        [Given(@"I set the JWT Requested Record Id to the Request Id")]
-        public void SetTheJwtRequestedRecordIdToTheRequestId()
-        {
-            _jwtHelper.RequestedOrganizationId = _httpContext.HttpRequestConfiguration.GetRequestId;
-        }
-
-        [Given(@"I set the JWT Requested Record to the NHS Number ""(.*)""")]
-        public void SetTheJwtRequestedRecordToTheNhsNumber(string nhsNumber)
-        {
-            _jwtHelper.RequestedPatientNHSNumber = nhsNumber;
-        }
-
-        [Given(@"I set the JWT Requested Record to the NHS Number of the Stored Patient")]
-        public void SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient()
-        {
-            var patient = _fhirResourceRepository.Patient;
-
-            var identifier = patient.Identifier.FirstOrDefault(x => x.System == FhirConst.IdentifierSystems.kNHSNumber);
-       
-            _jwtHelper.RequestedPatientNHSNumber = identifier?.Value;
-        }
-
-        [Given(@"I set the JWT Requested Record to the NHS Number ""(.*)""")]
-        public void SetTheJwtRequestedRecordPatientNhsNumberTo(string nhsNumber)
-        {
-            _jwtHelper.RequestedPatientNHSNumber = nhsNumber;
-            _headerHelper.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
-        }
-
 
         [Given(@"I set the JWT Requesting Organization Identifier system to match the rc5 specification")]
         public void SetJWTRequestingOrganizationToOldURL()

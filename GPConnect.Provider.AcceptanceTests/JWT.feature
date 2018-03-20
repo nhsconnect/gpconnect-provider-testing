@@ -132,18 +132,4 @@ Scenario: JWT - Requesting Organization - Backward Compatability for RC5
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 
-Scenario: JWT - Requesting Record Patient - Backward Compatability for RC5
-	Given I configure the default "MetadataRead" request with old URL
-		And I set the JWT Requested Scope to Patient Read
-		And I add an NHS Number parameter for "patient1"	
-		And I set the JWT Requested Record to the NHS Number for "patient1"
-	When I make the "MetadataRead" request
-		Then the response status code should indicate success
-
-Scenario: JWT - Requesting Record Organization - Backward Compatability for RC5
-	Given I configure the default "MetadataRead" request with old URL
-		And I set the JWT Requested Scope to Organization Read
-		And I set the JWT Requested Record to the ODS Code for "ORG1"
-	When I make the "MetadataRead" request
-		Then the response status code should indicate success
 

@@ -13,7 +13,6 @@ Scenario: The response resources must be valid FHIR JSON or XML
 
 Scenario: Returned patients should contain a logical identifier
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
@@ -23,7 +22,6 @@ Scenario: Returned patients should contain a logical identifier
 
 Scenario: Provider should return an error when no system is supplied in the identifier parameter
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I add a Patient Identifier parameter with no System and Value "patient1"
 	When I make the "PatientSearch" request
 	Then the response status code should be "422"
@@ -31,7 +29,6 @@ Scenario: Provider should return an error when no system is supplied in the iden
 
 Scenario: Provider should return an error when a blank system is supplied in the identifier parameter
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I add a Patient Identifier parameter with System "" and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should be "422"
@@ -39,7 +36,6 @@ Scenario: Provider should return an error when a blank system is supplied in the
 
 Scenario: When a patient is not found on the provider system an empty bundle should be returned
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patientNotInSystem"
 		And I add a Patient Identifier parameter with default System and Value "patientNotInSystem"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
@@ -48,14 +44,12 @@ Scenario: When a patient is not found on the provider system an empty bundle sho
 
 Scenario: Patient search should fail if no identifier parameter is include
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: The identifier parameter should be rejected if the case is incorrect
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add a Patient Identifier parameter with identifier name "Identifier" default System and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
@@ -63,7 +57,6 @@ Scenario: The identifier parameter should be rejected if the case is incorrect
 
 Scenario: The response should be an error if no value is sent in the identifier parameter
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add the parameter "identifier" with the value "https://fhir.nhs.uk/Id/nhs-number|"
 	When I make the "PatientSearch" request
 	Then the response status code should be "422"
@@ -71,7 +64,6 @@ Scenario: The response should be an error if no value is sent in the identifier 
 
 Scenario Outline: The patient search endpoint should accept the accept header
 	Given I configure the default "PatientSearch" request
-        And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I set the Accept header to "<AcceptHeader>"
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 	When I make the "PatientSearch" request
@@ -88,7 +80,6 @@ Scenario Outline: The patient search endpoint should accept the accept header
 
 Scenario Outline: The patient search endpoint should accept the format parameter
 	 Given I configure the default "PatientSearch" request
-        And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add the parameter "_format" with the value "<FormatParam>"
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 	When I make the "PatientSearch" request
@@ -105,7 +96,6 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 
 Scenario Outline: The patient search endpoint should accept the format parameter after the identifier parameter
 	 Given I configure the default "PatientSearch" request
-        And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I set the Accept header to "<AcceptHeader>"
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 		And I add the parameter "_format" with the value "<FormatParam>"
@@ -125,7 +115,6 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 
 Scenario Outline: The patient search endpoint should accept the format parameter before the identifier parameter
 	Given I configure the default "PatientSearch" request
-        And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I set the Accept header to "<AcceptHeader>"
 		And I add the parameter "_format" with the value "<FormatParam>"
 		And I add a Patient Identifier parameter with default System and Value "patient2"
@@ -145,7 +134,6 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 
 Scenario: Patient resource should contain meta data elements
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
@@ -155,7 +143,6 @@ Scenario: Patient resource should contain meta data elements
 
 Scenario Outline: Patient resource should contain NHS number identifier returned as XML
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I set the Accept header to "application/fhir+xml"
 		And I add a Patient Identifier parameter with default System and Value "<Patient>"
 	When I make the "PatientSearch" request
@@ -172,7 +159,6 @@ Scenario Outline: Patient resource should contain NHS number identifier returned
 
 Scenario Outline: Patient search response conforms with the GPConnect specification
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I add a Patient Identifier parameter with default System and Value "<Patient>"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
@@ -203,7 +189,6 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 
 Scenario: Patient search response does not return deceased patient
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient18"
 		And I add a Patient Identifier parameter with default System and Value "patient18"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
@@ -219,7 +204,6 @@ Scenario: CapabilityStatement profile supports the Patient search operation
 
 Scenario Outline: System should error if multiple parameters valid or invalid are sent
 	 Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add a Patient Identifier parameter with identifier name "<Identifier1>" default System and Value "<PatientOne>"
 		And I add a Patient Identifier parameter with identifier name "<Identifier2>" default System and Value "<PatientTwo>"
 	When I make the "PatientSearch" request
@@ -231,26 +215,8 @@ Scenario Outline: System should error if multiple parameters valid or invalid ar
 		| identifier       | patient1   | identifier        | patient2   |
 		| identifier       | patient2   | identifier        | patient1   |
 
-Scenario: JWT requesting scope claim should reflect the operation being performed
-	 Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add a Patient Identifier parameter with default System and Value "patient2"
-		And I set the JWT requested scope to "organization/*.read"
-	When I make the "PatientSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario: JWT patient claim should reflect the patient being searched for
-	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add a Patient Identifier parameter with default System and Value "patient1"
-	When I make the "PatientSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
 Scenario: Patient Search include count and sort parameters
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 		And I add the parameter "_count" with the value "1"
 		And I add the parameter "_sort" with the value "status"
@@ -259,10 +225,8 @@ Scenario: Patient Search include count and sort parameters
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 	
-
 Scenario: Patient search valid response check caching headers exist
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
@@ -273,8 +237,7 @@ Scenario: Patient search valid response check caching headers exist
 
 Scenario:Patient search invalid response check caching headers exist
 Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
-		And I add a Patient Identifier parameter with default System and Value "patient1"
+		And I add a Patient Identifier parameter with identifier name "Identifier" default System and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

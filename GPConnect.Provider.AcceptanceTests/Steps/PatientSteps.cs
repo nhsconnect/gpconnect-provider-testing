@@ -396,8 +396,6 @@
 
             AddAPatientIdentifierParameterWithDefaultSystemAndValue(value);
 
-            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberFor(value);
-
             _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
         }
 
@@ -409,8 +407,6 @@
 
             AddAPatientIdentifierParameterWithDefaultSystemAndValue(value);
 
-            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberFor(value);
-
             _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
         }
 
@@ -420,8 +416,6 @@
             _httpSteps.ConfigureRequest(GpConnectInteraction.PatientSearch);
 
             AddAPatientIdentifierParameterWithDefaultSystemAndNhsNumber(nhsNumber);
-
-            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumber(nhsNumber);
 
             _httpSteps.MakeRequest(GpConnectInteraction.PatientSearch);
         }
