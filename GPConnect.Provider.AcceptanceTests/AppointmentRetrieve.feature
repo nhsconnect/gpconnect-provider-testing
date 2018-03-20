@@ -201,7 +201,6 @@ Scenario Outline: Appointment retrieve JWT patient type request invalid
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 	Examples:
 		| JWTType              |
-		| organization/*.read  |
 		| organization/*.write |
 		| patient/*.write      |
 
