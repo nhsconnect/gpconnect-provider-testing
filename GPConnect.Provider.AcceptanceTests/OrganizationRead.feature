@@ -5,7 +5,6 @@ Scenario: Organization Read successful request validate all of response
 	Given I get the Organization for Organization Code "ORG1"
 		And I store the Organization
 	Given I configure the default "OrganizationRead" request
-		And I set the JWT Requested Record Id to the Request Id
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
 		And the Response should contain the ETag header matching the Resource Version Id
@@ -24,7 +23,6 @@ Scenario: Organization Read successful request validate all of response
 Scenario Outline: Organization Read with valid identifier which does not exist on providers system
 	Given I configure the default "OrganizationRead" request
 		And I set the Read Operation logical identifier used in the request to "<LogicalId>"
-		And I set the JWT Requested Record Id to the Request Id
 	When I make the "OrganizationRead" request
 	Then the response status code should be "404"
 	Examples:
@@ -41,7 +39,6 @@ Scenario Outline: Organization Read with invalid resource path in URL
 		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
-		And I set the JWT Requested Record Id to the Request Id
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
@@ -57,7 +54,6 @@ Scenario Outline: Organization Read using the _format parameter to request respo
 		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 		And I add the parameter "_format" with the value "<Parameter>"
-		And I set the JWT Requested Record Id to the Request Id
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
@@ -75,7 +71,6 @@ Scenario Outline: Organization Read using the Accept header to request response 
 		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 		And I set the Accept header to "<Header>"
-		And I set the JWT Requested Record Id to the Request Id
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
@@ -93,7 +88,6 @@ Scenario Outline: Organization Read sending the Accept header and _format parame
 	Given I configure the default "OrganizationRead" request
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
-		And I set the JWT Requested Record Id to the Request Id
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
 		And the response should be the format FHIR <ResponseFormat>
@@ -117,7 +111,6 @@ Scenario: Organization read valid response check caching headers exist
 	Given I get the Organization for Organization Code "ORG1"
 		And I store the Organization
 	Given I configure the default "OrganizationRead" request
-		And I set the JWT Requested Record Id to the Request Id
 	When I make the "OrganizationRead" request
 	Then the response status code should indicate success
 		And the Response should contain the ETag header matching the Resource Version Id
@@ -129,7 +122,6 @@ Scenario: Organization read invalid response check caching headers exist
 		And I store the Organization
 	Given I configure the default "OrganizationRead" request
 		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3"
-		And I set the JWT Requested Record Id to the Request Id
 	When I make the "OrganizationRead" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

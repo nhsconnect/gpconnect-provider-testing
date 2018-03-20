@@ -326,8 +326,6 @@
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCancel);
 
-            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumber(nhsNumber);
-            //_jwtSteps.SetTheJwtRequestedRecordNhsnumberToConfigPatient("patient1");
             _httpRequestConfiguration.SetTheReadOperationLogicalIdentifierUsedInTheRequestTo(appointment.Id);
 
             _fhirResourceRepository.Appointment = appointment;
