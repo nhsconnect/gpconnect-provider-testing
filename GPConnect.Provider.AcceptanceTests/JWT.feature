@@ -121,7 +121,7 @@ Scenario: JWT - Requested Scope - missing
 
 Scenario: JWT - Requested Scope - Metadata - incorrect
 	Given I configure the default "MetadataRead" request
-		And I set the JWT Requested Scope to Patient Read
+		And I set the JWT Requested Scope to be incorrect
 	When I make the "MetadataRead" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource

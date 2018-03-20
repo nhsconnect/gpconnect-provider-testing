@@ -40,6 +40,12 @@
             _jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
         }
 
+        [Given(@"I set the JWT Requested Scope to be incorrect")]
+        public void SetTheJwtRequestedScopeToBeIncorrect()
+        {
+            _jwtHelper.RequestedScope = "badScope";
+        }
+
         [Given(@"I set the JWT Requested Scope to Organization Read")]
         public void SetTheJwtRequestedScopeToOrganizationRead()
         {
