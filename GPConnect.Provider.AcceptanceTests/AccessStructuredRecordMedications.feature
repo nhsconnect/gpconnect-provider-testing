@@ -3,7 +3,6 @@ Feature: AccessStructuredRecordMedications
 
 Scenario Outline: Retrieve the medication structured record section for a patient including prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medication parameter with includePrescriptionIssues set to "true"
 	When I make the "GpcGetStructuredRecord" request
@@ -30,7 +29,6 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		
 Scenario Outline: Retrieve the medication structured record section for a patient excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
@@ -56,7 +54,6 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 
 Scenario Outline: Retrieve the medication structured record section for a patient without the prescription issue parameter
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medications parameter
 	When I make the "GpcGetStructuredRecord" request
@@ -82,7 +79,6 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 
 Scenario Outline: Retrieve the structured record section for a patient without the medications parameter
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I add an NHS Number parameter for "<Patient>"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
@@ -103,7 +99,6 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 
 Scenario: Retrieve the medication structured record section for a patient with the prescriptions parameter added incorrectly
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I add an NHS Number parameter for "patient1"
 		And I add the medications parameter incorrectly
 	Then the response status code should indicate failure
@@ -111,7 +106,6 @@ Scenario: Retrieve the medication structured record section for a patient with t
 
 Scenario: Retrieve the medication structured record section for a patient with an invalid include parameter
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I add an NHS Number parameter for "patient1"
 		And I add an invalid medications parameter
 	When I make the "GpcGetStructuredRecord" request
@@ -160,7 +154,6 @@ Scenario: Retrieve the medication structured record section for an invalid param
 
 Scenario Outline: Retrieve the medication structured record section for a patient with a timePeriod
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medications parameter with a timePeriod
 	When I make the "GpcGetStructuredRecord" request
@@ -186,7 +179,6 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 
 Scenario Outline: Retrieve the medication structured record section for a patient with a start date
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medications parameter with a start date
 	When I make the "GpcGetStructuredRecord" request
@@ -212,7 +204,6 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 
 Scenario Outline: Retrieve the medication structured record section for a patient with an end date
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I set the JWT Requested Record to the NHS Number for "<Patient>"
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medications parameter with an end date
 	When I make the "GpcGetStructuredRecord" request
@@ -238,7 +229,6 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 
 Scenario Outline: Retrieve the medication structured record section for a patient with invalid time period
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I add an NHS Number parameter for "patient1"
 		And I set a medications period parameter start date to "<StartDate>" and end date to "<EndDate>"
 	When I make the "GpcGetStructuredRecord" request
