@@ -318,14 +318,30 @@
             _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?{startKey}={startValue}";
         }
 
-        [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for Start ""([^""]*)"" and Prefix ""([^""]*)"" for End ""([^""]*)""")]
-        public void AddAQueryParameterToTheRequestUrlWithPrefixForStartAndPrefixForEnd(string prefix, string start, string endPrefix, string end)
+        [Given(@"I add a query parameter to the Request URL for Start ""([^""]*)"" and End ""([^""]*)""")]
+        public void AddAQueryParameterToTheRequestUrlForStartAndEnd(string start, string end)
         {
             var startKey = UrlEncode("start");
-            var startValue = UrlEncode($"{prefix}{start}");
-            var endValue = UrlEncode($"{endPrefix}{end}");
+            var startValue = UrlEncode($"ge{start}");
+            var endValue = UrlEncode($"le{end}");
 
             _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?{startKey}={startValue}&{startKey}={endValue}";
+            System.Diagnostics.Debug.WriteLine(_httpContext.HttpRequestConfiguration.RequestUrl);
+        }
+
+        [Given(@"I add start query parameters to the Request URL for Period starting today for ""([^""]*)"" days")]
+        public void AddStartQueryParametersToTheRequestUrlForStartAndEnd(int days)
+        {
+            var date = DateTime.UtcNow;
+            var startDate = date.ToString("yyyy-MM-dd");
+            var endDate = date.AddDays(days).ToString("yyyy-MM-dd");
+
+            var startKey = UrlEncode("start");
+            var startValue = UrlEncode($"ge{startDate}");
+            var endValue = UrlEncode($"le{endDate}");
+
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?{startKey}={startValue}&{startKey}={endValue}";
+            System.Diagnostics.Debug.WriteLine(_httpContext.HttpRequestConfiguration.RequestUrl);
         }
 
         [Given(@"I add a query parameter to the Request URL with Prefix ""([^""]*)"" for the Created Appointment Start")]
