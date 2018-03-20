@@ -39,13 +39,13 @@ Scenario Outline: Searching for free slots should fail due to missing parameters
 	| Keys		|
 	| start,end |
 	| start		|
-	| fb-type	|
+	| status	|
 
 Scenario: Searching for free slots with valid prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
@@ -55,7 +55,7 @@ Scenario Outline: Searching for free slots with invalid prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start date prefix "<startDatePrefix>" and the end date prefix "<endDatePrefix>"
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate failure
@@ -73,7 +73,7 @@ Scenario Outline: Searching for free slots with unknown prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start date prefix "<startDatePrefix>" and the end date prefix "<endDatePrefix>"
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate failure
@@ -106,7 +106,7 @@ Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start format "<StartDate>" and the end format "<EndDate>"
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
@@ -122,7 +122,7 @@ Scenario Outline: Searching for free slots with in-valid partial dateTime string
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start format "<StartDate>" and the end format "<EndDate>"
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should be "422"
@@ -242,7 +242,7 @@ Scenario: Searching in the future for no free slots should result in no resource
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameter that is "500" days in the future
-		And I add the parameter "fb-type" with the value "free"
+		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success

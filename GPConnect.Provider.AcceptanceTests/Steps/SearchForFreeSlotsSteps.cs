@@ -61,7 +61,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void SetRequiredParametersWithTimePeriod(int days)
         {
             _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTodayWithStartEndPrefix(days,"ge","le");
-            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("fb-type", "free");
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("status", "free");
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
         }
 
