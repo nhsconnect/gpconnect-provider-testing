@@ -90,7 +90,6 @@
             _httpContext.SetDefaults();
 
             _httpContext.HttpRequestConfiguration = GetHttpRequestConfiguration(interaction, _httpContext.HttpRequestConfiguration);
-            _jwtHelper.RequestedRecordUseOldUrls = true;
             _jwtHelper = GetJwtHelper(interaction, _jwtHelper);
 
             _securitySteps.ConfigureServerCertificatesAndSsl();

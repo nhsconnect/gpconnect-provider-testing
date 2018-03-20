@@ -103,8 +103,6 @@
 
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
 
-            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient();
-
             CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
 
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
@@ -128,8 +126,6 @@
             _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
 
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
-
-            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient();
 
             CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
 
@@ -253,8 +249,6 @@
         public void ReadTheStoredAppointment()
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentRead);
-
-            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumberOfTheStoredPatient();
 
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentRead);
         }
