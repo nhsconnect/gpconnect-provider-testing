@@ -7,7 +7,6 @@ Scenario: Book single appointment for patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -19,7 +18,6 @@ Scenario Outline: Book Appointment with invalid url for booking appointment
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the request URL to "<url>"
 	When I make the "AppointmentCreate" request
@@ -35,7 +33,6 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Accept header to "<Header>"
 		And I add the parameter "_format" with the value "<Parameter>"
@@ -58,7 +55,6 @@ Scenario Outline: Book appointment _format parameter only but varying request co
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the request content type to "<ContentType>"
 		And I add the parameter "_format" with the value "<Parameter>"
@@ -82,7 +78,6 @@ Scenario Outline: Book appointment accept header to request response format
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Accept header to "<Header>"
 	When I make the "AppointmentCreate" request
@@ -103,7 +98,6 @@ Scenario: Book appointment prefer header set to representation
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Prefer header to "return=representation"
 	When I make the "AppointmentCreate" request
@@ -119,7 +113,6 @@ Scenario: Book appointment prefer header set to minimal
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Prefer header to "return=minimal"
 	When I make the "AppointmentCreate" request
@@ -132,7 +125,6 @@ Scenario: Book Appointment and check response contains the manadatory elements
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -153,7 +145,6 @@ Scenario: Book Appointment and check returned appointment resource contains meta
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -168,7 +159,6 @@ Scenario: Book Appointment and appointment participant is valid
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -182,7 +172,6 @@ Scenario: Book Appointment without practitioner participant
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the "Practitioner" Participants from the Created Appointment
 	When I make the "AppointmentCreate" request
@@ -195,7 +184,6 @@ Scenario Outline: Book Appointment and remove manadatory resources from the appo
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the "<ParticipantToRemove>" Participants from the Created Appointment
 	When I make the "AppointmentCreate" request
@@ -213,7 +201,6 @@ Scenario: Book Appointment and remove all participants
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the "Location" Participants from the Created Appointment
 		And I remove the "Patient" Participants from the Created Appointment
@@ -229,7 +216,6 @@ Scenario: Book appointment and set an incorrect appointment id
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Created Appointment Id to "ZZ"
 	When I make the "AppointmentCreate" request
@@ -244,7 +230,6 @@ Scenario: Book appointment for patient and send extra fields in the resource
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request with Invalid Additional Field in the Resource
 	Then the response status code should be "400"
@@ -257,7 +242,6 @@ Scenario Outline: Book appointment with invalid slot reference
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Created Appointment Slot Reference to "<slotReference>"
 	When I make the "AppointmentCreate" request
@@ -277,7 +261,6 @@ Scenario: Book single appointment for patient and check the location reference i
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -291,7 +274,6 @@ Scenario: Book appointment with missing start element in appointment resource
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the Start from the Created Appointment
 	When I make the "AppointmentCreate" request
@@ -305,7 +287,6 @@ Scenario: Book appointment with missing end element in appointment resource
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the End from the Created Appointment
 	When I make the "AppointmentCreate" request
@@ -319,7 +300,6 @@ Scenario: Book appointment with missing status element in appointment resource
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the Status from the Created Appointment
 	When I make the "AppointmentCreate" request
@@ -333,7 +313,6 @@ Scenario: Book appointment with missing slot element in appointment resource
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the Slot from the Created Appointment
 	When I make the "AppointmentCreate" request
@@ -347,7 +326,6 @@ Scenario: Book Appointment and remove identifier value from the appointment book
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Created Appointment Identifier Value to null
 	When I make the "AppointmentCreate" request
@@ -362,7 +340,6 @@ Scenario: Book Appointment and remove participant status from the appointment bo
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Created Appointment Patient Participant Status to null
 		And I set the Created Appointment Practitioner Participant Status to null
@@ -378,7 +355,6 @@ Scenario: Book appointment and send an invalid bundle resource
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request with invalid Resource type
 	Then the response status code should be "422"
@@ -391,7 +367,6 @@ Scenario: Book appointment and send an invalid appointment resource
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Created Appointment to a new Appointment
 		When I make the "AppointmentAmend" request
@@ -411,7 +386,6 @@ Scenario: Book appointment valid response check caching headers exist
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
@@ -424,7 +398,6 @@ Scenario: Book appointment invalid response check caching headers exist
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the Slot from the Created Appointment
 	When I make the "AppointmentCreate" request
@@ -439,7 +412,6 @@ Scenario: Book appointment with name removed from booking organization
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the booking organization name element
 	When I make the "AppointmentCreate" request
@@ -454,7 +426,6 @@ Scenario: Book appointment with telecom removed from booking organization
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I remove the booking organization telecom element
 	When I make the "AppointmentCreate" request
@@ -468,7 +439,6 @@ Scenario: Book appointment with a comment
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Created Appointment Comment to "customComment"
 	When I make the "AppointmentCreate" request

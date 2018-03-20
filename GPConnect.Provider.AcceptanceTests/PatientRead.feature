@@ -3,7 +3,6 @@ Feature: PatientRead
 
 Scenario Outline: Read patient 404 if patient not found
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"	
 		And I set the Read Operation logical identifier used in the request to "<id>"
 	When I make the "PatientRead" request
 	Then the response status code should be "404"
@@ -15,7 +14,6 @@ Scenario Outline: Read patient 404 if patient not found
 
 Scenario Outline: Patient Read with valid identifier which does not exist on providers system
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I set the Read Operation logical identifier used in the request to "<LogicalId>"
 	When I make the "PatientRead" request
 	Then the response status code should be "404"
@@ -30,7 +28,6 @@ Scenario Outline: Patient Read with valid identifier which does not exist on pro
 
 Scenario: Read patient 400 or 404 if patient id not sent
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
 	Then the Response Status Code should be one of "400, 404"
 		And the response should be a OperationOutcome resource
@@ -39,7 +36,6 @@ Scenario Outline: Read patient using the Accept header to request response forma
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I set the Accept header to "<Header>"
 	When I make the "PatientRead" request
 	Then the response status code should indicate success
@@ -55,7 +51,6 @@ Scenario Outline: Read patient using the _format parameter to request response f
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I add a Format parameter with the Value "<Format>"
 	When I make the "PatientRead" request
 	Then the response status code should indicate success
@@ -72,7 +67,6 @@ Scenario Outline: Read patient sending the Accept header and _format parameter t
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I set the Accept header to "<Header>"
 		And I add a Format parameter with the Value "<Format>"
 	When I make the "PatientRead" request
@@ -92,7 +86,6 @@ Scenario: Read patient should contain correct logical identifier
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -104,7 +97,6 @@ Scenario: Read patient response should contain an ETag header
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
 	Then the response status code should indicate success
 		And the Response Resource should be a Patient
@@ -115,7 +107,6 @@ Scenario: Read patient resurned should conform to the GPconnect specification
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
 	Then the response status code should indicate success
 		And the Response Resource should be a Patient
@@ -147,7 +138,6 @@ Scenario: Patient read valid response check caching headers exist
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 	When I make the "PatientRead" request
 	Then the response status code should indicate success
 		And the Response Resource should be a Patient
@@ -155,8 +145,17 @@ Scenario: Patient read valid response check caching headers exist
 	
 Scenario: Patient read invalid response check caching headers exist
 	Given I configure the default "PatientRead" request
-		And I set the JWT Requested Record to the NHS Number for "patient1"
 		And I set the Read Operation logical identifier used in the request to "AABa"
 	When I make the "PatientRead" request
 	Then the response status code should be "404"
 		And the required cacheing headers should be present in the response
+
+Scenario: Patient read valid response check preferred branch
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I configure the default "PatientRead" request
+		And I set the JWT Requested Record to the NHS Number for "patient1"
+	When I make the "PatientRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a Patient
+		And the Patient RegistrationDetails should include preferredBranchSurgery

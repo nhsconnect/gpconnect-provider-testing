@@ -16,7 +16,6 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kRequestingOrganization = "requesting_organization";
             public const string kRequestingPractitioner = "requesting_practitioner";
             public const string kRequestedScope = "requested_scope";
-            public const string kRequestedRecord = "requested_record";
         }
 
         internal static class Values

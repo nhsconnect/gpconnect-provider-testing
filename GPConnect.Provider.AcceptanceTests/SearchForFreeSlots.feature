@@ -134,7 +134,6 @@ Scenario: Searching for free slots should fail due to two invalid searchFilter p
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 
-
 Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -332,6 +331,8 @@ Scenario: Successfully search for free slots and check the included location res
 		And the Location Physical Type should be valid
 		And the Location PartOf Location should be valid
 		And the Location Managing Organization should be valid
+		And the Location Name should be valid
+		And the Location Address should be valid
 
 Scenario: CapabilityStatement profile supports the Slot Search Resource
 	Given I configure the default "MetadataRead" request

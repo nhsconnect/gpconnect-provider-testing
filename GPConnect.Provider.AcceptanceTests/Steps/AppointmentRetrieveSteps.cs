@@ -91,8 +91,6 @@
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentSearch);
 
-            _jwtSteps.SetTheJwtRequestedRecordToTheNhsNumber(nhsNumber);
-
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentSearch);
         }
     }
