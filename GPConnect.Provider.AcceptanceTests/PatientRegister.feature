@@ -321,7 +321,6 @@ Scenario Outline: Register patient setting JWT request type to invalid type
 		| JWTType              |
 		| patient/*.read       |
 		| organization/*.read  |
-		| organization/*.write |
 
 Scenario: Register pateient valid response check caching headers exist
 	Given I get the next Patient to register and store it
