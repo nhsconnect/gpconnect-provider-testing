@@ -107,6 +107,8 @@ Scenario Outline: Retrieve the allergy structured record section including resol
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should contain "2" lists
+		And the Bundle should contain a list with the title "Active Allergies"
+		And the Bundle should not contain a list with the title "Resolved Allergies"
 		And the Lists are valid for a patient with no allergies but no explicit recording of No Known Allergies
 	Examples:
 		| Patient   |
@@ -125,6 +127,7 @@ Scenario Outline: Retrieve the allergy structured record section excluding resol
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should contain "1" lists
+		And the Bundle should contain a list with the title "Active Allergies"
 		And the Lists are valid for a patient with no allergies but no explicit recording of No Known Allergies
 	Examples:
 		| Patient   |
@@ -143,6 +146,7 @@ Scenario Outline: Retrieve the allergy structured record section without the res
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should contain "1" lists
+		And the Bundle should contain a list with the title "Active Allergies"
 		And the Lists are valid for a patient with no allergies but no explicit recording of No Known Allergies
 	Examples:
 		| Patient   |
