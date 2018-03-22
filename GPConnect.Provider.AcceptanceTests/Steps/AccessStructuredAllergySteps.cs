@@ -143,12 +143,13 @@
         [Then(@"the Lists are valid for a patient with no allergies but no explicit recording of No Known Allergies")]
         public void TheListsAreValidForAPatientWithNoAllergies()
         {
-            Lists.ForEach(List =>
+            Lists.ForEach(list =>
            {
-               List.EmptyReason.ShouldBeNull();
-               List.Note.ShouldNotBeNull();
-               List.Note.ShouldHaveSingleItem();
-               List.Note.First().Text.ShouldMatch("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
+               list.EmptyReason.ShouldBeNull();
+               list.Note.ShouldNotBeNull();
+               list.Note.ShouldHaveSingleItem();
+               list.Note.First().Text.ShouldMatch("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
+               list.Entry.ShouldBeEmpty();
            });
         }
 
