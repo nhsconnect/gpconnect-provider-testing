@@ -143,12 +143,13 @@
         [Then(@"the Lists are valid for a patient with no allergies but no explicit recording of No Known Allergies")]
         public void TheListsAreValidForAPatientWithNoAllergies()
         {
-            Lists.ForEach(List =>
+            Lists.ForEach(list =>
            {
-               List.EmptyReason.ShouldBeNull();
-               List.Note.ShouldNotBeNull();
-               List.Note.ShouldHaveSingleItem();
-               List.Note.First().Text.ShouldMatch("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
+               list.EmptyReason.ShouldBeNull();
+               list.Note.ShouldNotBeNull();
+               list.Note.ShouldHaveSingleItem();
+               list.Note.First().Text.ShouldMatch("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
+               list.Entry.ShouldBeEmpty();
            });
         }
 
@@ -169,7 +170,18 @@
             TheAllergyIntoleranceReactionShouldBeValid();
             TheAllergyIntoleranceEndDateShouldBeValid();
             TheAllergyIntoleranceCodeShouldbeValid();
+            TheAllergyIntoleranceOnsetDateTimeShouldBeValid();
             TheListOfAllergyIntolerancesShouldBeValid();
+        }
+
+        [Then(@"the AllergyIntolerance onsetDateTime should be valid")]
+        public void TheAllergyIntoleranceOnsetDateTimeShouldBeValid()
+        {
+            AllergyIntolerances.ForEach(allergyIntolerance =>
+            {
+                allergyIntolerance.Onset.ShouldNotBeNull();
+                allergyIntolerance.Onset.TypeName.ShouldBe("dateTime");
+            });
         }
 
         [Then(@"the AllergyIntolerance Metadata should be valid")]
@@ -232,6 +244,7 @@
                allergy.Code.Coding.ForEach(coding =>
                {
                    coding.System.ShouldNotBeNull("Code should not be null");
+                   coding.System.Equals(FhirConst.ValueSetSystems.kAllergyIntoleranceCode);
                });
             });
         }
@@ -281,6 +294,14 @@
                 if (allergy.Reaction != null)
                 {
                     allergy.Reaction[0].Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
+                    if (allergy.Reaction[0].Severity != null)
+                    {
+                        allergy.Reaction[0].Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kAllergyIntoleranceSeverity}");
+                    }
+                    if(allergy.Reaction[0].ExposureRoute != null)
+                    {
+                        allergy.Reaction[0].ExposureRoute.Coding.First().System.Equals(FhirConst.ValueSetSystems.kAllergyIntoleranceExposure); 
+                    }
                 }
             });
         }

@@ -77,6 +77,8 @@
             public const string kAllergyIntoleranceClinicalStatus = "http://hl7.org/fhir/stu3/valueset-allergy-clinical-status.html";
             public const string kAllergyIntoleranceCategory = "http://hl7.org/fhir/stu3/valueset-allergy-intolerance-category.html";
             public const string kAllergyIntoleranceCode = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-AllergyCode-1";
+            public const string kAllergyIntoleranceSeverity = "http://hl7.org/fhir/stu3/valueset-reaction-event-severity.html";
+            public const string kAllergyIntoleranceExposure = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-AllergyExposureRoute-1";
             public const string kMedicationStatementStatus = "http://hl7.org/fhir/stu3/valueset-medication-statement-status.html";
             public const string kMedicationRequestStatus = "http://hl7.org/fhir/stu3/valueset-medication-statement-status.html";
             public const string kMedicationStatementTaken = "http://hl7.org/fhir/stu3/valueset-medication-statement-taken.html";
@@ -84,6 +86,7 @@
             public const string kMedicationPrescriptionType = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-PrescriptionType-1";
             public const string kListStatus = "http://hl7.org/fhir/stu3/valueset-list-status.html";
             public const string kListMode = "http://hl7.org/fhir/stu3/valueset-list-mode.html";
+
         }
 
         internal static class StructureDefinitionSystems
