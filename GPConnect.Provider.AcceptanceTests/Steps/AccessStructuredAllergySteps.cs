@@ -19,6 +19,7 @@
 
         private List<AllergyIntolerance> AllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
         private List<List> Lists => _httpContext.FhirResponse.Lists;
+        private Bundle Bundle => _httpContext.FhirResponse.Bundle;
 
         public AccessStructuredAllergySteps(HttpSteps httpSteps, HttpContext httpContext) 
             : base(httpSteps)
@@ -75,7 +76,21 @@
         #endregion
 
         #region List and Bundle Validity Checks
-        
+
+        [Then(@"the Bundle should be valid")]
+        public void TheBundleShouldBeValid()
+        {
+            Bundle.Meta.ShouldNotBeNull();
+            CheckForValidMetaDataInResource(Bundle, FhirConst.StructureDefinitionSystems.kGpcStructuredRecordBundle);
+            Bundle.Type.HasValue.ShouldBeTrue();
+            Bundle.Type.Value.ShouldBe(Bundle.BundleType.Collection);
+            Bundle.Entry.ShouldNotBeEmpty();
+            Bundle.Entry.ForEach(entry =>
+            {
+                entry.Resource.ShouldNotBeNull();
+            });
+        }
+
         [Then(@"the List of AllergyIntolerances should be valid")]
         public void TheListOfAllergyIntolerancesShouldBeValid()
         {
@@ -94,6 +109,11 @@
                 {
                     list.EmptyReason.ShouldNotBeNull();
                 };
+                list.Entry.ForEach(entry =>
+                {
+                    entry.Item.ShouldNotBeNull();
+                    entry.Item.Display.ShouldStartWith("AllergyIntolerance");
+                });
             });
         }
 
