@@ -22,12 +22,14 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		| patient2  |
 		| patient3  |
 		| patient4  |
+		| patient6  |
+		| patient7  |
+		| patient8  |
 		| patient9  |
 		| patient10 |
 		| patient11 |
 		| patient12 |
 		| patient13 |
-		| patient14 |
 		| patient15 |
 
 
@@ -52,12 +54,14 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		| patient2  |
 		| patient3  |
 		| patient4  |
+		| patient6  |
+		| patient7  |
+		| patient8  |
 		| patient9  |
 		| patient10 |
 		| patient11 |
 		| patient12 |
 		| patient13 |
-		| patient14 |
 		| patient15 |
 
 Scenario Outline: Retrieve the allergy structured record section for a patient without the resolved allergies parameter
@@ -81,13 +85,69 @@ Scenario Outline: Retrieve the allergy structured record section for a patient w
 		| patient2  |
 		| patient3  |
 		| patient4  |
+		| patient6  |
+		| patient7  |
+		| patient8  |
 		| patient9  |
 		| patient10 |
 		| patient11 |
 		| patient12 |
 		| patient13 |
-		| patient14 |
 		| patient15 |
+
+Scenario Outline: Retrieve the allergy structured record section including resolved allergies for a patient without any allergies
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "<Patient>"
+		And I add the allergies parameter with resolvedAllergies set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should contain "2" lists
+		And the Lists are valid for a patient with no allergies but no explicit recording of No Known Allergies
+	Examples:
+		| Patient   |
+		| patient1  |
+		| patient5  |
+
+Scenario Outline: Retrieve the allergy structured record section excluding resolved allergies for a patient without any allergies
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "<Patient>"
+		And I add the allergies parameter with resolvedAllergies set to "false"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should contain "1" lists
+		And the Lists are valid for a patient with no allergies but no explicit recording of No Known Allergies
+	Examples:
+		| Patient   |
+		| patient1  |
+		| patient5  |
+
+Scenario Outline: Retrieve the allergy structured record section without the resolved allergies parameter for a patient without any allergies
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "<Patient>"
+		And I add the allergies parameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should contain "1" lists
+		And the Lists are valid for a patient with no allergies but no explicit recording of No Known Allergies
+	Examples:
+		| Patient   |
+		| patient1  |
+		| patient5  |
 
 Scenario: Retrieve the allergy structured record section for a patient with an invalid include parameter
 	Given I configure the default "GpcGetStructuredRecord" request
