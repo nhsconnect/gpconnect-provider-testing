@@ -170,7 +170,18 @@
             TheAllergyIntoleranceReactionShouldBeValid();
             TheAllergyIntoleranceEndDateShouldBeValid();
             TheAllergyIntoleranceCodeShouldbeValid();
+            TheAllergyIntoleranceOnsetDateTimeShouldBeValid();
             TheListOfAllergyIntolerancesShouldBeValid();
+        }
+
+        [Then(@"the AllergyIntolerance onsetDateTime should be valid")]
+        public void TheAllergyIntoleranceOnsetDateTimeShouldBeValid()
+        {
+            AllergyIntolerances.ForEach(allergyIntolerance =>
+            {
+                allergyIntolerance.Onset.ShouldNotBeNull();
+                allergyIntolerance.Onset.TypeName.ShouldBe("dateTime");
+            });
         }
 
         [Then(@"the AllergyIntolerance Metadata should be valid")]
@@ -233,6 +244,7 @@
                allergy.Code.Coding.ForEach(coding =>
                {
                    coding.System.ShouldNotBeNull("Code should not be null");
+                   coding.System.Equals(FhirConst.ValueSetSystems.kAllergyIntoleranceCode);
                });
             });
         }
@@ -282,6 +294,14 @@
                 if (allergy.Reaction != null)
                 {
                     allergy.Reaction[0].Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
+                    if (allergy.Reaction[0].Severity != null)
+                    {
+                        allergy.Reaction[0].Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kAllergyIntoleranceSeverity}");
+                    }
+                    if(allergy.Reaction[0].ExposureRoute != null)
+                    {
+                        allergy.Reaction[0].ExposureRoute.Coding.First().System.Equals(FhirConst.ValueSetSystems.kAllergyIntoleranceExposure); 
+                    }
                 }
             });
         }
