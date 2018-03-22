@@ -243,14 +243,6 @@ Scenario: Retrieve the allergy structured record section for a patient with 'No 
 	# term of the ‘No Known Allergies’ present expressed as text.
 
 @Ignore @Manual
-Scenario: Retrieve the allergy structured record section for a patient with no allergies
-	# Check that the emptyReason code is correct for no allergies recorded
-	# Where there are no allergy or intolerance entries in the patient record, but no explicit recording of the ‘No Known Allergies’ 
-	# concept and equivalents, then systems SHOULD return an empty List with no emptyReason code and a List.note with the text: ‘There 
-	# are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no 
-	# known allergies’ code has not been recorded).
-
-@Ignore @Manual
 Scenario: Allergy data saved as non-allergies in the patient record is retreived as AllergyIntolerance resources
 	#All allergy data must be brought back in the same format, regardless of how it is saved in the supplier system
 
