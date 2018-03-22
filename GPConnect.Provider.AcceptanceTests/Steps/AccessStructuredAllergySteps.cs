@@ -74,24 +74,8 @@
 
         #endregion
 
-        #region Allergy Intolerance Validity Checks
-
-        [Then(@"the AllergyIntolerance should be valid")]
-        public void TheAllergyIntoleranceShouldBeValid()
-        {
-            TheAllergyIntoleranceCategoryShouldbeValid();
-            TheAllergyIntoleranceAssertedDateShouldBeValid();
-            TheAllergyIntoleranceClinicalStatusShouldbeValid();
-            TheAllergyIntoleranceIdShouldBeValid();
-            TheAllergyIntoleranceMetadataShouldBeValid();
-            TheAllergyIntolerancePatientShouldBeValidAndResolvable();
-            TheAllergyIntoleranceVerificationStatusShouldbeValid();
-            TheAllergyIntoleranceReactionShouldBeValid();
-            TheAllergyIntoleranceEndDateShouldBeValid();
-            TheAllergyIntoleranceCodeShouldbeValid();
-            TheListOfAllergyIntolerancesShouldBeValid();
-        }
-
+        #region List and Bundle Validity Checks
+        
         [Then(@"the List of AllergyIntolerances should be valid")]
         public void TheListOfAllergyIntolerancesShouldBeValid()
         {
@@ -110,15 +94,6 @@
                 {
                     list.EmptyReason.ShouldNotBeNull();
                 };
-            });
-        }
-
-        [Then(@"the AllergyIntolerance Metadata should be valid")]
-        public void TheAllergyIntoleranceMetadataShouldBeValid()
-        {
-            AllergyIntolerances.ForEach(allergyIntolerance =>
-            {
-                CheckForValidMetaDataInResource(allergyIntolerance, FhirConst.StructureDefinitionSystems.kAllergyIntolerance);
             });
         }
 
@@ -163,6 +138,47 @@
             return Lists
                     .Where(list => list.Title.Equals(title))
                     .ToList();
+        }
+
+        [Then(@"the Lists are valid for a patient with no allergies but no explicit recording of No Known Allergies")]
+        public void TheListsAreValidForAPatientWithNoAllergies()
+        {
+            Lists.ForEach(List =>
+           {
+               List.EmptyReason.ShouldBeNull();
+               List.Note.ShouldNotBeNull();
+               List.Note.ShouldHaveSingleItem();
+               List.Note.First().Text.ShouldMatch("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
+           });
+        }
+
+        #endregion
+
+        #region Allergy Intolerance Validity Checks
+
+        [Then(@"the AllergyIntolerance should be valid")]
+        public void TheAllergyIntoleranceShouldBeValid()
+        {
+            TheAllergyIntoleranceCategoryShouldbeValid();
+            TheAllergyIntoleranceAssertedDateShouldBeValid();
+            TheAllergyIntoleranceClinicalStatusShouldbeValid();
+            TheAllergyIntoleranceIdShouldBeValid();
+            TheAllergyIntoleranceMetadataShouldBeValid();
+            TheAllergyIntolerancePatientShouldBeValidAndResolvable();
+            TheAllergyIntoleranceVerificationStatusShouldbeValid();
+            TheAllergyIntoleranceReactionShouldBeValid();
+            TheAllergyIntoleranceEndDateShouldBeValid();
+            TheAllergyIntoleranceCodeShouldbeValid();
+            TheListOfAllergyIntolerancesShouldBeValid();
+        }
+
+        [Then(@"the AllergyIntolerance Metadata should be valid")]
+        public void TheAllergyIntoleranceMetadataShouldBeValid()
+        {
+            AllergyIntolerances.ForEach(allergyIntolerance =>
+            {
+                CheckForValidMetaDataInResource(allergyIntolerance, FhirConst.StructureDefinitionSystems.kAllergyIntolerance);
+            });
         }
 
         [Then(@"the AllergyIntolerance Id should be valid")]
@@ -254,23 +270,6 @@
                var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PatientRead, reference);
                resource.GetType().ShouldBe(typeof(Patient));
             });
-        }
-
-        [Then(@"the emptyReason code is correct for 'NoKnownAllergies'")]
-        public void TheEmptyReasoncodeIsCorrectForNoKnownAllergies()
-        {
-            Lists.ShouldHaveSingleItem();
-            Lists.First().EmptyReason.Text.ShouldBe("No Known Allergies");
-            Lists.First().EmptyReason.Coding.First().Code.ShouldBe("nil-known");
-        }
-
-        [Then(@"the emptyReason code is correct for no allergies recorded")]
-        public void TheEmptyReasoncodeIsCorrectForNoAllergiesRecorded()
-        {
-            Lists.ShouldHaveSingleItem();
-            Lists.First().EmptyReason.Text.ShouldNotBe("No Known Allergies");
-            Lists.First().EmptyReason.Coding.First().Code.ShouldNotBe("nil-known");
-            Lists.First().Note.First().Text.ShouldBe("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
         }
 
         [Then(@"the allergyIntolerance reaction should be valid")]
