@@ -45,6 +45,24 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
+        [Given(@"I add the medicationDatePeriod partParameter")]
+        public void IAddTheMedicationsDatePeriodPartParameter()
+        {
+            ParameterComponent param = new ParameterComponent();
+            param.Name = FhirConst.GetStructuredRecordParams.kMedicationDatePeriod;
+            param.Value = TimePeriodHelper.GetTimePeriodFormatted("dd-MM-yyyy");
+            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+        }
+
+        [Given(@"I add the prescriptions partParameter")]
+        public void IAddThePrescriptionsPartParameter()
+        {
+            ParameterComponent param = new ParameterComponent();
+            param.Name = FhirConst.GetStructuredRecordParams.kPrescriptionIssues;
+            param.Value = new FhirBoolean(Boolean.Parse("true"));
+            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+        }
+
         [Given(@"I add the medications parameter incorrectly")]
         public void GivenIAddTheMedicationsParameterIncorrectly()
         {
