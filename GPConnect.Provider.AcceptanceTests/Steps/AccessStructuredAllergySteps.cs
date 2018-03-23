@@ -104,10 +104,11 @@
                 list.Mode.ShouldBe(ListMode.Snapshot);
                 list.Code.ShouldNotBeNull();
                 list.Subject.ShouldNotBeNull();
-                list.Subject.Reference.StartsWith("Patient");
+                isTheListSubjectValid(list.Subject).ShouldBeTrue();
                 if (list.Entry.Count.Equals(0))
                 {
                     list.EmptyReason.ShouldNotBeNull();
+                    list.EmptyReason.Text.Equals("noContent");
                 };
                 list.Entry.ForEach(entry =>
                 {
@@ -117,7 +118,12 @@
             });
         }
 
-        [Then(@"the Bundle should contain ""(.*)"" allergies")]
+        private Boolean isTheListSubjectValid(ResourceReference subject)
+        { 
+            return !(subject.Reference.Equals(null) && subject.Identifier.Equals(null));
+        }
+
+[Then(@"the Bundle should contain ""(.*)"" allergies")]
         public void TheBundleShouldContainAllergies(int number)
         {
             AllergyIntolerances.Count.ShouldBe(number, "An incorrect number of allergies was returned for the patient.");
