@@ -20,6 +20,7 @@
         private List<MedicationStatement> MedicationStatements => _httpContext.FhirResponse.MedicationStatements;
         private List<MedicationRequest> MedicationRequests => _httpContext.FhirResponse.MedicationRequests;
         private List<List> Lists => _httpContext.FhirResponse.Lists;
+        private Bundle Bundle => _httpContext.FhirResponse.Bundle;
 
         public AccessStructuredMedicationSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -93,8 +94,37 @@
         }
 
         #endregion
+        
+        #region List and Bundle Checks
 
-        #region Medication Checks
+        [Then(@"the List of MedicationStatements should be valid")]
+        public void TheListOfMedicationStatementsShouldBeValid()
+        {
+            Lists.ShouldHaveSingleItem();
+            Lists.ForEach(list =>
+            {
+                MedicationStatements.Count().Equals(list.Entry.Count());
+                list.Id.ShouldNotBeNull();
+                CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+                list.Status.ShouldBeOfType<List.ListStatus>("Status of medications list is of wrong type.");
+                list.Status.ShouldBe(List.ListStatus.Current);
+                list.Mode.ShouldBeOfType<ListMode>("Mode of medications list is of wrong type.");
+                list.Mode.ShouldBe(ListMode.Snapshot);
+                list.Code.ShouldNotBeNull();
+                list.Subject.ShouldNotBeNull();
+                list.Subject.Reference.StartsWith("Patient");
+                if (list.Entry.Count.Equals(0))
+                {
+                    list.EmptyReason.ShouldNotBeNull();
+                    list.EmptyReason.Text.Equals("noContent");
+                };
+                list.Entry.ForEach(entry =>
+                {
+                    entry.Item.ShouldNotBeNull();
+                    entry.Item.Display.ShouldStartWith("MedicationStatement");
+                });
+            });
+        }
 
         [Then(@"the response bundle should not contain any medications data")]
         public void TheResponseBundleShouldNotContainAnyMedicationsData()
@@ -103,6 +133,10 @@
             MedicationStatements.ShouldBeEmpty();
             MedicationRequests.ShouldBeEmpty();
         }
+
+        #endregion
+
+        #region Medication Checks
 
         [Then(@"the Medications should be valid")]
         public void TheMedicationsShouldBeValid()
@@ -157,7 +191,9 @@
             TheMedicationStatementIdShouldBeValid();
             TheMedicationStatementMetadataShouldBeValid();
             TheMedicationStatementBasedOnShouldNotBeNullAndShouldReferToMedicationRequestWithIntentPlan();
+            TheMedicationStatementContextShouldBeValid();
             TheMedicationStatementStatusShouldbeValid();
+            TheMedicationStatementEffectiveShouldbeValid();
             TheMedicationStatementMedicationReferenceShouldbeValid();
             TheMedicationStatementSubjectShouldbeValid();
             TheMedicationStatementTakenShouldbeValid();
@@ -200,6 +236,18 @@
             });
         }
 
+        [Then(@"the Medication Statement Context should be valid")]
+        public void TheMedicationStatementContextShouldBeValid()
+        {
+            MedicationStatements.ForEach(medicationStatement =>
+            {
+                if (medicationStatement.Context != null)
+                {
+                    medicationStatement.Context.Reference.StartsWith("Encounter");
+                }
+            });
+        }
+
         [Then(@"the MedicationStatement Status should be valid")]
         public void TheMedicationStatementStatusShouldbeValid()
         {
@@ -209,9 +257,8 @@
                 {
                     medStatement.Status.ShouldNotBeNull("MedicationStatement Status cannot be null");
                     medStatement.Status.ShouldBeOfType<MedicationStatement.MedicationStatementStatus>($"MedicationStatements Status is not a valid value within the value set {FhirConst.ValueSetSystems.kMedicationStatementStatus}");
-                    medStatement.Status.ShouldNotBe(MedicationStatement.MedicationStatementStatus.EnteredInError);
-                    medStatement.Status.ShouldNotBe(MedicationStatement.MedicationStatementStatus.Intended);
-                    medStatement.Status.ShouldNotBe(MedicationStatement.MedicationStatementStatus.Stopped);
+                    medStatement.Status.ShouldBeOneOf(MedicationStatement.MedicationStatementStatus.Active, MedicationStatement.MedicationStatementStatus.Completed, MedicationStatement.MedicationStatementStatus.Stopped);
+                    medStatement.Status.ShouldNotBeOneOf(MedicationStatement.MedicationStatementStatus.EnteredInError, MedicationStatement.MedicationStatementStatus.Intended, MedicationStatement.MedicationStatementStatus.OnHold);
                 }
             });
         }
@@ -221,9 +268,28 @@
         {
             MedicationStatements.ForEach(medStatement =>
             {
-                if (medStatement.Medication != null)
+                medStatement.Medication.ShouldNotBeNull("MedicationStatement MedicationReference cannot be null");
+                medStatement.Medication.TypeName.ShouldContain("Reference");
+
+                ResourceReference medReference = (ResourceReference)medStatement.Medication;
+                medReference.Reference.StartsWith("Encounter");
+            });
+        }
+
+        [Then(@"the MedicationStatement effective should be valid")]
+        public void TheMedicationStatementEffectiveShouldbeValid()
+        {
+            MedicationStatements.ForEach(medStatement =>
+            {
+                medStatement.Effective.ShouldNotBeNull();
+                if(medStatement.Effective.TypeName.Contains("Period"))
                 {
-                    medStatement.Medication.ShouldNotBeNull("MedicationStatement MedicationReference cannot be null");
+                    Period effectivePeriod = (Period)medStatement.Effective;
+                    effectivePeriod.Start.ShouldNotBeNull();
+                }
+                else
+                {
+                    medStatement.Effective.TypeName.ShouldContain("DateTime");
                 }
             });
         }
@@ -268,26 +334,7 @@
                 });
             });
         }
-
-        [Then(@"the List of MedicationStatements should be valid")]
-        public void TheListOfMedicationStatementsShouldBeValid()
-        {
-            Lists.ShouldHaveSingleItem();
-            Lists.ForEach(list =>
-            {
-                MedicationStatements.Count().Equals(list.Entry.Count());
-                list.Id.ShouldNotBeNull();
-                CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
-                list.Status.ShouldBeOfType<List.ListStatus>("Status of medications list is of wrong type.");
-                list.Status.ShouldBe(List.ListStatus.Current);
-                list.Mode.ShouldBeOfType<ListMode>("Mode of medications list is of wrong type.");
-                list.Mode.ShouldBe(ListMode.Snapshot);
-                list.Code.ShouldNotBeNull();
-                list.Subject.ShouldNotBeNull();
-                list.Subject.Reference.StartsWith("Patient");
-            });
-        }
-
+        
         [Then(@"the MedicationStatement dates are with the default period with start ""(.*)"" and end ""(.*)""")]
         private void TheMedicationStatementDatesAreWithinTheDefaultPeriod(Boolean useStart, Boolean useEnd)
         {
@@ -427,6 +474,7 @@
             TheMedicationRequestIntentShouldbeValid();
             TheMedicationRequestMedicationShouldbeValid();
             TheMedicationRequestSubjectShouldbeValid();
+            TheMedicationRequestContextShouldbeValid();
             TheMedicationRequestStatusReasonShouldbeValid();
             TheMedicationRequestPrescriptionTypeShouldbeValid();
             TheMedicationRequestRepeatInformationShouldbeValid();
@@ -475,6 +523,7 @@
                 if (prescriptionType.Coding.First().Display.Contains("Repeat"))
                 {
                     medRequest.BasedOn.ShouldNotBeNull();
+                    medRequest.BasedOn.First().Reference.StartsWith("MedicationRequest");
                 }
                 else 
                 {
@@ -531,6 +580,11 @@
             MedicationRequests.ForEach(medRequest =>
             {
                 medRequest.Medication.ShouldNotBeNull();
+
+                medRequest.Medication.TypeName.ShouldContain("Reference");
+
+                ResourceReference medReference = (ResourceReference)medRequest.Medication;
+                medReference.Reference.StartsWith("Medication");
             });
         }
         
@@ -541,6 +595,18 @@
             {
                 medRequest.Subject.ShouldNotBeNull();
                 medRequest.Subject.Reference.StartsWith("Patient");
+            });
+        }
+
+        [Then(@"the MedicationRequest context should be valid")]
+        public void TheMedicationRequestContextShouldbeValid()
+        {
+            MedicationRequests.ForEach(medRequest =>
+            {
+                if (medRequest.Context != null)
+                {
+                    medRequest.Context.Reference.StartsWith("Encounter");
+                }
             });
         }
 
@@ -585,6 +651,10 @@
                 if (prescriptionType.Coding.First().Display.Contains("Acute"))
                 {
                     medRequest.DispenseRequest.ValidityPeriod.End.ShouldBeNull();
+                } 
+                else
+                {
+                    medRequest.DispenseRequest.ValidityPeriod.End.ShouldNotBeNull();
                 }
             });
         }
@@ -596,7 +666,9 @@
             {
                 Extension repeatInformation = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRepeatInformation);
                 repeatInformation.ShouldNotBeNull();
+
                 repeatInformation.GetExtension("numberOfRepeatPrescriptionsIssued").ShouldNotBeNull();
+
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
                 if (prescriptionType.Coding.First().Display.Contains("Acute"))
                 {
