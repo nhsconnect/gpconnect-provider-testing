@@ -94,7 +94,6 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid
-		And the Bundle should contain "1" lists
 		And the response bundle should not contain any medications data
 	Examples:
 		| Patient  |
