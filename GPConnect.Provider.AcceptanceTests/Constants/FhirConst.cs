@@ -149,7 +149,7 @@
             public const string kMedicationRequestEndReason = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MedicationStatusReason-1";
             public const string kMedicationStatementLastIssueDate = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MedicationStatementLastIssueDate-1";
 
-            public const string kList = " https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1";
+            public const string kList = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1";
 
         }
 

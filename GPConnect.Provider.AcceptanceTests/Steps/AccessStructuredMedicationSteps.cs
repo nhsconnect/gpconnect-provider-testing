@@ -135,12 +135,15 @@
                 {
                     list.EmptyReason.ShouldNotBeNull();
                     list.EmptyReason.Text.Equals("noContent");
-                };
-                list.Entry.ForEach(entry =>
+                }
+                else
                 {
-                    entry.Item.ShouldNotBeNull();
-                    entry.Item.Display.ShouldStartWith("MedicationStatement");
-                });
+                    list.Entry.ForEach(entry =>
+                    {
+                        entry.Item.ShouldNotBeNull();
+                        entry.Item.Reference.ShouldStartWith("MedicationStatement");
+                    });
+                }
             });
         }
 
@@ -250,7 +253,7 @@
                 medStatement.BasedOn.ShouldHaveSingleItem();
 
                 medStatement.BasedOn.First().Reference.StartsWith("MedicationRequest");
-                var requestId = medStatement.BasedOn.First().Reference.Substring(17);
+                var requestId = medStatement.BasedOn.First().Reference.Substring(18);
 
                 var requests = MedicationRequests.Where(req => req.Id.Equals(requestId)).ToList();
                 requests.ShouldHaveSingleItem();
@@ -542,15 +545,14 @@
         {
             MedicationRequests.ForEach(medRequest =>
             {
-                CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
-                if (prescriptionType.Coding.First().Display.Contains("Repeat"))
+                if (medRequest.Intent.Equals("order"))
                 {
-                    medRequest.BasedOn.ShouldNotBeNull();
+                    medRequest.BasedOn.ShouldNotBeEmpty();
                     medRequest.BasedOn.First().Reference.StartsWith("MedicationRequest");
                 }
                 else 
                 {
-                    medRequest.BasedOn.ShouldBeNull();
+                    medRequest.BasedOn.ShouldBeEmpty();
                 }
                 
             });
