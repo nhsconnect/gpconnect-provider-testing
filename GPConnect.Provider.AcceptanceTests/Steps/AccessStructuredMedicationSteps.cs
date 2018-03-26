@@ -451,9 +451,9 @@
             var plans = MedicationRequests.Where(req => req.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan)).ToList();
             plans.ForEach(plan =>
             {
-                List<MedicationRequest> allRelatedRequests = (List<MedicationRequest>)MedicationRequests.Where(
+                var allRelatedRequests = MedicationRequests.Where(
                     relatedReq => relatedReq.GroupIdentifier.Value.Equals(plan.GroupIdentifier.Value)
-                );
+                ).ToList();
 
                 allRelatedRequests.ForEach(relatedRequest =>
                 {
@@ -545,7 +545,7 @@
         {
             MedicationRequests.ForEach(medRequest =>
             {
-                if (medRequest.Intent.Equals("order"))
+                if (medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Order))
                 {
                     medRequest.BasedOn.ShouldNotBeEmpty();
                     medRequest.BasedOn.First().Reference.StartsWith("MedicationRequest");
