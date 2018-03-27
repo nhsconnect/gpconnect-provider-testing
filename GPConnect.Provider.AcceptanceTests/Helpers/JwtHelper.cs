@@ -44,7 +44,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             SetCreationTimeSecondsPast(2);
             SetExpiryTimeInSecondsPast(2);
             ReasonForRequest = JwtConst.Values.kDirectCare;
-            AuthTokenURL = JwtConst.Values.kAuthTokenURL;
+            AuthTokenURL = AppSettingsHelper.JwtAudValue;
             RequestingDevice = FhirHelper.GetDefaultDevice().ToFhirJson();
             RequestingOrganization = FhirHelper.GetDefaultOrganization().ToFhirJson();
             RequestingIdentityId = FhirHelper.GetDefaultPractitioner().Id;
