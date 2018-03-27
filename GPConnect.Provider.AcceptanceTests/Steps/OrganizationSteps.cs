@@ -97,7 +97,6 @@
         {
             TheOrganizationMetadataShouldBeValid();
             TheOrganizationIdentifiersShouldBeValid();
-            TheOrganizationTypeShouldBeValid();
             TheLocationPartOfLocationShouldBeValid();
         }
 
