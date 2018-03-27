@@ -314,7 +314,6 @@ Scenario: Successfully search for free slots and check the included organization
 		And the response should be a Bundle resource of type "searchset"
 		And the Organization Metadata should be valid
 		And the Organization Identifiers should be valid
-		And the Organization Type should be valid
 		And the Organization PartOf Organization should be valid
 
 @ignore
