@@ -9,7 +9,6 @@ Scenario Outline: Organization search success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<Entries>" entries
 		And the response bundle Organization entries should contain a maximum of 1 "https://fhir.nhs.uk/Id/ods-organization-code" system identifier
-		And the Organization Type should be valid
 		And the Organization Name should be valid
 		And the Organization Telecom should be valid
 		And the Organization Address should be valid
@@ -20,18 +19,13 @@ Scenario Outline: Organization search success
 		| https://fhir.nhs.uk/Id/ods-organization-code | unknownORG | 0       | 
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1       | 1       |
 
-Scenario Outline: Organization search sending multiple identifiers resulting in failure
+Scenario: Organization search sending multiple identifiers resulting in failure
 	Given I configure the default "OrganizationSearch" request		
-		And I add an Organization Identifier parameter with System "<System1>" and Value "ORG1"
-		And I add an Organization Identifier parameter with System "<System2>" and Value "ORG1"
+		And I add an Organization Identifier parameter with System "https://fhir.nhs.uk/Id/ods-organization-code" and Value "ORG1"
+		And I add an Organization Identifier parameter with System "https://fhir.nhs.uk/Id/ods-organization-code" and Value "ORG2"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| System1                                      | System2                                      |
-		| https://fhir.nhs.uk/Id/ods-organization-code | https://fhir.nhs.uk/Id/ods-organization-code |
-		| badSystem                                    | https://fhir.nhs.uk/Id/ods-organization-code |
-		| https://fhir.nhs.uk/Id/ods-organization-code | badSystem                                    |
 
 Scenario: Organization search by organization code successfully returns single result containing the correct fields
 	Given I configure the default "OrganizationSearch" request		
@@ -69,18 +63,8 @@ Scenario: Organization search by organization code successfully returns multiple
 Scenario: Organization search failure due to no identifier parameter
 	Given I configure the default "OrganizationSearch" request		
 	When I make the "OrganizationSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario Outline: Organization search failure due to invalid identifier parameter name
-	Given I configure the default "OrganizationSearch" request		
-		And I add a "<Parameter>" parameter with the Value "<Value>"
-	When I make the "OrganizationSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	Examples:
-		| Parameter     | Value                                              |
-		| Identifier    | https://fhir.nhs.uk/Id/ods-organization-code\|ORG1 |
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 
 Scenario Outline: Organization search add accept header to request and check for correct response format 
 	Given I configure the default "OrganizationSearch" request		
@@ -188,12 +172,4 @@ Scenario: Organization search valid response check caching headers exist
 		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
-		And the required cacheing headers should be present in the response
-
-Scenario: Organization search invalid response check caching headers exist
-	Given I configure the default "OrganizationSearch" request			
-		And I add a "Identifier" parameter with the Value "badValue"
-	When I make the "OrganizationSearch" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		And the required cacheing headers should be present in the response

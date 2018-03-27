@@ -21,7 +21,6 @@ Scenario Outline: Practitioner search success and validate the practitioner iden
 		| practitioner1 | 1         | 0        |
 		| practitioner2 | 1         | 1        |
 		| practitioner3 | 1         | 2        |
-		| practitioner5 | 2         | 3        |
 
 Scenario Outline: Practitioner search with failure due to invalid identifier
 	Given I configure the default "PractitionerSearch" request
@@ -37,9 +36,9 @@ Scenario Outline: Practitioner search with failure due to invalid identifier
 Scenario: Practitioner search without the identifier parameter
 	Given I configure the default "PractitionerSearch" request
 	When I make the "PractitionerSearch" request
-	Then the response status code should be "400"
+	Then the response status code should indicate failure
 		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource
 
 Scenario Outline: Practitioner search where identifier contains the incorrect case or spelling
 	Given I configure the default "PractitionerSearch" request
