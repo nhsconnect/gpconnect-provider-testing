@@ -369,9 +369,9 @@
                 Extension lastIssueDateExt = medStatement.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationStatementLastIssueDate);
                 if (lastIssueDateExt != null)
                 {
-                    FhirDateTime lastIssueDateFhir = (FhirDateTime)lastIssueDateExt.Value;
-                    checkDateIsInRange(useStart, useEnd, (DateTime)lastIssueDateFhir.ToDateTime());
-
+                    var lastIssueDateFhir = lastIssueDateExt.Value;
+                    lastIssueDateFhir.ShouldBeOfType<FhirDateTime>();
+                    checkDateIsInRange(useStart, useEnd, DateTime.Parse(lastIssueDateFhir.ToString()));
                 }
                 else if (medStatement.Effective != null)
                 {
@@ -382,8 +382,9 @@
                     }
                     else
                     {
-                        FhirDateTime effectiveDateTime = (FhirDateTime)medStatement.Effective;
-                        checkDateIsInRange(useStart, useEnd, (DateTime)effectiveDateTime.ToDateTime());
+                        var effectiveDateTime = medStatement.Effective;
+                        effectiveDateTime.ShouldBeOfType<FhirDateTime>();
+                        checkDateIsInRange(useStart, useEnd, DateTime.Parse(effectiveDateTime.ToString()));
                     }
 
                 }
