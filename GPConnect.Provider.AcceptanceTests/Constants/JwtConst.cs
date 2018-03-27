@@ -1,7 +1,5 @@
 ﻿// ReSharper disable ClassNeverInstantiated.Global
 
-using GPConnect.Provider.AcceptanceTests.Helpers;
-
 namespace GPConnect.Provider.AcceptanceTests.Constants
 {
     internal static class JwtConst
@@ -23,7 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         internal static class Values
         {
             public const string kDirectCare = "directcare";
-            private static string kAuthTokenURL = AppSettingsHelper.JWTAudValue;
         }
 
         internal static class Scope

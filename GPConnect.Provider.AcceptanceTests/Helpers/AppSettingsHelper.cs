@@ -78,7 +78,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         // Provider Settings
         public static string ProviderASID => Get<string>("providerASID");
 
-        public static string JWTAudValue => Get<string>("jwtAudValue");
+        public static string JwtAudValue => Get<string>("jwtAudValue");
 
         public static T Get<T>(string key)
         {
