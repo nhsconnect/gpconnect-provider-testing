@@ -124,17 +124,7 @@
                 organizationEntry.FullUrl.ShouldNotBeNull();
             });
         }
-
-        [Then(@"the Organization Type should be valid")]
-        public void TheOrganizationTypeShouldBeValid()
-        {
-            Organizations.ForEach(organization =>
-            {
-                organization.Type.Count.ShouldBe(1,
-                    $"There should only be 1 Organization Type, but found {organization.Type.Count}.");
-            });
-        }
-
+        
         [Then(@"the Organization Name should be valid")]
         public void TheOrganizationNameShouldBeValid()
         {
