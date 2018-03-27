@@ -463,8 +463,8 @@
             });
         }
 
-        [Then(@"there should only be one plan request for acute prescriptions")]
-        public void ThereShouldOnlyBeOnePlanRequestForAcutePrescriptions()
+        [Then(@"there should only be one order request for acute prescriptions")]
+        public void ThereShouldOnlyBeOneOrderRequestForAcutePrescriptions()
         {
             List<MedicationRequest> acuteRequests = MedicationRequests.Where(req => isRequestAnAcutePlan(req).Equals(true)).ToList();
             acuteRequests.ForEach(acuteRequest =>
