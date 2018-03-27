@@ -690,15 +690,18 @@
         {
             MedicationRequests.ForEach(medRequest =>
             {
-                Extension repeatInformation = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRepeatInformation);
-                repeatInformation.ShouldNotBeNull();
-
-                repeatInformation.GetExtension("numberOfRepeatPrescriptionsIssued").ShouldNotBeNull();
-
-                CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
-                if (prescriptionType.Coding.First().Display.Contains("Acute"))
+                if (isRequestAnAcutePlan(medRequest).Equals(false))
                 {
-                   repeatInformation.GetExtension("numberOfRepeatPrescriptionsAllowed").ShouldBeNull();
+                    Extension repeatInformation = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRepeatInformation);
+                    repeatInformation.ShouldNotBeNull();
+
+                    repeatInformation.GetExtension("numberOfRepeatPrescriptionsIssued").ShouldNotBeNull();
+
+                    CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
+                    if (prescriptionType.Coding.First().Display.Contains("Acute"))
+                    {
+                        repeatInformation.GetExtension("numberOfRepeatPrescriptionsAllowed").ShouldBeNull();
+                    }
                 }
             });
         }
