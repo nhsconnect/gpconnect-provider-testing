@@ -97,7 +97,7 @@
             Lists.ForEach(list =>
             {
                 list.Id.ShouldNotBeNull();
-                //CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+                CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
                 list.Status.ShouldBeOfType<List.ListStatus>("Status of allergies list is of wrong type.");
                 list.Status.ShouldBe(List.ListStatus.Current);
                 list.Mode.ShouldBeOfType<ListMode>("Mode of allergies list is of wrong type.");
@@ -109,12 +109,15 @@
                 {
                     list.EmptyReason.ShouldNotBeNull();
                     list.EmptyReason.Text.Equals("noContent");
-                };
-                list.Entry.ForEach(entry =>
+                }
+                else
                 {
-                    entry.Item.ShouldNotBeNull();
-                    entry.Item.Display.ShouldStartWith("AllergyIntolerance");
-                });
+                    list.Entry.ForEach(entry =>
+                    {
+                        entry.Item.ShouldNotBeNull();
+                        entry.Item.Reference.ShouldStartWith("AllergyIntolerance");
+                    });
+                }
             });
         }
 
@@ -123,7 +126,7 @@
             return !(subject.Reference.Equals(null) && subject.Identifier.Equals(null));
         }
 
-[Then(@"the Bundle should contain ""(.*)"" allergies")]
+        [Then(@"the Bundle should contain ""(.*)"" allergies")]
         public void TheBundleShouldContainAllergies(int number)
         {
             AllergyIntolerances.Count.ShouldBe(number, "An incorrect number of allergies was returned for the patient.");
@@ -186,9 +189,8 @@
         [Then(@"the AllergyIntolerance should be valid")]
         public void TheAllergyIntoleranceShouldBeValid()
         {
-            TheAllergyIntoleranceCategoryShouldbeValid();
-            TheAllergyIntoleranceAssertedDateShouldBeValid();
             TheAllergyIntoleranceClinicalStatusShouldbeValid();
+            TheAllergyIntoleranceAssertedDateShouldBeValid();
             TheAllergyIntoleranceIdShouldBeValid();
             TheAllergyIntoleranceMetadataShouldBeValid();
             TheAllergyIntolerancePatientShouldBeValidAndResolvable();
@@ -196,8 +198,9 @@
             TheAllergyIntoleranceReactionShouldBeValid();
             TheAllergyIntoleranceEndDateShouldBeValid();
             TheAllergyIntoleranceCodeShouldbeValid();
-            TheAllergyIntoleranceOnsetDateTimeShouldBeValid();
+            //TheAllergyIntoleranceOnsetDateTimeShouldBeValid();
             TheListOfAllergyIntolerancesShouldBeValid();
+            TheAllergyIntoleranceCategoryShouldbeValid();
         }
 
         [Then(@"the AllergyIntolerance onsetDateTime should be valid")]
@@ -253,10 +256,14 @@
         {
             AllergyIntolerances.ForEach(allergy =>
             {
+
                 allergy.Category.ShouldNotBeNull("AllergyIntolerance Category cannot be null");
-                allergy.Category.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceCategory>($"AllergyIntolerance Category is not a valid value within the value set {FhirConst.ValueSetSystems.kAllergyIntoleranceCategory}");
-                allergy.Category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Biologic);
-                allergy.Category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Food);
+                allergy.Category.ToList().ForEach(category =>
+               {
+                   category.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceCategory>($"AllergyIntolerance Category is not a valid value within the value set {FhirConst.ValueSetSystems.kAllergyIntoleranceCategory}");
+                   category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Biologic);
+                   category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Food);
+               });                
             });
         }
 
