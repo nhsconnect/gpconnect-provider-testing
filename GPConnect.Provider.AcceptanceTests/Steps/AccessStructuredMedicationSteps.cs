@@ -122,7 +122,7 @@
             Lists.ForEach(list =>
             {
                 MedicationStatements.Count().Equals(list.Entry.Count());
-                list.Id.ShouldNotBeNull();
+                //list.Id.ShouldNotBeNull();
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
                 list.Status.ShouldBeOfType<List.ListStatus>("Status of medications list is of wrong type.");
                 list.Status.ShouldBe(List.ListStatus.Current);
@@ -149,7 +149,14 @@
 
         private Boolean isTheListSubjectValid(ResourceReference subject)
         {
-            return !(subject.Reference.Equals(null) && subject.Identifier.Equals(null));
+            if (null == subject.Identifier) {
+                return !(subject.Reference.Equals(null));
+            } 
+            else
+            {
+                return !(subject.Identifier.Equals(null));
+            }
+            
         }
 
         [Then(@"the response bundle should not contain any medications data")]
