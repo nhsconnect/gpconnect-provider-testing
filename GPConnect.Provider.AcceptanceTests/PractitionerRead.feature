@@ -30,6 +30,7 @@ Scenario Outline: Practitioner Read with valid identifier which does not exist o
 		And I set the Read Operation logical identifier used in the request to "<LogicalId>"
 	When I make the "PractitionerRead" request
 	Then the response status code should be "404"
+		And the response should be a OperationOutcome resource
 	Examples:
 		| LogicalId      |
 		| aaBA           |
