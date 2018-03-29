@@ -13,7 +13,6 @@ Scenario: Organization Read successful request validate all of response
 		And the Organization Id should equal the Request Id
 		And the Organization Metadata should be valid
 		And the Organization PartOf Organization should be resolvable
-		And the Organization Type should be valid
 		And the Organization Name should be valid
 		And the Organization Telecom should be valid
 		And the Organization Address should be valid
