@@ -174,9 +174,8 @@
         {
             Lists.ForEach(list =>
            {
-               if (null == list.EmptyReason)
+               if (null == list.EmptyReason.Coding)
                {
-                   list.EmptyReason.ShouldBeNull();
                    list.Note.ShouldNotBeNull();
                    list.Note.ShouldHaveSingleItem();
                    list.Note.First().Text.ShouldMatch("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
