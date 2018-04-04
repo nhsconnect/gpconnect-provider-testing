@@ -302,10 +302,10 @@
                 if (allergy.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved))
                 {
                     Extension endAllergy = allergy.GetExtension(FhirConst.StructureDefinitionSystems.kAllergyEndExt);
-                    //endAllergy.ShouldNotBeNull();
-                    //Extension endDate = endAllergy.GetExtension("endDate");
-                    //endDate.ShouldNotBeNull();
-                    //endDate.Value.ShouldNotBeNull();
+                    endAllergy.ShouldNotBeNull();
+                    Extension endDate = endAllergy.GetExtension("endDate");
+                    endDate.ShouldNotBeNull();
+                    endDate.Value.ShouldNotBeNull();
                 }
             });
         }
