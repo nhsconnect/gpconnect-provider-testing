@@ -112,7 +112,7 @@ Scenario Outline: Retrieve the allergy structured record section including resol
 		And the Bundle should be valid
 		And the Bundle should contain "2" lists
 		And the Bundle should contain a list with the title "Active Allergies"
-		And the Bundle should not contain a list with the title "Resolved Allergies"
+		And the Bundle should contain a list with the title "Resolved Allergies"
 		And the Lists are valid for a patient with no allergies but no explicit recording of No Known Allergies
 		And the List of AllergyIntolerances should be valid
 	Examples:

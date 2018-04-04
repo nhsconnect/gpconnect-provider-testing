@@ -105,12 +105,7 @@
                 list.Code.ShouldNotBeNull();
                 list.Subject.ShouldNotBeNull();
                 isTheListSubjectValid(list.Subject).ShouldBeTrue();
-                if (list.Entry.Count.Equals(0))
-                {
-                    list.EmptyReason.ShouldNotBeNull();
-                    list.EmptyReason.Text.Equals("noContent");
-                }
-                else
+                if (list.Entry.Count > 0)
                 {
                     list.Entry.ForEach(entry =>
                     {
@@ -123,7 +118,7 @@
 
         private Boolean isTheListSubjectValid(ResourceReference subject)
         { 
-            return !(subject.Reference.Equals(null) && subject.Identifier.Equals(null));
+            return !(null == subject.Reference && null == subject.Identifier);
         }
 
         [Then(@"the Bundle should contain ""(.*)"" allergies")]
@@ -174,11 +169,19 @@
         {
             Lists.ForEach(list =>
            {
-               list.EmptyReason.ShouldBeNull();
-               list.Note.ShouldNotBeNull();
-               list.Note.ShouldHaveSingleItem();
-               list.Note.First().Text.ShouldMatch("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
-               list.Entry.ShouldBeEmpty();
+               if (null == list.EmptyReason || null == list.EmptyReason.Coding)
+               {
+                   list.Note.ShouldNotBeNull();
+                   list.Note.ShouldHaveSingleItem();
+                   list.Note.First().Text.ShouldBe("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
+                   list.Entry.ShouldBeEmpty();
+               }
+               else
+               {
+                   list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kSpecial);
+                   list.EmptyReason.Coding.First().Code.ShouldBe("nil-known");
+                   list.EmptyReason.Text.ShouldBe("No Known Allergies");
+               }
            });
         }
 
@@ -298,9 +301,11 @@
             {
                 if (allergy.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved))
                 {
-                    var endAllergyList = allergy.Extension.Where(e => e.Url.Equals(FhirConst.StructureDefinitionSystems.kAllergyEndExt)).ToList();
-                    endAllergyList.ShouldHaveSingleItem();
-                    endAllergyList.First().Extension.Where(e => e.Url.Equals("endDate")).First().Value.ShouldNotBeNull();
+                    Extension endAllergy = allergy.GetExtension(FhirConst.StructureDefinitionSystems.kAllergyEndExt);
+                    endAllergy.ShouldNotBeNull();
+                    Extension endDate = endAllergy.GetExtension("endDate");
+                    endDate.ShouldNotBeNull();
+                    endDate.Value.ShouldNotBeNull();
                 }
             });
         }
