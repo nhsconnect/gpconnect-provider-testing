@@ -385,6 +385,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 catch (Exception e)
                 {
                     Log.WriteLine("Could not add header: " + header.Key);
+                    Log.WriteLine(e.Message);
                 }
             }
 

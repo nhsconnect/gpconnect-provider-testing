@@ -312,6 +312,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 }
                 catch (Exception e) {
                     ScenarioContext.Set(new Dictionary<string, string>(), Context.kResponseHeaders);
+                    Log.WriteLine(e.Message);
                     return ScenarioContext.Get<Dictionary<string, string>>(Context.kResponseHeaders);
                 }
             }
