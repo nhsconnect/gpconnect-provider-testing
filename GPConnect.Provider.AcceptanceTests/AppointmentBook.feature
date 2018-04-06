@@ -446,6 +446,26 @@ Scenario: Book appointment with a comment
 		And the Response Resource should be an Appointment
 		And the Appointment Comment should be valid for "customComment"
 
+Scenario: Book appointment re-using an already booked slot
+	Given I get the Patient for Patient Value "patient1"
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+	Given I get the Patient for Patient Value "patient2"
+		And I store the Patient
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "409"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "DUPLICATE_REJECTED"
+
+
 @ignore
 Scenario: Book appointment for temporary patient
 
