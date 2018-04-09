@@ -41,7 +41,7 @@
             public const string kCcLanguageAbilityMode = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-LanguageAbilityMode-1";
             public const string kCcLanguageAbilityProficiency = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-LanguageAbilityProficiency-1";
             public const string kCcReligiousAffiliation = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-ReligiousAffiliation-1";
-            public const string kCcNhsNumVerification = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-NHSNumberVerificationStatus-1";
+            public const string kCcNhsNumVerification = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1";
 
             //STU3
             public const string kNameUse = "http://hl7.org/fhir/stu3/valueset-name-use.html";
