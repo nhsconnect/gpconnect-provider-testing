@@ -58,21 +58,9 @@
 
                 if (locationType != null)
                 {
-                    // locationType codeable concept binding is extensible
-                    // ideally I would check if it was of FhirConst.ValueSetSystems.kServDelLocationRoleType
-                    // and if so check the code
-                    // as extensible is does not need to be of FhirConst.ValueSetSystems.kServDelLocationRoleType
-
-                    //var serviceDeliveryLocationRoleTypes = GlobalContext.GetFhirGpcValueSet(FhirConst.ValueSetSystems.kServDelLocationRoleType).WithComposeImports();
-
-                    foreach (var coding in locationType.Coding)
+                   foreach (var coding in locationType.Coding)
                     {
                         coding.System.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a System Value.");
-
-                        //if (coding.System.Equals(FhirConst.ValueSetSystems.kServDelLocationRoleType) && serviceDeliveryLocationRoleTypes != null)
-                        //{
-                        //        coding.Code.ShouldBeOneOf(serviceDeliveryLocationRoleTypes.ToArray(), "The Location Type Coding should contain a Code.");
-                        //}
 
                         coding.Code.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a Code.");
                         coding.Display.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a Display.");
