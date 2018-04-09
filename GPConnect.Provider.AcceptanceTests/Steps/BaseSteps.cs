@@ -41,14 +41,13 @@
         {
             var validCode = codingList.FirstOrDefault(f => f.Code.Equals(code.Code) && f.Display.Equals(code.Display) && f.System.Equals(code.System));
 
-            validCode.ShouldNotBeNull();
+            validCode.ShouldNotBeNull("Code, System and display combination does not match required valueset");
         }
 
         private static void ValueSetContainsCodeAndDisplayAndSystem(ValueSet valueSet, Coding coding)
         {
             valueSet.Expansion.Contains.ShouldContain(component => component.Code.Equals(coding.Code)  
-                                                    && component.Display.Equals(coding.Display) 
-                                                    && component.System.Equals(coding.System));
+                                                    && component.Display.Equals(coding.Display));
         }
 
         public void CheckForValidMetaDataInResource<T>(T resource, string profileId) where T : Resource

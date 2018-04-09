@@ -1,12 +1,8 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Cache.ValueSet
 {
-    using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using GPConnect.Provider.AcceptanceTests.Helpers;
     using Hl7.Fhir.Model;
-    using Hl7.Fhir.Serialization;
     using Hl7.Fhir.Specification.Source;
     using Hl7.Fhir.Specification.Terminology;
     using Resolvers;
@@ -55,41 +51,16 @@
 
         private static ValueSet GetValueSet(string key)
         {
-            char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
-            var keyCleaned = new string(key.Where(ch => !invalidFileNameChars.Contains(ch)).ToArray()); // This is important to remove characters which stop the file name being valid
-            var filePath = AppSettingsHelper.FhirDirectory  + "/valuesets/" + keyCleaned; 
+            var valueSet = ValueSetResolvers.GetResolver().FindValueSet(key);
 
-            var valueSet = new ValueSet();
+            valueSet.ShouldNotBeNull($"There was no ValueSet found at {key}.");
 
-            try
-            {
-                valueSet = ValueSetResolvers.GetResolver().FindValueSet(key);
+            ExpandValueSet(valueSet);
 
-                valueSet.ShouldNotBeNull($"There was no ValueSet found at {key}.");
-
-                ExpandValueSet(valueSet);
-                Set(key, valueSet);
-
-                // Store the valueset so it can be used to load when no network connection
-                StreamWriter jsonFile = new StreamWriter(filePath);
-                jsonFile.WriteLine(FhirSerializer.SerializeResourceToJson(valueSet));
-                jsonFile.Close();
-
-            }
-            catch (Exception exVS)
-            {
-                // Load from file
-                StreamReader jsonFile = new StreamReader(filePath);
-                FhirJsonParser parser = new FhirJsonParser();
-                valueSet = parser.Parse<ValueSet>(jsonFile.ReadLine());
-                jsonFile.Close();
-
-                Set(key, valueSet);
-            }
+            Set(key, valueSet);
 
             return valueSet;
         }
-
 
         private static void ExpandValueSet(ValueSet valueSet)
         {
