@@ -54,6 +54,34 @@
             public const string kContactEntityType = "http://hl7.org/fhir/contactentity-type";
             public const string kEncounterParticipantType = "http://hl7.org/fhir/encounter-participant-type";
             public const string kRelationshipStatus = "http://hl7.org/fhir/v2/0131";
+            public const string kLocationType = "http://hl7.org/fhir/v3/RoleCode";
+            public const string kLocationPhysicalType = "http://hl7.org/fhir/stu3/location-physical-type.html";
+        }
+
+        internal static class ValueSetSystems
+        {
+            public const string kVsGpcRegistrationType = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-RegistrationType-1";
+            public const string kVsGpcRegistrationStatus = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-RegistrationStatus-1";
+            public const string kVsEthnicCategory = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-EthnicCategory-1";
+            public const string kVsResidentialStatus = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-ResidentialStatus-1";
+            public const string kVsTreatmentCategory = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-TreatmentCategory-1";
+            public const string kVsHumanLanguage = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-HumanLanguage-1";
+            public const string kVsLanguageAbilityMode = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-LanguageAbilityMode-1";
+            public const string kVsLanguageAbilityProficiency = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-LanguageAbilityProficiency-1";
+            public const string kVsNhsNumVerification = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-NHSNumberVerificationStatus-1";
+            public const string kVsAdministrativeGender = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-AdministrativeGender-1";
+            public const string kVsMaritalStatus = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-MaritalStatus-1";
+
+            //HL7
+            public const string kVsNameUse = "http://hl7.org/fhir/stu3/valueset-name-use.html";
+            public const string kVsContactPointSystem = "http://hl7.org/fhir/stu3/valueset-contact-point-system.html";
+            public const string kVsNContactPointUse = "http://hl7.org/fhir/stu3/valueset-contact-point-use.html";
+            public const string kVsAddressUse = "http://hl7.org/fhir/stu3/valueset-address-use.html";
+            public const string kVsAddressType = "http://hl7.org/fhir/stu3/valueset-address-type.html";
+            public const string kVsContactEntityType = "http://hl7.org/fhir/ValueSet/contactentity-type";
+            public const string kVsEncounterParticipantType = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
+            public const string kVsRelationshipStatus = "http://hl7.org/fhir/ValueSet/v2-0131";
+            public const string kVsNullFlavour = "http://hl7.org/fhir/ValueSet/v3-NullFlavor";
         }
 
         internal static class StructureDefinitionSystems

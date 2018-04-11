@@ -103,7 +103,7 @@ Scenario: Read patient response should contain an ETag header
 		And the Response should contain the ETag header matching the Resource Version Id
 		And the Patient Identifiers should be valid for Patient "patient1"
 
-Scenario: Read patient resurned should conform to the GPconnect specification
+Scenario: Read patient returned should conform to the GPconnect specification
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "PatientRead" request
