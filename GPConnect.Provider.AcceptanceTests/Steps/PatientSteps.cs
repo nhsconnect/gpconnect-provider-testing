@@ -102,7 +102,7 @@
                 {
                     contact.Relationship.ForEach(relationship =>
                     {
-                        var valueSet = ValueSetCache.Get(FhirConst.CodeSystems.kRelationshipStatus);
+                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kRelationshipStatus);
 
                         ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
@@ -120,8 +120,8 @@
                     contact.Name.Family.Count().ShouldBe(1,"There should be 1 family name");
 
                     contact.Name.Use.ShouldNotBeNull("Contact Name Use should not be null");
-                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.CodeSystems.kNameUse}");
-                    contact.Gender?.ShouldBeOfType<AdministrativeGender>($"Type is not a valid value within the value set {FhirConst.CodeSystems.kAdministrativeGender}");
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
+                    contact.Gender?.ShouldBeOfType<AdministrativeGender>($"Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAdministrativeGender}");
                 });
             });
         }
@@ -174,7 +174,7 @@
 
                     var extension = identifier.Extension.First();
 
-                    ValidateCodeConceptExtension(extension, FhirConst.CodeSystems.kCcNhsNumVerification);
+                    ValidateCodeConceptExtension(extension, FhirConst.ValueSetSystems.kCcNhsNumVerification);
                 }
             });
         }
@@ -188,7 +188,7 @@
                 {
                     telecom.System.ShouldNotBeNull("The telecom system should not be null");
                     telecom.Value.ShouldNotBeNull("The telecom value element should not be null");
-                    //telecom.System.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", FhirConst.CodeSystems.kContactPointSystem));
+                    //telecom.System.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kContactPointSystem));
 
 
 
@@ -232,13 +232,14 @@
                 {
                     patient.MaritalStatus.Coding.ShouldNotBeNull("Patient MaritalStatus coding cannot be null");
 
-                    var maritalStatusList = ValueSetCache.Get(FhirConst.CodeSystems.kMaritalStatus).WithComposeIncludes().ToArray();
-                    maritalStatusList.Concat(ValueSetCache.Get(FhirConst.CodeSystems.kNullFlavour).WithComposeIncludes().ToArray());
-                    patient.MaritalStatus.Coding.ForEach(coding =>
-                    {
-                        coding.System.ShouldNotBeNull("MaritalStatus System should not be null");
-                        coding.Code.ShouldBeOneOf(maritalStatusList.Select(c => c.Code).ToArray());
-                        coding.Display.ShouldBeOneOf(maritalStatusList.Select(c => c.Display).ToArray());
+                // GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeImports(), patient.MaritalStatus.Coding.First().Code.First());
+                var maritalStatusList = ValueSetCache.Get(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes().ToArray();
+                patient.MaritalStatus.Coding.ForEach(coding =>
+            {
+                coding.System.ShouldNotBeNull("MaritalStatus System should not be null");
+                coding.Code.ShouldBeOneOf(maritalStatusList.Select(c => c.Code).ToArray());
+                coding.Display.ShouldBeOneOf(maritalStatusList.Select(c => c.Display).ToArray());
+
                     });
                 }
             });
@@ -253,7 +254,7 @@
                 {
                     communication.Language.ShouldNotBeNull("The communication language element should not be null");
 
-                    var valueSet = ValueSetCache.Get(FhirConst.CodeSystems.kCcHumanLanguage);
+                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kCcHumanLanguage);
 
                     ShouldBeSingleCodingWhichIsInValueSet(valueSet, communication.Language.Coding);
                 });
@@ -352,14 +353,14 @@
                     // Contact Relationship Checks
                     contact.Relationship.ForEach(relationship =>
                     {
-                        var valueSet = ValueSetCache.Get(FhirConst.CodeSystems.kRelationshipStatus);
+                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kRelationshipStatus);
 
                         ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
 
                     contact.Name.ShouldBeNull();
                     contact.Name.Use.ShouldNotBeNull("Patient Name Use cannot be null");
-                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Name Use is not a valid value within the value set {FhirConst.CodeSystems.kNameUse}");
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
                     contact.Name.Family.Count().ShouldBeLessThanOrEqualTo(1);
                     // Contact Name Checks
                     // Contact Telecom Checks
@@ -494,7 +495,7 @@
                     // Contact Relationship Checks
 
                     name.Use.ShouldNotBeNull("Patient Name Use cannot be null");
-                    name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Name Use is not a valid value within the value set {0}", FhirConst.CodeSystems.kNameUse));
+                    name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
                 });
             });
         }
@@ -519,7 +520,7 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.Gender.ShouldBeOfType<AdministrativeGender>($"Patient Gender is not a valid value within the value set {FhirConst.CodeSystems.kAdministrativeGender}");
+                patient.Gender.ShouldBeOfType<AdministrativeGender>($"Patient Gender is not a valid value within the value set {FhirConst.ValueSetSystems.kAdministrativeGender}");
             });
         }
 

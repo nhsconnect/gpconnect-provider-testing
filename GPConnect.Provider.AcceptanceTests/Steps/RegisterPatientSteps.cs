@@ -41,7 +41,7 @@
             patientIdentifier.Extension.Add(new Extension
             {
                 Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
-                Value = new CodeableConcept(FhirConst.CodeSystems.kCcNhsNumVerification, "01", "Number present and verified")
+                Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerification, "01", "Number present and verified")
             });
 
             var returnPatient = new Patient
@@ -135,7 +135,7 @@
             _fhirResourceRepository.Patient.Identifier[0].Extension.Add(new Extension
             {
                 Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
-                Value = new CodeableConcept(FhirConst.CodeSystems.kCcNhsNumVerification, "01", "Number present and verified")
+                Value = new CodeableConcept(FhirConst.ValueSetSystems.kCcNhsNumVerification, "01", "Number present and verified")
             });
         }
 
@@ -300,7 +300,7 @@
         [Given(@"I add a Marital element to the Stored Patient")]
         public void AddAMaritalElementToStoredPatient()
         {
-            _fhirResourceRepository.Patient.MaritalStatus = new CodeableConcept(FhirConst.CodeSystems.kMaritalStatus, "M");
+            _fhirResourceRepository.Patient.MaritalStatus = new CodeableConcept(FhirConst.ValueSetSystems.kMaritalStatus, "M");
         }
 
         [Given(@"I add a Photo element to the Stored Patient")]
@@ -347,7 +347,7 @@
 
                 numberExtensions.Count().ShouldBe(1,$"There can only be one extension on the NHS Number Identifer with a URL of {FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification}");
 
-                ValidateCodeConceptExtension(numberExtensions.First(), FhirConst.CodeSystems.kCcNhsNumVerification);
+                ValidateCodeConceptExtension(numberExtensions.First(), FhirConst.ValueSetSystems.kCcNhsNumVerification);
             });
         }
 
@@ -381,7 +381,7 @@
 
             if (extensions.Any())
             {
-                var codeList = ValueSetCache.Get(FhirConst.CodeSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
+                var codeList = ValueSetCache.Get(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
 
                 extensions.ForEach(registrationTypeExtension =>
                 {
@@ -492,11 +492,11 @@
 
                 // EXTENSIONS
                 var extensions = patient.Extension;
-                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtEthnicCategory, FhirConst.CodeSystems.kCcEthnicCategory);
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtEthnicCategory, FhirConst.ValueSetSystems.kCcEthnicCategory);
                 ValidateSingleExtension(extensions, FhirConst.StructureDefinitionSystems.kCcExtReligiousAffiliation); //Would preferably check codeable concept as it has a binding strength of Required
                 ValidateSingleBooleanExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtPatientCadaver);
-                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtResidentialStatus, FhirConst.CodeSystems.kCcResidentialStatus);
-                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtTreatmentCategory, FhirConst.CodeSystems.kCcTreatmentCategory);
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtResidentialStatus, FhirConst.ValueSetSystems.kCcResidentialStatus);
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtTreatmentCategory, FhirConst.ValueSetSystems.kCcTreatmentCategory);
                 ValidateNhsCommunicationExtension(extensions);
 
 
@@ -520,9 +520,8 @@
                 if (patient.MaritalStatus != null)
                 {
                     patient.MaritalStatus.Coding.Count.ShouldBe(1);
-                    var vset = ValueSetCache.Get(FhirConst.CodeSystems.kMaritalStatus).WithComposeIncludes().ToList();
-                    vset.AddRange(ValueSetCache.Get(FhirConst.CodeSystems.kNullFlavour).WithComposeIncludes().ToList());
-                    ShouldBeSingleCodingWhichIsInCodeList(patient.MaritalStatus.Coding.First(), vset);
+                    var vset = ValueSetCache.Get(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes();
+                    ShouldBeSingleCodingWhichIsInCodeList(patient.MaritalStatus.Coding.First(), vset.ToList());
                 }
 
                 //CONTACT
@@ -593,7 +592,7 @@
         {
             var extList = new List<Extension>
             {
-                GetCodingExtension(FhirConst.StructureDefinitionSystems.kCCExtRegistrationStatus, FhirConst.CodeSystems.kCcGpcRegistrationStatus, "I", "Inactive")
+                GetCodingExtension(FhirConst.StructureDefinitionSystems.kCCExtRegistrationStatus, FhirConst.ValueSetSystems.kCcGpcRegistrationStatus, "I", "Inactive")
             };
 
             var registrationDetails = new Extension
@@ -693,7 +692,7 @@
 
                 contactName.ShouldNotBeNull();
                 contactName.Use.ShouldNotBeNull();
-                contactName.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.CodeSystems.kNameUse}");
+                contactName.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
                 contactName.Family.Count().ShouldBeLessThanOrEqualTo(1, "Patient Contact Name Family Element should contain a maximum of 1.");
 
                 ValidateTelecom(contact.Telecom, "Patient Contact Telecom");
@@ -722,10 +721,10 @@
 
                 var subExtensions = ext.Extension;
 
-                ValidateExactSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommLanguage, FhirConst.CodeSystems.kCcHumanLanguage);
+                ValidateExactSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommLanguage, FhirConst.ValueSetSystems.kCcHumanLanguage);
                 ValidateSingleBooleanExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommPreferred);
-                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommModeOfCommunication, FhirConst.CodeSystems.kCcLanguageAbilityMode);
-                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommCommProficiency, FhirConst.CodeSystems.kCcLanguageAbilityProficiency);
+                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommModeOfCommunication, FhirConst.ValueSetSystems.kCcLanguageAbilityMode);
+                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommCommProficiency, FhirConst.ValueSetSystems.kCcLanguageAbilityProficiency);
                 ValidateSingleBooleanExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommInterpreterRequired);
             }
         }
