@@ -289,7 +289,7 @@
                 if (medStatement.Status != null)
                 {
                     medStatement.Status.ShouldNotBeNull("MedicationStatement Status cannot be null");
-                    medStatement.Status.ShouldBeOfType<MedicationStatement.MedicationStatementStatus>($"MedicationStatements Status is not a valid value within the value set {FhirConst.ValueSetSystems.kMedicationStatementStatus}");
+                    medStatement.Status.ShouldBeOfType<MedicationStatement.MedicationStatementStatus>($"MedicationStatements Status is not a valid value within the value set {FhirConst.CodeSystems.kMedicationStatementStatus}");
                     medStatement.Status.ShouldBeOneOf(MedicationStatement.MedicationStatementStatus.Active, MedicationStatement.MedicationStatementStatus.Completed, MedicationStatement.MedicationStatementStatus.Stopped);
                     medStatement.Status.ShouldNotBeOneOf(MedicationStatement.MedicationStatementStatus.EnteredInError, MedicationStatement.MedicationStatementStatus.Intended, MedicationStatement.MedicationStatementStatus.OnHold);
                 }
@@ -585,7 +585,7 @@
             MedicationRequests.ForEach(medRequest =>
             {
                 medRequest.Status.ShouldNotBeNull("MedicationStatement Status cannot be null");
-                medRequest.Status.ShouldBeOfType<MedicationRequest.MedicationRequestStatus>($"MedicationRequest Status is not a valid value within the value set {FhirConst.ValueSetSystems.kMedicationRequestStatus}");
+                medRequest.Status.ShouldBeOfType<MedicationRequest.MedicationRequestStatus>($"MedicationRequest Status is not a valid value within the value set {FhirConst.CodeSystems.kMedicationRequestStatus}");
                 medRequest.Status.ShouldBeOneOf(MedicationRequest.MedicationRequestStatus.Active, MedicationRequest.MedicationRequestStatus.Completed, MedicationRequest.MedicationRequestStatus.Stopped);
                    
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
@@ -602,7 +602,7 @@
             MedicationRequests.ForEach(medRequest =>
             {
                 medRequest.Intent.ShouldNotBeNull();
-                medRequest.Intent.ShouldBeOfType<MedicationRequest.MedicationRequestIntent>($"MedicationRequest Intent is not a valid value within the value set {FhirConst.ValueSetSystems.kMedicationRequestIntent}");
+                medRequest.Intent.ShouldBeOfType<MedicationRequest.MedicationRequestIntent>($"MedicationRequest Intent is not a valid value within the value set {FhirConst.CodeSystems.kMedicationRequestIntent}");
                 medRequest.Intent.ShouldBeOneOf(MedicationRequest.MedicationRequestIntent.Plan, MedicationRequest.MedicationRequestIntent.Order);
             });
         }
@@ -722,7 +722,7 @@
                 medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).ShouldNotBeNull();
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
 
-                prescriptionType.Coding.First().System.Equals(FhirConst.ValueSetSystems.kMedicationPrescriptionType);
+                prescriptionType.Coding.First().System.Equals(FhirConst.CodeSystems.kMedicationPrescriptionType);
             });
         }
 

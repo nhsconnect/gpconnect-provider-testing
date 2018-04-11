@@ -127,7 +127,7 @@
                 Status = ParticipationStatus.Accepted,
                 Type = new List<CodeableConcept>
                 {
-                    new CodeableConcept(FhirConst.ValueSetSystems.kEncounterParticipantType, "PART", "Participation", "Participation")
+                    new CodeableConcept(FhirConst.CodeSystems.kEncounterParticipantType, "PART", "Participation", "Participation")
                 }
             };
         }
@@ -151,7 +151,7 @@
                 Status = ParticipationStatus.Accepted,
                 Type = new List<CodeableConcept>
                 {
-                    new CodeableConcept(FhirConst.ValueSetSystems.kEncounterParticipantType, "PART", "Participation", "Participation")
+                    new CodeableConcept(FhirConst.CodeSystems.kEncounterParticipantType, "PART", "Participation", "Participation")
                 }
             };
         }
@@ -168,7 +168,7 @@
                     Status = ParticipationStatus.Accepted,
                     Type = new List<CodeableConcept>
                     {
-                        new CodeableConcept(FhirConst.ValueSetSystems.kEncounterParticipantType, "PPRF", "primary performer", "primary performer")
+                        new CodeableConcept(FhirConst.CodeSystems.kEncounterParticipantType, "PPRF", "primary performer", "primary performer")
                     }
                 })
                 .ToList();
