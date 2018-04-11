@@ -46,8 +46,7 @@
 
         public static void ValueSetContainsCodeAndDisplayAndSystem(ValueSet valueSet, Coding coding)
         {
-            var children = valueSet.Expansion.Contains;
-            children.ShouldContain(component => component.Code.Equals(coding.Code)  
+            valueSet.Expansion.Contains.ShouldContain(component => component.Code.Equals(coding.Code)  
                                                     && component.Display.Equals(coding.Display) 
                                                     && component.System.Equals(coding.System));
         }
