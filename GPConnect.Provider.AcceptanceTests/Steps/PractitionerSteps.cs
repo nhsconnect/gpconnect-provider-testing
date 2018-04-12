@@ -251,7 +251,7 @@
 
                 practionerName.Family.ShouldNotBeNullOrEmpty("There should be 1 Family Name in the Practitioner name.");
 
-                practionerName.Use?.ShouldBeOfType<HumanName.NameUse>($"Practitioner Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
+                practionerName.Use?.ShouldBeOfType<HumanName.NameUse>($"Practitioner Name Use is not a valid value within the value set {FhirConst.CodeSystems.kNameUse}");
             });
         }
 
@@ -307,7 +307,7 @@
         {
             Practitioners.ForEach(practitioner =>
             {
-                practitioner.Gender?.ShouldBeOfType<AdministrativeGender>(string.Format($"Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAdministrativeGender}"));
+                practitioner.Gender?.ShouldBeOfType<AdministrativeGender>(string.Format($"Type is not a valid value within the value set {FhirConst.CodeSystems.kAdministrativeGender}"));
             });
         }
 
@@ -317,8 +317,8 @@
             addressList.ForEach(address =>
             {
                 address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
-                address.Type?.ShouldBeOfType<Address.AddressType>($"{from} Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressType}");
-                address.Use?.ShouldBeOfType<Address.AddressUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressUse}");
+                address.Type?.ShouldBeOfType<Address.AddressType>($"{from} Type is not a valid value within the value set {FhirConst.CodeSystems.kAddressType}");
+                address.Use?.ShouldBeOfType<Address.AddressUse>($"{from} Use is not a valid value within the value set {FhirConst.CodeSystems.kAddressUse}");
             });
         }
 
@@ -328,8 +328,8 @@
             telecoms.ForEach(teleCom =>
             {
                 teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
-                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"{from} System is not a valid value within the value set {FhirConst.ValueSetSystems.kContactPointSystem}");
-                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNContactPointUse}");
+                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"{from} System is not a valid value within the value set {FhirConst.CodeSystems.kContactPointSystem}");
+                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"{from} Use is not a valid value within the value set {FhirConst.CodeSystems.kNContactPointUse}");
             });
         }
     }

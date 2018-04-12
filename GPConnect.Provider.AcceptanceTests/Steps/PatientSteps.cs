@@ -120,8 +120,8 @@
                     contact.Name.Family.Count().ShouldBe(1,"There should be 1 family name");
 
                     contact.Name.Use.ShouldNotBeNull("Contact Name Use should not be null");
-                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
-                    contact.Gender?.ShouldBeOfType<AdministrativeGender>($"Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAdministrativeGender}");
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.CodeSystems.kNameUse}");
+                    contact.Gender?.ShouldBeOfType<AdministrativeGender>($"Type is not a valid value within the value set {FhirConst.CodeSystems.kAdministrativeGender}");
                 });
             });
         }
@@ -360,7 +360,7 @@
 
                     contact.Name.ShouldBeNull();
                     contact.Name.Use.ShouldNotBeNull("Patient Name Use cannot be null");
-                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
+                    contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Name Use is not a valid value within the value set {FhirConst.CodeSystems.kNameUse}");
                     contact.Name.Family.Count().ShouldBeLessThanOrEqualTo(1);
                     // Contact Name Checks
                     // Contact Telecom Checks
@@ -495,7 +495,7 @@
                     // Contact Relationship Checks
 
                     name.Use.ShouldNotBeNull("Patient Name Use cannot be null");
-                    name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Name Use is not a valid value within the value set {0}", FhirConst.ValueSetSystems.kNameUse));
+                    name.Use.ShouldBeOfType<HumanName.NameUse>(string.Format("Patient Name Use is not a valid value within the value set {0}", FhirConst.CodeSystems.kNameUse));
                 });
             });
         }
@@ -520,7 +520,7 @@
         {
             Patients.ForEach(patient =>
             {
-                patient.Gender.ShouldBeOfType<AdministrativeGender>($"Patient Gender is not a valid value within the value set {FhirConst.ValueSetSystems.kAdministrativeGender}");
+                patient.Gender.ShouldBeOfType<AdministrativeGender>($"Patient Gender is not a valid value within the value set {FhirConst.CodeSystems.kAdministrativeGender}");
             });
         }
 

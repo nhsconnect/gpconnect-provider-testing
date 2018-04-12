@@ -194,9 +194,9 @@
 
                     contactPurpose.Coding.ForEach(coding =>
                     {
-                        if (coding.System.Equals(FhirConst.ValueSetSystems.kContactEntityType) && contactEntityTypes.Any() && !string.IsNullOrEmpty(coding.Code))
+                        if (coding.System.Equals(FhirConst.CodeSystems.kContactEntityType) && contactEntityTypes.Any() && !string.IsNullOrEmpty(coding.Code))
                         {
-                            coding.Code.ShouldBeOneOf(contactEntityTypes, $"Organisation Contact Purpose System is {FhirConst.ValueSetSystems.kContactEntityType}, but the code provided is not valid for this ValueSet.");
+                            coding.Code.ShouldBeOneOf(contactEntityTypes, $"Organisation Contact Purpose System is {FhirConst.CodeSystems.kContactEntityType}, but the code provided is not valid for this ValueSet.");
                         }
                     });
                 }
@@ -205,7 +205,7 @@
 
                 if (contactName != null)
                 {
-                    contactName.Use?.ShouldBeOfType<HumanName.NameUse>($"Organisation Contact Name Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNameUse}");
+                    contactName.Use?.ShouldBeOfType<HumanName.NameUse>($"Organisation Contact Name Use is not a valid value within the value set {FhirConst.CodeSystems.kNameUse}");
 
                     contactName.Family.Count().ShouldBeLessThanOrEqualTo(1, "Organisation Contact Name Family Element should contain a maximum of 1.");
                 }

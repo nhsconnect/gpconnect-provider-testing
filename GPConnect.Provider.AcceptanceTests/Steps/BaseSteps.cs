@@ -68,13 +68,13 @@
             telecoms.ForEach(teleCom =>
             {
                 teleCom.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
-                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"{from} System is not a valid value within the value set {FhirConst.ValueSetSystems.kContactPointSystem}");
+                teleCom.System?.ShouldBeOfType<ContactPoint.ContactPointSystem>($"{from} System is not a valid value within the value set {FhirConst.CodeSystems.kContactPointSystem}");
                 if (svRequired)
                 {
                     teleCom.System.ShouldNotBeNull($"{from} System is required");
                     teleCom.Value.ShouldNotBeNullOrEmpty($"{from} Value is required");
                 }
-                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kNContactPointUse}");
+                teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"{from} Use is not a valid value within the value set {FhirConst.CodeSystems.kNContactPointUse}");
             });
         }
 
@@ -83,8 +83,8 @@
             if (address != null)
             {
                 address.Extension.ForEach(ext => ext.Url.ShouldNotBeNullOrEmpty($"{from} has an invalid extension. Extensions must have a URL element."));
-                address.Type?.ShouldBeOfType<Address.AddressType>($"{from} Type is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressType}");
-                address.Use?.ShouldBeOfType<Address.AddressUse>($"{from} Use is not a valid value within the value set {FhirConst.ValueSetSystems.kAddressUse}");
+                address.Type?.ShouldBeOfType<Address.AddressType>($"{from} Type is not a valid value within the value set {FhirConst.CodeSystems.kAddressType}");
+                address.Use?.ShouldBeOfType<Address.AddressUse>($"{from} Use is not a valid value within the value set {FhirConst.CodeSystems.kAddressUse}");
             }
         }
 
