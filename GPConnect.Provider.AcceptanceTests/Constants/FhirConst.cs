@@ -30,17 +30,16 @@
             public const string kAppointment = "https://fhir.nhs.uk/Id/gpconnect-appointment-identifier";
         }
 
-        internal static class ValueSetSystems
+        internal static class CodeSystems
         {
-            public const string kCcGpcRegistrationType = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-RegistrationType-1";
-            public const string kCcGpcRegistrationStatus = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-RegistrationStatus-1";
-            public const string kCcEthnicCategory = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-EthnicCategory-1";
-            public const string kCcResidentialStatus = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-ResidentialStatus-1";
-            public const string kCcTreatmentCategory = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-TreatmentCategory-1";
-            public const string kCcHumanLanguage = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-HumanLanguage-1";
-            public const string kCcLanguageAbilityMode = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-LanguageAbilityMode-1";
-            public const string kCcLanguageAbilityProficiency = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-LanguageAbilityProficiency-1";
-            public const string kCcReligiousAffiliation = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-ReligiousAffiliation-1";
+            public const string kCcGpcRegistrationType = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-RegistrationType-1";
+            public const string kCcGpcRegistrationStatus = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-RegistrationStatus-1";
+            public const string kCcEthnicCategory = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-EthnicCategory-1";
+            public const string kCcResidentialStatus = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-ResidentialStatus-1";
+            public const string kCcTreatmentCategory = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-TreatmentCategory-1";
+            public const string kCcHumanLanguage = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-HumanLanguage-1";
+            public const string kCcLanguageAbilityMode = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-LanguageAbilityMode-1";
+            public const string kCcLanguageAbilityProficiency = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-LanguageAbilityProficiency-1";
             public const string kCcNhsNumVerification = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1";
 
             //STU3
@@ -83,7 +82,6 @@
             public const string kVsEncounterParticipantType = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
             public const string kVsRelationshipStatus = "http://hl7.org/fhir/ValueSet/v2-0131";
             public const string kVsNullFlavour = "http://hl7.org/fhir/ValueSet/v3-NullFlavor";
->>>>>>> 7ca557cf58e37a8a6cfecec99f0d3f1488d2fc0d
         }
 
         internal static class StructureDefinitionSystems
