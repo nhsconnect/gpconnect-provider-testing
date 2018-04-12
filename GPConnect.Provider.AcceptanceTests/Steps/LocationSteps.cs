@@ -68,12 +68,7 @@
                     foreach (var coding in locationType.Coding)
                     {
                         coding.System.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a System Value.");
-
-                        //if (coding.System.Equals(FhirConst.ValueSetSystems.kServDelLocationRoleType) && serviceDeliveryLocationRoleTypes != null)
-                        //{
-                        //        coding.Code.ShouldBeOneOf(serviceDeliveryLocationRoleTypes.ToArray(), "The Location Type Coding should contain a Code.");
-                        //}
-
+                        coding.System.Equals(FhirConst.CodeSystems.kLocationType);
                         coding.Code.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a Code.");
                         coding.Display.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a Display.");
                     }

@@ -189,7 +189,7 @@
 
                 if (contactPurpose != null)
                 {
-                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kContactEntityType);
+                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsContactEntityType);
                     var contactEntityTypes = valueSet.WithComposeImports().ToArray();
 
                     contactPurpose.Coding.ForEach(coding =>

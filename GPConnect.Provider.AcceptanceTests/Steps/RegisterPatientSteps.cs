@@ -347,7 +347,8 @@
 
                 numberExtensions.Count().ShouldBe(1,$"There can only be one extension on the NHS Number Identifer with a URL of {FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification}");
 
-                ValidateCodeConceptExtension(numberExtensions.First(), FhirConst.ValueSetSystems.kCcNhsNumVerification);
+                ValidateCodeConceptExtension(numberExtensions.First(), FhirConst.ValueSetSystems.kVsNhsNumVerification);
+
             });
         }
 
@@ -381,7 +382,8 @@
 
             if (extensions.Any())
             {
-                var codeList = ValueSetCache.Get(FhirConst.ValueSetSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
+
+                var codeList = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsGpcRegistrationType).WithComposeIncludes().ToList();
 
                 extensions.ForEach(registrationTypeExtension =>
                 {
@@ -520,8 +522,9 @@
                 if (patient.MaritalStatus != null)
                 {
                     patient.MaritalStatus.Coding.Count.ShouldBe(1);
-                    var vset = ValueSetCache.Get(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes();
-                    ShouldBeSingleCodingWhichIsInCodeList(patient.MaritalStatus.Coding.First(), vset.ToList());
+                    var vset = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsMaritalStatus).WithComposeIncludes().ToList();
+                    vset.AddRange(ValueSetCache.Get(FhirConst.ValueSetSystems.kVsNullFlavour).WithComposeIncludes().ToList());
+                    ShouldBeSingleCodingWhichIsInCodeList(patient.MaritalStatus.Coding.First(), vset);
                 }
 
                 //CONTACT

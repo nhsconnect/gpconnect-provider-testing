@@ -102,7 +102,7 @@
                 {
                     contact.Relationship.ForEach(relationship =>
                     {
-                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kRelationshipStatus);
+                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsRelationshipStatus);
 
                         ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
@@ -173,8 +173,8 @@
                     }
 
                     var extension = identifier.Extension.First();
+                    ValidateCodeConceptExtension(extension, FhirConst.ValueSetSystems.kVsNhsNumVerification);
 
-                    ValidateCodeConceptExtension(extension, FhirConst.ValueSetSystems.kCcNhsNumVerification);
                 }
             });
         }
@@ -232,14 +232,14 @@
                 {
                     patient.MaritalStatus.Coding.ShouldNotBeNull("Patient MaritalStatus coding cannot be null");
 
-                // GlobalContext.GetExtensibleValueSet(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeImports(), patient.MaritalStatus.Coding.First().Code.First());
-                var maritalStatusList = ValueSetCache.Get(FhirConst.ValueSetSystems.kMaritalStatus).WithComposeIncludes().ToArray();
-                patient.MaritalStatus.Coding.ForEach(coding =>
-            {
-                coding.System.ShouldNotBeNull("MaritalStatus System should not be null");
-                coding.Code.ShouldBeOneOf(maritalStatusList.Select(c => c.Code).ToArray());
-                coding.Display.ShouldBeOneOf(maritalStatusList.Select(c => c.Display).ToArray());
 
+                    var maritalStatusList = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsMaritalStatus).WithComposeIncludes().ToArray();
+                    maritalStatusList.Concat(ValueSetCache.Get(FhirConst.ValueSetSystems.kVsNullFlavour).WithComposeIncludes().ToArray());
+                    patient.MaritalStatus.Coding.ForEach(coding =>
+                    {
+                        coding.System.ShouldNotBeNull("MaritalStatus System should not be null");
+                        coding.Code.ShouldBeOneOf(maritalStatusList.Select(c => c.Code).ToArray());
+                        coding.Display.ShouldBeOneOf(maritalStatusList.Select(c => c.Display).ToArray());
                     });
                 }
             });
@@ -254,7 +254,7 @@
                 {
                     communication.Language.ShouldNotBeNull("The communication language element should not be null");
 
-                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kCcHumanLanguage);
+                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsHumanLanguage);
 
                     ShouldBeSingleCodingWhichIsInValueSet(valueSet, communication.Language.Coding);
                 });
@@ -353,7 +353,7 @@
                     // Contact Relationship Checks
                     contact.Relationship.ForEach(relationship =>
                     {
-                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kRelationshipStatus);
+                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsRelationshipStatus);
 
                         ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
