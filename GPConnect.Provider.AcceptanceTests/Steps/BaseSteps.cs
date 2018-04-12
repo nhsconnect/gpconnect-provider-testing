@@ -44,7 +44,7 @@
             validCode.ShouldNotBeNull();
         }
 
-        public static void ValueSetContainsCodeAndDisplayAndSystem(ValueSet valueSet, Coding coding)
+        private static void ValueSetContainsCodeAndDisplayAndSystem(ValueSet valueSet, Coding coding)
         {
             valueSet.Expansion.Contains.ShouldContain(component => component.Code.Equals(coding.Code)  
                                                     && component.Display.Equals(coding.Display) 
