@@ -275,7 +275,7 @@
             {
                 practitioner.Communication.ForEach(codeableConcept =>
                 {
-                    var valueSet = ValueSetCache.Get(FhirConst.CodeSystems.kCcHumanLanguage);
+                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsHumanLanguage);
 
                     ShouldBeSingleCodingWhichIsInValueSet(valueSet, codeableConcept.Coding);
                 });

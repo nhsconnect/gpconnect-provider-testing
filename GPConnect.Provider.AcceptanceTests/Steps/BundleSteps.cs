@@ -79,7 +79,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     var coding = issue.Details.Coding[0];
 
-                    //coding.System.ShouldBe("http://fhir.nhs.net/ValueSet/gpconnect-error-or-warning-code-1");
                     coding.Code.ShouldNotBeNull();
                     coding.Display.ShouldNotBeNull();
 

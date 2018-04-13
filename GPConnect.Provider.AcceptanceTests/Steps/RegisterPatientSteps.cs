@@ -347,7 +347,7 @@
 
                 numberExtensions.Count().ShouldBe(1,$"There can only be one extension on the NHS Number Identifer with a URL of {FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification}");
 
-                ValidateCodeConceptExtension(numberExtensions.First(), FhirConst.CodeSystems.kCcNhsNumVerification);
+                ValidateCodeConceptExtension(numberExtensions.First(), FhirConst.ValueSetSystems.kVsNhsNumVerification);
             });
         }
 
@@ -381,7 +381,7 @@
 
             if (extensions.Any())
             {
-                var codeList = ValueSetCache.Get(FhirConst.CodeSystems.kCcGpcRegistrationType).WithComposeIncludes().ToList();
+                var codeList = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsGpcRegistrationType).WithComposeIncludes().ToList();
 
                 extensions.ForEach(registrationTypeExtension =>
                 {
@@ -492,11 +492,11 @@
 
                 // EXTENSIONS
                 var extensions = patient.Extension;
-                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtEthnicCategory, FhirConst.CodeSystems.kCcEthnicCategory);
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtEthnicCategory, FhirConst.ValueSetSystems.kVsEthnicCategory);
                 ValidateSingleExtension(extensions, FhirConst.StructureDefinitionSystems.kCcExtReligiousAffiliation); //Would preferably check codeable concept as it has a binding strength of Required
                 ValidateSingleBooleanExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtPatientCadaver);
-                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtResidentialStatus, FhirConst.CodeSystems.kCcResidentialStatus);
-                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtTreatmentCategory, FhirConst.CodeSystems.kCcTreatmentCategory);
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtResidentialStatus, FhirConst.ValueSetSystems.kVsResidentialStatus);
+                ValidateMaxSingleCodeConceptExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtTreatmentCategory, FhirConst.ValueSetSystems.kVsTreatmentCategory);
                 ValidateNhsCommunicationExtension(extensions);
 
 
@@ -520,8 +520,8 @@
                 if (patient.MaritalStatus != null)
                 {
                     patient.MaritalStatus.Coding.Count.ShouldBe(1);
-                    var vset = ValueSetCache.Get(FhirConst.CodeSystems.kMaritalStatus).WithComposeIncludes().ToList();
-                    vset.AddRange(ValueSetCache.Get(FhirConst.CodeSystems.kNullFlavour).WithComposeIncludes().ToList());
+                    var vset = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsMaritalStatus).WithComposeIncludes().ToList();
+                    vset.AddRange(ValueSetCache.Get(FhirConst.ValueSetSystems.kVsNullFlavour).WithComposeIncludes().ToList());
                     ShouldBeSingleCodingWhichIsInCodeList(patient.MaritalStatus.Coding.First(), vset);
                 }
 
@@ -722,10 +722,10 @@
 
                 var subExtensions = ext.Extension;
 
-                ValidateExactSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommLanguage, FhirConst.CodeSystems.kCcHumanLanguage);
+                ValidateExactSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommLanguage, FhirConst.ValueSetSystems.kVsHumanLanguage);
                 ValidateSingleBooleanExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommPreferred);
-                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommModeOfCommunication, FhirConst.CodeSystems.kCcLanguageAbilityMode);
-                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommCommProficiency, FhirConst.CodeSystems.kCcLanguageAbilityProficiency);
+                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommModeOfCommunication, FhirConst.ValueSetSystems.kVsLanguageAbilityMode);
+                ValidateMaxSingleCodeConceptExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommCommProficiency, FhirConst.ValueSetSystems.kVsLanguageAbilityProficiency);
                 ValidateSingleBooleanExtension(subExtensions, FhirConst.StructureDefinitionSystems.kCCExtCommInterpreterRequired);
             }
         }

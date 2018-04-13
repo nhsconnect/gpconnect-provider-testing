@@ -24,7 +24,7 @@
             codingList.Count.ShouldBeLessThanOrEqualTo(1);
             codingList.ForEach(coding =>
             {
-                ValueSetContainsCodeAndDisplay(valueSet, coding);
+                ValueSetContainsCodeAndDisplayAndSystem(valueSet, coding);
             });
         }
 
@@ -33,7 +33,7 @@
             codingList.Count.ShouldBe(1);
             codingList.ForEach(coding =>
             {
-                ValueSetContainsCodeAndDisplay(valueSet, coding);
+                ValueSetContainsCodeAndDisplayAndSystem(valueSet, coding);
             });
         }
 
@@ -44,9 +44,11 @@
             validCode.ShouldNotBeNull();
         }
 
-        private static void ValueSetContainsCodeAndDisplay(ValueSet valueSet, Coding coding)
+        private static void ValueSetContainsCodeAndDisplayAndSystem(ValueSet valueSet, Coding coding)
         {
-            valueSet.Expansion.Contains.ShouldContain(component => component.Code.Equals(coding.Code) && component.Display.Equals(coding.Display));
+            valueSet.Expansion.Contains.ShouldContain(component => component.Code.Equals(coding.Code)  
+                                                    && component.Display.Equals(coding.Display) 
+                                                    && component.System.Equals(coding.System));
         }
 
         public void CheckForValidMetaDataInResource<T>(T resource, string profileId) where T : Resource

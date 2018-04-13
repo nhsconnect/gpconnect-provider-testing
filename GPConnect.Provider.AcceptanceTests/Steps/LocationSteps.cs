@@ -61,7 +61,7 @@
                    foreach (var coding in locationType.Coding)
                     {
                         coding.System.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a System Value.");
-
+                        coding.System.Equals(FhirConst.CodeSystems.kLocationType);
                         coding.Code.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a Code.");
                         coding.Display.ShouldNotBeNullOrEmpty("The Location Type Coding should contain a Display.");
                     }

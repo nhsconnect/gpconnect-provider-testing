@@ -102,7 +102,7 @@
                 {
                     contact.Relationship.ForEach(relationship =>
                     {
-                        var valueSet = ValueSetCache.Get(FhirConst.CodeSystems.kRelationshipStatus);
+                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsRelationshipStatus);
 
                         ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });
@@ -174,7 +174,7 @@
 
                     var extension = identifier.Extension.First();
 
-                    ValidateCodeConceptExtension(extension, FhirConst.CodeSystems.kCcNhsNumVerification);
+                    ValidateCodeConceptExtension(extension, FhirConst.ValueSetSystems.kVsNhsNumVerification);
                 }
             });
         }
@@ -232,8 +232,8 @@
                 {
                     patient.MaritalStatus.Coding.ShouldNotBeNull("Patient MaritalStatus coding cannot be null");
 
-                    var maritalStatusList = ValueSetCache.Get(FhirConst.CodeSystems.kMaritalStatus).WithComposeIncludes().ToArray();
-                    maritalStatusList.Concat(ValueSetCache.Get(FhirConst.CodeSystems.kNullFlavour).WithComposeIncludes().ToArray());
+                    var maritalStatusList = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsMaritalStatus).WithComposeIncludes().ToArray();
+                    maritalStatusList.Concat(ValueSetCache.Get(FhirConst.ValueSetSystems.kVsNullFlavour).WithComposeIncludes().ToArray());
                     patient.MaritalStatus.Coding.ForEach(coding =>
                     {
                         coding.System.ShouldNotBeNull("MaritalStatus System should not be null");
@@ -253,7 +253,7 @@
                 {
                     communication.Language.ShouldNotBeNull("The communication language element should not be null");
 
-                    var valueSet = ValueSetCache.Get(FhirConst.CodeSystems.kCcHumanLanguage);
+                    var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsHumanLanguage);
 
                     ShouldBeSingleCodingWhichIsInValueSet(valueSet, communication.Language.Coding);
                 });
@@ -352,7 +352,7 @@
                     // Contact Relationship Checks
                     contact.Relationship.ForEach(relationship =>
                     {
-                        var valueSet = ValueSetCache.Get(FhirConst.CodeSystems.kRelationshipStatus);
+                        var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsRelationshipStatus);
 
                         ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
                     });

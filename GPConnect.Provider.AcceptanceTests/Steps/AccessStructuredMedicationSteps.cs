@@ -262,10 +262,9 @@
                 medStatement.BasedOn.First().Reference.StartsWith("MedicationRequest");
                 var requestId = medStatement.BasedOn.First().Reference.Substring(18);
 
-                var requests = MedicationRequests.Where(req => req.Id.Equals(requestId)).ToList();
+                var requests = MedicationRequests.Where(req => req.Id.Equals(requestId) && req.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan)).ToList();
                 requests.ShouldHaveSingleItem();
                 requests.First().Intent.ShouldBeOfType<MedicationRequest.MedicationRequestIntent>("MedicationStatement links to MedicationRequest of incorrect type");
-                requests.First().Intent.ShouldBe(MedicationRequest.MedicationRequestIntent.Plan);
             });
         }
 
@@ -289,7 +288,7 @@
                 if (medStatement.Status != null)
                 {
                     medStatement.Status.ShouldNotBeNull("MedicationStatement Status cannot be null");
-                    medStatement.Status.ShouldBeOfType<MedicationStatement.MedicationStatementStatus>($"MedicationStatements Status is not a valid value within the value set {FhirConst.CodeSystems.kMedicationStatementStatus}");
+                    medStatement.Status.ShouldBeOfType<MedicationStatement.MedicationStatementStatus>($"MedicationStatements Status is not a valid value within the value set {FhirConst.ValueSetSystems.kVsMedicationStatementStatus}");
                     medStatement.Status.ShouldBeOneOf(MedicationStatement.MedicationStatementStatus.Active, MedicationStatement.MedicationStatementStatus.Completed, MedicationStatement.MedicationStatementStatus.Stopped);
                     medStatement.Status.ShouldNotBeOneOf(MedicationStatement.MedicationStatementStatus.EnteredInError, MedicationStatement.MedicationStatementStatus.Intended, MedicationStatement.MedicationStatementStatus.OnHold);
                 }
@@ -585,7 +584,7 @@
             MedicationRequests.ForEach(medRequest =>
             {
                 medRequest.Status.ShouldNotBeNull("MedicationStatement Status cannot be null");
-                medRequest.Status.ShouldBeOfType<MedicationRequest.MedicationRequestStatus>($"MedicationRequest Status is not a valid value within the value set {FhirConst.CodeSystems.kMedicationRequestStatus}");
+                medRequest.Status.ShouldBeOfType<MedicationRequest.MedicationRequestStatus>($"MedicationRequest Status is not a valid value within the value set {FhirConst.ValueSetSystems.kVsMedicationRequestStatus}");
                 medRequest.Status.ShouldBeOneOf(MedicationRequest.MedicationRequestStatus.Active, MedicationRequest.MedicationRequestStatus.Completed, MedicationRequest.MedicationRequestStatus.Stopped);
                    
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
@@ -602,7 +601,7 @@
             MedicationRequests.ForEach(medRequest =>
             {
                 medRequest.Intent.ShouldNotBeNull();
-                medRequest.Intent.ShouldBeOfType<MedicationRequest.MedicationRequestIntent>($"MedicationRequest Intent is not a valid value within the value set {FhirConst.CodeSystems.kMedicationRequestIntent}");
+                medRequest.Intent.ShouldBeOfType<MedicationRequest.MedicationRequestIntent>($"MedicationRequest Intent is not a valid value within the value set {FhirConst.ValueSetSystems.kVsMedicationRequestIntent}");
                 medRequest.Intent.ShouldBeOneOf(MedicationRequest.MedicationRequestIntent.Plan, MedicationRequest.MedicationRequestIntent.Order);
             });
         }
@@ -722,7 +721,7 @@
                 medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).ShouldNotBeNull();
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
 
-                prescriptionType.Coding.First().System.Equals(FhirConst.CodeSystems.kMedicationPrescriptionType);
+                prescriptionType.Coding.First().System.Equals(FhirConst.CodeSystems.kCcPresriptionType);
             });
         }
 
