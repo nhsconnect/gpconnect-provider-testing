@@ -64,7 +64,6 @@ Scenario: I perform cancel appointment and update the reason
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
 		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I set the Created Appointment Reason to "RANDOM REASON"
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
