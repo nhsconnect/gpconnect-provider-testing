@@ -218,6 +218,21 @@
             //TheAllergyIntoleranceOnsetDateTimeShouldBeValid();
             TheListOfAllergyIntolerancesShouldBeValid();
             TheAllergyIntoleranceCategoryShouldbeValid();
+            TheSpecifiedAllergyIntoleranceFieldsShouldBeNull();
+        }
+
+        [Then(@"the specified AllergyIntolerance fields should be null")]
+        public void TheSpecifiedAllergyIntoleranceFieldsShouldBeNull()
+        {
+            AllergyIntolerances.ForEach(allergyIntolerance =>
+            {
+                allergyIntolerance.Reaction.ForEach(reaction =>
+                {
+                    reaction.Note.ShouldBeEmpty();
+                    reaction.Onset.ShouldBeNull();
+                    reaction.Substance.ShouldBeNull();
+                });
+            });
         }
 
         [Then(@"the AllergyIntolerance onsetDateTime should be valid")]

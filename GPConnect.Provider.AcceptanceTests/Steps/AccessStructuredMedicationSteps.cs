@@ -231,6 +231,22 @@
             TheMedicationStatementSubjectShouldbeValid();
             TheMedicationStatementTakenShouldbeValid();
             TheMedicationStatementDosageTextShouldbeValid();
+            TheSpecifiedMedicationStatementFieldsShouldBeNull();
+        }
+
+        [Then(@"the specified MedicationStatement fields should be null")]
+        public void TheSpecifiedMedicationStatementFieldsShouldBeNull()
+        {
+            MedicationStatements.ForEach(medStatement =>
+            {
+                medStatement.PartOf.ShouldBeEmpty();
+                medStatement.Category.ShouldBeNull();
+                medStatement.InformationSource.ShouldBeNull();
+                medStatement.DerivedFrom.ShouldBeEmpty();
+                //medStatement.Taken.ShouldBeNull();
+                medStatement.ReasonNotTaken.ShouldBeEmpty();
+                medStatement.GetExtension("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MedicationChangeSummary-1").ShouldBeNull();
+            });
         }
 
         [Then(@"the MedicationStatement Id should be valid")]
@@ -516,6 +532,25 @@
             TheMedicationRequestRecorderShouldbeValid();
             TheMedicationRequestAuthoredOnShouldbeValid();
             ThereShouldBeAtLeastOneMedicationRequestWithIntentToPlan();
+            TheSpecifiedMedicationRequestsFieldsShouldBeNull();
+        }
+
+        [Then(@"the specified Medication Requests fields should be null")]
+        public void TheSpecifiedMedicationRequestsFieldsShouldBeNull()
+        {
+            MedicationRequests.ForEach(medRequest =>
+            {
+                medRequest.Definition.ShouldBeEmpty();
+                //medRequest.BasedOn.ShouldBeNull();
+                medRequest.Category.ShouldBeNull();
+                medRequest.Priority.ShouldBeNull();
+                medRequest.SupportingInformation.ShouldBeEmpty();
+                medRequest.DispenseRequest.ExpectedSupplyDuration.ShouldBeNull();
+                medRequest.Substitution.ShouldBeNull();
+                medRequest.EventHistory.ShouldBeEmpty();
+                //medRequest.GroupIdentifier.ShouldBeNull();
+                medRequest.Requester.ShouldBeNull();
+            });
         }
 
         [Then(@"the MedicationRequest Id should be valid")]
