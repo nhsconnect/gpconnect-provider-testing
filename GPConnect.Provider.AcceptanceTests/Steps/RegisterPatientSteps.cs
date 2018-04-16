@@ -348,6 +348,7 @@
                 numberExtensions.Count().ShouldBe(1,$"There can only be one extension on the NHS Number Identifer with a URL of {FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification}");
 
                 ValidateCodeConceptExtension(numberExtensions.First(), FhirConst.ValueSetSystems.kVsNhsNumVerification);
+
             });
         }
 
@@ -381,6 +382,7 @@
 
             if (extensions.Any())
             {
+
                 var codeList = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsGpcRegistrationType).WithComposeIncludes().ToList();
 
                 extensions.ForEach(registrationTypeExtension =>
