@@ -12,32 +12,20 @@ Scenario Outline: I perform a successful cancel appointment
 		And the Appointment Status should be Cancelled
 		And the Appointment Cancellation Reason Extension should be valid for "double booked"
 		And the Appointment Metadata should be valid
-		And the Appointment Description must be valid
-	Examples:
-		| PatientName |
-		| patient1    |
-		| patient2    |
-		| patient3    |
-		| patient8    |
-		| patient9    |
-
-Scenario Outline: I perform a successful cancel appointment and all returned appointments must be in the future	
-	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-	When I make the "AppointmentCancel" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
 		And the Appointment Status should be Cancelled
+		And the Appointment Id should equal the Created Appointment Id
+		And the Appointment Extensions should equal the Created Appointment Extensions
+		And the Appointment Description should equal the Created Appointment Description
+		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
+		And the Appointment Slots should equal the Created Appointment Slots
+		And the Appointment Participants should be equal to the Created Appointment Participants
+		And the Appointment Created should be equal to the Created Appointment Created
 		And the Appointments returned must be in the future
 	Examples:
 		| PatientName |
 		| patient1    |
 		| patient2    |
 		| patient3    |
-		| patient8    |
-		| patient9    |
 
 Scenario: I perform a successful cancel appointment and amend the comment
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -59,16 +47,6 @@ Scenario: I perform cancel appointment and update the description
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
 
-Scenario: I perform cancel appointment and update the reason
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I set the Created Appointment Reason to "RANDOM REASON"
-	When I make the "AppointmentCancel" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
 Scenario: I perform cancel appointment and add participants
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -81,27 +59,6 @@ Scenario: I perform cancel appointment and add participants
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-Scenario: I perform cancel appointment and update the priority
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I set the Created Appointment Priority to "3"
-	When I make the "AppointmentCancel" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario: I perform cancel appointment and update the minutes duration
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I set the Created Appointment Minutes Duration to "20"
-	When I make the "AppointmentCancel" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-
 Scenario: I perform cancel appointment and update the type text
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -111,20 +68,6 @@ Scenario: I perform cancel appointment and update the type text
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
-Scenario Outline: Cancel appointment making a request to an invalid URL
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-		And I set the request URL to "<url>"
-	When I make the "AppointmentCancel" request
-	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource
-	Examples:
-		| url              |
-		| appointmentqq/!  |
-		| Appointments/#   |
 
 Scenario Outline: Cancel appointment using the _format parameter to request response format
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -221,10 +164,9 @@ Scenario Outline: Cancel appointment check cancellation reason is equal to the r
 		And the Appointment Cancellation Reason Extension should be valid for "<reason>"
 		And the Appointment Metadata should be valid
 	Examples:
-		| reason      |
-		| Too busy    |
-		| Car crashed |
-		| Too tired   |
+		| reason                     |
+		| Test cancellation reason 1 |
+		| test reason for cancel 2   |
 
 Scenario Outline: Cancel appointment invalid cancellation extension url
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -238,7 +180,6 @@ Scenario Outline: Cancel appointment invalid cancellation extension url
 	Examples:
 		| url                                                                                               | reason   |
 		|                                                                                                   | Too busy |
-		| http://fhir.nhs.uk/StructureDefinition/extension-gpINCORRECTect-appointment-cancellation-reason-1 | Too busy |
 		| http://fhir.nhs.uk/StructuraeDefinition/extension-gpconnect-appointment-cancellation-reason-1-010 | Too busy |
 
 Scenario: Cancel appointment missing cancellation extension reason
@@ -272,37 +213,6 @@ Scenario: Cancel appointment verify resource is not updated when an out of date 
 	When I make the "AppointmentCancel" request	
 	Then the response status code should be "409"
 		And the response should be a OperationOutcome resource with error code "FHIR_CONSTRAINT_VIOLATION"
-
-Scenario: Cancel appointment compare request appointment to returned appointment
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-	When I make the "AppointmentCancel" request	
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointment Status should be Cancelled
-		And the Appointment Id should equal the Created Appointment Id
-		And the Appointment Status should equal the Created Appointment Status
-		And the Appointment Extensions should equal the Created Appointment Extensions
-		And the Appointment Description should equal the Created Appointment Description
-		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
-		And the Appointment Slots should equal the Created Appointment Slots
-		And the Appointment Participants should be equal to the Created Appointment Participants
-		And the Appointment Created should be equal to the Created Appointment Created
-
-Scenario: Cancel appointment response body must contain valid slot reference
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the Created Appointment to Cancelled with Reason "double booked"
-	When I make the "AppointmentCancel" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointment Cancellation Reason Extension should be valid for "double booked"
-		And the Appointment Status should be Cancelled
-		And the Appointment Slots should be valid
-		And the Appointment Participants should be valid and resolvable
 
 Scenario: Cancel appointment prefer header set to representation
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -348,10 +258,6 @@ Scenario Outline: Cancel appointment check the version id of the cancelled resou
 		| PatientName |
 		| patient1    |
 		| patient2    |
-		| patient3    |
-		| patient8    |
-		| patient10   |
-		| patient12   |
 
 Scenario: CapabilityStatement profile supports the cancel appointment operation
 	Given I configure the default "MetadataRead" request

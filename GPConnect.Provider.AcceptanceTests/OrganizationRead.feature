@@ -33,21 +33,6 @@ Scenario Outline: Organization Read with valid identifier which does not exist o
 		| 40-9223        |
 		| nc-sfem.mks--s |
 
-Scenario Outline: Organization Read with invalid resource path in URL
-	Given I get the Organization for Organization Code "ORG1"
-		And I store the Organization
-	Given I configure the default "OrganizationRead" request
-		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
-	When I make the "OrganizationRead" request
-	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource
-	Examples:
-		| RelativePath  |
-		| Organizations |
-		| Organization! |
-		| Organization2 |
-		| organizations |
-
 Scenario Outline: Organization Read using the _format parameter to request response format
 	Given I get the Organization for Organization Code "ORG1"
 		And I store the Organization

@@ -40,8 +40,16 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 	Then the response status code should indicate created
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
 		And the Appointment Id should be valid
 		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
+		And the booking organization extension must be valid
+		And the Appointment Created must be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/fhir+json | application/fhir+json | JSON       |
@@ -119,40 +127,6 @@ Scenario: Book appointment prefer header set to minimal
 	Then the response status code should indicate created
 		And the response body should be empty
 
-Scenario: Book Appointment and check response contains the manadatory elements
-	Given I get an existing patients nshNumber
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I create an Appointment from the stored Patient and stored Schedule
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate created
-		And the response body should be FHIR JSON
-		And the Response Resource should be an Appointment
-		And the Appointment Status should be valid
-		And the Appointment Start should be valid
-		And the Appointment End should be valid
-		And the Appointment Participants should be valid and resolvable
-		And the Appointment Slots should be valid
-		And the Appointment Description must be valid
-		And the booking organization extension must be valid
-		And the Appointment Created must be valid
-
-Scenario: Book Appointment and check returned appointment resource contains meta data
-	Given I get an existing patients nshNumber
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I create an Appointment from the stored Patient and stored Schedule
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate created
-		And the response body should be FHIR JSON
-		And the Response Resource should be an Appointment
-		And the Appointment Metadata should be valid
-
-#improve name to be more descriptive
 Scenario: Book Appointment and appointment participant is valid
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -250,7 +224,6 @@ Scenario Outline: Book appointment with invalid slot reference
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
 		| slotReference    |
-		| Slot/44445555555 |
 		| Slot/45555g55555 |
 		| Slot/45555555##  |
 		| Slot/hello       |
@@ -333,7 +306,6 @@ Scenario: Book Appointment and remove identifier value from the appointment book
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-#Miss-leading test name - participant status is not removed but nullified
 Scenario: Book Appointment and remove participant status from the appointment booking
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -433,18 +405,18 @@ Scenario: Book appointment with telecom removed from booking organization
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-Scenario: Book appointment with a comment
+Scenario: Book appointment with a description
 	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Comment to "customComment"
+		And I set the Created Appointment Description to "customDescription"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "customComment"
+		And the Appointment Description should be valid for "customDescription"
 
 Scenario: Book appointment re-using an already booked slot
 	Given I get the Patient for Patient Value "patient1"
@@ -464,20 +436,3 @@ Scenario: Book appointment re-using an already booked slot
 	Then the response status code should be "409"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "DUPLICATE_REJECTED"
-
-
-@ignore
-Scenario: Book appointment for temporary patient
-
-@ignore
-@Manual
-Scenario: Multi slot booking
-	# Multiple adjacent slots success
-	# Non adjacent slot failure
-	# Slots from different schedules that are adjacent failure
-	# Slots from different schedules which are not adjacent failure
-
-@ignore
-@Manual
-Scenario: Extension supported
-	# Is the data represented by the extensions such as booking method supported by the provider system? If so are the details saved when sent in and returned when resource is returned.

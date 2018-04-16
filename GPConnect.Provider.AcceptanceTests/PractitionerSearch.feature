@@ -111,6 +111,7 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 	Then the response status code should indicate success
 		And the response body should be FHIR <BodyFormat>
 		And the response should be a Bundle resource of type "searchset"
+		And the Practitioner Metadata should be valid
 		And the Practitioner Identifiers should be valid fixed values
 		And the Practitioner Name should be valid
 		And the Practitioner should exclude disallowed elements
@@ -121,38 +122,6 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 		| application/fhir+json | application/fhir+xml  | XML        |
 		| application/fhir+xml  | application/fhir+json | JSON       |
 		| application/fhir+xml  | application/fhir+xml  | XML        |
-
-Scenario: Practitioner search multiple practitioners contains metadata and populated fields
-	Given I configure the default "PractitionerSearch" request
-		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-	When I make the "PractitionerSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Practitioner Metadata should be valid
-
-Scenario: Practitioner search returns back user with name element
-	Given I configure the default "PractitionerSearch" request
-		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-	When I make the "PractitionerSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Practitioner Name should be valid
-
-Scenario: Practitioner search should not contain photo or qualification information
-	Given I configure the default "PractitionerSearch" request
-		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-	When I make the "PractitionerSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Practitioner should exclude disallowed elements
-
-Scenario: Practitioner search contains nhsCommunication element
-	Given I configure the default "PractitionerSearch" request
-		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
-	When I make the "PractitionerSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Practitioner nhsCommunication should be valid
 
 Scenario: Practitioner search multiple identifier parameter failure
 	Given I configure the default "PractitionerSearch" request
