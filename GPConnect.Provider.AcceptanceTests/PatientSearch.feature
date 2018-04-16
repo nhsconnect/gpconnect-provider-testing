@@ -1,16 +1,6 @@
 ﻿@patient
 Feature: PatientSearch
 
-@ignore
-Scenario: The provider system should accept the search parameter URL encoded
-	# The API being used in the test suite encodes the parameter string by default so no additional test needs to be performed.
-	# The FHIR and HTTP standards require the request to be URL encoded so it is mandated that clents encode their requests.
-
-@ignore
-Scenario: The response resources must be valid FHIR JSON or XML
-	# This validation is done impliciitly by the parsing of the response XML or JSON into the FHIR resource used in most of the
-	# test scenarios so no specific test needs to be implemented.
-
 Scenario: Returned patients should contain a logical identifier
 	Given I configure the default "PatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
