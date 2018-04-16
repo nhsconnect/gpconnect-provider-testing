@@ -24,7 +24,7 @@
             Appointments.ForEach(appointment =>
             {
                 appointment.Description.ShouldNotBeNull("Appointment description cannot be null");
-                appointment.Description.ShouldBe(value, $@"The Appointment Description should be ""{value}"" but was ""{appointment.Description}"".");
+                appointment.Description.ShouldContain(value, $@"The Appointment Description should be ""{value}"" but was ""{appointment.Description}"".");
             });
         }
 
