@@ -126,7 +126,6 @@ Scenario Outline: SSP - CORS
 	| PractitionerRead   | GET      | Practitioner/{id}            |
 	| PatientSearch      | GET      | Patient                      |
 	| PatientRead        | GET      | Patient/{id}                 |
-	| LocationSearch     | GET      | Location                     |
 	| LocationRead       | GET      | Location/{id}                |
 	| RegisterPatient    | POST     | Patient/$gpc.registerpatient |
 	| SearchForFreeSlots | GET      | Slot						   |
