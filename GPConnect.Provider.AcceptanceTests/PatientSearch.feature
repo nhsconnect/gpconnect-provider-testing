@@ -9,6 +9,7 @@ Scenario: Returned patients should contain a logical identifier
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the Patient Id should be valid
+		And the patient resource in the bundle should contain meta data profile and version id
 
 Scenario: Provider should return an error when no system is supplied in the identifier parameter
 	Given I configure the default "PatientSearch" request
@@ -122,15 +123,6 @@ Scenario Outline: The patient search endpoint should accept the format parameter
 		| application/fhir+json | application/fhir+json | JSON         |
 		| application/fhir+xml  | application/fhir+json | JSON         |
 
-Scenario: Patient resource should contain meta data elements
-	Given I configure the default "PatientSearch" request
-		And I add a Patient Identifier parameter with default System and Value "patient2"
-	When I make the "PatientSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain "1" entries
-		And the patient resource in the bundle should contain meta data profile and version id
-
 Scenario Outline: Patient resource should contain NHS number identifier returned as XML
 	Given I configure the default "PatientSearch" request
 		And I set the Accept header to "application/fhir+xml"
@@ -175,7 +167,6 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		| patient4  |
 		| patient5  |
 		| patient6  |
-
 
 Scenario: Patient search response does not return deceased patient
 	Given I configure the default "PatientSearch" request
@@ -235,18 +226,9 @@ Given I configure the default "PatientSearch" request
 
 Scenario: Returned patients should contain a preferred branch
 	Given I configure the default "PatientSearch" request
-		And I set the JWT Requested Record to the NHS Number for "patient2"
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 	When I make the "PatientSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the Patient RegistrationDetails should include preferredBranchSurgery
-
-@Manual
-@ignore
-Scenario: Test that if patient is part of a multiple birth that this is reflected in the patient resource with a boolean element only
-
-@Manual
-@ignore
-Scenario: Check patients with contacts which contain multiple contacts and contacts with multiple names. There must be only one family name for contacts within the patient resource.

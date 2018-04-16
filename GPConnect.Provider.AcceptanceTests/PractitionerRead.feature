@@ -40,21 +40,6 @@ Scenario Outline: Practitioner Read with valid identifier which does not exist o
 		| 40-9           |
 		| nd-skdm.mks--s |
 
-Scenario Outline: Practitioner Read with invalid resource path in URL
-	Given I get the Practitioner for Practitioner Code "practitioner1"
-		And I store the Practitioner
-	Given I configure the default "PractitionerRead" request
-		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
-	When I make the "PractitionerRead" request
-	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource
-	Examples:
-		| RelativePath  |
-		| Practitioners |
-		| Practitioner! |
-		| Practitioner2 |
-		| practitioners |
-
 Scenario Outline: Practitioner Read using the _format parameter to request response format
 	Given I get the Practitioner for Practitioner Code "practitioner1"
 		And I store the Practitioner
@@ -138,26 +123,3 @@ Scenario: Practitioner read invalid response check caching headers exist
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		And the required cacheing headers should be present in the response
-	
-
-
-
-@Manual
-@ignore
-Scenario: If provider sysstems allow the practitioner to be associated with multiple languages shown by communication element manual testing is required
-		#communication - A language the practitioner is able to use in patient communication
-@Manual
-@ignore
-Scenario: If provider supports versioning test that once a resource is updated that the old version can be retrieved
-
-@Manual
-@ignore
-Scenario: If the provider supports active and inactive practitioners is this information visible within the returned practitioner resource
-
-@Manual
-@ignore
-Scenario: Check that the optional fields are populated in the practitioner resource if they are available in the provider system
-	# telecom - Telecom information for the practitioner, can be multiple instances for different types.
-	# address - Address(s) for the Practitioner.
-	# gender - Gender of the practitioner
-	# practitionerRole - The list of Roles/Organizations that the Practitioner is associated with
