@@ -277,18 +277,6 @@ Scenario Outline: Searching for free slots without actor parameter should return
 	| Location      | Schedule:actor:Practitioner |
 	| Practitioner  | Schedule:actor:Location     |
 
-Scenario: Searching in the future for no free slots should result in no resources returned
-	Given I configure the default "SearchForFreeSlots" request
-		And I set the JWT Requested Scope to Organization Read
-		And I add the time period parameter that is "500" days in the future
-		And I add the parameter "status" with the value "free"
-		And I add the parameter "_include" with the value "Slot:schedule"
-		And I add two valid searchFilter paramaters
-	When I make the "SearchForFreeSlots" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Bundle should not contain resources
-
 @ignore
 Scenario: Successfully search for free slots and check the included practitioner resources returned are valid
 	Given I configure the default "SearchForFreeSlots" request
