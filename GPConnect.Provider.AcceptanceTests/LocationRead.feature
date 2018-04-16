@@ -28,20 +28,6 @@ Scenario Outline: Location Read with valid identifier which does not exist on pr
 		| 40-95-3     |
 		| a-tm.mss..s |
 
-Scenario Outline: Location Read with invalid resource path in URL
-	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"
-	Given I configure the default "LocationRead" request
-		And I set the Read Operation relative path to "<RelativePath>" and append the resource logical identifier
-	When I make the "LocationRead" request
-	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource
-	Examples:
-		| RelativePath |
-		| Locationss   |
-		| Location!    |
-		| Location2    |
-		| locations    |
-
 Scenario Outline: Location Read using the _format parameter to request response format
 	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"
 	Given I configure the default "LocationRead" request
