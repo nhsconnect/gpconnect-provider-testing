@@ -5,132 +5,12 @@ Scenario Outline: I perform a successful amend appointment and check the returne
 	Given I create an Appointment for Patient "<Patient>" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Comment to "customComment"
+		And I set the Created Appointment Description to "customDescription"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "customComment"
 		And the Appointments returned must be in the future
 		And the Appointment Metadata should be valid
-	Examples:
-		| Patient  |
-		| patient1 |
-		| patient2 |
-		| patient3 |
-		| patient4 |
-		| patient5 |
-		| patient6 |
-		| patient7 |
-		| patient8 |
-
-Scenario: Amend appointment and change the description to a custom message
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Description to "customDescription"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointment Description should be valid for "customDescription"
-
-Scenario: Amend appointment and change the comment to a custom message
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Comment to "customComment"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "customComment"
-
-Scenario: Amend appointment and update element which cannot be updated
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Priority to "1"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-	
-Scenario Outline: Amend appointment making a request to an invalid URL
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentAmend" request
-		And I set the request URL to "<url>"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource
-	Examples:
-		| url                 |
-		| Appointment/!      |
-		| APPointment/23     |
-		| Appointment/#      |
-		| Appointment/update |
-
-Scenario Outline: Amend appointment using the _format parameter to request response format
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment	
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Comment to "customComment"
-		And I add a Format parameter with the Value "<Format>"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate success
-		And the response body should be FHIR <BodyFormat>
-		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "customComment"
-	Examples:
-		| Format                | BodyFormat |
-		| application/fhir+json | JSON       |
-		| application/fhir+xml  | XML        |
-
-Scenario Outline: Amend appointment using the accept header to request response format
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment	
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Comment to "customComment"
-		And I set the Accept header to "<Header>"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate success
-		And the response body should be FHIR <BodyFormat>
-		And the Response Resource should be an Appointment
-		And the Appointment Metadata should be valid
-		And the Appointment Comment should be valid for "customComment"
-	Examples:
-		| Header                | BodyFormat |
-		| application/fhir+json | JSON       |
-		| application/fhir+xml  | XML        |
-
-Scenario Outline: Amend appointment using the _format and accept parameter to request response format
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment	
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Comment to "customComment"
-		And I set the Accept header to "<Header>"
-		And I add the parameter "_format" with the value "<Parameter>"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate success
-		And the response body should be FHIR <BodyFormat>
-		And the Response Resource should be an Appointment
-		And the Appointment Metadata should be valid
-		And the Appointment Comment should be valid for "customComment"
-	Examples:
-		| Header                | Parameter             | BodyFormat |
-		| application/fhir+json | application/fhir+json | JSON       |
-		| application/fhir+json | application/fhir+xml  | XML        |
-		| application/fhir+xml  | application/fhir+json | JSON       |
-		| application/fhir+xml  | application/fhir+xml  | XML        |
-
-Scenario: Amend appointment and check the returned appointment resource conforms to the GPConnect specification
-	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
-		And I store the Created Appointment	
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Comment to "customComment"
-		And I set the Created Appointment Description to "customDescription"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
-		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "customComment"
 		And the Appointment Status should be valid
 		And the Appointment Start should be valid
 		And the Appointment End should be valid
@@ -141,6 +21,71 @@ Scenario: Amend appointment and check the returned appointment resource conforms
 		And the Appointment Identifiers should be valid
 		And the Appointment Description should be valid for "customDescription"
 		And the Appointment Created must be valid
+	Examples:
+		| Patient  |
+		| patient1 |
+		| patient2 |
+		| patient3 |
+
+Scenario: Amend appointment and update element which cannot be updated
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the Created Appointment Priority to "1"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+Scenario Outline: Amend appointment using the _format parameter to request response format
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment	
+	Given I configure the default "AppointmentAmend" request
+		And I set the Created Appointment Description to "customDescription"
+		And I add a Format parameter with the Value "<Format>"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the Response Resource should be an Appointment
+		And the Appointment Description should be valid for "customDescription"
+	Examples:
+		| Format                | BodyFormat |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
+
+Scenario Outline: Amend appointment using the accept header to request response format
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment	
+	Given I configure the default "AppointmentAmend" request
+		And I set the Created Appointment Description to "customDescription"
+		And I set the Accept header to "<Header>"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+		And the Appointment Description should be valid for "customDescription"
+	Examples:
+		| Header                | BodyFormat |
+		| application/fhir+json | JSON       |
+		| application/fhir+xml  | XML        |
+
+Scenario Outline: Amend appointment using the _format and accept parameter to request response format
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment	
+	Given I configure the default "AppointmentAmend" request
+		And I set the Accept header to "<Header>"
+		And I add the parameter "_format" with the value "<Parameter>"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the response body should be FHIR <BodyFormat>
+		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+	Examples:
+		| Header                | Parameter             | BodyFormat |
+		| application/fhir+json | application/fhir+json | JSON       |
+		| application/fhir+json | application/fhir+xml  | XML        |
+		| application/fhir+xml  | application/fhir+json | JSON       |
+		| application/fhir+xml  | application/fhir+xml  | XML        |
 		
 Scenario: Amend appointment prefer header set to representation
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
