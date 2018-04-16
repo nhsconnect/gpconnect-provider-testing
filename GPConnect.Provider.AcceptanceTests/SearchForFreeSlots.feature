@@ -115,25 +115,6 @@ Scenario: Searching for free slots with invalid searchFilter system
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 
-@ignore
-Scenario: Searching for free slots should fail due to one invalid searchFilter paramater
-	Given I configure the default "SearchForFreeSlots" request
-		And I set the JWT Requested Scope to Organization Read
-		And I set the required parameters with a time period of "3" days
-		And I add a single searchFilter paramater with value equal to ""
-	When I make the "SearchForFreeSlots" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
-@ignore
-Scenario: Searching for free slots should fail due to two invalid searchFilter paramaters
-	Given I configure the default "SearchForFreeSlots" request
-		And I set the JWT Requested Scope to Organization Read
-		And I set the required parameters with a time period of "3" days
-		And I add two searchFilter paramaters with values equal to "" and ""
-	When I make the "SearchForFreeSlots" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
-
 Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -277,23 +258,11 @@ Scenario Outline: Searching for free slots without actor parameter should return
 	| Location      | Schedule:actor:Practitioner |
 	| Practitioner  | Schedule:actor:Location     |
 
-Scenario: Searching in the future for no free slots should result in no resources returned
-	Given I configure the default "SearchForFreeSlots" request
-		And I set the JWT Requested Scope to Organization Read
-		And I add the time period parameter that is "500" days in the future
-		And I add the parameter "status" with the value "free"
-		And I add the parameter "_include" with the value "Slot:schedule"
-		And I add two valid searchFilter paramaters
-	When I make the "SearchForFreeSlots" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Bundle should not contain resources
-
-@ignore
 Scenario: Successfully search for free slots and check the included practitioner resources returned are valid
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "3" days
+		And I add the parameter "_include:recurse" with the value "Schedule:actor:Practitioner"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -304,23 +273,11 @@ Scenario: Successfully search for free slots and check the included practitioner
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
 
-@ignore
-Scenario: Successfully search for free slots and check the included organization resources returned are valid
-	Given I configure the default "SearchForFreeSlots" request
-		And I set the JWT Requested Scope to Organization Read
-		And I set the required parameters with a time period of "3" days
-	When I make the "SearchForFreeSlots" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Organization Metadata should be valid
-		And the Organization Identifiers should be valid
-		And the Organization PartOf Organization should be valid
-
-@ignore
 Scenario: Successfully search for free slots and check the included location resources returned are valid
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "3" days
+		And I add the parameter "_include:recurse" with the value "Schedule:actor:Location"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"

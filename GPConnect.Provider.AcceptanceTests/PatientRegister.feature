@@ -80,6 +80,7 @@ Scenario Outline: Register Patient and use the Accept Header to request response
 		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
+		And the required cacheing headers should be present in the response
 	Examples:
 		| ContentType           | ResponseFormat |
 		| application/fhir+xml  | XML            |
@@ -124,6 +125,8 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
+		And the Patient Optional Elements should be valid
+		And the Patient Link should be valid and resolvable
 	Examples:
 		| ContentType           | AcceptHeader          | Format                | ResponseFormat |
 		| application/fhir+xml  | application/fhir+xml  | application/fhir+xml  | XML            |
@@ -134,23 +137,6 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 		| application/fhir+json | application/fhir+json | application/fhir+json | JSON           |
 		| application/fhir+xml  | application/fhir+json | application/fhir+xml  | XML            |
 		| application/fhir+json | application/fhir+xml  | application/fhir+json | JSON           |
-
-
-Scenario: Register patient and check all elements conform to the gp connect profile
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the response meta profile should be for "searchset"
-		And the response bundle should contain a single Patient resource
-		And the Patient Metadata should be valid
-		And the Patient Nhs Number Identifer should be valid
-		And the Patient Registration Details Extension should be valid
-		And the Patient Demographics should match the Stored Patient
-		And the Patient Optional Elements should be valid
-		And the Patient Link should be valid and resolvable
 
 Scenario: Register patient with registration details extension
 	Given I get the next Patient to register and store it
@@ -322,15 +308,6 @@ Scenario Outline: Register patient setting JWT request type to invalid type
 		| patient/*.read       |
 		| organization/*.read  |
 
-Scenario: Register pateient valid response check caching headers exist
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should indicate success
-		And the response meta profile should be for "searchset"
-		And the required cacheing headers should be present in the response
-
 Scenario:Register patient invalid response check caching headers exist
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -344,7 +321,6 @@ Scenario:Register patient invalid response check caching headers exist
 Scenario: Register patient and check preferred branch 
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I set the JWT Requested Record to the NHS Number of the Stored Patient
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success

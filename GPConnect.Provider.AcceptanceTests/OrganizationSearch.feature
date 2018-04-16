@@ -37,16 +37,6 @@ Scenario: Organization search by organization code successfully returns single r
 		And the Organization Full Url should be valid
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
-	
-#Ignored for now as seem like duplicates of [Then(@"an organization returned in the bundle has ""([^""]*)"" ......
-@ignore
-Scenario: Organization - Identifier - have correct Organization Codes a when searching by Organization Code
-	Given I configure the default "OrganizationSearch" request		
-		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
-	When I make the "OrganizationSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the Organization Identifiers are correct for Organization Code "ORG1"
 
 Scenario: Organization search by organization code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request		
