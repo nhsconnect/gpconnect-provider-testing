@@ -475,10 +475,10 @@
             plans.ForEach(plan =>
             {
                 var allRelatedRequests = MedicationRequests.Where(
-                    relatedReq => relatedReq.GroupIdentifier.Value.Equals(plan.GroupIdentifier.Value)
-                ).ToList();
+                     relatedReq => relatedReq.BasedOn.Count > 0 && relatedReq.BasedOn.First().Reference.Equals("MedicationRequest/" + plan.Id)
+                );
 
-                allRelatedRequests.ForEach(relatedRequest =>
+                allRelatedRequests.ToList().ForEach(relatedRequest =>
                 {
                     relatedRequest.AuthoredOn.ShouldBe(plan.AuthoredOn);
                 });
@@ -491,8 +491,10 @@
             List<MedicationRequest> acuteRequests = MedicationRequests.Where(req => isRequestAnAcutePlan(req).Equals(true)).ToList();
             acuteRequests.ForEach(acuteRequest =>
             {
-                List<MedicationRequest> acuteRelatedRequests = MedicationRequests.Where(req => req.GroupIdentifier.Value.Equals(acuteRequest.GroupIdentifier.Value)).ToList();
-                acuteRelatedRequests.Count.ShouldBeLessThanOrEqualTo(2); //Acute should be one plan and one order at most
+                List<MedicationRequest> acuteRelatedRequests = MedicationRequests.Where(
+                     relatedReq => relatedReq.BasedOn.Count > 0 && relatedReq.BasedOn.First().Reference.Equals("MedicationRequest/" + acuteRequest.Id)
+                ).ToList();
+                acuteRelatedRequests.Count.ShouldBeLessThanOrEqualTo(1); //Acute should be one plan and one order at most and plans should not have a BasedOn
             });
         }
 
@@ -548,8 +550,18 @@
                 medRequest.DispenseRequest.ExpectedSupplyDuration.ShouldBeNull();
                 medRequest.Substitution.ShouldBeNull();
                 medRequest.EventHistory.ShouldBeEmpty();
-                //medRequest.GroupIdentifier.ShouldBeNull();
-                medRequest.Requester.ShouldBeNull();
+
+                if (medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan))
+                {
+                    //medRequest.GroupIdentifier.ShouldBeNull();
+                    medRequest.Requester.ShouldBeNull();
+                }
+
+                CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
+                if (!prescriptionType.Coding.First().Display.Contains("Repeat"))
+                {
+                    medRequest.GroupIdentifier.ShouldBeNull();
+                }
             });
         }
 
