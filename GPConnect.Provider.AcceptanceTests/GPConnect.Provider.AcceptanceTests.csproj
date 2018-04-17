@@ -215,11 +215,6 @@
     <Compile Include="Importers\ODSCodeMapConverter.cs" />
     <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
-    <Compile Include="JWT1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JWT.feature</DependentUpon>
-    </Compile>
     <Compile Include="LocationRead.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
