@@ -90,6 +90,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             
         }
 
+        [Given(@"I add two additional non GP Connect specific searchFilter paramaters")]
+        public void IAddTwoAdditionalNonGPConnectSpecificSearchFilterParamaters()
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "FilterCategory-7" + '|' + "OtherConsumerCategory");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/otherIdentifier" + '|' + "otherID");
+        }
+
+        [Given(@"I add one additional non GP Connect specific searchFilter paramaters")]
+        public void IAddOneAdditionalNonGPConnectSpecificSearchFilterParamaters()
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "TypeCategory" + '|' + "OtherTypeCategory");
+        }
+
         [Given(@"I add three valid searchFilter paramaters")]
         public void IAddThreeValidSearchFilterParamaters()
         {

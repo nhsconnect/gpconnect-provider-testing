@@ -48,7 +48,9 @@ Scenario: Searching for free slots with valid prefixes
 		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add two additional non GP Connect specific searchFilter paramaters
 		And I add two valid searchFilter paramaters
+		And I add one additional non GP Connect specific searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -106,11 +108,11 @@ Scenario Outline: Searching for free slots should fail due to invalid parameter 
 		| end    |                  |
 		| status | busy             |
 
-Scenario: Searching for free slots with invalid searchFilter system
+Scenario: Searching for free slots with other searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "3" days
-		And I add a invalid searchFilter paramater with system equal to "invalidSystem"
+		And I add one additional non GP Connect specific searchFilter paramaters
 		When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -122,6 +124,7 @@ Scenario Outline: Searching for free slots with valid partial dateTime strings
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
 		And I add two valid searchFilter paramaters
+		And I add one additional non GP Connect specific searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -154,7 +157,8 @@ Scenario Outline: Searching for free slots with invalid partial dateTime strings
 Scenario: Successfully search for free slots and check the slot resources returned are valid
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
-		And I set the required parameters with a time period of "3" days	
+		And I set the required parameters with a time period of "3" days
+		And I add two additional non GP Connect specific searchFilter paramaters
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
