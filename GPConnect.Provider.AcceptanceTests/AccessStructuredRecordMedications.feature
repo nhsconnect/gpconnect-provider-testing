@@ -28,6 +28,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient4 |
 		| patient5 |
 		| patient6 |
+		| patient12 |
 		
 Scenario Outline: Retrieve the medication structured record section for a patient excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -55,6 +56,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient4 |
 		| patient5 |
 		| patient6 |
+		| patient12 |
 
 Scenario Outline: Retrieve the medication structured record section for a patient without the prescription issue parameter
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -82,6 +84,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient4 |
 		| patient5 |
 		| patient6 |
+		| patient12 |
 
 Scenario Outline: Retrieve the structured record section for a patient without the medications parameter
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -103,6 +106,7 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		| patient4 |
 		| patient5 |
 		| patient6 |
+		| patient12 |
 
 Scenario: Retrieve the medication structured record section with the prescriptions part parameter but without the includeMedications parameter
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -196,6 +200,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient4 |
 		| patient5 |
 		| patient6 |
+		| patient12 |
 
 Scenario Outline: Retrieve the medication structured record section for a patient with a start date
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -223,6 +228,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient4 |
 		| patient5 |
 		| patient6 |
+		| patient12 |
 
 Scenario Outline: Retrieve the medication structured record section for a patient with an end date
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -250,6 +256,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient4 |
 		| patient5 |
 		| patient6 |
+		| patient12 |
 
 Scenario Outline: Retrieve the medication structured record section for a patient with invalid time period
 	Given I configure the default "GpcGetStructuredRecord" request
