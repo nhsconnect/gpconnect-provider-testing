@@ -200,6 +200,15 @@
                     {
                         coding.System.ShouldNotBeNull("Code should not be null");
                         coding.System.ShouldBe("http://snomed.info/sct");
+                        Extension extension = coding.GetExtension("https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-coding-sctdescid");
+                        extension.ShouldNotBeNull();
+                        extension.GetExtension("descriptionId").ShouldNotBeNull();
+                        extension.GetExtension("descriptionDisplay").ShouldNotBeNull();
+
+                        if (extension.GetExtension("descriptionId").Value.Equals("196421000000109"))
+                        {
+                            medication.Code.Text.ShouldNotBeNullOrEmpty();
+                        }
                     });
                 }
             });
