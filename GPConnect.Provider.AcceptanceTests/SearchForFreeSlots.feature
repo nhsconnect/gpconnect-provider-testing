@@ -134,7 +134,6 @@ Scenario Outline: Searching for free slots with valid partial dateTime strings
 		| yyyy-MM-ddTHH:mm:ssZ | yyyy-MM-ddTHH:mm:ssZ |
 		| yyyy-MM-dd           | yyyy-MM-ddTHH:mm:ssZ |
 		| yyyy-MM-ddTHH:mm:ssZ | yyyy-MM-dd           |
-		| yyyy-MM              | yyyy-MM              |
 
 Scenario Outline: Searching for free slots with invalid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
