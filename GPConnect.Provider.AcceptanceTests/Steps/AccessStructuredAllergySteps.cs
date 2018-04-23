@@ -347,14 +347,14 @@
                     if (allergy.Reaction[0].Manifestation != null)
                     {
                         allergy.Reaction[0].Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
-                        if (allergy.Reaction[0].Severity != null)
-                        {
-                            allergy.Reaction[0].Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
-                        }
-                        if (allergy.Reaction[0].ExposureRoute != null)
-                        {
-                            allergy.Reaction[0].ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
-                        }
+                    }
+                    if (allergy.Reaction[0].Severity != null)
+                    {
+                        allergy.Reaction[0].Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
+                    }
+                    if (allergy.Reaction[0].ExposureRoute != null)
+                    {
+                        allergy.Reaction[0].ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
                     }
                 }
 
