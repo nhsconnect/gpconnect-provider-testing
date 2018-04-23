@@ -218,21 +218,6 @@
             //TheAllergyIntoleranceOnsetDateTimeShouldBeValid();
             TheListOfAllergyIntolerancesShouldBeValid();
             TheAllergyIntoleranceCategoryShouldbeValid();
-            TheSpecifiedAllergyIntoleranceFieldsShouldBeNull();
-        }
-
-        [Then(@"the specified AllergyIntolerance fields should be null")]
-        public void TheSpecifiedAllergyIntoleranceFieldsShouldBeNull()
-        {
-            AllergyIntolerances.ForEach(allergyIntolerance =>
-            {
-                allergyIntolerance.Reaction.ForEach(reaction =>
-                {
-                    reaction.Note.ShouldBeEmpty();
-                    reaction.Onset.ShouldBeNull();
-                    reaction.Substance.ShouldBeNull();
-                });
-            });
         }
 
         [Then(@"the AllergyIntolerance onsetDateTime should be valid")]
@@ -356,19 +341,29 @@
         {
             AllergyIntolerances.ForEach(allergy =>
             {
-                allergy.Reaction.Count.ShouldBeLessThanOrEqualTo(1);
                 if (allergy.Reaction != null)
                 {
-                    allergy.Reaction[0].Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
-                    if (allergy.Reaction[0].Severity != null)
+                    allergy.Reaction.Count.ShouldBeLessThanOrEqualTo(1);
+                    if (allergy.Reaction[0].Manifestation != null)
                     {
-                        allergy.Reaction[0].Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
-                    }
-                    if(allergy.Reaction[0].ExposureRoute != null)
-                    {
-                        allergy.Reaction[0].ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed); 
+                        allergy.Reaction[0].Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
+                        if (allergy.Reaction[0].Severity != null)
+                        {
+                            allergy.Reaction[0].Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
+                        }
+                        if (allergy.Reaction[0].ExposureRoute != null)
+                        {
+                            allergy.Reaction[0].ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
+                        }
                     }
                 }
+
+                allergy.Reaction.ForEach(reaction =>
+                {
+                    reaction.Note.ShouldBeEmpty();
+                    reaction.Onset.ShouldBeNull();
+                    reaction.Substance.ShouldBeNull();
+                });
             });
         }
 
