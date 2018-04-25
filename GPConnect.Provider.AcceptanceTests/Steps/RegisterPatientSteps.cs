@@ -345,7 +345,7 @@
 
                 var numberExtensions = nhsNumberIdentifier.Extension.Where(nne => nne.Url.Equals(FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification)).ToList();
 
-                numberExtensions.Count().ShouldBe(1,$"There can only be one extension on the NHS Number Identifer with a URL of {FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification}");
+                numberExtensions.Count().ShouldBe(1,$"There can only be one extension on the NHS Number Identifer");
 
                 ValidateCodeConceptExtension(numberExtensions.First(), FhirConst.ValueSetSystems.kVsNhsNumVerification);
 
