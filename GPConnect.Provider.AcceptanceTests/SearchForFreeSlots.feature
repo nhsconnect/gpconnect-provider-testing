@@ -157,7 +157,6 @@ Scenario: Successfully search for free slots and check the slot resources return
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the Bundle Metadata should be valid
 		And the Slot Status should be Free
 		And the Slot Metadata should be valid
 		And the Slot Identifiers should be valid
