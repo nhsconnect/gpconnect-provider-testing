@@ -194,6 +194,17 @@
             });
         }
 
+        [Then(@"the response should contain the recorder reference")]
+        public void TheResponseShouldContainTheRecorderReference()
+        {
+            var values = _httpContext.FhirResponse.AllergyIntolerances;
+            foreach(var allergy in values)
+            {
+                allergy.Recorder.ShouldNotBeNull("Recorder has a value");
+            }
+            
+        }
+
         [StepArgumentTransformation]
         public List<string> CommaSeperatedValuesTransform(string csv)
         {

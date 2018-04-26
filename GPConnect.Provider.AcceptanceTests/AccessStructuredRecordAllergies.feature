@@ -237,6 +237,15 @@ Scenario: Retrieve the allergy structured record section for a patient with an e
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
+Scenario: Retrieve the allergy structured record section for a patient with recorder
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the allergies parameter with resolvedAllergies set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response should contain the recorder reference
+
+
+
 @Ignore @Manual
 Scenario: Resolved allergy resources are assigned a clinicalStatus of resolved
 
