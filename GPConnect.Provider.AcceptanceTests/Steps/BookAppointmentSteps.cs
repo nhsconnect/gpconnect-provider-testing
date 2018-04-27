@@ -82,6 +82,12 @@
         {
             _fhirResourceRepository.Appointment.Id = id;
         }
+        
+        [Given(@"I add an Appointment Reason to the appointment")]
+        public void thenIAddAnAppointmentReasonToTheAppointment()
+        {
+            _fhirResourceRepository.Appointment.Reason.Add(new CodeableConcept("http://snomed.info/sct", "17436001", "Medical consultation with outpatient", "Medical consultation with outpatient"));
+        }
 
         [Given(@"I set the Created Appointment Slot Reference to ""([^""]*)""")]
         public void SetTheCreatedAppointmentSlotReferenceTo(string slotReference)

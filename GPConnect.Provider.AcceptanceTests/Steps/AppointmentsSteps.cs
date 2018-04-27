@@ -73,6 +73,16 @@
             });
         }
 
+        [Then(@"the appointment reason must not be included")]
+        public void theAppointmentReasonShouldBeEmpty()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Reason?.Count.ShouldBeLessThanOrEqualTo(0, "Appointment Reason should not be included in the appointment");
+            });
+
+        }
+        
         [Then(@"the Appointment Start should equal the Created Appointment Start")]
         public void TheAppointmentStartShouldEqualTheCreatedAppointmentStart()
         {

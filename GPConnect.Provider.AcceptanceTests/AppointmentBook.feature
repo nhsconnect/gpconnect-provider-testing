@@ -50,6 +50,7 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 		And the Appointment Description must be valid
 		And the booking organization extension must be valid
 		And the Appointment Created must be valid
+		And the appointment reason must not be included
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/fhir+json | application/fhir+json | JSON       |
@@ -436,3 +437,16 @@ Scenario: Book appointment re-using an already booked slot
 	Then the response status code should be "409"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "DUPLICATE_REJECTED"
+
+Scenario: Book appointment and send a reason in the appointment
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I add an Appointment Reason to the appointment
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
