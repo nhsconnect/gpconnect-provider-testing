@@ -41,7 +41,7 @@
         {
             var validCode = codingList.FirstOrDefault(f => f.Code.Equals(code.Code) && f.Display.Equals(code.Display) && f.System.Equals(code.System));
 
-            validCode.ShouldNotBeNull();
+            validCode.ShouldNotBeNull("Code, System and display combination does not match required valueset");
         }
 
         private static void ValueSetContainsCodeAndDisplayAndSystem(ValueSet valueSet, Coding coding)
