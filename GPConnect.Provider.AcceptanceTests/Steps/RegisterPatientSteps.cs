@@ -619,35 +619,36 @@
 
         private void ValidateReferenceRequest(string reference, GpConnectInteraction interaction)
         {
-            if (!ResourceReferenceHelper.IsRelOrAbsReference(reference)) return;
-
-            _httpSteps.ConfigureRequest(interaction);
-
-            _httpContext.HttpRequestConfiguration.RequestUrl = reference;
-
-            _httpSteps.MakeRequest(interaction);
-
-            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
-
-            if (interaction.Equals(GpConnectInteraction.OrganizationRead))
+            if (reference.StartsWith("Location/"))
             {
-                StoreTheOrganization();
-                var returnedReference = _fhirResourceRepository.Organization.Meta.Profile.FirstOrDefault();
-                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
-            }
-            else if (interaction.Equals(GpConnectInteraction.PractitionerRead))
-            {
-                StoreThePractitioner();
-                var returnedReference = _fhirResourceRepository.Practitioner.Meta.Profile.FirstOrDefault();
-                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kPractitioner);
-            }
-            else if (interaction.Equals(GpConnectInteraction.LocationRead))
-            {
-                StoreTheLocation();
-                var returnedReference = _fhirResourceRepository.Location.Meta.Profile.FirstOrDefault();
-                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kLocation);
-            }
+                var location = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.LocationRead, reference);
 
+                location.ShouldNotBeNull(
+                    $"The Reference {reference} returned a null Location.");
+                location.GetType()
+                    .ShouldBe(typeof(Location),
+                        $"The reference {reference} returned a {location.GetType().ToString()}.");
+            }
+            else if (reference.StartsWith("Organization/"))
+            {
+                var organization = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.OrganizationRead, reference);
+
+                organization.ShouldNotBeNull(
+                    $"The Reference {reference} returned a null Location.");
+                organization.GetType()
+                    .ShouldBe(typeof(Location),
+                        $"The reference {reference} returned a {organization.GetType().ToString()}.");
+            }
+            else if (reference.StartsWith("Practitioner/"))
+            {
+                var practitioner = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PractitionerRead, reference);
+
+                practitioner.ShouldNotBeNull(
+                    $"The Reference {reference} returned a null Location.");
+                practitioner.GetType()
+                    .ShouldBe(typeof(Location),
+                        $"The reference {reference} returned a {practitioner.GetType().ToString()}.");
+            }
         }
 
         private void StoreTheOrganization()
