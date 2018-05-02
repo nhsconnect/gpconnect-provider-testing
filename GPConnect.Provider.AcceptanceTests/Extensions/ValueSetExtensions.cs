@@ -18,7 +18,7 @@
         {
             return resource.Expansion
                 .Contains
-                .Select(contains => new GpcCode(contains.Code, contains.Display, resource.Url));
+                .Select(contains => new GpcCode(contains.Code, contains.Display, contains.System));
         }
 
         private static string ConceptCodes(ValueSet.ContainsComponent contains)

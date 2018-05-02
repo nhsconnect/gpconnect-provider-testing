@@ -33,6 +33,7 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 		And the Appointment Metadata should be valid
 		And the Appointment Start should be valid
 		And the Appointment End should be valid
+		And the appointment reason must not be included
 	Examples:
 		| patient  | numberOfAppointments |
 		| patient4 | 1                    |

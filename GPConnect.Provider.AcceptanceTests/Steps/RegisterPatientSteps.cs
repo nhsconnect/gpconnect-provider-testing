@@ -314,6 +314,16 @@
             _fhirResourceRepository.Patient.Photo.Add(attachment);
         }
 
+        [Given(@"I add a PreferredBranch element to the Stored Patient")]
+        public void AddAPreferredBranchElementToStoredPatient()
+        {
+            ResourceReference location = new ResourceReference();
+            location.Reference = "Location/1";
+            Extension preferredBranch = new Extension("preferredBranchSurgery", location);
+           
+            _fhirResourceRepository.Patient.Extension.Add(new Extension("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1", preferredBranch));
+        }
+
         [Given(@"I add a Telecom element to the Stored Patient")]
         public void AddATelecomElementToStoredPatient()
         {
@@ -358,7 +368,7 @@
         {
             Patients.ForEach(patient =>
             {
-                var registrationDetailsExtensions = patient.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtCcGpcRegDetails)).ToList();
+                var registrationDetailsExtensions = patient.Extension.Where(extension => extension.Url.Equals("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1")).ToList();
 
                 registrationDetailsExtensions.Count.ShouldBe(1, "Incorrect number of registration details extension have been returned. This should be 1.");
 
@@ -425,12 +435,12 @@
         {
             var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtPreferredBranchSurgery)).ToList();
 
-            extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 Preferred Branch Surgery extension.");
+            extensions.Count.ShouldBe(1, "The patient resource shall contain a single Preferred Branch Surgery extension.");
 
             extensions.ForEach(preferredBranchSurgeryExtension =>
             {
                 preferredBranchSurgeryExtension.Value.ShouldNotBeNull("The Preferred Branch Surgery extension should have a value element.");
-                preferredBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The Preferred Branch Surgery extension should be a Period.");
+                preferredBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The Preferred Branch Surgery extension should be a Location.");
 
                 var reference = (ResourceReference)preferredBranchSurgeryExtension.Value;
                 ValidateReferenceRequest(reference.Reference, GpConnectInteraction.LocationRead);
@@ -609,35 +619,36 @@
 
         private void ValidateReferenceRequest(string reference, GpConnectInteraction interaction)
         {
-            if (!ResourceReferenceHelper.IsRelOrAbsReference(reference)) return;
-
-            _httpSteps.ConfigureRequest(interaction);
-
-            _httpContext.HttpRequestConfiguration.RequestUrl = reference;
-
-            _httpSteps.MakeRequest(interaction);
-
-            _httpResponseSteps.ThenTheResponseStatusCodeShouldIndicateSuccess();
-
-            if (interaction.Equals(GpConnectInteraction.OrganizationRead))
+            if (reference.StartsWith("Location/"))
             {
-                StoreTheOrganization();
-                var returnedReference = _fhirResourceRepository.Organization.Meta.Profile.FirstOrDefault();
-                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kOrganisation);
-            }
-            else if (interaction.Equals(GpConnectInteraction.PractitionerRead))
-            {
-                StoreThePractitioner();
-                var returnedReference = _fhirResourceRepository.Practitioner.Meta.Profile.FirstOrDefault();
-                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kPractitioner);
-            }
-            else if (interaction.Equals(GpConnectInteraction.LocationRead))
-            {
-                StoreTheLocation();
-                var returnedReference = _fhirResourceRepository.Location.Meta.Profile.FirstOrDefault();
-                returnedReference.ShouldBe(FhirConst.StructureDefinitionSystems.kLocation);
-            }
+                var location = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.LocationRead, reference);
 
+                location.ShouldNotBeNull(
+                    $"The Reference {reference} returned a null Location.");
+                location.GetType()
+                    .ShouldBe(typeof(Location),
+                        $"The reference {reference} returned a {location.GetType().ToString()}.");
+            }
+            else if (reference.StartsWith("Organization/"))
+            {
+                var organization = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.OrganizationRead, reference);
+
+                organization.ShouldNotBeNull(
+                    $"The Reference {reference} returned a null Location.");
+                organization.GetType()
+                    .ShouldBe(typeof(Location),
+                        $"The reference {reference} returned a {organization.GetType().ToString()}.");
+            }
+            else if (reference.StartsWith("Practitioner/"))
+            {
+                var practitioner = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PractitionerRead, reference);
+
+                practitioner.ShouldNotBeNull(
+                    $"The Reference {reference} returned a null Location.");
+                practitioner.GetType()
+                    .ShouldBe(typeof(Location),
+                        $"The reference {reference} returned a {practitioner.GetType().ToString()}.");
+            }
         }
 
         private void StoreTheOrganization()

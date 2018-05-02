@@ -84,6 +84,7 @@ Scenario Outline: Read appointment ensure response appointments contain the mana
 		And the Appointment Participant Type and Actor should be valid
 		And the Response should contain the ETag header matching the Resource Version Id
 		And the Appointment booking organization extension and contained resource must be valid
+		And the appointment reason must not be included
 	Examples:
 		| Header                | BodyFormat |
 		| application/fhir+json | JSON       |

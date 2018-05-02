@@ -21,6 +21,7 @@ Scenario Outline: I perform a successful cancel appointment
 		And the Appointment Participants should be equal to the Created Appointment Participants
 		And the Appointment Created should be equal to the Created Appointment Created
 		And the Appointments returned must be in the future
+		And the appointment reason must not be included
 	Examples:
 		| PatientName |
 		| patient1    |
