@@ -118,29 +118,40 @@
         [Then(@"the List of MedicationStatements should be valid")]
         public void TheListOfMedicationStatementsShouldBeValid()
         {
-            Lists.ShouldHaveSingleItem();
+            Lists.ShouldHaveSingleItem("The medications data must contain a single list.");
             Lists.ForEach(list =>
             {
                 MedicationStatements.Count().Equals(list.Entry.Count());
-                //list.Id.ShouldNotBeNull();
+
+                list.Id.ShouldNotBeNull("The list must have an id.");
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
-                list.Status.ShouldBeOfType<List.ListStatus>("Status of medications list is of wrong type.");
-                list.Status.ShouldBe(List.ListStatus.Current);
-                list.Mode.ShouldBeOfType<ListMode>("Mode of medications list is of wrong type.");
-                list.Mode.ShouldBe(ListMode.Snapshot);
-                list.Code.ShouldNotBeNull();
-                list.Subject.ShouldNotBeNull();
+
+                list.Status.ShouldNotBeNull("The List status is a mandatory field.");
+                list.Status.ShouldBeOfType<List.ListStatus>("Status of allergies list is of wrong type.");
+                list.Status.ShouldBe(List.ListStatus.Current, "The list's status must be set to Current.");
+
+                list.Mode.ShouldNotBeNull("The List mode is a mandatory field.");
+                list.Mode.ShouldBeOfType<ListMode>("Mode of allergies list is of wrong type.");
+                list.Mode.ShouldBe(ListMode.Snapshot, "The list's mode must be set to Snapshot.");
+
+                list.Code.ShouldNotBeNull("The List code is a mandatory field.");
+
+                list.Subject.ShouldNotBeNull("The List subject is a mandatory field.");
                 isTheListSubjectValid(list.Subject).ShouldBeTrue();
+
+                list.Title.ShouldNotBeNull("The List title is a mandatory field.");
+
                 if (list.Entry.Count.Equals(0))
                 {
-                    list.EmptyReason.ShouldNotBeNull();
+                    list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
                     list.EmptyReason.Text.Equals("noContent");
+                    list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
                 }
                 else
                 {
                     list.Entry.ForEach(entry =>
                     {
-                        entry.Item.ShouldNotBeNull();
+                        entry.Item.ShouldNotBeNull("The item field must be populated for eac list entry.");
                         entry.Item.Reference.ShouldStartWith("MedicationStatement");
                     });
                 }
