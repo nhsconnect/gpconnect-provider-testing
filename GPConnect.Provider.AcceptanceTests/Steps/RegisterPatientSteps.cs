@@ -314,16 +314,6 @@
             _fhirResourceRepository.Patient.Photo.Add(attachment);
         }
 
-        [Given(@"I add a PreferredBranch element to the Stored Patient")]
-        public void AddAPreferredBranchElementToStoredPatient()
-        {
-            ResourceReference location = new ResourceReference();
-            location.Reference = "Location/1";
-            Extension preferredBranch = new Extension("preferredBranchSurgery", location);
-           
-            _fhirResourceRepository.Patient.Extension.Add(new Extension("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1", preferredBranch));
-        }
-
         [Given(@"I add a Telecom element to the Stored Patient")]
         public void AddATelecomElementToStoredPatient()
         {
@@ -368,7 +358,7 @@
         {
             Patients.ForEach(patient =>
             {
-                var registrationDetailsExtensions = patient.Extension.Where(extension => extension.Url.Equals("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1")).ToList();
+                var registrationDetailsExtensions = patient.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtCcGpcRegDetails)).ToList();
 
                 registrationDetailsExtensions.Count.ShouldBe(1, "Incorrect number of registration details extension have been returned. This should be 1.");
 
@@ -435,12 +425,12 @@
         {
             var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtPreferredBranchSurgery)).ToList();
 
-            extensions.Count.ShouldBe(1, "The patient resource shall contain a single Preferred Branch Surgery extension.");
+            extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 Preferred Branch Surgery extension.");
 
             extensions.ForEach(preferredBranchSurgeryExtension =>
             {
                 preferredBranchSurgeryExtension.Value.ShouldNotBeNull("The Preferred Branch Surgery extension should have a value element.");
-                preferredBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The Preferred Branch Surgery extension should be a Location.");
+                preferredBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The Preferred Branch Surgery extension should be a Period.");
 
                 var reference = (ResourceReference)preferredBranchSurgeryExtension.Value;
                 ValidateReferenceRequest(reference.Reference, GpConnectInteraction.LocationRead);
