@@ -57,6 +57,15 @@ Scenario: JWT expiry time before creation time
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
+Scenario: JWT creation time in the future
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the JWT creation time to "200" seconds after the current time
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource
+
 Scenario: JWT reason for request is not directcare
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
