@@ -205,6 +205,7 @@
             address.LineElement.Add(new FhirString("1 Trevelyan Square"));
             address.LineElement.Add(new FhirString("Boar Lane"));
 
+            address.Use = Address.AddressUse.Temp;
             _fhirResourceRepository.Patient.Address.Add(address);
         }
 
@@ -317,7 +318,7 @@
         [Given(@"I add a Telecom element to the Stored Patient")]
         public void AddATelecomElementToStoredPatient()
         {
-            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01234567891"));
         }
 
         [Then(@"the Patient Nhs Number Identifer should be valid")]
