@@ -108,7 +108,16 @@
                 list.Mode.ShouldBe(ListMode.Snapshot, "The list's mode must be set to Snapshot.");
 
                 list.Code.ShouldNotBeNull("The List code is a mandatory field.");
-                list.Code.Equals("886921000000105");
+                if(list.Title.Equals("Active Allergies"))
+                {
+                    list.Code.Equals("886921000000105");
+
+                }
+                else if(list.Title.Equals("Resolved Allergies"))
+                {
+                    list.Code.Equals("TBD");
+                }
+                
 
                 list.Subject.ShouldNotBeNull("The List subject is a mandatory field.");
                 isTheListSubjectValid(list.Subject).ShouldBeTrue();
