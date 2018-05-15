@@ -232,6 +232,7 @@
         [Then(@"the AllergyIntolerance should be valid")]
         public void TheAllergyIntoleranceShouldBeValid()
         {
+            TheAllergyIntoleranceRecorderShouldbeValid();
             TheAllergyIntoleranceClinicalStatusShouldbeValid();
             TheAllergyIntoleranceAssertedDateShouldBeValid();
             TheAllergyIntoleranceIdShouldBeValid();
@@ -241,18 +242,18 @@
             TheAllergyIntoleranceReactionShouldBeValid();
             TheAllergyIntoleranceEndDateShouldBeValid();
             TheAllergyIntoleranceCodeShouldbeValid();
-            //TheAllergyIntoleranceOnsetDateTimeShouldBeValid();
             TheListOfAllergyIntolerancesShouldBeValid();
             TheAllergyIntoleranceCategoryShouldbeValid();
         }
 
-        [Then(@"the AllergyIntolerance onsetDateTime should be valid")]
-        public void TheAllergyIntoleranceOnsetDateTimeShouldBeValid()
+        
+
+        [Then(@"the AllergyIntolerance Recorder should be valid")]
+        public void TheAllergyIntoleranceRecorderShouldbeValid()
         {
-            AllergyIntolerances.ForEach(allergyIntolerance =>
+            AllergyIntolerances.ForEach(allergy =>
             {
-                allergyIntolerance.Onset.ShouldNotBeNull();
-                allergyIntolerance.Onset.TypeName.ShouldBe("dateTime");
+                allergy.Recorder.ShouldNotBeNull("AllergyIntolerance Recorder cannot be null");
             });
         }
 
