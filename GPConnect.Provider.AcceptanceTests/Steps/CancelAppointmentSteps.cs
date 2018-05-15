@@ -60,13 +60,10 @@
         [Given(@"I set the Created Appointment Type Text to ""(.*)""")]
         public void SetTheCreatedAppointmentTypeTextTo(string value)
         {
-            _fhirResourceRepository.Appointment.ServiceType = new List<CodeableConcept>
-            {
-                new CodeableConcept
-                {
+            _fhirResourceRepository.Appointment.AppointmentType = new CodeableConcept
+             {
                     Text = value
-                }
-            };
+             };
         }
 
         [Given(@"I add an Appointment Identifier with default System and Value ""(.*)"" to the Created Appointment")]
