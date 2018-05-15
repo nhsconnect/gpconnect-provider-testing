@@ -108,6 +108,16 @@
                 list.Mode.ShouldBe(ListMode.Snapshot, "The list's mode must be set to Snapshot.");
 
                 list.Code.ShouldNotBeNull("The List code is a mandatory field.");
+                if(list.Title.Equals("Active Allergies"))
+                {
+                    list.Code.Equals("886921000000105");
+
+                }
+                else if(list.Title.Equals("Resolved Allergies"))
+                {
+                    list.Code.Equals("TBD");
+                }
+                
 
                 list.Subject.ShouldNotBeNull("The List subject is a mandatory field.");
                 isTheListSubjectValid(list.Subject).ShouldBeTrue();
@@ -126,6 +136,7 @@
                 if (list.Entry.Count == 0)
                 {
                     list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
+                    list.EmptyReason.Text.Equals("Information not available");
                     list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
                 }
             });
@@ -190,7 +201,7 @@
                    list.Note.ShouldHaveSingleItem();
                    list.Note.First().Text.ShouldBe("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
                    list.Entry.ShouldBeEmpty();
-                   list.EmptyReason.Text.ShouldBe("No Content recorded");
+                   list.EmptyReason.Text.ShouldBe("Information not available");
                }
                else
                {
