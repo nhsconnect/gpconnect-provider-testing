@@ -135,6 +135,7 @@
                 list.Mode.ShouldBe(ListMode.Snapshot, "The list's mode must be set to Snapshot.");
 
                 list.Code.ShouldNotBeNull("The List code is a mandatory field.");
+                list.Code.Equals("933361000000108");
 
                 list.Subject.ShouldNotBeNull("The List subject is a mandatory field.");
                 isTheListSubjectValid(list.Subject).ShouldBeTrue();
@@ -144,7 +145,7 @@
                 if (list.Entry.Count.Equals(0))
                 {
                     list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
-                    list.EmptyReason.Text.Equals("noContent");
+                    list.EmptyReason.Text.Equals("Information not available");
                     list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
                 }
                 else
