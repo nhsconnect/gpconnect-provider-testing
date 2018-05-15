@@ -11,6 +11,19 @@
             public const string kEndDate = "endDate";
         }
 
+        internal static class GetStructuredRecordParams
+        {
+            public const string kPatientNHSNumber = "patientNHSNumber";
+            public const string kAllergies = "includeAllergies";
+            public const string kMedication = "includeMedication";
+            public const string kStartDate = "start";
+            public const string kEndDate = "end";
+            public const string kResolvedAllergies = "includeResolvedAllergies";
+            public const string kPrescriptionIssues  = "includePrescriptionIssues";
+            public const string kMedicationDatePeriod = "medicationDatePeriod";
+            public const string kTimePeriod = "timePeriod";
+        }
+
         internal static class Resources
         {
             public const string kInvalidResourceType = "InvalidResourceType";
@@ -41,6 +54,7 @@
             public const string kCcLanguageAbilityMode = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-LanguageAbilityMode-1";
             public const string kCcLanguageAbilityProficiency = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-LanguageAbilityProficiency-1";
             public const string kCcNhsNumVerification = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1";
+            public const string kCcPresriptionType = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-PrescriptionType-1";
 
             //STU3
             public const string kNameUse = "http://hl7.org/fhir/name-use";
@@ -56,6 +70,8 @@
             public const string kRelationshipStatus = "http://hl7.org/fhir/v2/0131";
             public const string kLocationType = "http://hl7.org/fhir/v3/RoleCode";
             public const string kLocationPhysicalType = "http://hl7.org/fhir/stu3/location-physical-type.html";
+
+            public const string kCCSnomed = "http://snomed.info/sct";
         }
 
         internal static class ValueSetSystems
@@ -82,6 +98,19 @@
             public const string kVsEncounterParticipantType = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
             public const string kVsRelationshipStatus = "http://hl7.org/fhir/ValueSet/v2-0131";
             public const string kVsNullFlavour = "http://hl7.org/fhir/ValueSet/v3-NullFlavor";
+            public const string kVsAllergyIntoleranceClinicalStatus = "http://hl7.org/fhir/stu3/valueset-allergy-clinical-status.html";
+            public const string kVsAllergyIntoleranceCategory = "http://hl7.org/fhir/stu3/valueset-allergy-intolerance-category.html";
+            public const string kVsAllergyIntoleranceCode = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-AllergyCode-1";
+            public const string kVsAllergyIntoleranceSeverity = "http://hl7.org/fhir/stu3/valueset-reaction-event-severity.html";
+            public const string kVsAllergyIntoleranceExposure = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-AllergyExposureRoute-1";
+            public const string kVsMedicationStatementStatus = "http://hl7.org/fhir/stu3/valueset-medication-statement-status.html";
+            public const string kVsMedicationRequestStatus = "http://hl7.org/fhir/stu3/valueset-medication-statement-status.html";
+            public const string kVsMedicationStatementTaken = "http://hl7.org/fhir/stu3/valueset-medication-statement-taken.html";
+            public const string kVsMedicationRequestIntent = "http://hl7.org/fhir/stu3/valueset-medication-request-intent.html";
+            public const string kVsMedicationPrescriptionType = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-PrescriptionType-1";
+            public const string kVsListStatus = "http://hl7.org/fhir/stu3/valueset-list-status.html";
+            public const string kVsListMode = "http://hl7.org/fhir/stu3/valueset-list-mode.html";
+            public const string kVsLanguage = "http://hl7.org/fhir/ValueSet/languages";
         }
 
         internal static class StructureDefinitionSystems
@@ -113,6 +142,13 @@
             public const string kSlot = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Slot-1";
             public const string kSchedule = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Schedule-1";
             public const string kGpcSearchSet = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Searchset-Bundle-1";
+            public const string kGpcStructuredRecordBundle = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-GetStructuredRecord-Bundle-1";
+            public const string kAllergyIntolerance = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-AllergyIntolerance-1";
+            public const string kMedication = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Medication-1";
+            public const string kMedicationStatement = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1";
+            public const string kMedicationRequest = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1";
+            public const string kList = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1";
+            public const string kSpecial = "http://hl7.org/fhir/special-values";
 
             //Extensions
             public const string kCCExtNhsCommunication =        "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSCommunication-1";
@@ -131,6 +167,13 @@
 
             public const string kPractitionerRoleExt = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-PractitionerRole-1";
             public const string kDeliveryChannelExt ="https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-DeliveryChannel-1";
+
+            public const string kAllergyEndExt = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-AllergyIntoleranceEnd-1";
+
+            public const string kMedicationPrescriptionType = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-PrescriptionType-1";
+            public const string kMedicationRepeatInformation = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MedicationRepeatInformation-1";
+            public const string kMedicationRequestEndReason = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MedicationStatusReason-1";
+            public const string kMedicationStatementLastIssueDate = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MedicationStatementLastIssueDate-1";
         }
 
         internal static class Prefixs

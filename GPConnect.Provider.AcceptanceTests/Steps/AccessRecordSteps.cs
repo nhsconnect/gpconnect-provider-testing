@@ -3,8 +3,8 @@
     using Constants;
     using Context;
     using Helpers;
-    using Hl7.Fhir.Model;
     using TechTalk.SpecFlow;
+    using Hl7.Fhir.Model;
 
     [Binding]
     public sealed class AccessRecordSteps : BaseSteps
