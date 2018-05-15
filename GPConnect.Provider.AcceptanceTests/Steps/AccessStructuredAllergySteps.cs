@@ -281,6 +281,8 @@
             {
                 allergy.ClinicalStatus.ShouldNotBeNull("AllergyIntolerance ClinicalStatus cannot be null");
                 allergy.ClinicalStatus.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceClinicalStatus>($"AllergyIntolerance ClinicalStatus is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceClinicalStatus}");
+                allergy.ClinicalStatus.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Inactive, "The clinical status should never be set to inactive");
+                       
             });
         }
 
