@@ -20,7 +20,7 @@
         [Given(@"I set the Parameter name ""(.*)"" to ""(.*)""")]
         public void SetTheParameterNameTo(string parameterName, string invalidParameterName)
         {
-            _httpContext.HttpRequestConfiguration.BodyParameters.GetSingle(parameterName).Name = invalidParameterName;
+            //_httpContext.HttpRequestConfiguration.BodyParameters.GetSingle(parameterName).Name = invalidParameterName;
         }
 
         #region NHS Number Parameter
