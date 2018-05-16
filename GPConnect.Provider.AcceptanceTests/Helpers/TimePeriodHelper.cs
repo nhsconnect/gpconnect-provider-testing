@@ -50,6 +50,12 @@
             return new Period(new FhirDateTime(date), new FhirDateTime(date.AddDays(days)));
         }
 
+        public static Period GetTimePeriodStartDateTomorrowEndDateDays(int days)
+        {
+            var date = DateTime.UtcNow.Date.AddDays(1);
+            return new Period(new FhirDateTime(date), new FhirDateTime(date.AddDays(days)));
+        }
+
         public static Period GetTimePeriodStartDateFormatEndDateFormat(string startDateFormat, string endDateFormat, int days = 3)
         {
             var date = DateTime.UtcNow;
