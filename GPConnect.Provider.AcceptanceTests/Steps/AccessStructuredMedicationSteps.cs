@@ -564,20 +564,13 @@
             MedicationRequests.ForEach(medRequest =>
             {
                 medRequest.Definition.ShouldBeEmpty();
-                //medRequest.BasedOn.ShouldBeNull();
                 medRequest.Category.ShouldBeNull();
                 medRequest.Priority.ShouldBeNull();
                 medRequest.SupportingInformation.ShouldBeEmpty();
                 medRequest.DispenseRequest.ExpectedSupplyDuration.ShouldBeNull();
                 medRequest.Substitution.ShouldBeNull();
                 medRequest.EventHistory.ShouldBeEmpty();
-
-                if (medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan))
-                {
-                    //medRequest.GroupIdentifier.ShouldBeNull();
-                    medRequest.Requester.ShouldBeNull();
-                }
-
+                
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
                 if (!prescriptionType.Coding.First().Display.Contains("Repeat"))
                 {
@@ -752,10 +745,6 @@
                 {
                     medRequest.DispenseRequest.ValidityPeriod.End.ShouldBeNull();
                 } 
-                else
-                {
-                    medRequest.DispenseRequest.ValidityPeriod.End.ShouldNotBeNull();
-                }
             });
         }
 
