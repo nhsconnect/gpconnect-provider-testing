@@ -108,24 +108,6 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		| patient6 |
 		| patient12 |
 
-Scenario: Retrieve the medication structured record section with the prescriptions part parameter but without the includeMedications parameter
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient1"
-		And I add the prescriptions partParameter
-	Then the response status code should indicate failure
-
-Scenario: Retrieve the medication structured record section with the medicationDatePeriod part parameter but without the includeMedications parameter
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient1"
-		And I add the medicationDatePeriod partParameter
-	Then the response status code should indicate failure
-
-Scenario: Retrieve the medication structured record section for a patient with the prescriptions parameter added incorrectly
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient1"
-		And I add the medications parameter incorrectly
-	Then the response status code should indicate failure
-
 Scenario: Retrieve the medication structured record section for a patient with an invalid include parameter
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
