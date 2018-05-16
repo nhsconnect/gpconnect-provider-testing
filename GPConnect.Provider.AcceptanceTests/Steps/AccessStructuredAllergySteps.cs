@@ -377,15 +377,27 @@
                     if (reaction.Manifestation != null)
                     {
                         reaction.Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
+
+                        if (reaction.Manifestation.Count == 1) {
+                            if (reaction.Severity != null)
+                            {
+                                reaction.Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
+
+                                var codableConcept = reaction.Manifestation.First();
+
+                                var codingDisplay = codableConcept.Coding.First().Display;
+
+                                codingDisplay.ShouldBe("nullFlavor NI", "AllergyIntolerance.reaction.manifestation SHOULD be coded as the nullFlavor NI");
+
+                            }
+                        }     
                     }
-                    if (reaction.Severity != null)
-                    {
-                        reaction.Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
-                    }
+                 
                     if (reaction.ExposureRoute != null)
                     {
                         reaction.ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
                     }
+
 
                     reaction.Note.ShouldBeEmpty();
                     reaction.Onset.ShouldBeNull();
