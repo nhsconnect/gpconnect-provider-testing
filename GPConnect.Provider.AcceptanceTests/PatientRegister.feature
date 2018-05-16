@@ -280,6 +280,32 @@ Scenario Outline: Register patient with additional valid elements
 		| Marital       |
 		| Telecom       |
 
+Scenario: Register patient with Address and Telecom
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I add the Stored Patient as a parameter
+		And I add a Address element to the Stored Patient
+		And I add a Telecom element to the Stored Patient
+	When I make the "RegisterPatient" request
+	Then the response status code should indicate success
+		And the Patient should has a correct Address
+		And the Patient should has a correct Telecom
+
+Scenario Outline: Register patient without temp should error
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I add the Stored Patient as a parameter
+		And I add a <ElementToAdd> element without temp to the Stored Patient
+	When I make the "RegisterPatient" request
+	Then the response status code should indicate failure
+		And the Patient should has a <ElementToAdd> error
+	Examples:
+		| ElementToAdd |
+		| Telecom      |
+		| Address      |
+
+
+
 Scenario Outline: Register patient with additional not allowed elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request

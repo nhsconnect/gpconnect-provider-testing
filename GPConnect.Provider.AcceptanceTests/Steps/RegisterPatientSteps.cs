@@ -209,6 +209,22 @@
             _fhirResourceRepository.Patient.Address.Add(address);
         }
 
+        [Given(@"I add a Address element without temp to the Stored Patient")]
+        public void AddAAddressElementWithoutTempToStoredPatient()
+        {
+            var address = new Address
+            {
+                CityElement = new FhirString("Leeds"),
+                PostalCode = "LS1 6AE"
+            };
+
+            address.LineElement.Add(new FhirString("1 Trevelyan Square"));
+            address.LineElement.Add(new FhirString("Boar Lane"));
+
+            address.Use = Address.AddressUse.Work;
+            _fhirResourceRepository.Patient.Address.Add(address);
+        }
+
         [Given(@"I add a Animal element to the Stored Patient")]
         public void AddAAnimalElementToStoredPatient()
         {
@@ -321,6 +337,12 @@
             _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01234567891"));
         }
 
+        [Given(@"I add a Telecom element without temp to the Stored Patient")]
+        public void AddATelecomElementWithoutTempToStoredPatient()
+        {
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Work, "01234567891"));
+        }
+
         [Then(@"the Patient Nhs Number Identifer should be valid")]
         public void ThePatientNhsNumberIdentiferShouldBeValid()
         {
@@ -351,6 +373,51 @@
                 ValidateCodeConceptExtension(numberExtensions.First(), FhirConst.ValueSetSystems.kVsNhsNumVerification);
 
             });
+        }
+
+        [Then(@"the Patient should has a correct Address")]
+        public void ThePatientShouldHasACorrectAddress()
+        {
+            var storedPatient = _fhirResourceRepository.Patient;
+            var storedPatientAddress = storedPatient
+                .Address
+                .First();
+
+
+            var responsePatientAddress = _httpContext.FhirResponse.Patients.First().Address.First();
+
+            responsePatientAddress.ShouldBe(storedPatientAddress, "The returned Address is different than sent");
+        }
+
+        [Then(@"the Patient should has a correct Telecom")]
+        public void ThePatientShouldHasACorrectTelecom()
+        {
+            var storedPatient = _fhirResourceRepository.Patient;
+            var storedPatientTelecom = storedPatient
+                .Telecom
+                .First();
+
+            var responsePatientTelecom = _httpContext.FhirResponse.Patients.First().Telecom.First();
+
+            responsePatientTelecom.ShouldBe(storedPatientTelecom, "The returned Telecom is different than sent");
+        }
+
+        [Then(@"the Patient should has a Telecom error")]
+        public void ThePatientShouldHasTelecomError()
+        {
+            var errorMessage = ((OperationOutcome)_httpContext.FhirResponse.Resource).Issue.First().Details.Text;
+
+            errorMessage.ShouldBe("The telecom use must be set to temp.", "The telecom use must be set to temp.");
+
+        }
+
+        [Then(@"the Patient should has a Address error")]
+        public void ThePatientShouldHasAddressError()
+        {
+            var errorMessage = ((OperationOutcome)_httpContext.FhirResponse.Resource).Issue.First().Details.Text;
+
+            errorMessage.ShouldBe("The address use must be set to temp.", "The address use must be set to temp.");
+
         }
 
 
