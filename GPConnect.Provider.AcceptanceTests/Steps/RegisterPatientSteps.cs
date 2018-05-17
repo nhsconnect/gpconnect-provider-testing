@@ -205,6 +205,23 @@
             address.LineElement.Add(new FhirString("1 Trevelyan Square"));
             address.LineElement.Add(new FhirString("Boar Lane"));
 
+            address.Use = Address.AddressUse.Temp;
+            _fhirResourceRepository.Patient.Address.Add(address);
+        }
+
+        [Given(@"I add a Address element without temp to the Stored Patient")]
+        public void AddAAddressElementWithoutTempToStoredPatient()
+        {
+            var address = new Address
+            {
+                CityElement = new FhirString("Leeds"),
+                PostalCode = "LS1 6AE"
+            };
+
+            address.LineElement.Add(new FhirString("1 Trevelyan Square"));
+            address.LineElement.Add(new FhirString("Boar Lane"));
+
+            address.Use = Address.AddressUse.Work;
             _fhirResourceRepository.Patient.Address.Add(address);
         }
 
@@ -314,20 +331,16 @@
             _fhirResourceRepository.Patient.Photo.Add(attachment);
         }
 
-        [Given(@"I add a PreferredBranch element to the Stored Patient")]
-        public void AddAPreferredBranchElementToStoredPatient()
-        {
-            ResourceReference location = new ResourceReference();
-            location.Reference = "Location/1";
-            Extension preferredBranch = new Extension("preferredBranchSurgery", location);
-           
-            _fhirResourceRepository.Patient.Extension.Add(new Extension("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1", preferredBranch));
-        }
-
         [Given(@"I add a Telecom element to the Stored Patient")]
         public void AddATelecomElementToStoredPatient()
         {
-            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01234567891"));
+        }
+
+        [Given(@"I add a Telecom element without temp to the Stored Patient")]
+        public void AddATelecomElementWithoutTempToStoredPatient()
+        {
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Work, "01234567891"));
         }
 
         [Then(@"the Patient Nhs Number Identifer should be valid")]
@@ -362,13 +375,58 @@
             });
         }
 
+        [Then(@"the Patient should has a correct Address")]
+        public void ThePatientShouldHasACorrectAddress()
+        {
+            var storedPatient = _fhirResourceRepository.Patient;
+            var storedPatientAddress = storedPatient
+                .Address
+                .First();
+
+
+            var responsePatientAddress = _httpContext.FhirResponse.Patients.First().Address.First();
+
+            responsePatientAddress.ShouldBe(storedPatientAddress, "The returned Address is different than sent");
+        }
+
+        [Then(@"the Patient should has a correct Telecom")]
+        public void ThePatientShouldHasACorrectTelecom()
+        {
+            var storedPatient = _fhirResourceRepository.Patient;
+            var storedPatientTelecom = storedPatient
+                .Telecom
+                .First();
+
+            var responsePatientTelecom = _httpContext.FhirResponse.Patients.First().Telecom.First();
+
+            responsePatientTelecom.ShouldBe(storedPatientTelecom, "The returned Telecom is different than sent");
+        }
+
+        [Then(@"the Patient should has a Telecom error")]
+        public void ThePatientShouldHasTelecomError()
+        {
+            var errorMessage = ((OperationOutcome)_httpContext.FhirResponse.Resource).Issue.First().Details.Text;
+
+            errorMessage.ShouldBe("The telecom use must be set to temp.", "The telecom use must be set to temp.");
+
+        }
+
+        [Then(@"the Patient should has a Address error")]
+        public void ThePatientShouldHasAddressError()
+        {
+            var errorMessage = ((OperationOutcome)_httpContext.FhirResponse.Resource).Issue.First().Details.Text;
+
+            errorMessage.ShouldBe("The address use must be set to temp.", "The address use must be set to temp.");
+
+        }
+
 
         [Then(@"the Patient Registration Details Extension should be valid")]
         public void ThePatientRegistrationDetailsExtensioShouldBeValid()
         {
             Patients.ForEach(patient =>
             {
-                var registrationDetailsExtensions = patient.Extension.Where(extension => extension.Url.Equals("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1")).ToList();
+                var registrationDetailsExtensions = patient.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtCcGpcRegDetails)).ToList();
 
                 registrationDetailsExtensions.Count.ShouldBe(1, "Incorrect number of registration details extension have been returned. This should be 1.");
 
@@ -435,12 +493,12 @@
         {
             var extensions = extList.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtPreferredBranchSurgery)).ToList();
 
-            extensions.Count.ShouldBe(1, "The patient resource shall contain a single Preferred Branch Surgery extension.");
+            extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 Preferred Branch Surgery extension.");
 
             extensions.ForEach(preferredBranchSurgeryExtension =>
             {
                 preferredBranchSurgeryExtension.Value.ShouldNotBeNull("The Preferred Branch Surgery extension should have a value element.");
-                preferredBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The Preferred Branch Surgery extension should be a Location.");
+                preferredBranchSurgeryExtension.Value.ShouldBeOfType<ResourceReference>("The Preferred Branch Surgery extension should be a Period.");
 
                 var reference = (ResourceReference)preferredBranchSurgeryExtension.Value;
                 ValidateReferenceRequest(reference.Reference, GpConnectInteraction.LocationRead);

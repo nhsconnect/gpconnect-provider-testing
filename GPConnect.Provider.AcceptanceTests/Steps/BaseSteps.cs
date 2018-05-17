@@ -47,7 +47,8 @@
         private static void ValueSetContainsCodeAndDisplayAndSystem(ValueSet valueSet, Coding coding)
         {
             valueSet.Expansion.Contains.ShouldContain(component => component.Code.Equals(coding.Code)  
-                                                    && component.Display.Equals(coding.Display));
+                                                    && component.Display.Equals(coding.Display) 
+                                                    && component.System.Equals(coding.System));
         }
 
         public void CheckForValidMetaDataInResource<T>(T resource, string profileId) where T : Resource

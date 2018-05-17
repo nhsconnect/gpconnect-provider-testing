@@ -368,7 +368,8 @@
         {
             Appointments.ForEach(appointment =>
             {
-                appointment.Start.Value .ShouldBeGreaterThan(DateTime.UtcNow);
+                //appointment.Start.Value .ShouldBeGreaterThan(DateTime.UtcNow);
+                appointment.Start.Value.Date.ShouldBeGreaterThanOrEqualTo(DateTime.UtcNow.Date);
             });
         }
 

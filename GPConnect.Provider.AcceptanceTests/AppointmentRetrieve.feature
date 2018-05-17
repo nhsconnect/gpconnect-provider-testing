@@ -2,7 +2,7 @@
 Feature: AppointmentRetrieve
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
-	Given I get the Patient for Patient Value "patient15"
+	Given I get the Patient for Patient Value "patientNoAppointments"
 		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I add start query parameters to the Request URL for Period starting today for "1" days
@@ -224,14 +224,13 @@ Scenario: CapabilityStatement profile supports the search appointment operation
 		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "SearchType" Interaction
 
 Scenario: Appointment retrieve valid response check caching headers exist
-	Given I get the Patient for Patient Value "patient15"
+	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient
 	Given I configure the default "AppointmentSearch" request
 		And I add start query parameters to the Request URL for Period starting today for "1" days
 	When I make the "AppointmentSearch" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And the Bundle should contain no Appointments
 		And the required cacheing headers should be present in the response
 
 Scenario: Appointment retrieve invalid response check caching headers exist

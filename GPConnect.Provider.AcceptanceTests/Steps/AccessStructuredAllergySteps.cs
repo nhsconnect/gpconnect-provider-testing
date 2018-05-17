@@ -232,6 +232,7 @@
         [Then(@"the AllergyIntolerance should be valid")]
         public void TheAllergyIntoleranceShouldBeValid()
         {
+            TheAllergyIntoleranceRecorderShouldbeValid();
             TheAllergyIntoleranceClinicalStatusShouldbeValid();
             TheAllergyIntoleranceAssertedDateShouldBeValid();
             TheAllergyIntoleranceIdShouldBeValid();
@@ -241,18 +242,18 @@
             TheAllergyIntoleranceReactionShouldBeValid();
             TheAllergyIntoleranceEndDateShouldBeValid();
             TheAllergyIntoleranceCodeShouldbeValid();
-            //TheAllergyIntoleranceOnsetDateTimeShouldBeValid();
             TheListOfAllergyIntolerancesShouldBeValid();
             TheAllergyIntoleranceCategoryShouldbeValid();
         }
 
-        [Then(@"the AllergyIntolerance onsetDateTime should be valid")]
-        public void TheAllergyIntoleranceOnsetDateTimeShouldBeValid()
+        
+
+        [Then(@"the AllergyIntolerance Recorder should be valid")]
+        public void TheAllergyIntoleranceRecorderShouldbeValid()
         {
-            AllergyIntolerances.ForEach(allergyIntolerance =>
+            AllergyIntolerances.ForEach(allergy =>
             {
-                allergyIntolerance.Onset.ShouldNotBeNull();
-                allergyIntolerance.Onset.TypeName.ShouldBe("dateTime");
+                allergy.Recorder.ShouldNotBeNull("AllergyIntolerance Recorder cannot be null");
             });
         }
 
@@ -281,6 +282,8 @@
             {
                 allergy.ClinicalStatus.ShouldNotBeNull("AllergyIntolerance ClinicalStatus cannot be null");
                 allergy.ClinicalStatus.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceClinicalStatus>($"AllergyIntolerance ClinicalStatus is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceClinicalStatus}");
+                allergy.ClinicalStatus.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Inactive, "The clinical status should never be set to inactive");
+                       
             });
         }
 
@@ -374,15 +377,27 @@
                     if (reaction.Manifestation != null)
                     {
                         reaction.Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
+
+                        if (reaction.Manifestation.Count == 1) {
+                            if (reaction.Severity != null)
+                            {
+                                reaction.Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
+
+                                var codableConcept = reaction.Manifestation.First();
+
+                                var codingDisplay = codableConcept.Coding.First().Display;
+
+                                codingDisplay.ShouldBe("nullFlavor NI", "AllergyIntolerance.reaction.manifestation SHOULD be coded as the nullFlavor NI");
+
+                            }
+                        }     
                     }
-                    if (reaction.Severity != null)
-                    {
-                        reaction.Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
-                    }
+                 
                     if (reaction.ExposureRoute != null)
                     {
                         reaction.ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
                     }
+
 
                     reaction.Note.ShouldBeEmpty();
                     reaction.Onset.ShouldBeNull();
