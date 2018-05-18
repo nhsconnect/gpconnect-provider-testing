@@ -89,6 +89,37 @@
             {
                 entry.Resource.ShouldNotBeNull();
             });
+            CheckBundleResources();
+           
+        }
+
+        private void CheckBundleResources()
+        {
+            Boolean hasPatient = false;
+            Boolean hasOrganization = false;
+            Boolean hasPractitioner = false;
+            Boolean hasPractitionerRole = false;
+            Bundle.GetResources().ToList().ForEach(resource =>
+            {
+                if (resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    hasPatient = true;
+                } else if (resource.ResourceType.Equals(ResourceType.Organization))
+                {
+                    hasOrganization = true;
+                } else if (resource.ResourceType.Equals(ResourceType.Practitioner))
+                {
+                    hasPractitioner = true;
+                } else if (resource.ResourceType.Equals(ResourceType.PractitionerRole))
+                {
+                    hasPractitionerRole = true;
+                }
+            });
+
+            hasPatient.ShouldBe(true);
+            hasOrganization.ShouldBe(true);
+            hasPractitioner.ShouldBe(true);
+            //hasPractitionerRole.ShouldBe(true);
         }
 
         [Then(@"the List of AllergyIntolerances should be valid")]
