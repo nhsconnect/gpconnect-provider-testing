@@ -138,15 +138,6 @@ Scenario Outline: Register Patient and use both the Accept header and _format pa
 		| application/fhir+xml  | application/fhir+json | application/fhir+xml  | XML            |
 		| application/fhir+json | application/fhir+xml  | application/fhir+json | JSON           |
 
-Scenario: Register patient with registration details extension
-	Given I get the next Patient to register and store it
-	Given I configure the default "RegisterPatient" request
-		And I Set the Stored Patient Registration Details Extension 
-		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
 Scenario: Register patient with invalid bundle resource type
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request

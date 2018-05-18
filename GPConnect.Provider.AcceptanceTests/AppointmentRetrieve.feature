@@ -173,7 +173,7 @@ Scenario Outline: Appointment retreive with date parameters in the past
 		| 2010-03-03 | 2030-03-30 |
 
 Scenario: Appointment retreive with end date before start date
-Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 	Given I configure the default "AppointmentSearch" request
 		And I add the parameter "start" with the value "ge2030-03-03"
 		And I add the parameter "start" with the value "le2030-01-01"

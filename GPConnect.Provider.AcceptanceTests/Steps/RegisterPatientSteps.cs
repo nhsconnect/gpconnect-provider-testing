@@ -381,12 +381,14 @@
             var storedPatient = _fhirResourceRepository.Patient;
             var storedPatientAddress = storedPatient
                 .Address
-                .First();
+                .First().ToFhirJson();
 
 
-            var responsePatientAddress = _httpContext.FhirResponse.Patients.First().Address.First();
+            var responsePatientAddress = _httpContext.FhirResponse.Patients.First().Address.First().ToFhirJson();
 
-            responsePatientAddress.ShouldBe(storedPatientAddress, "The returned Address is different than sent");
+                
+
+            responsePatientAddress.Equals(storedPatientAddress);
         }
 
         [Then(@"the Patient should has a correct Telecom")]
@@ -395,11 +397,11 @@
             var storedPatient = _fhirResourceRepository.Patient;
             var storedPatientTelecom = storedPatient
                 .Telecom
-                .First();
+                .First().ToFhirJson();
 
-            var responsePatientTelecom = _httpContext.FhirResponse.Patients.First().Telecom.First();
+            var responsePatientTelecom = _httpContext.FhirResponse.Patients.First().Telecom.First().ToFhirJson();
 
-            responsePatientTelecom.ShouldBe(storedPatientTelecom, "The returned Telecom is different than sent");
+            responsePatientTelecom.Equals(storedPatientTelecom);
         }
 
         [Then(@"the Patient should has a Telecom error")]

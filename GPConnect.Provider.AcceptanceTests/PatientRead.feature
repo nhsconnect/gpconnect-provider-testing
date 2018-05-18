@@ -126,6 +126,7 @@ Scenario: Read patient returned should conform to the GPconnect specification
 		And the Patient Gender should be valid
 		And the Patient MaritalStatus should be valid
 		And the Patient Link should be valid and resolvable
+		And the Patient Registration Details should be valid
 
 Scenario: CapabilityStatement profile supports the Patient read operation
 	Given I configure the default "MetadataRead" request

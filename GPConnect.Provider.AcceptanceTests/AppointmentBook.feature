@@ -185,20 +185,6 @@ Scenario: Book Appointment and remove all participants
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-Scenario: Book appointment and set an incorrect appointment id
-	Given I get an existing patients nshNumber
-		And I store the Patient
-	Given I get Available Free Slots
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Id to "ZZ"
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate failure
-		And the response body should be FHIR JSON
-		And the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
 Scenario: Book appointment for patient and send extra fields in the resource
 	Given I get an existing patients nshNumber
 		And I store the Patient
