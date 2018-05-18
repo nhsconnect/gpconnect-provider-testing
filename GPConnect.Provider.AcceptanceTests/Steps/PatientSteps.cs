@@ -23,9 +23,9 @@
         private readonly JwtSteps _jwtSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
         private readonly IFhirResourceRepository _fhirResourceRepository;
-     
- 
-        
+
+
+
 
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
@@ -88,7 +88,7 @@
             {
                 patient.MultipleBirth?.ShouldBeOfType<FhirBoolean>("Multiple Birth must be of type FhirBoolean");
 
-             
+
 
             });
         }
@@ -117,7 +117,7 @@
             {
                 patient.Contact.ForEach(contact =>
                 {
-                    contact.Name.Family.Count().ShouldBe(1,"There should be 1 family name");
+                    contact.Name.Family.Count().ShouldBe(1, "There should be 1 family name");
 
                     contact.Name.Use.ShouldNotBeNull("Contact Name Use should not be null");
                     contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Contact Name Use is not a valid value within the value set {FhirConst.CodeSystems.kNameUse}");
@@ -413,12 +413,13 @@
         [Given(@"I get an existing patients nshNumber")]
         public void GetTheRandomPatientValue()
         {
-            var value= "patient1";
+            var value = "patient1";
 
-            if (AppSettingsHelper.RandomPatientEnabled == true) {
-                 value = RandomPatientSteps.ReturnRandomPatient();
+            if (AppSettingsHelper.RandomPatientEnabled == true)
+            {
+                value = RandomPatientSteps.ReturnRandomPatient();
             }
-           
+
             _httpSteps.ConfigureRequest(GpConnectInteraction.PatientSearch);
 
             AddAPatientIdentifierParameterWithDefaultSystemAndValue(value);
@@ -510,7 +511,7 @@
                     // Contact Relationship Checks
 
                     name.Family.ShouldNotBeNull("Patient Name Family cannot be null");
-                    name.Family.Count().ShouldBe(1,"Patient family must be populated");
+                    name.Family.Count().ShouldBe(1, "Patient family must be populated");
                 });
             });
         }
@@ -546,5 +547,46 @@
                 });
             });
         }
+
+        [Then(@"the Patient Registration Details should be valid")]
+        public void ThePatientRegistrationDetailsShouldBeValid()
+        {
+            Patients.ForEach(patient =>
+            {
+                var registrationDetailsExtensions = patient.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtCcGpcRegDetails)).ToList();
+                if (registrationDetailsExtensions.Count() > 0)
+                {
+                    var regDetailsExtension = registrationDetailsExtensions.First();
+                    var regExtensions = regDetailsExtension.Extension;
+                    
+                    //Check the registrationPeriod is valid
+                    var extensions = regExtensions.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationPeriod)).ToList();
+                    extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 registration period extension.");
+                    extensions.ForEach(registrationPeriodExtension =>
+                    {
+                        registrationPeriodExtension.Value.ShouldNotBeNull("The registration period extension should have a value element.");
+                        registrationPeriodExtension.Value.ShouldBeOfType<Period>("The registration period extension should be a Period.");
+                    });
+
+                    //Check the registrationPeriod is valid
+                    extensions = regExtensions.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationType)).ToList();
+                    extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 registration type extension.");
+                    extensions.ForEach(registrationTypeExtension =>
+                    {
+                        registrationTypeExtension.Value.ShouldNotBeNull("The registration type extension should have a value element.");
+                    });
+
+                    //Check the preferredBranchSurgery is valid
+                    extensions = regExtensions.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtPreferredBranchSurgery)).ToList();
+                    extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 preferred branch surgery extension.");
+                    extensions.ForEach(registrationTypeExtension =>
+                    {
+                        registrationTypeExtension.Value.ShouldNotBeNull("The preferred branch surgery extension should have a value element.");
+                    });
+                }
+
+            });
+        }
+
     }
 }
