@@ -60,7 +60,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the required parameters with a time period of ""(.*)"" days")]
         public void SetRequiredParametersWithTimePeriod(int days)
         {
-            _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTodayWithStartEndPrefix(days,"ge","le");
+            _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTomorrowWithStartEndPrefix(days,"ge","le");
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("status", "free");
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");

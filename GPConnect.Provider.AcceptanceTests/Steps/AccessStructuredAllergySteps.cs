@@ -77,52 +77,24 @@
 
         #region List and Bundle Validity Checks
 
-        [Then(@"the Bundle should be valid")]
-        public void TheBundleShouldBeValid()
-        {
-            Bundle.Meta.ShouldNotBeNull();
-            CheckForValidMetaDataInResource(Bundle, FhirConst.StructureDefinitionSystems.kGpcStructuredRecordBundle);
-            Bundle.Type.HasValue.ShouldBeTrue();
-            Bundle.Type.Value.ShouldBe(Bundle.BundleType.Collection);
-            Bundle.Entry.ShouldNotBeEmpty();
-            Bundle.Entry.ForEach(entry =>
-            {
-                entry.Resource.ShouldNotBeNull();
-            });
-        }
-
         [Then(@"the List of AllergyIntolerances should be valid")]
         public void TheListOfAllergyIntolerancesShouldBeValid()
         {
             Lists.ForEach(list =>
             {
-                list.Id.ShouldNotBeNull("The list must have an id.");
+                StructuredRecordBaseSteps.BaseListParametersAreValid(list);
+
+                //Alergy specific checks
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
 
-                list.Status.ShouldNotBeNull("The List status is a mandatory field.");
-                list.Status.ShouldBeOfType<List.ListStatus>("Status of allergies list is of wrong type.");
-                list.Status.ShouldBe(List.ListStatus.Current, "The list's status must be set to Current.");
-
-                list.Mode.ShouldNotBeNull("The List mode is a mandatory field.");
-                list.Mode.ShouldBeOfType<ListMode>("Mode of allergies list is of wrong type.");
-                list.Mode.ShouldBe(ListMode.Snapshot, "The list's mode must be set to Snapshot.");
-
-                list.Code.ShouldNotBeNull("The List code is a mandatory field.");
                 if(list.Title.Equals("Active Allergies"))
                 {
                     list.Code.Equals("886921000000105");
 
-                }
-                else if(list.Title.Equals("Resolved Allergies"))
+                } else if (list.Title.Equals("Resolved Allergies"))
                 {
                     list.Code.Equals("TBD");
                 }
-                
-
-                list.Subject.ShouldNotBeNull("The List subject is a mandatory field.");
-                isTheListSubjectValid(list.Subject).ShouldBeTrue();
-
-                list.Title.ShouldNotBeNull("The List title is a mandatory field.");
 
                 if (list.Entry.Count > 0)
                 {
@@ -142,10 +114,6 @@
             });
         }
 
-        private Boolean isTheListSubjectValid(ResourceReference subject)
-        { 
-            return !(null == subject.Reference && null == subject.Identifier);
-        }
 
         [Then(@"the Bundle should contain ""(.*)"" allergies")]
         public void TheBundleShouldContainAllergies(int number)

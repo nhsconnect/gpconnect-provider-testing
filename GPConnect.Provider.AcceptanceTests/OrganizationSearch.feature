@@ -22,7 +22,7 @@ Scenario Outline: Organization search success
 Scenario: Organization search sending multiple identifiers resulting in failure
 	Given I configure the default "OrganizationSearch" request		
 		And I add an Organization Identifier parameter with System "https://fhir.nhs.uk/Id/ods-organization-code" and Value "ORG1"
-		And I add an Organization Identifier parameter with System "https://fhir.nhs.uk/Id/ods-organization-code" and Value "ORG2"
+		And I add an Organization Identifier parameter with System "https://fhir.nhs.uk/Id/ods-organization-code" and Value "ORG1"
 	When I make the "OrganizationSearch" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

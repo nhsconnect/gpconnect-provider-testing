@@ -87,6 +87,9 @@
             appointment.Extension.Add(bookingOrganizationExtension);
             appointment.Contained.Add(bookingOrganization);
 
+            CodeableConcept type = new CodeableConcept("http://hl7.org/fhir/ValueSet/c80-practice-codes", "394802001", "General medicine", null);
+            appointment.AppointmentType = type;
+
             return appointment;
         }
 

@@ -9,6 +9,7 @@
     using System;
     using System.Globalization;
     using Enum;
+    using static System.Net.WebUtility;
 
     [Binding]
     public class AppointmentRetrieveSteps : Steps
@@ -90,6 +91,15 @@
         public void RetrieveAppoinmentsForNhsNumber(string nhsNumber)
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentSearch);
+            var date = DateTime.UtcNow;
+            var startDate = date.ToString("yyyy-MM-dd");
+            var endDate = date.AddDays(30).ToString("yyyy-MM-dd");
+
+            var startKey = UrlEncode("start");
+            var startValue = UrlEncode($"ge{startDate}");
+            var endValue = UrlEncode($"le{endDate}");
+
+            _httpContext.HttpRequestConfiguration.RequestUrl = $"{_httpContext.HttpRequestConfiguration.RequestUrl}?{startKey}={startValue}&{startKey}={endValue}";
 
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentSearch);
         }

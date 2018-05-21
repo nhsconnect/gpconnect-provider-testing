@@ -343,6 +343,7 @@
     <Compile Include="Helpers\HttpHeaderHelper.cs" />
     <Compile Include="Helpers\HttpParameterHelper.cs" />
     <Compile Include="Helpers\JwtHelper.cs" />
+    <Compile Include="Steps\StructuredRecordBaseSteps.cs" />
     <Compile Include="Steps\TeardownSteps.cs" />
     <Compile Include="Tables\CareRecordSection.cs" />
   </ItemGroup>
