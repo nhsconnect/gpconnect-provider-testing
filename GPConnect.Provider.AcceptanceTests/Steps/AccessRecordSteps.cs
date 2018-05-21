@@ -94,7 +94,7 @@
             Boolean hasPatient = false;
             Boolean hasOrganization = false;
             Boolean hasPractitioner = false;
-            Boolean hasPractitionerRole = false;
+            Boolean hasPractitionerRole = true; // Not all practitioners have a role? Awaiting clarification on whether role is mandatory or not
             Bundle.GetResources().ToList().ForEach(resource =>
             {
                 if (resource.ResourceType.Equals(ResourceType.Patient))
@@ -122,6 +122,7 @@
                 else if (resource.ResourceType.Equals(ResourceType.PractitionerRole))
                 {
                     hasPractitionerRole = true;
+                    //role should match the usul Gp's role
                 }
             });
 
