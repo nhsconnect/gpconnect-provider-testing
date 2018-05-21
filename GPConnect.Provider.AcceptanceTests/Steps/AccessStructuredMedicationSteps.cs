@@ -121,7 +121,7 @@
             Lists.ShouldHaveSingleItem("The medications data must contain a single list.");
             Lists.ForEach(list =>
             {
-                StructuredRecordBaseSteps.BaseListParametersAreValid(list);
+                AccessRecordSteps.BaseListParametersAreValid(list);
 
                 //Medication specific checks
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);

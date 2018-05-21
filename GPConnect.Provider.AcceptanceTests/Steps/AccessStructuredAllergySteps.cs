@@ -82,7 +82,7 @@
         {
             Lists.ForEach(list =>
             {
-                StructuredRecordBaseSteps.BaseListParametersAreValid(list);
+                AccessRecordSteps.BaseListParametersAreValid(list);
 
                 //Alergy specific checks
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
@@ -100,7 +100,7 @@
                 {
                     list.Entry.ForEach(entry =>
                     {
-                        entry.Item.ShouldNotBeNull("The item field must be populated for eac list entry.");
+                        entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
                         entry.Item.Reference.ShouldStartWith("AllergyIntolerance");
                     });
                 }
