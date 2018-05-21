@@ -457,6 +457,9 @@
             {
                 _httpContext.HttpRequestConfiguration.GetRequestId = patient.Id;
                 _fhirResourceRepository.Patient = patient;
+            } else
+            {
+                patient.ShouldNotBeNull("Stored patient is null.");
             }
         }
 

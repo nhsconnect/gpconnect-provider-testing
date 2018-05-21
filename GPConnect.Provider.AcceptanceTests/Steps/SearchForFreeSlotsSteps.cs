@@ -50,10 +50,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void StoreTheFreeSlotsBundle()
         {
             var bundle = _httpContext.FhirResponse.Bundle;
-
             if (bundle != null)
             {
                 _fhirResourceRepository.Bundle = bundle;
+            } else
+            {
+                bundle.ShouldNotBeNull("The bundle returned by the free slots search was null.");
             }
         }
 
