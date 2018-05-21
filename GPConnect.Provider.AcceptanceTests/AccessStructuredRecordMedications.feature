@@ -57,35 +57,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient5 |
 		| patient6 |
 		| patient12 |
-
-Scenario Outline: Retrieve the medication structured record section for a patient without the prescription issue parameter
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "<Patient>"
-		And I add the medications parameter
-	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "collection"
-		And the response meta profile should be for "structured"
-		And the patient resource in the bundle should contain meta data profile and version id
-		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
-		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should be valid for patient "<Patient>"
-		And the Bundle should contain "1" lists
-		And the Medications should be valid
-		And the Medication Statements should be valid
-		And the Medication Requests should be valid
-		And the List of MedicationStatements should be valid
-		And the Medication Requests should not contain any issues
-	Examples:
-		| Patient  |
-		| patient1 |
-		| patient2 |
-		| patient3 |
-		| patient4 |
-		| patient5 |
-		| patient6 |
-		| patient12 |
-
+		
 Scenario Outline: Retrieve the structured record section for a patient without the medications parameter
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -107,11 +79,20 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		| patient5 |
 		| patient6 |
 		| patient12 |
+		
+Scenario: Retrieve the medication structured record section for a patient without the prescription issue parameter
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I add the medications parameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
 
 Scenario: Retrieve the medication structured record section for a patient with an invalid include parameter
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
 		And I add an invalid medications parameter
+		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
@@ -120,6 +101,7 @@ Scenario: Retrieve the medication structured record section for an invalid NHS n
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
 		And I add the medications parameter
+		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
@@ -128,6 +110,7 @@ Scenario: Retrieve the medication structured record section for an empty NHS num
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter with an empty NHS Number
 		And I add the medications parameter
+		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
@@ -136,6 +119,7 @@ Scenario: Retrieve the medication structured record section for an invalid Ident
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
 		And I add the medications parameter
+		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
@@ -144,6 +128,7 @@ Scenario: Retrieve the medication structured record section for an empty Identif
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
 		And I add the medications parameter
+		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
@@ -152,6 +137,7 @@ Scenario: Retrieve the medication structured record section for an invalid param
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" using an invalid parameter type
 		And I add the medications parameter
+		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
@@ -160,6 +146,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medications parameter with a timePeriod
+		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -188,6 +175,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medications parameter with a start date
+		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -216,6 +204,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medications parameter with an end date
+		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -244,6 +233,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
 		And I set a medications period parameter start date to "<StartDate>" and end date to "<EndDate>"
+		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource

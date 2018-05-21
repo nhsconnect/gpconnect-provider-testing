@@ -128,7 +128,7 @@
             hasPatient.ShouldBe(true);
             hasOrganization.ShouldBe(true);
             hasPractitioner.ShouldBe(true);
-            //hasPractitionerRole.ShouldBe(true);
+            hasPractitionerRole.ShouldBe(true);
         }
 
         public static void BaseListParametersAreValid(List list)
