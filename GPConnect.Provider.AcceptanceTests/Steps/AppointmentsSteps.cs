@@ -190,6 +190,8 @@
             var appointmentBuilder = new DefaultAppointmentBuilder(_fhirResourceRepository);
 
             _fhirResourceRepository.Appointment = appointmentBuilder.BuildAppointment();
+
+            _fhirResourceRepository.Appointment.ShouldNotBeNull("Built appointment is null.");
         }
 
         [Given(@"I set the Created Appointment to Cancelled with Reason ""([^""]*)""")]
