@@ -47,29 +47,49 @@
         [Given(@"I add an invalid allergies parameter")]
         public void GivenIAddAnInvalidAllergiesParameter()
         {
-            ParameterComponent param = new ParameterComponent();
-            param.Name = "inlcudeInvalidAllergies";
-            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+           IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add("inlcudeInvalidAllergies", tuples);
+        }
+
+        [Given(@"I add the allergies parameter with includePrescriptionIssues")]
+        public void GivenIAddTheAllergiesParameterWithIncludePrescriptionIssues()
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
         }
 
         [Given(@"I add the allergies parameter with a timePeriod")]
         public void GivenIAddTheAllergiesParameterWithATimePeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetDefaultTimePeriod())};
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetDefaultTimePeriod()),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
+            };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
         }
 
         [Given(@"I add the allergies parameter with a start date")]
         public void GivenIAddTheAllergiesParameterWithAStartPeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnly()) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnly()),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
+            };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
         }
 
         [Given(@"I add the allergies parameter with an end date")]
         public void GivenIAddTheAllergiesParameterWithAnEndPeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodEndDateOnly()) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodEndDateOnly()),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
+            };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
         }
 

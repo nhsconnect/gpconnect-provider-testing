@@ -59,7 +59,7 @@
         {
             ParameterComponent param = new ParameterComponent();
             param.Name = FhirConst.GetStructuredRecordParams.kPrescriptionIssues;
-            param.Value = new FhirBoolean(Boolean.Parse("true"));
+            param.Value = new FhirBoolean(true);
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
@@ -78,36 +78,50 @@
         [Given(@"I add an invalid medications parameter")]
         public void GivenIAddAnInvalidMedicationsParameter()
         {
-            ParameterComponent param = new ParameterComponent();
-            param.Name = "includeInvalidMedications";
-            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+            };
+
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add("includeInvalidMedications", tuples);
         }
 
         [Given(@"I add the medications parameter with a timePeriod")]
         public void GivenIAddTheMedicationsParameterWithATimePeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodFormatted("yyyy-MM-dd")) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodFormatted("yyyy-MM-dd"))
+            };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
         [Given(@"I add the medications parameter with a start date")]
         public void GivenIAddTheMedicationsParameterWithAStartPeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnlyFormatted("yyyy-MM-dd")) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnlyFormatted("yyyy-MM-dd"))
+            };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
         [Given(@"I add the medications parameter with an end date")]
         public void GivenIAddTheMedicationsParameterWithAnEndPeriod()
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodEndDateOnlyFormatted("yyyy-MM-dd")) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodEndDateOnlyFormatted("yyyy-MM-dd"))
+            };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
         [Given(@"I set a medications period parameter start date to ""([^ ""]*)"" and end date to ""([^ ""]*)""")]
         public void GivenISetAMedicationsTimeAParameterStartDateToAndEndDateTo(string startDate, string endDate)
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetTimePeriod(startDate, endDate)) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetTimePeriod(startDate, endDate))
+            };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 

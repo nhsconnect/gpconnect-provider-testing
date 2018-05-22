@@ -113,7 +113,6 @@ Scenario Outline: Retrieve the allergy structured record section excluding resol
 Scenario Outline: Retrieve the allergy structured record section without the resolved allergies parameter for a patient without any allergies
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
-		And I add the allergies parameter
 		And I add the allergies parameter with resolvedAllergies set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
@@ -140,11 +139,18 @@ Scenario: Retrieve the allergy structured record section for a patient without t
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
+Scenario: Retrieve the allergy structured record section for a patient with the include prescription issues parameter
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I add the allergies parameter with includePrescriptionIssues
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource
+
 Scenario: Retrieve the allergy structured record section for a patient with an invalid include parameter
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
 		And I add an invalid allergies parameter
-		And I add the allergies parameter with resolvedAllergies set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
@@ -152,7 +158,6 @@ Scenario: Retrieve the allergy structured record section for a patient with an i
 Scenario: Retrieve the allergy structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
-		And I add the allergies parameter
 		And I add the allergies parameter with resolvedAllergies set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
@@ -161,7 +166,6 @@ Scenario: Retrieve the allergy structured record section for an invalid NHS numb
 Scenario: Retrieve the allergy structured record section for an empty NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter with an empty NHS Number
-		And I add the allergies parameter
 		And I add the allergies parameter with resolvedAllergies set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
@@ -170,7 +174,6 @@ Scenario: Retrieve the allergy structured record section for an empty NHS number
 Scenario: Retrieve the allergy structured record section for an invalid Identifier System
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
-		And I add the allergies parameter
 		And I add the allergies parameter with resolvedAllergies set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
@@ -179,7 +182,6 @@ Scenario: Retrieve the allergy structured record section for an invalid Identifi
 Scenario: Retrieve the allergy structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
-		And I add the allergies parameter
 		And I add the allergies parameter with resolvedAllergies set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
@@ -188,7 +190,6 @@ Given I configure the default "GpcGetStructuredRecord" request
 Scenario: Retrieve the allergy structured record section for an invalid parameter type
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" using an invalid parameter type
-		And I add the allergies parameter
 		And I add the allergies parameter with resolvedAllergies set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
@@ -197,7 +198,6 @@ Scenario: Retrieve the allergy structured record section for an invalid paramete
 Scenario: Retrieve the allergy structured record section for a patient with a timePeriod
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
-		And I add the allergies parameter with resolvedAllergies set to "false"
 		And I add the allergies parameter with a timePeriod
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
@@ -206,7 +206,6 @@ Scenario: Retrieve the allergy structured record section for a patient with a ti
 Scenario: Retrieve the allergy structured record section for a patient with a start date
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
-		And I add the allergies parameter with resolvedAllergies set to "false"
 		And I add the allergies parameter with a start date
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
@@ -215,7 +214,6 @@ Scenario: Retrieve the allergy structured record section for a patient with a st
 Scenario: Retrieve the allergy structured record section for a patient with an end date
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
-		And I add the allergies parameter with resolvedAllergies set to "false"
 		And I add the allergies parameter with an end date
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
