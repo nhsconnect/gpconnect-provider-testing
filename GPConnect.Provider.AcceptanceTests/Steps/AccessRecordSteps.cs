@@ -93,8 +93,6 @@
         {
             Boolean hasPatient = false;
             Boolean hasOrganization = false;
-            Boolean hasPractitioner = false;
-            Boolean hasPractitionerRole = true; // Not all practitioners have a role? Awaiting clarification on whether role is mandatory or not
             Bundle.GetResources().ToList().ForEach(resource =>
             {
                 if (resource.ResourceType.Equals(ResourceType.Patient))
@@ -110,26 +108,78 @@
                             identifier.Value.ShouldBe(GlobalContext.PatientNhsNumberMap[patient], "NHS number returned in patient should be the same as the one requested");
                         }
                     });
+
+                    checkPractitionerResourcesAgainstPatientGp(patientResource);
                 }
                 else if (resource.ResourceType.Equals(ResourceType.Organization))
                 {
                     hasOrganization = true;
                 }
-                else if (resource.ResourceType.Equals(ResourceType.Practitioner))
-                {
-                    hasPractitioner = true;
-                }
-                else if (resource.ResourceType.Equals(ResourceType.PractitionerRole))
-                {
-                    hasPractitionerRole = true;
-                    //role should match the usul Gp's role
-                }
             });
 
             hasPatient.ShouldBe(true);
             hasOrganization.ShouldBe(true);
-            hasPractitioner.ShouldBe(true);
-            hasPractitionerRole.ShouldBe(true);
+        }
+
+        /*
+         * Check that a practitioner resource exists for the patient's usual GP (also check role resources exist)
+         */
+        private void checkPractitionerResourcesAgainstPatientGp(Patient patient)
+        {
+            Boolean usualGpPresent = false;
+            patient.GeneralPractitioner.ForEach(practitioner =>
+            {
+                practitioner.Reference.ShouldStartWith("Practitioner");
+                string identifier = practitioner.Reference.Substring(13);
+                Bundle.GetResources().ToList().ForEach(potentialPractitioner =>
+                {
+                    if (potentialPractitioner.ResourceType.Equals(ResourceType.Practitioner))
+                    {
+                        Practitioner practitionerResource = (Practitioner)potentialPractitioner;
+                        if (practitionerResource.Id.Equals(identifier))
+                        {
+                            usualGpPresent = true;
+                            checkPractitionerRoleResourcesAgainstPatientGpRole(practitionerResource);
+                        }
+                    };
+                });
+            });
+
+            usualGpPresent.ShouldBe(true, "There is no practitioner resource that matches the patient's usual GP.");
+        }
+
+        /*
+         * Check that a PractitionerRole resource exists for the patient's usual GP's roles
+         */
+        private void checkPractitionerRoleResourcesAgainstPatientGpRole(Practitioner practitioner)
+        {
+            Boolean usualGpRolePresent = false;
+
+            var pracRoleIdentifiers = practitioner.Identifier
+                        .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kPracRoleProfile))
+                        .ToList();
+
+            if (pracRoleIdentifiers.Count.Equals(0))
+            {
+                usualGpRolePresent = true; 
+            }
+
+            pracRoleIdentifiers.ForEach(roleIdentifier =>
+            {
+                Bundle.GetResources().ToList().ForEach(potentialPractitionerRole =>
+                {
+                    if (potentialPractitionerRole.ResourceType.Equals(ResourceType.PractitionerRole))
+                    {
+                        PractitionerRole role = (PractitionerRole)potentialPractitionerRole;
+                        if (role.Id.Equals(roleIdentifier.Value))
+                        {
+                            usualGpRolePresent = true;
+                        }
+                    };
+                });
+            });
+
+            usualGpRolePresent.ShouldBe(true, "There is no practitioner role resource that matches the patient's usual GP's role.");
         }
 
         public static void BaseListParametersAreValid(List list)
