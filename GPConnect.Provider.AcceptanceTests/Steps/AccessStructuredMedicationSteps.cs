@@ -145,7 +145,7 @@
                 if (list.Entry.Count.Equals(0))
                 {
                     list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
-                    list.EmptyReason.Text.Equals("Information not available");
+                    list.EmptyReason.Text.Equals("noContent");
                     list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
                 }
                 else
