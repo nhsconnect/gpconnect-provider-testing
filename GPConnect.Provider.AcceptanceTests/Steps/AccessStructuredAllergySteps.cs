@@ -16,8 +16,8 @@
     public sealed class AccessStructuredAllergySteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
-
-        private List<AllergyIntolerance> AllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
+        private List<AllergyIntolerance> AllAllergyIntolerances = new List<AllergyIntolerance>();
+        private List<AllergyIntolerance> ActiveAllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
         private List<List> Lists => _httpContext.FhirResponse.Lists;
         private Bundle Bundle => _httpContext.FhirResponse.Bundle;
 
@@ -121,7 +121,18 @@
                     list.Entry.ForEach(entry =>
                     {
                         entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
-                        entry.Item.Reference.ShouldStartWith("AllergyIntolerance");
+                        entry.Item.Reference.ShouldMatch("AllergyIntolerance/.+|#.+");
+                        if (entry.Item.IsContainedReference)
+                        {
+                            string id = entry.Item.Reference.Substring(1);
+                            List<Resource> contained = list.Contained.Where(allergy => allergy.Id.Equals(id)).ToList();
+                            contained.Count.ShouldBe(1);
+                            contained.ForEach(allergy =>
+                            {
+                                AllergyIntolerance allergyIntolerance = (AllergyIntolerance)allergy;
+                                allergyIntolerance.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved);
+                            });
+                        }
                     });
                 }
 
@@ -138,7 +149,7 @@
         [Then(@"the Bundle should contain ""(.*)"" allergies")]
         public void TheBundleShouldContainAllergies(int number)
         {
-            AllergyIntolerances.Count.ShouldBe(number, "An incorrect number of allergies was returned for the patient.");
+            ActiveAllergyIntolerances.Count.ShouldBe(number, "An incorrect number of allergies was returned for the patient.");
         }
 
         [Then(@"the Bundle should contain ""(.*)"" lists")]
@@ -156,13 +167,9 @@
         [Then(@"the Bundle should contain the correct number of allergies")]
         public void TheBundleShouldContainTheCorrectNumberOfAllergies()
         {
-            int numberOfEntries = 0;
-            Lists.ForEach(list =>
-            {
-                numberOfEntries = numberOfEntries + list.Entry.Count();
-            });
+            List active = Lists.Where(list => list.Title.Equals("Active Allergies")).ToList().First();
 
-            AllergyIntolerances.Count.ShouldBe(numberOfEntries);
+            ActiveAllergyIntolerances.Count.ShouldBe(active.Entry.Count);
         }
 
         [Then(@"the Bundle should not contain a list with the title ""(.*)""")]
@@ -220,6 +227,20 @@
         [Then(@"the AllergyIntolerance should be valid")]
         public void TheAllergyIntoleranceShouldBeValid()
         {
+            AllAllergyIntolerances.AddRange(ActiveAllergyIntolerances);
+
+            //Get the 'contained' resolved allergies from the resolved list
+            List<List> resolved = Lists.Where(list => list.Title.Equals("Resolved Allergies")).ToList();
+            if (resolved.Count > 0)
+            {
+                List<Resource> resolvedAllergies = resolved.First().Contained.Where(resource => resource.ResourceType.Equals(ResourceType.AllergyIntolerance)).ToList();
+                resolvedAllergies.ForEach(resource =>
+                {
+                    AllergyIntolerance allergy = (AllergyIntolerance)resource;
+                    AllAllergyIntolerances.Add(allergy);
+                });
+            }
+            
             TheAllergyIntoleranceRecorderShouldbeValid();
             TheAllergyIntoleranceClinicalStatusShouldbeValid();
             TheAllergyIntoleranceAssertedDateShouldBeValid();
@@ -234,61 +255,57 @@
             TheAllergyIntoleranceCategoryShouldbeValid();
         }
 
-        
-
-        [Then(@"the AllergyIntolerance Recorder should be valid")]
-        public void TheAllergyIntoleranceRecorderShouldbeValid()
+        private void TheAllergyIntoleranceRecorderShouldbeValid()
         {
-            AllergyIntolerances.ForEach(allergy =>
+            AllAllergyIntolerances.ForEach(allergy =>
             {
                 allergy.Recorder.ShouldNotBeNull("AllergyIntolerance Recorder cannot be null");
             });
         }
 
-        [Then(@"the AllergyIntolerance Metadata should be valid")]
-        public void TheAllergyIntoleranceMetadataShouldBeValid()
+        private void TheAllergyIntoleranceMetadataShouldBeValid()
         {
-            AllergyIntolerances.ForEach(allergyIntolerance =>
+            AllAllergyIntolerances.ForEach(allergyIntolerance =>
             {
                 CheckForValidMetaDataInResource(allergyIntolerance, FhirConst.StructureDefinitionSystems.kAllergyIntolerance);
             });
         }
 
-        [Then(@"the AllergyIntolerance Id should be valid")]
-        public void TheAllergyIntoleranceIdShouldBeValid()
+        private void TheAllergyIntoleranceIdShouldBeValid()
         {
-            AllergyIntolerances.ForEach(allergy =>
+            AllAllergyIntolerances.ForEach(allergy =>
             {
                 allergy.Id.ShouldNotBeNullOrWhiteSpace("Id must be set");
             });
         }
 
-        [Then(@"the AllergyIntolerance clinicalStatus should be valid")]
-        public void TheAllergyIntoleranceClinicalStatusShouldbeValid()
+        private void TheAllergyIntoleranceClinicalStatusShouldbeValid()
         {
-            AllergyIntolerances.ForEach(allergy =>
+            ActiveAllergyIntolerances.ForEach(allergy =>
+            {
+                allergy.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Active);
+            });
+
+            AllAllergyIntolerances.ForEach(allergy =>
             {
                 allergy.ClinicalStatus.ShouldNotBeNull("AllergyIntolerance ClinicalStatus cannot be null");
                 allergy.ClinicalStatus.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceClinicalStatus>($"AllergyIntolerance ClinicalStatus is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceClinicalStatus}");
-                allergy.ClinicalStatus.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Inactive, "The clinical status should never be set to inactive");
-                       
+                allergy.ClinicalStatus.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Inactive, "The clinical status should never be set to inactive");        
             });
         }
 
-        [Then(@"the AllergyIntolerance verificationStatus should be valid")]
-        public void TheAllergyIntoleranceVerificationStatusShouldbeValid()
+        private void TheAllergyIntoleranceVerificationStatusShouldbeValid()
         {
-            AllergyIntolerances.ForEach(allergy =>
+            AllAllergyIntolerances.ForEach(allergy =>
             {
                 allergy.VerificationStatus.ShouldNotBeNull("AllergyIntolerance VerificationStatus cannot be null");
                 allergy.VerificationStatus.ShouldBe(AllergyIntolerance.AllergyIntoleranceVerificationStatus.Unconfirmed);
             });
         }
 
-        [Then(@"the AllergyIntolerance category should be valid")]
-        public void TheAllergyIntoleranceCategoryShouldbeValid()
+        private void TheAllergyIntoleranceCategoryShouldbeValid()
         {
-            AllergyIntolerances.ForEach(allergy =>
+            AllAllergyIntolerances.ForEach(allergy =>
             {
 
                 allergy.Category.ShouldNotBeNull("AllergyIntolerance Category cannot be null");
@@ -301,10 +318,9 @@
             });
         }
 
-        [Then(@"the AllergyIntolerance Code should be valid")]
-        public void TheAllergyIntoleranceCodeShouldbeValid()
+        private void TheAllergyIntoleranceCodeShouldbeValid()
         {
-            AllergyIntolerances.ForEach(allergy =>
+            AllAllergyIntolerances.ForEach(allergy =>
             {
                allergy.Code.Coding.ShouldNotBeNull("AllergyIntolerance Code coding cannot be null");
 
@@ -315,19 +331,17 @@
             });
         }
 
-        [Then(@"the AllergyIntolerance assertedDate should be valid")]
-        public void TheAllergyIntoleranceAssertedDateShouldBeValid()
+        private void TheAllergyIntoleranceAssertedDateShouldBeValid()
         {
-            AllergyIntolerances.ForEach(allergy =>
+            AllAllergyIntolerances.ForEach(allergy =>
             {
                 allergy.AssertedDate.ShouldNotBeNullOrEmpty();
             });
         }
 
-        [Then(@"the AllergyIntolerance endDate should be valid")]
-        public void TheAllergyIntoleranceEndDateShouldBeValid()
+        private void TheAllergyIntoleranceEndDateShouldBeValid()
         {
-            AllergyIntolerances.ForEach(allergy =>
+            AllAllergyIntolerances.ForEach(allergy =>
             {
                 if (allergy.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved))
                 {
@@ -340,10 +354,9 @@
             });
         }
 
-        [Then(@"the AllergyIntolerance Patient should be valid and resolvable")]
-        public void TheAllergyIntolerancePatientShouldBeValidAndResolvable()
+        private void TheAllergyIntolerancePatientShouldBeValidAndResolvable()
         {
-            AllergyIntolerances.ForEach(allergy =>
+            AllAllergyIntolerances.ForEach(allergy =>
             {
                var reference = allergy.Patient.Reference;
                reference.ShouldStartWith("Patient/");
@@ -353,10 +366,9 @@
             });
         }
 
-        [Then(@"the allergyIntolerance reaction should be valid")]
-        public void TheAllergyIntoleranceReactionShouldBeValid()
+        private void TheAllergyIntoleranceReactionShouldBeValid()
         {
-            AllergyIntolerances.ForEach(allergy =>
+            AllAllergyIntolerances.ForEach(allergy =>
             {
                 if (allergy.Reaction != null)
                 {

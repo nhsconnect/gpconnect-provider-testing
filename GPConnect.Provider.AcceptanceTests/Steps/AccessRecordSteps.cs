@@ -92,28 +92,26 @@
 
         private void CheckBundleResources(string patient)
         {
-            Boolean hasPatient = false;
-            Bundle.GetResources().ToList().ForEach(resource =>
+            List<Resource> patientResources = Bundle.GetResources().ToList()
+                        .Where(resource => resource.ResourceType.Equals(ResourceType.Patient))
+                        .ToList();
+
+            patientResources.Count.ShouldBeGreaterThan(0, "Bundle must contain a Patient resource");
+
+            patientResources.ForEach(resource =>
             {
-                if (resource.ResourceType.Equals(ResourceType.Patient))
+                //Check the returned patient has the correct NHS number
+                Patient patientResource = (Patient)resource;
+                patientResource.Identifier.ForEach(identifier =>
                 {
-                    hasPatient = true;
-
-                    //Check the returned patient has the correct NHS number
-                    Patient patientResource = (Patient)resource;
-                    patientResource.Identifier.ForEach(identifier =>
+                    if (identifier.System.Equals(FhirConst.IdentifierSystems.kNHSNumber))
                     {
-                        if (identifier.System.Equals(FhirConst.IdentifierSystems.kNHSNumber))
-                        {
-                            identifier.Value.ShouldBe(GlobalContext.PatientNhsNumberMap[patient], "NHS number returned in patient should be the same as the one requested");
-                        }
-                    });
+                        identifier.Value.ShouldBe(GlobalContext.PatientNhsNumberMap[patient], "NHS number returned in patient should be the same as the one requested");
+                    }
+                });
 
-                    checkPractitionerOrganisationResourcesAgainstPatientGp(patientResource);
-                }
+                checkPractitionerOrganisationResourcesAgainstPatientGp(patientResource);
             });
-
-            hasPatient.ShouldBe(true);
         }
 
         /*
@@ -121,9 +119,6 @@
          */
         private void checkPractitionerOrganisationResourcesAgainstPatientGp(Patient patient)
         {
-            Boolean usualGpPresent = false;
-            Boolean managingOrg = false;
-
             List<Resource> practitionerResources = Bundle.GetResources().ToList()
                         .Where(resource => resource.ResourceType.Equals(ResourceType.Practitioner))
                         .ToList();
@@ -132,57 +127,34 @@
                         .Where(resource => resource.ResourceType.Equals(ResourceType.Organization))
                         .ToList();
 
-            if (patient.GeneralPractitioner.Count.Equals(0))
-            {
-                usualGpPresent = true;
-            }
             patient.GeneralPractitioner.ForEach(gp =>
             {
-                string identifier = gp.Reference.Substring(13);
-                if (gp.Reference.StartsWith("Practitioner"))
-                {
-                    //if the patient's general practitioner is a practitioner reference then a matching practitioner should be returned in the bundle
-                    practitionerResources.ForEach(practitioner =>
+                    string identifier = gp.Reference.Substring(13);
+                    if (gp.Reference.StartsWith("Practitioner"))
                     {
-                        if (practitioner.Id.Equals(identifier))
-                        {
-                            usualGpPresent = true;
-                            checkPractitionerRoleResourcesAgainstPatientGpRole(practitioner);
-                        }
-                    });
-                } else if (gp.Reference.StartsWith("Organization"))
-                {
-                    //if the patient's general practitioner is an organisation reference then a matching organisation should be returned in the bundle
-                    usualGpPresent = checkForOrganisationResource(identifier, organisationResources);
-                }
-            });
+                        //if the patient's general practitioner is a practitioner reference then a matching practitioner should be returned in the bundle
+                        practitionerResources.Where(prac => prac.Id.Equals(identifier)).ToList().Count.ShouldBeGreaterThan(0);
 
-            if (patient.ManagingOrganization != null)
-            {
-                //if the patient's managing practitioner is not null then a matching organisation should be returned in the bundle
-                string manOrgId = patient.ManagingOrganization.Reference.Substring(13);
-                managingOrg = checkForOrganisationResource(manOrgId, organisationResources);
-            }
-            else
-            {
-                managingOrg = true;
+                    }
+                    else if (gp.Reference.StartsWith("Organization"))
+                    {
+                        //if the patient's general practitioner is an organisation reference then a matching organisation should be returned in the bundle
+                        checkForOrganisationResource(identifier, organisationResources);
+                    }
+             });
+
+                if (patient.ManagingOrganization != null)
+                {
+                    //if the patient's managing practitioner is not null then a matching organisation should be returned in the bundle
+                    string manOrgId = patient.ManagingOrganization.Reference.Substring(13);
+                    checkForOrganisationResource(manOrgId, organisationResources);
+                }
             }
 
-            usualGpPresent.ShouldBe(true, "There is no practitioner or organisation resource that matches the patient's general practitioner.");
-            managingOrg.ShouldBe(true, "There is no organisation resource that matches the patient's managing organisation.");
-        }
 
-        private bool checkForOrganisationResource(string orgId, List<Resource> organisationResources)
-        {
-            bool returnValue = false;
-            organisationResources.ForEach(potentialOrganisation =>
-            {
-                if (potentialOrganisation.Id.Equals(orgId))
-                {
-                    returnValue = true;
-                }
-            });
-            return returnValue;
+        private void checkForOrganisationResource(string orgId, List<Resource> organisationResources)
+        {            
+            organisationResources.Where(org => org.Id.Equals(orgId)).ToList().Count.ShouldBeGreaterThan(0);
         }
 
         /*
@@ -190,7 +162,6 @@
          */
         private void checkPractitionerRoleResourcesAgainstPatientGpRole(Resource practitionerResource)
         {
-            Boolean usualGpRolePresent = false;
             Practitioner practitioner = (Practitioner)practitionerResource;
 
             var pracRoleIdentifiers = practitioner.Identifier
@@ -201,25 +172,10 @@
                         .Where(resource => resource.ResourceType.Equals(ResourceType.PractitionerRole))
                         .ToList();
 
-            if (pracRoleIdentifiers.Count.Equals(0))
+            pracRoleIdentifiers.ForEach(roleIdentifier =>
             {
-                usualGpRolePresent = true;
-            }
-            else
-            {
-                pracRoleIdentifiers.ForEach(roleIdentifier =>
-                {
-                    roleResources.ForEach(practitionerRole =>
-                    {
-                        if (practitionerRole.Id.Equals(roleIdentifier.Value))
-                        {
-                            usualGpRolePresent = true;
-                        }
-                    });
-                });
-            }
-
-            usualGpRolePresent.ShouldBe(true, "There is no practitioner role resource that matches the patient's usual GP's role.");
+                roleResources.Where(role => role.Id.Equals(roleIdentifier.Value)).ToList().Count.ShouldBeGreaterThan(0);
+            });
         }
 
         public static void BaseListParametersAreValid(List list)
