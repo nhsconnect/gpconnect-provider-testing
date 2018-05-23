@@ -139,7 +139,6 @@
                 if (list.Entry.Count == 0)
                 {
                     list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
-                    list.EmptyReason.Text.Equals("Information not available");
                     list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
                 }
             });
@@ -190,21 +189,32 @@
         {
             Lists.ForEach(list =>
            {
-               if (null == list.EmptyReason || list.EmptyReason.Coding.Count == 0)
-               {
-                   list.Note.ShouldNotBeNull();
-                   list.Note.ShouldHaveSingleItem();
-                   list.Note.First().Text.ShouldBe("There are no allergies in the patient record but it has not been confirmed with the patient that they have no allergies (that is, a ‘no known allergies’ code has not been recorded).");
-                   list.Entry.ShouldBeEmpty();
-                   list.EmptyReason.Text.ShouldBe("Information not available");
-               }
-               else
-               {
-                   list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kSpecial);
-                   list.EmptyReason.Coding.First().Code.ShouldBe("nil-known");
-                   list.EmptyReason.Text.ShouldBe("No Known Allergies");
-               }
+               list.Entry.ShouldBeEmpty();
+               list.Note.ShouldNotBeNull();
+               list.Note.ShouldHaveSingleItem();
+               list.Note.First().Text.ShouldBe("Information not available");
+               list.EmptyReason.ShouldNotBeNull();
+               list.EmptyReason.Coding.Count.ShouldBe(1);
+               list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kSpecial);
+               list.EmptyReason.Coding.First().Code.ShouldBe("nocontentrecorded");
+               list.EmptyReason.Coding.First().Display.ShouldBe("No content recorded");
            });
+        }
+
+        [Then(@"the Lists are valid for a patient with explicit no allergies coding")]
+        public void TheListsAreValidForAPatientWithExplicitNoAllergiesCoding()
+        {
+            Lists.ForEach(list =>
+            {
+                if (list.Title.Equals("Active Allergies"))
+                {
+                    ActiveAllergyIntolerances.Count.Equals(1);
+                    ActiveAllergyIntolerances.ForEach(allergy =>
+                    {
+                        allergy.Code.Coding.First().Code.ShouldNotBeNull();
+                    });
+                }
+            });
         }
 
         [Then(@"the Lists are valid for a patient with allergies")]
