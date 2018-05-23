@@ -124,6 +124,7 @@
             public const string kExtRegistrationPeriod = "https://fhir.nhs.uk/StructureDefinition/extension-registration-period-1";
             public const string kExtListWarningCode = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-ListWarningCode-1";
             public const string kExtListClinicalSetting = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-ClinicalSetting-1";
+            public const string kExtEncounter = "http://hl7.org/fhir/StructureDefinition/encounter-associatedEncounter";
             public const string kCCExtRegistrationStatus = "registrationStatus";
             public const string kCCExtRegistrationType = "registrationType";
             public const string kCCExtRegistrationPeriod = "registrationPeriod";

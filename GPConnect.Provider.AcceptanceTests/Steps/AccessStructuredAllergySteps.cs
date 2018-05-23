@@ -263,6 +263,20 @@
             TheAllergyIntoleranceCodeShouldbeValid();
             TheListOfAllergyIntolerancesShouldBeValid();
             TheAllergyIntoleranceCategoryShouldbeValid();
+            TheAllergyIntoleranceEncounterShouldBeValid();
+        }
+
+        private void TheAllergyIntoleranceEncounterShouldBeValid()
+        {
+            AllAllergyIntolerances.ForEach(allergy =>
+            {
+                Extension encounter = allergy.GetExtension(FhirConst.StructureDefinitionSystems.kExtEncounter);
+                if (encounter != null)
+                {
+                    ResourceReference encRef = (ResourceReference)encounter.Value;
+                    encRef.Reference.StartsWith("Encounter/");
+                }
+            });
         }
 
         private void TheAllergyIntoleranceRecorderShouldbeValid()
@@ -360,6 +374,9 @@
                     Extension endDate = endAllergy.GetExtension("endDate");
                     endDate.ShouldNotBeNull();
                     endDate.Value.ShouldNotBeNull();
+                    Extension endReason = endAllergy.GetExtension("reasonEnded");
+                    endReason.ShouldNotBeNull();
+                    endReason.Value.ShouldNotBeNull();
                 }
             });
         }
