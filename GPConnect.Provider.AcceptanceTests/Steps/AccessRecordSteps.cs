@@ -9,6 +9,7 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
+    using GPConnect.Provider.AcceptanceTests.Cache.ValueSet;
 
     [Binding]
     public sealed class AccessRecordSteps : BaseSteps
@@ -196,8 +197,36 @@
             isTheListSubjectValid(list.Subject).ShouldBeTrue();
 
             list.Title.ShouldNotBeNull("The List title is a mandatory field.");
+            TheListClinicalSettingShouldBeValid(list);
+
+            TheListWarningCodeShouldBeValid(list);
         }
 
+        private static void TheListClinicalSettingShouldBeValid(List list)
+        {
+            List<Extension> clinicalSettings = list.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtListClinicalSetting)).ToList();
+            clinicalSettings.Count.ShouldBeLessThanOrEqualTo(1);
+            if (clinicalSettings.Count == 1)
+            {
+                CodeableConcept clinicalSetting = (CodeableConcept)clinicalSettings.First().Value;
+                clinicalSetting.Coding.Count.Equals(1);
+                clinicalSetting.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
+                clinicalSetting.Coding.First().Code.Equals("1060971000000108");
+                clinicalSetting.Coding.First().Display.Equals("General practice service");
+            }
+        }
+
+        private static void TheListWarningCodeShouldBeValid(List list)
+        {
+            List<Extension> warningCodes = list.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtListWarningCode)).ToList();
+            warningCodes.Count.ShouldBeLessThanOrEqualTo(1);
+            if (warningCodes.Count == 1)
+            {
+                Coding warningCode = (Coding)warningCodes.First().Value;
+                var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsWarningCode);
+                ValueSetContainsCodeAndDisplayAndSystem(valueSet, warningCode);
+            }
+        }
 
         private static Boolean isTheListSubjectValid(ResourceReference subject)
         {

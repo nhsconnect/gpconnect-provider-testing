@@ -44,7 +44,7 @@
             validCode.ShouldNotBeNull("Code, System and display combination does not match required valueset");
         }
 
-        private static void ValueSetContainsCodeAndDisplayAndSystem(ValueSet valueSet, Coding coding)
+        public static void ValueSetContainsCodeAndDisplayAndSystem(ValueSet valueSet, Coding coding)
         {
             valueSet.Expansion.Contains.ShouldContain(component => component.Code.Equals(coding.Code)  
                                                     && component.Display.Equals(coding.Display) 
