@@ -623,6 +623,7 @@
                 if (prescriptionType.Coding.First().Display.Contains("Repeat"))
                 {
                     medRequest.GroupIdentifier.ShouldNotBeNull();
+                    medRequest.GroupIdentifier.Value.ShouldNotBeNull();
                 }
             });
         }
