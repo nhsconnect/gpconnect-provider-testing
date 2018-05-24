@@ -22,12 +22,9 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And there should only be one order request for acute prescriptions
 	Examples:
 		| Patient  |
-		| patient1 |
 		| patient2 |
 		| patient3 |
-		| patient4 |
 		| patient5 |
-		| patient6 |
 		| patient12 |
 		
 Scenario Outline: Retrieve the medication structured record section for a patient excluding prescription issues
@@ -50,13 +47,40 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the Medication Requests should not contain any issues
 	Examples:
 		| Patient  |
-		| patient1 |
 		| patient2 |
 		| patient3 |
-		| patient4 |
 		| patient5 |
-		| patient6 |
 		| patient12 |
+
+Scenario: Retrieve the medication structured record section for a patient with no medications including issues
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient4"
+		And I add the medication parameter with includePrescriptionIssues set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient4"
+		And the Bundle should contain "1" lists
+		And the List of MedicationStatements should be valid
+		
+Scenario: Retrieve the medication structured record section for a patient with no medications
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient4"
+		And I add the medication parameter with includePrescriptionIssues set to "false"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient4"
+		And the Bundle should contain "1" lists
+		And the List of MedicationStatements should be valid
 		
 Scenario Outline: Retrieve the structured record section for a patient without the medications parameter
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -72,12 +96,9 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		And the response bundle should not contain any medications data
 	Examples:
 		| Patient  |
-		| patient1 |
 		| patient2 |
 		| patient3 |
-		| patient4 |
 		| patient5 |
-		| patient6 |
 		| patient12 |
 		
 Scenario: Retrieve the medication structured record section for a patient without the prescription issue parameter
@@ -156,12 +177,9 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the MedicationStatement dates are with the default period with start "true" and end "true"
 	Examples:
 		| Patient  |
-		| patient1 |
 		| patient2 |
 		| patient3 |
-		| patient4 |
 		| patient5 |
-		| patient6 |
 		| patient12 |
 
 Scenario Outline: Retrieve the medication structured record section for a patient with a start date
@@ -184,12 +202,9 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the MedicationStatement dates are with the default period with start "true" and end "false"
 	Examples:
 		| Patient  |
-		| patient1 |
 		| patient2 |
 		| patient3 |
-		| patient4 |
 		| patient5 |
-		| patient6 |
 		| patient12 |
 
 Scenario Outline: Retrieve the medication structured record section for a patient with an end date
@@ -212,12 +227,9 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the MedicationStatement dates are with the default period with start "false" and end "true"
 	Examples:
 		| Patient  |
-		| patient1 |
 		| patient2 |
 		| patient3 |
-		| patient4 |
 		| patient5 |
-		| patient6 |
 		| patient12 |
 
 Scenario Outline: Retrieve the medication structured record section for a patient with invalid time period
@@ -258,6 +270,7 @@ Scenario: Retrieve the medication structured record section for a patient with m
 		And the List of MedicationStatements should be valid
 		And the MedicationStatement dates are with the default period with start "false" and end "true"
 		And the MedicationStatement for prescriptions prescribed elsewhere should be valid
+
 
 @Ignore @Manual
 Scenario: Notes that are present in the record are formatted correctly
