@@ -256,3 +256,4 @@ paket-files/
 
 #Ignore .feature.cs
 /GPConnect.Provider.AcceptanceTests/*.feature.cs
+Data/.~lock.Test Suite Prerequisites.xlsx#

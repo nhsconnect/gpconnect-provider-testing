@@ -338,15 +338,17 @@
         {
             MedicationStatements.ForEach(medStatement =>
             {
-                medStatement.Effective.ShouldNotBeNull();
-                if(medStatement.Effective.TypeName.Contains("Period"))
+                if (medStatement.Effective != null)
                 {
-                    Period effectivePeriod = (Period)medStatement.Effective;
-                    effectivePeriod.Start.ShouldNotBeNull();
-                }
-                else
-                {
-                    medStatement.Effective.TypeName.ShouldContain("DateTime");
+                    if (medStatement.Effective.TypeName.Contains("Period"))
+                    {
+                        Period effectivePeriod = (Period)medStatement.Effective;
+                        effectivePeriod.Start.ShouldNotBeNull();
+                    }
+                    else
+                    {
+                        medStatement.Effective.TypeName.ShouldContain("DateTime");
+                    }
                 }
             });
         }
@@ -375,8 +377,8 @@
         {
             MedicationStatements.ForEach(medStatement =>
             {
-                medStatement.Taken.ShouldNotBeNull();
-                medStatement.Taken.ShouldBeOfType<MedicationStatement.MedicationStatementTaken>("Medication Taken is of the wrong type");
+                //medStatement.Taken.ShouldNotBeNull();
+                //medStatement.Taken.ShouldBeOfType<MedicationStatement.MedicationStatementTaken>("Medication Taken is of the wrong type");
             });
         }
 
@@ -754,7 +756,10 @@
                 else
                 { 
                     Extension repeatInformation = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRepeatInformation);
-                    //repeatInformation.GetExtension("numberOfRepeatPrescriptionsAllowed").ShouldBeNull();
+                    if (repeatInformation != null)
+                    {
+                        repeatInformation.GetExtension("numberOfRepeatPrescriptionsAllowed").ShouldBeNull();
+                    }
                 }
             });
         }
@@ -764,10 +769,11 @@
         {
             MedicationRequests.ForEach(medRequest =>
             {
-                medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).ShouldNotBeNull();
-                CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
+                Extension prescriptionType = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType);
+                prescriptionType.ShouldNotBeNull();
+                CodeableConcept prescriptionTypeValue = (CodeableConcept)prescriptionType.Value;
 
-                prescriptionType.Coding.First().System.Equals(FhirConst.CodeSystems.kCcPresriptionType);
+                prescriptionTypeValue.Coding.First().System.Equals(FhirConst.CodeSystems.kCcPresriptionType);
             });
         }
 
