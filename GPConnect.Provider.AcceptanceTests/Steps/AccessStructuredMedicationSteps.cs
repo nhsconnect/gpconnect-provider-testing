@@ -393,7 +393,22 @@
                 });
             });
         }
-        
+
+        [Then(@"the MedicationStatement for prescriptions prescribed elsewhere should be valid")]
+        public void TheMedicationStatementForPrescriptionsPrescribedElsewhereShouldBeValid()
+        {
+            List<MedicationStatement> prescribedElsewhere = MedicationStatements.Where(medStatement => 
+                medStatement.GetExtension(FhirConst.StructureDefinitionSystems.kExtPrescriptionAgency) != null).ToList();
+
+            prescribedElsewhere.ForEach(medStatement =>
+            {
+                var requestId = medStatement.BasedOn.First().Reference.Substring(18);
+                List<MedicationRequest> requestsFromElsewhere = MedicationRequests.Where(medRequest => medRequest.Id.Equals(requestId)).ToList();
+                requestsFromElsewhere.ShouldHaveSingleItem();
+                requestsFromElsewhere.First().Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan);
+            });
+        }
+
         [Then(@"the MedicationStatement dates are with the default period with start ""(.*)"" and end ""(.*)""")]
         private void TheMedicationStatementDatesAreWithinTheDefaultPeriod(Boolean useStart, Boolean useEnd)
         {

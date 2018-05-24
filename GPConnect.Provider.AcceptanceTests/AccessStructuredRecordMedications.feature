@@ -239,6 +239,26 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| 2016-02-02                | 2017-10-23T11:08:32+00:00 |
 		| 2014-02-02                | 2012-02-02                |
 
+Scenario: Retrieve the medication structured record section for a patient with medication prescribed elsewhere
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient12"
+		And I add the medication parameter with includePrescriptionIssues set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient12"
+		And the Bundle should contain "1" lists
+		And the Medications should be valid
+		And the Medication Statements should be valid
+		And the Medication Requests should be valid
+		And the List of MedicationStatements should be valid
+		And the MedicationStatement dates are with the default period with start "false" and end "true"
+		And the MedicationStatement for prescriptions prescribed elsewhere should be valid
+
 @Ignore @Manual
 Scenario: Notes that are present in the record are formatted correctly
 	# All patient notes and prescriber notes at authorisation(plan) and issue(order) level SHOULD be included in this field.
