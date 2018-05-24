@@ -107,11 +107,11 @@
                 //Alergy specific checks
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
 
-                if(list.Title.Equals("Active Allergies"))
+                if(list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
                 {
                     list.Code.Equals("886921000000105");
 
-                } else if (list.Title.Equals("Resolved Allergies"))
+                } else if (list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies))
                 {
                     list.Code.Equals("TBD");
                 }
@@ -166,7 +166,7 @@
         [Then(@"the Bundle should contain the correct number of allergies")]
         public void TheBundleShouldContainTheCorrectNumberOfAllergies()
         {
-            List active = Lists.Where(list => list.Title.Equals("Active Allergies")).ToList().First();
+            List active = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kActiveAllergies)).ToList().First();
 
             ActiveAllergyIntolerances.Count.ShouldBe(active.Entry.Count);
         }
@@ -206,7 +206,7 @@
         {
             Lists.ForEach(list =>
             {
-                if (list.Title.Equals("Active Allergies"))
+                if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
                 {
                     ActiveAllergyIntolerances.Count.Equals(1);
                     ActiveAllergyIntolerances.ForEach(allergy =>
@@ -240,7 +240,7 @@
             AllAllergyIntolerances.AddRange(ActiveAllergyIntolerances);
 
             //Get the 'contained' resolved allergies from the resolved list
-            List<List> resolved = Lists.Where(list => list.Title.Equals("Resolved Allergies")).ToList();
+            List<List> resolved = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies)).ToList();
             if (resolved.Count > 0)
             {
                 List<Resource> resolvedAllergies = resolved.First().Contained.Where(resource => resource.ResourceType.Equals(ResourceType.AllergyIntolerance)).ToList();

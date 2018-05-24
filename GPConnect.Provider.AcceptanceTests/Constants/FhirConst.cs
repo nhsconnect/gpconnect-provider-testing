@@ -187,5 +187,12 @@
             public const string kGreaterThanOrEqualTo = "ge";
             public const string kLessThanOrEqualTo = "le";
         }
+
+        internal static class ListTitles
+        {
+            public const string kActiveAllergies = "Allergies and adverse reactions";
+            public const string kResolvedAllergies = "Resolved Allergies";
+            public const string kMedications = "Medications and medical devices";
+        }
     }
 }

@@ -140,6 +140,7 @@
                 //Medication specific checks
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
                 MedicationStatements.Count().Equals(list.Entry.Count());
+                list.Title.Equals(FhirConst.ListTitles.kMedications);
                 list.Code.Equals("933361000000108");
 
                 if (list.Entry.Count.Equals(0))
