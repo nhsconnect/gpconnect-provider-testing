@@ -219,7 +219,7 @@
         private static void TheListWarningCodeShouldBeValid(List list)
         {
             List<Extension> warningCodes = list.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtListWarningCode)).ToList();
-            warningCodes.Count.ShouldBeLessThanOrEqualTo(1);
+            warningCodes.Count.ShouldBeLessThanOrEqualTo(4);
             if (warningCodes.Count == 1)
             {
                 Coding warningCode = (Coding)warningCodes.First().Value;
