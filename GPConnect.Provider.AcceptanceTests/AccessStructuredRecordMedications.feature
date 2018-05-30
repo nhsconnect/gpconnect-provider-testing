@@ -271,6 +271,15 @@ Scenario: Retrieve the medication structured record section for a patient with m
 		And the MedicationStatement dates are with the default period with start "false" and end "true"
 		And the MedicationStatement for prescriptions prescribed elsewhere should be valid
 
+Scenario: Check warning code is populated for a patient
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the medication parameter with includePrescriptionIssues set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the Bundle should contain "1" lists
+		And the Bundle should contain a list with the title "Medication List"
+		And the Lists are valid for a patient without allergies
 
 @Ignore @Manual
 Scenario: Notes that are present in the record are formatted correctly

@@ -231,6 +231,18 @@ Scenario: Retrieve the allergy structured record section for a patient with reco
 		And I add the allergies parameter with resolvedAllergies set to "true"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response should contain the recorder reference
+
+Scenario: Check allergy warning code is populated for a patient
+	Given I configure the default "GpcGetStructuredRecord" request 
+	And I add an NHS Number parameter for "patient14"
+	And I add the allergies parameter with resolvedAllergies set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+	And the Bundle should contain "2" lists
+	And the Bundle should contain a list with the title "Allergies and adverse reactions"
+	And the Bundle should contain a list with the title "Resolved Allergies"
+	And the Lists are valid for a patient without allergies
+
 	
 @Ignore @Manual
 Scenario: Resolved allergy resources are assigned a clinicalStatus of resolved

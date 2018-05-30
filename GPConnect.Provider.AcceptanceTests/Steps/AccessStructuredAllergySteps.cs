@@ -230,6 +230,23 @@
             });
         }
 
+        [Then(@"the Lists are valid for a patient without allergies")]
+        public void TheListsAreValidForAPatientWithooutAllergies()
+        {
+            Lists.ForEach(list =>
+            {
+                list.EmptyReason.ShouldBeNull();
+                list.Extension.ForEach(extension =>
+                {
+                    extension.Url.ShouldNotBeNull();
+                });
+                //list.Note.ForEach(note =>
+                //{
+                //    note.Text.ShouldNotContain("no known allergies");
+                //});
+            });
+        }
+
         #endregion
 
         #region Allergy Intolerance Validity Checks
