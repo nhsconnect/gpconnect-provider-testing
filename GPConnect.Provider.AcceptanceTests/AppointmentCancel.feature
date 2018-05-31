@@ -57,8 +57,8 @@ Scenario: I perform cancel appointment and add participants
 		And I add a Participant with Reference "Patient/2" to the Created Appointment
 		And I add a Participant with Reference "Practitioner/2" to the Created Appointment		
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: I perform cancel appointment and update the type text
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
