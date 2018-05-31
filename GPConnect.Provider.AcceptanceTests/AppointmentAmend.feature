@@ -34,7 +34,7 @@ Scenario: Amend appointment and update element which cannot be updated
 		And I set the Created Appointment Priority to "1"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario Outline: Amend appointment using the _format parameter to request response format
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
