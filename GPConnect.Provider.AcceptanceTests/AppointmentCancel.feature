@@ -35,8 +35,8 @@ Scenario: I perform a successful cancel appointment and amend the comment
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Comment to "RANDOM COMMENT"
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario: I perform cancel appointment and update the description
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -45,8 +45,8 @@ Scenario: I perform cancel appointment and update the description
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Description to "RANDOM DESCRIPTION"
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"	
+	Then  the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"	 
+		And the response status code should be "422"
 
 Scenario: I perform cancel appointment and add participants
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -67,8 +67,8 @@ Scenario: I perform cancel appointment and update the type text
 		And I set the Created Appointment to Cancelled with Reason "double booked"
 		And I set the Created Appointment Type Text to "RANDOM TYPE TEXT"
 	When I make the "AppointmentCancel" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario Outline: Cancel appointment using the _format parameter to request response format
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
