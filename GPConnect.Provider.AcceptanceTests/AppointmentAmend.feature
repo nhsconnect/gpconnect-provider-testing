@@ -34,7 +34,7 @@ Scenario: Amend appointment and update element which cannot be updated
 		And I set the Created Appointment Priority to "1"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario Outline: Amend appointment using the _format parameter to request response format
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -120,9 +120,7 @@ Scenario: Amend appointment send an update with an invalid if-match header
 
 Scenario: Amend appointment set etag and check etag is the same in the returned amended appointment
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"		
-		And I store the Created Appointment			
-	Given I read the Stored Appointment
-		And I store the Appointment 
+		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the Created Appointment Comment to "customComment"
 		And I set the If-Match header to the Stored Appointment Version Id
