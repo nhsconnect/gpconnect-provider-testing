@@ -120,9 +120,7 @@ Scenario: Amend appointment send an update with an invalid if-match header
 
 Scenario: Amend appointment set etag and check etag is the same in the returned amended appointment
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"		
-		And I store the Created Appointment			
-	Given I read the Stored Appointment
-		And I store the Appointment 
+		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
 		And I set the Created Appointment Comment to "customComment"
 		And I set the If-Match header to the Stored Appointment Version Id
