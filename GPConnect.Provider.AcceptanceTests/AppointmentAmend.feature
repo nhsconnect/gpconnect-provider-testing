@@ -172,5 +172,5 @@ Scenario:Amend appointment invalid response check caching headers exist
 		And I set the Created Appointment Comment to "customComment"
 		And I set the Created Appointment to a new Appointment
 	When I make the "AppointmentAmend" request
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the required cacheing headers should be present in the response
