@@ -39,6 +39,12 @@
             _fhirResourceRepository.Appointment.Description = value;
         }
 
+        [Given(@"I amend an invalid appointment field")]
+        public void IAmendAnInvalidAppointmentField()
+        {
+            _fhirResourceRepository.Appointment.Status = AppointmentStatus.Noshow;
+        }
+
         [Given(@"I set the Created Appointment Priority to ""(.*)""")]
         public void SetTheCreatedAppointmentPriorityTo(int value)
         {
