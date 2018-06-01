@@ -169,8 +169,7 @@ Scenario:Amend appointment invalid response check caching headers exist
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Comment to "customComment"
-		And I set the Created Appointment to a new Appointment
+		And I amend an invalid appointment field
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "422"
 		And the required cacheing headers should be present in the response
