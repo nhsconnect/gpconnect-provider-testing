@@ -238,10 +238,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT reason for request is not directcare")]
-        public virtual void JWTReasonForRequestIsNotDirectcare()
+        [NUnit.Framework.DescriptionAttribute("JWT creation time in the future")]
+        public virtual void JWTCreationTimeInTheFuture()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT reason for request is not directcare", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT creation time in the future", ((string[])(null)));
 #line 60
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -252,7 +252,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
-  testRunner.And("I set the JWT reason for request to \"notdirectcare\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT creation time to \"200\" seconds after the current time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 65
@@ -266,10 +266,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT authorization server token incorrect")]
-        public virtual void JWTAuthorizationServerTokenIncorrect()
+        [NUnit.Framework.DescriptionAttribute("JWT reason for request is not directcare")]
+        public virtual void JWTReasonForRequestIsNotDirectcare()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT authorization server token incorrect", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT reason for request is not directcare", ((string[])(null)));
 #line 69
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -280,8 +280,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
-  testRunner.And("I set the JWT authorization server token URL to \"https://notValid.fhir.nhs.net/to" +
-                    "kenEndpoint\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT reason for request to \"notdirectcare\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 74
@@ -295,10 +294,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting device is not valid FHIR device resource")]
-        public virtual void JWTRequestingDeviceIsNotValidFHIRDeviceResource()
+        [NUnit.Framework.DescriptionAttribute("JWT authorization server token incorrect")]
+        public virtual void JWTAuthorizationServerTokenIncorrect()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting device is not valid FHIR device resource", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT authorization server token incorrect", ((string[])(null)));
 #line 78
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -309,11 +308,12 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 81
-  testRunner.And("I set an invalid JWT requesting device resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT authorization server token URL to \"https://notValid.fhir.nhs.net/to" +
+                    "kenEndpoint\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 83
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 84
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 85
@@ -323,10 +323,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting organization is not valid FHIR organization resource")]
-        public virtual void JWTRequestingOrganizationIsNotValidFHIROrganizationResource()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting device is not valid FHIR device resource")]
+        public virtual void JWTRequestingDeviceIsNotValidFHIRDeviceResource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting organization is not valid FHIR organization resource", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting device is not valid FHIR device resource", ((string[])(null)));
 #line 87
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -337,7 +337,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 90
-  testRunner.And("I set an invalid JWT requesting organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set an invalid JWT requesting device resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 92
@@ -351,10 +351,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting organization identifier does not contain an ODS code")]
-        public virtual void JWTRequestingOrganizationIdentifierDoesNotContainAnODSCode()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting organization is not valid FHIR organization resource")]
+        public virtual void JWTRequestingOrganizationIsNotValidFHIROrganizationResource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting organization identifier does not contain an ODS code", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting organization is not valid FHIR organization resource", ((string[])(null)));
 #line 96
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -365,11 +365,11 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
-  testRunner.And("I set JWT requesting organization resource without ODS Code", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set an invalid JWT requesting organization resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 100
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 101
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 102
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
@@ -379,10 +379,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting organization does not contain and identifier")]
-        public virtual void JWTRequestingOrganizationDoesNotContainAndIdentifier()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting organization identifier does not contain an ODS code")]
+        public virtual void JWTRequestingOrganizationIdentifierDoesNotContainAnODSCode()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting organization does not contain and identifier", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting organization identifier does not contain an ODS code", ((string[])(null)));
 #line 105
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -393,7 +393,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
-  testRunner.And("I set JWT requesting organization resource without identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set JWT requesting organization resource without ODS Code", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 109
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 110
@@ -407,10 +407,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner is not valid FHIR practitioner resource")]
-        public virtual void JWTRequestingPractitionerIsNotValidFHIRPractitionerResource()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting organization does not contain and identifier")]
+        public virtual void JWTRequestingOrganizationDoesNotContainAndIdentifier()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner is not valid FHIR practitioner resource", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting organization does not contain and identifier", ((string[])(null)));
 #line 114
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -421,11 +421,11 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 117
-  testRunner.And("I set an invalid JWT requesting practitioner resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set JWT requesting organization resource without identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 118
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 119
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 120
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 121
@@ -435,10 +435,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner identifier does not contain an SDS Id")]
-        public virtual void JWTRequestingPractitionerIdentifierDoesNotContainAnSDSId()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner is not valid FHIR practitioner resource")]
+        public virtual void JWTRequestingPractitionerIsNotValidFHIRPractitionerResource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner identifier does not contain an SDS Id", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner is not valid FHIR practitioner resource", ((string[])(null)));
 #line 123
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -449,11 +449,11 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
-  testRunner.And("I set a JWT requesting practitioner without SDS id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set an invalid JWT requesting practitioner resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 128
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 129
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
@@ -463,10 +463,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner does not contain identifier")]
-        public virtual void JWTRequestingPractitionerDoesNotContainIdentifier()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner identifier does not contain an SDS Id")]
+        public virtual void JWTRequestingPractitionerIdentifierDoesNotContainAnSDSId()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner does not contain identifier", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner identifier does not contain an SDS Id", ((string[])(null)));
 #line 132
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -477,7 +477,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 135
-  testRunner.And("I set a JWT requesting practitioner without identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT requesting practitioner without SDS id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 136
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 137
@@ -491,10 +491,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT User Id does not match requesting practitioner id")]
-        public virtual void JWTUserIdDoesNotMatchRequestingPractitionerId()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner does not contain identifier")]
+        public virtual void JWTRequestingPractitionerDoesNotContainIdentifier()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT User Id does not match requesting practitioner id", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner does not contain identifier", ((string[])(null)));
 #line 141
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -505,7 +505,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 144
-  testRunner.And("I set a JWT requesting practitioner with miss matched user id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT requesting practitioner without identifier", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 145
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 146
@@ -519,10 +519,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner name does not contain a family or given name")]
-        public virtual void JWTRequestingPractitionerNameDoesNotContainAFamilyOrGivenName()
+        [NUnit.Framework.DescriptionAttribute("JWT User Id does not match requesting practitioner id")]
+        public virtual void JWTUserIdDoesNotMatchRequestingPractitionerId()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner name does not contain a family or given name", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT User Id does not match requesting practitioner id", ((string[])(null)));
 #line 150
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -533,7 +533,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 153
-  testRunner.And("I set a JWT requesting practitioner with missing name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT requesting practitioner with miss matched user id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 154
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 155
@@ -547,10 +547,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner does not contain a practitionerRole")]
-        public virtual void JWTRequestingPractitionerDoesNotContainAPractitionerRole()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner name does not contain a family or given name")]
+        public virtual void JWTRequestingPractitionerNameDoesNotContainAFamilyOrGivenName()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner does not contain a practitionerRole", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner name does not contain a family or given name", ((string[])(null)));
 #line 159
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -561,7 +561,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 162
-  testRunner.And("I set a JWT requesting practitioner with missing Job Role", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT requesting practitioner with missing name element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 163
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 164
@@ -575,12 +575,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner practitionerRole does not contain a SDS Job Role name" +
-            "")]
-        public virtual void JWTRequestingPractitionerPractitionerRoleDoesNotContainASDSJobRoleName()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner does not contain a practitionerRole")]
+        public virtual void JWTRequestingPractitionerDoesNotContainAPractitionerRole()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner practitionerRole does not contain a SDS Job Role name" +
-                    "", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner does not contain a practitionerRole", ((string[])(null)));
 #line 168
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -591,7 +589,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 171
-  testRunner.And("I set a JWT requesting practitioner with missing SDS Job Role", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT requesting practitioner with missing Job Role", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 172
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 173
@@ -605,10 +603,12 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing iss claim")]
-        public virtual void JWTMissingIssClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner practitionerRole does not contain a SDS Job Role name" +
+            "")]
+        public virtual void JWTRequestingPractitionerPractitionerRoleDoesNotContainASDSJobRoleName()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing iss claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner practitionerRole does not contain a SDS Job Role name" +
+                    "", ((string[])(null)));
 #line 177
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -619,7 +619,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 180
-  testRunner.And("I set a JWT without iss claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT requesting practitioner with missing SDS Job Role", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 181
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 182
@@ -633,10 +633,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing sub claim")]
-        public virtual void JWTMissingSubClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT missing iss claim")]
+        public virtual void JWTMissingIssClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing sub claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing iss claim", ((string[])(null)));
 #line 186
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -647,7 +647,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
-  testRunner.And("I set a JWT without sub claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without iss claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 190
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 191
@@ -661,10 +661,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing aud claim")]
-        public virtual void JWTMissingAudClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT missing sub claim")]
+        public virtual void JWTMissingSubClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing aud claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing sub claim", ((string[])(null)));
 #line 195
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -675,7 +675,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 198
-  testRunner.And("I set a JWT without aud claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without sub claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 199
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 200
@@ -689,10 +689,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing exp claim")]
-        public virtual void JWTMissingExpClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT missing aud claim")]
+        public virtual void JWTMissingAudClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing exp claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing aud claim", ((string[])(null)));
 #line 204
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -703,7 +703,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 207
-  testRunner.And("I set a JWT without exp claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without aud claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 208
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 209
@@ -717,10 +717,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing iat claim")]
-        public virtual void JWTMissingIatClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT missing exp claim")]
+        public virtual void JWTMissingExpClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing iat claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing exp claim", ((string[])(null)));
 #line 213
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -731,7 +731,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 216
-  testRunner.And("I set a JWT without iat claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without exp claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 217
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 218
@@ -745,10 +745,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing reason for request claim")]
-        public virtual void JWTMissingReasonForRequestClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT missing iat claim")]
+        public virtual void JWTMissingIatClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing reason for request claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing iat claim", ((string[])(null)));
 #line 222
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -759,7 +759,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 225
-  testRunner.And("I set a JWT without reason for request claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without iat claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 226
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 227
@@ -773,10 +773,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing requested record claim")]
-        public virtual void JWTMissingRequestedRecordClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT missing reason for request claim")]
+        public virtual void JWTMissingReasonForRequestClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing requested record claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing reason for request claim", ((string[])(null)));
 #line 231
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -787,7 +787,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 234
-  testRunner.And("I set a JWT without requested record claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without reason for request claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 235
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 236
@@ -801,10 +801,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing requested scope claim")]
-        public virtual void JWTMissingRequestedScopeClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT missing requested record claim")]
+        public virtual void JWTMissingRequestedRecordClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing requested scope claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing requested record claim", ((string[])(null)));
 #line 240
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -815,7 +815,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 243
-  testRunner.And("I set a JWT without requested scope claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without requested record claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 244
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 245
@@ -829,10 +829,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing requesting device claim")]
-        public virtual void JWTMissingRequestingDeviceClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT missing requested scope claim")]
+        public virtual void JWTMissingRequestedScopeClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing requesting device claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing requested scope claim", ((string[])(null)));
 #line 249
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -843,7 +843,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 252
-  testRunner.And("I set a JWT without requesting device claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without requested scope claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 253
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 254
@@ -857,10 +857,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing requesting organization claim")]
-        public virtual void JWTMissingRequestingOrganizationClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT missing requesting device claim")]
+        public virtual void JWTMissingRequestingDeviceClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing requesting organization claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing requesting device claim", ((string[])(null)));
 #line 258
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -871,7 +871,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 261
-  testRunner.And("I set a JWT without requesting organization claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without requesting device claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 262
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 263
@@ -885,10 +885,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT missing requesting practitioner claim")]
-        public virtual void JWTMissingRequestingPractitionerClaim()
+        [NUnit.Framework.DescriptionAttribute("JWT missing requesting organization claim")]
+        public virtual void JWTMissingRequestingOrganizationClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing requesting practitioner claim", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing requesting organization claim", ((string[])(null)));
 #line 267
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -899,7 +899,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 270
-  testRunner.And("I set a JWT without requesting practitioner claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without requesting organization claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 271
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 272
@@ -913,10 +913,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting device invalid resourceType")]
-        public virtual void JWTRequestingDeviceInvalidResourceType()
+        [NUnit.Framework.DescriptionAttribute("JWT missing requesting practitioner claim")]
+        public virtual void JWTMissingRequestingPractitionerClaim()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting device invalid resourceType", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT missing requesting practitioner claim", ((string[])(null)));
 #line 276
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -927,7 +927,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 279
-  testRunner.And("I change the JWT requesting device resource type to InvalidResourceType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set a JWT without requesting practitioner claim", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 280
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 281
@@ -941,10 +941,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting organization invalid resourceType")]
-        public virtual void JWTRequestingOrganizationInvalidResourceType()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting device invalid resourceType")]
+        public virtual void JWTRequestingDeviceInvalidResourceType()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting organization invalid resourceType", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting device invalid resourceType", ((string[])(null)));
 #line 285
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -955,7 +955,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 288
-  testRunner.And("I change the JWT requesting organization resource type to InvalidResourceType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I change the JWT requesting device resource type to InvalidResourceType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 289
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 290
@@ -969,10 +969,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner invalid resourceType")]
-        public virtual void JWTRequestingPractitionerInvalidResourceType()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting organization invalid resourceType")]
+        public virtual void JWTRequestingOrganizationInvalidResourceType()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner invalid resourceType", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting organization invalid resourceType", ((string[])(null)));
 #line 294
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -983,7 +983,7 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 297
-  testRunner.And("I change the JWT requesting practitioner resource type to InvalidResourceType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I change the JWT requesting organization resource type to InvalidResourceType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 298
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 299
@@ -997,10 +997,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("JWT requested record patient does not match getCareRecord Payload patient")]
-        public virtual void JWTRequestedRecordPatientDoesNotMatchGetCareRecordPayloadPatient()
+        [NUnit.Framework.DescriptionAttribute("JWT requesting practitioner invalid resourceType")]
+        public virtual void JWTRequestingPractitionerInvalidResourceType()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requested record patient does not match getCareRecord Payload patient", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requesting practitioner invalid resourceType", ((string[])(null)));
 #line 303
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -1008,20 +1008,48 @@ this.FeatureBackground();
 #line 304
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 305
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
+                    "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 306
+  testRunner.And("I change the JWT requesting practitioner resource type to InvalidResourceType", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 307
+ testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 308
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 309
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 310
+  testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("JWT requested record patient does not match getCareRecord Payload patient")]
+        public virtual void JWTRequestedRecordPatientDoesNotMatchGetCareRecordPayloadPatient()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requested record patient does not match getCareRecord Payload patient", ((string[])(null)));
+#line 312
+this.ScenarioSetup(scenarioInfo);
+#line 4
+this.FeatureBackground();
+#line 313
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 314
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 306
+#line 315
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient2" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 307
+#line 316
   testRunner.And("I set the JWT requested record NHS number to config patient \"patient15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 308
+#line 317
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 309
+#line 318
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 310
+#line 319
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 311
+#line 320
   testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1032,27 +1060,27 @@ this.FeatureBackground();
         public virtual void JWTRequestedScopeForGetCareRecordDoesNotMatchTypeOfRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requested scope for getCareRecord does not match type of request", ((string[])(null)));
-#line 313
+#line 322
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 314
+#line 323
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 315
+#line 324
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 316
+#line 325
   testRunner.And("I author a request for the \"SUM\" care record section for config patient \"patient2" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 317
+#line 326
   testRunner.And("I set the JWT requested scope to \"organization/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 318
+#line 327
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 319
+#line 328
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 320
+#line 329
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 321
+#line 330
   testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1063,27 +1091,27 @@ this.FeatureBackground();
         public virtual void JWTRequestedScopeIsInvalidType()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requested scope is invalid type", ((string[])(null)));
-#line 323
+#line 332
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 324
+#line 333
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 325
+#line 334
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 326
+#line 335
   testRunner.And("I author a request for the \"ENC\" care record section for config patient \"patient2" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 327
+#line 336
   testRunner.And("I set the JWT requested scope to \"encounter/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 328
+#line 337
  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 329
+#line 338
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 330
+#line 339
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 331
+#line 340
   testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1094,24 +1122,24 @@ this.FeatureBackground();
         public virtual void JWTRequestedScopeForMetaDataRequestDoesNotMatchOrganizationRead()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("JWT requested scope for metaData request does not match organization read", ((string[])(null)));
-#line 333
+#line 342
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 334
+#line 343
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 335
+#line 344
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:rest:read:metadata\" in" +
                     "teraction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 336
+#line 345
   testRunner.And("I set the JWT requested scope to \"patient/*.read\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 337
+#line 346
  testRunner.When("I make a GET request to \"/metadata\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 338
+#line 347
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 339
+#line 348
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 340
+#line 349
   testRunner.And("the JSON response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
