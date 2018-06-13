@@ -306,6 +306,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             foreach(var parameter in restResponse.Headers)
             {
+                Log.WriteLine("Response Header: " + parameter.Name + " : " + parameter.Value);
                 HttpContext.ResponseHeaders.Add(parameter.Name, (string)parameter.Value);
             }
             
