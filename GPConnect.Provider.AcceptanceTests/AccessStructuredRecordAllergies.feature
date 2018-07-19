@@ -5,11 +5,12 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the allergies parameter with resolvedAllergies set to "true"
-	When I make the "GpcGetStructuredRecord" request
+	When I make the "GpcGetStructuredR	ecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the AllergyIntolerance should be valid
@@ -43,6 +44,8 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resource in the bundle should contain a logical id
+		And the allergyIntolerance resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "<Patient>"
@@ -94,6 +97,7 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "patient1"
@@ -111,6 +115,7 @@ Scenario: Retrieve the allergy structured record section including resolved alle
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the practitoner resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "patient5"
@@ -129,6 +134,7 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the practitoner resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "patient5"

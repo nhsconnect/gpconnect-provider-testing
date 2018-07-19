@@ -10,6 +10,8 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resource in the bundle should contain a logical id
+		And the organisation resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "<Patient>"
@@ -36,6 +38,8 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resource in the bundle should contain a logical id
+		And the medication resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "<Patient>"
@@ -61,6 +65,8 @@ Scenario: Retrieve the medication structured record section for a patient with n
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resource in the bundle should contain a logical id
+		And the organisation resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "patient4"
@@ -75,6 +81,9 @@ Scenario: Retrieve the medication structured record section for a patient with n
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain a logical id
+		And the organisation resource in the bundle should contain a logical id
+		And the practitoner resource in the bundle should contain a logical id
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
@@ -90,6 +99,7 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "<Patient>"
@@ -166,6 +176,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "<Patient>"
@@ -191,6 +202,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "<Patient>"
@@ -216,6 +228,8 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
 		And the patient resource in the bundle should contain meta data profile and version id
+		And the patient resource in the bundle should contain a logical id
+		And the medication resource in the bundle should contain a logical id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "<Patient>"

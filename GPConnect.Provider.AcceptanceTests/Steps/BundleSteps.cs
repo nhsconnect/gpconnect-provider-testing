@@ -159,6 +159,42 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             CheckForValidMetaDataInResource(_httpContext.FhirResponse.Patients,FhirConst.StructureDefinitionSystems.kPatient);
         }
 
+        [Then(@"the patient resource in the bundle should contain a logical id")]
+        public void ThenThePatientResourceInTheBundleShouldContainALogicalId()
+        {
+            CheckForLogicalId(_httpContext.FhirResponse.Patients);
+        }
+
+        [Then(@"the practitoner resource in the bundle should contain a logical id")]
+        public void ThenThePractitonerResourceInTheBundleShouldContainALogicalId()
+        {
+            CheckForLogicalId(_httpContext.FhirResponse.Practitioners);
+        }
+
+        [Then(@"the medication resource in the bundle should contain a logical id")]
+        public void ThenTheMedicationResourceInTheBundleShouldContainALogicalId()
+        {
+            CheckForLogicalId(_httpContext.FhirResponse.Medications);
+        }
+
+        [Then(@"the organisation resource in the bundle should contain a logical id")]
+        public void ThenTheOrganisationResourceInTheBundleShouldContainALogicalId()
+        {
+            CheckForLogicalId(_httpContext.FhirResponse.Organizations);
+        }
+
+        [Then(@"the allergyIntolerance resource in the bundle should contain a logical id")]
+        public void ThenTheAllergyIntoleranceResourceInTheBundleShouldContainALogicalId()
+        {
+            CheckForLogicalId(_httpContext.FhirResponse.AllergyIntolerances);
+        }
+
+        [Then(@"the appointment resource in the bundle should contain a logical id")]
+        public void ThenTheAppointmentResourceInTheBundleShouldContainALogicalId()
+        {
+            CheckForLogicalId(_httpContext.FhirResponse.Appointments);
+        }
+
         [Then(@"if the response bundle contains an organization resource it should contain meta data profile and version id")]
         public void ThenIfTheResponseBundleContainsAnOrganizationResourceItShouldContainMetaDataProfileAndVersionId()
         {
@@ -194,6 +230,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     profile.ShouldBe(profileId);
                 });
                 resource.Meta.VersionId.ShouldNotBeNull();
+            });
+        }
+
+        public void CheckForLogicalId<T>(List<T> resources) where T : Resource
+        {
+            resources.ForEach(resource =>
+            {
+                resource.Id.ShouldNotBeNull();
             });
         }
 
