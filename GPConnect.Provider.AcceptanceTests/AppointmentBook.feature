@@ -11,7 +11,6 @@ Scenario: Book single appointment for patient
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
-		And the appointment resource in the bundle should contain a logical id
 		
 Scenario Outline: Book Appointment with invalid url for booking appointment
 	Given I get an existing patients nshNumber
@@ -39,7 +38,6 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the appointment resource in the bundle should contain a logical id
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
 		And the Appointment Metadata should be valid
@@ -71,7 +69,6 @@ Scenario Outline: Book appointment _format parameter only but varying request co
 		And I add the parameter "_format" with the value "<Parameter>"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the appointment resource in the bundle should contain a logical id
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
 		And the Appointment Id should be valid
@@ -94,7 +91,6 @@ Scenario Outline: Book appointment accept header to request response format
 		And I set the Accept header to "<Header>"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
-		And the appointment resource in the bundle should contain a logical id
 		And the response body should be FHIR <BodyFormat>
 		And the Response Resource should be an Appointment
 		And the Appointment Id should be valid
