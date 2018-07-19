@@ -141,6 +141,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessStructuredRecordMedications.feature.cs">
+      <DependentUpon>AccessStructuredRecordMedications.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AccessStructuredRecordAllergies.feature.cs">
+      <DependentUpon>AccessStructuredRecordAllergies.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AppointmentBook.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -287,6 +297,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SSP.feature</DependentUpon>
     </Compile>
+    <Compile Include="Steps\AccessStructuredMedicationSteps.cs" />
+    <Compile Include="Steps\AccessStructuredAllergySteps.cs" />
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
     <Compile Include="Steps\AppointmentReadSteps.cs" />
     <Compile Include="Steps\AppointmentRetrieveSteps.cs" />
@@ -327,9 +339,12 @@
     <Compile Include="Helpers\HttpParameterHelper.cs" />
     <Compile Include="Helpers\JwtHelper.cs" />
     <Compile Include="Steps\TeardownSteps.cs" />
-    <Compile Include="Tables\CareRecordSection.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AccessStructuredRecordMedications.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AccessStructuredRecordMedications.feature.cs</LastGenOutput>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -341,6 +356,10 @@
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="AccessStructuredRecordAllergies.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AccessStructuredRecordAllergies.feature.cs</LastGenOutput>
     </None>
     <None Include="AppointmentBook.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

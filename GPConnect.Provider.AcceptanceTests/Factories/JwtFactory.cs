@@ -30,6 +30,7 @@
                     jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
                     break;
                 case GpConnectInteraction.GpcGetCareRecord:
+                case GpConnectInteraction.GpcGetStructuredRecord:
                 case GpConnectInteraction.PatientSearch:
                 case GpConnectInteraction.PatientRead:
                 case GpConnectInteraction.AppointmentSearch:

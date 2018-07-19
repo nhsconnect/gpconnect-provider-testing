@@ -24,6 +24,8 @@
             {
                 case GpConnectInteraction.GpcGetCareRecord:
                     return GetCareRecordConfiguration();
+                case GpConnectInteraction.GpcGetStructuredRecord:
+                    return GetStructuredRecordConfiguration();
                 case GpConnectInteraction.OrganizationSearch:
                     return OrganizationSearchConfiguration();
                 case GpConnectInteraction.OrganizationRead:
@@ -65,6 +67,15 @@
             _httpRequestConfiguration.RequestUrl = "Patient/$gpc.getcarerecord";
             _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetCareRecord);
             
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration GetStructuredRecordConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Post;
+            _httpRequestConfiguration.RequestUrl = "Patient/$gpc.getstructuredrecord";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetStructuredRecord);
+
             return _httpRequestConfiguration;
         }
 

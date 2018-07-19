@@ -25,6 +25,8 @@
         AppointmentCancel = 15,
         AppointmentRead = 16,
 
-        MetadataRead = 17
+        MetadataRead = 17,
+
+        GpcGetStructuredRecord = 18
     }
 }

@@ -4,7 +4,6 @@ using GPConnect.Provider.AcceptanceTests.Helpers;
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System;
-    using System.Net;
     using System.Net.Http;
     using Constants;
     using Context;

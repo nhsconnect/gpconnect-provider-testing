@@ -65,5 +65,24 @@
 
             return GetTimePeriod(startDate, endDate);
         }
+       
+        public static Period GetTimePeriodFormatted(string startDateFormat)
+        {
+            var startDate = DateTime.UtcNow.AddYears(-2);
+            var endDate = DateTime.UtcNow;
+            return GetTimePeriod(startDate.ToString(startDateFormat), endDate.ToString(startDateFormat));
+        }
+
+        public static Period GetTimePeriodStartDateOnlyFormatted(string startDateFormat)
+        {
+            var startDate = DateTime.UtcNow.AddYears(-2);
+            return GetTimePeriod(startDate.ToString(startDateFormat), null);
+        }
+
+        public static Period GetTimePeriodEndDateOnlyFormatted(string endDateFormat)
+        {
+            var endDate = DateTime.UtcNow;
+            return GetTimePeriod(null, endDate.ToString(endDateFormat));
+        }
     }
 }

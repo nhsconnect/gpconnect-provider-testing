@@ -22,6 +22,11 @@
         public List<Appointment> Appointments => GetResources<Appointment>();
         public List<Schedule> Schedules => GetResources<Schedule>();
         public List<CapabilityStatement> CapabilityStatements => GetResources<CapabilityStatement>();
+        public List<AllergyIntolerance> AllergyIntolerances => GetResources<AllergyIntolerance>();
+        public List<Medication> Medications => GetResources<Medication>();
+        public List<MedicationStatement> MedicationStatements => GetResources<MedicationStatement>();
+        public List<MedicationRequest> MedicationRequests => GetResources<MedicationRequest>();
+        public List<List> Lists => GetResources<List>();
 
         private List<T> GetResources<T>() where T : Resource
         {
@@ -53,7 +58,12 @@
             {typeof(Slot), ResourceType.Slot},
             {typeof(Appointment), ResourceType.Appointment},
             {typeof(Schedule), ResourceType.Schedule},
-            {typeof(CapabilityStatement), ResourceType.CapabilityStatement}
+            {typeof(CapabilityStatement), ResourceType.CapabilityStatement},
+            {typeof(AllergyIntolerance), ResourceType.AllergyIntolerance},
+            {typeof(List), ResourceType.List},
+            {typeof(Medication), ResourceType.Medication},
+            {typeof(MedicationStatement), ResourceType.MedicationStatement},
+            {typeof(MedicationRequest), ResourceType.MedicationRequest}
         };
     }
 }
