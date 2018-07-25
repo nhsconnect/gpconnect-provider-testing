@@ -9,6 +9,7 @@ Scenario Outline: Organization search success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<Entries>" entries
 		And the response bundle Organization entries should contain a maximum of 1 "https://fhir.nhs.uk/Id/ods-organization-code" system identifier
+		And the Organization Id should be valid
 		And the Organization Name should be valid
 		And the Organization Telecom should be valid
 		And the Organization Address should be valid

@@ -13,6 +13,9 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the AllergyIntolerance should be valid
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
 		And the Bundle should be valid for patient "<Patient>"
 		And the Bundle should contain "2" lists
 		And the Bundle should contain a list with the title "Allergies and adverse reactions"
@@ -45,6 +48,9 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
 		And the Bundle should be valid for patient "<Patient>"
 		And the Bundle should contain "1" lists
 		And the Bundle should contain a list with the title "Allergies and adverse reactions"
@@ -78,6 +84,9 @@ Scenario: Retrieve the allergy structured record section including resolved alle
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient1"
 		And the Bundle should contain "2" lists
 		And the Bundle should contain a list with the title "Allergies and adverse reactions"
@@ -96,6 +105,9 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient1"
 		And the Bundle should contain "1" lists
 		And the Bundle should contain a list with the title "Allergies and adverse reactions"
@@ -113,6 +125,9 @@ Scenario: Retrieve the allergy structured record section including resolved alle
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient5"
 		And the Bundle should contain "2" lists
 		And the Bundle should contain a list with the title "Allergies and adverse reactions"
@@ -131,6 +146,9 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient5"
 		And the Bundle should contain "1" lists
 		And the Bundle should contain a list with the title "Allergies and adverse reactions"

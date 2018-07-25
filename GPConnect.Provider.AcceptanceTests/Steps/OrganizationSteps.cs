@@ -50,6 +50,15 @@
             });
         }
 
+        [Then("the Organization Id should be valid")]
+        public void TheOrganizationIdShouldBeValid()
+        {
+            Organizations.ForEach(organization =>
+            {
+                organization.Id.ShouldNotBeNullOrEmpty($"The Organization Id should not be null or empty.");
+            });
+        }
+
         [Then(@"the Organization Identifiers should be valid")]
         public void TheOrganizationIdentifiersShouldBeValid()
         {
