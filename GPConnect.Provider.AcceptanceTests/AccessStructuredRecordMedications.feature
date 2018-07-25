@@ -20,6 +20,9 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the List of MedicationStatements should be valid
 		And order requests should have the same authoredOn date as their plan
 		And there should only be one order request for acute prescriptions
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
 	Examples:
 		| Patient  |
 		| patient2 |
@@ -45,6 +48,9 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the Medication Requests should be valid
 		And the List of MedicationStatements should be valid
 		And the Medication Requests should not contain any issues
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
 	Examples:
 		| Patient  |
 		| patient2 |
@@ -66,6 +72,12 @@ Scenario: Retrieve the medication structured record section for a patient with n
 		And the Bundle should be valid for patient "patient4"
 		And the Bundle should contain "1" lists
 		And the List of MedicationStatements should be valid
+		And the Medications should be valid
+		And the Medication Statements should be valid
+		And the Medication Requests should be valid
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
 		
 Scenario: Retrieve the medication structured record section for a patient with no medications
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -81,6 +93,9 @@ Scenario: Retrieve the medication structured record section for a patient with n
 		And the Bundle should be valid for patient "patient4"
 		And the Bundle should contain "1" lists
 		And the List of MedicationStatements should be valid
+		And the Medications should be valid
+		And the Medication Statements should be valid
+		And the Medication Requests should be valid
 		
 Scenario Outline: Retrieve the structured record section for a patient without the medications parameter
 	Given I configure the default "GpcGetStructuredRecord" request
