@@ -21,6 +21,7 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Bundle should contain a minimum of "<numberOfAppointments>" Appointments
+		And the Appointment Id should be valid
 		And the Appointments returned must be in the future
 		And the Appointment Status should be valid
 		And the Appointment Start should be valid

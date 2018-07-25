@@ -161,6 +161,7 @@ Scenario: Successfully search for free slots and check the slot resources return
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
+		And the Slot Id should be valid
 		And the Slot Status should be Free
 		And the Slot Metadata should be valid
 		And the Slot Identifiers should be valid
@@ -237,12 +238,16 @@ Scenario: Successfully search for free slots and check the included schedule res
 		And the Schedule Metadata should be valid
 		And the Schedule Location should be referenced in the Bundle
 		And the Location should be valid
+		And the Location Id should be valid
+		And the Schedule Id should be valid
 		And the Schedule Identifiers should be valid
 		And the Schedule PlanningHorizon should be valid
 		And the Schedule ServiceType should be valid
 		And the Schedule Extensions should be populated and valid
 		And the Practitioner Entry should be valid
+		And the Practitioner Id should be valid
 		And the Organization should be valid
+		And the Organization Id should be valid
 
 Scenario Outline: Searching for free slots without actor parameter should return results without actor resource 
 	Given I configure the default "SearchForFreeSlots" request
@@ -284,6 +289,7 @@ Scenario: Successfully search for free slots and check the included location res
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Location Metadata should be valid
+		And the Location Id should be valid
 		And the Location Identifier should be valid
 		And the Location Type should be valid
 		And the Location Physical Type should be valid

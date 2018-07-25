@@ -154,6 +154,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
+        [Then("the Slot Id should be valid")]
+        public void TheSlotIdShouldBeValid()
+        {
+            Slots.ForEach(slot =>
+            {
+                slot.Id.ShouldNotBeNullOrEmpty($"The Slot Id should not be null or empty.");
+            });
+        }
+
         [Then(@"the Slot Identifiers should be valid")]
         public void ThenTheSlotResourcesCanContainAMaximumOfOneIdentifierWithAPopulatedValue()
         {
@@ -202,6 +211,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 locationReference.ShouldNotBeNullOrEmpty("The Schedule Actors should contain a Location Reference, but did not.");
 
                 _bundleSteps.ResponseBundleContainsReferenceOfType(locationReference, ResourceType.Location);
+            });
+        }
+
+        [Then("the Schedule Id should be valid")]
+        public void TheScheduleIdShouldBeValid()
+        {
+            Schedules.ForEach(schedule =>
+            {
+                schedule.Id.ShouldNotBeNullOrEmpty($"The Schedule Id should not be null or empty.");
             });
         }
 

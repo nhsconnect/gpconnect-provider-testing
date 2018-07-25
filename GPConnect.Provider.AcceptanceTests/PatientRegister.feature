@@ -34,6 +34,7 @@ Scenario: Register patient without gender element
 		And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Metadata should be valid
+		And the Patient Id should be valid
 		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
 		And the Patient Demographics should match the Stored Patient
@@ -76,6 +77,7 @@ Scenario Outline: Register Patient and use the Accept Header to request response
 		And the response should be a Bundle resource of type "searchset"
 		And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
+		And the Patient Id should be valid
 		And the Patient Metadata should be valid
 		And the Patient Nhs Number Identifer should be valid
 		And the Patient Registration Details Extension should be valid
