@@ -24,6 +24,16 @@
             _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.CapabilityStatement);
         }
 
+        [Then(@"the CapabilityStatement version should match the GP Connect specification release ""([^""]*)""")]
+        public void TheCapabilityStatementVersionShouldMatchTheGPConnectSpecificationRelease(string version)
+        {
+            CapabilityStatements.ForEach(capabilityStatement =>
+            {
+                capabilityStatement.Version.ShouldBe(version, $"The CapabilityStatement should match the specification version {version} but was {capabilityStatement.Version}");
+            });
+        }
+
+
         [Then("the CapabilityStatement Format should contain XML and JSON")]
         public void TheCapabilityStatementFormatShouldContainXmlAndJson()
         {
