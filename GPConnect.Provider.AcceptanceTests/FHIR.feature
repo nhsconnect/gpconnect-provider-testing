@@ -6,6 +6,7 @@ Scenario: Fhir Get MetaData
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the Response Resource should be a CapabilityStatement
+		And the CapabilityStatement version should match the GP Connect specification release "1.2.0"
 
 Scenario: CapabilityStatement profile indicates acceptance of xml and json format
 	Given I configure the default "MetadataRead" request
