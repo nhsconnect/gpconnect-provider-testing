@@ -4,6 +4,7 @@
     using System.Linq;
     using Constants;
     using Context;
+    using GPConnect.Provider.AcceptanceTests.Helpers;
     using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
@@ -24,12 +25,12 @@
             _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.CapabilityStatement);
         }
 
-        [Then(@"the CapabilityStatement version should match the GP Connect specification release ""([^""]*)""")]
-        public void TheCapabilityStatementVersionShouldMatchTheGPConnectSpecificationRelease(string version)
+        [Then(@"the CapabilityStatement version should match the GP Connect specification release")]
+        public void TheCapabilityStatementVersionShouldMatchTheGPConnectSpecificationRelease()
         {
             CapabilityStatements.ForEach(capabilityStatement =>
             {
-                capabilityStatement.Version.ShouldBe(version, $"The CapabilityStatement should match the specification version {version} but was {capabilityStatement.Version}");
+                capabilityStatement.Version.ShouldBe(AppSettingsHelper.GPConnectSpecVersion, $"The CapabilityStatement should match the specification version {AppSettingsHelper.GPConnectSpecVersion} but was {capabilityStatement.Version}");
             });
         }
 

@@ -15,6 +15,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static string DataDirectory => Get<string>("dataDirectory");
 
         // FHIR Settings
+        public static string GPConnectSpecVersion => Get<string>("gpConnectSpecVersion");
         public static string FhirDirectory => Get<string>("fhirDirectory");
         public static string FhirWebDirectory => Get<string>("fhirWebDirectory");
         public static bool FhirCheckWeb => Get<bool>("fhirCheckWeb");
