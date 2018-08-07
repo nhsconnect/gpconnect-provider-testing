@@ -142,10 +142,10 @@ Scenario: Amend appointment and send an invalid appointment resource
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment to a new Appointment
+		And I amend an invalid appointment field
 	When I make the "AppointmentAmend" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 				
 Scenario: CapabilityStatement profile support the Amend appointment operation
 	Given I configure the default "MetadataRead" request
@@ -169,8 +169,7 @@ Scenario:Amend appointment invalid response check caching headers exist
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Comment to "customComment"
-		And I set the Created Appointment to a new Appointment
+		And I amend an invalid appointment field
 	When I make the "AppointmentAmend" request
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the required cacheing headers should be present in the response
