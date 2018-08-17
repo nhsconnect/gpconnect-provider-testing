@@ -153,7 +153,7 @@
                 {
                     list.Entry.ForEach(entry =>
                     {
-                        entry.Item.ShouldNotBeNull("The item field must be populated for eac list entry.");
+                        entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
                         entry.Item.Reference.ShouldStartWith("MedicationStatement");
                     });
                 }
@@ -233,6 +233,13 @@
         {
             TheMedicationStatementIdShouldBeValid();
             TheMedicationStatementMetadataShouldBeValid();
+			
+			// Added check for Medication Statement PrescribingAgency is Mandatory RMB 08-08-2016		
+            TheMedicationStatementPrescribingAgencyShouldBeValid();			
+			
+			// Added check for Medication Statement System should be set and be a GUID RMB 08-08-2016		
+            TheMedicationStatementIdentifierShouldBeValid();			
+			
             TheMedicationStatementBasedOnShouldNotBeNullAndShouldReferToMedicationRequestWithIntentPlan();
             TheMedicationStatementContextShouldBeValid();
             TheMedicationStatementStatusShouldbeValid();
@@ -268,6 +275,33 @@
             });
         }
 
+		// Added check for MedicationStatement PrescribingAgency is Mandatory RMB 08-08-2016		
+        [Then(@"the MedicationStatement PrescribingAgency should be valid")]
+        public void TheMedicationStatementPrescribingAgencyShouldBeValid()
+        {
+            MedicationStatements.ForEach(medStatement =>
+            {
+                medStatement.GetExtension("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-PrescribingAgency-1").ShouldNotBeNull();
+            });
+        }		
+
+		// Added check for MedicationStatement System should be set and be a GUID RMB 08-08-2016		
+		[Then(@"the MedicationStatement Identifier should be valid")]
+        public void TheMedicationStatementIdentifierShouldBeValid()
+        {
+            MedicationStatements.ForEach(medStatement =>
+            {
+				medStatement.Identifier.Count.ShouldBeGreaterThan(0,"There should be at least 1 Identifier system/value pair");
+                if (medStatement.Identifier.Count == 1)
+                {
+                    var identifier = medStatement.Identifier.First();				
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
+					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();					
+					identifier.Value.ShouldNotBeNull("Identifier value is Mandatory and a GUID");					
+				}
+            });
+        }					
+		
         [Then(@"the Medication Statement Metadata should be valid")]
         public void TheMedicationStatementMetadataShouldBeValid()
         {
@@ -378,8 +412,9 @@
         {
             MedicationStatements.ForEach(medStatement =>
             {
-                //medStatement.Taken.ShouldNotBeNull();
-                //medStatement.Taken.ShouldBeOfType<MedicationStatement.MedicationStatementTaken>("Medication Taken is of the wrong type");
+				// Commented out code added back in 1.2.0 RMB 8/8/2018
+                medStatement.Taken.ShouldNotBeNull();
+                medStatement.Taken.ShouldBeOfType<MedicationStatement.MedicationStatementTaken>("Medication Taken is of the wrong type");
             });
         }
 
@@ -391,6 +426,9 @@
                 medStatement.Dosage.ForEach(dosage =>
                 {
                     dosage.Text.ShouldNotBeNullOrEmpty();
+					
+					// Added for 1.2.0 RMB 8/8/2018
+                    dosage.Text.Equals("No information available");
                 });
             });
         }
@@ -546,6 +584,10 @@
         {
             TheMedicationRequestIdShouldBeValid();
             TheMedicationRequestMetadataShouldBeValid();
+
+			// Added RMB 8/8/2018
+            TheMedicationRequestIdentifierShouldBeValid();			
+			
             TheMedicationRequestGroupIdentiferShouldBeValid();
             TheMedicationRequestBasedOnShouldBeValid();
             TheMedicationRequestStatusShouldbeValid();
@@ -573,8 +615,15 @@
                 medRequest.Category.ShouldBeNull();
                 medRequest.Priority.ShouldBeNull();
                 medRequest.SupportingInformation.ShouldBeEmpty();
-                medRequest.DispenseRequest.ExpectedSupplyDuration.ShouldBeNull();
+				
+				// Removed 1.2.0 RMB 8/8/2018
+                //medRequest.DispenseRequest.ExpectedSupplyDuration.ShouldBeNull();
+				
                 medRequest.Substitution.ShouldBeNull();
+				
+				// Added RMB 8/8/2018
+                medRequest.DetectedIssue.ShouldBeEmpty();				
+				
                 medRequest.EventHistory.ShouldBeEmpty();
                 
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
@@ -593,7 +642,24 @@
                 medRequest.Id.ShouldNotBeNullOrEmpty();
             });
         }
-
+		
+		// Added RMB 8/8/2018
+        [Then(@"the MedicationRequest Identifier should be valid")]
+        public void TheMedicationRequestIdentifierShouldBeValid()
+        {
+            MedicationRequests.ForEach(medRequest =>
+            {
+				medRequest.Identifier.Count.ShouldBeGreaterThan(0,"There should be at least 1 Identifier system/value pair");
+                if (medRequest.Identifier.Count == 1)
+                {
+                    var identifier = medRequest.Identifier.First();				
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
+					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();					
+					identifier.Value.ShouldNotBeNull("Identifier value is Mandatory and a GUID");					
+                }
+            });
+        }
+		
         [Then(@"there should be at least one medication request with intent to plan")]
         public void ThereShouldBeAtLeastOneMedicationRequestWithIntentToPlan()
         {
@@ -736,6 +802,9 @@
             {
                 medRequest.DosageInstruction.ShouldHaveSingleItem();
                 medRequest.DosageInstruction.First().Text.ShouldNotBeNullOrEmpty();
+				
+				// Added for 1.2.0 RMB 8/8/2018
+                medRequest.DosageInstruction.First().Text.Equals("No information available");
             });
         }
 
@@ -787,6 +856,10 @@
             {
                 Extension prescriptionType = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType);
                 prescriptionType.ShouldNotBeNull();
+				
+				// Added for 1.2.0 RMB 8/8/2018
+                prescriptionType.Equals("No information available");
+				
                 CodeableConcept prescriptionTypeValue = (CodeableConcept)prescriptionType.Value;
 
                 prescriptionTypeValue.Coding.First().System.Equals(FhirConst.CodeSystems.kCcPresriptionType);
@@ -804,6 +877,8 @@
                     endReason.ShouldNotBeNull();
                     endReason.GetExtension("statusChangeDate").ShouldNotBeNull();
                     endReason.GetExtension("statusReason").ShouldNotBeNull();
+					// Added 1.2.0 RMB 8/8/2018
+                    endReason.GetExtension("statusReason").Equals("No information available");					
                 }
             });
         }

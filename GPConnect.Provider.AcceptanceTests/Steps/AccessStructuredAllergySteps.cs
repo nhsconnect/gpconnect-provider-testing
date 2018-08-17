@@ -113,7 +113,8 @@
 
                 } else if (list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies))
                 {
-                    list.Code.Equals("TBD");
+					// Changed from TBD to 1103671000000101 for 1.2.0 RMB 7/8/2018
+                    list.Code.Equals("1103671000000101");
                 }
 
                 if (list.Entry.Count > 0)
@@ -272,6 +273,10 @@
             TheAllergyIntoleranceClinicalStatusShouldbeValid();
             TheAllergyIntoleranceAssertedDateShouldBeValid();
             TheAllergyIntoleranceIdShouldBeValid();
+			
+			// Added check for Allergy Identifier should be set and be a GUID RMB 07-08-2016
+			TheAllergyIntoleranceIdentifierShouldBeValid();	
+			
             TheAllergyIntoleranceMetadataShouldBeValid();
             TheAllergyIntolerancePatientShouldBeValidAndResolvable();
             TheAllergyIntoleranceVerificationStatusShouldbeValid();
@@ -319,6 +324,22 @@
                 allergy.Id.ShouldNotBeNullOrWhiteSpace("Id must be set");
             });
         }
+
+		// Added check for Allergy Identifier System should be set and be a GUID RMB 07-08-2016		
+        private void TheAllergyIntoleranceIdentifierShouldBeValid()
+        {
+            AllAllergyIntolerances.ForEach(allergy =>
+            {
+				allergy.Identifier.Count.ShouldBeGreaterThan(0,"There should be at least 1 Identifier system/value pair");
+                if (allergy.Identifier.Count == 1)
+                {
+                    var identifier = allergy.Identifier.First();				
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
+					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();					
+					identifier.Value.ShouldNotBeNull("Identifier value is Mandatory and a GUID");					
+				}
+            });
+        }		
 
         private void TheAllergyIntoleranceClinicalStatusShouldbeValid()
         {
@@ -442,14 +463,40 @@
                         reaction.ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
                     }
 
-
                     reaction.Note.ShouldBeEmpty();
                     reaction.Onset.ShouldBeNull();
                     reaction.Substance.ShouldBeNull();
                 }
             });
         }
+        // Added 1.2.0 RMB 15/8/2018
 
-        #endregion
+        [Then(@"the Lists are valid for a patient with legacy endReason")]
+        public void theListsarevalidforapatientwithlegacyendReason()
+        {
+            checktheListsarevalidforapatientwithlegacyendReason();
+        }
+
+        // Added test for 'No information available' 1.2.0 RMB 7/8/2018
+        private void checktheListsarevalidforapatientwithlegacyendReason()
+        {
+            List<List> resolved = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies)).ToList();
+            if (resolved.Count > 0)
+            {
+                List<Resource> resolvedAllergies = resolved.First().Contained.Where(resource => resource.ResourceType.Equals(ResourceType.AllergyIntolerance)).ToList();
+                resolvedAllergies.ForEach(resource =>
+                {
+                    AllergyIntolerance endedAllergy = (AllergyIntolerance)resource;
+                    Extension endAllergy = endedAllergy.GetExtension(FhirConst.StructureDefinitionSystems.kAllergyEndExt);
+                    endAllergy.ShouldNotBeNull();
+                    Extension endReason = endAllergy.GetExtension("reasonEnded");
+                    endReason.Value.ShouldNotBeNull();
+                    endReason.Value.ToString().ShouldBe("No information available");
+
+                });
+            }
+        }
+
     }
 }
+#endregion

@@ -261,7 +261,19 @@ Scenario: Check allergy warning code is populated for a patient
 	And the Bundle should contain a list with the title "Resolved Allergies"
 	And the Lists are valid for a patient without allergies
 
-	
+	# Added 1.2.0 RMB 15/8/2018
+
+Scenario: Check allergy legacy endReason
+	Given I configure the default "GpcGetStructuredRecord" request 
+	And I add an NHS Number parameter for "patient16"
+	And I add the allergies parameter with resolvedAllergies set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+	And the Bundle should contain "2" lists
+	And the Bundle should contain a list with the title "Allergies and adverse reactions"
+	And the Bundle should contain a list with the title "Resolved Allergies"
+	And the Lists are valid for a patient with legacy endReason
+
 @Ignore @Manual
 Scenario: Resolved allergy resources are assigned a clinicalStatus of resolved
 
@@ -299,5 +311,3 @@ Scenario: Patient with an allergy that is saved as a problem
 
 @Ignore @Manual
 Scenario: Patient data only associated with MHRA Yellow Card dataset is ignored
-
-

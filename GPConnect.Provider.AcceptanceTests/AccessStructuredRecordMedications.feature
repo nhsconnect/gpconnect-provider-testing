@@ -29,6 +29,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient3 |
 		| patient5 |
 		| patient12 |
+		| patient16 |
 		
 Scenario Outline: Retrieve the medication structured record section for a patient excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -331,7 +332,7 @@ Scenario: Historical non-dm+d medication names are preserved correctly
 	# CodeableConcept.text SHOULD be omitted.
 
 @Ignore @Manual
-Scenario: Amended and re-issued medications arehandled correctly
+Scenario: Amended and re-issued medications are handled correctly
 	# Where an authorisation is amended – for example, Proprietary/Generic switch, altered dates, change of quantities and so on, then the existing 
 	# authorisation/plan SHOULD be stopped or discontinued, and an appropriate reason supplied via detectedIssue. 
 	# A new authorisation SHOULD be created, in the form of a MedicationStatement and MedicationRequest with intent of plan, to hold the amended details. 

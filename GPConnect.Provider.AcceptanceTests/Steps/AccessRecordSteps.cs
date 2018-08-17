@@ -131,6 +131,13 @@
             patient.GeneralPractitioner.ForEach(gp =>
             {
                     string identifier = gp.Reference.Substring(13);
+					// Added code for PractitionerRole RMB 14/08/2018
+                    if (gp.Reference.StartsWith("PractitionerRole"))
+                    {
+                        //if the patient's general practitioner is a practitioner role reference then a matching practitionerRole should be returned in the bundle
+                        //practitionerResources.Where(prac => prac.Id.Equals(identifier)).ToList().Count.ShouldBeGreaterThan(0);
+
+                    }					
                     if (gp.Reference.StartsWith("Practitioner"))
                     {
                         //if the patient's general practitioner is a practitioner reference then a matching practitioner should be returned in the bundle
