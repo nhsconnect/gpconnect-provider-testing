@@ -176,6 +176,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 });
             });
         }
+        // Added 1.1.1 RMB 4/9/2018 Delivery Channel removed from Schedule and added to Slot resource
+        [Then(@"the Slot Extensions should be valid")]
+        public void ThenTheSlotExtensionsshouldbevalid()
+        {
+            Slots.ForEach(slot =>
+            {
+                var deliveryChannelExtensions = slot.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kDeliveryChannelExt)).ToList();
+                deliveryChannelExtensions.Count.ShouldBeLessThanOrEqualTo(1, "Incorrect number of Slot delivery Channel Extensions have been returned. This should be 0 or 1.");
+            });
+        }
 
         [Then(@"the Slot Schedule should be referenced in the Bundle")]
         public void TheSlotScheduleShouldBeReferencedInTheBundle()
@@ -266,8 +276,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 var practitionerRoleExtensions = schedule.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kPractitionerRoleExt)).ToList();
                 practitionerRoleExtensions.Count.ShouldBe(1, "Incorrect number of practitionerRole Extensions have been returned. This should be 1.");
 
+                // Added 1.1.1 RMB 4/9/2018 Delivery Channel removed from Schedule and added to Slot resource
                 var deliveryChannelExtensions = schedule.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kDeliveryChannelExt)).ToList();
-                deliveryChannelExtensions.Count.ShouldBe(1, "Incorrect number of delivery Channel Extensions have been returned. This should be 1.");
+                deliveryChannelExtensions.Count.ShouldBe(0, "Incorrect number of delivery Channel Extensions have been returned. This should be 0.");
 
             });
         }
