@@ -85,13 +85,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         {
             var appSetting = ConfigurationManager.AppSettings[key];
 
-            if (key.Equals("serverHttpPort") || key.Equals("serverHttpsPort"))
+
+            if (!(key.Equals("serverHttpPort") || key.Equals("serverHttpsPort")) && string.IsNullOrWhiteSpace(appSetting))
             {
-                appSetting = "";
-            }
-            else if (string.IsNullOrWhiteSpace(appSetting))
-            {
-               throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
+                throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
             }
 
             var converter = TypeDescriptor.GetConverter(typeof(T));
