@@ -21,7 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static bool FhirCheckWeb => Get<bool>("fhirCheckWeb");
         public static bool FhirCheckDisk => Get<bool>("fhirCheckDisk");
         public static bool FhirCheckWebFirst => Get<bool>("fhirCheckWebFirst");
-        
+
         // Security Settings
         public static bool UseTLS => Get<bool>("useTLS");
 
@@ -44,14 +44,14 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         // Certificate Settings
         public static bool SendClientCert => Get<bool>("sendClientCert");
         public static bool ValidateServerCert => Get<bool>("validateServerCert");
-        
+
         //Certificates to imitate the Consumer calling the SSP
         public static string ThumbprintConsumerValid => Get<string>("Thumbprint:Consumer:Valid");
         public static string ThumbprintConsumerInvalidFqdn => Get<string>("Thumbprint:Consumer:Invalid:Fqdn");
         public static string ThumbprintConsumerInvalidAuthority => Get<string>("Thumbprint:Consumer:Invalid:Authority");
         public static string ThumbprintConsumerInvalidRevoked => Get<string>("Thumbprint:Consumer:Invalid:Revoked");
         public static string ThumbprintConsumerInvalidExpired => Get<string>("Thumbprint:Consumer:Invalid:Expired");
-        
+
         //Certificates to imitate the SSP calling the Provider
         public static string ThumbprintSspValid => Get<string>("Thumbprint:Ssp:Valid");
 
@@ -85,9 +85,13 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         {
             var appSetting = ConfigurationManager.AppSettings[key];
 
-            if (string.IsNullOrWhiteSpace(appSetting))
+            if (key.Equals("serverHttpPort") || key.Equals("serverHttpsPort"))
             {
-                throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
+                appSetting = "";
+            }
+            else if (string.IsNullOrWhiteSpace(appSetting))
+            {
+               throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
             }
 
             var converter = TypeDescriptor.GetConverter(typeof(T));

@@ -69,7 +69,8 @@
 
         public string FhirServerFhirBase { get; set; }
 
-        public string ProviderAddress => Protocol + FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase;
+        public string ProviderAddress => Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+        //Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
 
         public string EndpointAddress
         {
@@ -86,7 +87,8 @@
         {
             var sspAddress = UseSpineProxy ? SpineProxyAddress + "/" : string.Empty;
 
-            var baseUrl = sspAddress + Protocol + FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase;
+            //var baseUrl = sspAddress + Protocol + FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase;
+            var baseUrl = Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
 
             if (baseUrl[baseUrl.Length - 1] != '/')
             {
