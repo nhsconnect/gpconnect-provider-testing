@@ -79,6 +79,10 @@
         public void TheBundleShouldBeValid(string patient)
         {
             Bundle.Meta.ShouldNotBeNull();
+            // Added 1.2.1 RMB 1/10/2018
+            Bundle.Meta.VersionId.ShouldBeNull();
+            Bundle.Meta.LastUpdated.ShouldBeNull();
+
             CheckForValidMetaDataInResource(Bundle, FhirConst.StructureDefinitionSystems.kGpcStructuredRecordBundle);
             Bundle.Type.HasValue.ShouldBeTrue();
             Bundle.Type.Value.ShouldBe(Bundle.BundleType.Collection);

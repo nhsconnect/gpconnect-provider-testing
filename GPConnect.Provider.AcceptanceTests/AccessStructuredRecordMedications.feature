@@ -24,10 +24,10 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
 	Examples:
-		| Patient  |
-		| patient2 |
-		| patient3 |
-		| patient5 |
+		| Patient   |
+		| patient2  |
+		| patient3  |
+		| patient5  |
 		| patient12 |
 		| patient16 |
 		
@@ -294,7 +294,8 @@ Scenario: Check warning code is populated for a patient
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the Bundle should contain "1" lists
-		And the Bundle should contain a list with the title "Medication List"
+# RMB 13/9/2018 Replaced 'Medication List' with 'Medications and medical devices'
+		And the Bundle should contain a list with the title "Medications and medical devices"
 		And the Lists are valid for a patient without allergies
 
 @Ignore @Manual

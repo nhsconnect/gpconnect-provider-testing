@@ -22,11 +22,30 @@ Scenario Outline: I perform a successful cancel appointment
 		And the Appointment Created should be equal to the Created Appointment Created
 		And the Appointments returned must be in the future
 		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
 	Examples:
 		| PatientName |
 		| patient1    |
 		| patient2    |
 		| patient3    |
+
+Scenario Outline: I perform a successful cancel appointment with Extensions
+	Given I create an Appointment for Patient "<PatientName>" 
+		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
+		And I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments returned must be in the future
+		And the Appointment Id should be valid
+		And the Appointment Metadata should be valid
+		And the Appointment DeliveryChannel must be present
+		And the Appointment PractitionerRole must be present
+	Examples:
+		| PatientName | OrgType | DeliveryChannel | PracRole |
+		| patient1    | true    | true            | true     |
 
 Scenario: I perform a successful cancel appointment and amend the comment
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"

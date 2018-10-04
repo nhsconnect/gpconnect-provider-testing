@@ -1,4 +1,6 @@
-﻿namespace GPConnect.Provider.AcceptanceTests.Steps
+﻿using GPConnect.Provider.AcceptanceTests.Constants;
+
+namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System.Collections.Generic;
     using Context;
@@ -88,6 +90,48 @@
             });
         }
 
+        [Then(@"the Appointment DeliveryChannel must be valid")]
+        public void TheAppointmentDeliveryChannelMustBeValid()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                var deliveryChannelExtensions = appointment.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kDeliveryChannel2Ext)).ToList();
+                deliveryChannelExtensions.Count.ShouldBeGreaterThanOrEqualTo(0, "Incorrect number of Appointment delivery Channel Extensions have been returned.");
+            });
+        }
+
+
+        [Then(@"the Appointment PractitionerRole must be valid")]
+        public void TheAppointmentPractitionerRoleMustBeValid()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                var practitionerRoleExtensions = appointment.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kPractitionerRoleExt)).ToList();
+                practitionerRoleExtensions.Count.ShouldBeGreaterThanOrEqualTo(0, "Incorrect number of Appointment practitionerRole Extensions have been returned.");
+            });
+        }
+
+        // added 1.2.1 RMB 4/10/2018
+        [Then(@"the Appointment DeliveryChannel must be present")]
+        public void TheAppointmentDeliveryChannelMustBePresent()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                var deliveryChannelExtensions = appointment.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kDeliveryChannel2Ext)).ToList();
+                deliveryChannelExtensions.Count.ShouldBeGreaterThanOrEqualTo(1, "Incorrect number of Appointment delivery Channel Extensions have been returned.");
+            });
+        }
+
+
+        [Then(@"the Appointment PractitionerRole must be present")]
+        public void TheAppointmentPractitionerRoleMustBePresent()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                var practitionerRoleExtensions = appointment.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kPractitionerRoleExt)).ToList();
+                practitionerRoleExtensions.Count.ShouldBeGreaterThanOrEqualTo(1, "Incorrect number of Appointment practitionerRole Extensions have been returned.");
+            });
+        }
         public void RetrieveAppoinmentsForNhsNumber(string nhsNumber)
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentSearch);

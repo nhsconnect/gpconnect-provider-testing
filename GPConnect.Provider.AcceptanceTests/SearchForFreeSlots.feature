@@ -40,7 +40,7 @@ Scenario Outline: Searching for free slots should fail due to missing parameters
 	| start,end                 |
 	| start                     |
 	| status                    |
-	| searchFilter,searchFilter |
+# removed 1.2.1 RMB 1/10/2018	| searchFilter,searchFilter |
 
 Scenario: Searching for free slots with valid prefixes
 	Given I configure the default "SearchForFreeSlots" request
@@ -165,6 +165,7 @@ Scenario: Successfully search for free slots and check the slot resources return
 		And the Slot Status should be Free
 		And the Slot Metadata should be valid
 		And the Slot Identifiers should be valid
+		And the Slot Extensions should be valid
 
 Scenario Outline: Successfully search for free slots using various content types XML and JSON in Accept header
 	Given I configure the default "SearchForFreeSlots" request

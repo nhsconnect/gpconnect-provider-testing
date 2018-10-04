@@ -18,7 +18,7 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "<Patient>"
 		And the Bundle should contain "2" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Allergies and adverse reaction"
 		And the Bundle should contain a list with the title "Resolved Allergies"
 		And the Bundle should contain the correct number of allergies
 		And the Lists are valid for a patient with allergies
@@ -53,7 +53,7 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "<Patient>"
 		And the Bundle should contain "1" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Allergies and adverse reaction"
 		And the Bundle should not contain a list with the title "Resolved Allergies"
 		And the AllergyIntolerance should be valid
 		And the Bundle should contain the correct number of allergies
@@ -89,7 +89,7 @@ Scenario: Retrieve the allergy structured record section including resolved alle
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient1"
 		And the Bundle should contain "2" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Allergies and adverse reaction"
 		And the Bundle should contain a list with the title "Resolved Allergies"
 		And the Lists are valid for a patient with no allergies
 		And the List of AllergyIntolerances should be valid
@@ -110,7 +110,7 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient1"
 		And the Bundle should contain "1" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Allergies and adverse reaction"
 		And the Lists are valid for a patient with no allergies
 		And the List of AllergyIntolerances should be valid
 
@@ -130,7 +130,7 @@ Scenario: Retrieve the allergy structured record section including resolved alle
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient5"
 		And the Bundle should contain "2" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Allergies and adverse reaction"
 		And the Bundle should contain a list with the title "Resolved Allergies"
 		And the Lists are valid for a patient with explicit no allergies coding
 		And the List of AllergyIntolerances should be valid
@@ -151,7 +151,7 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient5"
 		And the Bundle should contain "1" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Allergies and adverse reaction"
 		And the Lists are valid for a patient with explicit no allergies coding
 		And the List of AllergyIntolerances should be valid
 
@@ -257,7 +257,7 @@ Scenario: Check allergy warning code is populated for a patient
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 	And the Bundle should contain "2" lists
-	And the Bundle should contain a list with the title "Allergies and adverse reactions"
+	And the Bundle should contain a list with the title "Allergies and adverse reaction"
 	And the Bundle should contain a list with the title "Resolved Allergies"
 	And the Lists are valid for a patient without allergies
 
@@ -270,7 +270,7 @@ Scenario: Check allergy legacy endReason
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 	And the Bundle should contain "2" lists
-	And the Bundle should contain a list with the title "Allergies and adverse reactions"
+	And the Bundle should contain a list with the title "Allergies and adverse reaction"
 	And the Bundle should contain a list with the title "Resolved Allergies"
 	And the Lists are valid for a patient with legacy endReason
 

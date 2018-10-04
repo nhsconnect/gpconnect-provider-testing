@@ -14,6 +14,7 @@
     using static Hl7.Fhir.Model.Appointment;
     using System;
     using GPConnect.Provider.AcceptanceTests.Helpers;
+    using GPConnect.Provider.AcceptanceTests.Extensions;
 
     [Binding]
     public class AppointmentsSteps : BaseSteps
@@ -102,6 +103,23 @@
             }
         }
 
+        [Given(@"I create an Appointment for Patient ""([^""]*)""")]
+        public void CreateAnAppointmentForPatient(string patient)
+        {
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _searchForFreeSlotsSteps.GetAvailableFreeSlots();
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
+
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+            
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
+        }
+
         [Given(@"I create an Appointment for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
         public void CreateAnAppointmentForPatientAndOrganizationCode(string patient, string code)
         {
@@ -112,6 +130,9 @@
             _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
 
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+            Organization changed = FhirHelper.GetDefaultOrganization();
+            changed.Identifier.First().Value = GlobalContext.OdsCodeMap[code];
+            _httpSteps.jwtHelper.RequestingOrganization = changed.ToFhirJson();
 
             CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
 
@@ -189,7 +210,27 @@
         {
             var appointmentBuilder = new DefaultAppointmentBuilder(_fhirResourceRepository);
 
-            _fhirResourceRepository.Appointment = appointmentBuilder.BuildAppointment();
+            _fhirResourceRepository.Appointment = appointmentBuilder.BuildAppointment(true, false, false);
+
+            _fhirResourceRepository.Appointment.ShouldNotBeNull("Built appointment is null.");
+        }
+
+        [Given(@"I create an Appointment with org type ""(.*)"" with channel ""(.*)"" with prac role ""(.*)""")]
+        public void CreateAnAppointmentWithOrgTypeWithChannelWithPracRole(Boolean addOrgType, Boolean addDeliveryChannel, Boolean addPracRole)
+        {
+            var appointmentBuilder = new DefaultAppointmentBuilder(_fhirResourceRepository);
+
+            _fhirResourceRepository.Appointment = appointmentBuilder.BuildAppointment(addOrgType, addDeliveryChannel, addPracRole);
+
+            _fhirResourceRepository.Appointment.ShouldNotBeNull("Built appointment is null.");
+        }
+
+        [Given(@"I create an Appointment without organisationType from the stored Patient and stored Schedule")]
+        public void CreateAnAppointmentWithoutOrgTypeFromTheStoredPatientAndStoredSchedule()
+        {
+            var appointmentBuilder = new DefaultAppointmentBuilder(_fhirResourceRepository);
+
+            _fhirResourceRepository.Appointment = appointmentBuilder.BuildAppointment(false, false, false);
 
             _fhirResourceRepository.Appointment.ShouldNotBeNull("Built appointment is null.");
         }
@@ -390,5 +431,22 @@
             { "PPRF", "primary performer"},
             { "PART", "Participation"}
         };
+
+        [Then(@"the Appointment Organisation Code should equal ""(.*)""")]
+        public void TheAppointmentOrganisationCodeShouldEqual(String org)
+        {
+            Appointments.ForEach(readAppointment =>
+            {
+                readAppointment.Contained.ForEach(resource =>
+                {
+                    if (resource.ResourceType.Equals(ResourceType.Organization))
+                    {
+                        Organization organisation = (Organization)resource;
+                        organisation.Identifier.First().Value.ShouldBe(GlobalContext.OdsCodeMap[org]);
+
+                    }
+                });
+            });
+        }
     }
 }

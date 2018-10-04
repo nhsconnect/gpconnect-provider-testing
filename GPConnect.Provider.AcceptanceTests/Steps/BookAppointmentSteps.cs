@@ -272,6 +272,8 @@
                     {
                         Organization org = (Organization)contained;
                         org.Id.ShouldNotBeNull();
+                        // Added 1.2.1 RMB 1/10/2018
+                        org.Type.ShouldBeNull();
                         org.Name.ShouldNotBeNull();
                         org.Telecom.ShouldNotBeNull();
 

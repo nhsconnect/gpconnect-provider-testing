@@ -19,7 +19,7 @@
             _fhirResourceRepository = fhirResourceRepository;
         }
 
-        public Appointment BuildAppointment()
+        public Appointment BuildAppointment(Boolean addOrgType, Boolean addDeliveryChannel, Boolean addPracRole)
         {
             var storedPatient = _fhirResourceRepository.Patient;
             var storedBundle = _fhirResourceRepository.Bundle;
@@ -44,7 +44,7 @@
             //Practitioners
             var practitionerReferences = schedule.Extension.Where(extension => extension is ResourceReference).Select(extension => ((ResourceReference)extension.Value).Reference);
             var practitioners = GetPractitioners(practitionerReferences);
-
+            
             //Location
             var locationReference = schedule.Actor.First(actor => actor.Reference.Contains("Location")).Reference;
             var location = GetLocation(locationReference);
@@ -69,7 +69,7 @@
             var bookingOrganizationExtension = GetBookingOrganizationExtension();
 
             //Contained Resources
-            var bookingOrganization = GetBookingOrganization();
+            var bookingOrganization = GetBookingOrganization(addOrgType);
             
             //Initialize Appointment
             var appointment = new Appointment
@@ -87,13 +87,30 @@
             appointment.Extension.Add(bookingOrganizationExtension);
             appointment.Contained.Add(bookingOrganization);
 
+
+            //Practitioner Role
+            if (addPracRole)
+            {
+                CodeableConcept roleCode = new CodeableConcept("https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-SDSJobRoleName-1", "R0260", "General Medical Practitioner");
+                Extension pracRole = new Extension("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-PractitionerRole-1", roleCode);
+                appointment.Extension.Add(pracRole);
+            }
+
+            //Deliver Channel
+            if (addDeliveryChannel)
+            {
+                Code channelCode = new Code("In-person"); 
+                Extension delChannel = new Extension("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-DeliveryChannel-2", channelCode);
+                appointment.Extension.Add(delChannel);
+            }
+
             CodeableConcept type = new CodeableConcept("http://hl7.org/fhir/ValueSet/c80-practice-codes", "394802001", "General medicine", null);
             appointment.AppointmentType = type;
 
             return appointment;
         }
 
-        private static Organization GetBookingOrganization()
+        private static Organization GetBookingOrganization(Boolean addOrgType)
         {
             var bookingOrganization = new Organization
             {
@@ -102,6 +119,11 @@
             };
 
             bookingOrganization.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap["ORG1"]));
+            if (addOrgType)
+            {
+                CodeableConcept ot = new CodeableConcept("https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1", "urgent-care", "Urgent Care");
+                bookingOrganization.Type.Add(ot);
+            }
             bookingOrganization.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01823938938"));
 
             return bookingOrganization;
