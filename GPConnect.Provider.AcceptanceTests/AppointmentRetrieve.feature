@@ -11,6 +11,23 @@ Scenario: Appointment retrieve success valid id where appointment resource retur
 		And the response should be a Bundle resource of type "searchset"
 		And the Bundle should contain no Appointments
 
+Scenario Outline: I perform a successful retrieve appointment with Extensions
+	Given I create an Appointment for Patient "<PatientName>" 
+		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
+		And I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments returned must be in the future
+		And the Appointment Id should be valid
+		And the Appointment Metadata should be valid
+		And the Appointment DeliveryChannel must be present
+		And the Appointment PractitionerRole must be present
+	Examples:
+		| PatientName | OrgType | DeliveryChannel | PracRole |
+		| patient1    | true    | true            | true     |
+
 Scenario Outline: Appointment retrieve multiple appointment retrived
 	Given I create "<numberOfAppointments>" Appointments for Patient "<patient>" and Organization Code "ORG1"
 	Given I get the Patient for Patient Value "<patient>"
@@ -35,6 +52,8 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 		And the Appointment Start should be valid
 		And the Appointment End should be valid
 		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
 	Examples:
 		| patient  | numberOfAppointments |
 		| patient4 | 1                    |

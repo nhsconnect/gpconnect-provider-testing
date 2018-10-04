@@ -17,7 +17,7 @@
     public class HttpSteps : Steps
     {
         private readonly HttpContext _httpContext;
-        private JwtHelper _jwtHelper;
+        public JwtHelper jwtHelper;
         private readonly SecuritySteps _securitySteps;
         private readonly SecurityContext _securityContext;
         private readonly IFhirResourceRepository _fhirResourceRepository;
@@ -26,7 +26,7 @@
         {
             Log.WriteLine("HttpSteps() Constructor");
             _httpContext = httpContext;
-            _jwtHelper = jwtHelper;
+            this.jwtHelper = jwtHelper;
             _securitySteps = securitySteps;
             _securityContext = securityContext;
             _fhirResourceRepository = fhirResourceRepository;
@@ -79,7 +79,7 @@
 
             _httpContext.HttpRequestConfiguration = GetHttpRequestConfiguration(interaction, _httpContext.HttpRequestConfiguration);
   
-            _jwtHelper = GetJwtHelper(interaction, _jwtHelper);
+            jwtHelper = GetJwtHelper(interaction, jwtHelper);
 
             _securitySteps.ConfigureServerCertificatesAndSsl();
         }
@@ -90,7 +90,7 @@
             _httpContext.SetDefaults();
 
             _httpContext.HttpRequestConfiguration = GetHttpRequestConfiguration(interaction, _httpContext.HttpRequestConfiguration);
-            _jwtHelper = GetJwtHelper(interaction, _jwtHelper);
+            jwtHelper = GetJwtHelper(interaction, jwtHelper);
 
             _securitySteps.ConfigureServerCertificatesAndSsl();
         }
@@ -105,7 +105,7 @@
             
             _httpContext.HttpRequestConfiguration = GetRequestBody(interaction, _httpContext.HttpRequestConfiguration);
 
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
 
             var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
@@ -118,7 +118,7 @@
         {
             _httpContext.HttpRequestConfiguration = GetRequestBody(interaction, _httpContext.HttpRequestConfiguration);
 
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
 
             _httpContext.HttpRequestConfiguration.RequestHeaders.RemoveHeader(headerKey);
 
@@ -134,7 +134,7 @@
 
             requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
 
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerTokenWithoutEncoding());
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerTokenWithoutEncoding());
 
             var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
@@ -149,7 +149,7 @@
             requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
             requestFactory.ConfigureInvalidResourceType(_httpContext.HttpRequestConfiguration);
 
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
 
             var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
@@ -164,7 +164,7 @@
             requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
             requestFactory.ConfigureAdditionalInvalidFieldInResource(_httpContext.HttpRequestConfiguration);
 
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
 
             var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
@@ -177,7 +177,7 @@
             var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
             requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
             requestFactory.ConfigureInvalidParameterResourceType(_httpContext.HttpRequestConfiguration);
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
 
             var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
@@ -190,7 +190,7 @@
             var requestFactory = new RequestFactory(interaction, _fhirResourceRepository);
             requestFactory.ConfigureBody(_httpContext.HttpRequestConfiguration);
             requestFactory.ConfigureParameterResourceWithAdditionalField(_httpContext.HttpRequestConfiguration);
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
 
             var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 
@@ -203,7 +203,7 @@
 
             _httpContext.HttpRequestConfiguration = GetRequestBody(interaction, _httpContext.HttpRequestConfiguration);
 
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, _jwtHelper.GetBearerToken());
+            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kAuthorization, jwtHelper.GetBearerToken());
 
             var httpRequest = new HttpContextRequest(_httpContext, _securityContext);
 

@@ -3,6 +3,7 @@ using GPConnect.Provider.AcceptanceTests.Constants;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System;
     using System.Collections.Generic;
     using Context;
     using Enum;
@@ -40,9 +41,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
 
             _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
-            SetRequiredParametersWithTimePeriod(14);
+            SetRequiredParametersWithTimePeriod(14, true);
+            
+            _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
+        }
 
+        [Given(@"I get Available Free Slots without organisation type")]
+        public void GetAvailableFreeSlotsWithoutOrgType()
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
 
+            _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
+            SetRequiredParametersWithTimePeriod(14, false);
+            
             _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }
 
@@ -60,12 +71,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I set the required parameters with a time period of ""(.*)"" days")]
-        public void SetRequiredParametersWithTimePeriod(int days)
+        public void SetRequiredParametersWithTimePeriod(int days, Boolean orgType)
         {
             _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTomorrowWithStartEndPrefix(days,"ge","le");
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("status", "free");
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            if (orgType)
+            {
+                _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            }
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
         }
 
@@ -80,7 +94,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAddTwoSearchFilterParametersWithValuesEqualToAnd(string firstInvalidValue, string secondInvalidValue)
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["OG1"]);
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "");
 
         }
 
@@ -88,7 +102,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAddTwoValidSearchFilterParamaters()
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
             
         }
 
@@ -109,8 +123,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAddThreeValidSearchFilterParamaters()
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Other");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Other");
         }
 
         [Given(@"I add a invalid searchFilter paramater with system equal to ""(.*)""")]
@@ -182,8 +196,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             Slots.ForEach(slot =>
             {
-                var deliveryChannelExtensions = slot.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kDeliveryChannelExt)).ToList();
-                deliveryChannelExtensions.Count.ShouldBeLessThanOrEqualTo(1, "Incorrect number of Slot delivery Channel Extensions have been returned. This should be 0 or 1.");
+                var deliveryChannelExtensions = slot.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kDeliveryChannel2Ext)).ToList();
+                deliveryChannelExtensions.Count.ShouldBeGreaterThanOrEqualTo(0, "Incorrect number of Slot delivery Channel Extensions have been returned. This should be 1 or more.");
             });
         }
 

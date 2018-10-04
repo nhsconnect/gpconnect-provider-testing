@@ -40,7 +40,7 @@ Scenario Outline: Searching for free slots should fail due to missing parameters
 	| start,end                 |
 	| start                     |
 	| status                    |
-	| searchFilter,searchFilter |
+# removed 1.2.1 RMB 1/10/2018	| searchFilter,searchFilter |
 
 Scenario: Searching for free slots with valid prefixes
 	Given I configure the default "SearchForFreeSlots" request
