@@ -41,7 +41,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
 
             _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
-            SetRequiredParametersWithTimePeriod(14, true);
+            SetRequiredParametersWithOrgTypeAndATimePeriod(14, true);
             
             _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }
@@ -52,7 +52,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
 
             _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
-            SetRequiredParametersWithTimePeriod(14, false);
+            SetRequiredParametersWithOrgTypeAndATimePeriod(14, false);
             
             _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }
@@ -71,18 +71,28 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I set the required parameters with a time period of ""(.*)"" days")]
-        public void SetRequiredParametersWithTimePeriod(int days, Boolean orgType)
+        public void SetRequiredParametersWithTimePeriod(int days)
         {
             _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTomorrowWithStartEndPrefix(days,"ge","le");
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("status", "free");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
+        }
+// Added 1.2.1 RMB 5/10/2018
+        [Given(@"I set the required parameters with org type and a time period of ""(.*)"" days")]
+        public void SetRequiredParametersWithOrgTypeAndATimePeriod(int days, Boolean orgType)
+        {
+            _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTomorrowWithStartEndPrefix(days, "ge", "le");
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("status", "free");
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
             if (orgType)
             {
                 _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
             }
+            
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
         }
-
         [Given(@"I add a single searchFilter paramater with value equal to ""(.*)""")]
         public void ISetASingleTheSearchFilterParameterTo(string invalidValue)
         {
