@@ -149,8 +149,19 @@
                 if (list.Entry.Count.Equals(0))
                 {
                     list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
-                    list.EmptyReason.Text.Equals("noContent");
+//                    list.EmptyReason.Text.Equals("noContent");
+// Added github ref 87
+// RMB 9/10/2018
+//
+                    if (list.EmptyReason.Coding.Count.Equals(1))
+                    {
+                        list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
+                        list.EmptyReason.Coding.First().Display.ShouldBe("No content recorded");
+                    }
                     list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
+// Added git hub ref 88
+// RMB 9/10/2018
+                    list.Note.First().Text.ShouldBe("Information not available");
                 }
                 else
                 {
@@ -205,7 +216,9 @@
                     medication.Code.Coding.ForEach(coding =>
                     {
                         coding.System.ShouldNotBeNull("Code should not be null");
-                        coding.System.ShouldBe("http://snomed.info/sct");
+// Added github ref 85
+// RMB 15/10/2018
+                        coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
                         Extension extension = coding.GetExtension("https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-coding-sctdescid");
                         extension.ShouldNotBeNull();
                         extension.GetExtension("descriptionId").ShouldNotBeNull();

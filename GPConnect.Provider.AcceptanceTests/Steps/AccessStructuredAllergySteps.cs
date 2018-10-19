@@ -113,12 +113,14 @@
 
                 if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
                 {
-                    list.Code.Equals("886921000000105");
-
+                    list.Code.Coding.First().Code.Equals("886921000000105");
                 } else if (list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies))
                 {
                     // Changed from TBD to 1103671000000101 for 1.2.0 RMB 7/8/2018
-                    list.Code.Equals("1103671000000101");
+                    list.Code.Coding.First().Code.Equals("1103671000000101");
+// Amended github ref 89
+// RMB 9/10/2018				
+					list.Code.Coding.First().Display.ShouldBe("Ended allergies (record artifact)");
                 }
 
                 if (list.Entry.Count > 0)
@@ -201,7 +203,9 @@
                list.EmptyReason.ShouldNotBeNull();
                list.EmptyReason.Coding.Count.ShouldBe(1);
                list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kSpecial);
-               list.EmptyReason.Coding.First().Code.ShouldBe("nocontentrecorded");
+// Amended for github ref 87
+// RMB 9/10/2018			   
+               list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
                list.EmptyReason.Coding.First().Display.ShouldBe("No content recorded");
            });
         }

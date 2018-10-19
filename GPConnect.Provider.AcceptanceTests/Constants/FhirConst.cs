@@ -199,6 +199,11 @@
         {
             public const string kActiveAllergies = "Allergies and adverse reaction";
             public const string kResolvedAllergies = "Resolved Allergies";
+//
+// Added github ref 89
+// RMB 9/10/2018
+//
+            public const string kEndedAllergies = "Ended allergies (record artifact)";
             public const string kMedications = "Medications and medical devices";
         }
     }

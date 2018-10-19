@@ -141,11 +141,13 @@ Scenario: Amend appointment set etag and check etag is the same in the returned 
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"		
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
+# Amended RMB from csutomComment to customDescription
 		And I set the Created Appointment Description to "customDescription"
 		And I set the If-Match header to the Stored Appointment Version Id
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
+# Amended RMB from csutomComment to customDescription
 		And the Appointment Description should be valid for "customDescription"
 
 Scenario: Amend appointment and send an invalid bundle resource
@@ -156,16 +158,29 @@ Scenario: Amend appointment and send an invalid bundle resource
 	When I make the "AppointmentAmend" request with invalid Resource type
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+#
+# Test reeplaced with original tests from 1.2.0
+# github ref 99
+# RMB 17/10/2018
+#
+#Scenario: Amend appointment and send an invalid appointment resource
+#	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+#		And I store the Created Appointment	
+#	Given I configure the default "AppointmentAmend" request
+#		And I set the Created Appointment to a new Appointment
+#	When I make the "AppointmentAmend" request
+#	Then the response status code should be "400"
+#		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Amend appointment and send an invalid appointment resource
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment to a new Appointment
+		And I amend an invalid appointment field
 	When I make the "AppointmentAmend" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-				
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+		
 Scenario: CapabilityStatement profile support the Amend appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
@@ -183,13 +198,26 @@ Scenario: Amend appointment valid response check caching headers exist
 		And the Appointment Description should be valid for "customDescription"
 		And the Appointment Metadata should be valid
 		And the required cacheing headers should be present in the response
+#
+# Test reeplaced with original tests from 1.2.0
+# github ref 99
+# RMB 17/10/2018
+#
+#Scenario:Amend appointment invalid response check caching headers exist
+#	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+#		And I store the Created Appointment	
+#	Given I configure the default "AppointmentAmend" request
+#		And I set the Created Appointment Comment to "customComment"
+#		And I set the Created Appointment to a new Appointment
+#	When I make the "AppointmentAmend" request
+#	Then the response status code should be "400"
+#		And the required cacheing headers should be present in the response
 
 Scenario:Amend appointment invalid response check caching headers exist
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Comment to "customComment"
-		And I set the Created Appointment to a new Appointment
+		And I amend an invalid appointment field														
 	When I make the "AppointmentAmend" request
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the required cacheing headers should be present in the response

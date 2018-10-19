@@ -61,18 +61,21 @@ Scenario: Book single appointment for patient without organisation type
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
-
-Scenario: Search without organisation type and book with organisation type 
-	Given I get an existing patients nshNumber
-		And I store the Patient
-	Given I get Available Free Slots without organisation type
-		And I store the Free Slots Bundle
-	Given I configure the default "AppointmentCreate" request
-		And I create an Appointment from the stored Patient and stored Schedule
-	When I make the "AppointmentCreate" request
-	Then the response status code should indicate failure
-		And the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+#
+# Provider systems unable to keep state between interactions so test removed
+# RMB 16/10/2018
+#
+#Scenario: Search without organisation type and book with organisation type 
+#	Given I get an existing patients nshNumber
+#		And I store the Patient
+#	Given I get Available Free Slots without organisation type
+#		And I store the Free Slots Bundle
+#	Given I configure the default "AppointmentCreate" request
+#		And I create an Appointment from the stored Patient and stored Schedule
+#	When I make the "AppointmentCreate" request
+#	Then the response status code should indicate failure
+#		And the response status code should be "422"
+#		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 		
 Scenario Outline: Book Appointment with invalid url for booking appointment
 	Given I get an existing patients nshNumber
