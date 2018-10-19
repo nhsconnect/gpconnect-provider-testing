@@ -21,11 +21,30 @@ Scenario Outline: I perform a successful amend appointment and check the returne
 		And the Appointment Identifiers should be valid
 		And the Appointment Description should be valid for "customDescription"
 		And the Appointment Created must be valid
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
 	Examples:
 		| Patient  |
 		| patient1 |
 		| patient2 |
 		| patient3 |
+
+Scenario Outline: I perform a successful amend appointment with Extensions
+	Given I create an Appointment for Patient "<PatientName>" 
+		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
+		And I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments returned must be in the future
+		And the Appointment Id should be valid
+		And the Appointment Metadata should be valid
+		And the Appointment DeliveryChannel must be present
+		And the Appointment PractitionerRole must be present
+	Examples:
+		| PatientName | OrgType | DeliveryChannel | PracRole |
+		| patient1    | true    | true            | true     |
 
 Scenario: Amend appointment and update element which cannot be updated
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -122,12 +141,14 @@ Scenario: Amend appointment set etag and check etag is the same in the returned 
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"		
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Comment to "customComment"
+# Amended RMB from csutomComment to customDescription
+		And I set the Created Appointment Description to "customDescription"
 		And I set the If-Match header to the Stored Appointment Version Id
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "customComment"
+# Amended RMB from csutomComment to customDescription
+		And the Appointment Description should be valid for "customDescription"
 
 Scenario: Amend appointment and send an invalid bundle resource
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -137,6 +158,19 @@ Scenario: Amend appointment and send an invalid bundle resource
 	When I make the "AppointmentAmend" request with invalid Resource type
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+#
+# Test reeplaced with original tests from 1.2.0
+# github ref 99
+# RMB 17/10/2018
+#
+#Scenario: Amend appointment and send an invalid appointment resource
+#	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+#		And I store the Created Appointment	
+#	Given I configure the default "AppointmentAmend" request
+#		And I set the Created Appointment to a new Appointment
+#	When I make the "AppointmentAmend" request
+#	Then the response status code should be "400"
+#		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: Amend appointment and send an invalid appointment resource
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
@@ -146,7 +180,7 @@ Scenario: Amend appointment and send an invalid appointment resource
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
-				
+		
 Scenario: CapabilityStatement profile support the Amend appointment operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
@@ -164,12 +198,26 @@ Scenario: Amend appointment valid response check caching headers exist
 		And the Appointment Description should be valid for "customDescription"
 		And the Appointment Metadata should be valid
 		And the required cacheing headers should be present in the response
+#
+# Test reeplaced with original tests from 1.2.0
+# github ref 99
+# RMB 17/10/2018
+#
+#Scenario:Amend appointment invalid response check caching headers exist
+#	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+#		And I store the Created Appointment	
+#	Given I configure the default "AppointmentAmend" request
+#		And I set the Created Appointment Comment to "customComment"
+#		And I set the Created Appointment to a new Appointment
+#	When I make the "AppointmentAmend" request
+#	Then the response status code should be "400"
+#		And the required cacheing headers should be present in the response
 
 Scenario:Amend appointment invalid response check caching headers exist
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
-		And I amend an invalid appointment field
+		And I amend an invalid appointment field														
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "422"
 		And the required cacheing headers should be present in the response

@@ -105,7 +105,9 @@ Scenario: Organization read invalid response check caching headers exist
 	Given I get the Organization for Organization Code "ORG1"
 		And I store the Organization
 	Given I configure the default "OrganizationRead" request
-		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3"
+	# Amended github ref 97
+	# RMB 16/10/2018
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner-1"
 	When I make the "OrganizationRead" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

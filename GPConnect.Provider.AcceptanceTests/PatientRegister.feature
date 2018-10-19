@@ -202,7 +202,9 @@ Scenario: Register patient which is not the Spine
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+# Changed from BAD_REQUEST to 'INVALID_PATIENT_DEMOGRAPHICS' git hub ref 80
+# RMB 9/10/2018 
+		And the response should be a OperationOutcome resource with error code "INVALID_PATIENT_DEMOGRAPHICS"
 
 Scenario: Register patient with no official name
 	Given I get the next Patient to register and store it

@@ -164,3 +164,16 @@ Scenario: Organization search valid response check caching headers exist
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 		And the required cacheing headers should be present in the response
+
+	# Added test github ref 97
+	# RMB 16/10/2018
+
+Scenario: Organization search invalid response check caching headers exist
+	Given I get the Organization for Organization Code "ORG1"
+		And I store the Organization
+	Given I configure the default "OrganizationSearch" request
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner-1"
+	When I make the "OrganizationSearch" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		And the required cacheing headers should be present in the response

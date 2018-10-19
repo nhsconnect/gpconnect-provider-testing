@@ -24,10 +24,10 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
 	Examples:
-		| Patient  |
-		| patient2 |
-		| patient3 |
-		| patient5 |
+		| Patient   |
+		| patient2  |
+		| patient3  |
+		| patient5  |
 		| patient12 |
 		| patient16 |
 		
@@ -294,8 +294,20 @@ Scenario: Check warning code is populated for a patient
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the Bundle should contain "1" lists
-		And the Bundle should contain a list with the title "Medication List"
+# RMB 13/9/2018 github ref 84 Replaced 'Medication List' with 'Medications and medical devices'
+		And the Bundle should contain a list with the title "Medications and medical devices"
 		And the Lists are valid for a patient without allergies
+
+# Added for github ref 110 (Demonstrator)
+# 1.2.1 RMB 15/10/2018
+
+Scenario:  structured record for a patient that is not in the database 
+	Given I configure the default "GpcGetStructuredRecord" request 
+	And I add an NHS Number parameter for "patientNotInSystem"
+	And I add the medication parameter with includePrescriptionIssues set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
 @Ignore @Manual
 Scenario: Notes that are present in the record are formatted correctly

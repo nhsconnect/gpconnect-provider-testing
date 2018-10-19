@@ -132,7 +132,10 @@
         {
             string cacheControl;
             _httpContext.HttpResponse.Headers.TryGetValue("Cache-Control", out cacheControl);
-            cacheControl.ShouldBe("no-store", "The response payload should contain a resource.");
+
+// Amended git hub ref 82 from Shouldbe to ShouldContain 
+// RMB 9/10/2018			
+            cacheControl.ShouldContain("no-store", "The response payload should contain a resource.");
     
         }
 

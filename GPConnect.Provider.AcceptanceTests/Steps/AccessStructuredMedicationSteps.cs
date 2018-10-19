@@ -136,6 +136,9 @@
             Lists.ForEach(list =>
             {
                 AccessRecordSteps.BaseListParametersAreValid(list);
+// Added 1.2.1 RMB 1/10/2018				
+                list.Meta.VersionId.ShouldBeNull();
+                list.Meta.LastUpdated.ShouldBeNull();				
 
                 //Medication specific checks
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
@@ -146,8 +149,19 @@
                 if (list.Entry.Count.Equals(0))
                 {
                     list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
-                    list.EmptyReason.Text.Equals("noContent");
+//                    list.EmptyReason.Text.Equals("noContent");
+// Added github ref 87
+// RMB 9/10/2018
+//
+                    if (list.EmptyReason.Coding.Count.Equals(1))
+                    {
+                        list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
+                        list.EmptyReason.Coding.First().Display.ShouldBe("No content recorded");
+                    }
                     list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
+// Added git hub ref 88
+// RMB 9/10/2018
+                    list.Note.First().Text.ShouldBe("Information not available");
                 }
                 else
                 {
@@ -178,6 +192,8 @@
             TheMedicationIdShouldBeValid();
             TheMedicationCodeShouldBeValid();
             TheMedicationMetadataShouldBeValid();
+// Added 1.2.1 RMB 1/10/2018
+            TheMedicationNotInUseShouldBeValid();
         }
 
         [Then(@"the Medication Id should be valid")]
@@ -200,7 +216,9 @@
                     medication.Code.Coding.ForEach(coding =>
                     {
                         coding.System.ShouldNotBeNull("Code should not be null");
-                        coding.System.ShouldBe("http://snomed.info/sct");
+// Added github ref 85
+// RMB 15/10/2018
+                        coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
                         Extension extension = coding.GetExtension("https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-coding-sctdescid");
                         extension.ShouldNotBeNull();
                         extension.GetExtension("descriptionId").ShouldNotBeNull();
@@ -221,6 +239,18 @@
             Medications.ForEach(medication =>
             {
                 CheckForValidMetaDataInResource(medication, FhirConst.StructureDefinitionSystems.kMedication);
+            });
+        }
+
+// Added 1.2.1 RMB 1/10/2018        
+        [Then(@"the Medication Not In Use should be valid")]
+        public void TheMedicationNotInUseShouldBeValid()
+        {
+            Medications.ForEach(medication =>
+            {
+                medication.Meta.VersionId.ShouldBeNull();
+                medication.Meta.LastUpdated.ShouldBeNull();
+                medication.Package.ShouldBeNull();
             });
         }
 
@@ -249,6 +279,8 @@
             TheMedicationStatementTakenShouldbeValid();
             TheMedicationStatementDosageTextShouldbeValid();
             TheSpecifiedMedicationStatementFieldsShouldBeNull();
+// Added 1.2.1 RMB 1/10/2018
+            TheMedicationStatementNotInUseShouldBeValid();
         }
 
         [Then(@"the specified MedicationStatement fields should be null")]
@@ -427,7 +459,7 @@
                 {
                     dosage.Text.ShouldNotBeNullOrEmpty();
 					
-					// Added for 1.2.0 RMB 8/8/2018
+// Added for 1.2.0 RMB 8/8/2018
                     dosage.Text.Equals("No information available");
                 });
             });
@@ -529,6 +561,23 @@
             }
         }
 
+        // Added 1.2.1 RMB 1/10/2018        
+        [Then(@"the MedicationStatement Not In Use should be valid")]
+        public void TheMedicationStatementNotInUseShouldBeValid()
+        {
+            MedicationStatements.ForEach(medStatement =>
+            {
+                medStatement.Meta.VersionId.ShouldBeNull();
+                medStatement.Meta.LastUpdated.ShouldBeNull();
+                medStatement.PartOf.Count().ShouldBe(0);
+                medStatement.Category.ShouldBeNull();
+                medStatement.InformationSource.ShouldBeNull();
+                medStatement.DerivedFrom.Count().ShouldBe(0);
+//                medStatement.Taken.ShouldBeNull();
+                medStatement.ReasonNotTaken.Count().ShouldBe(0);
+
+            });
+        }
         #endregion
 
         #region Medication Request Checks
@@ -604,6 +653,8 @@
             TheMedicationRequestAuthoredOnShouldbeValid();
             ThereShouldBeAtLeastOneMedicationRequestWithIntentToPlan();
             TheSpecifiedMedicationRequestsFieldsShouldBeNull();
+// Added 1.2.1 RMB 1/10/2018
+            TheMedicationRequestNotInUseShouldBeValid();
         }
 
         [Then(@"the specified Medication Requests fields should be null")]
@@ -857,7 +908,7 @@
                 Extension prescriptionType = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType);
                 prescriptionType.ShouldNotBeNull();
 				
-				// Added for 1.2.0 RMB 8/8/2018
+// Added for 1.2.0 RMB 8/8/2018
                 prescriptionType.Equals("No information available");
 				
                 CodeableConcept prescriptionTypeValue = (CodeableConcept)prescriptionType.Value;
@@ -877,12 +928,30 @@
                     endReason.ShouldNotBeNull();
                     endReason.GetExtension("statusChangeDate").ShouldNotBeNull();
                     endReason.GetExtension("statusReason").ShouldNotBeNull();
-					// Added 1.2.0 RMB 8/8/2018
+// Added 1.2.0 RMB 8/8/2018
                     endReason.GetExtension("statusReason").Equals("No information available");					
                 }
             });
         }
 
+// Added 1.2.1 RMB 1/10/2018        
+        [Then(@"the MedicationRequest Not In Use should be valid")]
+        public void TheMedicationRequestNotInUseShouldBeValid()
+        {
+            MedicationRequests.ForEach(medRequest =>
+            {
+                medRequest.Meta.VersionId.ShouldBeNull();
+                medRequest.Meta.LastUpdated.ShouldBeNull();
+                medRequest.Definition.Count().ShouldBe(0);
+                medRequest.Category.ShouldBeNull();
+                medRequest.Priority.ShouldBeNull();
+                medRequest.SupportingInformation.Count().ShouldBe(0);
+                medRequest.Substitution.ShouldBeNull();
+                medRequest.DetectedIssue.Count().ShouldBe(0);
+                medRequest.EventHistory.Count().ShouldBe(0);
+
+            });
+        }
         #endregion
     }
 }

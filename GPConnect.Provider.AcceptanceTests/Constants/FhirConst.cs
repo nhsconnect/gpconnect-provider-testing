@@ -154,7 +154,7 @@
             public const string kGpcSearchSet = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Searchset-Bundle-1";
 			// Amended to https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1  RMB 14/8/2018
             public const string kGpcStructuredRecordBundle = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1";
-            public const string kAllergyIntolerance = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-AllergyIntolerance-1";
+			public const string kAllergyIntolerance = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-AllergyIntolerance-1";
             public const string kMedication = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Medication-1";
             public const string kMedicationStatement = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1";
             public const string kMedicationRequest = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1";
@@ -178,6 +178,8 @@
 
             public const string kPractitionerRoleExt = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-PractitionerRole-1";
             public const string kDeliveryChannelExt ="https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-DeliveryChannel-1";
+			// added 1.2.1 RMB 1/10/2018
+            public const string kDeliveryChannel2Ext ="https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-DeliveryChannel-2";			
 
             public const string kAllergyEndExt = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-AllergyIntoleranceEnd-1";
 
@@ -195,8 +197,13 @@
 
         internal static class ListTitles
         {
-            public const string kActiveAllergies = "Allergies and adverse reactions";
+            public const string kActiveAllergies = "Allergies and adverse reaction";
             public const string kResolvedAllergies = "Resolved Allergies";
+//
+// Added github ref 89
+// RMB 9/10/2018
+//
+            public const string kEndedAllergies = "Ended allergies (record artifact)";
             public const string kMedications = "Medications and medical devices";
         }
     }

@@ -11,6 +11,71 @@ Scenario: Book single appointment for patient
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
+
+Scenario Outline: Book single appointment for patient with optional elements
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+	Examples:
+		| OrgType | DeliveryChannel | PracRole |
+		| false   | false           | false    |
+		| false   | false           | true     |
+		| false   | true            | false    |
+		| false   | true            | true     |
+		| true    | false           | false    |
+		| true    | false           | true     |
+		| true    | true            | false    |
+		| true    | true            | true     |
+
+Scenario Outline: Book single appointment for patient with Extensions
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment DeliveryChannel must be present
+		And the Appointment PractitionerRole must be present
+	Examples:
+		| OrgType | DeliveryChannel | PracRole |
+		| true    | true            | true     |
+
+Scenario: Book single appointment for patient without organisation type
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots without organisation type
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment without organisationType from the stored Patient and stored Schedule
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+#
+# Provider systems unable to keep state between interactions so test removed
+# RMB 16/10/2018
+#
+#Scenario: Search without organisation type and book with organisation type 
+#	Given I get an existing patients nshNumber
+#		And I store the Patient
+#	Given I get Available Free Slots without organisation type
+#		And I store the Free Slots Bundle
+#	Given I configure the default "AppointmentCreate" request
+#		And I create an Appointment from the stored Patient and stored Schedule
+#	When I make the "AppointmentCreate" request
+#	Then the response status code should indicate failure
+#		And the response status code should be "422"
+#		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 		
 Scenario Outline: Book Appointment with invalid url for booking appointment
 	Given I get an existing patients nshNumber
@@ -51,6 +116,8 @@ Scenario Outline: Book appointment accept header and _format parameter to reques
 		And the booking organization extension must be valid
 		And the Appointment Created must be valid
 		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
 	Examples:
 		| Header                | Parameter             | BodyFormat |
 		| application/fhir+json | application/fhir+json | JSON       |

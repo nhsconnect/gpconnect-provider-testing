@@ -3,6 +3,7 @@ using GPConnect.Provider.AcceptanceTests.Constants;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
+    using System;
     using System.Collections.Generic;
     using Context;
     using Enum;
@@ -40,9 +41,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
 
             _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
-            SetRequiredParametersWithTimePeriod(14);
+            SetRequiredParametersWithOrgTypeAndATimePeriod(14, true);
+            
+            _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
+        }
 
+        [Given(@"I get Available Free Slots without organisation type")]
+        public void GetAvailableFreeSlotsWithoutOrgType()
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
 
+            _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
+            SetRequiredParametersWithOrgTypeAndATimePeriod(14, false);
+            
             _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }
 
@@ -65,10 +76,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTomorrowWithStartEndPrefix(days,"ge","le");
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("status", "free");
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
         }
-
+// Added 1.2.1 RMB 5/10/2018
+        [Given(@"I set the required parameters with org type and a time period of ""(.*)"" days")]
+        public void SetRequiredParametersWithOrgTypeAndATimePeriod(int days, Boolean orgType)
+        {
+            _httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTomorrowWithStartEndPrefix(days, "ge", "le");
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("status", "free");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
+            if (orgType)
+            {
+                _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            }
+            
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
+        }
         [Given(@"I add a single searchFilter paramater with value equal to ""(.*)""")]
         public void ISetASingleTheSearchFilterParameterTo(string invalidValue)
         {
@@ -80,7 +104,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAddTwoSearchFilterParametersWithValuesEqualToAnd(string firstInvalidValue, string secondInvalidValue)
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["OG1"]);
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "");
 
         }
 
@@ -88,7 +112,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAddTwoValidSearchFilterParamaters()
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
             
         }
 
@@ -109,8 +133,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IAddThreeValidSearchFilterParamaters()
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1" + '|' + "Other");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Other");
         }
 
         [Given(@"I add a invalid searchFilter paramater with system equal to ""(.*)""")]
@@ -174,6 +198,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     identifier.Value.ShouldNotBeNullOrEmpty($"The Slot Identifier Value should not be null or empty but was {identifier.Value}.");
                 });
+            });
+        }
+        // Added 1.1.1 RMB 4/9/2018 Delivery Channel removed from Schedule and added to Slot resource
+        [Then(@"the Slot Extensions should be valid")]
+        public void ThenTheSlotExtensionsshouldbevalid()
+        {
+            Slots.ForEach(slot =>
+            {
+                var deliveryChannelExtensions = slot.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kDeliveryChannel2Ext)).ToList();
+                deliveryChannelExtensions.Count.ShouldBeGreaterThanOrEqualTo(0, "Incorrect number of Slot delivery Channel Extensions have been returned. This should be 1 or more.");
             });
         }
 
@@ -266,8 +300,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 var practitionerRoleExtensions = schedule.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kPractitionerRoleExt)).ToList();
                 practitionerRoleExtensions.Count.ShouldBe(1, "Incorrect number of practitionerRole Extensions have been returned. This should be 1.");
 
+                // Added 1.1.1 RMB 4/9/2018 Delivery Channel removed from Schedule and added to Slot resource
                 var deliveryChannelExtensions = schedule.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kDeliveryChannelExt)).ToList();
-                deliveryChannelExtensions.Count.ShouldBe(1, "Incorrect number of delivery Channel Extensions have been returned. This should be 1.");
+                deliveryChannelExtensions.Count.ShouldBe(0, "Incorrect number of delivery Channel Extensions have been returned. This should be 0.");
 
             });
         }

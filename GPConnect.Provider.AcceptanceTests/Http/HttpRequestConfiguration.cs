@@ -86,7 +86,10 @@
         {
             var sspAddress = UseSpineProxy ? SpineProxyAddress + "/" : string.Empty;
 
-            var baseUrl = Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+// github ref 98
+// RMB 17/10/2018
+//            var baseUrl = Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+            var baseUrl = sspAddress + Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
 
             if (baseUrl[baseUrl.Length - 1] != '/')
             {

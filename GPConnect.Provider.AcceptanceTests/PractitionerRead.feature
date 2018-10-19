@@ -118,7 +118,9 @@ Scenario: Practitioner read invalid response check caching headers exist
 	Given I get the Practitioner for Practitioner Code "practitioner1"
 		And I store the Practitioner
 	Given I configure the default "PractitionerRead" request
-		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner3>"
+	# Amended test github ref 97
+	# RMB 16/10/2018
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:location-1"
 	When I make the "PractitionerRead" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"

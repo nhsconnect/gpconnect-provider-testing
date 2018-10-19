@@ -21,7 +21,7 @@
         private List<List> Lists => _httpContext.FhirResponse.Lists;
         private Bundle Bundle => _httpContext.FhirResponse.Bundle;
 
-        public AccessStructuredAllergySteps(HttpSteps httpSteps, HttpContext httpContext) 
+        public AccessStructuredAllergySteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
         {
             _httpContext = httpContext;
@@ -47,7 +47,7 @@
         [Given(@"I add an invalid allergies parameter")]
         public void GivenIAddAnInvalidAllergiesParameter()
         {
-           IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add("inlcudeInvalidAllergies", tuples);
@@ -104,17 +104,23 @@
             {
                 AccessRecordSteps.BaseListParametersAreValid(list);
 
+// Added 1.2.1 RMB 1/10/2018
+                list.Meta.VersionId.ShouldBeNull();
+                list.Meta.LastUpdated.ShouldBeNull();
+
                 //Alergy specific checks
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
 
-                if(list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
+                if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
                 {
-                    list.Code.Equals("886921000000105");
-
+                    list.Code.Coding.First().Code.Equals("886921000000105");
                 } else if (list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies))
                 {
-					// Changed from TBD to 1103671000000101 for 1.2.0 RMB 7/8/2018
-                    list.Code.Equals("1103671000000101");
+                    // Changed from TBD to 1103671000000101 for 1.2.0 RMB 7/8/2018
+                    list.Code.Coding.First().Code.Equals("1103671000000101");
+// Amended github ref 89
+// RMB 9/10/2018				
+					list.Code.Coding.First().Display.ShouldBe("Ended allergies (record artifact)");
                 }
 
                 if (list.Entry.Count > 0)
@@ -197,7 +203,9 @@
                list.EmptyReason.ShouldNotBeNull();
                list.EmptyReason.Coding.Count.ShouldBe(1);
                list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kSpecial);
-               list.EmptyReason.Coding.First().Code.ShouldBe("nocontentrecorded");
+// Amended for github ref 87
+// RMB 9/10/2018			   
+               list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
                list.EmptyReason.Coding.First().Display.ShouldBe("No content recorded");
            });
         }
@@ -268,15 +276,15 @@
                     AllAllergyIntolerances.Add(allergy);
                 });
             }
-            
+
             TheAllergyIntoleranceRecorderShouldbeValid();
             TheAllergyIntoleranceClinicalStatusShouldbeValid();
             TheAllergyIntoleranceAssertedDateShouldBeValid();
             TheAllergyIntoleranceIdShouldBeValid();
-			
-			// Added check for Allergy Identifier should be set and be a GUID RMB 07-08-2016
-			TheAllergyIntoleranceIdentifierShouldBeValid();	
-			
+
+            // Added check for Allergy Identifier should be set and be a GUID RMB 07-08-2016
+            TheAllergyIntoleranceIdentifierShouldBeValid();
+
             TheAllergyIntoleranceMetadataShouldBeValid();
             TheAllergyIntolerancePatientShouldBeValidAndResolvable();
             TheAllergyIntoleranceVerificationStatusShouldbeValid();
@@ -286,6 +294,8 @@
             TheListOfAllergyIntolerancesShouldBeValid();
             TheAllergyIntoleranceCategoryShouldbeValid();
             TheAllergyIntoleranceEncounterShouldBeValid();
+            // Added 1.2.1 RMB 1/10/2018
+            TheAllergyIntoleranceNotInUseShouldBeValid();
         }
 
         private void TheAllergyIntoleranceEncounterShouldBeValid()
@@ -325,21 +335,21 @@
             });
         }
 
-		// Added check for Allergy Identifier System should be set and be a GUID RMB 07-08-2016		
+        // Added check for Allergy Identifier System should be set and be a GUID RMB 07-08-2016		
         private void TheAllergyIntoleranceIdentifierShouldBeValid()
         {
             AllAllergyIntolerances.ForEach(allergy =>
             {
-				allergy.Identifier.Count.ShouldBeGreaterThan(0,"There should be at least 1 Identifier system/value pair");
+                allergy.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 if (allergy.Identifier.Count == 1)
                 {
-                    var identifier = allergy.Identifier.First();				
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();					
-					identifier.Value.ShouldNotBeNull("Identifier value is Mandatory and a GUID");					
-				}
+                    var identifier = allergy.Identifier.First();
+                    identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
+                    FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
+                    identifier.Value.ShouldNotBeNull("Identifier value is Mandatory and a GUID");
+                }
             });
-        }		
+        }
 
         private void TheAllergyIntoleranceClinicalStatusShouldbeValid()
         {
@@ -352,7 +362,7 @@
             {
                 allergy.ClinicalStatus.ShouldNotBeNull("AllergyIntolerance ClinicalStatus cannot be null");
                 allergy.ClinicalStatus.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceClinicalStatus>($"AllergyIntolerance ClinicalStatus is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceClinicalStatus}");
-                allergy.ClinicalStatus.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Inactive, "The clinical status should never be set to inactive");        
+                allergy.ClinicalStatus.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Inactive, "The clinical status should never be set to inactive");
             });
         }
 
@@ -376,7 +386,7 @@
                    category.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceCategory>($"AllergyIntolerance Category is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceCategory}");
                    category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Biologic);
                    category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Food);
-               });                
+               });
             });
         }
 
@@ -384,12 +394,12 @@
         {
             AllAllergyIntolerances.ForEach(allergy =>
             {
-               allergy.Code.Coding.ShouldNotBeNull("AllergyIntolerance Code coding cannot be null");
+                allergy.Code.Coding.ShouldNotBeNull("AllergyIntolerance Code coding cannot be null");
 
-               allergy.Code.Coding.ForEach(coding =>
-               {
-                   coding.System.ShouldNotBeNull("Code should not be null");
-               });
+                allergy.Code.Coding.ForEach(coding =>
+                {
+                    coding.System.ShouldNotBeNull("Code should not be null");
+                });
             });
         }
 
@@ -423,11 +433,11 @@
         {
             AllAllergyIntolerances.ForEach(allergy =>
             {
-               var reference = allergy.Patient.Reference;
-               reference.ShouldStartWith("Patient/");
+                var reference = allergy.Patient.Reference;
+                reference.ShouldStartWith("Patient/");
 
-               var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PatientRead, reference);
-               resource.GetType().ShouldBe(typeof(Patient));
+                var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PatientRead, reference);
+                resource.GetType().ShouldBe(typeof(Patient));
             });
         }
 
@@ -455,9 +465,9 @@
                                 codingDisplay.ShouldBe("nullFlavor NI", "AllergyIntolerance.reaction.manifestation SHOULD be coded as the nullFlavor NI");
 
                             }
-                        }     
+                        }
                     }
-                 
+
                     if (reaction.ExposureRoute != null)
                     {
                         reaction.ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
@@ -495,6 +505,18 @@
 
                 });
             }
+        }
+
+        // Added 1.2.1 RMB 1/10/2018        
+        [Then(@"the AllergyIntolerance Not In Use should be valid")]
+        public void TheAllergyIntoleranceNotInUseShouldBeValid()
+        {
+            AllAllergyIntolerances.ForEach(allergy =>
+            {
+                allergy.Meta.VersionId.ShouldBeNull();
+                allergy.Meta.LastUpdated.ShouldBeNull();
+
+            });
         }
 
     }

@@ -53,15 +53,17 @@
 
         public void CheckForValidMetaDataInResource<T>(T resource, string profileId) where T : Resource
         {
-            resource.Meta.ShouldNotBeNull();
-            resource.Meta.LastUpdated.ShouldNotBeNull();
-            resource.Meta.Profile.Count().ShouldBe(1);
-            resource.Meta.Profile.First().ShouldBe(profileId);
-
-            if (resource.GetType() != typeof(Composition) && resource.GetType() != typeof(Bundle))
-            {
-                resource.Meta.VersionId.ShouldNotBeNull();
-            }
+                resource.Meta.ShouldNotBeNull();
+// removed 1.2.1 RMB 1/10/2018
+//              resource.Meta.LastUpdated.ShouldNotBeNull();
+                resource.Meta.Profile.Count().ShouldBe(1);
+                resource.Meta.Profile.First().ShouldBe(profileId);
+            
+// Removed 1.2.1 RMB 1/10/2018
+//            if (resource.GetType() != typeof(Composition) && resource.GetType() != typeof(Bundle))
+//            {
+//                resource.Meta.VersionId.ShouldNotBeNull();
+//            }
         }
 
         public void ValidateTelecom(List<ContactPoint> telecoms, string from, bool svRequired = false)

@@ -172,10 +172,10 @@ Scenario: Patient search response does not return deceased patient
 	Given I configure the default "PatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient18"
 	When I make the "PatientSearch" request
-	Then the response status code should indicate success
-		And the response body should be FHIR JSON
+	And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "0" entries
+	Then the response status code should indicate success
 
 Scenario: CapabilityStatement profile supports the Patient search operation
 	Given I configure the default "MetadataRead" request
