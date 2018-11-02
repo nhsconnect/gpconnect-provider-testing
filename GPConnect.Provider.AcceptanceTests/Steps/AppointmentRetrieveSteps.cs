@@ -99,7 +99,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 deliveryChannelExtensions.Count.ShouldBeGreaterThanOrEqualTo(0, "Incorrect number of Appointment delivery Channel Extensions have been returned.");
             });
         }
-
+        // github ref 120
+        // RMB 25/10/2018        
+        [Then(@"the Appointment Not In Use should be valid")]
+        public void TheAppointmentNotInUseShouldBeValid()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Specialty.Count.ShouldBe(0);
+                appointment.Reason.Count.ShouldBe(0);
+            });
+        }
 
         [Then(@"the Appointment PractitionerRole must be valid")]
         public void TheAppointmentPractitionerRoleMustBeValid()

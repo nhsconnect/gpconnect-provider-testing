@@ -24,6 +24,9 @@ Scenario Outline: Book single appointment for patient with optional elements
 		And the Response Resource should be an Appointment
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
+# git hub ref 120
+# RMB 25/10/2018		
+		And the Appointment Not In Use should be valid
 	Examples:
 		| OrgType | DeliveryChannel | PracRole |
 		| false   | false           | false    |

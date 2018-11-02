@@ -172,3 +172,13 @@ Scenario:Practitioner search invalid response check caching headers exist
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		And the required cacheing headers should be present in the response
 	
+# git hub ref 120
+# RMB 25/10/2018
+Scenario: Practitioner search returned should conform to the GPconnect specification
+	Given I configure the default "PractitionerSearch" request		
+		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner1"
+	When I make the "PractitionerSearch" request
+	Then the response status code should indicate success
+		And the response bundle should contain "1" entries
+		And the response should be a Bundle resource of type "searchset"
+		And the Practitioner Not In Use should be valid

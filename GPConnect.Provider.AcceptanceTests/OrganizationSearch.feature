@@ -15,10 +15,16 @@ Scenario Outline: Organization search success
 		And the Organization Address should be valid
 		And the Organization Contact should be valid
 		And the Organization Extensions should be valid
+# git hub ref 120
+# RMB 25/10/2018		
+		And the Organization Not In Use should be valid
 	Examples:
 		| System                                       | Value      | Entries |
 		| https://fhir.nhs.uk/Id/ods-organization-code | unknownORG | 0       | 
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1       | 1       |
+# github ref 109
+# RMB 23/10/2018
+		| https://fhir.nhs.uk/Id/ods-organization-code | ORG2       | 2       |
 
 Scenario: Organization search sending multiple identifiers resulting in failure
 	Given I configure the default "OrganizationSearch" request		

@@ -85,6 +85,9 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 		And the Location Physical Type should be valid
 		And the Location Managing Organization should be valid
 		And the Location PartOf Location should be valid
+# git hub ref 120
+# RMB 25/10/2018		
+		And the Location Not In Use should be valid
 	Examples:
 		| Header                | BodyFormat |
 		| application/fhir+json | JSON       |

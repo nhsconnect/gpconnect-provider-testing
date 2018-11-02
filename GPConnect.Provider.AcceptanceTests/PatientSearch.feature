@@ -159,6 +159,13 @@ Scenario Outline: Patient search response conforms with the GPConnect specificat
 		And the Patient GeneralPractitioner Practitioner should be valid and resolvable
 		And the Patient should exclude disallowed fields
 		And the Patient Link should be valid and resolvable
+		# git hub ref 121
+		# RMB 25/10/2018
+		And the Patient Contact Telecom use should be valid
+		# git hub ref 120
+		# RMB 25/10/2018
+		And the Patient Not In Use should be valid
+
 	Examples:
 		| Patient   |
 		| patient1  |
@@ -233,3 +240,23 @@ Scenario: Returned patients should contain a preferred branch
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
 		And the Patient RegistrationDetails should include preferredBranchSurgery
+
+Scenario: When a patient on the provider system has sensitive flag
+# github ref 103
+# RMB 22/10/2018
+	Given I configure the default "PatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient9"
+	When I make the "PatientSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "0" entries
+
+Scenario: When a patient on the provider system has inactive flag
+# github ref 107 demonstrator 115
+# RMB 22/10/2018
+	Given I configure the default "PatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient21"
+	When I make the "PatientSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "0" entries

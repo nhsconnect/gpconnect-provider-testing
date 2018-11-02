@@ -30,8 +30,6 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		| patient6  |
 		| patient7  |
 		| patient8  |
-		| patient9  |
-		| patient10 |
 		| patient11 |
 		| patient12 |
 		| patient13 |
@@ -66,8 +64,6 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		| patient6  |
 		| patient7  |
 		| patient8  |
-		| patient9  |
-		| patient10 |
 		| patient11 |
 		| patient12 |
 		| patient13 |

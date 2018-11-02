@@ -26,6 +26,22 @@ Scenario: CapabilityStatement profile supported fhir version
 	Then the response status code should indicate success
 		And the CapabilityStatement FHIR Version should be "3.0.1"
 
+# github ref 132
+# RMB 29/10/2018
+Scenario: CapabilityStatement profile supported rp operation
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement REST Operations should contain "gpc.registerpatient"
+
+# github ref 132
+# RMB 29/10/2018
+Scenario: CapabilityStatement profile supported sr operation
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
+
 Scenario: Fhir content type test where Accept header is JSON and request payload is XML
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+xml"

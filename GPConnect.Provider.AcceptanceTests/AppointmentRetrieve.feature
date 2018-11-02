@@ -24,6 +24,9 @@ Scenario Outline: I perform a successful retrieve appointment with Extensions
 		And the Appointment Metadata should be valid
 		And the Appointment DeliveryChannel must be present
 		And the Appointment PractitionerRole must be present
+# git hub ref 120
+# RMB 25/10/2018		
+		And the Appointment Not In Use should be valid
 	Examples:
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
@@ -54,6 +57,9 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 		And the appointment reason must not be included
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
+		# git hub ref 120
+# RMB 25/10/2018		
+		And the Appointment Not In Use should be valid
 	Examples:
 		| patient  | numberOfAppointments |
 		| patient4 | 1                    |

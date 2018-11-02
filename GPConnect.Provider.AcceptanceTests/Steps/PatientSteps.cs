@@ -142,8 +142,25 @@
                 });
             });
         }
+        // git hub ref 118
+        // RMB 25/10/2018
+        [Then(@"the Patient Contact Telecom use should be valid")]
+        public void ThePatientContactTelecomUseShouldBeValid()
+        {
+            Patients.ForEach(patient =>
+            {
+                patient.Contact.ForEach(contact =>
+                {
+                    contact.Telecom.ForEach(telecom =>
+                    {
+                        telecom.Use.ShouldNotBeNull();
+                    });
 
-        [Then(@"the Patient Identifiers should be valid")]
+                  });
+            });
+        }
+
+    [Then(@"the Patient Identifiers should be valid")]
         public void ThePatientIdentifiersShouldBeValid()
         {
             ThePatientIdentifiersShouldBeValid(null);
@@ -189,8 +206,9 @@
                     telecom.System.ShouldNotBeNull("The telecom system should not be null");
                     telecom.Value.ShouldNotBeNull("The telecom value element should not be null");
                     //telecom.System.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kContactPointSystem));
-
-
+// git hub ref 121
+// RMB 25/10/2018
+                    telecom.Use.ShouldNotBeNull("The telecom use element should not be null");
 
                 });
             });
@@ -327,6 +345,7 @@
                 if (patient.ManagingOrganization != null)
                 {
                     _bundleSteps.ResponseBundleContainsReferenceOfType(patient.ManagingOrganization.Reference, ResourceType.Organization);
+
                 }
             });
         }
@@ -356,6 +375,10 @@
                         var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsRelationshipStatus);
 
                         ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
+// github ref 126
+// RMB 29/10/2018
+                        relationship.Text.ShouldNotBeNull();
+						relationship.Coding.Count.ShouldBe(0);
                     });
 
                     contact.Name.ShouldBeNull();
@@ -549,6 +572,34 @@
                     }
                 });
             });
+        }
+
+        // github ref 120
+        // RMB 25/10/2018        
+        [Then(@"the Patient Not In Use should be valid")]
+        public void ThePatientNotInUseShouldBeValid()
+        {
+            Patients.ForEach(patient =>
+            {               
+                patient.MaritalStatus.ShouldBeNull();
+                patient.MultipleBirth.ShouldBeNull();
+                // EXTENSIONS
+                var extensions = patient.Extension;
+                ValidateNoExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtEthnicCategory);
+                ValidateNoExtension(extensions, FhirConst.StructureDefinitionSystems.kCcExtReligiousAffiliation);
+                ValidateNoExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtPatientCadaver);
+                ValidateNoExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtResidentialStatus);
+                ValidateNoExtension(extensions, FhirConst.StructureDefinitionSystems.kCCExtTreatmentCategory);
+
+            });
+        }
+
+        private void ValidateNoExtension(List<Extension> extensions, string defUri)
+        {
+            var exts = extensions.Where(
+                ece => ece.Url.Equals(defUri)).ToList();
+            exts.Count.ShouldBeLessThanOrEqualTo(0);
+
         }
 
         [Then(@"the Patient Registration Details should be valid")]

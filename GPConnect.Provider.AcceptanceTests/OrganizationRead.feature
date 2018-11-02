@@ -18,6 +18,9 @@ Scenario: Organization Read successful request validate all of response
 		And the Organization Address should be valid
 		And the Organization Contact should be valid
 		And the Organization Extensions should be valid
+# git hub ref 120
+# RMB 25/10/2018		
+		And the Organization Not In Use should be valid
 
 Scenario Outline: Organization Read with valid identifier which does not exist on providers system
 	Given I configure the default "OrganizationRead" request

@@ -7,6 +7,9 @@
     using Shouldly;
     using TechTalk.SpecFlow;
     using Constants;
+    using Helpers;
+    using Context;
+    using Enum;
 
     [Binding]
     public class LocationSteps : BaseSteps
@@ -101,6 +104,17 @@
                 location.PartOf?.Reference?.ShouldStartWith("Location/", "The reference element within the PartOf element of the Location resource should contain a relative Location reference.");
             });
         }
+        // github ref 120
+        // RMB 25/10/2018        
+        [Then(@"the Location Not In Use should be valid")]
+        public void TheLocationnNotInUseShouldBeValid()
+        {
+            Locations.ForEach(location =>
+            {
+                location.Endpoint.Count.ShouldBe(0);
+
+            });
+        }
 
         [Then(@"the Location Managing Organization should be valid")]
         public void TheLocationManagingOrganizationShouldBeValid()
@@ -108,6 +122,15 @@
             Locations.ForEach(location =>
             {
                 location.ManagingOrganization?.Reference?.ShouldStartWith("Organization/", "The ManagingOrganization reference should be a relative url for an Organization.");
+// github ref 121
+// RMB 29/10/2018
+				    var reference = location.ManagingOrganization.Reference;
+
+                    reference.ShouldStartWith("Organization/");
+
+                    var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.OrganizationRead, reference);
+
+                    resource.GetType().ShouldBe(typeof(Organization));
             });
         }
 
