@@ -13,6 +13,9 @@ Scenario Outline: I perform a successful Read appointment
 		And the Appointment Metadata should be valid
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
+# git hub ref 120
+# RMB 25/10/2018
+		And the Appointment Not In Use should be valid
 	Examples:
 		| PatientName |
 		| patient1    |

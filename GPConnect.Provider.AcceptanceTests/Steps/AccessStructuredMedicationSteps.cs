@@ -220,14 +220,14 @@
 // RMB 15/10/2018
                         coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
                         Extension extension = coding.GetExtension("https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-coding-sctdescid");
-                        extension.ShouldNotBeNull();
-                        extension.GetExtension("descriptionId").ShouldNotBeNull();
-                        extension.GetExtension("descriptionDisplay").ShouldNotBeNull();
-
-                        if (extension.GetExtension("descriptionId").Value.Equals("196421000000109"))
-                        {
-                            medication.Code.Text.ShouldNotBeNullOrEmpty();
-                        }
+//                        extension.ShouldNotBeNull();
+//                        extension.GetExtension("descriptionId").ShouldNotBeNull();
+//                        extension.GetExtension("descriptionDisplay").ShouldNotBeNull();
+//
+//                       if (extension.GetExtension("descriptionId").Value.Equals("196421000000109"))
+//                      {
+//                           medication.Code.Text.ShouldNotBeNullOrEmpty();
+//                       }
                     });
                 }
             });

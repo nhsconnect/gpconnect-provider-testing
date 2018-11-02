@@ -179,8 +179,8 @@ Scenario: Register patient which alread exists on the system as a normal patient
 	Given I configure the default "RegisterPatient" request
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "409"
+		And the response should be a OperationOutcome resource with error code "DUPLICATE_REJECTED"
 
 Scenario: Register patient which alread exists on the system as a temporary patient
 	Given I get the next Patient to register and store it
@@ -193,8 +193,8 @@ Scenario: Register patient which alread exists on the system as a temporary pati
 	Given I configure the default "RegisterPatient" request
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "409"
+		And the response should be a OperationOutcome resource with error code "DUPLICATE_REJECTED"
 
 Scenario: Register patient which is not the Spine
 	Given I create a Patient which does not exist on PDS and store it
@@ -265,15 +265,34 @@ Scenario Outline: Register patient with additional valid elements
 		And the Patient Demographics should match the Stored Patient
 	Examples:
 		| ElementToAdd |
-		| Active       |
+#		| Active       |
 		| Address      |
 		| Name         |
+#		| Births        |
+#		| CareProvider  |
+#		| Contact       |
+#		| ManagingOrg   |
+#		| Marital       |
+		| Telecom       |
+
+# github ref 136
+# RMB 1/11/2018
+Scenario Outline: Register patient with invalid additional valid elements
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I add the Stored Patient as a parameter
+		And I add a <ElementToAdd> element to the Stored Patient
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Examples:
+		| ElementToAdd |
+		| Active       |
 		| Births        |
 		| CareProvider  |
 		| Contact       |
 		| ManagingOrg   |
 		| Marital       |
-		| Telecom       |
 
 Scenario: Register patient with Address and Telecom
 	Given I get the next Patient to register and store it
@@ -298,8 +317,6 @@ Scenario Outline: Register patient without temp should error
 		| ElementToAdd |
 		| Telecom      |
 		| Address      |
-
-
 
 Scenario Outline: Register patient with additional not allowed elements
 	Given I get the next Patient to register and store it
@@ -349,3 +366,65 @@ Scenario: Register patient and check preferred branch
 		And the response meta profile should be for "searchset"
 		And the response bundle should contain a single Patient resource
 		And the Patient Registration Details Extension should be valid
+
+# github ref 111
+# RMB 23/10/2018		
+Scenario: Register patient with family name not matching PDS
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I change the Family Name from the Stored Patient
+		And I add the Stored Patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+
+# github ref 111
+# RMB 23/10/2018		
+#Scenario: Register patient with gender not matching PDS
+#	Given I get the next Patient to register and store it
+#	Given I configure the default "RegisterPatient" request
+#		And I change the Gender from the Stored Patient
+#		And I add the Stored Patient as a parameter
+#	When I make the "RegisterPatient" request
+#	Then the response status code should be "400"
+#		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+		
+# github ref 111
+# RMB 23/10/2018		
+#Scenario: Register patient with birth date not matching PDS
+#	Given I get the next Patient to register and store it
+#	Given I configure the default "RegisterPatient" request
+#		And I change the Birth Date from the Stored Patient
+#		And I add the Stored Patient as a parameter
+#	When I make the "RegisterPatient" request
+#	Then the response status code should be "400"
+#		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+#
+# github demonstrator ref 128
+# RMB 29/10/2018		
+	Scenario: Register deceased patient
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I add the Stored Patient as a parameter
+		And I change the NHSNo from the Stored Patient "patient18"
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "INVALID_PATIENT_DEMOGRAPHICS"
+
+	Scenario: Register sensitive patient
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I add the Stored Patient as a parameter
+		And I change the NHSNo from the Stored Patient "patient9"
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "INVALID_PATIENT_DEMOGRAPHICS"
+
+	Scenario: Register superseded patient
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I add the Stored Patient as a parameter
+		And I change the NHSNo from the Stored Patient "patient11"
+	When I make the "RegisterPatient" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"

@@ -166,6 +166,9 @@ Scenario: Successfully search for free slots and check the slot resources return
 		And the Slot Metadata should be valid
 		And the Slot Identifiers should be valid
 		And the Slot Extensions should be valid
+# git hub ref 120
+# RMB 25/10/2018
+		And the Slot Not In Use should be valid
 
 Scenario Outline: Successfully search for free slots using various content types XML and JSON in Accept header
 	Given I configure the default "SearchForFreeSlots" request
@@ -232,6 +235,9 @@ Scenario: Successfully search for free slots and check the included schedule res
 		And I set the required parameters with a time period of "3" days
 		And I add the parameter "_include:recurse" with the value "Schedule:actor:Practitioner"
 		And I add the parameter "_include:recurse" with the value "Schedule:actor:Location"
+# github ref 124
+# RMB 29/10/2018
+		And I add the parameter "_include:recurse" with the value "Location:managingOrganization"
 	When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
@@ -249,6 +255,9 @@ Scenario: Successfully search for free slots and check the included schedule res
 		And the Practitioner Id should be valid
 		And the Organization should be valid
 		And the Organization Id should be valid
+# git hub ref 120
+# RMB 25/10/2018
+		And the Schedule Not In Use should be valid
 
 Scenario Outline: Searching for free slots without actor parameter should return results without actor resource 
 	Given I configure the default "SearchForFreeSlots" request
@@ -323,3 +332,33 @@ Scenario: SearchForFreeSlots invalid response check caching headers exist
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		And the required cacheing headers should be present in the response
+
+# git hub ref 131
+# RMB 25/10/2018
+Scenario: Searching for free slots with org code searchFilter system
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
+		And I add the parameter "status" with the value "free"
+		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add org type searchFilter paramaters
+		When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Organization should be valid
+		And the Organization Id should be valid
+
+# git hub ref 131
+# RMB 25/10/2018
+Scenario: Searching for free slots with org type searchFilter system
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
+		And I add the parameter "status" with the value "free"
+		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add org code searchFilter paramaters
+		When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Organization should be valid
+		And the Organization Id should be valid

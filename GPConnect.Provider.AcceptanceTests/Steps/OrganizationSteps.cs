@@ -151,6 +151,19 @@
             });
         }
 
+        // github ref 120
+        // RMB 25/10/2018        
+        [Then(@"the Organization Not In Use should be valid")]
+        public void TheOrganizationNotInUseShouldBeValid()
+        {
+            Organizations.ForEach(organization =>
+            {
+                organization.Contact.Count.ShouldBe(0);
+                organization.Endpoint.Count.ShouldBe(0); ;
+
+            });
+        }
+
         [Then(@"the Organization Address should be valid")]
         public void TheOrganizationAddressShouldBeValid()
         {

@@ -19,6 +19,7 @@ Scenario Outline: Practitioner read successful request validate all of response
 		And the practitioner Gender should be valid
 		And the Practitioner SDS Role Profile Identifier should be valid for "<numberOfRoleIdentifiers>" Role Profile Identifiers
 		And the Practitioner SDS User Identifier should be valid for Value "<practitioner>"
+
 	Examples: 
 		| practitioner  | numberOfRoleIdentifiers |
 		| practitioner1 | 0                       |
@@ -125,3 +126,14 @@ Scenario: Practitioner read invalid response check caching headers exist
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		And the required cacheing headers should be present in the response
+
+# git hub ref 120
+# RMB 25/10/2018
+Scenario: Read practitioner returned should conform to the GPconnect specification
+	Given I get the Practitioner for Practitioner Code "practitioner1"
+		And I store the Practitioner
+	When I make the "PractitionerRead" request
+	Then the response status code should indicate success
+		And the response bundle should contain "1" entries
+		And the response should be a Bundle resource of type "searchset"
+		And the Practitioner Not In Use should be valid

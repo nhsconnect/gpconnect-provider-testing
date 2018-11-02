@@ -37,7 +37,11 @@
         [Given(@"I create a Patient which does not exist on PDS and store it")]
         public void CreateAPatientWhichDoesNoteExistOnPDSAndStoreIt()
         {
-            var patientIdentifier = new Identifier(FhirConst.IdentifierSystems.kNHSNumber, "9019546082");
+            // amended github ref 115 (demonstrator)
+            // RMB 24-10-2018
+            //            var patientIdentifier = new Identifier(FhirConst.IdentifierSystems.kNHSNumber, "9019546082");
+            var nhsNumber = GlobalContext.PatientNhsNumberMap["patient14"];
+            var patientIdentifier = new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber);
             patientIdentifier.Extension.Add(new Extension
             {
                 Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
@@ -115,6 +119,13 @@
             }
         }
 
+        // github ref 110
+        // RMB 23/10/2018		
+        [Given(@"I change the Family Name from the Stored Patient")]
+        public void ChangeTheFamilyNameFromTheStoredPatient()
+        {
+            _fhirResourceRepository.Patient.Name = null;
+        }
 
         [Given(@"I remove the Gender from the Stored Patient")]
         public void RemoveTheGenderFromTheStoredPatient()
@@ -122,10 +133,35 @@
             _fhirResourceRepository.Patient.Gender = null;
         }
 
+        // github ref 110
+        // RMB 23/10/2018		
+        [Given(@"I change the Gender from the Stored Patient")]
+        public void ChangeTheGenderFromTheStoredPatient()
+        {
+            _fhirResourceRepository.Patient.Gender = AdministrativeGender.Other;
+        }
+
         [Given(@"I remove the Birth Date from the Stored Patient")]
         public void RemoveTheBirthDateFromTheStoredPatient()
         {
             _fhirResourceRepository.Patient.BirthDate = null;
+        }
+
+        // github ref 110
+        // RMB 23/10/2018		
+        [Given(@"I change the Birth Date from the Stored Patient")]
+        public void ChangeTheBirthDateFromTheStoredPatient()
+        {
+            _fhirResourceRepository.Patient.BirthDate = "1958-07-21";
+        }
+
+        // github ref 110
+        // RMB 23/10/2018		
+        [Given(@"I change the NHSNo from the Stored Patient ""(.*)""")]
+        public void ChangeTheNHNoFromTheStoredPatient(string nhsNumber)
+        {
+            var PatNHSNo = GlobalContext.PatientNhsNumberMap[nhsNumber];
+            _fhirResourceRepository.Patient.Identifier[0].Value = PatNHSNo;
         }
 
         [Given(@"I add an Identifier with Value ""([^""]*)"" to the Stored Patient")]
@@ -139,7 +175,6 @@
             });
         }
 
-       
         [Given(@"I add the Stored Patient as a parameter")]
         public void AddTheStoredPatientAsAParameter()
         {

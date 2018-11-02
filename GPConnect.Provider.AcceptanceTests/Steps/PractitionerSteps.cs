@@ -311,6 +311,21 @@
             });
         }
 
+        // github ref 120
+        // RMB 25/10/2018        
+        [Then(@"the Practitioner Not In Use should be valid")]
+        public void ThePractitionerNotInUseShouldBeValid()
+        {
+            Practitioners.ForEach(practitioner =>
+            {
+                practitioner.Telecom.Count.ShouldBe(0);
+                practitioner.Address.Count.ShouldBe(0);
+                practitioner.BirthDate.ShouldBeNull();
+                practitioner.Photo?.Count.ShouldBe(0);
+                practitioner.Qualification.Count.ShouldBe(0);
+
+            });
+        }
 
         private static void ValidateAddress(List<Address> addressList, string from)
         {

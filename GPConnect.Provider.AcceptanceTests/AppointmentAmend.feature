@@ -23,6 +23,9 @@ Scenario Outline: I perform a successful amend appointment and check the returne
 		And the Appointment Created must be valid
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
+# git hub ref 120
+# RMB 25/10/2018		
+		And the Appointment Not In Use should be valid
 	Examples:
 		| Patient  |
 		| patient1 |
@@ -42,6 +45,9 @@ Scenario Outline: I perform a successful amend appointment with Extensions
 		And the Appointment Metadata should be valid
 		And the Appointment DeliveryChannel must be present
 		And the Appointment PractitionerRole must be present
+# git hub ref 120
+# RMB 25/10/2018		
+		And the Appointment Not In Use should be valid
 	Examples:
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |

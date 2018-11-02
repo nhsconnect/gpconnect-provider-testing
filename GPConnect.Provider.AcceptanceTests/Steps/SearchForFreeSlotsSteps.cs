@@ -116,6 +116,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             
         }
 
+        [Given(@"I add org code searchFilter paramaters")]
+        public void IAddOrgCodeSearchFilterParamaters()
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
+
+        }
+
+        [Given(@"I add org type searchFilter paramaters")]
+        public void IAddOrgTypeSearchFilterParamaters()
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "Urgent Care");
+
+        }
+
         [Given(@"I add two additional non GP Connect specific searchFilter paramaters")]
         public void IAddTwoAdditionalNonGPConnectSpecificSearchFilterParamaters()
         {
@@ -184,6 +198,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Slots.ForEach(slot =>
             {
                 slot.Id.ShouldNotBeNullOrEmpty($"The Slot Id should not be null or empty.");
+            });
+        }
+
+        // github ref 120
+        // RMB 25/10/2018        
+        [Then(@"the Slot Not In Use should be valid")]
+        public void TheSlotNotInUseShouldBeValid()
+        {
+            Slots.ForEach(slot =>
+            {
+                slot.Specialty.Count.ShouldBe(0);
+
             });
         }
 
@@ -268,6 +294,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     identifier.Value.ShouldNotBeNullOrEmpty($"The Schedule Identifier should not be null or empty but was {identifier.Value}.");
                 });
+            });
+        }
+        // github ref 120
+        // RMB 25/10/2018        
+        [Then(@"the Schedule Not In Use should be valid")]
+        public void TheScheduleNotInUseShouldBeValid()
+        {
+            Schedules.ForEach(schedule =>
+            {
+                schedule.Specialty.Count.ShouldBe(0);
+
             });
         }
 

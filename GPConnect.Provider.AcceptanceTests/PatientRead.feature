@@ -127,6 +127,9 @@ Scenario: Read patient returned should conform to the GPconnect specification
 		And the Patient MaritalStatus should be valid
 		And the Patient Link should be valid and resolvable
 		And the Patient Registration Details should be valid
+		# git hub ref 120
+		# RMB 25/10/2018
+		And the Patient Not In Use should be valid
 
 Scenario: CapabilityStatement profile supports the Patient read operation
 	Given I configure the default "MetadataRead" request
@@ -158,3 +161,14 @@ Scenario: Patient read valid response check preferred branch
 	Then the response status code should indicate success
 		And the Response Resource should be a Patient
 		And the Patient RegistrationDetails should include preferredBranchSurgery
+
+#Scenario: When a patient on the provider system is deceased
+# github ref 108
+# RMB 22/10/2018
+# removed as can't be done - needs a manual test
+#	Given I configure the default "PatientRead" request
+#		And I set the Read Operation logical identifier used in the request to "18"
+#	Given I configure the default "PatientRead" request
+#	When I make the "PatientRead" request
+#	Then the response status code should be "400"
+#		And the response should be a OperationOutcome resource with error code "INVALID_PATIENT_DEMOGRAAPHICS"
