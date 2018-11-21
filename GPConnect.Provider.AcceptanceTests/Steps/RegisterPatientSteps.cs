@@ -369,7 +369,135 @@
         [Given(@"I add a Telecom element to the Stored Patient")]
         public void AddATelecomElementToStoredPatient()
         {
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+        }
+        // github ref 138
+        // RMB 12/11/2018
+
+        [Given(@"I add a Telecom element use ""([^""]*)"" to the Stored Patient")]
+        public void AddATelecomElementUseHomeToStoredPatient(string Use)
+        {
+            if (Use.Contains("Home"))
+                {
+                _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+                };
+
+            if (Use.Contains("Work"))
+            {
+                _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Work, "01234567891"));
+            };
+
+            if (Use.Contains("Mobile"))
+            {
+                _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Mobile, "01234567891"));
+            };
+
+            if (Use.Contains("Temp"))
+            {
+                _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01234567891"));
+            };
+            if (Use.Contains("Email"))
+            {
+                _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Email, ContactPoint.ContactPointUse.Temp, "abc.d@mail.com"));
+            };
+        }
+
+        [Given(@"I add a Telecom element use Mobile to the Stored Patient")]
+        public void AddATelecomElementUseMobileToStoredPatient(string Use)
+        {
+            if (Use.Contains("Home"))
+            {
+                _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+            };
+
+            if (Use.Contains("Work"))
+            {
+                _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Work, "01234567891"));
+            };
+
+            if (Use.Contains("Mobile"))
+            {
+                _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Mobile, "01234567891"));
+            };
+
+            if (Use.Contains("Temp"))
+            {
+                _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01234567891"));
+            };
+            if (Use.Contains("Email"))
+            {
+                _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Email, ContactPoint.ContactPointUse.Temp, "abc.d@mail.com"));
+            };
+        }
+        [Given(@"I add a Telecom Home element to the Stored Patient")]
+        public void AddATelecomHomeElementToStoredPatient()
+        {
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, "01234567891"));
+        }
+
+        [Given(@"I add a Telecom Work element to the Stored Patient")]
+        public void AddATelecomWorkElementToStoredPatient()
+        {
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Work, "01132678901"));
+        }
+        [Given(@"I add a Telecom Mobile element to the Stored Patient")]
+        public void AddATelecomMobileElementToStoredPatient()
+        {
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Mobile, "0776789012"));
+        }
+        [Given(@"I add a Telecom Temp element to the Stored Patient")]
+        public void AddATelecomTempElementToStoredPatient()
+        {
             _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01234567891"));
+        }
+        [Given(@"I add Multiple Telecom element to the Stored Patient")]
+        public void AddMultipleTelecomElementToStoredPatient()
+        {
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Work, "01132678901"));
+        }
+        [Given(@"I add Email element to the Stored Patient")]
+        public void AddEmailElementToStoredPatient()
+        {
+            _fhirResourceRepository.Patient.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Email, ContactPoint.ContactPointUse.Temp, "abc.d@mail.com"));
+        }
+
+        [Given(@"I add nhsCommunication extension to the Stored Patient")]
+        public void AddnhsCommunicationExtensionToStoredPatient()
+        {
+            var coding = new Coding
+            {
+                System = "https://fhir.nhs.uk/CareConnect-HumanLanguage-1",
+                Code = "de",
+                Display = "German"
+            };
+
+            var codableConcept = new CodeableConcept();
+            codableConcept.Coding.Add(coding);
+
+            var subExtension = new Extension
+            {
+                Url = "language",
+                Value = codableConcept
+            };
+
+            var nhscextension = new Extension
+            {
+                Url = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSCommunication-1",
+            };
+
+            nhscextension.Extension.Add(subExtension);
+
+            _fhirResourceRepository.Patient.Extension.Add(nhscextension);
+
+            var ir = new FhirBoolean(true);
+
+            var irextension = new Extension
+            {
+                Url = "interpreterRequired",
+                Value = ir
+            };
+
+            _fhirResourceRepository.Patient.Extension.Add(irextension);
         }
 
         [Given(@"I add a Telecom element without temp to the Stored Patient")]
@@ -418,10 +546,7 @@
                 .Address
                 .First().ToFhirJson();
 
-
-            var responsePatientAddress = _httpContext.FhirResponse.Patients.First().Address.First().ToFhirJson();
-
-                
+            var responsePatientAddress = _httpContext.FhirResponse.Patients.First().Address.First().ToFhirJson();                
 
             responsePatientAddress.Equals(storedPatientAddress);
         }

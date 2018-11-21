@@ -20,7 +20,8 @@
             public const string kEndDate = "end";
             public const string kResolvedAllergies = "includeResolvedAllergies";
             public const string kPrescriptionIssues  = "includePrescriptionIssues";
-            public const string kMedicationDatePeriod = "medicationDatePeriod";
+// github ref 127 RMB 5/11/2018            public const string kMedicationDatePeriod = "medicationDatePeriod";
+            public const string kMedicationDatePeriod = "medicationSearchFromDate";			
             public const string kTimePeriod = "timePeriod";
         }
 

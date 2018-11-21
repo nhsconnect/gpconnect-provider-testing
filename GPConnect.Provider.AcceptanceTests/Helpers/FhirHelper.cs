@@ -10,7 +10,7 @@ using GPConnect.Provider.AcceptanceTests.Constants;
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
     public static class FhirHelper
-    {
+    {        
         public static Identifier GetNHSNumberIdentifier(string nhsNumber)
         {
             return GetIdentifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber);
@@ -139,6 +139,13 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static Period GetTimePeriod(string startDate, string endDate) {
             return new Period(new FhirDateTime(startDate), new FhirDateTime(endDate));
+        }
+
+        // github ref 127
+        // RMB 5/11/2018
+        public static Date GetStartDate(string startDate)
+        {
+            return new Date(startDate);
         }
 
         public static bool isValidNHSNumber(string NHSNumber) {

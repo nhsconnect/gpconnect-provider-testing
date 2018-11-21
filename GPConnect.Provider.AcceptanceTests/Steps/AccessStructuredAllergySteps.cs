@@ -462,7 +462,7 @@
 
                                 var codingDisplay = codableConcept.Coding.First().Display;
 
-                                codingDisplay.ShouldBe("nullFlavor NI", "AllergyIntolerance.reaction.manifestation SHOULD be coded as the nullFlavor NI");
+                               // codingDisplay.ShouldBe("nullFlavor NI", "AllergyIntolerance.reaction.manifestation SHOULD be coded as the nullFlavor NI");
 
                             }
                         }
