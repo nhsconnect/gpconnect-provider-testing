@@ -381,10 +381,10 @@
 						relationship.Coding.Count.ShouldBe(0);
                     });
 
-                    contact.Name.ShouldBeNull();
+                    //contact.Name.ShouldBeNull();
                     contact.Name.Use.ShouldNotBeNull("Patient Name Use cannot be null");
                     contact.Name.Use.ShouldBeOfType<HumanName.NameUse>($"Patient Name Use is not a valid value within the value set {FhirConst.CodeSystems.kNameUse}");
-                    contact.Name.Family.Count().ShouldBeLessThanOrEqualTo(1);
+                    //contact.Name.Family.Count().ShouldBeLessThanOrEqualTo(1);
                     // Contact Name Checks
                     // Contact Telecom Checks
                     // Contact Address Checks

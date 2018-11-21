@@ -1,0 +1,31 @@
+<CodeSystem xmlns="http://hl7.org/fhir">
+   <id value="CareConnect-ListWarningCode-1"></id>
+   <text>
+      <status value="generated"></status>
+   </text>
+   <url value="https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-ListWarningCode-1"></url>
+   <version value="1.1.0"></version>
+   <name value="Care Connect List Warning Code"></name>
+   <status value="active"></status>
+   <date value="2018-08-01T00:00:00+00:00"></date>
+   <publisher value="HL7 UK"></publisher>
+   <description value="A CodeSystem to identify the reason a list may be incomplete."></description>
+   <copyright value="Copyright © 2016 HL7 UK"></copyright>
+   <caseSensitive value="true"></caseSensitive>
+   <content value="complete"></content>
+   <concept>
+      <code value="confidential-items"></code>
+      <display value="Confidential Items"></display>
+      <definition value="Items excluded due to confidentiality and/or patient preferences."></definition>
+   </concept>
+   <concept>
+      <code value="data-in-transit"></code>
+      <display value="Data in Transit"></display>
+      <definition value="Patient record transfer from previous GP practice not yet complete; any information recorded before dd-mmm-yyyy has been excluded."></definition>
+   </concept>
+   <concept>
+      <code value="data-awaiting-filing"></code>
+      <display value="Data Awaiting Filing"></display>
+      <definition value="Patient data may be incomplete as there is data supplied by a third party awaiting review before becoming available."></definition>
+   </concept>
+</CodeSystem>

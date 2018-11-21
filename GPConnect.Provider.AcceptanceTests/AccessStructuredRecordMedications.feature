@@ -222,50 +222,67 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient3 |
 		| patient5 |
 		| patient12 |
-
-Scenario Outline: Retrieve the medication structured record section for a patient with an end date
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "<Patient>"
-		And I add the medications parameter with an end date
-	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "collection"
-		And the response meta profile should be for "structured"
-		And the patient resource in the bundle should contain meta data profile and version id
-		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
-		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should be valid for patient "<Patient>"
-		And the Bundle should contain "1" lists
-		And the Medications should be valid
-		And the Medication Statements should be valid
-		And the Medication Requests should be valid
-		And the List of MedicationStatements should be valid
-		And the MedicationStatement dates are with the default period with start "false" and end "true"
-	Examples:
-		| Patient  |
-		| patient2 |
-		| patient3 |
-		| patient5 |
-		| patient12 |
-
-Scenario Outline: Retrieve the medication structured record section for a patient with invalid time period
+#
+# github ref 127 end date tests removed RMB 5/11/2018
+#Scenario Outline: Retrieve the medication structured record section for a patient with an end date
+#	Given I configure the default "GpcGetStructuredRecord" request
+#		And I add an NHS Number parameter for "<Patient>"
+#		And I add the medications parameter with an end date
+#	When I make the "GpcGetStructuredRecord" request
+#	Then the response status code should indicate success
+#		And the response should be a Bundle resource of type "collection"
+#		And the response meta profile should be for "structured"
+#		And the patient resource in the bundle should contain meta data profile and version id
+#		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+#		And if the response bundle contains an organization resource it should contain meta data profile and version id
+#		And the Bundle should be valid for patient "<Patient>"
+#		And the Bundle should contain "1" lists
+#		And the Medications should be valid
+#		And the Medication Statements should be valid
+#		And the Medication Requests should be valid
+#		And the List of MedicationStatements should be valid
+#		And the MedicationStatement dates are with the default period with start "false" and end "true"
+#	Examples:
+#		| Patient  |
+#		| patient2 |
+#		| patient3 |
+#		| patient5 |
+#		| patient12 |
+#
+#Scenario Outline: Retrieve the medication structured record section for a patient with invalid time period
+#	Given I configure the default "GpcGetStructuredRecord" request
+#		And I add an NHS Number parameter for "patient1"
+#		And I set a medications period parameter start date to "<StartDate>" and end date to "<EndDate>"
+#	When I make the "GpcGetStructuredRecord" request
+#	Then the response status code should indicate failure
+#		And the response should be a OperationOutcome resource
+#	Examples:
+#		| StartDate                 | EndDate                   |
+#		| 2014                      | 2016-02-02                |
+#		| 2014-02                   | 2016-02-02                |
+#		| 2015-10-23T11:08:32       | 2016-02-02                |
+#		| 2015-10-23T11:08:32+00:00 | 2016-02-02                |
+#		| 2016-02-02                | 2017                      |
+#		| 2016-02-02                | 2017-02                   |
+#		| 2016-02-02                | 2017-10-23T11:08:32       |
+#		| 2016-02-02                | 2017-10-23T11:08:32+00:00 |
+#		| 2014-02-02                | 2012-02-02                |
+#
+# github ref 127
+# RMB 5/11/2018
+Scenario Outline: Retrieve the medication structured record section for a patient with invalid start date
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
-		And I set a medications period parameter start date to "<StartDate>" and end date to "<EndDate>"
+		And I set a medications period parameter start date to "<StartDate>" 
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 	Examples:
-		| StartDate                 | EndDate                   |
-		| 2014                      | 2016-02-02                |
-		| 2014-02                   | 2016-02-02                |
-		| 2015-10-23T11:08:32       | 2016-02-02                |
-		| 2015-10-23T11:08:32+00:00 | 2016-02-02                |
-		| 2016-02-02                | 2017                      |
-		| 2016-02-02                | 2017-02                   |
-		| 2016-02-02                | 2017-10-23T11:08:32       |
-		| 2016-02-02                | 2017-10-23T11:08:32+00:00 |
-		| 2014-02-02                | 2012-02-02                |
+		| StartDate                 | 
+		| 2014                      | 
+		| 2014-02                   | 
+		| 2015-10-23T11:08:32       | 
+		| 2015-10-23T11:08:32+00:00 | 
 
 Scenario: Retrieve the medication structured record section for a patient with medication prescribed elsewhere
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -304,6 +321,33 @@ Scenario: Check warning code is populated for a patient
 Scenario:  structured record for a patient that is not in the database 
 	Given I configure the default "GpcGetStructuredRecord" request 
 	And I add an NHS Number parameter for "patientNotInSystem"
+	And I add the medication parameter with includePrescriptionIssues set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+#
+# Added for github ref 129
+# RMB 5/11/2018
+#
+Scenario:  structured record for a patient that is deceased
+	Given I configure the default "GpcGetStructuredRecord" request 
+	And I add an NHS Number parameter for "patient18"
+	And I add the medication parameter with includePrescriptionIssues set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+
+Scenario:  structured record for a patient that has sensitive flag
+	Given I configure the default "GpcGetStructuredRecord" request 
+	And I add an NHS Number parameter for "patient9"
+	And I add the medication parameter with includePrescriptionIssues set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+
+Scenario:  structured record for a patient that has inactive flag
+	Given I configure the default "GpcGetStructuredRecord" request 
+	And I add an NHS Number parameter for "patient21"
 	And I add the medication parameter with includePrescriptionIssues set to "true"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure

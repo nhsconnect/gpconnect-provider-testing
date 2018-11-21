@@ -1,11 +1,26 @@
 <ValueSet xmlns="http://hl7.org/fhir">
+	<id value="spine-error-or-warning-code-1"/>
 	<meta>
-		<lastUpdated value="2016-12-03T00:00:00+00:00"/>
+		<lastUpdated value="2017-08-23T00:00:00+00:00"/>
 	</meta>
+	<text>
+		<status value="generated"/>
+	</text>
 	<url value="https://fhir.nhs.uk/ValueSet/spine-error-or-warning-code-1"/>
+	<version value="1.1.0"/>
 	<name value="Spine Error or Warning Code"/>
-	<status value="draft"/>
+	<status value="active"/>
+	<publisher value="NHS Digital"/>
+	<contact>
+		<name value="Interoperability Team"/>
+		<telecom>
+			<system value="email"/>
+			<value value="interoperabilityteam@nhs.net"/>
+			<use value="work"/>
+		</telecom>
+	</contact>
 	<description value="Spine error or warning code in response to a request."/>
+	<copyright value="Copyright � 2016 Health and Social Care Information Centre"/>
 	<codeSystem>
 		<system value="https://fhir.nhs.uk/spine-error-or-warning-code-1"/>
 		<concept>
@@ -119,6 +134,14 @@
 		<concept>
 			<code value="ASID_CHECK_FAILED"/>
 			<display value="The sender or receiver's ASID is not authorised for this interaction"/>
+		</concept>
+		<concept>
+			<code value="MISSING_OR_INVALID_HEADER"/>
+			<display value="There is a required header missing or invalid"/>
+		</concept>
+		<concept>
+			<code value="ACCESS_DENIED_SSL"/>
+			<display value="SSL Protocol or Cipher requirements not met"/>
 		</concept>
 	</codeSystem>
 </ValueSet>

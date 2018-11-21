@@ -88,20 +88,27 @@
         [Given(@"I add the medications parameter with a timePeriod")]
         public void GivenIAddTheMedicationsParameterWithATimePeriod()
         {
+            var tempDate = DateTime.UtcNow.AddYears(-2);
+            var startDate = tempDate.ToString("yyyy-MM-dd");
+
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodFormatted("yyyy-MM-dd"))
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetStartDate(startDate))
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
         [Given(@"I add the medications parameter with a start date")]
-        public void GivenIAddTheMedicationsParameterWithAStartPeriod()
+        public void GivenIAddTheMedicationsParameterWithAStartDate()
         {
+            var tempDate = DateTime.UtcNow;
+            var startDate = tempDate.ToString("yyyy-MM-dd");
+
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnlyFormatted("yyyy-MM-dd"))
-            };
+                        Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+//                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnlyFormatted("yyyy-MM-dd"))               
+            Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetStartDate(startDate))
+        };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
@@ -120,13 +127,24 @@
         {
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetTimePeriod(startDate, endDate))
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetTimePeriod(startDate , endDate))
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
+        }
+// github ref 127
+// RMB 5/11/2018
+        [Given(@"I set a medications period parameter start date to ""([^ ""]*)""")]
+        public void GivenISetAMedicationsTimeAParameterStartDateToAndEndDateTo(string startDate)
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetStartDate(startDate))
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
         #endregion
-        
+
         #region List and Bundle Checks
 
         [Then(@"the List of MedicationStatements should be valid")]
@@ -881,13 +899,14 @@
             MedicationRequests.ForEach(medRequest =>
             {
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
-                if (prescriptionType.Coding.First().Display.Contains("Repeat"))
+                // added medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan ) 
+                if (prescriptionType.Coding.First().Display.Equals("Repeat") && medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan))
                 {
                     Extension repeatInformation = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRepeatInformation);
-                    repeatInformation.ShouldNotBeNull();
+                   repeatInformation.Extension.Count.ShouldBeGreaterThan(0);
 
-                    repeatInformation.GetExtension("numberOfRepeatPrescriptionsIssued").ShouldNotBeNull();
-
+                    Extension rpi = repeatInformation.GetExtension("numberOfRepeatPrescriptionsIssued");
+                    rpi.Value.ShouldNotBeNull();
                 }
                 else
                 { 
