@@ -78,6 +78,9 @@
         [Then(@"the Bundle should be valid for patient ""(.*)""")]
         public void TheBundleShouldBeValid(string patient)
         {
+// git hub ref 165
+// RMB 16/1/19
+            Bundle.Id.ShouldBeNull();
             Bundle.Meta.ShouldNotBeNull();
             // Added 1.2.1 RMB 1/10/2018
             Bundle.Meta.VersionId.ShouldBeNull();
@@ -192,8 +195,13 @@
 
         public static void BaseListParametersAreValid(List list)
         {
-            list.Id.ShouldNotBeNull("The list must have an id.");
+// git hub ref 161
+// RMB 14/1/19
+//          list.Id.ShouldNotBeNull("The list must have an id.");
 
+// git hub ref 166
+// RMB 16/1/19
+			list.Id.ShouldBeNull("The list must NOT have an id.");
             list.Status.ShouldNotBeNull("The List status is a mandatory field.");
             list.Status.ShouldBeOfType<List.ListStatus>("Status of allergies list is of wrong type.");
             list.Status.ShouldBe(List.ListStatus.Current, "The list's status must be set to Current.");

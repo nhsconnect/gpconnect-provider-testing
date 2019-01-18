@@ -18,8 +18,8 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "<Patient>"
 		And the Bundle should contain "2" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reaction"
-		And the Bundle should contain a list with the title "Resolved Allergies"
+		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Ended allergies"
 		And the Bundle should contain the correct number of allergies
 		And the Lists are valid for a patient with allergies
 	Examples:
@@ -30,7 +30,7 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		| patient6  |
 		| patient7  |
 		| patient8  |
-		| patient11 |
+# git hub ref 144		| patient11 |
 		| patient12 |
 		| patient13 |
 ## removed github ref 91 		| patient15 |
@@ -51,8 +51,8 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "<Patient>"
 		And the Bundle should contain "1" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reaction"
-		And the Bundle should not contain a list with the title "Resolved Allergies"
+		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should not contain a list with the title "Ended allergies"
 		And the AllergyIntolerance should be valid
 		And the Bundle should contain the correct number of allergies
 		And the Lists are valid for a patient with allergies
@@ -64,7 +64,7 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		| patient6  |
 		| patient7  |
 		| patient8  |
-		| patient11 |
+# git hub ref 144		| patient11 |
 		| patient12 |
 		| patient13 |
 ## removed github ref 91 		| patient15 |
@@ -85,8 +85,8 @@ Scenario: Retrieve the allergy structured record section including resolved alle
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient1"
 		And the Bundle should contain "2" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reaction"
-		And the Bundle should contain a list with the title "Resolved Allergies"
+		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Ended allergies"
 		And the Lists are valid for a patient with no allergies
 		And the List of AllergyIntolerances should be valid
 
@@ -106,7 +106,7 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient1"
 		And the Bundle should contain "1" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reaction"
+		And the Bundle should contain a list with the title "Allergies and adverse reactions"
 		And the Lists are valid for a patient with no allergies
 		And the List of AllergyIntolerances should be valid
 
@@ -126,8 +126,8 @@ Scenario: Retrieve the allergy structured record section including resolved alle
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient5"
 		And the Bundle should contain "2" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reaction"
-		And the Bundle should contain a list with the title "Resolved Allergies"
+		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Ended allergies"
 		And the Lists are valid for a patient with explicit no allergies coding
 		And the List of AllergyIntolerances should be valid
 
@@ -147,7 +147,7 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "patient5"
 		And the Bundle should contain "1" lists
-		And the Bundle should contain a list with the title "Allergies and adverse reaction"
+		And the Bundle should contain a list with the title "Allergies and adverse reactions"
 		And the Lists are valid for a patient with explicit no allergies coding
 		And the List of AllergyIntolerances should be valid
 
@@ -253,8 +253,8 @@ Scenario: Check allergy warning code is populated for a patient
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 	And the Bundle should contain "2" lists
-	And the Bundle should contain a list with the title "Allergies and adverse reaction"
-	And the Bundle should contain a list with the title "Resolved Allergies"
+	And the Bundle should contain a list with the title "Allergies and adverse reactions"
+	And the Bundle should contain a list with the title "Ended allergies"
 	And the Lists are valid for a patient without allergies
 
 	# Added 1.2.0 RMB 15/8/2018
@@ -266,8 +266,8 @@ Scenario: Check allergy legacy endReason
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 	And the Bundle should contain "2" lists
-	And the Bundle should contain a list with the title "Allergies and adverse reaction"
-	And the Bundle should contain a list with the title "Resolved Allergies"
+	And the Bundle should contain a list with the title "Allergies and adverse reactions"
+	And the Bundle should contain a list with the title "Ended allergies"
 	And the List of AllergyIntolerances should be valid
 	And the Lists are valid for a patient with legacy endReason
 

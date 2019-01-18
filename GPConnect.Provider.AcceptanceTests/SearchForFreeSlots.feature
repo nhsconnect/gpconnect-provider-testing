@@ -335,7 +335,7 @@ Scenario: SearchForFreeSlots invalid response check caching headers exist
 
 # git hub ref 131
 # RMB 25/10/2018
-Scenario: Searching for free slots with org code searchFilter system
+Scenario: Searching for free slots with org type searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
@@ -350,13 +350,27 @@ Scenario: Searching for free slots with org code searchFilter system
 
 # git hub ref 131
 # RMB 25/10/2018
-Scenario: Searching for free slots with org type searchFilter system
+Scenario: Searching for free slots with org code searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
 		And I add org code searchFilter paramaters
+		When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Organization should be valid
+		And the Organization Id should be valid
+
+# git hub ref 143 AG
+# RMB 5/12/2018
+Scenario: Searching for free slots with NO org code and NO org type searchFilter system
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
+		And I add the parameter "status" with the value "free"
+		And I add the parameter "_include" with the value "Slot:schedule"		
 		When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
