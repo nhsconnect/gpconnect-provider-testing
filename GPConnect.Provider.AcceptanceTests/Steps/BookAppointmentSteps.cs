@@ -88,6 +88,13 @@
         {
             _fhirResourceRepository.Appointment.Reason.Add(new CodeableConcept("http://snomed.info/sct", "17436001", "Medical consultation with outpatient", "Medical consultation with outpatient"));
         }
+// git hub ref 141
+// 6/12/2018 RMB
+        [Given(@"I add a typeCode to the Created Appointment")]
+        public void IaddatypeCodetotheCreatedAppointment()
+        {
+            _fhirResourceRepository.Appointment.Specialty.Add(new CodeableConcept("http://hl7.org/fhir/stu3/valueset-c80-practice-codes", "394802001", "General medicine", null));
+        }
 
         [Given(@"I set the Created Appointment Slot Reference to ""([^""]*)""")]
         public void SetTheCreatedAppointmentSlotReferenceTo(string slotReference)

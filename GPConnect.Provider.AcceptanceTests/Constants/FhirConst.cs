@@ -135,8 +135,8 @@
             public const string kCCExtRegistrationType = "registrationType";
             public const string kCCExtRegistrationPeriod = "registrationPeriod";
             public const string kCCExtPreferredBranchSurgery = "preferredBranchSurgery";
-            public const string kCCExtCommLanguage = "Language";
-            public const string kCCExtCommPreferred = "Preferred";
+            public const string kCCExtCommLanguage = "language";
+            public const string kCCExtCommPreferred = "preferred";
             public const string kCCExtCommModeOfCommunication = "modeOfCommunication";
             public const string kCCExtCommCommProficiency = "communicationProficiency";
             public const string kCCExtCommInterpreterRequired = "interpreterRequired";
@@ -161,6 +161,9 @@
             public const string kMedicationRequest = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1";
             public const string kList = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1";
             public const string kSpecial = "http://hl7.org/fhir/special-values";
+// git hub ref 158
+// RMB 9/1/19			
+            public const string kListEmptyReason = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-ListEmptyReasonCode-1";			
 
             //Extensions
             public const string kCCExtNhsCommunication =        "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSCommunication-1";
@@ -198,8 +201,8 @@
 
         internal static class ListTitles
         {
-            public const string kActiveAllergies = "Allergies and adverse reaction";
-            public const string kResolvedAllergies = "Resolved Allergies";
+            public const string kActiveAllergies = "Allergies and adverse reactions";
+            public const string kResolvedAllergies = "Ended allergies";
 //
 // Added github ref 89
 // RMB 9/10/2018

@@ -466,7 +466,7 @@
         {
             var coding = new Coding
             {
-                System = "https://fhir.nhs.uk/CareConnect-HumanLanguage-1",
+                System = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-HumanLanguage-1",
                 Code = "de",
                 Display = "German"
             };
@@ -763,6 +763,20 @@
             });
 
         }
+		
+// git hub ref 153
+// RMB 18/12/2018
+
+	[Then(@"the Patient NhsCommunicationExtension should be valid")]
+        public void ThePatientNhsCommunicationExtensionShouldBeValid()
+        {
+            Patients.ForEach(patient =>
+            {
+                var extensions = patient.Extension;
+
+                ValidateRegPatientNhsCommunicationExtension(extensions);
+            });
+        }		
 
         [Given(@"I get the next Patient to register and store it")]
         public void GetTheNextPatientToRegisterAndStoreIt()
@@ -1016,6 +1030,20 @@
             }
 
         }
+		
+// git hub ref 153
+// RMB 18/12/2018
+       private void ValidateRegPatientNhsCommunicationExtension(List<Extension> extensions)
+        {
+            var exts = extensions.Where(ece => ece.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtNhsCommunication)).ToList();
+            exts.Count.ShouldBe(1, "The patient resource should contain a nhsCommunication extension.");
+
+            exts.ForEach(nhsCommunicationExtension =>
+            {
+                var val = nhsCommunicationExtension;
+            });
+            
+        }		
 
 
         private static Extension GetCodingExtension(string extensionUrl, string codingUrl, string code, string display)

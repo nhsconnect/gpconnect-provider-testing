@@ -448,7 +448,6 @@ Scenario: Book appointment with name removed from booking organization
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-
 Scenario: Book appointment with telecom removed from booking organization
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -506,3 +505,34 @@ Scenario: Book appointment and send a reason in the appointment
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+# git hub ref 141
+# 6/12/2018 RMB
+Scenario: Book appointment with typeCode in appointment resource
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I add a typeCode to the Created Appointment
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+# git hub ref 155
+# RMB 8/1/19
+Scenario: Book appointment with a description and comment
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I set the Created Appointment Description to "customDescription"
+		And I set the Created Appointment Comment
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment Description should be valid for "customDescription"

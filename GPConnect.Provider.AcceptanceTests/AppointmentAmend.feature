@@ -147,13 +147,13 @@ Scenario: Amend appointment set etag and check etag is the same in the returned 
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"		
 		And I store the Created Appointment	
 	Given I configure the default "AppointmentAmend" request
-# Amended RMB from csutomComment to customDescription
+# Amended RMB from customComment to customDescription
 		And I set the Created Appointment Description to "customDescription"
 		And I set the If-Match header to the Stored Appointment Version Id
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
-# Amended RMB from csutomComment to customDescription
+# Amended RMB from customComment to customDescription
 		And the Appointment Description should be valid for "customDescription"
 
 Scenario: Amend appointment and send an invalid bundle resource
@@ -205,7 +205,7 @@ Scenario: Amend appointment valid response check caching headers exist
 		And the Appointment Metadata should be valid
 		And the required cacheing headers should be present in the response
 #
-# Test reeplaced with original tests from 1.2.0
+# Test replaced with original tests from 1.2.0
 # github ref 99
 # RMB 17/10/2018
 #
@@ -227,3 +227,27 @@ Scenario:Amend appointment invalid response check caching headers exist
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "422"
 		And the required cacheing headers should be present in the response
+		
+# git hub ref 145
+# RMB 10/12/2018
+Scenario: Amend appointment and update cancellation reason
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the Created Appointment Cancellation Reason "double booked"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+# git hub ref 157
+# RMB 8/1/19
+Scenario: Amend appointment with Comment and Description
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the Created Appointment Description to "customDescription"
+		And I set the Created Appointment Comment to "customComment"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Description should be valid for "customDescription"

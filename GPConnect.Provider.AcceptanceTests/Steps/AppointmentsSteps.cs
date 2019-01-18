@@ -140,6 +140,26 @@
 
         }
 
+        [Given(@"I create an Appointment for Today for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
+        public void CreateAnAppointmentForTodayForPatientAndOrganizationCode(string patient, string code)
+        {
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _searchForFreeSlotsSteps.GetAvailableFreeSlotsForToday();
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
+
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+            Organization changed = FhirHelper.GetDefaultOrganization();
+            changed.Identifier.First().Value = GlobalContext.OdsCodeMap[code];
+            _httpSteps.jwtHelper.RequestingOrganization = changed.ToFhirJson();
+
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
+        }
+
         [Given(@"I create an Appointment for an existing Patient and Organization Code ""([^""]*)""")]
         public void CreateAnAppointmentForRandomPatientAndOrganizationCode(string code)
         { 
@@ -246,6 +266,18 @@
             _fhirResourceRepository.Appointment.Extension.Add(extension);
             _fhirResourceRepository.Appointment.Status = AppointmentStatus.Cancelled;
         }
+// git hub ref 145
+// RMB 12/10/2018		
+        [Given(@"I set the Created Appointment Cancellation Reason ""([^""]*)""")]
+        public void SetTheCreatedAppointmentCancellationReason(string reason)
+        {
+            var extension = GetCancellationReasonExtension(reason);
+
+            if (_fhirResourceRepository.Appointment.Extension == null)
+                _fhirResourceRepository.Appointment.Extension = new List<Extension>();
+
+            _fhirResourceRepository.Appointment.Extension.Add(extension); 
+        }		
 
         [Given(@"I set the Created Appointment to Cancelled with Url ""([^""]*)"" and Reason ""([^""]*)""")]
         public void SetTheCreatedAppointmentToCancelledWithUrlAndReason(string url, string reason)

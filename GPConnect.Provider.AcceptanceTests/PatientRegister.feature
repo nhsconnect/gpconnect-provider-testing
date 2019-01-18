@@ -308,7 +308,7 @@ Scenario: Register patient with Address and Telecom
 # github ref 138
 # RMB 12/11/2018
 
-Scenario: Register patient with Multiple Address and Telecom
+Scenario: Register patient with Multiple Address not allowed and Telecom
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I add the Stored Patient as a parameter
@@ -380,6 +380,12 @@ Scenario: Register patient with Address Telecom and nhsCommunication
 		And I add nhsCommunication extension to the Stored Patient
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
+		And the Patient should has a correct Address
+		And the Patient should has a correct Telecom
+		And the Patient Optional Elements should be valid
+# git hub ref 153
+# RMB 8/1/19
+		And the Patient NhsCommunicationExtension should be valid
 
 Scenario: Register patient with Address Telecom and multiple nhsCommunication
 	Given I get the next Patient to register and store it
@@ -390,7 +396,7 @@ Scenario: Register patient with Address Telecom and multiple nhsCommunication
 		And I add nhsCommunication extension to the Stored Patient
 		And I add nhsCommunication extension to the Stored Patient
 	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
+	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 #Scenario Outline: Register patient without temp should error
@@ -517,3 +523,16 @@ Scenario: Register patient with family name not matching PDS
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
 
+# git hub ref 154
+# RMB 8/1/19
+Scenario: Register patient with Multiple Address and Telecom resources
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I add the Stored Patient as a parameter
+		And I add a Address element to the Stored Patient
+		And I add a Address element without temp to the Stored Patient
+		And I add a Telecom element to the Stored Patient
+	When I make the "RegisterPatient" request
+	Then the response status code should indicate success
+		And the Patient should has a correct Address
+		And the Patient should has a correct Telecom

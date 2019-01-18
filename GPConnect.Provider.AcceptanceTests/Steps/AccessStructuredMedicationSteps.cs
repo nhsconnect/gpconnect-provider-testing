@@ -888,7 +888,9 @@
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
                 if (prescriptionType.Coding.First().Display.Contains("Acute"))
                 {
-                    medRequest.DispenseRequest.ValidityPeriod.End.ShouldBeNull();
+                    // git hub ref 160
+                    // RMB 14/1/19
+                    //medRequest.DispenseRequest.ValidityPeriod.End.ShouldBeNull();
                 } 
             });
         }
