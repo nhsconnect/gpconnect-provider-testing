@@ -174,7 +174,9 @@
                     if (list.EmptyReason.Coding.Count.Equals(1))
                     {
                         list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
-                        list.EmptyReason.Coding.First().Display.ShouldBe("No content recorded");
+// Amended for github ref 172
+// RMB 24/1/19							
+                        list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
                     }
                     list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
 // Added git hub ref 88
@@ -698,7 +700,9 @@
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
                 if (!prescriptionType.Coding.First().Display.Contains("Repeat"))
                 {
-                    medRequest.GroupIdentifier.ShouldBeNull();
+ // git hub ref 167
+//  RMB 22/1/19
+					//medRequest.GroupIdentifier.ShouldBeNull();
                 }
             });
         }
@@ -786,15 +790,23 @@
         {
             MedicationRequests.ForEach(medRequest =>
             {
-                medRequest.Status.ShouldNotBeNull("MedicationStatement Status cannot be null");
-                medRequest.Status.ShouldBeOfType<MedicationRequest.MedicationRequestStatus>($"MedicationRequest Status is not a valid value within the value set {FhirConst.ValueSetSystems.kVsMedicationRequestStatus}");
-                medRequest.Status.ShouldBeOneOf(MedicationRequest.MedicationRequestStatus.Active, MedicationRequest.MedicationRequestStatus.Completed, MedicationRequest.MedicationRequestStatus.Stopped);
+// git hub ref 170
+// RMB 23/1/19
+//                medRequest.Status.ShouldNotBeNull("MedicationRequest Status cannot be null");
+				if (medRequest.Status != null) 
+				{
+					medRequest.Status.ShouldBeOfType<MedicationRequest.MedicationRequestStatus>($"MedicationRequest Status is not a valid value within the value set {FhirConst.ValueSetSystems.kVsMedicationRequestStatus}");
+					medRequest.Status.ShouldBeOneOf(MedicationRequest.MedicationRequestStatus.Active, MedicationRequest.MedicationRequestStatus.Completed, MedicationRequest.MedicationRequestStatus.Stopped);
+				}
                    
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
-                if (prescriptionType.Coding.First().Display.Contains("Acute"))
-                { 
-                    medRequest.Status.ShouldBe(MedicationRequest.MedicationRequestStatus.Completed);
-                }
+// git hub ref 170
+// RMB 23/1/19
+//                if (prescriptionType.Coding.First().Display.Contains("Acute"))
+//                { 
+//
+//                    medRequest.Status.ShouldBe(MedicationRequest.MedicationRequestStatus.Completed);
+//               }
             });
         }
 

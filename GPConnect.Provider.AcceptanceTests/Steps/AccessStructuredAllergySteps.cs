@@ -120,7 +120,10 @@
                     list.Code.Coding.First().Code.Equals("1103671000000101");
 // Amended github ref 89
 // RMB 9/10/2018				
-					list.Code.Coding.First().Display.ShouldBe("Ended allergies (record artifact)");
+// git hub ref 174 snomed code display set to Ended allergies
+// RMB 23/1/19
+//					list.Code.Coding.First().Display.ShouldBe("Ended allergies (record artifact)");
+					list.Code.Coding.First().Display.ShouldBe("Ended allergies");					
                 }
 
                 if (list.Entry.Count > 0)
@@ -208,7 +211,9 @@
 // Amended for github ref 87
 // RMB 9/10/2018			   
                list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
-               list.EmptyReason.Coding.First().Display.ShouldBe("No content recorded");
+// Amended for github ref 172
+// RMB 24/1/19			   			   
+               list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
            });
         }
 
@@ -446,39 +451,47 @@
 
         private void TheAllergyIntoleranceReactionShouldBeValid()
         {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
+            AllAllergyIntolerances.ForEach(allergy => {
                 if (allergy.Reaction != null)
                 {
                     allergy.Reaction.Count.ShouldBeLessThanOrEqualTo(1);
-                    AllergyIntolerance.ReactionComponent reaction = allergy.Reaction[0];
-                    if (reaction.Manifestation != null)
+                    if (allergy.Reaction.Count == 0)
                     {
-                        reaction.Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
+                        allergy.Reaction.Count.ShouldBe(1);
+                    }
+                    // git hub ref 173
+                    // RMB 23/1/19
+                    if (allergy.Reaction.Any()) {
+                        AllergyIntolerance.ReactionComponent reaction = allergy.Reaction[0];
+                        if (reaction.Manifestation != null)
+                        {
+                            reaction.Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
 
-                        if (reaction.Manifestation.Count == 1) {
-                            if (reaction.Severity != null)
+                            if (reaction.Manifestation.Count == 1)
                             {
-                                reaction.Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
+                                if (reaction.Severity != null)
+                                {
+                                    reaction.Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
 
-                                var codableConcept = reaction.Manifestation.First();
+                                    var codableConcept = reaction.Manifestation.First();
 
-                                var codingDisplay = codableConcept.Coding.First().Display;
+                                    var codingDisplay = codableConcept.Coding.First().Display;
 
-                               // codingDisplay.ShouldBe("nullFlavor NI", "AllergyIntolerance.reaction.manifestation SHOULD be coded as the nullFlavor NI");
+                                    // codingDisplay.ShouldBe("nullFlavor NI", "AllergyIntolerance.reaction.manifestation SHOULD be coded as the nullFlavor NI");
 
+                                }
                             }
                         }
-                    }
 
-                    if (reaction.ExposureRoute != null)
-                    {
-                        reaction.ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
-                    }
+                        if (reaction.ExposureRoute != null)
+                        {
+                            reaction.ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
+                        }
 
-                    reaction.Note.ShouldBeEmpty();
-                    reaction.Onset.ShouldBeNull();
-                    reaction.Substance.ShouldBeNull();
+                        reaction.Note.ShouldBeEmpty();
+                        reaction.Onset.ShouldBeNull();
+                        reaction.Substance.ShouldBeNull();
+                    }
                 }
             });
         }

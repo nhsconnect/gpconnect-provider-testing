@@ -50,6 +50,12 @@
                                                     && component.Display.Equals(coding.Display) 
                                                     && component.System.Equals(coding.System));
         }
+// git hub ref 173
+// RMB 24/1/19
+        public static void ValueSetContainsCode(ValueSet valueSet, Code warningCode)
+        {
+            valueSet.Expansion.Contains.ShouldContain(component => component.CodeElement.Matches(warningCode));
+        }
 
         public void CheckForValidMetaDataInResource<T>(T resource, string profileId) where T : Resource
         {

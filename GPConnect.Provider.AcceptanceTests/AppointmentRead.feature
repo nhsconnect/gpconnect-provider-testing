@@ -139,3 +139,10 @@ Scenario:Read appointment invalid response check caching headers exist
 	Then the response status code should be "404"
 		And the response body should be FHIR JSON
 
+# git hub ref 171
+# RMB 22/1/19
+Scenario: CapabilityStatement profile supports the read appointment operation
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Read" Interaction

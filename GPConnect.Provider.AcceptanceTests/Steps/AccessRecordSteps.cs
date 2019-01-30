@@ -241,9 +241,12 @@
             warningCodes.Count.ShouldBeLessThanOrEqualTo(4);
             if (warningCodes.Count == 1)
             {
-                Coding warningCode = (Coding)warningCodes.First().Value;
+                // git hub ref #173
+                // RMB 24/1/19
+                //Coding warningCode = (Coding)warningCodes.First().Value;
+                Code warningCode = (Code)warningCodes.First().Value;
                 var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsWarningCode);
-                ValueSetContainsCodeAndDisplayAndSystem(valueSet, warningCode);
+                ValueSetContainsCode(valueSet, warningCode);
             }
         }
 
