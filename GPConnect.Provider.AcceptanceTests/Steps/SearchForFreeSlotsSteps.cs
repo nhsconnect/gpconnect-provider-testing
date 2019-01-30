@@ -133,11 +133,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
 
         }
-
-        [Given(@"I add org type searchFilter paramaters")]
-        public void IAddOrgTypeSearchFilterParamaters()
+// RMB extra tests for org-type
+// git hub ref 175
+// RMB 24/1/19
+        [Given(@"I add org type searchFilter paramaters ""(.*)""")]
+        public void IAddOrgTypeSearchFilterParamaters(string orgType)
         {
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "urgent-care");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + orgType);
+
+        }
+// RMB extra tests for org-code
+// git hub ref 175
+// RMB 24/1/19
+        [Given(@"I add org code searchFilter paramaters ""(.*)""")]
+        public void IAddOrgCodeSearchFilterParamaters(string orgCode)
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + orgCode);
 
         }
 
@@ -202,6 +213,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 CheckForValidMetaDataInResource(slot, FhirConst.StructureDefinitionSystems.kSlot);
             });
         }
+
+        [Then("the Slot Count should be valid")]
+        public void TheSlotCountShouldBeValid()
+        {
+            Slots.Count.ShouldBeGreaterThan(0,"Wrong No Slots Returned");
+        }
+
 
         [Then("the Slot Id should be valid")]
         public void TheSlotIdShouldBeValid()

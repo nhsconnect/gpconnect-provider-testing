@@ -8,6 +8,7 @@ Scenario Outline: Searching for free slots with valid parameters should return s
 		When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
+
 	Examples:
 		| Days	|
 		| 8		|
@@ -335,40 +336,69 @@ Scenario: SearchForFreeSlots invalid response check caching headers exist
 
 # git hub ref 131
 # RMB 25/10/2018
-Scenario: Searching for free slots with org type searchFilter system
+# git hub ref 175
+# RMB 24/1/19
+Scenario Outline: Searching for free slots with org type searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
-		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
+		And I add the time period parameters for "14" days starting today using the start date prefix "ge" and the end date prefix "le"
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
-		And I add org type searchFilter paramaters
+		And I add org type searchFilter paramaters "<orgType>"
 		When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Organization should be valid
 		And the Organization Id should be valid
+		And the Slot Id should be valid
+		And the Slot Count should be valid
+		And the Slot Status should be Free
+		And the Slot Metadata should be valid
+		And the Slot Identifiers should be valid
+		And the Slot Extensions should be valid
+	Examples:
+		| orgType     |
+		| urgent-care |
+		| gp-practice |
+		| oncology    |
 
 # git hub ref 131
 # RMB 25/10/2018
-Scenario: Searching for free slots with org code searchFilter system
+# git hub ref 175
+# RMB 24/1/19
+Scenario Outline: Searching for free slots with org code searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
-		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
+		And I add the time period parameters for "14" days starting today using the start date prefix "ge" and the end date prefix "le"
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"
-		And I add org code searchFilter paramaters
+		And I add org code searchFilter paramaters "<orgCode>"
 		When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the Organization should be valid
 		And the Organization Id should be valid
+		And the Slot Id should be valid
+		And the Slot Count should be valid
+		And the Slot Status should be Free
+		And the Slot Metadata should be valid
+		And the Slot Identifiers should be valid
+		And the Slot Extensions should be valid
+	Examples:
+		| orgCode |
+		| A20047  |
+		| B81016  |
+		| M85015  |
+		| RNR01   |
 
 # git hub ref 143 AG
 # RMB 5/12/2018
+# git hub ref 175
+# RMB 24/1/19
 Scenario: Searching for free slots with NO org code and NO org type searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
-		And I add the time period parameters for "3" days starting today using the start date prefix "ge" and the end date prefix "le"
+		And I add the time period parameters for "14" days starting today using the start date prefix "ge" and the end date prefix "le"
 		And I add the parameter "status" with the value "free"
 		And I add the parameter "_include" with the value "Slot:schedule"		
 		When I make the "SearchForFreeSlots" request
@@ -376,3 +406,45 @@ Scenario: Searching for free slots with NO org code and NO org type searchFilter
 		And the response should be a Bundle resource of type "searchset"
 		And the Organization should be valid
 		And the Organization Id should be valid
+		And the Slot Id should be valid
+		And the Slot Count should be valid
+		And the Slot Status should be Free
+		And the Slot Metadata should be valid
+		And the Slot Identifiers should be valid
+		And the Slot Extensions should be valid
+
+# git hub ref 175
+# RMB 24/1/19
+Scenario Outline: Searching for free slots with org type and code searchFilter system
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I add the time period parameters for "14" days starting today using the start date prefix "ge" and the end date prefix "le"
+		And I add the parameter "status" with the value "free"
+		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add org type searchFilter paramaters "<orgType>"
+		And I add org code searchFilter paramaters "<orgCode>"
+		When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Organization should be valid
+		And the Organization Id should be valid
+		And the Slot Id should be valid
+		And the Slot Count should be valid
+		And the Slot Status should be Free
+		And the Slot Metadata should be valid
+		And the Slot Identifiers should be valid
+		And the Slot Extensions should be valid
+	Examples:
+		| orgType     | orgCode |
+		| urgent-care | A20047  |
+		| urgent-care | B81016  |
+		| urgent-care | M85015  |
+		| urgent-care | RNR01   |
+		| gp-practice | A20047  |
+		| gp-practice | B81016  |
+		| gp-practice | M85015  |
+		| gp-practice | RNR01   |
+		| oncology    | A20047  |
+		| oncology    | B81016  |
+		| oncology    | M85015  |
+		| oncology    | RNR01   |

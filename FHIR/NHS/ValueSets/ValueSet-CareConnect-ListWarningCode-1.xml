@@ -12,6 +12,18 @@
 	<compose>
 		<include>
 			<system value="https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-ListWarningCode-1"/>
+			<concept>
+				<code value="confidential-items"/>
+				<display value="Confidential Items"/>
+			</concept>
+			<concept>
+				<code value="data-in-transit"/>
+				<display value="Data in Transit"/>
+			</concept>
+			<concept>
+				<code value="data-awaiting-filing"/>
+				<display value="Data Awaiting Filing"/>
+			</concept>			
 		</include>
 	</compose>
 </ValueSet>

@@ -36,11 +36,11 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             };
         }
 
-        public static Organization GetOrganization(string id, string odsCode)
+        public static Organization GetOrganization(string odsCode)
         {
             return new Organization
             {
-                Id = id,
+//                Id = id,
                 Name = "GP Connect Assurance",
                 Identifier = new List<Identifier>
                 { 
@@ -51,8 +51,9 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static Organization GetDefaultOrganization(string odsCode = "GPCA0001")
         {
-            return GetOrganization("1", odsCode);
-          
+// github ref 168 RMB 22/1/19            return GetOrganization("1", odsCode);
+            return GetOrganization(odsCode);
+
         }
 
         public static Practitioner GetDefaultPractitioner()
