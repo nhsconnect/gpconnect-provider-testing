@@ -473,6 +473,7 @@ Scenario: Book appointment with a description
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
 		And the Appointment Description should be valid for "customDescription"
+		And the Appointment Comment should be null
 
 Scenario: Book appointment re-using an already booked slot
 	Given I get the Patient for Patient Value "patient1"
@@ -536,3 +537,33 @@ Scenario: Book appointment with a description and comment
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
 		And the Appointment Description should be valid for "customDescription"
+		And the Appointment Comment should be valid for "CustomComment"
+
+# git hub ref 190 (demonstrator)
+# RMB 6/2/19
+Scenario: Book appointment with a comment
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I set the Created Appointment Comment
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment Comment should be valid for "CustomComment"
+
+# git hub ref 190 (demonstrator)
+# RMB 6/2/19
+Scenario: Book appointment without a comment
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment Comment should be null

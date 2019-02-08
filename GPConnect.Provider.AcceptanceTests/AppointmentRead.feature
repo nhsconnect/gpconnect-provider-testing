@@ -40,7 +40,9 @@ Scenario Outline: I perform a successful Read appointment with Extensions
 		| patient1    | true    | true            | true     |
 
 Scenario: I perform a successful Read appointment with JWT Org Different
-	Given I create an Appointment for Patient "patient1" and Organization Code "SIT1"
+# git hub ref 177
+# RMB 31/1/19
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG3"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentRead" request
 	When I make the "AppointmentRead" request

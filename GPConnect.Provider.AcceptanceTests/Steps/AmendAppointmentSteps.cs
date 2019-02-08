@@ -36,5 +36,15 @@
                 appointment.Comment.ShouldBe(value, $@"The Appointment Description should be ""{value}"" but was ""{appointment.Comment}"".");
             });
         }
+// git hub ref 190 (demonstrator)
+// RMB 6/2/19
+        [Then(@"the Appointment Comment should be null")]
+        public void TheAppointmentCommentShouldBeNull()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Comment.ShouldBeNull();
+            });
+        }
     }
 }
