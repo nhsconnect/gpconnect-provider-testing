@@ -455,12 +455,14 @@
                 if (allergy.Reaction != null)
                 {
                     allergy.Reaction.Count.ShouldBeLessThanOrEqualTo(1);
-                    if (allergy.Reaction.Count == 0)
-                    {
-                        allergy.Reaction.Count.ShouldBe(1);
-                    }
-                    // git hub ref 173
-                    // RMB 23/1/19
+// git hub ref 173
+// RMB 4/2/19 - debug for testing code should have been removed
+//                  if (allergy.Reaction.Count == 0)
+//                   {
+//                        allergy.Reaction.Count.ShouldBe(1);
+//                   }               
+// git hub ref 173
+// RMB 23/1/19
                     if (allergy.Reaction.Any()) {
                         AllergyIntolerance.ReactionComponent reaction = allergy.Reaction[0];
                         if (reaction.Manifestation != null)

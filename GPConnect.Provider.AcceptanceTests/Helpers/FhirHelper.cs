@@ -51,7 +51,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static Organization GetDefaultOrganization(string odsCode = "GPCA0001")
         {
-// github ref 168 RMB 22/1/19            return GetOrganization("1", odsCode);
+// github ref 169 RMB 22/1/19            return GetOrganization("1", odsCode);
             return GetOrganization(odsCode);
 
         }

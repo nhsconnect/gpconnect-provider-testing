@@ -327,11 +327,13 @@ Scenario: SearchForFreeSlots valid response check caching headers exist
 Scenario: SearchForFreeSlots invalid response check caching headers exist
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
-		And I set the required parameters with a time period of "3" days
-		And I set the Interaction Id header to "InvalidInteractionId"
+# git hub ref 178 
+# RMB 31/1/19
+		And I set the required parameters with a time period of "30" days
+#   And I set the Interaction Id header to "InvalidInteractionId"
 	When I make the "SearchForFreeSlots" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 		And the required cacheing headers should be present in the response
 
 # git hub ref 131

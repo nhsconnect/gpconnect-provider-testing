@@ -1152,6 +1152,8 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 475
   testRunner.And("the Appointment Description should be valid for \"customDescription\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 476
+  testRunner.And("the Appointment Comment should be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1161,41 +1163,41 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void BookAppointmentRe_UsingAnAlreadyBookedSlot()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment re-using an already booked slot", ((string[])(null)));
-#line 477
-this.ScenarioSetup(scenarioInfo);
 #line 478
- testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 479
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 480
- testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 481
-  testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 482
- testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 483
-  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 484
- testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 485
- testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 486
-  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 487
- testRunner.Given("I get the Patient for Patient Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 488
   testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 489
+#line 481
+ testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 482
+  testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 483
  testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 490
+#line 484
   testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 491
+#line 485
  testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 486
+ testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 487
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 488
+ testRunner.Given("I get the Patient for Patient Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 489
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 490
+ testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 491
+  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 492
- testRunner.Then("the response status code should be \"409\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 493
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should be \"409\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 494
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 495
   testRunner.And("the response should be a OperationOutcome resource with error code \"DUPLICATE_REJ" +
                     "ECTED\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1207,29 +1209,29 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void BookAppointmentAndSendAReasonInTheAppointment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment and send a reason in the appointment", ((string[])(null)));
-#line 496
-this.ScenarioSetup(scenarioInfo);
 #line 497
- testRunner.Given("I get an existing patients nshNumber", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 498
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get an existing patients nshNumber", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 499
- testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 500
-  testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 501
- testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 502
-  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 503
-  testRunner.And("I add an Appointment Reason to the appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 504
- testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add an Appointment Reason to the appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 505
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 506
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 507
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 508
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_RESOU" +
                     "RCE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1241,29 +1243,29 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void BookAppointmentWithTypeCodeInAppointmentResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with typeCode in appointment resource", ((string[])(null)));
-#line 511
-this.ScenarioSetup(scenarioInfo);
 #line 512
- testRunner.Given("I get an existing patients nshNumber", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 513
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get an existing patients nshNumber", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 514
- testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 515
-  testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 516
- testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 517
-  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 518
-  testRunner.And("I add a typeCode to the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 519
- testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add a typeCode to the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 520
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 521
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 522
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 523
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_RESOU" +
                     "RCE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1275,32 +1277,98 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void BookAppointmentWithADescriptionAndComment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with a description and comment", ((string[])(null)));
-#line 526
-this.ScenarioSetup(scenarioInfo);
 #line 527
- testRunner.Given("I get an existing patients nshNumber", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 528
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get an existing patients nshNumber", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 529
- testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 530
-  testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 531
- testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 532
-  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 533
-  testRunner.And("I set the Created Appointment Description to \"customDescription\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 534
-  testRunner.And("I set the Created Appointment Comment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the Created Appointment Description to \"customDescription\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 535
- testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I set the Created Appointment Comment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 536
- testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 537
-  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 538
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 539
   testRunner.And("the Appointment Description should be valid for \"customDescription\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 540
+  testRunner.And("the Appointment Comment should be valid for \"CustomComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Book appointment with a comment")]
+        public virtual void BookAppointmentWithAComment()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with a comment", ((string[])(null)));
+#line 544
+this.ScenarioSetup(scenarioInfo);
+#line 545
+ testRunner.Given("I get an existing patients nshNumber", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 546
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 547
+ testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 548
+  testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 549
+ testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 550
+  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 551
+  testRunner.And("I set the Created Appointment Comment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 552
+ testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 553
+ testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 554
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 555
+  testRunner.And("the Appointment Comment should be valid for \"CustomComment\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Book appointment without a comment")]
+        public virtual void BookAppointmentWithoutAComment()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment without a comment", ((string[])(null)));
+#line 559
+this.ScenarioSetup(scenarioInfo);
+#line 560
+ testRunner.Given("I get an existing patients nshNumber", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 561
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 562
+ testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 563
+  testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 564
+ testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 565
+  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 566
+ testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 567
+ testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 568
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 569
+  testRunner.And("the Appointment Comment should be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

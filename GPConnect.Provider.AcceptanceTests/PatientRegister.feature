@@ -307,6 +307,8 @@ Scenario: Register patient with Address and Telecom
 
 # github ref 138
 # RMB 12/11/2018
+# github ref 180
+# RMB 6/2/19
 
 Scenario: Register patient with Multiple Address not allowed and Telecom
 	Given I get the next Patient to register and store it
@@ -316,8 +318,8 @@ Scenario: Register patient with Multiple Address not allowed and Telecom
 		And I add a Address element to the Stored Patient
 		And I add a Telecom element to the Stored Patient
 	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario Outline: Register patient with Address and Valid Telecom elements
 	Given I get the next Patient to register and store it
@@ -525,14 +527,72 @@ Scenario: Register patient with family name not matching PDS
 
 # git hub ref 154
 # RMB 8/1/19
-Scenario: Register patient with Multiple Address and Telecom resources
+# git hub ref 180 removed test
+# and replaced with multiple address Use Types
+#Scenario: Register patient with Multiple Address and Telecom resources
+#	Given I get the next Patient to register and store it
+#	Given I configure the default "RegisterPatient" request
+#		And I add the Stored Patient as a parameter
+#		And I add a Address element to the Stored Patient
+#		And I add a Address element without temp to the Stored Patient
+#		And I add a Telecom element to the Stored Patient
+#	When I make the "RegisterPatient" request
+#	Then the response status code should indicate success
+#		And the Patient should has a correct Address
+#		And the Patient should has a correct Telecom
+
+# git hub ref 180
+# RMB 4/2/19
+Scenario Outline: Register patient with Multiple Address Use types
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I add the Stored Patient as a parameter
-		And I add a Address element to the Stored Patient
-		And I add a Address element without temp to the Stored Patient
-		And I add a Telecom element to the Stored Patient
+		And I add a Address element to the Stored Patient with Use "<Use1>"
+		And I add a Address element to the Stored Patient with Use "<Use2>"
 	When I make the "RegisterPatient" request
 	Then the response status code should indicate success
 		And the Patient should has a correct Address
-		And the Patient should has a correct Telecom
+	Examples:		
+		| Use1 | Use2 |
+		| Home | Temp |
+		| Temp | Home |
+
+# git hub ref 180
+# RMB 4/2/19
+Scenario Outline: Register patient with Invalid Multiple Address Use types
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I add the Stored Patient as a parameter
+		And I add a Address element to the Stored Patient with Use "<Use1>"
+		And I add a Address element to the Stored Patient with Use "<Use2>"
+	When I make the "RegisterPatient" request
+	Then the response status code should indicate failure
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+	Examples:		
+		| Use1 | Use2 |
+		| Home | Work |
+		| Home | Home |
+		| Home | Old  |
+		| Old  | Work |
+		| Old  | Old  |
+		| Old  | Temp |
+		| Temp | Work |
+		| Temp | Temp |
+		| Temp | Old  |
+
+# git hub ref 180
+# RMB 4/2/19
+Scenario Outline: Register patient with Invalid Address Use type
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I add the Stored Patient as a parameter
+		And I add a Address element to the Stored Patient with Use "<Use1>"
+	When I make the "RegisterPatient" request
+	Then the response status code should indicate failure
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+	Examples:		
+		| Use1 |
+		| Work |
+		| Old  |

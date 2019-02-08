@@ -243,6 +243,23 @@
             address.Use = Address.AddressUse.Temp;
             _fhirResourceRepository.Patient.Address.Add(address);
         }
+// git hub ref 180
+// RMB 4/2/19
+        [Given(@"I add a Address element to the Stored Patient with Use ""([^""]*)""")]
+        public void AddAAddressElementToStoredPatientWithUse(Address.AddressUse use)
+        {
+            var address = new Address
+            {
+                CityElement = new FhirString("Leeds"),
+                PostalCode = "LS1 6AE"
+            };
+
+            address.LineElement.Add(new FhirString("1 Trevelyan Square"));
+            address.LineElement.Add(new FhirString("Boar Lane"));
+
+            address.Use = use;
+            _fhirResourceRepository.Patient.Address.Add(address);
+        }
 
         [Given(@"I add a Address element without temp to the Stored Patient")]
         public void AddAAddressElementWithoutTempToStoredPatient()
