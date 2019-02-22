@@ -579,7 +579,7 @@ Scenario: Book appointment without a comment
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I amend the organization reference to absolute reference
+		And I amend the Organization reference to absolute reference
 	When I make the "AppointmentCreate" request
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
