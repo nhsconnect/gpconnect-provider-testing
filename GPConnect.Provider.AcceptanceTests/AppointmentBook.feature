@@ -280,10 +280,12 @@ Scenario Outline: Book appointment with invalid slot reference
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
-		| slotReference    |
-		| Slot/45555g55555 |
-		| Slot/45555555##  |
-		| Slot/hello       |
+		| slotReference                                                               |
+		| Slot/45555g55555                                                            |
+		| Slot/45555555##                                                             |
+		| Slot/hello                                                                  |
+		| https://test1.supplier.thirdparty.nhs.uk/A11111/STU3/1/GPConnect/Slot/#12345 |
+
 
 Scenario: Book single appointment for patient and check the location reference is valid
 	Given I get an existing patients nshNumber
@@ -567,3 +569,18 @@ Scenario: Book appointment without a comment
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
 		And the Appointment Comment should be null
+
+# git hub ref 200 (demonstrator)
+# RMB 20/2/19
+	Scenario: Book single appointment for patient with invalid reference
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I amend the organization reference to absolute reference
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"

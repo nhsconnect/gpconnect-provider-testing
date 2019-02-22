@@ -96,6 +96,19 @@
             _fhirResourceRepository.Appointment.Specialty.Add(new CodeableConcept("http://hl7.org/fhir/stu3/valueset-c80-practice-codes", "394802001", "General medicine", null));
         }
 
+// git hub ref 200
+// RMB 20/2/19
+        [Given(@"I amend the Organization reference to absolute reference")]
+        public void Iamendtheorganizationreferencetoabsolutereference()
+        {
+            var organizationReference = new ResourceReference {Reference = "https://test1.supplier.thirdparty.nhs.uk/A11111/STU3/1/GPConnect/#1"};
+            var arExt = new Extension(FhirConst.StructureDefinitionSystems.kAppointmentBookingOrganization, organizationReference);
+
+            _fhirResourceRepository.Appointment.RemoveExtension(FhirConst.StructureDefinitionSystems.kAppointmentBookingOrganization);
+            _fhirResourceRepository.Appointment.Extension.Add(arExt);
+        }
+
+
         [Given(@"I set the Created Appointment Slot Reference to ""([^""]*)""")]
         public void SetTheCreatedAppointmentSlotReferenceTo(string slotReference)
         {

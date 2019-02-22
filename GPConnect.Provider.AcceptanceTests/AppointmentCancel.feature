@@ -310,3 +310,40 @@ Scenario:Cancel appointment invalid response check caching headers exist
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 		And the required cacheing headers should be present in the response
+
+# git hub ref 182
+# RMB 14/2/19
+Scenario: Amend a cancelled appointment 
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+	When I make the "AppointmentCancel" request
+	Given I configure the default "AppointmentAmend" request
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+# git hub ref 200 (demonstrator)
+# RMB 20/2/19
+Scenario: I cancel appointment for patient with absoulute reference
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+		And I amend the cancel organization reference to absolute reference
+	When I make the "AppointmentCancel" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+Scenario: I perform cancel appointment with participants with absoulte references
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+		And I add a Participant with Reference "https://test1.supplier.thirdparty.nhs.uk/A11111/STU3/1/GPConnect/Location/2" to the Created Appointment
+		And I add a Participant with Reference "https://test1.supplier.thirdparty.nhs.uk/A11111/STU3/1/GPConnect/Practitioner/2" to the Created Appointment
+		And I add a Participant with Reference "https://test1.supplier.thirdparty.nhs.uk/A11111/STU3/1/GPConnect/Patient/2" to the Created Appointment
+	When I make the "AppointmentCancel" request
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"

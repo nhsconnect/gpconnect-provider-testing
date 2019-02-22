@@ -251,3 +251,26 @@ Scenario: Amend appointment with Comment and Description
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
 		And the Appointment Description should be valid for "customDescription"
+
+# git hub ref 200 (demonstrator)
+# RMB 21/2/19
+Scenario: Amend appointment and update to absolute reference
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I amend the cancel organization reference to absolute reference
+	When I make the "AppointmentAmend" request
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+Scenario: I perform amend appointment with participants with absoulte references
+	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the Created Appointment to Cancelled with Reason "double booked"
+		And I add a Participant with Reference "https://test1.supplier.thirdparty.nhs.uk/A11111/STU3/1/GPConnect/Location/2" to the Created Appointment
+		And I add a Participant with Reference "https://test1.supplier.thirdparty.nhs.uk/A11111/STU3/1/GPConnect/Practitioner/2" to the Created Appointment
+		And I add a Participant with Reference "https://test1.supplier.thirdparty.nhs.uk/A11111/STU3/1/GPConnect/Patient/2" to the Created Appointment
+	When I make the "AppointmentAmend" request
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"

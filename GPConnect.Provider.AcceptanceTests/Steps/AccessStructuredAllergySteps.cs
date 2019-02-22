@@ -105,8 +105,8 @@
                 AccessRecordSteps.BaseListParametersAreValid(list);
 
 // Added 1.2.1 RMB 1/10/2018
-                list.Meta.VersionId.ShouldBeNull();
-                list.Meta.LastUpdated.ShouldBeNull();
+                list.Meta.VersionId.ShouldBeNull("List Meta VersionId should be Null");
+                list.Meta.LastUpdated.ShouldBeNull("List Meta LastUpdated should be Null");
 
                 //Alergy specific checks
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
@@ -238,7 +238,7 @@
         {
             Lists.ForEach(list =>
             {
-                list.EmptyReason.ShouldBeNull();
+                list.EmptyReason.ShouldBeNull("ist empty reason should be null");
                 list.Note.ForEach(note =>
                 {
                     note.Text.ShouldNotContain("no known allergies");
@@ -491,8 +491,8 @@
                         }
 
                         reaction.Note.ShouldBeEmpty();
-                        reaction.Onset.ShouldBeNull();
-                        reaction.Substance.ShouldBeNull();
+                        reaction.Onset.ShouldBeNull("Allergy Reaction Onset should be Null");
+                        reaction.Substance.ShouldBeNull("Allergy Reaction Substance should be Null");
                     }
                 }
             });
@@ -531,8 +531,8 @@
         {
             AllAllergyIntolerances.ForEach(allergy =>
             {
-                allergy.Meta.VersionId.ShouldBeNull();
-                allergy.Meta.LastUpdated.ShouldBeNull();
+                allergy.Meta.VersionId.ShouldBeNull("Allergy Meta VersionID should be Null");
+                allergy.Meta.LastUpdated.ShouldBeNull("Allergy Meta LastUpdated should be Null");
 
             });
         }

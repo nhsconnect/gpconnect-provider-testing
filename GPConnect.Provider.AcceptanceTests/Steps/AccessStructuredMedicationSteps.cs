@@ -10,6 +10,7 @@
     using System.Linq;
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
+    using GPConnect.Provider.AcceptanceTests.Steps;
 
     [Binding]
     public sealed class AccessStructuredMedicationSteps : BaseSteps
@@ -155,8 +156,8 @@
             {
                 AccessRecordSteps.BaseListParametersAreValid(list);
 // Added 1.2.1 RMB 1/10/2018				
-                list.Meta.VersionId.ShouldBeNull();
-                list.Meta.LastUpdated.ShouldBeNull();				
+                list.Meta.VersionId.ShouldBeNull("List Meta VersionID should be Null");
+                list.Meta.LastUpdated.ShouldBeNull("List Meta LastUpdated should be Null");				
 
                 //Medication specific checks
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
@@ -268,9 +269,9 @@
         {
             Medications.ForEach(medication =>
             {
-                medication.Meta.VersionId.ShouldBeNull();
-                medication.Meta.LastUpdated.ShouldBeNull();
-                medication.Package.ShouldBeNull();
+                medication.Meta.VersionId.ShouldBeNull("Medication Meta VersionId should be Null");
+                medication.Meta.LastUpdated.ShouldBeNull("Medication Meta lastUpdated should be Null");
+                medication.Package.ShouldBeNull("Medication Package should be Null");
             });
         }
 
@@ -309,8 +310,8 @@
             MedicationStatements.ForEach(medStatement =>
             {
                 medStatement.PartOf.ShouldBeEmpty();
-                medStatement.Category.ShouldBeNull();
-                medStatement.InformationSource.ShouldBeNull();
+                medStatement.Category.ShouldBeNull("MedicationStatement Category should be Null");
+                medStatement.InformationSource.ShouldBeNull("MedicationStatement InformationSource should be Null");
                 medStatement.DerivedFrom.ShouldBeEmpty();
                 //medStatement.Taken.ShouldBeNull();
                 medStatement.ReasonNotTaken.ShouldBeEmpty();
@@ -553,7 +554,17 @@
         private void checkPeriodIsInRange(Boolean useStart, Boolean useEnd, Period period)
         {
             DateTime startPeriod = DateTime.Parse(period.Start);
-            DateTime endPeriod = DateTime.Parse(period.End);
+
+// git hub ref 184
+// RMB 19/2/19			
+            //DateTime endPeriod = DateTime.Parse(period.End);
+            DateTime endPeriod = DateTime.UtcNow;
+
+            if (period.End != null)
+            {
+                endPeriod = DateTime.Parse(period.End);
+            }			
+
             DateTime start = DateTime.UtcNow.AddYears(-2);
             DateTime end = DateTime.UtcNow;
 
@@ -587,11 +598,11 @@
         {
             MedicationStatements.ForEach(medStatement =>
             {
-                medStatement.Meta.VersionId.ShouldBeNull();
-                medStatement.Meta.LastUpdated.ShouldBeNull();
+                medStatement.Meta.VersionId.ShouldBeNull("MedicationStatement Meta VersionID should be Null");
+                medStatement.Meta.LastUpdated.ShouldBeNull("MedicationStatement Meta LastUpdated should be Null");
                 medStatement.PartOf.Count().ShouldBe(0);
-                medStatement.Category.ShouldBeNull();
-                medStatement.InformationSource.ShouldBeNull();
+                medStatement.Category.ShouldBeNull("MedicationStatement Category should be Null");
+                medStatement.InformationSource.ShouldBeNull("MedicationStatement InformationSource should be Null");
                 medStatement.DerivedFrom.Count().ShouldBe(0);
 //                medStatement.Taken.ShouldBeNull();
                 medStatement.ReasonNotTaken.Count().ShouldBe(0);
@@ -614,7 +625,13 @@
 
                 allRelatedRequests.ToList().ForEach(relatedRequest =>
                 {
-                    relatedRequest.AuthoredOn.ShouldBe(plan.AuthoredOn);
+// git hub ref 183
+// RMB 14/2/19
+                CodeableConcept prescriptionType = (CodeableConcept)relatedRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
+                if (prescriptionType.Coding.First().Display.Contains("Repeat"))
+                {
+					relatedRequest.AuthoredOn.ShouldContain(plan.AuthoredOn);
+                }					                  
                 });
             });
         }
@@ -683,14 +700,14 @@
             MedicationRequests.ForEach(medRequest =>
             {
                 medRequest.Definition.ShouldBeEmpty();
-                medRequest.Category.ShouldBeNull();
-                medRequest.Priority.ShouldBeNull();
+                medRequest.Category.ShouldBeNull("MedicationRequest Category should be Null");
+                medRequest.Priority.ShouldBeNull("MedicationRequest Priority should be Null");
                 medRequest.SupportingInformation.ShouldBeEmpty();
 				
 				// Removed 1.2.0 RMB 8/8/2018
                 //medRequest.DispenseRequest.ExpectedSupplyDuration.ShouldBeNull();
 				
-                medRequest.Substitution.ShouldBeNull();
+                medRequest.Substitution.ShouldBeNull("MedicationRequest Substitution should be Null");
 				
 				// Added RMB 8/8/2018
                 medRequest.DetectedIssue.ShouldBeEmpty();				
@@ -973,13 +990,13 @@
         {
             MedicationRequests.ForEach(medRequest =>
             {
-                medRequest.Meta.VersionId.ShouldBeNull();
-                medRequest.Meta.LastUpdated.ShouldBeNull();
+                medRequest.Meta.VersionId.ShouldBeNull("MedicationRequest Meta VersionID should be Null");
+                medRequest.Meta.LastUpdated.ShouldBeNull("MedicationRequest MetaLastUpdated should be Null");
                 medRequest.Definition.Count().ShouldBe(0);
-                medRequest.Category.ShouldBeNull();
-                medRequest.Priority.ShouldBeNull();
+                medRequest.Category.ShouldBeNull("MedicationRequest Category should be Null");
+                medRequest.Priority.ShouldBeNull("MedicationRequest Priority should be Null");
                 medRequest.SupportingInformation.Count().ShouldBe(0);
-                medRequest.Substitution.ShouldBeNull();
+                medRequest.Substitution.ShouldBeNull("MedicationRequest Substitution should be Null");
                 medRequest.DetectedIssue.Count().ShouldBe(0);
                 medRequest.EventHistory.Count().ShouldBe(0);
 

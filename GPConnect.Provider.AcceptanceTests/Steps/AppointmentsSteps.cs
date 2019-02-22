@@ -266,8 +266,9 @@
             _fhirResourceRepository.Appointment.Extension.Add(extension);
             _fhirResourceRepository.Appointment.Status = AppointmentStatus.Cancelled;
         }
-// git hub ref 145
-// RMB 12/10/2018		
+
+        // git hub ref 145
+        // RMB 12/10/2018		
         [Given(@"I set the Created Appointment Cancellation Reason ""([^""]*)""")]
         public void SetTheCreatedAppointmentCancellationReason(string reason)
         {
@@ -277,7 +278,19 @@
                 _fhirResourceRepository.Appointment.Extension = new List<Extension>();
 
             _fhirResourceRepository.Appointment.Extension.Add(extension); 
-        }		
+        }
+
+        // git hub ref 200
+        // RMB 20/2/19
+        [Given(@"I amend the Appointment reference to absolute reference")]
+        public void Iamendthereferencetoabsolutereference()
+        {
+            var organizationReference = new ResourceReference { Reference = "https://test1.supplier.thirdparty.nhs.uk/A11111/STU3/1/GPConnect/#1" };
+            var arExt = new Extension(FhirConst.StructureDefinitionSystems.kAppointmentBookingOrganization, organizationReference);
+
+            _fhirResourceRepository.Appointment.RemoveExtension(FhirConst.StructureDefinitionSystems.kAppointmentBookingOrganization);
+            _fhirResourceRepository.Appointment.Extension.Add(arExt);
+        }
 
         [Given(@"I set the Created Appointment to Cancelled with Url ""([^""]*)"" and Reason ""([^""]*)""")]
         public void SetTheCreatedAppointmentToCancelledWithUrlAndReason(string url, string reason)
