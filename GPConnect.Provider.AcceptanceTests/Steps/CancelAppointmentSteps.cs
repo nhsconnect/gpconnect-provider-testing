@@ -12,6 +12,7 @@
     using TechTalk.SpecFlow;
     using static Hl7.Fhir.Model.Appointment;
     using System;
+    using Http;
 
     [Binding]
     public class CancelAppointmentSteps : BaseSteps
@@ -38,8 +39,21 @@
         {
             _fhirResourceRepository.Appointment.Description = value;
         }
-// git hub ref 155
-// RMB 8/1/19
+
+        // git hub ref 200
+        // RMB 20/2/19
+        [Given(@"I amend the cancel organization reference to absolute reference")]
+        public void Iamendthecancelorganizationreferencetoabsolutereference()
+        {
+            var organizationReference = new ResourceReference { Reference = "https://test1.supplier.thirdparty.nhs.uk/A11111/STU3/1/GPConnect/#1" };
+            var arExt = new Extension(FhirConst.StructureDefinitionSystems.kAppointmentBookingOrganization, organizationReference);
+
+            _fhirResourceRepository.Appointment.RemoveExtension(FhirConst.StructureDefinitionSystems.kAppointmentBookingOrganization);
+            _fhirResourceRepository.Appointment.Extension.Add(arExt);
+        }
+
+        // git hub ref 155
+        // RMB 8/1/19
         [Given(@"I set the Created Appointment Comment")]
         public void SetTheCreatedAppointmentDescription()
         {

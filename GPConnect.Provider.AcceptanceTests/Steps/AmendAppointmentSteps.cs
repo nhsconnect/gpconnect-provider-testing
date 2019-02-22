@@ -6,6 +6,10 @@
     using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
+    using Constants;
+    using Enum;
+    using Http;
+
 
     [Binding]
     public class AmendAppointmentSteps : Steps
@@ -36,14 +40,15 @@
                 appointment.Comment.ShouldBe(value, $@"The Appointment Description should be ""{value}"" but was ""{appointment.Comment}"".");
             });
         }
-// git hub ref 190 (demonstrator)
-// RMB 6/2/19
+
+        // git hub ref 190 (demonstrator)
+        // RMB 6/2/19
         [Then(@"the Appointment Comment should be null")]
         public void TheAppointmentCommentShouldBeNull()
         {
             Appointments.ForEach(appointment =>
             {
-                appointment.Comment.ShouldBeNull();
+                appointment.Comment.ShouldBeNull("Appointment Comment should be Null");
             });
         }
     }
