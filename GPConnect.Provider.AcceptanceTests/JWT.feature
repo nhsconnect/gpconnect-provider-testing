@@ -132,4 +132,69 @@ Scenario: JWT - Requesting Organization - Backward Compatability for RC5
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 
+# git hub ref 188 
+# RMB 28/2/19
+# test 1
+Scenario: JWT - Everything normal test
+	Given I configure the default "MetadataRead" request
+		And I set the JWT Creation Time to "0" seconds in the future
+	When I make the "MetadataRead" request
+	Then the response status code should be "200"
 
+# test 2
+Scenario: JWT - Ensure token expiration check
+	Given I configure the default "MetadataRead" request
+		And I set the JWT Creation Time to "-600" seconds in the past
+	When I make the "MetadataRead" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
+
+# test 3
+Scenario: JWT - Ensure token future date check
+	Given I configure the default "MetadataRead" request
+		And I set the JWT Creation Time to "600" seconds in the future
+	When I make the "MetadataRead" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
+
+# clock skew allowance
+# test 4
+Scenario: JWT - Consumer clock is fast 90s
+	Given I configure the default "MetadataRead" request
+		And I set the JWT Creation Time to "90" seconds in the future
+	When I make the "MetadataRead" request
+	Then the response status code should be "200"
+	
+# clock skew allowance
+# test 5
+Scenario: JWT - Consumer clock is fast 180s
+	Given I configure the default "MetadataRead" request
+		And I set the JWT Creation Time to "180" seconds in the future
+	When I make the "MetadataRead" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
+
+# clock skew allowance
+# test 6
+Scenario: JWT - Consumer clock is slow 90s
+	Given I configure the default "MetadataRead" request
+		And I set the JWT Creation Time to "-90" seconds in the past
+	When I make the "MetadataRead" request
+	Then the response status code should be "200"
+		
+# clock skew allowance
+# test 7
+Scenario: JWT - Consumer clock is slow 390s 
+	Given I configure the default "MetadataRead" request
+		And I set the JWT Creation Time to "-390" seconds in the past
+	When I make the "MetadataRead" request
+	Then the response status code should be "200"
+
+# clock skew allowance
+# test 8
+Scenario: JWT - Consumer clock is slow 480s 
+	Given I configure the default "MetadataRead" request
+		And I set the JWT Creation Time to "-480" seconds in the past
+	When I make the "MetadataRead" request
+	Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
