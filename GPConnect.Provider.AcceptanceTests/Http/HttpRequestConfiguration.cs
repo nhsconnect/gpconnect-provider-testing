@@ -69,7 +69,25 @@
 
         public string FhirServerFhirBase { get; set; }
 
-        public string ProviderAddress => Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+        //public string ProviderAddress => Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+
+        // PG - 27/3/2019 - SSP has been upgraded and will not allow a port number in the URL - so change below removes port when UseTls is true in app.config 
+        public string ProviderAddress
+        {
+            get
+            {
+                if (UseTls)
+                {
+                    return Protocol + ((FhirServerPort != "") ? FhirServerUrl + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+
+                }
+                else
+                {
+                    return Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+
+                }
+            }
+        }
 
         public string EndpointAddress
         {
@@ -86,10 +104,23 @@
         {
             var sspAddress = UseSpineProxy ? SpineProxyAddress + "/" : string.Empty;
 
-// github ref 98
-// RMB 17/10/2018
-//            var baseUrl = Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
-            var baseUrl = sspAddress + Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+            // github ref 98
+            // RMB 17/10/2018
+            //            var baseUrl = Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+
+            // PG - 27/3/2019 - SSP has been upgraded and will not allow a port number in the URL - so change below removes port when UseTls is true in app.config 
+            //var baseUrl = sspAddress + Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+            string baseUrl;
+
+            if (UseTls)
+            {
+                baseUrl = sspAddress + Protocol + ((FhirServerPort != "") ? FhirServerUrl + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+
+            }
+            else
+            {
+                baseUrl = sspAddress + Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+            }
 
             if (baseUrl[baseUrl.Length - 1] != '/')
             {
