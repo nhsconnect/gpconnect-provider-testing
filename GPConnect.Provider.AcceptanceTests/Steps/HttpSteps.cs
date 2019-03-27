@@ -354,7 +354,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             */
             
             var sspAddress = HttpContext.UseSpineProxy ? HttpContext.SpineProxyAddress + "/" : string.Empty;
-            string baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + ":" + HttpContext.FhirServerPort + HttpContext.FhirServerFhirBase;
+
+            //string baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + ":" + HttpContext.FhirServerPort + HttpContext.FhirServerFhirBase;
+
+            // PG - 27/3/2019 - SSP has been upgraded and will not allow a port number in the URL - so change below removes port when UseTls is true in app.config             
+            string baseUrl;
+
+            if (HttpContext.SecurityContext.UseTLS)
+            {
+                baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + HttpContext.FhirServerFhirBase;
+
+            }
+            else
+            {
+                baseUrl = sspAddress + HttpContext.Protocol + HttpContext.FhirServerUrl + ":" + HttpContext.FhirServerPort + HttpContext.FhirServerFhirBase;
+            }
+
             // Move the forward slash or the HttpClient will remove everything after the port number
             if (baseUrl[baseUrl.Length-1] != '/')
             {

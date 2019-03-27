@@ -387,7 +387,25 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             }
         }
 
-        public string ProviderAddress => Protocol + FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase;
+        //public string ProviderAddress => Protocol + FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase;
+
+        // PG - 27/3/2019 - SSP has been upgraded and will not allow a port number in the URL - so change below removes port when UseTls is true in app.config 
+        public string ProviderAddress
+        {
+            get
+            {
+                if (SecurityContext.UseTLS)
+                {
+                    return Protocol + FhirServerUrl + FhirServerFhirBase;
+
+                }
+                else
+                {
+                    return Protocol + FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase;
+
+                }
+            }
+        }
 
         public string EndpointAddress
         {
