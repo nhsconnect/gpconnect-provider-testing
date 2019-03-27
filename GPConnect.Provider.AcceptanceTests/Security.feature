@@ -42,22 +42,22 @@ Scenario: Security Expired client certificate sent
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
-@ignore("IgnoreManualTest")
+@ignore
 Scenario: Connect with Invalid Secure Cipher
 	# Connect to provider using a valid cipher which is secure but is not 256 AES
 
-@ignore("IgnoreManualTest")
+@ignore
 Scenario: Connect with Invalid Broken Cipher
 	# Connect to a provider using a cipher which has been broken and is vunerable to attacks
 
-@ignore("IgnoreManualTest")
+@ignore
 Scenario: Connect with Cipher AESGCM+EECDH
 
-@ignore("IgnoreManualTest")
+@ignore
 Scenario: Connect with Cipher AESGCM+EDH
 
-@ignore("IgnoreManualTest")
+@ignore
 Scenario: Connect with Cipher AES256+EECDH
 
-@ignore("IgnoreManualTest")
+@ignore
 Scenario: Connect with Cipher AES256+EDH

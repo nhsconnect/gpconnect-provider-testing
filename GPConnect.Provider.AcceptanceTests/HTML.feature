@@ -295,14 +295,14 @@ Scenario Outline: Check html for non html formatting
 		| REF  |
 		| SUM  |
 
-@ignore("IgnoreManualTest")
+@ignore
 @Manual
 Scenario: Patients flag as sensitive should return any information within the HTML which may allow for identification of contact information or address
 
-@ignore("IgnoreManualTest")
+@ignore
 @Manual
 Scenario: Check dates are in decending order within the results tables
 
-@ignore("IgnoreManualTest")
+@ignore
 @Manual
 Scenario: System does not support section html response where appropriate
