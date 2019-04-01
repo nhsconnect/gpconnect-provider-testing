@@ -181,7 +181,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-
+//issue 194 sado1 01/04/19 change to Banner message
         [Then(@"the response html should contain the all data items text")]
         public void ThenTheResponseHTMLShouldContainTheAllDataItemsText()
         {
@@ -193,7 +193,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        html.ShouldContain("<p>All relevant items subject to patient preferences and/or RCGP exclusions</p>");
+                        html.ShouldContain("<p>All relevant items</p>");
                     }
                 }
             }
