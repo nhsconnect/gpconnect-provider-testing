@@ -493,6 +493,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseStatusCode.ShouldNotBe(HttpStatusCode.OK);
         }
 
+        //PG - #192 - 2/3/2019 - added for s-pateints returning 404 not found
+        [Then(@"the response status code should indicate notfound")]
+        public void ThenTheResponseStatusCodeShouldIndicateNofound()
+        {
+            HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
         [Then(@"the response status code should indicate unsupported media type error")]
         public void ThenTheResponseShouldIndicateUnsupportedMediaTypeError()
         {

@@ -1185,6 +1185,33 @@ Scenario Outline: A patient is requested which is not on Spine but is on provide
 		| REF |
 		| SUM |
 
+
+#Added By PG #192 20-3-2019
+Scenario Outline: Ensure Retrieve the care record sections for senstive patients returns patient not found
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I am requesting the record for config patient "patient9"
+		And I am requesting the "<Code>" care record section
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate notfound
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+	Examples:
+		| Code |
+		| ADM |
+		| ALL |
+		| CLI |
+		| ENC |
+		| IMM |
+		#| INV |
+		| MED |
+		| OBS |
+		#| PAT |
+		| PRB |
+		| REF |
+		| SUM |
+
+
 @ignore("IgnoreManualTest")
 Scenario: Identifier order in response resources
 # The identifiers within the response resources have to appear in the correct order as per the specfication.
