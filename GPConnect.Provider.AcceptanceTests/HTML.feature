@@ -295,6 +295,22 @@ Scenario Outline: Check html for non html formatting
 		| REF  |
 		| SUM  |
 
+#issue 194 sado1 01/04/2019 Test null value in StartDateTime and EndDateTime
+Scenario Outline: check when no date range supplied should contain default date range section banner
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		And I set a time period parameter start date to "<StartDateTime>" and end date to "<EndDateTime>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the response html should contain the all data items text
+		
+	Examples:
+		| Code | Patient  | StartDateTime | EndDateTime | 
+		| ADM  | patient1 |				  |				|    
+
 @ignore("IgnoreManualTest")
 @Manual
 Scenario: Patients flag as sensitive should return any information within the HTML which may allow for identification of contact information or address
