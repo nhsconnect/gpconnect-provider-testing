@@ -52,13 +52,6 @@
             _fhirResourceRepository.Appointment.Extension.Add(arExt);
         }
 
-        // git hub ref 155
-        // RMB 8/1/19
-        [Given(@"I set the Created Appointment Comment")]
-        public void SetTheCreatedAppointmentDescription()
-        {
-            _fhirResourceRepository.Appointment.Comment = "CustomComment";
-        }
         [Given(@"I amend an invalid appointment field")]
         public void IAmendAnInvalidAppointmentField()
         {

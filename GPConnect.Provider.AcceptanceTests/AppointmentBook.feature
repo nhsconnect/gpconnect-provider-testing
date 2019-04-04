@@ -463,19 +463,27 @@ Scenario: Book appointment with telecom removed from booking organization
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-Scenario: Book appointment with a description
+
+# git hub ref #203 - changed to test small description & limits 99 and 100 chars work- PG 21/3/19
+Scenario Outline: Book appointment with a description
 	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Description to "customDescription"
+		And I set the Created Appointment Description to "<testDescription>"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
-		And the Appointment Description should be valid for "customDescription"
+		And the Appointment Description should be valid for "<testDescription>"
 		And the Appointment Comment should be null
+		Examples: 
+		| sizeOfDesc | testDescription                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+		| 17            | customDescription                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+		| 99           | Abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvw |
+		| 100           | aBcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwx |
+		
 
 Scenario: Book appointment re-using an already booked slot
 	Given I get the Patient for Patient Value "patient1"
@@ -534,7 +542,7 @@ Scenario: Book appointment with a description and comment
 	Given I configure the default "AppointmentCreate" request
 		And I create an Appointment from the stored Patient and stored Schedule
 		And I set the Created Appointment Description to "customDescription"
-		And I set the Created Appointment Comment
+		And I set the Created Appointment Comment to "CustomComment"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
@@ -543,19 +551,25 @@ Scenario: Book appointment with a description and comment
 
 # git hub ref 190 (demonstrator)
 # RMB 6/2/19
-Scenario: Book appointment with a comment
+# PG - git hub ref #203 - changed to test small comment and boundaries of comment field length
+Scenario Outline: Book appointment with a comment
 	Given I get an existing patients nshNumber
 		And I store the Patient
 	Given I get Available Free Slots
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
 		And I create an Appointment from the stored Patient and stored Schedule
-		And I set the Created Appointment Comment
+		And I set the Created Appointment Comment to "<testComment>"
 	When I make the "AppointmentCreate" request
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
-		And the Appointment Comment should be valid for "CustomComment"
-
+		And the Appointment Comment should be valid for "<testComment>"
+		Examples: 
+		| sizeOfComment | testComment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+		| 13            | CustomComment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+		| 499           | aBcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz01234 |
+		| 500           | Abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789  abcdefghijklmnopqrstuvwxyz 0123456789 abcdef |
+		
 # git hub ref 190 (demonstrator)
 # RMB 6/2/19
 Scenario: Book appointment without a comment
@@ -584,3 +598,57 @@ Scenario: Book appointment without a comment
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+		
+# git hub ref #203 - Negative test to check that comments over 500 are not allowed - PG 22/3/19
+Scenario Outline: Check Book appointment with a comment Greater than 500 characters Fails
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I set the Created Appointment Comment to "<testComment>"
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+		Examples: 
+		| sizeOfComment | testComment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+		| 501           | aBcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456 |
+		| 600           | Abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789  abcdefghijklmnopqrstuvwxyz 0123456789 abcdef 0123456789abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789  abcdefghijkl |
+		
+
+# git hub ref #203 - Negative test to check that description over 500 are not allowed- PG 22/3/19
+Scenario Outline: Check Book appointment with a description Greater than 100 characters Fails
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I set the Created Appointment Description to "<testDescription>"
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+		Examples: 
+		| sizeOfDesc | testDescription     |
+		| 101           | Abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxy |
+		| 200           | aBcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxaBcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwxyz 0123456789 abcdefghijklmnopqrstuvwx |
+		
+# PG added test to check that booking fails when no description is submitted with request
+# Added as this requirement was confirmed during 1.2.3 work and the spec updated
+Scenario: Check Book appointment fails when no description supplied in booking
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+		And I set the Created Appointment Description to ""
+	When I make the "AppointmentCreate" request
+	Then the response status code should be "422"
+		And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		

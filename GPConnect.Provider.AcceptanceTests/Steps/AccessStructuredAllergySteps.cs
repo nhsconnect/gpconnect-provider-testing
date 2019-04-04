@@ -343,17 +343,22 @@
         }
 
         // Added check for Allergy Identifier System should be set and be a GUID RMB 07-08-2016		
+        // Updated PG 15/3/2019 For #190 removed check for 1 or more identifiers 
         private void TheAllergyIntoleranceIdentifierShouldBeValid()
         {
             AllAllergyIntolerances.ForEach(allergy =>
             {
-                allergy.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+
                 if (allergy.Identifier.Count == 1)
                 {
                     var identifier = allergy.Identifier.First();
                     identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
                     FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
-                    identifier.Value.ShouldNotBeNull("Identifier value is Mandatory and a GUID");
+
+                    //new code to check for valid guid in the identifier by PG 15/3/2019 For ticket #190
+                    Guid.TryParse(identifier.Value, out var guidResult).ShouldBeTrue("AllergyIntolerance identifier GUID is not valid or Null");
+
+
                 }
             });
         }
