@@ -181,7 +181,46 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-//issue 194 sado1 01/04/19 change to Banner message
+
+        //issue 193 sado1 02/04/19 no end date provided
+        [Then(@"the response html should contain the applied start date banner text ""([^""]*)""")]
+        public void ThenTheResponseHTMLShouldContainTheAppliedStartDateBannerText(string fromDate)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var html = section.Text.Div;
+                        string expectedTimePeriodBanner = "<p>All the data items from '" + fromDate + "'</p>";
+                        html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
+                    }
+                }
+            }
+        }
+
+        //issue 193 sado1 02/04/19 no start date provided
+        [Then(@"the response html should contain the applied end date banner text ""([^""]*)""")]
+        public void ThenTheResponseHTMLShouldContainTheAppliedEndDateBannerText(string toDate)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var html = section.Text.Div;
+                        string expectedTimePeriodBanner = "<p>All data items until '" + toDate + "'</p>";
+                        html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
+                    }
+                }
+            }
+        }
+
+        //issue 194 sado1 01/04/19 change to Banner message
         [Then(@"the response html should contain the all data items text")]
         public void ThenTheResponseHTMLShouldContainTheAllDataItemsText()
         {
