@@ -321,9 +321,10 @@ Scenario Outline: Check html for non html formatting
 		| CLI  |
 		| ENC  |
 		| IMM  |
-		#| INV  |
+   #    | INV  |
 		| MED  |
 		| OBS  |
+		| PAT  |
 		| PRB  |
 		| REF  |
 		| SUM  |
