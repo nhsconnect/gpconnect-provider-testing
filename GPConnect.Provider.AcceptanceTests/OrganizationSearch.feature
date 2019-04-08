@@ -1,6 +1,7 @@
 ﻿@organization
 Feature: OrganizationSearch
 
+#PG 8/4/2019 for #220 - added check that entries in bundle do not have a fullurl
 Scenario Outline: Organization search success
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
@@ -8,6 +9,7 @@ Scenario Outline: Organization search success
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<Entries>" entries
+		And the Bundle Entries should not contain a fullurl
 		And the response bundle Organization entries should contain a maximum of 1 "https://fhir.nhs.uk/Id/ods-organization-code" system identifier
 		And the Organization Id should be valid
 		And the Organization Name should be valid

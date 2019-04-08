@@ -44,6 +44,30 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        //PG 8/4/2019 for #220 - Function to check bundle entries have no fullurl key/value pairs as per 1.2.3 spec
+        [Then(@"the Bundle Entries should not contain a fullurl")]
+        public void ThenTheResponseShouldBeABundleshouldnotcontainfullurl()
+        {
+
+            var entries = _httpContext.FhirResponse.Entries;
+            
+            int foundFullurlCounter = 0;
+
+            entries.ForEach(entry =>
+            {
+                var fullUrlProperty = entry.FullUrl;
+
+                if (fullUrlProperty != null)
+                    foundFullurlCounter++;
+            });
+
+            //check that no fullurl entries found, else fail test and report how many found
+            foundFullurlCounter.ShouldBe(0,("Expected 0 fullurl key/value pairs but found : " + foundFullurlCounter.ToString() ));
+          
+        }
+
+
+
         [Then(@"the response should be a OperationOutcome resource")]
         public void ThenTheResponseShouldBeAOperationOutcomeResource()
         {
