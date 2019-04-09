@@ -1,6 +1,7 @@
 ﻿@structuredrecord
 Feature: AccessStructuredRecordAllergies
 
+#PG 8/4/2019 for #220 - added check that entries in bundle do not have a fullurl
 Scenario Outline: Retrieve the allergy structured record section for a patient including resolved allergies
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -21,6 +22,7 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And the Bundle should contain a list with the title "Allergies and adverse reactions"
 		And the Bundle should contain a list with the title "Ended allergies"
 		And the Bundle should contain the correct number of allergies
+		And the Bundle Entries should not contain a fullurl
 		And the Lists are valid for a patient with allergies
 	Examples:
 		| Patient   |

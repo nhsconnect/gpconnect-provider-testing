@@ -31,6 +31,7 @@ Scenario Outline: I perform a successful retrieve appointment with Extensions
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
 
+#PG 8/4/2019 for #220 - added check that entries in bundle do not have a fullurl
 Scenario Outline: Appointment retrieve multiple appointment retrived
 	Given I create "<numberOfAppointments>" Appointments for Patient "<patient>" and Organization Code "ORG1"
 	Given I get the Patient for Patient Value "<patient>"
@@ -57,6 +58,7 @@ Scenario Outline: Appointment retrieve multiple appointment retrived
 		And the appointment reason must not be included
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
+		And the Bundle Entries should not contain a fullurl
 		# git hub ref 120
 # RMB 25/10/2018		
 		And the Appointment Not In Use should be valid

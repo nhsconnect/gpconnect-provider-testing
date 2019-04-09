@@ -5,6 +5,7 @@ Feature: PractitionerSearch
 # JWT is hard coded value and it should probably be considered what JWT requested resource should be, organization but which?
 # Compress successful tests into one possibly // For clarity it may be better to keep successful seperated as if one failes it is easier to see where the problem is
 
+#PG 8/4/2019 for #220 - added check that entries in bundle do not have a fullurl
 Scenario Outline: Practitioner search success and validate the practitioner identifiers
 	Given I configure the default "PractitionerSearch" request		
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "<Value>"
@@ -12,6 +13,7 @@ Scenario Outline: Practitioner search success and validate the practitioner iden
 	Then the response status code should indicate success
 		And the response bundle should contain "<EntrySize>" entries
 		And the response should be a Bundle resource of type "searchset" 
+		And the Bundle Entries should not contain a fullurl
 		And the Practitioner Id should be valid
 		And the Practitioner Identifiers should be valid fixed values
 		And the Practitioner SDS User Identifier should be valid for Value "<Value>"

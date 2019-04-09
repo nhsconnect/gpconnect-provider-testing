@@ -315,6 +315,7 @@ Scenario: CapabilityStatement profile supports the Slot Search Resource
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Resources should contain the "Slot" Resource with the "SearchType" Interaction
 
+#PG 4/4/2019 for #220 - added check that entries in bundle do not have a fullurl
 Scenario: SearchForFreeSlots valid response check caching headers exist
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -323,6 +324,7 @@ Scenario: SearchForFreeSlots valid response check caching headers exist
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the required cacheing headers should be present in the response
+		And the Bundle Entries should not contain a fullurl
 
 Scenario: SearchForFreeSlots invalid response check caching headers exist
 	Given I configure the default "SearchForFreeSlots" request
