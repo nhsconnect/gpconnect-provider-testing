@@ -46,7 +46,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         //PG 8/4/2019 for #220 - Function to check bundle entries have no fullurl key/value pairs as per 1.2.3 spec
         [Then(@"the Bundle Entries should not contain a fullurl")]
-        public void ThenTheResponseShouldBeABundleshouldnotcontainfullurl()
+        public void ThenTheBundleEntriesShouldNotContainAFullurl()
         {
 
             var entries = _httpContext.FhirResponse.Entries;
