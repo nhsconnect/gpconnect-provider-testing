@@ -349,10 +349,11 @@
                 {
                     var identifier = medStatement.Identifier.First();				
 					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();					
+					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
 
                     //new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
-                    Guid.TryParse(identifier.Value, out var guidResult).ShouldBeTrue("MedicationStatement identifier GUID is not valid or Null");
+                    Guid guidResult;
+                    Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("MedicationStatement identifier GUID is not valid or Null");
 
                 }
             });
