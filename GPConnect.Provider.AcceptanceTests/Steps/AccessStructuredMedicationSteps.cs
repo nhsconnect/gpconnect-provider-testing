@@ -336,10 +336,10 @@
             {
                 medStatement.GetExtension("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-PrescribingAgency-1").ShouldNotBeNull();
             });
-        }		
+        }
 
-		// Added check for MedicationStatement System should be set and be a GUID RMB 08-08-2016		
-		[Then(@"the MedicationStatement Identifier should be valid")]
+        //PG 10-4-2019 #190 - Updated Code to check that GUID is valid
+        [Then(@"the MedicationStatement Identifier should be valid")]
         public void TheMedicationStatementIdentifierShouldBeValid()
         {
             MedicationStatements.ForEach(medStatement =>
@@ -350,8 +350,11 @@
                     var identifier = medStatement.Identifier.First();				
 					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
 					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();					
-					identifier.Value.ShouldNotBeNull("Identifier value is Mandatory and a GUID");					
-				}
+
+                    //new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
+                    Guid.TryParse(identifier.Value, out var guidResult).ShouldBeTrue("MedicationStatement identifier GUID is not valid or Null");
+
+                }
             });
         }					
 		
