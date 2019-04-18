@@ -49,12 +49,13 @@ Scenario: JWT - Creation Time - missing
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource
 
+		#PG 18/4/2019 #188 - Providers should now not reject JWT when creation time
+		# is in the future. as such this test has been updated to expected a 200 response
 Scenario: JWT - Creation Time - in the future
 	Given I configure the default "MetadataRead" request
 		And I set the JWT Creation Time to "200" seconds in the future
 	When I make the "MetadataRead" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource
+	Then the response status code should be "200"
 
 Scenario: JWT - Reason For Request - missing
 	Given I configure the default "MetadataRead" request
