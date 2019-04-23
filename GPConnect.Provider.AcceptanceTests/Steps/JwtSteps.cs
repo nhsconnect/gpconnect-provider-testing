@@ -167,16 +167,25 @@
         }
 
         [Given(@"I set the JWT with missing Requesting Identity")]
-        public void SetTheJwtWithMissingRequestingPractitioner()
+        public void SetTheJwtWithMissingRequestingIdentity()
         {
             _jwtHelper.RequestingIdentity = null;
         }
-
-        [Given(@"I set the JWT Requesting Identity as an invalid Identity")]
-        public void SetTheJwtRequestingPractitionerAsAnInvalidPractitioner()
+        
+        // #224 16/04/19 SJD UNK practioner request header
+        [Given(@"I set the JWT Requesting Identity as UNK Practitioner")]
+        public void SetTheJwtRequestingIdentityAsUnkPractitioner()
         {
-            _jwtHelper.SetRequestingPractitioner("1", FhirHelper.AddInvalidFieldToResourceJson(FhirHelper.GetDefaultPractitioner().ToFhirJson()));
+            _jwtHelper.RequestingIdentity = FhirHelper.GetUnkPractitioner().ToFhirJson();
         }
+
+        // #224 16/04/19 SJD missing practioner details in request header
+        [Given(@"I set the JWT missing sdsRoleProfile and guid")]
+        public void SetTheJwtMissingSdsRoleprofileAndGuid()
+        {
+            _jwtHelper.RequestingIdentity = FhirHelper.GetNoProfAndGuid().ToFhirJson();
+        }
+
 
         [Given(@"I set the JWT Requesting Practitioner with missing SDS Id")]
         public void SetTheJwtRequestingPractitionerWithMissingSdsId()

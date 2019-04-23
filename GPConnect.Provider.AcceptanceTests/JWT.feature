@@ -99,12 +99,19 @@ Scenario: JWT - Requesting Identity - missing
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource
 
-Scenario: JWT - Requesting Identity - invalid
+# SJD #224 15/04/19
+Scenario: JWT - Requesting Identity - UNK value
 	Given I configure the default "MetadataRead" request
-		And I set the JWT Requesting Identity as an invalid Identity
+		And I set the JWT Requesting Identity as UNK Practitioner
 	When I make the "MetadataRead" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource
+	Then the response status code should be "200"
+
+# SJD #224 15/04/19
+Scenario: JWT - Missing sdsRoleProfile and guid
+	Given I configure the default "MetadataRead" request
+		And I set the JWT missing sdsRoleProfile and guid 
+	When I make the "MetadataRead" request
+	Then the response status code should be "200"
 
 Scenario: JWT - Requesting Identity - Resource Type - invalid
 	Given I configure the default "MetadataRead" request
