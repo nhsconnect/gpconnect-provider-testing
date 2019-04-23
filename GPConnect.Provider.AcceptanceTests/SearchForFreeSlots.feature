@@ -453,3 +453,11 @@ Scenario Outline: Searching for free slots with org type and code searchFilter s
 		| oncology    | B81016  |
 		| oncology    | M85015  |
 		| oncology    | RNR01   |
+
+	#PG 12-4-2019 #225 - Check that CapabilityStatement includes Location:managingOrganization 
+	Scenario: Check CapabilityStatement includes specific searchInclude
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success	
+	And the CapabilityStatement has a searchInclude called "Location:managingOrganization"
+	
