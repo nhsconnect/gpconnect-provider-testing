@@ -1,7 +1,6 @@
 ﻿@organization
 Feature: OrganizationSearch
 
-#PG 8/4/2019 for #220 - added check that entries in bundle do not have a fullurl
 Scenario Outline: Organization search success
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"
@@ -9,7 +8,6 @@ Scenario Outline: Organization search success
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "<Entries>" entries
-		And the Bundle Entries should not contain a fullurl
 		And the response bundle Organization entries should contain a maximum of 1 "https://fhir.nhs.uk/Id/ods-organization-code" system identifier
 		And the Organization Id should be valid
 		And the Organization Name should be valid
@@ -38,7 +36,6 @@ Scenario Outline: Organization search success
 #	Then the response status code should be "400"
 #		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
-#PG 11-4-2019 - #220 - Changed test to ensure that no Full Url is sent as per #220
 Scenario: Organization search by organization code successfully returns single result containing the correct fields
 	Given I configure the default "OrganizationSearch" request		
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
@@ -46,11 +43,9 @@ Scenario: Organization search by organization code successfully returns single r
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And the Bundle Entries should not contain a fullurl
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 
-#PG 11-4-2019 - #220 - Changed test to ensure that no Full Url is sent as per #220
 Scenario: Organization search by organization code successfully returns multiple results containing the correct fields
 	Given I configure the default "OrganizationSearch" request		
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
@@ -59,7 +54,6 @@ Scenario: Organization search by organization code successfully returns multiple
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And the Bundle Entries should not contain a fullurl
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 		
@@ -164,7 +158,6 @@ Scenario: Organization search include count and sort parameters
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries				
 
-#PG 11-4-2019 - #220 - Changed test to ensure that no Full Url is sent as per #220
 Scenario: Organization search valid response check caching headers exist
 	Given I configure the default "OrganizationSearch" request		
 		And I add an Organization Identifier parameter with Organization Code System and Value "ORG1"
@@ -173,7 +166,6 @@ Scenario: Organization search valid response check caching headers exist
 		And the response body should be FHIR JSON
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-		And the Bundle Entries should not contain a fullurl
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And an organization returned in the bundle has "1" "https://fhir.nhs.uk/Id/ods-organization-code" system identifier with "ORG1"
 		And the required cacheing headers should be present in the response

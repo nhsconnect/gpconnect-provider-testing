@@ -1,7 +1,6 @@
 ﻿@structuredrecord
 Feature: AccessStructuredRecordMedications
 
-#PG 8/4/2019 for #220 - added check that entries in bundle do not have a fullurl
 Scenario Outline: Retrieve the medication structured record section for a patient including prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -15,7 +14,6 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "<Patient>"
 		And the Bundle should contain "1" lists
-		And the Bundle Entries should not contain a fullurl
 		And the Medications should be valid
 		And the Medication Statements should be valid
 		And the Medication Requests should be valid
