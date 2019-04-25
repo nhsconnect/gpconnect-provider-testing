@@ -63,8 +63,6 @@ Scenario: JWT creation time in the future
 		And I set the JWT creation time to "200" seconds after the current time
 	When I make a GET request to "/metadata"
 	Then the response status code should be "200"
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
 
 Scenario: JWT reason for request is not directcare
 	Given I am using the default server
