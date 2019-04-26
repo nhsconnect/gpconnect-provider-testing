@@ -133,9 +133,9 @@
     <Compile Include="Helpers\IGlobalContextHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Html1.feature.cs">
-      <DependentUpon>Html.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Html.feature</DependentUpon>
     </Compile>
     <Compile Include="Http.feature.cs">
       <AutoGen>True</AutoGen>
@@ -232,6 +232,9 @@
   <Target Name="BeforeBuild">
   </Target>
   -->
+  <Target Name="BeforeBuild">
+    <TechTalk.SpecFlow.Tools.MsBuild.GenerateAll ProjectPath=".\$(ProjectFileName)" />
+  </Target>
   <Target Name="AfterBuild">
     <PropertyGroup>
       <Pickles_Generate>True</Pickles_Generate>
@@ -240,4 +243,9 @@
       <Pickles_OutputDirectory>C:\Temp\GPConnect.Provider.AcceptanceTests.Doco</Pickles_OutputDirectory>
     </PropertyGroup>
   </Target>
+  <PropertyGroup>
+    <SpecFlowTasksPath>..\packages\SpecFlow.2.1.0\tools\specflow.exe</SpecFlowTasksPath>
+  </PropertyGroup>
+  <Import Project="..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.tasks" Condition="Exists('..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.tasks')" />
+  <Import Project="..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.targets" Condition="Exists('..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.targets')" />
 </Project>
