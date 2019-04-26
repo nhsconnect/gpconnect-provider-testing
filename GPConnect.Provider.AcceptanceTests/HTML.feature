@@ -294,3 +294,37 @@ Scenario Outline: Check html for non html formatting
 		| PRB  |
 		| REF  |
 		| SUM  |
+
+# issue 215 SJD 25/4/19 - To check banner when no end date provided
+Scenario Outline: should contain the applied start banner
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		And I set a time period parameter with start date "<StartDateTime>" 
+	    When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the response html should contain the applied start date banner text "<TextStartDate>"
+	Examples:
+		| Code | Patient  | StartDateTime | TextStartDate |
+		| ENC  | patient1 | 1982-10-05    | 05-Oct-1982   |             
+		| CLI  | patient2 | 2014-02       | 01-Feb-2014   |             
+		| PRB  | patient1 | 2014          | 01-Jan-2014   |             
+
+# issue 215 SJD 25/4/19 - To check banner when no start date provided		
+Scenario Outline: should contain the banner All data items until 
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		And I set a time period parameter with end date "<EndDateTime>"
+	    When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the response html should contain the applied end date banner text "<TextEndDate>"
+	Examples:
+		| Code | Patient  | EndDateTime | TextEndDate |
+		| MED  | patient1 | 2016-12-12  | 12-Dec-2016 |                                            
+		| REF  | patient1 | 2016-11     | 31-Nov-2016 | 
+		| OBS  | patient2 | 2014        | 31-Dec-2016 | 
