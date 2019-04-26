@@ -309,12 +309,3 @@ Scenario: endpoint should support chunking of data
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And response should be chunked
-
-@ignore
-@Manual
-Scenario: maximum field size in fhir resource
-	# String fields must not contain more than 1mb or data, this will require a test patient with data greater than 1mb a field that maps to a string field in the fhir resource.
-
-@ignore
-@Manual
-Scenario: case sensitive valuesets mapped correctly to resource valuesets
