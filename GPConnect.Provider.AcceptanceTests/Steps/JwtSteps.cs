@@ -68,6 +68,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
         }
 
+        //#235 PG - 25/4/2019 - Added for a test where Creation time is in the past
+        [Given(@"I set the JWT creation time to ""(.*)"" seconds in the past")]
+        public void ISetTheJWTCreationTimeToSecondsInThePast(double secondsInPast)
+        {
+            Jwt.SetCreationTimeSeconds(secondsInPast);
+            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+        }
+
         [Given(@"I set the JWT reason for request to ""(.*)""")]
         public void ISetTheJWTReasonForRequestTo(string reasonForRequest)
         {
