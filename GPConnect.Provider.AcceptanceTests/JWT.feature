@@ -62,9 +62,7 @@ Scenario: JWT creation time in the future
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
 		And I set the JWT creation time to "200" seconds after the current time
 	When I make a GET request to "/metadata"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+	Then the response status code should be "200"
 
 Scenario: JWT reason for request is not directcare
 	Given I am using the default server
@@ -347,3 +345,25 @@ Scenario: JWT requested scope for metaData request does not match organization r
 	Then the response status code should be "400"
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
+
+		# PG 26/4/19 - #235
+	Scenario: JWT - Everything normal test 
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the JWT creation time to "0" seconds after the current time
+	And I set the JWT expiry time to "300" seconds after creation time
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "resourceType" should be "Conformance"
+
+	## PG 26/4/19 - #235
+	Scenario: JWT - Consumer clock is slow 600s
+	Given I am using the default server
+	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	And I set the JWT creation time to "-600" seconds in the past
+	And I set the JWT expiry time to "300" seconds after creation time
+	When I make a GET request to "/metadata"
+	Then the response status code should be "400"
+	And the response body should be FHIR JSON
+	And the JSON response should be a OperationOutcome resource
