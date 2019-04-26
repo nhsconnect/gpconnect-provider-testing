@@ -118,6 +118,7 @@ Scenario: Searching for free slots with other searchFilter system
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 
+#PG 9-4-2018 #223 - Updated Test to use agreed date formats
 Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -132,9 +133,9 @@ Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Examples:
 		| StartDate            | EndDate              |
 		| yyyy-MM-dd           | yyyy-MM-dd           |
-		| yyyy-MM-ddTHH:mm:ssZ | yyyy-MM-ddTHH:mm:ssZ |
-		| yyyy-MM-dd           | yyyy-MM-ddTHH:mm:ssZ |
-		| yyyy-MM-ddTHH:mm:ssZ | yyyy-MM-dd           |
+		| yyyy-MM-ddTHH:mm:sszzz  | yyyy-MM-ddTHH:mm:sszzz  |
+		| yyyy-MM-ddTHH:mm:sszzz  | yyyy-MM-dd           |
+		| yyyy-MM-dd  | yyyy-MM-ddTHH:mm:sszzz           |
 
 Scenario Outline: Searching for free slots with invalid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
@@ -450,3 +451,11 @@ Scenario Outline: Searching for free slots with org type and code searchFilter s
 		| oncology    | B81016  |
 		| oncology    | M85015  |
 		| oncology    | RNR01   |
+
+	#PG 12-4-2019 #225 - Check that CapabilityStatement includes Location:managingOrganization 
+	Scenario: Check CapabilityStatement includes specific searchInclude
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success	
+	And the CapabilityStatement has a searchInclude called "Location:managingOrganization"
+	

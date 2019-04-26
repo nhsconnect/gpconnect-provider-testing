@@ -63,7 +63,7 @@
                 capabilityStatement.FhirVersion.ShouldBe(version, $"The CapabilityStatement FHIR Version should be {version} but was {capabilityStatement.FhirVersion}.");
             });
         }
-        
+
         [Then(@"the CapabilityStatement REST Operations should contain ""([^""]*)""")]
         public void TheCapabilityStatementRestOperationsShouldContain(string operation)
         {
@@ -95,5 +95,27 @@
                 });
             });
         }
+
+        //PG 12-4-2019 #225 - Check that CapabilityStatement includes specified searchInclude
+        [Then(@"the CapabilityStatement has a searchInclude called ""(.*)""")]
+        public void theCapabilityStatementhasasearchIncludecalled(string searchIncludeToCheck)
+        {
+            CapabilityStatements.ForEach(capabilityStatement =>
+            {
+                capabilityStatement.Rest.ForEach(rest =>
+                {
+                    //Get Handle to Slot Resouce
+                    var slotResource = rest.Resource.FirstOrDefault(r => r.Type == ResourceType.Slot);
+
+                    //find searchinclude passed in.
+                    var searchInclude = slotResource.SearchIncludeElement.FirstOrDefault(i => i.ToString() == searchIncludeToCheck);
+
+                    //Assert That Text Is Found
+                    searchInclude.ShouldNotBeNull("Not Found searchInclude: " + searchIncludeToCheck);
+
+                });
+            });
+        }
+
     }
 }

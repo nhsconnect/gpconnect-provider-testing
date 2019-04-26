@@ -10,7 +10,7 @@ using GPConnect.Provider.AcceptanceTests.Constants;
 namespace GPConnect.Provider.AcceptanceTests.Helpers
 {
     public static class FhirHelper
-    {        
+    {
         public static Identifier GetNHSNumberIdentifier(string nhsNumber)
         {
             return GetIdentifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber);
@@ -40,10 +40,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         {
             return new Organization
             {
-//                Id = id,
+                //                Id = id,
                 Name = "GP Connect Assurance",
                 Identifier = new List<Identifier>
-                { 
+                {
                     GetODSCodeIdentifier(odsCode)
                 }
             };
@@ -51,11 +51,11 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static Organization GetDefaultOrganization(string odsCode = "GPCA0001")
         {
-// github ref 169 RMB 22/1/19            return GetOrganization("1", odsCode);
+            // github ref 169 RMB 22/1/19            return GetOrganization("1", odsCode);
             return GetOrganization(odsCode);
 
         }
-
+        // #224 15/04/19 SJD added 2 identifiers for JWT request header
         public static Practitioner GetDefaultPractitioner()
         {
             return new Practitioner
@@ -73,22 +73,68 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 Identifier =
                 {
                     new Identifier(FhirConst.IdentifierSystems.kPracSDSUserId, "GCASDS0001"),
-                    new Identifier("LocalIdentifierSystem", "1")
+                    new Identifier(FhirConst.IdentifierSystems.kPracRoleProfile, "112233445566"),
+                    new Identifier(FhirConst.IdentifierSystems.kGuid, "98ed4f78-814d-4266-8d5b-cde742f3093c")                    
+                }
+            };
+        }
+        //#224 15/04/19 SJD created for UNK accepted in JWT request header    
+        public static Practitioner GetUnkPractitioner()
+        {
+            return new Practitioner
+            {
+                Id = "1",
+                Name = new List<HumanName>
+                {
+                    new HumanName
+                    {
+                        Prefix = new[] { "Mr" },
+                        Given = new[] { "AssuranceTest" },
+                        Family = "AssurancePractitioner"
+                    }
+                },
+                Identifier =
+                {
+                    new Identifier(FhirConst.IdentifierSystems.kPracSDSUserId, "UNK"),
+                    new Identifier(FhirConst.IdentifierSystems.kPracRoleProfile, "UNK"),
+                    new Identifier(FhirConst.IdentifierSystems.kGuid, "98ed4f78-814d-4266-8d5b-cde742f3093c"),
+
                 }
             };
         }
 
+        //224 15/04/19 SJD created accept when no SDS role profile ID and Guid in JWT request header    
+        public static Practitioner GetNoProfAndGuid()
+        {
+            return new Practitioner
+            {
+                Id = "1",
+                Name = new List<HumanName>
+                {
+                    new HumanName
+                    {
+                        Prefix = new[] { "Mr" },
+                        Given = new[] { "AssuranceTest" },
+                        Family = "AssurancePractitioner"
+                    }
+                },
+                Identifier =
+                {
+                    new Identifier(FhirConst.IdentifierSystems.kPracSDSUserId, "GCASDS0001")
+                }
+            };
+        }
+
+        //224 removed Id and type= DeviceIdentifierSystem 
         public static Device GetDefaultDevice()
         {
             return new Device()
             {
-                Id = "1",
                 Model = "v1",
                 Version = "1.1",
                 Identifier = {
                             new Identifier("GPConnectTestSystem", "Client")
-                        },
-                Type = new CodeableConcept("DeviceIdentifierSystem", "DeviceIdentifier")
+                        }
             };
         }
 
@@ -152,13 +198,13 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static bool isValidNHSNumber(string NHSNumber) {
 
             NHSNumber = NHSNumber.Trim();
-            
+
             if (NHSNumber.Length != 10 || !Regex.Match(NHSNumber, "(\\d+)").Success)
             {
                 return false;
             }
             else {
-                
+
                 string checkDigit = NHSNumber.Substring(NHSNumber.Length - 1, 1);
                 int checkNumber = Convert.ToInt16(checkDigit);
 
@@ -173,7 +219,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 multiplers[6] = 4;
                 multiplers[7] = 3;
                 multiplers[8] = 2;
-                
+
                 int currentNumber = 0;
                 int currentSum = 0;
 
@@ -193,7 +239,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
                 return total.Equals(checkNumber);
             }
-            
+
         }
     }
 }
