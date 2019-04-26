@@ -213,7 +213,7 @@ Scenario: Patient Search include count and sort parameters
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "1" entries
-	
+
 Scenario: Patient search valid response check caching headers exist
 	Given I configure the default "PatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"

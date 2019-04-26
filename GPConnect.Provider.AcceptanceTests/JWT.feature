@@ -49,12 +49,13 @@ Scenario: JWT - Creation Time - missing
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource
 
+		#PG 18/4/2019 #188 - Providers should now not reject JWT when creation time
+		# is in the future. as such this test has been updated to expected a 200 response
 Scenario: JWT - Creation Time - in the future
 	Given I configure the default "MetadataRead" request
 		And I set the JWT Creation Time to "200" seconds in the future
 	When I make the "MetadataRead" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource
+	Then the response status code should be "200"
 
 Scenario: JWT - Reason For Request - missing
 	Given I configure the default "MetadataRead" request
@@ -98,12 +99,19 @@ Scenario: JWT - Requesting Identity - missing
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource
 
-Scenario: JWT - Requesting Identity - invalid
+# SJD #224 15/04/19
+Scenario: JWT - Requesting Identity - UNK value
 	Given I configure the default "MetadataRead" request
-		And I set the JWT Requesting Identity as an invalid Identity
+		And I set the JWT Requesting Identity as UNK Practitioner
 	When I make the "MetadataRead" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource
+	Then the response status code should be "200"
+
+# SJD #224 15/04/19
+Scenario: JWT - Missing sdsRoleProfile and guid
+	Given I configure the default "MetadataRead" request
+		And I set the JWT missing sdsRoleProfile and guid 
+	When I make the "MetadataRead" request
+	Then the response status code should be "200"
 
 Scenario: JWT - Requesting Identity - Resource Type - invalid
 	Given I configure the default "MetadataRead" request
@@ -132,4 +140,20 @@ Scenario: JWT - Requesting Organization - Backward Compatability for RC5
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 
+# git hub ref 188 
+# PG 15/4/19
+# #188 was updated so RMB tests updated /removed to meet new requirements
+Scenario: JWT - Everything normal test
+	Given I configure the default "MetadataRead" request
+	And I set the JWT Creation Time to "0" seconds in the future
+	And I set the JWT Expiry Time to "300" seconds after Creation Time
+	When I make the "MetadataRead" request
+	Then the response status code should be "200"
 
+# PG 15/4/19 - #188 - Checking that Creation Time set in past is rejected.
+Scenario: JWT - Consumer clock is slow 600s
+	Given I configure the default "MetadataRead" request
+		And I set the JWT Creation Time to "-600" seconds in the past
+		And I set the JWT Expiry Time to "300" seconds after Creation Time
+	When I make the "MetadataRead" request
+	Then the response status code should be "400"

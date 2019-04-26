@@ -36,8 +36,6 @@
                 .Select(entry => (Schedule)entry.Resource)
                 .First();
             
-         
-
             //Patient
             var patient = GetPatient(storedPatient);
 
@@ -70,10 +68,18 @@
 
             //Contained Resources
             var bookingOrganization = GetBookingOrganization(addOrgType);
-            
+
+            // git hub ref 203 (demonstrator)
+            // RMB 27/2/19
+            // Meta Profile
+            var ApptMeta = new Meta();
+            IEnumerable<string> MetaProfile = new string[] { FhirConst.StructureDefinitionSystems.kAppointment };
+            ApptMeta.Profile = MetaProfile;
+
             //Initialize Appointment
             var appointment = new Appointment
             {
+                Meta = ApptMeta,
                 Status = AppointmentStatus.Booked,
                 Start = firstSlot.Start,
                 End = firstSlot.End,
@@ -83,9 +89,12 @@
                 CreatedElement = new FhirDateTime(DateTime.UtcNow)
             };
 
+            
+
             //Add Extensions & Contained Resources
             appointment.Extension.Add(bookingOrganizationExtension);
             appointment.Contained.Add(bookingOrganization);
+
 
 
             //Practitioner Role
@@ -96,16 +105,22 @@
                 appointment.Extension.Add(pracRole);
             }
 
-            //Deliver Channel
+            //Delivery Channel
             if (addDeliveryChannel)
             {
-                Code channelCode = new Code("In-person"); 
+// git hub ref 203 (demonstrator) failed if channel code <> In-Person
+// RMB 28/2/19
+                Extension sExt = firstSlot.GetExtension(FhirConst.StructureDefinitionSystems.kDeliveryChannel2Ext);
+                var channelCode = sExt.Value;
+                //Code channelCode = new Code("In-person"); 
                 Extension delChannel = new Extension("https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-DeliveryChannel-2", channelCode);
                 appointment.Extension.Add(delChannel);
             }
 
-            CodeableConcept type = new CodeableConcept("http://hl7.org/fhir/ValueSet/c80-practice-codes", "394802001", "General medicine", null);
-            appointment.AppointmentType = type;
+            // git hub ref 203 (demonstrator)
+            // RMB 27/2/19
+            //CodeableConcept type = new CodeableConcept("http://hl7.org/fhir/ValueSet/c80-practice-codes", "394802001", "General medicine", null);
+            //appointment.AppointmentType = type;
 
             return appointment;
         }
@@ -117,6 +132,13 @@
                 Id = "1",
                 Name = "Test Suite Validator"
             };
+            // git hub ref 203 (demonstrator)
+            // RMB 27/2/19
+            // Meta Profile
+            var OrgMeta = new Meta();
+            IEnumerable<string> MetaProfile = new string[] { FhirConst.StructureDefinitionSystems.kOrganisation };
+            OrgMeta.Profile = MetaProfile;
+            bookingOrganization.Meta = OrgMeta;
 
             bookingOrganization.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap["ORG1"]));
             if (addOrgType)
