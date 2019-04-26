@@ -66,6 +66,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("Response HttpStatusCode={0}", HttpContext.ResponseStatusCode);
         }
 
+        //PG - #214 - 26/4/2019 - added for s-pateints returning 404 not found
+        [Then(@"the response status code should indicate notfound")]
+        public void ThenTheResponseStatusCodeShouldIndicateNofound()
+        {
+            HttpContext.ResponseStatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
         [Then(@"the response status code should be ""(.*)""")]
         public void ThenTheResponseStatusCodeShouldBe(string statusCode)
         {
