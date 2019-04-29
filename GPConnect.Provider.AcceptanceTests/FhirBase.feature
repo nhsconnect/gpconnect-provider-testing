@@ -309,3 +309,13 @@ Scenario: endpoint should support chunking of data
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And response should be chunked
+
+	#PG 29-4-2019 - #238 - Added check for Api Capability Version
+	Scenario: Check Capbility Version
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+	When I make a GET request to "/metadata"
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON value "version" should be "0.5.2"
+		And the JSON value "resourceType" should be "Conformance"
