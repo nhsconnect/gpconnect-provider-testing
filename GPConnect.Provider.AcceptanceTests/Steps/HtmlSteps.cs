@@ -194,13 +194,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        html.ShouldContain("<p>All relevant items </p>");
+                        bool matchflag = false;
+                       
+                        Regex regexHeadersPattern1 = new Regex("<p>All relevant items</p>");
+                        Regex regexHeadersPattern2 = new Regex("<p>All relevant items subject to patient preferences and / or RCGP exclusions</p>");
+
+                        MatchCollection tableBannerText1Matches = regexHeadersPattern1.Matches(html);
+                        if (tableBannerText1Matches.Count >= 1)
+                            matchflag = true;
+
+                        MatchCollection tableBannerText2Matches = regexHeadersPattern2.Matches(html);
+                        if (tableBannerText2Matches.Count >= 1)
+                            matchflag = true;
+
+                        if (matchflag)
+                            matchflag.ShouldBeTrue("All data items text not found");
                     }
                 }
             }
         }
-
-        [Then(@"the html should not contain ""([^""]*)""")]
+        
+[Then(@"the html should not contain ""([^""]*)""")]
         public void ThenTheHTMLShouldNotContain(string value)
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -258,7 +272,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        string expectedTimePeriodBanner = "<p>All the data items from '" + fromDate + "'</p>";
+                        string expectedTimePeriodBanner = "<p>All data items from " + fromDate + "</p>";
                         html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
                     }
                 }
@@ -277,7 +291,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        string expectedTimePeriodBanner = "<p>All data items until '" + toDate + "'</p>";
+                        string expectedTimePeriodBanner = "<p>All data items until " + toDate +"</p>";
                         html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
                     }
                 }

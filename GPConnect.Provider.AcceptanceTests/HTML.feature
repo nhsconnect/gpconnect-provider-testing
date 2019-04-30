@@ -326,8 +326,8 @@ Scenario Outline: should contain the banner All data items until
 	Examples:
 		| Code | Patient  | EndDateTime | TextEndDate |
 		| MED  | patient1 | 2016-12-12  | 12-Dec-2016 |                                            
-		| REF  | patient1 | 2016-11     | 31-Nov-2016 | 
-		| OBS  | patient2 | 2014        | 31-Dec-2016 | 
+		| MED  | patient1 | 2016-12     | 31-Dec-2016 | 
+		| OBS  | patient2 | 2016        | 31-Dec-2016 | 
 
 #issue 216 SJD 25/04/2019 Test null value in StartDateTime and EndDateTime
 Scenario Outline: check when no date range supplied should contain default date range section banner
