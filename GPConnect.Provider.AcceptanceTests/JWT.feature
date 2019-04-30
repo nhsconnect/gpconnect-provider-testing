@@ -181,6 +181,22 @@ Scenario: JWT requesting practitioner practitionerRole does not contain a SDS Jo
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
+#issue 235 SJD 29/04/2019
+Scenario: JWT requesting practitioner UNK value
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the JWT Requesting Identity as UNK Practitioner
+	When I make a GET request to "/metadata"
+	Then the response status code should be "200"
+
+#issue 235 SJD 29/04/2019 - This will fail (400) against the demonstrator as is locked down for any new consumers coming on board to force a value
+Scenario: JWT Missing sdsRoleProfile and guid
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+		And I set the JWT missing sdsRoleProfile and guid
+	When I make a GET request to "/metadata"
+	Then the response status code should be "200"
+
 Scenario: JWT missing iss claim
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
