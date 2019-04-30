@@ -183,6 +183,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
         }
 
+        // #235 29/04/19 SJD UNK practioner request header
+        [Given(@"I set the JWT Requesting Identity as UNK Practitioner")]
+        public void SetTheJwtRequestingIdentityAsUnkPractitioner()
+        {
+            Jwt.RequestingPractitioner = FhirHelper.GetUnkPractitioner().ToJson();
+            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+        }
+
+        // #235 29/04/19 SJD missing practioner details in request header
+        [Given(@"I set the JWT missing sdsRoleProfile and guid")]
+        public void SetTheJwtMissingSdsRoleprofileAndGuid()
+        {
+            Jwt.RequestingPractitioner = FhirHelper.GetNoProfAndGuid().ToJson();
+            Headers.ReplaceHeader(HttpConst.Headers.kAuthorization, Jwt.GetBearerToken());
+        }
+
         [Given(@"I set the JWT requested scope to ""(.*)""")]
         public void ISetTheJWTRequestedScopeTo(string requestedScope)
         {
