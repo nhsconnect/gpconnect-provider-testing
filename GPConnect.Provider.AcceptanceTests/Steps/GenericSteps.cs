@@ -7,6 +7,7 @@
     using Cache.ValueSet;
     using Constants;
     using Context;
+    using Reporting;
     using Helpers;
     using Importers;
     using Logger;
@@ -14,6 +15,7 @@
     using Repository;
     using TechTalk.SpecFlow;
     using Steps = TechTalk.SpecFlow.Steps;
+    using System.Linq;
 
     [Binding]
     public class GenericSteps : Steps
@@ -156,7 +158,7 @@
                 {
                     _httpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
                 }
-                catch 
+                catch
                 {
                     Log.WriteLine("Exception writing HttpContext to Output File");
                 }
@@ -168,15 +170,87 @@
                 {
                     Log.WriteLine("Exception writing FhirContext to Output File");
                 }
+                
+                
+                //Output JSON trace
+                if (AppSettingsHelper.TraceOutputJSONResponse)
+                {
+                    //OutputJson Response as Pretty Printed Separate File
+                    try
+                    {
+                        _httpContext.SaveJSONResponseToDisk(Path.Combine(scenarioDirectory, "JSONResponse.txt"));
+                    }
+                    catch
+                    {
+                        Log.WriteLine("Exception writing JSONResponse to Output File");
+                    }
+
+                }
+
+                //Output JWT trace
+                if (AppSettingsHelper.TraceOutputJWT)
+                {
+                    //Dump JWT Token to output file
+                    try
+                    {
+                        _httpContext.SaveJWTToDisk(Path.Combine(scenarioDirectory, "JWTToken.txt"));
+                    }
+                    catch (Exception Ex)
+                    {
+                        Log.WriteLine("Exception writing JWT Header to Output File");
+                    }
+                }
+               
+
+
+                
             }
         }
-
 
         [BeforeTestRun]
         public static void SetTestRunId()
         {
             GlobalContext.TestRunId = Guid.NewGuid();
         }
-        
+
+        [AfterTestRun]
+        public static void outputFileBasedTestReport()
+        {
+            //output test run sumamry file
+            if (ReportingConfiguration.FileReportingEnabled)
+            {
+
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(GlobalContext.TraceDirectory + @"\TestRunLog.txt"))
+                {
+                    //writes overall stats first
+                    file.WriteLine("Overall Stats from test Run: Passed=" + GlobalContext.CountTestRunPassed.ToString() + "  Failed: " + GlobalContext.CountTestRunFailed.ToString());
+
+                    //Add inormation about the test run
+                    file.WriteLine("TestRunDateTime : " + DateTime.UtcNow.ToLocalTime().ToString());
+                    file.WriteLine("consumerASID : " + AppSettingsHelper.ConsumerASID);
+                    file.WriteLine("providerASID : " + AppSettingsHelper.ProviderASID);
+                    file.WriteLine("useTLS Flag : " + AppSettingsHelper.UseTLS.ToString());
+                    file.WriteLine("serverPort HTTP: " + AppSettingsHelper.ServerHttpPort);
+                    file.WriteLine("serverPort HTTPS: " + AppSettingsHelper.ServerHttpsPort);
+                    file.WriteLine("serverBase : " + AppSettingsHelper.ServerBase);
+                    file.WriteLine("useSpineProxy Flag : " + AppSettingsHelper.UseSpineProxy.ToString());
+                    file.WriteLine("spineProxyUrl : " + AppSettingsHelper.SpineProxyUrl.ToString());
+                    file.WriteLine("spineProxyPort : " + AppSettingsHelper.SpineProxyPort.ToString());
+
+
+                    if (ReportingConfiguration.FileReportingSortFailFirst)
+                        GlobalContext.FileBasedReportList = GlobalContext.FileBasedReportList.OrderBy(i => i.TestResult).ToList();
+                    else
+                        GlobalContext.FileBasedReportList = GlobalContext.FileBasedReportList.OrderBy(i => i.TestRunDateTime).ToList();
+
+                    foreach (GlobalContext.FileBasedReportEntry entry in GlobalContext.FileBasedReportList)
+                    {
+                        file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                    }
+                }
+
+            }
+        }
+
     }
 }

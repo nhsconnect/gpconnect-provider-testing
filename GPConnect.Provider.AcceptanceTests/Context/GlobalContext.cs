@@ -34,5 +34,19 @@
         public static Dictionary<string, string> LocationLogicalIdentifierMap { get; set; }
 
         public static Dictionary<string, List<Appointment>> CreatedAppointments { get; set; }
+
+        //Reporting
+        public static List<FileBasedReportEntry> FileBasedReportList { get; set; }
+
+        public class FileBasedReportEntry
+        {
+            public DateTime TestRunDateTime;
+            public string Testname;
+            public string TestResult;
+        }
+
+        public static int CountTestRunPassed { get; set; }
+        public static int CountTestRunFailed { get; set; }
+
     }
 }

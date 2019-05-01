@@ -1,9 +1,13 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Context
 {
+    using System.IdentityModel.Tokens.Jwt;
+    using System.IO;
     using System.Xml.Linq;
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Serialization;
     using Http;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     public class HttpContext : IHttpContext
     {
@@ -87,6 +91,40 @@
                 )
             );
             doc.Save(filename);
+        }
+
+        public void SaveJSONResponseToDisk(string filename)
+        {
+            var JSONResponse = JToken.Parse(FhirSerializer.SerializeResourceToJson(FhirResponse.Resource));
+                     
+            string jsonPrettyPrinted = JsonConvert.SerializeObject(JSONResponse, Formatting.Indented);
+            File.WriteAllText(@filename, jsonPrettyPrinted);
+
+
+        }
+
+        public void SaveJWTToDisk(string filename)
+        {
+            string JWTToken;
+
+            foreach (var entry in HttpRequestConfiguration.RequestHeaders.GetRequestHeaders())
+            {             
+                //find JWT
+                if (entry.Key == "Authorization")
+                { 
+                    JWTToken = entry.Value.Replace("Bearer ", "");
+             
+                    //Convert Token to JSON
+                    var jwtHandler = new JwtSecurityTokenHandler();
+                    var token = jwtHandler.ReadJwtToken(JWTToken);
+                    
+                    string jwtHeaderPrettyPrinted = JsonConvert.SerializeObject(token.Header, Formatting.Indented);
+                    string jwtPayloadPrettyPrinted = JsonConvert.SerializeObject(token.Payload, Formatting.Indented);
+                    File.WriteAllText(@filename, "Header:\n" + jwtHeaderPrettyPrinted + "\nPayload:\n" + jwtPayloadPrettyPrinted);
+                    }
+
+            }
+
         }
 
         private static class Context

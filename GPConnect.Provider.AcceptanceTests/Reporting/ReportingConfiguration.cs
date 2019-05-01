@@ -11,5 +11,8 @@
         private static int Port => AppSettingsHelper.Get<int>("Reporting:Port");
         private static bool Tls => AppSettingsHelper.Get<bool>("Reporting:Tls");
         private static string Protocol => Tls ? "https://" : "http://";
+        internal static bool FileReportingEnabled => AppSettingsHelper.Get<bool>("ReportingToFile:Enabled");
+        internal static bool FileReportingSortFailFirst => AppSettingsHelper.Get<bool>("ReportingToFile:SortFailFirst");
+
     }
 }

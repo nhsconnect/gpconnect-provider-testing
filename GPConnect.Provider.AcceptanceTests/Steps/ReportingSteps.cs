@@ -9,6 +9,7 @@
     using Extensions;
     using Reporting;
     using static Logger.Log;
+    using System.Collections.Generic;
 
     [Binding]
     internal class ReportingSteps : Steps
@@ -53,6 +54,41 @@
                 {
                     WriteLine($"{Message} - {exception.InnerException?.InnerException?.Message}");
                 }
+            }
+
+            //Add Test Details to Report List
+            if (ReportingConfiguration.FileReportingEnabled)
+            {
+                var traceDirectory = GlobalContext.TraceDirectory;
+
+                string ScenarioName = ScenarioContext.Current.ScenarioInfo.Title +  GlobalContext.ScenarioIndex.ToString();  
+                string ErrorMessage = ScenarioContext.Current.TestError?.Message;
+                string ScenarioOutcome = string.IsNullOrEmpty(ErrorMessage) ? "Pass" : "Fail";
+                
+                //init vars if needed
+                if (GlobalContext.FileBasedReportList == null)
+                {
+                   
+                    GlobalContext.FileBasedReportList = new List<GlobalContext.FileBasedReportEntry>();
+                    GlobalContext.CountTestRunPassed = 0;
+                    GlobalContext.CountTestRunPassed = 0;
+                }
+
+                //Keep count of Pass and Fails
+                if (ScenarioOutcome == "Pass")
+                    GlobalContext.CountTestRunPassed++;
+                else
+                    GlobalContext.CountTestRunFailed++;
+
+                var FileLogEntry = new GlobalContext.FileBasedReportEntry()
+                {
+                    TestRunDateTime = DateTime.UtcNow.ToLocalTime(),
+                    Testname = ScenarioName,
+                    TestResult = ScenarioOutcome
+                };
+
+                GlobalContext.FileBasedReportList.Add(FileLogEntry);
+
             }
         }
 
