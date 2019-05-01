@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BoDi;
@@ -120,5 +121,104 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine("");
             Log.WriteLine("Scenario: " + ScenarioContext.Current.ScenarioInfo.Title);
         }
+
+        [BeforeScenario]
+        internal void SetOutlineIndex()
+        {
+            if (GlobalContext.PreviousScenarioTitle == ScenarioContext.Current.ScenarioInfo.Title)
+                GlobalContext.ScenarioIndex++;
+            else
+                GlobalContext.ScenarioIndex = 1;
+        }
+
+        [AfterScenario(Order = 2)]
+        internal void SetPreviousTitle()
+        {
+            GlobalContext.PreviousScenarioTitle = ScenarioContext.Current.ScenarioInfo.Title;
+        }
+
+
+        [AfterScenario(Order = 1)]
+        internal void SendReport()
+        {
+
+
+            //Add Test Details to Report List
+            if (AppSettingsHelper.FileReportingEnabled)
+            {
+                var traceDirectory = GlobalContext.TraceDirectory;
+
+                string ScenarioName = ScenarioContext.Current.ScenarioInfo.Title + GlobalContext.ScenarioIndex.ToString();
+                string ErrorMessage = ScenarioContext.Current.TestError?.Message;
+                string ScenarioOutcome = string.IsNullOrEmpty(ErrorMessage) ? "Pass" : "Fail";
+
+                //init vars if needed
+                if (GlobalContext.FileBasedReportList == null)
+                {
+
+                    GlobalContext.FileBasedReportList = new List<GlobalContext.FileBasedReportEntry>();
+                    GlobalContext.CountTestRunPassed = 0;
+                    GlobalContext.CountTestRunPassed = 0;
+                }
+
+                //Keep count of Pass and Fails
+                if (ScenarioOutcome == "Pass")
+                    GlobalContext.CountTestRunPassed++;
+                else
+                    GlobalContext.CountTestRunFailed++;
+
+                var FileLogEntry = new GlobalContext.FileBasedReportEntry()
+                {
+                    TestRunDateTime = DateTime.UtcNow.ToLocalTime(),
+                    Testname = ScenarioName,
+                    TestResult = ScenarioOutcome
+                };
+
+                GlobalContext.FileBasedReportList.Add(FileLogEntry);
+
+            }
+        }
+
+        [AfterTestRun]
+        public static void outputFileBasedTestReport()
+        {
+            //output test run sumamry file
+            if (AppSettingsHelper.FileReportingEnabled)
+            {
+
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(GlobalContext.TraceDirectory + @"\TestRunLog.txt"))
+                {
+                    //writes overall stats first
+                    file.WriteLine("Overall Stats from test Run: Passed=" + GlobalContext.CountTestRunPassed.ToString() + "  Failed: " + GlobalContext.CountTestRunFailed.ToString());
+
+                    //Add inormation about the test run
+                    file.WriteLine("TestRunDateTime : " + DateTime.UtcNow.ToLocalTime().ToString());
+                    file.WriteLine("consumerASID : " + AppSettingsHelper.ConsumerASID);
+                    file.WriteLine("providerASID : " + AppSettingsHelper.ProviderASID);
+                    file.WriteLine("useTLS Flag : " + AppSettingsHelper.UseTLS.ToString());
+                    file.WriteLine("serverPort : " + AppSettingsHelper.ServerPort);
+                    file.WriteLine("serverBase : " + AppSettingsHelper.ServerBase);
+                    file.WriteLine("useSpineProxy Flag : " + AppSettingsHelper.UseSpineProxy.ToString());
+                    file.WriteLine("spineProxyUrl : " + AppSettingsHelper.SpineProxyUrl.ToString());
+                    file.WriteLine("spineProxyPort : " + AppSettingsHelper.SpineProxyPort.ToString());
+
+                    if (AppSettingsHelper.FileReportingSortFailFirst)
+                        GlobalContext.FileBasedReportList = GlobalContext.FileBasedReportList.OrderBy(i => i.TestResult).ToList();
+                    else
+                        GlobalContext.FileBasedReportList = GlobalContext.FileBasedReportList.OrderBy(i => i.TestRunDateTime).ToList();
+
+                    foreach (GlobalContext.FileBasedReportEntry entry in GlobalContext.FileBasedReportList)
+                    {
+                        file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                    }
+                }
+
+            }
+        }
+
+
+
+
+
     }
 }

@@ -6,6 +6,10 @@ using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using Newtonsoft.Json;
+using Hl7.Fhir.Serialization;
 // ReSharper disable ClassNeverInstantiated.Global
 
 namespace GPConnect.Provider.AcceptanceTests.Context
@@ -484,5 +488,43 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 ));
             doc.Save(filename);
         }
+
+        public void SaveJWTToDisk(string filename)
+        {
+            string JWTToken;
+
+            foreach (var entry in RequestHeaders.GetRequestHeaders())
+            {
+                //find JWT Header
+                if (entry.Key == "Authorization")
+                {
+                    JWTToken = entry.Value.Replace("Bearer ", "");
+
+                    //Convert Token to JSON
+                    var jwtHandler = new JwtSecurityTokenHandler();
+                    var token = jwtHandler.ReadJwtToken(JWTToken);
+
+                    string jwtHeaderPrettyPrinted = JsonConvert.SerializeObject(token.Header, Formatting.Indented);
+                    string jwtPayloadPrettyPrinted = JsonConvert.SerializeObject(token.Payload, Formatting.Indented);
+                    File.WriteAllText(@filename, "Header:\n" + jwtHeaderPrettyPrinted + "\nPayload:\n" + jwtPayloadPrettyPrinted);
+                }
+
+            }
+
+        }
+
+
+        public void SaveJSONResponseToDisk(string filename)
+        {
+            var jsonBody = ScenarioContext.Get<string>(Context.kResponseBody);
+
+            var JSONResponse = JToken.Parse(jsonBody);
+
+            string jsonPrettyPrinted = JsonConvert.SerializeObject(JSONResponse, Formatting.Indented);
+            File.WriteAllText(@filename, jsonPrettyPrinted);
+
+
+        }
+
     }
 }

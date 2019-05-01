@@ -8,6 +8,13 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         // Trace Log Settings
         public static bool TraceAllScenarios => Get<bool>("traceAllScenarios");
         public static string TraceBaseDirectory => Get<string>("traceBaseDirectory");
+        public static bool TraceOutputJSONResponse => Get<bool>("traceOutputJSONResponse");
+        public static bool TraceOutputJWT => Get<bool>("traceOutputJWT");
+
+        //reporting
+        public static bool FileReportingEnabled => AppSettingsHelper.Get<bool>("ReportingToFile:Enabled");
+        public static bool FileReportingSortFailFirst => AppSettingsHelper.Get<bool>("ReportingToFile:SortFailFirst");
+
 
         // Data Settings
         public static string DataDirectory => Get<string>("dataDirectory");
