@@ -138,12 +138,3 @@ Scenario: endpoint should support gzip compression for metadata endpoint and con
 		And the response should be gzip encoded
 		And the response body should be FHIR JSON
 		And the Response Resource should be a CapabilityStatement
-
-@ignore
-@Manual
-Scenario: maximum field size in fhir resource
-	# String fields must not contain more than 1mb or data, this will require a test patient with data greater than 1mb a field that maps to a string field in the fhir resource.
-
-@ignore
-@Manual
-Scenario: case sensitive valuesets mapped correctly to resource valuesets
