@@ -182,7 +182,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        //issue 193 sado1 02/04/19 no end date provided
+        //issue 193 SJD 01/05/19 no end date provided
         [Then(@"the response html should contain the applied start date banner text ""([^""]*)""")]
         public void ThenTheResponseHTMLShouldContainTheAppliedStartDateBannerText(string fromDate)
         {
@@ -194,14 +194,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        string expectedTimePeriodBanner = "<p>All the data items from '" + fromDate + "'</p>";
+                        string expectedTimePeriodBanner = "<p>All data items from " + fromDate +"</p>";
                         html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
                     }
                 }
             }
         }
 
-        //issue 193 sado1 02/04/19 no start date provided
+        //issue 193 SJD 01/05/19 no start date provided
         [Then(@"the response html should contain the applied end date banner text ""([^""]*)""")]
         public void ThenTheResponseHTMLShouldContainTheAppliedEndDateBannerText(string toDate)
         {
@@ -213,14 +213,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        string expectedTimePeriodBanner = "<p>All data items until '" + toDate + "'</p>";
+                        string expectedTimePeriodBanner = "<p>All data items until " + toDate + "</p>";
                         html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
                     }
                 }
             }
         }
 
-        //issue 194 sado1 01/04/19 change to Banner message
+        //issue 194 SJD 01/05/19 change to Banner message
         [Then(@"the response html should contain the all data items text")]
         public void ThenTheResponseHTMLShouldContainTheAllDataItemsText()
         {
@@ -232,7 +232,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        html.ShouldContain("<p>All relevant items</p>");
+                        bool matchflag = false;
+
+                        Regex regexHeadersPattern1 = new Regex("<p>All relevant items</p>");
+                        Regex regexHeadersPattern2 = new Regex("<p>All relevant items subject to patient preferences and / or RCGP exclusions</p>");
+
+                        MatchCollection tableBannerText1Matches = regexHeadersPattern1.Matches(html);
+                        if (tableBannerText1Matches.Count >= 1)
+                            matchflag = true;
+
+                        MatchCollection tableBannerText2Matches = regexHeadersPattern2.Matches(html);
+                        if (tableBannerText2Matches.Count >= 1)
+                            matchflag = true;
+
+                        if (matchflag)
+                            matchflag.ShouldBeTrue("All data items text not found");
+
                     }
                 }
             }
