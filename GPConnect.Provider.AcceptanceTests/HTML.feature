@@ -344,15 +344,3 @@ Scenario Outline: check when no date range supplied should contain default date 
 	Examples:
 		| Code | Patient  | StartDateTime | EndDateTime | 
 		| ADM  | patient1 |				  |				|    
-
-@ignore("IgnoreManualTest")
-@Manual
-Scenario: Patients flag as sensitive should return any information within the HTML which may allow for identification of contact information or address
-
-@ignore("IgnoreManualTest")
-@Manual
-Scenario: Check dates are in decending order within the results tables
-
-@ignore("IgnoreManualTest")
-@Manual
-Scenario: System does not support section html response where appropriate
