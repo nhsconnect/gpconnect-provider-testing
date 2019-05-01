@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GPConnect.Provider.AcceptanceTests.Data;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using Hl7.Fhir.Model;
@@ -20,6 +21,22 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public const string kFhirRelationshipValueSet = "fhirRelationshipValueSet";
             public const string kFhirHumanLanguageValueSet = "fhirHumanLanguageValueSet";
         }
+
+        public static int ScenarioIndex { get; set; }
+        public static string PreviousScenarioTitle { get; set; }
+        
+        //Reporting
+        public static List<FileBasedReportEntry> FileBasedReportList { get; set; }
+
+        public class FileBasedReportEntry
+        {
+            public DateTime TestRunDateTime;
+            public string Testname;
+            public string TestResult;
+        }
+
+        public static int CountTestRunPassed { get; set; }
+        public static int CountTestRunFailed { get; set; }
 
         public static string TraceDirectory
         {

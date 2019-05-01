@@ -350,6 +350,38 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Log.WriteLine(scenarioDirectory);
             HttpContext.SaveToDisk(Path.Combine(scenarioDirectory, "HttpContext.xml"));
             FhirContext.SaveToDisk(Path.Combine(scenarioDirectory, "FhirContext.xml"));
+
+            //Output JSON trace
+            if (AppSettingsHelper.TraceOutputJSONResponse)
+            {
+                //OutputJson Response as Pretty Printed Separate File
+                try
+                {
+                    HttpContext.SaveJSONResponseToDisk(Path.Combine(scenarioDirectory, "JSONResponse.txt"));
+                }
+                catch
+                {
+                    Log.WriteLine("Exception writing JSONResponse to Output File");
+                }
+
+            }
+
+            //Output JWT trace
+            if (AppSettingsHelper.TraceOutputJWT)
+            {
+                //Dump JWT Token to output file
+                try
+                {
+                    HttpContext.SaveJWTToDisk(Path.Combine(scenarioDirectory, "JWTToken.txt"));
+                }
+                catch (Exception Ex)
+                {
+                    Log.WriteLine("Exception writing JWT Header to Output File");
+                }
+            }
+
+
+
         }
 
     }
