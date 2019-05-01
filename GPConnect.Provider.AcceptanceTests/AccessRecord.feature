@@ -21,26 +21,6 @@ Background:
 		| patient14          | 9000000014 |
 		| patient15          | 9000000015 |
 
-@ignore("IgnoreManualTest")
-Scenario: patient is a valid fhir resource
-# There is no need to check that the patient resource and included value sets are correct if included as this is done by the parse of the response within scenario above.
-# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
-
-@ignore("IgnoreManualTest")
-Scenario: if patient contains name elements
-# There is no need to check that the patient resource name element value sets are correct if included as this is done by the parse of the response within scenario above.
-# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
-
-@ignore("IgnoreManualTest")
-Scenario: if patient contains gender
-# There is no need to check that the patient gender value set is valid as this is done by the parse of the response within scenario above.
-# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
-
-@ignore("IgnoreManualTest")
-Scenario: if patient contains address
-# There is no need to check that the patient address value sets are valid as this is done by the parse of the response within scenario above.
-# The Fhir Patient object checks the values passed in are within the standard value sets as the values are mapped to an enum and throw an exception if the value does not map to a allowed value.
-
 Scenario Outline: Retrieve the care record sections for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -1211,39 +1191,3 @@ Scenario Outline: Ensure Retrieve the care record sections for senstive patients
 		| REF |
 		| SUM |
 
-
-@ignore("IgnoreManualTest")
-Scenario: Identifier order in response resources
-# The identifiers within the response resources have to appear in the correct order as per the specfication.
-
-@ignore("IgnoreManualTest")
-@Manual
-Scenario: Patients flag as sensitive should return a minimal patient resource which does not contain sensitive fields
-
-@ignore("IgnoreManualTest")
-@Manual
-Scenario: Patient with inactive nhs number in system should not return that NHS Number
-
-@ignore("IgnoreManualTest")
-@Manual
-Scenario: Request records for patients with genders which do not match the valueset so must addear to gender mapping
-	# Check that the gender returned matches the expected mapping
-
-@ignore("IgnoreManualTest")
-@Manual
-Scenario: Check that all the genders supported by provider are in the GP Connect value set, if not check mapping is covered in documentation and system maps correctly
-	# Run tests with patients with non value set genders if possible and check mapping in response is acceptable
-
-@ignore("IgnoreManualTest")
-@Manual
-Scenario: Request records for patients contact with relationship which do not match the valueset so must addear to relationship mapping
-	# Check that the relationship returned matches the expected mapping
-
-@ignore("IgnoreManualTest")
-@Manual
-Scenario: Check that all the relationship supported for contacts by the provider are in the GP Connect value set, if not check mapping is covered in documentation and system maps correctly
-	# Run tests with patients with non value set relationships for contacts and check mapping in response is acceptable
-
-@ignore("IgnoreManualTest")
-@Manual
-Scenario: Patient whos records are currently in transit
