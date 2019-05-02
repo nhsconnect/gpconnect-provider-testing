@@ -199,7 +199,7 @@ Scenario Outline: should contain the applied start banner
 		| CLI  | patient2 | 2014-02       | 01-Feb-2014   |             
 		| PRB  | patient1 | 2014          | 01-Jan-2014   |             
 
-# issue 193 sado1 2/4/19 - To check banner when no start date provided		
+# issue 193 SJD 01/05/19 - To check banner when no start date provided		
 Scenario Outline: should contain the banner All data items until 
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -213,8 +213,8 @@ Scenario Outline: should contain the banner All data items until
 	Examples:
 		| Code | Patient  | EndDateTime | TextEndDate |
 		| MED  | patient1 | 2016-12-12  | 12-Dec-2016 |                                            
-		| REF  | patient1 | 2016-11     | 31-Nov-2016 | 
-		| OBS  | patient2 | 2014        | 31-Dec-2016 | 
+		| MED  | patient1 | 2016-12     | 31-Dec-2016 | 
+		| OBS  | patient2 | 2016        | 31-Dec-2016 |
 
 Scenario Outline: sections should contain the all data items section banner
 	Given I am using the default server
@@ -324,7 +324,7 @@ Scenario Outline: Check html for non html formatting
    #    | INV  |
 		| MED  |
 		| OBS  |
-		| PAT  |
+   #	| PAT  | 
 		| PRB  |
 		| REF  |
 		| SUM  |
