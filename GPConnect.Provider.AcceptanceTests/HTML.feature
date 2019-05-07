@@ -53,6 +53,7 @@ Scenario Outline: HTML should not contain disallowed elements
 		| REF  |
 		| SUM  |
 
+# 197 03/05/2019 SJD changes to Medication view
 Scenario Outline: html section headers present
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -78,14 +79,14 @@ Scenario Outline: html section headers present
 		| patient2 | IMM  | Immunisations |
 		#| patient1 | INV | Investigations |
 		#| patient2 | INV | Investigations |
-		| patient1 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
-		| patient2 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
-		| patient3 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
-		| patient4 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
-		| patient5 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
-		| patient6 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
-		| patient7 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
-		| patient8 | MED  | Current Medication Issues,Current Repeat Medications,Past Medications |
+		| patient1 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
+		| patient2 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
+		| patient3 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
+		| patient4 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
+		| patient5 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
+		| patient6 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
+		| patient7 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
+		| patient8 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
 		| patient1 | OBS  | Observations |
 		| patient2 | OBS  | Observations |
 		#| patient1 | PAT |  |
@@ -122,21 +123,21 @@ Scenario Outline: html table headers present and in order that is expected
 		| patient2 | CLI      | Date,Entry,Details                                                                       | 1                |
 		| patient2 | ENC      | Date,Title,Details                                                                       | 1                |
 		| patient2 | IMM      | Date,Vaccination,Part,Contents,Details                                                   | 1                |
-#        | patient2 | INV      |                                                                                          |                  |
-		| patient2 | MED      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                      | 1                |
+		| #        | patient2 | INV                                                                                      |                  |  |
+		| patient2 | MED      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                 | 1                |
 		| patient2 | MED      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 2                |
 		| patient2 | MED      | Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issues,Details | 3                |
 		| patient2 | OBS      | Date,Entry,Value,Details                                                                 | 1                |
-#        | patient2 | PAT      |                                                                                          |                  |
+		| #        | patient2 | PAT                                                                                      |                  |  |
 		| patient2 | PRB      | Start Date,Entry,Significance,Details                                                    | 1                |
 		| patient2 | PRB      | Start Date,End Date,Entry,Significance,Details                                           | 2                |
 		| patient2 | REF      | Date,From,To,Priority,Details                                                            | 1                |
-		| patient2 | SUM      | Start Date,Entry,Significance,Details                                                    | 1				|
-		| patient2 | SUM      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                      | 2				|
-		| patient2 | SUM      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 3				|
-		| patient2 | SUM      | Start Date,Details                                                                       | 4				|
-		| patient2 | SUM      | Date,Title,Details                                                                       | 5				|
-
+		| patient2 | SUM      | Start Date,Entry,Significance,Details                                                    | 1                |
+		| patient2 | SUM      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                 | 2                |
+		| patient2 | SUM      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 3                |
+		| patient2 | SUM      | Start Date,Details                                                                       | 4                |
+		| patient2 | SUM      | Date,Title,Details                                                                       | 5                |
+		
 Scenario Outline: filtered sections should contain date range section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -270,6 +271,7 @@ Scenario Outline: filtered sections should return no data available html banner
 	#	| INV ||||||
 	#	| PAT ||||||
 
+#197 SJD 03/05/2019 Update to Medication view
 Scenario Outline: sections should return no data available html banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -289,14 +291,16 @@ Scenario Outline: sections should return no data available html banner
 		| SUM  | patient1 | Current Medication Issues                  |
 		| SUM  | patient1 | Current Repeat Medications                 |
 		| SUM  | patient1 | Current Allergies and Adverse Reactions    |
-		| SUM  | patient1 | Encounters		                           |
+		| SUM  | patient1 | Encounters                                 |
 		| REF  | patient1 | Referrals                                  |
 		| ALL  | patient1 | Current Allergies and Adverse Reactions    |
 		| ALL  | patient1 | Historical Allergies and Adverse Reactions |
 		| IMM  | patient1 | Immunisations                              |
-		| MED  | patient1 | Current Medication Issues                  |
-		| MED  | patient1 | Current Repeat Medications                 |
-		| MED  | patient1 | Past Medications                           |
+		| MED  | patient1 | Recent Acute Medication                    |
+		| MED  | patient1 | Current Repeat Medication                  |
+		| MED  | patient1 | Discontinued Repeat Medication             |
+		| MED  | patient1 | All Medication (Summary)		           |
+		| MED  | patient1 | All Medication Issues		               |
 		| OBS  | patient1 | Observations                               |
 		| PRB  | patient1 | Active Problems and Issues                 |
 		| PRB  | patient1 | Inactive Problems and Issues               |
