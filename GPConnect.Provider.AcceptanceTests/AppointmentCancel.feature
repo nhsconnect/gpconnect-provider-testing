@@ -1,6 +1,7 @@
 ﻿@appointment
 Feature: AppointmentCancel
 
+@1.2.3
 Scenario Outline: I perform a successful cancel appointment
 	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -33,6 +34,7 @@ Scenario Outline: I perform a successful cancel appointment
 		| patient2    |
 		| patient3    |
 
+@1.2.3
 Scenario Outline: I perform a successful cancel appointment with Extensions
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
@@ -50,6 +52,7 @@ Scenario Outline: I perform a successful cancel appointment with Extensions
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
 
+@1.2.3
 Scenario: I perform a successful cancel appointment and amend the comment
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -60,6 +63,7 @@ Scenario: I perform a successful cancel appointment and amend the comment
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
+@1.2.3
 Scenario: I perform cancel appointment and update the description
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment

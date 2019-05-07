@@ -1,6 +1,7 @@
 ﻿@organization
 Feature: OrganizationSearch
 
+@1.2.3
 Scenario Outline: Organization search success
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"

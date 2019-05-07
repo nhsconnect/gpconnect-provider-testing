@@ -1,4 +1,4 @@
-﻿@jwt
+﻿@jwt @1.2.3
 Feature: JWT
 
 Scenario: JWT - Bearer Token - not base 64 encoded

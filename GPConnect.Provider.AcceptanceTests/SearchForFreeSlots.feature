@@ -43,6 +43,7 @@ Scenario Outline: Searching for free slots should fail due to missing parameters
 	| status                    |
 # removed 1.2.1 RMB 1/10/2018	| searchFilter,searchFilter |
 
+@1.2.3
 Scenario: Searching for free slots with valid prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -119,6 +120,7 @@ Scenario: Searching for free slots with other searchFilter system
 		And the response should be a Bundle resource of type "searchset"
 
 #PG 9-4-2018 #223 - Updated Test to use agreed date formats
+@1.2.3
 Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -137,6 +139,7 @@ Scenario Outline: Searching for free slots with valid partial dateTime strings
 		| yyyy-MM-ddTHH:mm:sszzz  | yyyy-MM-dd           |
 		| yyyy-MM-dd  | yyyy-MM-ddTHH:mm:sszzz           |
 
+@1.2.3
 Scenario Outline: Searching for free slots with invalid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -292,6 +295,7 @@ Scenario: Successfully search for free slots and check the included practitioner
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
 
+@1.2.3
 Scenario: Successfully search for free slots and check the included location resources returned are valid
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -341,6 +345,7 @@ Scenario: SearchForFreeSlots invalid response check caching headers exist
 # RMB 25/10/2018
 # git hub ref 175
 # RMB 24/1/19
+@1.2.3
 Scenario Outline: Searching for free slots with org type searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -369,6 +374,7 @@ Scenario Outline: Searching for free slots with org type searchFilter system
 # RMB 25/10/2018
 # git hub ref 175
 # RMB 24/1/19
+@1.2.3
 Scenario Outline: Searching for free slots with org code searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -418,6 +424,7 @@ Scenario: Searching for free slots with NO org code and NO org type searchFilter
 
 # git hub ref 175
 # RMB 24/1/19
+@1.2.3
 Scenario Outline: Searching for free slots with org type and code searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read

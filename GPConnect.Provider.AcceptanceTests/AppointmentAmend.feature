@@ -1,6 +1,7 @@
 ﻿@appointment
 Feature: AppointmentAmend
 
+@1.2.3
 Scenario Outline: I perform a successful amend appointment and check the returned appointment resources are in the future
 	Given I create an Appointment for Patient "<Patient>" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -241,6 +242,7 @@ Scenario: Amend appointment and update cancellation reason
 
 # git hub ref 157
 # RMB 8/1/19
+@1.2.3
 Scenario: Amend appointment with Comment and Description
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
