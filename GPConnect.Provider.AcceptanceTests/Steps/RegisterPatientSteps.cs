@@ -504,8 +504,6 @@
 
             nhscextension.Extension.Add(subExtension);
 
-            _fhirResourceRepository.Patient.Extension.Add(nhscextension);
-
             var ir = new FhirBoolean(true);
 
             var irextension = new Extension
@@ -514,7 +512,10 @@
                 Value = ir
             };
 
-            _fhirResourceRepository.Patient.Extension.Add(irextension);
+
+            nhscextension.Extension.Add(irextension);
+            _fhirResourceRepository.Patient.Extension.Add(nhscextension);
+
         }
 
         [Given(@"I add a Telecom element without temp to the Stored Patient")]
