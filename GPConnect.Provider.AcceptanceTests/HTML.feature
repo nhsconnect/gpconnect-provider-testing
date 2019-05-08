@@ -53,6 +53,7 @@ Scenario Outline: HTML should not contain disallowed elements
 		| REF  |
 		| SUM  |
 
+# 201 08/05/2019 SJD Summary page reordering
 # 197 03/05/2019 SJD changes to Medication view
 Scenario Outline: html section headers present
 	Given I am using the default server
@@ -69,8 +70,6 @@ Scenario Outline: html section headers present
 		| patient2 | ADM  | Administrative Items |
 		| patient1 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
 		| patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
-		| patient3 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
-		| patient4 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
 		| patient1 | CLI  | Clinical Items |
 		| patient2 | CLI  | Clinical Items |
 		| patient1 | ENC  | Encounters |
@@ -81,31 +80,18 @@ Scenario Outline: html section headers present
 		#| patient2 | INV | Investigations |
 		| patient1 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
 		| patient2 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
-		| patient3 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
-		| patient4 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
-		| patient5 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
-		| patient6 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
-		| patient7 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
-		| patient8 | MED  | Recent Acute Medication,Current Repeat Medication,Discontinued Repeat Medication,All Medication (Summary),All Medication Issues |
 		| patient1 | OBS  | Observations |
 		| patient2 | OBS  | Observations |
 		#| patient1 | PAT |  |
 		#| patient2 | PAT |  |
 		| patient1 | PRB  | Active Problems and Issues,Inactive Problems and Issues |
 		| patient2 | PRB  | Active Problems and Issues,Inactive Problems and Issues |
-		| patient3 | PRB  | Active Problems and Issues,Inactive Problems and Issues |
-		| patient4 | PRB  | Active Problems and Issues,Inactive Problems and Issues |
 		| patient1 | REF  | Referrals |
 		| patient2 | REF  | Referrals |
-		| patient1 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient2 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient3 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient4 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient5 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient6 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient7 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-		| patient8 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
-
+		| patient1 | SUM  | Last 3 Encounters,Active Problems and Issues,Current Allergies and Adverse Reactions,Recent Acute Medication,Current Repeat Medication |
+		| patient2 | SUM  | Last 3 Encounters,Active Problems and Issues,Current Allergies and Adverse Reactions,Recent Acute Medication,Current Repeat Medication |
+		
+# 201 08/05/2019 SJD Summary page reordering
 Scenario Outline: html table headers present and in order that is expected
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -116,27 +102,27 @@ Scenario Outline: html table headers present and in order that is expected
 		And the JSON response should be a Bundle resource
 		And the html should contain table headers in coma seperated list order "<Headers>" for the "<PageSectionIndex>"
 	Examples:
-		| Patient  | Code     | Headers                                                                                  | PageSectionIndex |
-		| patient2 | ADM      | Date,Entry,Details                                                                       | 1                |
-		| patient2 | ALL      | Start Date,Details                                                                       | 1                |
-		| patient2 | ALL      | Start Date,End Date,Details                                                              | 2                |
-		| patient2 | CLI      | Date,Entry,Details                                                                       | 1                |
-		| patient2 | ENC      | Date,Title,Details                                                                       | 1                |
-		| patient2 | IMM      | Date,Vaccination,Part,Contents,Details                                                   | 1                |
-		| #        | patient2 | INV                                                                                      |                  |  |
-		| patient2 | MED      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                 | 1                |
-		| patient2 | MED      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 2                |
-		| patient2 | MED      | Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issues,Details | 3                |
-		| patient2 | OBS      | Date,Entry,Value,Details                                                                 | 1                |
-		| #        | patient2 | PAT                                                                                      |                  |  |
-		| patient2 | PRB      | Start Date,Entry,Significance,Details                                                    | 1                |
-		| patient2 | PRB      | Start Date,End Date,Entry,Significance,Details                                           | 2                |
-		| patient2 | REF      | Date,From,To,Priority,Details                                                            | 1                |
-		| patient2 | SUM      | Start Date,Entry,Significance,Details                                                    | 1                |
-		| patient2 | SUM      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                 | 2                |
-		| patient2 | SUM      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 3                |
-		| patient2 | SUM      | Start Date,Details                                                                       | 4                |
-		| patient2 | SUM      | Date,Title,Details                                                                       | 5                |
+		| Patient  | Code     | Headers                                                                                                                                                  | PageSectionIndex |
+		| patient2 | ADM      | Date,Entry,Details                                                                                                                                       | 1                |
+		| patient2 | ALL      | Start Date,Details                                                                                                                                       | 1                |
+		| patient2 | ALL      | Start Date,End Date,Details                                                                                                                              | 2                |
+		| patient2 | CLI      | Date,Entry,Details                                                                                                                                       | 1                |
+		| patient2 | ENC      | Date,Title,Details                                                                                                                                       | 1                |
+		| patient2 | IMM      | Date,Vaccination,Part,Contents,Details                                                                                                                   | 1                |
+	#   | patient2 | INV                                                                                                                                                      |                  |  
+		| patient2 | MED      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                                                                                 | 1                |
+		| patient2 | MED      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details                                                                      | 2                |
+		| patient2 | MED      | Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issues,Details                                                                 | 3                |
+		| patient2 | OBS      | Date,Entry,Value,Details                                                                                                                                 | 1                |
+	#   | patient2 | PAT                                                                                                                                                      |                  |  
+		| patient2 | PRB      | Start Date,Entry,Significance,Details                                                                                                                    | 1                |
+		| patient2 | PRB      | Start Date,End Date,Entry,Significance,Details                                                                                                           | 2                |
+		| patient2 | REF      | Date,From,To,Priority,Details                                                                                                                            | 1                |
+		| patient2 | SUM      | Date,Title,Details                                                                                                                                       | 1                |
+		| patient2 | SUM      | Start Date,Entry,Significance,Details                                                                                                                    | 2                |
+		| patient2 | SUM      | Start Date,Details                                                                                                                                       | 3                |
+		| patient2 | SUM      | Type,Start Date,Medication Item,Dosage Instruction,Quantity,Scheduled End Date,Days Duration,Additional Information                                      | 4                |
+		| patient2 | SUM      | Type,Start Date,Medication Item,Dosage Instruction,Quantity,Last Issued Date,Number of Prescriptions Issued,Max Issues,Review Date,Addtional Information | 5                |            
 		
 Scenario Outline: filtered sections should contain date range section banner
 	Given I am using the default server
@@ -248,8 +234,8 @@ Scenario Outline: sections should contain the all data items section banner
 		| OBS  | patient2 |
 		| PRB  | patient1 |
 		| PRB  | patient2 |
-	#	| INV ||||||
-	#	| PAT ||||||
+	#	| INV ||
+	#	| PAT ||
 	
 Scenario Outline: filtered sections should return no data available html banner
 	Given I am using the default server
@@ -271,6 +257,7 @@ Scenario Outline: filtered sections should return no data available html banner
 	#	| INV ||||||
 	#	| PAT ||||||
 
+#201 08/05/2019 SJD Summary page reordering
 #197 SJD 03/05/2019 Update to Medication view
 Scenario Outline: sections should return no data available html banner
 	Given I am using the default server
@@ -287,15 +274,15 @@ Scenario Outline: sections should return no data available html banner
 		| ADM  | patient1 | Administrative Items                       |
 		| CLI  | patient1 | Clinical Items                             |
 		| ENC  | patient1 | Encounters                                 |
-		| SUM  | patient1 | Active Problems and Issues                 |
-		| SUM  | patient1 | Current Medication Issues                  |
-		| SUM  | patient1 | Current Repeat Medications                 |
-		| SUM  | patient1 | Current Allergies and Adverse Reactions    |
-		| SUM  | patient1 | Encounters                                 |
-		| REF  | patient1 | Referrals                                  |
-		| ALL  | patient1 | Current Allergies and Adverse Reactions    |
-		| ALL  | patient1 | Historical Allergies and Adverse Reactions |
-		| IMM  | patient1 | Immunisations                              |
+		| SUM | patient1  | Last 3 Encounters                          |
+		| SUM | patient1  | Active Problems and Issues                 |
+		| SUM | patient1  | Current Allergies and Adverse Reactions    |
+		| SUM | patient1  | Recent Acute Medication			           |
+		| SUM | patient1  | Current Repeat Medications                 |
+		| REF | patient1  | Referrals                                  |
+		| ALL | patient1  | Current Allergies and Adverse Reactions    |
+		| ALL | patient1  | Historical Allergies and Adverse Reactions |
+		| IMM | patient1  | Immunisations                              |
 		| MED  | patient1 | Recent Acute Medication                    |
 		| MED  | patient1 | Current Repeat Medication                  |
 		| MED  | patient1 | Discontinued Repeat Medication             |
