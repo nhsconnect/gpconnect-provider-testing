@@ -262,3 +262,14 @@ Scenario: When a patient on the provider system has inactive flag
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "0" entries
+
+
+	Scenario: No Consent Patient search gets a valid response
+	Given I configure the default "PatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient15"
+	When I make the "PatientSearch" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain "1" entries
+		And the Patient Id should be valid
+		And the required cacheing headers should be present in the response

@@ -173,3 +173,32 @@ Scenario: Patient read valid response check preferred branch
 #	When I make the "PatientRead" request
 #	Then the response status code should be "400"
 #		And the response should be a OperationOutcome resource with error code "INVALID_PATIENT_DEMOGRAAPHICS"
+
+Scenario: Check read patient on a patient with no Consent returns a valid response
+	Given I get the Patient for Patient Value "patient15"
+		And I store the Patient
+	Given I configure the default "PatientRead" request
+	When I make the "PatientRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a Patient
+		And the Patient Id should be valid
+		And the Patient Metadata should be valid
+		And the Patient Identifiers should be valid for Patient "patient15"
+		And the Patient GeneralPractitioner Practitioner should be valid and resolvable
+		And the Patient ManagingOrganization Organization should be valid and resolvable
+		And the Patient Deceased should be valid
+		And the Patient MultipleBirth should be valid
+		And the Patient Telecom should be valid
+		And the Patient Contact Relationship should be valid
+		And the Patient Communication should be valid
+		And the Patient Name should be valid
+		And the Patient Contact Name should be valid
+		And the Patient should exclude disallowed fields
+		And the Patient Use should be valid
+		And the Patient Gender should be valid
+		And the Patient MaritalStatus should be valid
+		And the Patient Link should be valid and resolvable
+		And the Patient Registration Details should be valid
+		# git hub ref 120
+		# RMB 25/10/2018
+		And the Patient Not In Use should be valid
