@@ -138,7 +138,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         MatchCollection tableHeaderSectionMatches = regexHeaderSection.Matches(html);
                         if (tableHeaderSectionMatches.Count < pageSectionIndex) {
                             Log.WriteLine("The html table that is expected does not exist in the response.");
-                            Assert.Fail();
+                            Assert.Fail("The html table that is expected does not exist in the response.");
                         } else {
                             string tableHeaderSectionHTML = tableHeaderSectionMatches[pageSectionIndex - 1].Value;
                             Log.WriteLine("HeaderSection = " + tableHeaderSectionHTML);
@@ -148,7 +148,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             if (headerList.Length != matchesForTableHeadersInHTML.Count)
                             {
                                 Log.WriteLine("The number of table headers in HTML section does not match the required number of headers.");
-                                Assert.Fail();
+                                Assert.Fail("The number of table headers in HTML section does not match the required number of headers.");
                             }
                             else
                             {
