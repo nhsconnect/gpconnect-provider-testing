@@ -123,7 +123,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the html should contain table headers in coma seperated list order ""([^""]*)"" for the ""([^""]*)""")]
-        public void ThenTheHTMLShouldNotContainTableHeadersInComaSeperatedListOrder(string listOfTableHeadersInOrder, int pageSectionIndex)
+        public void ThenTheHTMLShouldContainTableHeadersInComaSeperatedListOrder(string listOfTableHeadersInOrder, int pageSectionIndex)
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
@@ -137,8 +137,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         Regex regexHeaderSection = new Regex("<thead[\\w\\W]*?thead>");
                         MatchCollection tableHeaderSectionMatches = regexHeaderSection.Matches(html);
                         if (tableHeaderSectionMatches.Count < pageSectionIndex) {
-                            Log.WriteLine("The html table that is expected does not exist in the response.");
-                            Assert.Fail("The html table that is expected does not exist in the response.");
+                            Log.WriteLine("The table header count doesn't match the expected.");
+                            Assert.Fail("The table header count doesn't match the expected.");
                         } else {
                             string tableHeaderSectionHTML = tableHeaderSectionMatches[pageSectionIndex - 1].Value;
                             Log.WriteLine("HeaderSection = " + tableHeaderSectionHTML);
@@ -290,7 +290,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             if (sectionHtml.Contains(sectionHeading))
                             {
                                 sectionFound = true;
-                                sectionHtml.ShouldContain("<p>No '" + sectionHeading + "' data is recorded for this patient.</p>");
+                                var tempstring = "<p>No '" + sectionHeading + "' data is recorded for this patient.</p>";
+                               sectionHtml.ShouldContain("<p>No '" + sectionHeading + "' data is recorded for this patient.</p>");
+                               // sectionHtml.ShouldContain("<p>No '" + sectionHeading + "'");
+                         //       var pg = "<p>No 'All Medication' data is recorded for this patient.</p>";
+                             //   sectionHtml.ShouldContain(pg);
                             }
                         }
                     }
