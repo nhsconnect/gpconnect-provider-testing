@@ -157,26 +157,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessStructuredRecordMedications.feature.cs">
-      <DependentUpon>AccessStructuredRecordMedications.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="AccessStructuredRecordAllergies.feature.cs">
-      <DependentUpon>AccessStructuredRecordAllergies.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="AppointmentBook.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppointmentBook.feature</DependentUpon>
-    </Compile>
-    <Compile Include="AppointmentCancel.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppointmentCancel.feature</DependentUpon>
-    </Compile>
+    <Compile Include="AccessStructuredRecordAllergies.feature.cs" />
+    <Compile Include="AccessStructuredRecordMedications.feature.cs" />
+    <Compile Include="AppointmentAmend.feature.cs" />
+    <Compile Include="AppointmentBook.feature.cs" />
+    <Compile Include="AppointmentCancel.feature.cs" />
+    <Compile Include="AppointmentRead.feature.cs" />
+    <Compile Include="AppointmentRetrieve.feature.cs" />
     <Compile Include="Builders\Appointment\DefaultAppointmentBuilder.cs" />
     <Compile Include="Builders\Patient\DefaultRegisterPatientBuilder.cs" />
     <Compile Include="Cache\ValueSet\Resolvers\ValueSetResolvers.cs" />
@@ -208,11 +195,7 @@
     <Compile Include="Factories\HttpRequestConfigurationFactory.cs" />
     <Compile Include="Factories\JwtFactory.cs" />
     <Compile Include="Factories\RequestFactory.cs" />
-    <Compile Include="FHIR.feature.cs">
-      <DependentUpon>FHIR.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="FHIR.feature.cs" />
     <Compile Include="Helpers\AppSettingsHelper.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Helpers\FhirHelper.cs" />
@@ -224,6 +207,7 @@
     <Compile Include="Helpers\ResourceReferenceHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Helpers\TimePeriodHelper.cs" />
+    <Compile Include="Http.feature.cs" />
     <Compile Include="Http\HttpContextRequest.cs" />
     <Compile Include="Http\HttpRequestBase.cs" />
     <Compile Include="Http\FhirResponse.cs" />
@@ -241,83 +225,25 @@
     <Compile Include="Importers\ODSCodeMapConverter.cs" />
     <Compile Include="Importers\NHSNoMapConverter.cs" />
     <Compile Include="Importers\PDSMap.cs" />
-    <Compile Include="JWT.feature.cs">
-      <DependentUpon>JWT.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="LocationRead.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LocationRead.feature</DependentUpon>
-    </Compile>
+    <Compile Include="JWT.feature.cs" />
+    <Compile Include="LocationRead.feature.cs" />
     <Compile Include="Models\GpcCode.cs" />
-    <Compile Include="OrganizationRead.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OrganizationRead.feature</DependentUpon>
-    </Compile>
-    <Compile Include="PractitionerSearch.feature.cs">
-      <DependentUpon>PractitionerSearch.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Logger\TestListener.cs" />
-    <Compile Include="OrganizationSearch.feature.cs">
-      <DependentUpon>OrganizationSearch.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="PatientSearch.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PatientSearch.feature</DependentUpon>
-    </Compile>
-    <Compile Include="AppointmentRetrieve.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppointmentRetrieve.feature</DependentUpon>
-    </Compile>
-    <Compile Include="PractitionerRead.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PractitionerRead.feature</DependentUpon>
-    </Compile>
-    <Compile Include="PatientRead.feature.cs">
-      <DependentUpon>PatientRead.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="AppointmentRead.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppointmentRead.feature</DependentUpon>
-    </Compile>
-    <Compile Include="PatientRegister.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PatientRegister.feature</DependentUpon>
-    </Compile>
-    <Compile Include="AppointmentAmend.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppointmentAmend.feature</DependentUpon>
-    </Compile>
+    <Compile Include="OrganizationRead.feature.cs" />
+    <Compile Include="OrganizationSearch.feature.cs" />
+    <Compile Include="PatientRead.feature.cs" />
+    <Compile Include="PatientRegister.feature.cs" />
+    <Compile Include="PatientSearch.feature.cs" />
+    <Compile Include="PractitionerRead.feature.cs" />
+    <Compile Include="PractitionerSearch.feature.cs" />
     <Compile Include="Reporting\Report.cs" />
     <Compile Include="Reporting\ReportingConfiguration.cs" />
     <Compile Include="Repository\FhirResourceRepository.cs" />
     <Compile Include="Repository\IFhirResourceRepository.cs" />
-    <Compile Include="SearchForFreeSlots.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SearchForFreeSlots.feature</DependentUpon>
-    </Compile>
-    <Compile Include="SSP.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SSP.feature</DependentUpon>
-    </Compile>
+    <Compile Include="SearchForFreeSlots.feature.cs" />
+    <Compile Include="Security.feature.cs" />
+    <Compile Include="SSP.feature.cs" />
     <Compile Include="Steps\AccessStructuredMedicationSteps.cs" />
     <Compile Include="Steps\AccessStructuredAllergySteps.cs" />
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
@@ -351,21 +277,13 @@
     <Compile Include="Steps\FhirSteps.cs" />
     <Compile Include="Steps\HttpSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Security.feature</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\HttpHeaderHelper.cs" />
     <Compile Include="Helpers\HttpParameterHelper.cs" />
     <Compile Include="Helpers\JwtHelper.cs" />
     <Compile Include="Steps\TeardownSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AccessStructuredRecordMedications.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AccessStructuredRecordMedications.feature.cs</LastGenOutput>
-    </None>
+    <None Include="AccessStructuredRecordMedications.feature" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -378,85 +296,28 @@
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
-    <None Include="AccessStructuredRecordAllergies.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AccessStructuredRecordAllergies.feature.cs</LastGenOutput>
-    </None>
-    <None Include="AppointmentBook.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AppointmentBook.feature.cs</LastGenOutput>
-    </None>
-    <None Include="AppointmentCancel.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AppointmentCancel.feature.cs</LastGenOutput>
-    </None>
-    <None Include="FHIR.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FHIR.feature.cs</LastGenOutput>
-    </None>
-    <None Include="JWT.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>JWT.feature.cs</LastGenOutput>
-    </None>
-    <None Include="LocationRead.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>LocationRead.feature.cs</LastGenOutput>
-    </None>
-    <None Include="OrganizationRead.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>OrganizationRead.feature.cs</LastGenOutput>
-    </None>
-    <None Include="PractitionerSearch.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PractitionerSearch.feature.cs</LastGenOutput>
-    </None>
-    <None Include="OrganizationSearch.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>OrganizationSearch.feature.cs</LastGenOutput>
-    </None>
-    <None Include="PatientSearch.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PatientSearch.feature.cs</LastGenOutput>
-    </None>
+    <None Include="AccessStructuredRecordAllergies.feature" />
+    <None Include="AppointmentBook.feature" />
+    <None Include="AppointmentCancel.feature" />
+    <None Include="FHIR.feature" />
+    <None Include="JWT.feature" />
+    <None Include="LocationRead.feature" />
+    <None Include="OrganizationRead.feature" />
+    <None Include="PractitionerSearch.feature" />
+    <None Include="OrganizationSearch.feature" />
+    <None Include="PatientSearch.feature" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="PractitionerRead.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PractitionerRead.feature.cs</LastGenOutput>
-    </None>
-    <None Include="PatientRead.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PatientRead.feature.cs</LastGenOutput>
-    </None>
-    <None Include="AppointmentRead.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AppointmentRead.feature.cs</LastGenOutput>
-    </None>
-    <None Include="PatientRegister.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PatientRegister.feature.cs</LastGenOutput>
-    </None>
-    <None Include="SearchForFreeSlots.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SearchForFreeSlots.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Security.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Security.feature.cs</LastGenOutput>
-    </None>
-    <None Include="AppointmentRetrieve.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AppointmentRetrieve.feature.cs</LastGenOutput>
-    </None>
-    <None Include="AppointmentAmend.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AppointmentAmend.feature.cs</LastGenOutput>
-    </None>
-    <None Include="SSP.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SSP.feature.cs</LastGenOutput>
-    </None>
+    <None Include="PractitionerRead.feature" />
+    <None Include="PatientRead.feature" />
+    <None Include="AppointmentRead.feature" />
+    <None Include="PatientRegister.feature" />
+    <None Include="SearchForFreeSlots.feature" />
+    <None Include="Security.feature" />
+    <None Include="AppointmentRetrieve.feature" />
+    <None Include="AppointmentAmend.feature" />
+    <None Include="SSP.feature" />
     <None Include="validation.xml.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -479,9 +340,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->
-  <Target Name="BeforeBuild">
-    <TechTalk.SpecFlow.Tools.MsBuild.GenerateAll ProjectPath=".\$(ProjectFileName)" />
-  </Target>
   <Target Name="AfterBuild">
     <PropertyGroup>
       <Pickles_Generate>True</Pickles_Generate>
@@ -510,11 +368,6 @@
     <!--Publish copies the untransformed App.config to deployment directory so overwrite it-->
     <Copy Condition="Exists('$(DeployedConfig)')" SourceFiles="$(IntermediateOutputPath)$(TargetFileName).config" DestinationFiles="$(DeployedConfig)" />
   </Target>
-  <PropertyGroup>
-    <SpecFlowTasksPath>..\packages\SpecFlow.2.1.0\tools\specflow.exe</SpecFlowTasksPath>
-  </PropertyGroup>
-  <Import Project="..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.tasks" Condition="Exists('..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.tasks')" />
-  <Import Project="..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.targets" Condition="Exists('..\packages\SpecFlow.2.1.0\tools\TechTalk.SpecFlow.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
