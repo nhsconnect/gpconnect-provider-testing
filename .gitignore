@@ -257,5 +257,3 @@ paket-files/
 #Ignore .feature.cs
 /GPConnect.Provider.AcceptanceTests/*.feature.cs
 
-#Specflow
-*.feature.cs
