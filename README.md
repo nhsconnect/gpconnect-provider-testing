@@ -30,7 +30,7 @@ By default, the test suite points to the public [Demonstrator](http://ec2-54-194
 * serverUrl
 * serverPort
 
-## Running in Visual Studio
+## Running in Visual Studio ( Must be at least Visual Studio 2017)
 Note: *This assumes the project has already been checked out and the appropriate modifications described in the Setup and Config sections have already been made.*
 
 Install 2 plugins:
