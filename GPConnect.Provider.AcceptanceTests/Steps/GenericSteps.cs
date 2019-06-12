@@ -170,8 +170,8 @@
                 {
                     Log.WriteLine("Exception writing FhirContext to Output File");
                 }
-                
-                
+
+
                 //Output JSON trace
                 if (AppSettingsHelper.TraceOutputJSONResponse)
                 {
@@ -200,10 +200,10 @@
                         Log.WriteLine("Exception writing JWT Header to Output File");
                     }
                 }
-               
 
 
-                
+
+
             }
         }
 
@@ -223,13 +223,14 @@
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(GlobalContext.TraceDirectory + @"\TestRunLog.txt"))
                 {
                     //writes overall stats first
-                    file.WriteLine("Overall Stats from test Run: Passed=" + GlobalContext.CountTestRunPassed.ToString() + "  Failed: " + GlobalContext.CountTestRunFailed.ToString());
+                    file.WriteLine("Overall Stats from test Run: Total=" + (GlobalContext.CountTestRunPassed + GlobalContext.CountTestRunFailed).ToString() + "  Passed=" + GlobalContext.CountTestRunPassed.ToString() + "  Failed: " + GlobalContext.CountTestRunFailed.ToString());
 
                     //Add inormation about the test run
                     file.WriteLine("TestRunDateTime : " + DateTime.UtcNow.ToLocalTime().ToString());
                     file.WriteLine("consumerASID : " + AppSettingsHelper.ConsumerASID);
                     file.WriteLine("providerASID : " + AppSettingsHelper.ProviderASID);
                     file.WriteLine("useTLS Flag : " + AppSettingsHelper.UseTLS.ToString());
+                    file.WriteLine("serverURL: " + AppSettingsHelper.ServerUrl);
                     file.WriteLine("serverPort HTTP: " + AppSettingsHelper.ServerHttpPort);
                     file.WriteLine("serverPort HTTPS: " + AppSettingsHelper.ServerHttpsPort);
                     file.WriteLine("serverBase : " + AppSettingsHelper.ServerBase);
