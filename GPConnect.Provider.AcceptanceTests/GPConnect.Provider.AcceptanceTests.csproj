@@ -196,17 +196,6 @@
       <Pickles_OutputDirectory>C:\Temp\GPConnect.Provider.AcceptanceTests.Doco</Pickles_OutputDirectory>
     </PropertyGroup>
   </Target>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.11.0\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.10.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.10.0\build\net35\NUnit3TestAdapter.props'))" />
-    <Error Condition="!Exists('..\packages\SpecFlow.NUnit.3.0.213\build\SpecFlow.NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SpecFlow.NUnit.3.0.213\build\SpecFlow.NUnit.props'))" />
-    <Error Condition="!Exists('..\packages\SpecFlow.NUnit.3.0.213\build\SpecFlow.NUnit.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SpecFlow.NUnit.3.0.213\build\SpecFlow.NUnit.targets'))" />
-    <Error Condition="!Exists('..\packages\SpecFlow.Tools.MsBuild.Generation.3.0.213\build\SpecFlow.Tools.MsBuild.Generation.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SpecFlow.Tools.MsBuild.Generation.3.0.213\build\SpecFlow.Tools.MsBuild.Generation.props'))" />
-    <Error Condition="!Exists('..\packages\SpecFlow.Tools.MsBuild.Generation.3.0.213\build\SpecFlow.Tools.MsBuild.Generation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SpecFlow.Tools.MsBuild.Generation.3.0.213\build\SpecFlow.Tools.MsBuild.Generation.targets'))" />
-  </Target>
   <Import Project="..\packages\SpecFlow.NUnit.3.0.213\build\SpecFlow.NUnit.targets" Condition="Exists('..\packages\SpecFlow.NUnit.3.0.213\build\SpecFlow.NUnit.targets')" />
   <Import Project="..\packages\SpecFlow.Tools.MsBuild.Generation.3.0.213\build\SpecFlow.Tools.MsBuild.Generation.targets" Condition="Exists('..\packages\SpecFlow.Tools.MsBuild.Generation.3.0.213\build\SpecFlow.Tools.MsBuild.Generation.targets')" />
     <Target Name="AfterUpdateFeatureFilesInProject">
