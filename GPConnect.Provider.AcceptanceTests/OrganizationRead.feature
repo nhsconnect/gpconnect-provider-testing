@@ -23,11 +23,13 @@ Scenario: Organization Read successful request validate all of response
 # RMB 25/10/2018		
 		And the Organization Not In Use should be valid
 
+# SJD 13/06/2019 #257 added check on error code
 Scenario Outline: Organization Read with valid identifier which does not exist on providers system
 	Given I configure the default "OrganizationRead" request
 		And I set the Read Operation logical identifier used in the request to "<LogicalId>"
 	When I make the "OrganizationRead" request
 	Then the response status code should be "404"
+	And the response should be a OperationOutcome resource with error code "ORGANISATION_NOT_FOUND"
 	Examples:
 		| LogicalId      |
 		| ddBm           |
