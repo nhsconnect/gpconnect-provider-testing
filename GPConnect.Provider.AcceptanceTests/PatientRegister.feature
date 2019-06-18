@@ -156,16 +156,16 @@ Scenario: Register patient with invalid patient resource type
 	When I make the "RegisterPatient" request with invalid parameter Resource type
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
-
+	
 @1.2.3
 Scenario: Register patient with invalid patient resource with additional element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I add the Stored Patient as a parameter
 	When I make the "RegisterPatient" request with additional field in parameter Resource
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+			
 Scenario: Register patient with duplicate patient resource parameters
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -174,7 +174,7 @@ Scenario: Register patient with duplicate patient resource parameters
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
-
+			
 @1.2.3
 Scenario: Register patient which alread exists on the system as a normal patient
 	Given I get an existing patients nshNumber
@@ -283,11 +283,11 @@ Scenario Outline: Register patient with additional valid elements
 Scenario Outline: Register patient with invalid additional valid elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I add the Stored Patient as a parameter
-		And I add a <ElementToAdd> element to the Stored Patient
+	And I add the Stored Patient as a parameter
+	And I add a <ElementToAdd> element to the Stored Patient
 	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+	And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
 		| ElementToAdd |
 		| Active       |
@@ -420,11 +420,11 @@ Scenario: Register patient with Address Telecom and multiple nhsCommunication
 Scenario Outline: Register patient with additional not allowed elements
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
-		And I add the Stored Patient as a parameter
-		And I add a <ElementToAdd> element to the Stored Patient
+	And I add the Stored Patient as a parameter
+	And I add a <ElementToAdd> element to the Stored Patient
 	When I make the "RegisterPatient" request
-	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+	And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	Examples:
 		| ElementToAdd  |
 		| Animal        |
