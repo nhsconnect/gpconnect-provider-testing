@@ -84,7 +84,8 @@
                 {
                     TestRunDateTime = DateTime.UtcNow.ToLocalTime(),
                     Testname = ScenarioName,
-                    TestResult = ScenarioOutcome
+                    TestResult = ScenarioOutcome,
+                    FailureMessage = ErrorMessage
                 };
 
                 GlobalContext.FileBasedReportList.Add(FileLogEntry);
