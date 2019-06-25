@@ -267,6 +267,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             HttpContext.ResponseJSON[key].ShouldBe(value);
         }
 
+        //238 - 25-6-2019 PG function added to check APi Version
+        [Then(@"the CapabilityStatement version should match the GP Connect specification release")]
+        public void TheCapabilityStatementVersionShouldMatchTheGPConnectSpecificationRelease()
+        {
+            Log.WriteLine("GPConnectSpecVersion should be : {0} Currently is : {1}", AppSettingsHelper.GPConnectSpecVersion, HttpContext.ResponseJSON["version"]);
+            HttpContext.ResponseJSON["version"].ShouldBe(AppSettingsHelper.GPConnectSpecVersion);
+            
+        }
+
+
+
         [Then(@"the JSON array ""([^""]*)"" should contain ""([^""]*)""")]
         public void ThenTheJSONArrayShouldContain(string key, string value)
         {

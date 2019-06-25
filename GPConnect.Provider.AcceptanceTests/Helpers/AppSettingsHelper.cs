@@ -20,7 +20,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         // FHIR Settings
         public static string FhirDirectory => Get<string>("fhirDirectory");
-        
+        public static string GPConnectSpecVersion => Get<string>("gpConnectSpecVersion");
+
         // Security Settings
         public static bool UseTLS => Get<bool>("useTLS");
 
