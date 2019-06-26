@@ -10,6 +10,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using System.Linq;
     using TechTalk.SpecFlow;
     using static Hl7.Fhir.Model.Bundle;
+    using GPConnect.Provider.AcceptanceTests.Logger;
 
     [Binding]
     public sealed class BundleSteps : BaseSteps
@@ -95,9 +96,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             operationOutcome.Issue?.ForEach(issue =>
             {
-                issue.Severity.ShouldNotBeNull();
+                var errorValue = issue.Severity;
+                errorValue.ToString().ShouldBe("Error", "the severity value is incorrect should be Error"); //#259 SJD 26/6/19 assertion added
                 issue.Code.ShouldNotBeNull();
-
+                                
                 issue.Details?.Coding?.Count.ShouldBe(1);
                 if (issue.Details?.Coding != null)
                 {
