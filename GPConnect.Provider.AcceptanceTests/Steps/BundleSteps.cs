@@ -97,7 +97,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             operationOutcome.Issue?.ForEach(issue =>
             {
                 var errorValue = issue.Severity;
+
+                Log.WriteLine("issue.severity value is incorrect should be issue.severity.error");
                 errorValue.ToString().ShouldBe("Error", "the severity value is incorrect should be Error"); //#259 SJD 26/6/19 assertion added
+               
                 issue.Code.ShouldNotBeNull();
                                 
                 issue.Details?.Coding?.Count.ShouldBe(1);
