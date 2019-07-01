@@ -34,6 +34,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public DateTime TestRunDateTime;
             public string Testname;
             public string TestResult;
+            public string FailureMessage;
         }
 
         public static int CountTestRunPassed { get; set; }

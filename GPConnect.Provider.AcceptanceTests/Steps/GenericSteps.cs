@@ -171,7 +171,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     TestRunDateTime = DateTime.UtcNow.ToLocalTime(),
                     Testname = ScenarioName,
-                    TestResult = ScenarioOutcome
+                    TestResult = ScenarioOutcome,
+                    FailureMessage = ErrorMessage
                 };
 
                 GlobalContext.FileBasedReportList.Add(FileLogEntry);
@@ -189,7 +190,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(GlobalContext.TraceDirectory + @"\TestRunLog.txt"))
                 {
                     //writes overall stats first
+                    file.WriteLine("****************************************************************");
                     file.WriteLine("Overall Stats from test Run: Total=" + (GlobalContext.CountTestRunPassed + GlobalContext.CountTestRunFailed).ToString() + "  Passed=" + GlobalContext.CountTestRunPassed.ToString() + "  Failed: " + GlobalContext.CountTestRunFailed.ToString());
+                    file.WriteLine("****************************************************************");
+
 
                     //Add inormation about the test run
                     file.WriteLine("TestRunDateTime : " + DateTime.UtcNow.ToLocalTime().ToString());
@@ -203,16 +207,55 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     file.WriteLine("spineProxyUrl : " + AppSettingsHelper.SpineProxyUrl.ToString());
                     file.WriteLine("spineProxyPort : " + AppSettingsHelper.SpineProxyPort.ToString());
 
+                    file.WriteLine("****************************************************************");
+                    file.WriteLine("Individual Test Results Below");
+                    file.WriteLine("****************************************************************");
+
                     if (AppSettingsHelper.FileReportingSortFailFirst)
                         GlobalContext.FileBasedReportList = GlobalContext.FileBasedReportList.OrderBy(i => i.TestResult).ToList();
                     else
                         GlobalContext.FileBasedReportList = GlobalContext.FileBasedReportList.OrderBy(i => i.TestRunDateTime).ToList();
 
+                    bool lastEntryFailed = false;
+
                     foreach (GlobalContext.FileBasedReportEntry entry in GlobalContext.FileBasedReportList)
                     {
-                        file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                        //Output test results with or without error message
+                        if (AppSettingsHelper.FileReportingOutputFailureMessage)
+                        {
+
+                            //If have error message for test then output 
+                            if (!string.IsNullOrEmpty(entry.FailureMessage))
+                            {
+
+                                //Write Test Result
+                                if (!lastEntryFailed)
+                                    file.Write("----------------------------------------------------------------\n");
+
+                                file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+
+                                file.Write(entry.FailureMessage + "\n");
+                                file.Write("----------------------------------------------------------------\n");
+
+                                lastEntryFailed = true;
+                            }
+                            //No failure so dont output a lines around pass entry
+                            else
+                            {
+                                file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                                lastEntryFailed = false;
+
+                            }
+                        }
+                        //output without error message
+                        else
+                        {
+                            file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                        }
                     }
+
                 }
+                     
 
             }
         }
