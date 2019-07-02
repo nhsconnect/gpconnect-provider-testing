@@ -14,6 +14,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         //reporting
         public static bool FileReportingEnabled => AppSettingsHelper.Get<bool>("ReportingToFile:Enabled");
         public static bool FileReportingSortFailFirst => AppSettingsHelper.Get<bool>("ReportingToFile:SortFailFirst");
+        public static bool FileReportingOutputFailureMessage => AppSettingsHelper.Get<bool>("ReportingToFile:OutputFailureMessage");
 
         // Data Settings
         public static string DataDirectory => Get<string>("dataDirectory");
