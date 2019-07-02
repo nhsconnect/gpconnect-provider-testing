@@ -13,6 +13,7 @@
         private static string Protocol => Tls ? "https://" : "http://";
         internal static bool FileReportingEnabled => AppSettingsHelper.Get<bool>("ReportingToFile:Enabled");
         internal static bool FileReportingSortFailFirst => AppSettingsHelper.Get<bool>("ReportingToFile:SortFailFirst");
+        internal static bool FileReportingOutputFailureMessage => AppSettingsHelper.Get<bool>("ReportingToFile:OutputFailureMessage");
 
     }
 }
