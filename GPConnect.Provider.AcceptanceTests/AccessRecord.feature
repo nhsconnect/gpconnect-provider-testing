@@ -21,6 +21,7 @@ Background:
 		| patient14          | 9000000014 |
 		| patient15          | 9000000015 |
 
+@0.5.2
 Scenario Outline: Retrieve the care record sections for a patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -165,6 +166,7 @@ Scenario: Duplicate NHS number parameters in request
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
+@0.5.2
 Scenario: No patient found with NHS number
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -1165,7 +1167,8 @@ Scenario Outline: A patient is requested which is not on Spine but is on provide
 		| REF |
 		| SUM |
 
-		#Added By PG #214 26-4-2019
+#Added By PG #214 26-4-2019
+@0.5.2
 Scenario Outline: Ensure Retrieve the care record sections for senstive patients returns patient not found
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction

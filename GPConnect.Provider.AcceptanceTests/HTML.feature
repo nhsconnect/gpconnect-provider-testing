@@ -182,6 +182,7 @@ Scenario Outline: filtered sections should contain date range section banner
 	#	| INV ||||||
 	#	| PAT ||||||
 
+@0.5.2
 Scenario Outline: sections should contain the all data items section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -236,6 +237,7 @@ Scenario Outline: filtered sections should return no data available html banner
 	#	| INV ||||||
 	#	| PAT ||||||
 
+@0.5.2
 Scenario Outline: sections should return no data available html banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -313,6 +315,7 @@ Scenario Outline: should contain the applied start banner
 		| PRB  | patient1 | 2014          | 01-Jan-2014   |             
 
 # issue 215 SJD 25/4/19 - To check banner when no start date provided		
+@0.5.2
 Scenario Outline: should contain the banner All data items until 
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction

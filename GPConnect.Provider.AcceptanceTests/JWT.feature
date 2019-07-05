@@ -57,6 +57,9 @@ Scenario: JWT expiry time before creation time
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
+#PG 26/4/19 - #235 - Agreed with Jonny Rylands this
+#test will fail for demonstrator but should pass for providers
+@0.5.2
 Scenario: JWT creation time in the future
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -182,6 +185,7 @@ Scenario: JWT requesting practitioner practitionerRole does not contain a SDS Jo
 		And the JSON response should be a OperationOutcome resource
 
 #issue 235 SJD 29/04/2019
+@0.5.2
 Scenario: JWT requesting practitioner UNK value
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -190,6 +194,7 @@ Scenario: JWT requesting practitioner UNK value
 	Then the response status code should be "200"
 
 #issue 235 SJD 29/04/2019 - This will fail (400) against the demonstrator as is locked down for any new consumers coming on board to force a value
+@0.5.2
 Scenario: JWT Missing sdsRoleProfile and guid
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -305,6 +310,7 @@ Scenario: JWT requesting device invalid resourceType
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
+@0.5.2
 Scenario: JWT requesting organization invalid resourceType
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -323,6 +329,7 @@ Scenario: JWT requesting practitioner invalid resourceType
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
+@0.5.2
 Scenario: JWT requested record patient does not match getCareRecord Payload patient
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -363,6 +370,7 @@ Scenario: JWT requested scope for metaData request does not match organization r
 		And the JSON response should be a OperationOutcome resource
 
 		# PG 26/4/19 - #235
+	@0.5.2
 	Scenario: JWT - Everything normal test 
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
@@ -374,6 +382,7 @@ Scenario: JWT requested scope for metaData request does not match organization r
 		And the JSON value "resourceType" should be "Conformance"
 
 	## PG 26/4/19 - #235
+	@0.5.2
 	Scenario: JWT - Consumer clock is slow 600s
 	Given I am using the default server
 	And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction

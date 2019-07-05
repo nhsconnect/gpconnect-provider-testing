@@ -311,6 +311,7 @@ Scenario: endpoint should support chunking of data
 		And response should be chunked
 
 	#PG 29-4-2019 - #238
+	@0.5.2
 	Scenario: Check Capability Version
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
