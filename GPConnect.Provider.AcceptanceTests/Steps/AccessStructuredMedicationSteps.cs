@@ -613,34 +613,35 @@
 
             });
         }
-        #endregion
+		/* SJD 19/07/2019 removed as not relevant to 'Retrieve the medication structured record section for a patient including prescription issues' test
+			#endregion
 
-        #region Medication Request Checks
+			#region Medication Request Checks
 
-        [Then(@"order requests should have the same authoredOn date as their plan")]
-        public void TheRelatedMedicationRequestsShouldHaveTheSameAuthoredOnDates()
-        {
-            var plans = MedicationRequests.Where(req => req.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan)).ToList();
-            plans.ForEach(plan =>
-            {
-                var allRelatedRequests = MedicationRequests.Where(
-                     relatedReq => relatedReq.BasedOn.Count > 0 && relatedReq.BasedOn.First().Reference.Equals("MedicationRequest/" + plan.Id)
-                );
+			[Then(@"order requests should have the same authoredOn date as their plan")]
+			public void TheRelatedMedicationRequestsShouldHaveTheSameAuthoredOnDates()
+			{
+				var plans = MedicationRequests.Where(req => req.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan)).ToList();
+				plans.ForEach(plan =>
+				{
+					var allRelatedRequests = MedicationRequests.Where(
+						 relatedReq => relatedReq.BasedOn.Count > 0 && relatedReq.BasedOn.First().Reference.Equals("MedicationRequest/" + plan.Id)
+					);
 
-                allRelatedRequests.ToList().ForEach(relatedRequest =>
-                {
-// git hub ref 183
-// RMB 14/2/19
-                CodeableConcept prescriptionType = (CodeableConcept)relatedRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
-                if (prescriptionType.Coding.First().Display.Contains("Repeat"))
-                {
-					relatedRequest.AuthoredOn.ShouldContain(plan.AuthoredOn);
-                }					                  
-                });
-            });
-        }
+					allRelatedRequests.ToList().ForEach(relatedRequest =>
+					{
+						// git hub ref 183
+						// RMB 14/2/19
+						CodeableConcept prescriptionType = (CodeableConcept)relatedRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
+						if (prescriptionType.Coding.First().Display.Contains("Repeat"))
+						{
+							relatedRequest.AuthoredOn.ShouldContain(plan.AuthoredOn);
+						}
+					});
+				});
+			} */
 
-        [Then(@"there should only be one order request for acute prescriptions")]
+		[Then(@"there should only be one order request for acute prescriptions")]
         public void ThereShouldOnlyBeOneOrderRequestForAcutePrescriptions()
         {
             List<MedicationRequest> acuteRequests = MedicationRequests.Where(req => isRequestAnAcutePlan(req).Equals(true)).ToList();
