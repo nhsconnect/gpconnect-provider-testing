@@ -55,7 +55,8 @@ Scenario Outline: HTML should not contain disallowed elements
 
 # 197 03/05/2019 SJD changes to Medication view - removed duplicated tests
 # 201 14/05/2019 SJD Summary Page re-ordering
-Scenario Outline: html section headers present
+# 195 17/07/2019 removed single tables as not inside a <h2> tag
+Scenario Outline: html sub section headers present
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "<Patient>"
@@ -63,33 +64,17 @@ Scenario Outline: html section headers present
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And the html should contain headers in coma seperated list "<Headers>"
+		And the html should contain sub section headers in coma seperated list "<Headers>"
 	Examples:
-		| Patient   | Code | Headers                                                                                                                                                                            |
-		| patient1  | ADM  | Administrative Items                                                                                                                                                               |
-		| patient2  | ADM  | Administrative Items                                                                                                                                                               |
-		| patient1  | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                 |
-		| patient2  | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                 |
-		| patient1  | CLI  | Clinical Items                                                                                                                                                                     |
-		| patient2  | CLI  | Clinical Items                                                                                                                                                                     |
-		| patient1  | ENC  | Encounters                                                                                                                                                                         |
-		| patient2  | ENC  | Encounters                                                                                                                                                                         |
-		| patient1  | IMM  | Immunisations                                                                                                                                                                      |
-		| patient2  | IMM  | Immunisations                                                                                                                                                                      |
+		| Patient  | Code | Headers                                                                            |
+		| patient1 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
+		| patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
 		| patient1  | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                    |
 		| patient2  | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                    |
-		| patient1  | OBS  | Observations                                                                                                                                                                       |
-		| patient2  | OBS  | Observations                                                                                                                                                                       |
 		| patient1  | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                   |
 		| patient2  | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                   |
-		| patient1  | REF  | Referrals                                                                                                                                                                          |
-		| patient2  | REF  | Referrals                                                                                                                                                                          |
 		| patient1  | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication |
 		| patient2  | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication |
-         #patient1 | INV  | Investigations                                                                                                                                                                     |
-		 #patient2 | INV  | Investigations                                                                                                                                                                     |
-		 #patient1 | PAT  |                                                                                                                                                                                    |
-		 #patient2 | PAT  |                                                                                                                                                                                    |
 
 # 197 03/05/2019 SJD changes to Medication view tables
 # 201 14/05/2019 SJD Summary Page re-ordering tables
@@ -187,10 +172,14 @@ Scenario Outline: should contain the applied start banner
 		And the response html should contain the applied start date banner text "<TextStartDate>"
 	Examples:
 		| Code | Patient  | StartDateTime | TextStartDate |
-		| ENC  | patient1 | 1982-10-05    | 05-Oct-1982   |             
-		| CLI  | patient2 | 2014-02       | 01-Feb-2014   |             
-		| PRB  | patient1 | 2014          | 01-Jan-2014   |             
-
+		| ENC  | patient1 | 1982-10-05    | 05-Oct-1982   |
+		| CLI  | patient2 | 2014-02       | 01-Feb-2014   |
+		| PRB  | patient1 | 2014          | 01-Jan-2014   |
+		| MED  | patient2 | 2016-12       | 01-Dec-2016   |
+		| REF  | patient1 | 2016-11       | 01-Nov-2016   |
+		| OBS  | patient2 | 2016-09       | 01-Sep-2016   |
+		| ADM  | patient1 | 2016-12       | 01-Dec-2016   |
+		
 # issue 193 SJD 01/05/19 - To check banner when no start date provided		
 Scenario Outline: should contain the banner All data items until 
 	Given I am using the default server
@@ -204,9 +193,13 @@ Scenario Outline: should contain the banner All data items until
 		And the response html should contain the applied end date banner text "<TextEndDate>"
 	Examples:
 		| Code | Patient  | EndDateTime | TextEndDate |
-		| MED  | patient1 | 2016-12-12  | 12-Dec-2016 |                                            
-		| MED  | patient1 | 2016-12     | 31-Dec-2016 | 
-		| OBS  | patient2 | 2016        | 31-Dec-2016 |
+		| ENC  | patient2 | 2016-12-12  | 12-Dec-2016 |
+		| CLI  | patient2 | 2016-02     | 29-Feb-2016 |
+		| PRB  | patient2 | 2016        | 31-Dec-2016 |
+		| MED  | patient2 | 2016-12     | 31-Dec-2016 |
+		| REF  | patient2 | 2016-11     | 30-Nov-2016 |
+		| OBS  | patient2 | 2016-09     | 30-Sep-2016 |
+		| ADM  | patient2 | 2016-12     | 31-Dec-2016 |
 
 Scenario Outline: sections should contain the all data items section banner
 	Given I am using the default server
@@ -338,7 +331,54 @@ Scenario Outline: check when no date range supplied should contain default date 
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And the response html should contain the all data items text
-		
 	Examples:
-		| Code | Patient  | StartDateTime | EndDateTime | 
-		| ADM  | patient1 |				  |				|  
+		| Code | Patient  | StartDateTime | EndDateTime |
+		| ENC  | patient2 |               |             |
+		| CLI  | patient2 |               |             |
+		| PRB  | patient2 |               |             |
+		| MED  | patient2 |               |             |
+		| REF  | patient2 |               |             |
+		| OBS  | patient2 |               |             |
+		| ADM  | patient2 |               |             |
+
+#195 SJD 24/07/2019 – when consumer date range applied to a section and subsections do not support a date filter - MUST display banner
+Scenario Outline: section date filter applied but date filter not supported in subsection - not applied banner displayed
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		And I set a time period parameter start date to "<StartDateTime>" and end date to "<EndDateTime>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the response html should contain the not applied date ranges banner for "<subSection>"
+	Examples:
+		| Code | Patient  | StartDateTime | EndDateTime | subSection                        |
+		| MED  | patient2 | 2018-04-20    | 2018-04-30  | Acute Medication (Last 12 Months) |
+		| PRB  | patient2 | 2018-04-20    | 2018-04-30  | Active Problems and Issues        |
+		| MED  | patient2 | 2018-04-20    | 2018-04-30  | Current Repeat Medication         |
+		| MED  | patient2 | 2018-04-20    | 2018-04-30  | Discontinued Repeat Medication    |
+	
+#195 SJD 24/07/2019 h1 header tags 
+Scenario Outline: html section headers inside correct tag
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the html should contain section headers in coma seperated list "<Headers>"
+	Examples:
+		| Patient  | Code | Headers                         |
+		| patient1 | ADM  | Administrative Items            |
+		| patient2 | ALL  | Allergies and Adverse Reactions |
+		| patient1 | CLI  | Clinical Items                  |
+		| patient2 | ENC  | Encounters                      |
+		| patient1 | IMM  | Immunisations                   |
+		| patient2 | MED  | Medications                     |
+		| patient1 | OBS  | Observations                    |
+		| patient2 | PRB  | Problems and Issues             |
+		| patient1 | REF  | Referrals                       |
+		| patient2 | SUM  | Summary                         |
+        
