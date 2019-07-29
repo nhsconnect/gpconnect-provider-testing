@@ -25,7 +25,8 @@ Scenario Outline: Organization search success
 		| https://fhir.nhs.uk/Id/ods-organization-code | ORG1       | 1       |
 # github ref 109
 # RMB 23/10/2018
-		| https://fhir.nhs.uk/Id/ods-organization-code | ORG2       | 2       |
+		#PG #275 - 29/07/2019 - removed test for multiple orgs
+		#| https://fhir.nhs.uk/Id/ods-organization-code | ORG2       | 2       |
 
 # github ref 152 removed
 # RMB 7/1/2019
