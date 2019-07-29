@@ -127,6 +127,15 @@
 
         }
 
+
+        public void SaveJSONRequestBodyToDisk(string filename)
+        {
+            var JSONRquestBody = JsonConvert.DeserializeObject(HttpRequestConfiguration.RequestBody);
+            string jsonPrettyPrinted = JsonConvert.SerializeObject(JSONRquestBody, Formatting.Indented);
+            File.WriteAllText(@filename, jsonPrettyPrinted);
+        }
+
+
         private static class Context
         {
             // Provider
