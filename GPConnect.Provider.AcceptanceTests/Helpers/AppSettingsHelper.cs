@@ -10,6 +10,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static string TraceBaseDirectory => Get<string>("traceBaseDirectory");
         public static bool TraceOutputJSONResponse => Get<bool>("traceOutputJSONResponse");
         public static bool TraceOutputJWT => Get<bool>("traceOutputJWT");
+        public static bool TraceOutputJSONRequestBody => Get<bool>("traceOutputJSONRequestBody");
 
         //reporting
         public static bool FileReportingEnabled => AppSettingsHelper.Get<bool>("ReportingToFile:Enabled");

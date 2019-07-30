@@ -526,5 +526,12 @@ namespace GPConnect.Provider.AcceptanceTests.Context
 
         }
 
+        public void SaveJSONRequestBodyToDisk(string filename)
+        {
+            var JSONRquestBody = JsonConvert.DeserializeObject(this.RequestBody);
+            string jsonPrettyPrinted = JsonConvert.SerializeObject(JSONRquestBody, Formatting.Indented);
+            File.WriteAllText(@filename, jsonPrettyPrinted);
+        }
+
     }
 }

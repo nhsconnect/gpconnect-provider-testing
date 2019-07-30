@@ -381,6 +381,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
 
+            //output Pretty Printed Request body
+            if (AppSettingsHelper.TraceOutputJSONRequestBody)
+            {
+                //Output Json Request Body to a Pretty Printed Separate File
+                try
+                {
+                    HttpContext.SaveJSONRequestBodyToDisk(Path.Combine(scenarioDirectory, "JSONRequestBody.txt"));
+                }
+                catch
+                {
+                    Log.WriteLine("Exception writing JSONRequestBody to Output File");
+                }
+
+            }
+
+
 
         }
 
