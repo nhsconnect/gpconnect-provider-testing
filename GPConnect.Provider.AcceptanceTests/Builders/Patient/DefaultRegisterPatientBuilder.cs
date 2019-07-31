@@ -24,8 +24,8 @@
                 Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
                 Value = new CodeableConcept(FhirConst.CodeSystems.kCcNhsNumVerification, "01", "Number present and verified")
             });
-
-            var patientToRegister = new Patient
+			
+			var patientToRegister = new Patient
             {
                 BirthDateElement = new Date(_registerPatient.DOB),
                 Name = new List<HumanName>
@@ -38,7 +38,16 @@
                 }
             };
 
-            switch (_registerPatient.GENDER)
+			//SJD 31/07/2019 #269 meta.profile added to request payload
+			var patientMeta = new Meta();
+			{
+				IEnumerable<string> MetaProfile = new string[] { FhirConst.StructureDefinitionSystems.kPatient };
+				patientMeta.Profile = MetaProfile;
+			}
+
+			patientToRegister.Meta = patientMeta;
+
+			switch (_registerPatient.GENDER)
             {
                 case "MALE":
                     patientToRegister.Gender = AdministrativeGender.Male;
