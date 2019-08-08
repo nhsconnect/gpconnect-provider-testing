@@ -18,7 +18,6 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the Medication Statements should be valid
 		And the Medication Requests should be valid
 		And the List of MedicationStatements should be valid
-		And order requests should have the same authoredOn date as their plan
 		And there should only be one order request for acute prescriptions
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
