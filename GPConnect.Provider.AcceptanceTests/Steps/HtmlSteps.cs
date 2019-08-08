@@ -260,8 +260,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        //issue 215 SJD 25/04/19 no end date provided
-        [Then(@"the response html should contain the applied start date banner text ""([^""]*)""")]
+		//SJD 22/7/19 #included single quotes around date Range Banner
+		//issue 215 SJD 25/04/19 no end date provided
+		[Then(@"the response html should contain the applied start date banner text ""([^""]*)""")]
         public void ThenTheResponseHTMLShouldContainTheAppliedStartDateBannerText(string fromDate)
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -272,15 +273,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        string expectedTimePeriodBanner = "<p>All data items from " + fromDate + "</p>";
+                        string expectedTimePeriodBanner = "<p>All data items from '" + fromDate + "'</p>";
                         html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
                     }
                 }
             }
         }
 
-        //issue 215 SJD 25/04/19 no start date provided
-        [Then(@"the response html should contain the applied end date banner text ""([^""]*)""")]
+		//SJD 22/7/19 #included single quotes around date Range Banner
+		//issue 215 SJD 25/04/19 no start date provided
+		[Then(@"the response html should contain the applied end date banner text ""([^""]*)""")]
         public void ThenTheResponseHTMLShouldContainTheAppliedEndDateBannerText(string toDate)
         {
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -291,7 +293,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
                         var html = section.Text.Div;
-                        string expectedTimePeriodBanner = "<p>All data items until " + toDate +"</p>";
+                        string expectedTimePeriodBanner = "<p>All data items until '" + toDate +"'</p>";
                         html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
                     }
                 }

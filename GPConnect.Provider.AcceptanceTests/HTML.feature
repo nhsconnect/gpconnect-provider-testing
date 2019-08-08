@@ -105,6 +105,7 @@ Scenario Outline: html section headers present
 		| patient7 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
 		| patient8 | SUM  | Active Problems and Issues,Current Medication Issues,Current Repeat Medications,Current Allergies and Adverse Reactions,Encounters |
 
+# SJD 22/7/19 #268 amended column as per spec
 Scenario Outline: html table headers present and in order that is expected
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -123,7 +124,7 @@ Scenario Outline: html table headers present and in order that is expected
 		| patient2 | ENC      | Date,Title,Details                                                                       | 1                |
 		| patient2 | IMM      | Date,Vaccination,Part,Contents,Details                                                   | 1                |
 #        | patient2 | INV      |                                                                                          |                  |
-		| patient2 | MED      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                      | 1                |
+		| patient2 | MED      | Start Date,Medication Item,Type,Scheduled End,Days Duration,Details                      | 1                |
 		| patient2 | MED      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 2                |
 		| patient2 | MED      | Start Date,Medication Item,Type,Last Issued,Review Date,Number Issued,Max Issues,Details | 3                |
 		| patient2 | OBS      | Date,Entry,Value,Details                                                                 | 1                |
@@ -132,7 +133,7 @@ Scenario Outline: html table headers present and in order that is expected
 		| patient2 | PRB      | Start Date,End Date,Entry,Significance,Details                                           | 2                |
 		| patient2 | REF      | Date,From,To,Priority,Details                                                            | 1                |
 		| patient2 | SUM      | Start Date,Entry,Significance,Details                                                    | 1				|
-		| patient2 | SUM      | Start Date,Medication Item,Type,Scheduled End Date,Days Duration,Details                      | 2				|
+		| patient2 | SUM      | Start Date,Medication Item,Type,Scheduled End,Days Duration,Details                      | 2				|
 		| patient2 | SUM      | Last Issued,Medication Item,Start Date,Review Date,Number Issued,Max Issues,Details      | 3				|
 		| patient2 | SUM      | Start Date,Details                                                                       | 4				|
 		| patient2 | SUM      | Date,Title,Details                                                                       | 5				|
