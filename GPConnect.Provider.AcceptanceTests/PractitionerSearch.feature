@@ -166,7 +166,7 @@ Scenario:Practitioner search valid response check caching headers exist
 
 Scenario:Practitioner search invalid response check caching headers exist
 	Given I configure the default "PractitionerSearch" request
-		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner-1"
+		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord"
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"
 	When I make the "PractitionerSearch" request
 	Then the response status code should be "400"
