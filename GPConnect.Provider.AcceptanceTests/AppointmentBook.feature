@@ -266,9 +266,9 @@ Scenario: Book appointment for patient and send extra fields in the resource
 	Given I configure the default "AppointmentCreate" request
 		And I create an Appointment from the stored Patient and stored Schedule
 	When I make the "AppointmentCreate" request with Invalid Additional Field in the Resource
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
+	Then the response status code should be "422"
+	And the response body should be FHIR JSON
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 Scenario Outline: Book appointment with invalid slot reference
 	Given I get an existing patients nshNumber
