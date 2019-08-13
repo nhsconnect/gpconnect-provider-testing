@@ -350,5 +350,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 				}
 			}
 		}
+
+		//******* TEST NOTES 13/08/2019 ***** still to be tested against DEMONSTRATOR once SF makes change ********
+		//#195 SJD Discontinued Repeat Medication banner
+		[Then(@"the response html should contain the discontinued repeat medication banner for ""([^""]*)""")]
+		public void ThenTheResponseHTMLShouldContainTheDiscontinuedRepeatMedicationBanner(string subSectionTitle)
+		{
+			foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+			{
+				if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+				{
+					Composition composition = (Composition)entry.Resource;
+					foreach (Composition.SectionComponent section in composition.Section)
+					{
+						Log.WriteLine("The Discontinued Repeat Medication banner did not display but was expected");
+						var html = section.Text.Div;
+
+						string expectedDateBanner = "<p>All repeat medication ended by a clinician action</p>";
+						html.ShouldContain(expectedDateBanner, Case.Sensitive);
+					}
+				}
+			}
+		}
 	}
 }

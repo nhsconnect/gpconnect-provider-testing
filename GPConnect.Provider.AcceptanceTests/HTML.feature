@@ -382,3 +382,17 @@ Scenario Outline: html section headers inside correct tag
 		| patient1 | REF  | Referrals                       |
 		| patient2 | SUM  | Summary                         |
         
+
+# issue 195 SJD - Discontinued content banner
+# ** TEST NOTES 13/08/19 ** still to be tested against demonstrator once SF commits a change
+Scenario Outline: should contain the discontinued content banner
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response html should contain the discontinued repeat medication banner for "<subSection>"
+	Examples:
+		| Code | Patient  | subSection                        |
+		| MED  | patient2 | Discontinued Repeat Medication    |
+	
