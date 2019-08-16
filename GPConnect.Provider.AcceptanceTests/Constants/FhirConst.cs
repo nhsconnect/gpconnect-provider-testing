@@ -24,6 +24,10 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         internal static class IdentifierSystems
         {
             public const string kNHSNumber = "http://fhir.nhs.net/Id/nhs-number";
+            public const string kGuid = "https://consumersupplier.com/Id/user-guid"; //added for #235
+            public const string kPracSDSUserId = "http://fhir.nhs.net/sds-user-id";  //added for #235
+            public const string kPracRoleProfile = "https://fhir.nhs.net/Id/sds-role-profile-id";  //added for #235
+
         }
     }
 }

@@ -325,7 +325,7 @@ Scenario Outline: Check html for non html formatting
 		| REF  |
 		| SUM  |
 	   #| INV  |
-	   #| PAT  | 
+	   #| PAT  |           
 
 #issue 194 sado1 01/04/2019 Test null value in StartDateTime and EndDateTime
 Scenario Outline: check when no date range supplied should contain default date range section banner

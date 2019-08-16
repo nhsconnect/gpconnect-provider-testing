@@ -81,9 +81,51 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 },
                 Identifier = {
                     new Identifier("http://fhir.nhs.net/sds-user-id", "GCASDS0001"),
-                    new Identifier("LocalIdentifierSystem", "1")
+                    // (removed as per #235)  new Identifier("LocalIdentifierSystem", "1")
+                    new Identifier(Constants.FhirConst.IdentifierSystems.kGuid, "98ed4f78-814d-4266-8d5b-cde742f3093c")
                 },
                 PractitionerRole = GetPractitionerRoleComponent("http://fhir.nhs.net/ValueSet/sds-job-role-name-1", "AssuranceJobRole")
+            };
+        }
+
+        //#235 29/04/19 SJD created for UNK accepted in JWT request header    
+        public static Practitioner GetUnkPractitioner()
+        {
+            return new Practitioner
+            {
+                Id = "1",
+                Name = new HumanName()
+                {
+                    Prefix = new[] { "Mr" },
+                    Given = new[] { "AssuranceTest" },
+                    Family = new[] { "AssurancePractitioner" }
+                },
+                Identifier = {
+                    new Identifier("http://fhir.nhs.net/sds-user-id", "UNK"),
+                    new Identifier(Constants.FhirConst.IdentifierSystems.kGuid, "98ed4f78-814d-4266-8d5b-cde742f3093c")
+
+
+                 },
+                PractitionerRole = GetPractitionerRoleComponent("http://fhir.nhs.net/ValueSet/sds-job-role-name-1", "UNK")
+            };
+        }
+
+        //#235 29//04/19 SJD created accept when no SDS role profile ID and Guid in JWT request header    
+        public static Practitioner GetNoProfAndGuid()
+        {
+            return new Practitioner
+            {
+                Id = "1",
+                Name = new HumanName()
+                {
+                    Prefix = new[] { "Mr" },
+                    Given = new[] { "AssuranceTest" },
+                    Family = new[] { "AssurancePractitioner" }
+                },
+                Identifier =
+                {
+                     new Identifier("http://fhir.nhs.net/sds-user-id", "GCASDS0001")
+                }
             };
         }
 
@@ -96,8 +138,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 Version = "1.1",
                 Identifier = {
                             new Identifier("GPConnectTestSystem", "Client")
-                        },
-                Type = new CodeableConcept("DeviceIdentifierSystem", "DeviceIdentifier")
+                        }
+                // (removed as per #235) Type = new CodeableConcept("DeviceIdentifierSystem", "DeviceIdentifier")
             };
         }
 
@@ -120,24 +162,28 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             return JsonConvert.SerializeObject(dynamicDeviceObj);
         }
 
-        public static Period GetDefaultTimePeriodForGetCareRecord() {
+        public static Period GetDefaultTimePeriodForGetCareRecord()
+        {
             return new Period(new FhirDateTime(DateTime.Now.AddYears(-2)), new FhirDateTime(DateTime.Now));
         }
 
-        public static Period GetTimePeriod(string startDate, string endDate) {
+        public static Period GetTimePeriod(string startDate, string endDate)
+        {
             return new Period(new FhirDateTime(startDate), new FhirDateTime(endDate));
         }
 
-        public static bool isValidNHSNumber(string NHSNumber) {
+        public static bool isValidNHSNumber(string NHSNumber)
+        {
 
             NHSNumber = NHSNumber.Trim();
-            
+
             if (NHSNumber.Length != 10 || !Regex.Match(NHSNumber, "(\\d+)").Success)
             {
                 return false;
             }
-            else {
-                
+            else
+            {
+
                 string checkDigit = NHSNumber.Substring(NHSNumber.Length - 1, 1);
                 int checkNumber = Convert.ToInt16(checkDigit);
 
@@ -152,7 +198,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 multiplers[6] = 4;
                 multiplers[7] = 3;
                 multiplers[8] = 2;
-                
+
                 int currentNumber = 0;
                 int currentSum = 0;
 
@@ -169,7 +215,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 {
                     total = 0;
                 }
-                
+
                 if (total.Equals(checkNumber))
                 {
                     return true;
@@ -179,7 +225,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                     return false;
                 }
             }
-            
+
         }
     }
 }
