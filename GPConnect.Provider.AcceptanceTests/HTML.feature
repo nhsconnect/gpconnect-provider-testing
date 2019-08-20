@@ -342,3 +342,63 @@ Scenario Outline: check when no date range supplied should contain default date 
 	Examples:
 		| Code | Patient  | StartDateTime | EndDateTime | 
 		| ADM  | patient1 |				  |				|  
+
+
+	#202  -PG 14-8-2019
+	Scenario Outline: Check html table ids are present and in correct order
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the html response contains all the following table ids "<TableIDs>"
+	Examples:
+		 | Patient  | Code | TableIDs                                                                           |
+		 | patient2 | ADM  | adm-tab                                                                            |
+		 | patient2 | MED  | med-tab-acu-med,med-tab-curr-rep,med-tab-dis-rep,med-tab-all-sum,med-tab-all-iss   |
+		 | patient2 | ALL  | all-tab-curr,all-tab-hist                                                          |
+		 | patient2 | CLI  | cli-tab                                                                            |
+		 | patient2 | ENC  | enc-tab                                                                            |
+		 | patient2 | IMM  | imm-tab                                                                            |
+		 | patient2 | OBS  | obs-tab                                                                            |
+		 | patient2 | PRB  | prb-tab-act,prb-tab-majinact,prb-tab-othinact                                      |
+		 | patient2 | REF  | ref-tab                                                                            |
+		 | patient2 | SUM  | all-tab-curr,enc-tab,med-tab-acu-med,med-tab-curr-rep,prb-tab-act,prb-tab-majinact |
+
+	#202  -PG 15-8-2019
+	Scenario Outline: Check html tables have date column class attribute for date columns
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		When I request the FHIR "gpc.getcarerecord" Patient Type operation
+		Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the html table "<TableIDToCheck>" has a date-column class attribute on these "<DateColumns>"
+	Examples:
+		 | Patient  | Code | TableIDToCheck   | DateColumns |
+		 | patient2 | ADM  | adm-tab          | 1           |
+		 | patient2 | MED  | med-tab-acu-med  | 2           |
+		 | patient2 | MED  | med-tab-curr-rep | 2,6,9       |
+		 | patient2 | MED  | med-tab-dis-rep  | 6           |
+		 | patient2 | MED  | med-tab-all-sum  | 2,6         |
+		 | patient2 | MED  | med-tab-all-iss  | 2           |
+		 | patient2 | ALL  | all-tab-curr     | 1           |
+		 | patient2 | ALL  | all-tab-hist     | 1,2         |
+		 | patient2 | CLI  | cli-tab          | 1           |
+		 | patient2 | CLI  | cli-tab          | 1           |
+		 | patient2 | ENC  | enc-tab          | 1           |
+		 | patient2 | IMM  | imm-tab          | 1           |
+		 | patient2 | OBS  | obs-tab          | 1           |
+		 | patient2 | PRB  | prb-tab-act      | 1           |
+		 | patient2 | PRB  | prb-tab-majinact | 1,2         |
+		 | patient2 | PRB  | prb-tab-othinact | 1,2         |
+		 | patient2 | REF  | ref-tab          | 1           |
+		 | patient2 | SUM  | all-tab-curr     | 1           |
+		 | patient2 | SUM  | enc-tab          | 1           |
+		 | patient2 | SUM  | med-tab-acu-med  | 2           |
+		 | patient2 | SUM  | med-tab-curr-rep | 2,6,9       |
+		 | patient2 | SUM  | prb-tab-act      | 1           |
+		 | patient2 | SUM  | prb-tab-majinact | 1,2         |

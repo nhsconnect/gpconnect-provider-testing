@@ -25,7 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "HTML.feature"
+#line 1 "Html.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
@@ -671,6 +671,102 @@ this.FeatureBackground();
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 340
   testRunner.And("the response html should contain the all data items text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check html table ids are present and in correct order")]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ADM", "adm-tab", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "med-tab-acu-med,med-tab-curr-rep,med-tab-dis-rep,med-tab-all-sum,med-tab-all-iss", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "all-tab-curr,all-tab-hist", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "CLI", "cli-tab", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ENC", "enc-tab", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "IMM", "imm-tab", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "OBS", "obs-tab", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "prb-tab-act,prb-tab-majinact,prb-tab-othinact", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "REF", "ref-tab", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "all-tab-curr,enc-tab,med-tab-acu-med,med-tab-curr-rep,prb-tab-act,prb-tab-majinac" +
+            "t", null)]
+        public virtual void CheckHtmlTableIdsArePresentAndInCorrectOrder(string patient, string code, string tableIDs, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check html table ids are present and in correct order", null, exampleTags);
+#line 348
+ this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line 349
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 350
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 351
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 352
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 353
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 354
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 355
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 356
+  testRunner.And(string.Format("the html response contains all the following table ids \"{0}\"", tableIDs), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check html tables have date column class attribute for date columns")]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ADM", "adm-tab", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "med-tab-acu-med", "2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "med-tab-curr-rep", "2,6,9", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "med-tab-dis-rep", "6", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "med-tab-all-sum", "2,6", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "med-tab-all-iss", "2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "all-tab-curr", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "all-tab-hist", "1,2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "CLI", "cli-tab", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "CLI", "cli-tab", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ENC", "enc-tab", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "IMM", "imm-tab", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "OBS", "obs-tab", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "prb-tab-act", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "prb-tab-majinact", "1,2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "prb-tab-othinact", "1,2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "REF", "ref-tab", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "all-tab-curr", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "enc-tab", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "med-tab-acu-med", "2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "med-tab-curr-rep", "2,6,9", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "prb-tab-act", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "prb-tab-majinact", "1,2", null)]
+        public virtual void CheckHtmlTablesHaveDateColumnClassAttributeForDateColumns(string patient, string code, string tableIDToCheck, string dateColumns, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check html tables have date column class attribute for date columns", null, exampleTags);
+#line 371
+ this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line 372
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 373
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 374
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 375
+  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 376
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 377
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 378
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 379
+  testRunner.And(string.Format("the html table \"{0}\" has a date-column class attribute on these \"{1}\"", tableIDToCheck, dateColumns), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

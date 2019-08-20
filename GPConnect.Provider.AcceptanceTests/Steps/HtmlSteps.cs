@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
+using HtmlAgilityPack;
+using System.Linq;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -78,25 +80,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Composition composition = (Composition)entry.Resource;
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
-                        var HTML = section.Text.Div;
-                        Regex regex = new Regex("<[^>]*([^' ']{1,}[' ']*=[' ']*[^' '>]{1,})[^>]*>");
-                        Regex regexXmlns = new Regex("<[^>]*(xmlns[' ']*=[' ']*[^' '>]{1,})[^>]*>");
+                        var html = section.Text.Div;
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(html);
 
-                        MatchCollection matches = regex.Matches(HTML);
-                        MatchCollection matchesXmlns = regexXmlns.Matches(HTML);
+                        //check for any on attribues and the xmlns attribute
+                        var onEventNodes = htmlDoc.DocumentNode
+                                .Descendants().Where(n => n.Attributes.Any(a => a.Name.StartsWith("on")));
 
-                        foreach (Match match in matchesXmlns)
-                        {
-                            Log.WriteLine("xmlns Regex Match = " + match.Value);
-                        }
-
-                        foreach (Match match in matches) {
-                            Log.WriteLine("Attribute Regex Match = " + match.Value);
-                        }
-
-                        var numberOfNonXmlnsAttributes = matches.Count - matchesXmlns.Count;
-                        numberOfNonXmlnsAttributes.ShouldBe(0);
-                        matchesXmlns.Count.ShouldBeGreaterThanOrEqualTo(1);
+                        //Assert we have no ON event attributes in HTML
+                        onEventNodes.Count().ShouldBe(0, "Found HTML tag with an ON event atribute that should not exist in HTML");
                     }
                 }
             }
@@ -301,6 +294,138 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-    }
+
+        //#202 PG - 15/8/2019
+        [Then(@"the html response contains all the following table ids ""([^""]*)""")]
+        public void theHtmlResponseContainsAllTheFollowingTableids(string listOfTableIdsToCheck)
+        {
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var html = section.Text.Div;
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(html);
+
+                        var tableidsListToCheck = listOfTableIdsToCheck.Split(',');
+
+                        var tables = htmlDoc.DocumentNode
+                                .Descendants("table");
+
+                        //Check the number of Tables matches the number we expect
+                        if (tableidsListToCheck.Length == tables.Count())
+                        {
+                            //Check each id is correct
+                            for (int index = 0; index < tableidsListToCheck.Length; index++)
+                            {
+                                Log.WriteLine("Expected Table ID = {0} and was {1}", tableidsListToCheck[index], tables.ToArray()[index].Id);
+
+                                tables.ToArray()[index].Id.ShouldBe(tableidsListToCheck[index], "Table ID does not match expected");
+                            }
+
+                        }
+                        //Number of table id's does not match
+                        else
+                        {
+                            //Build List of what is found to reportback
+                            var idsFound = "";
+
+                            for (int index = 0; index < tables.Count(); index++)
+                            {
+
+                                idsFound += tables.ToArray()[index].Id;
+                                if (index != tables.Count() - 1)
+                                    idsFound += ",";
+                            }
+
+                            string outputMessage = "The number of table ID's in HTML section does not match the required number of ID's. Actual:" +
+                               tables.Count().ToString() + " Expected:" + tableidsListToCheck.Length.ToString() +
+                                "   Values Expected :" + listOfTableIdsToCheck + " Found : " + idsFound;
+
+                            Log.WriteLine(outputMessage);
+                            Assert.Fail(outputMessage);
+                        }
+
+                    }
+                }
+            }
+
+
+
+
+        }
+
+        [Then(@"the html table ""([^""]*)"" has a date-column class attribute on these ""([^""]*)""")]
+        public void thehtmlresponsetable(string TableId, string ListOfColumnsToCheck)
+        {
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var html = section.Text.Div;
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(html);
+
+                        var colstoCheck = ListOfColumnsToCheck.Split(',');
+
+                        var table = htmlDoc.DocumentNode.Descendants("table").Where(t => t.Id.Equals(TableId)).FirstOrDefault();
+                        if (table != null)
+                        {
+                            foreach (HtmlNode row in table.SelectNodes("./tbody//tr"))
+                            {
+                                var tdNodes = row.SelectNodes(".//td");
+
+                                //If to ignore Grouped by row
+                                if (tdNodes.ToArray().Count() != 1)
+                                {
+                                    foreach (var item in colstoCheck)
+                                    {
+                                        int indexToCheck = Int32.Parse(item) - 1;
+                                        try
+                                        {
+                                            string passMessage = "Test for Class Attribute on Table : " + TableId + " Passed for Column " + item.ToString() + " date-column class found";
+                                            tdNodes[indexToCheck].Attributes["class"].Value.Equals("date-column").ShouldBeTrue(passMessage);
+                                            Log.WriteLine(passMessage);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            string failureMessage = "Test for Class Attribute on Table : " + TableId + " Failed for Column " + item.ToString() + " Did not have a date-column class";
+                                            Log.WriteLine(failureMessage);
+                                            Assert.Fail(failureMessage);
+                                        }
+                                    }
+                                }
+
+
+                            }
+                        }
+                        else
+                        {
+                            var failureMessage = ("date-column Class Test Failed - No table found with ID : "  + TableId);
+                            Log.WriteLine(failureMessage);
+                            Assert.Fail(failureMessage);
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+        }
+
+
+
+
+        }
     }
 
