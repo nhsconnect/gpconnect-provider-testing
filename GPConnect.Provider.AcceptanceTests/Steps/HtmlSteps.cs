@@ -388,12 +388,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                 {
                                     foreach (var item in colstoCheck)
                                     {
-                                        int indexToCheck = Int32.Parse(item) - 1;
+                                        int indexToCheck = Int32.Parse(item)-1;
                                         try
                                         {
-                                            string passMessage = "Test for Class Attribute on Table : " + TableId + " Passed for Column " + item.ToString() + " date-column class found";
-                                            tdNodes[indexToCheck].Attributes["class"].Value.Equals("date-column").ShouldBeTrue(passMessage);
-                                            Log.WriteLine(passMessage);
+                                            //if TD cell is empty do not test
+                                            if (!string.IsNullOrEmpty(tdNodes[indexToCheck].InnerHtml))
+                                            {
+                                                string passMessage = "Test for Class Attribute on Table : " + TableId + " Passed for Column " + item.ToString() + " date-column class found";
+                                                tdNodes[indexToCheck].Attributes["class"].Value.Equals("date-column").ShouldBeTrue(passMessage);
+                                                Log.WriteLine(passMessage);
+                                            }
+                                            else
+                                            {
+                                                Log.WriteLine("Skipped class Check on TD Cell with no Data");
+                                            }
                                         }
                                         catch (Exception)
                                         {
