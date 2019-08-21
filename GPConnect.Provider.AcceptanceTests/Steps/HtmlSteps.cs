@@ -297,7 +297,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         //#202 PG - 15/8/2019
         [Then(@"the html response contains all the following table ids ""([^""]*)""")]
-        public void theHtmlResponseContainsAllTheFollowingTableids(string listOfTableIdsToCheck)
+        public void TheHtmlResponseContainsAllTheFollowingTableids(string listOfTableIdsToCheck)
         {
 
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -360,7 +360,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Then(@"the html table ""([^""]*)"" has a date-column class attribute on these ""([^""]*)""")]
-        public void thehtmlresponsetable(string TableId, string ListOfColumnsToCheck)
+        public void TheHtmlTtableHasaDateColumnClassAttributeOnTheHtmlResponsetableColumns(string TableId, string ListOfColumnsToCheck)
         {
 
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)

@@ -594,6 +594,36 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
 
+            //output Pretty Printed Request body
+            if (AppSettingsHelper.TraceOutputJSONRequestBody)
+            {
+                //Output Json Request Body to a Pretty Printed Separate File
+                try
+                {
+                    HttpContext.SaveJSONRequestBodyToDisk(Path.Combine(scenarioDirectory, "JSONRequestBody.txt"));
+                }
+                catch
+                {
+                    Log.WriteLine("Exception writing JSONRequestBody to Output File - Request May Not be JSON");
+                }
+
+            }
+
+            //Output Pretty Printed HTML from the Reponse Payload
+            if (AppSettingsHelper.TraceOutputHTMLResponse)
+            {
+                //Output HTML From Reponse
+                try
+                {
+                    HttpContext.SaveHTMLReponseToDisk(Path.Combine(scenarioDirectory, "HTMLResponse.txt"));
+                }
+                catch
+                {
+                    Log.WriteLine("Exception writing HTMLResponse to Output File - Reponse May not Include HTML");
+                }
+            }
+
+
         }
     }
 }
