@@ -686,8 +686,8 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("patient2", "OBS", "obs-tab", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "prb-tab-act,prb-tab-majinact,prb-tab-othinact", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "REF", "ref-tab", null)]
-        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "all-tab-curr,enc-tab,med-tab-acu-med,med-tab-curr-rep,prb-tab-act,prb-tab-majinac" +
-            "t", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "enc-tab,prb-tab-act,prb-tab-majinact,all-tab-curr,med-tab-acu-med,med-tab-curr-re" +
+            "p", null)]
         public virtual void CheckHtmlTableIdsArePresentAndInCorrectOrder(string patient, string code, string tableIDs, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check html table ids are present and in correct order", null, exampleTags);

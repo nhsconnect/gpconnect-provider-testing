@@ -365,7 +365,7 @@ Scenario Outline: check when no date range supplied should contain default date 
 		 | patient2 | OBS  | obs-tab                                                                            |
 		 | patient2 | PRB  | prb-tab-act,prb-tab-majinact,prb-tab-othinact                                      |
 		 | patient2 | REF  | ref-tab                                                                            |
-		 | patient2 | SUM  | all-tab-curr,enc-tab,med-tab-acu-med,med-tab-curr-rep,prb-tab-act,prb-tab-majinact |
+		 | patient2 | SUM  | enc-tab,prb-tab-act,prb-tab-majinact,all-tab-curr,med-tab-acu-med,med-tab-curr-rep |
 
 	#202  -PG 15-8-2019
 	Scenario Outline: Check html tables have date column class attribute for date columns
