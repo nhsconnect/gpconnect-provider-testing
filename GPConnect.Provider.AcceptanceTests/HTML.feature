@@ -109,7 +109,7 @@ Scenario Outline: html table headers present and in order that is expected
 		| patient2 | SUM      | Start Date,Entry,Significance,Details                                                                                                                                     | 2                |
 		| patient2 | SUM      | Start Date,End Date,Entry,Significance,Details                                                                                                                            | 3                |
 		| patient2 | SUM      | Start Date,Details                                                                                                                                                        | 4                |
-		| patient2 | SUM      | Type,Start Date,Medication Item,Dosage Instruction,Quantity,Scehduled End Date,Days Duration,Additional Information                                                       | 5                |
+		| patient2 | SUM      | Type,Start Date,Medication Item,Dosage Instruction,Quantity,Scheduled End Date,Days Duration,Additional Information                                                       | 5                |
 		| patient2 | SUM      | Type,Start Date,Medication Item,Dosage Instruction,Quantity,Last Issued Date,Number of Prescriptions Issued,Max Issues,Review Date,Additional Information                 | 6                |
 		# patient2 | INV 
 		# patient2 | PAT  
@@ -381,18 +381,3 @@ Scenario Outline: html section headers inside correct tag
 		| patient2 | PRB  | Problems and Issues             |
 		| patient1 | REF  | Referrals                       |
 		| patient2 | SUM  | Summary                         |
-        
-
-# issue 195 SJD - Discontinued content banner
-# ** TEST NOTES 13/08/19 ** still to be tested against demonstrator once SF commits a change
-Scenario Outline: should contain the discontinued content banner
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "<Patient>"
-	When I request the FHIR "gpc.getcarerecord" Patient Type operation
-	Then the response status code should indicate success
-		And the response html should contain the discontinued repeat medication banner for "<subSection>"
-	Examples:
-		| Code | Patient  | subSection                        |
-		| MED  | patient2 | Discontinued Repeat Medication    |
-	
