@@ -166,24 +166,6 @@ Scenario: JWT requesting practitioner name does not contain a family or given na
 		And the response body should be FHIR JSON
 		And the JSON response should be a OperationOutcome resource
 
-Scenario: JWT requesting practitioner does not contain a practitionerRole
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I set a JWT requesting practitioner with missing Job Role
-	When I make a GET request to "/metadata"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
-
-Scenario: JWT requesting practitioner practitionerRole does not contain a SDS Job Role name
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I set a JWT requesting practitioner with missing SDS Job Role
-	When I make a GET request to "/metadata"
-	Then the response status code should be "400"
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
-
 #issue 235 SJD 29/04/2019
 @0.5.2
 Scenario: JWT requesting practitioner UNK value
