@@ -86,11 +86,8 @@
             CapabilityStatements.ForEach(capabilityStatement =>
             {
                 var foundFlag = false;
-
                 capabilityStatement.Rest.ForEach(rest =>
                 {
-                    
-
                     foreach (var op in rest.Operation)
                     {
                         if (op.Name == operation)
@@ -99,7 +96,6 @@
                                 foundFlag = true;
                         }
                     }
-           
                 });
 
                 if (foundFlag)
