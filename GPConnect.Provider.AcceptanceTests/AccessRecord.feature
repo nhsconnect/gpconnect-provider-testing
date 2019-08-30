@@ -407,6 +407,7 @@ Scenario Outline: request contain the structure definition in the meta fields
 		| REF |
 		| SUM |
 
+#25/07/2019 SJD Problems changed in 0.5.1 to Problems and Issues
 Scenario Outline: composition contains generic mandatory fields
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -426,31 +427,27 @@ Scenario Outline: composition contains generic mandatory fields
 		And response bundle entry "Composition" should contain element "resource.section[0].text.status"
 		And response bundle entry "Composition" should contain element "resource.section[0].text.div"
 	Examples:
-		| Patient  | Code     | Title                           | Display                         |
-		| patient1 | ADM      | Administrative Items            | Administrative Items            |
-		| patient2 | ADM      | Administrative Items            | Administrative Items            |
-		| patient1 | ALL      | Allergies and Adverse Reactions | Allergies and Adverse Reactions |
-		| patient2 | ALL      | Allergies and Adverse Reactions | Allergies and Adverse Reactions |
-		| patient1 | CLI      | Clinical Items                  | Clinical Items                  |
-		| patient2 | CLI      | Clinical Items                  | Clinical Items                  |
-		| patient1 | ENC      | Encounters                      | Encounters                      |
-		| patient2 | ENC      | Encounters                      | Encounters                      |
-		| patient1 | IMM      | Immunisations                   | Immunisations                   |
-		| patient2 | IMM      | Immunisations                   | Immunisations                   |
-	#    | patient1 | INV      | Investigations                  | Investigations                  |
-	#    | patient2 | INV      | Investigations                  | Investigations                  |
-		| patient1 | MED      | Medications                     | Medications                     |
-		| patient2 | MED      | Medications                     | Medications                     |
-		| patient1 | OBS      | Observations                    | Observations                    |
-		| patient2 | OBS      | Observations                    | Observations                    |
-	#    | patient1 | PAT      | Patient Details                 | Patient Details                 |
-	#    | patient2 | PAT      | Patient Details                 | Patient Details                 |
-		| patient1 | PRB      | Problems                        | Problems                        |
-		| patient2 | PRB      | Problems                        | Problems                        |
-		| patient1 | REF      | Referrals                       | Referrals                       |
-		| patient2 | REF      | Referrals                       | Referrals                       |
-		| patient1 | SUM      | Summary                         | Summary                         |
-		| patient2 | SUM      | Summary                         | Summary                         |
+		| Patient  | Code | Title                           | Display                         |
+		| patient1 | ADM  | Administrative Items            | Administrative Items            |
+		| patient2 | ADM  | Administrative Items            | Administrative Items            |
+		| patient1 | ALL  | Allergies and Adverse Reactions | Allergies and Adverse Reactions |
+		| patient2 | ALL  | Allergies and Adverse Reactions | Allergies and Adverse Reactions |
+		| patient1 | CLI  | Clinical Items                  | Clinical Items                  |
+		| patient2 | CLI  | Clinical Items                  | Clinical Items                  |
+		| patient1 | ENC  | Encounters                      | Encounters                      |
+		| patient2 | ENC  | Encounters                      | Encounters                      |
+		| patient1 | IMM  | Immunisations                   | Immunisations                   |
+		| patient2 | IMM  | Immunisations                   | Immunisations                   |
+		| patient1 | MED  | Medications                     | Medications                     |
+		| patient2 | MED  | Medications                     | Medications                     |
+		| patient1 | OBS  | Observations                    | Observations                    |
+		| patient2 | OBS  | Observations                    | Observations                    |
+		| patient1 | PRB  | Problems and Issues             | Problems and Issues             |
+		| patient2 | PRB  | Problems and Issues             | Problems and Issues             |
+		| patient1 | REF  | Referrals                       | Referrals                       |
+		| patient2 | REF  | Referrals                       | Referrals                       |
+		| patient1 | SUM  | Summary                         | Summary                         |
+		| patient2 | SUM  | Summary                         | Summary                         |
 
 Scenario Outline: if composition contains type mandatory field fixed values should be correct
 	Given I am using the default server
