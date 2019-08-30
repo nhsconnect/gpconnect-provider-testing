@@ -5,6 +5,7 @@
     using Constants;
     using Context;
     using GPConnect.Provider.AcceptanceTests.Helpers;
+    using GPConnect.Provider.AcceptanceTests.Logger;
     using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
@@ -77,6 +78,42 @@
                 });
             });
         }
+        
+        //#292 - PG 30/8/2019 - Check The structured record URL 
+        [Then(@"the CapabilityStatement Operation ""([^""]*)"" has url ""([^""]*)""")]
+        public void TheCapabilityStatementOperationsHasURL(string operation, string url)
+        {
+            CapabilityStatements.ForEach(capabilityStatement =>
+            {
+                var foundFlag = false;
+                capabilityStatement.Rest.ForEach(rest =>
+                {
+                    foreach (var op in rest.Operation)
+                    {
+                        if (op.Name == operation)
+                        {
+                            if (op.Definition.Reference == url)
+                                foundFlag = true;
+                        }
+                    }
+                });
+
+                if (foundFlag)
+                {
+                    var message = "URL :" + url + " found on Operation :" + operation;
+                    Log.WriteLine(message);
+                    foundFlag.ShouldBeTrue(message);
+                }
+                else
+                {
+                    var message = "URL :" + url + " Has NOT been found on Operation :" + operation;
+                    Log.WriteLine(message);
+                    foundFlag.ShouldBeTrue(message);
+                }
+
+            });
+        }
+
 
         [Then(@"the CapabilityStatement REST Resources should contain the ""([^""]*)"" Resource with the ""([^""]*)"" Interaction")]
         public void TheCapabilityStatementRestResourcesShouldContainAResourceWithInteraction(ResourceType resourceType, CapabilityStatement.TypeRestfulInteraction interaction)
