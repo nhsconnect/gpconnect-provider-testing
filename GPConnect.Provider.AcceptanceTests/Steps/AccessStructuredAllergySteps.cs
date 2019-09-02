@@ -1,103 +1,151 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Steps
 {
-    using Constants;
-    using Context;
-    using TechTalk.SpecFlow;
-    using Shouldly;
-    using Hl7.Fhir.Model;
-    using System.Collections.Generic;
-    using System;
-    using System.Linq;
-    using GPConnect.Provider.AcceptanceTests.Enum;
-    using static Hl7.Fhir.Model.Parameters;
-    using GPConnect.Provider.AcceptanceTests.Helpers;
+	using Constants;
+	using Context;
+	using TechTalk.SpecFlow;
+	using Shouldly;
+	using Hl7.Fhir.Model;
+	using System.Collections.Generic;
+	using System;
+	using System.Linq;
+	using GPConnect.Provider.AcceptanceTests.Enum;
+	using static Hl7.Fhir.Model.Parameters;
+	using GPConnect.Provider.AcceptanceTests.Helpers;
+	using GPConnect.Provider.AcceptanceTests.Steps;
 
-    [Binding]
-    public sealed class AccessStructuredAllergySteps : BaseSteps
-    {
-        private readonly HttpContext _httpContext;
-        private List<AllergyIntolerance> AllAllergyIntolerances = new List<AllergyIntolerance>();
-        private List<AllergyIntolerance> ActiveAllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
-        private List<List> Lists => _httpContext.FhirResponse.Lists;
-        private Bundle Bundle => _httpContext.FhirResponse.Bundle;
+	[Binding]
+	public sealed class AccessStructuredAllergySteps : BaseSteps
+	{
+		private readonly HttpContext _httpContext;
+		private List<AllergyIntolerance> AllAllergyIntolerances = new List<AllergyIntolerance>();
+		private List<AllergyIntolerance> ActiveAllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
+		private List<List> Lists => _httpContext.FhirResponse.Lists;
+		private Bundle Bundle => _httpContext.FhirResponse.Bundle;
 
-        public AccessStructuredAllergySteps(HttpSteps httpSteps, HttpContext httpContext)
-            : base(httpSteps)
-        {
-            _httpContext = httpContext;
-        }
+		public AccessStructuredAllergySteps(HttpSteps httpSteps, HttpContext httpContext)
+			: base(httpSteps)
+		{
+			_httpContext = httpContext;
+		}
 
-        #region Allergy Parameters
+		#region Allergy Parameters
 
-        [Given(@"I add the allergies parameter with resolvedAllergies set to ""(.*)""")]
-        public void GivenIAddTheAllergiesParameterWithResolvedAllergiesSetTo(string partValue)
-        {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(Boolean.Parse(partValue))) };
-            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
-        }
+		[Given(@"I add the allergies parameter with resolvedAllergies set to ""(.*)""")]
+		public void GivenIAddTheAllergiesParameterWithResolvedAllergiesSetTo(string partValue)
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(Boolean.Parse(partValue))) };
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
+		}
 
-        [Given(@"I add the allergies parameter")]
-        public void GivenIAddTheAllergiesParameter()
-        {
-            ParameterComponent param = new ParameterComponent();
-            param.Name = FhirConst.GetStructuredRecordParams.kAllergies;
-            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
-        }
+		[Given(@"I add the allergies parameter")]
+		public void GivenIAddTheAllergiesParameter()
+		{
+			ParameterComponent param = new ParameterComponent();
+			param.Name = FhirConst.GetStructuredRecordParams.kAllergies;
+			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+		}
 
-        [Given(@"I add an invalid allergies parameter")]
-        public void GivenIAddAnInvalidAllergiesParameter()
-        {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
-            };
-            _httpContext.HttpRequestConfiguration.BodyParameters.Add("inlcudeInvalidAllergies", tuples);
-        }
+		[Given(@"I add an invalid allergies parameter")]
+		public void GivenIAddAnInvalidAllergiesParameter()
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add("inlcudeInvalidAllergies", tuples);
+		}
 
-        [Given(@"I add the allergies parameter with includePrescriptionIssues")]
-        public void GivenIAddTheAllergiesParameterWithIncludePrescriptionIssues()
-        {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
-            };
-            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
-        }
+		[Given(@"I add the allergies parameter with includePrescriptionIssues")]
+		public void GivenIAddTheAllergiesParameterWithIncludePrescriptionIssues()
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
+		}
 
-        [Given(@"I add the allergies parameter with a timePeriod")]
-        public void GivenIAddTheAllergiesParameterWithATimePeriod()
-        {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetDefaultTimePeriod()),
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
-            };
-            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
-        }
+		[Given(@"I add the allergies parameter with a timePeriod")]
+		public void GivenIAddTheAllergiesParameterWithATimePeriod()
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetDefaultTimePeriod()),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
+		}
 
-        [Given(@"I add the allergies parameter with a start date")]
-        public void GivenIAddTheAllergiesParameterWithAStartPeriod()
-        {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnly()),
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
-            };
-            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
-        }
+		[Given(@"I add the allergies parameter with a start date")]
+		public void GivenIAddTheAllergiesParameterWithAStartPeriod()
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnly()),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
+		}
 
-        [Given(@"I add the allergies parameter with an end date")]
-        public void GivenIAddTheAllergiesParameterWithAnEndPeriod()
-        {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodEndDateOnly()),
-                Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
-            };
-            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
-        }
+		[Given(@"I add the allergies parameter with an end date")]
+		public void GivenIAddTheAllergiesParameterWithAnEndPeriod()
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodEndDateOnly()),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
+		}
+		//Sara testing notes 29/08/2019
 
-        #endregion
+		[Given(@"I add multiple parameters ""(.*)""")]
+		public void GivenIAddMultipleParameters(string parameter)
+		{
+			Given($"I add the allergies parameter with resolvedAllergies set to \"false\"");
+			Given($"I add the immunisations parameter");
+			Given($"I add the uncategorised parameter");
 
-        #region List and Bundle Validity Checks
+		} 
+			
+		[Given(@"I add the immunisations parameter")]
+		public void GivenIAddTheImmunisationsParameter()
+		{
+			ParameterComponent param = new ParameterComponent();
+			param.Name = FhirConst.GetStructuredRecordParams.kImmunisations;
+			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+		}
+		//need to sort out date format yyyy-mm-dd
+		[Given(@"I add the uncategorised parameter")]
+		public void GivenIAddTheUncategorisedParameter()
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kUncategorisedData, (Base)TimePeriodHelper.GetDefaultTimePeriod()),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kUncategorised, tuples);
+		}
 
-        [Then(@"the List of AllergyIntolerances should be valid")]
+		[Given(@"I add the consultation parameter ""(.*)""")]
+		public void GivenIAddTheConsultationParameter(string partValue)
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)TimePeriodHelper.GetDefaultTimePeriod()),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base)new FhirString((partValue)))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+		}
+
+		[Given(@"I add the problems parameter ""(.*)"",""(.*)""")]
+		public void GivenIAddTheProblemsParameter(string partStatus, string partSignificanceValue)
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new FhirString ((partStatus))),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new FhirString ((partSignificanceValue)))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
+		}
+
+		#endregion
+
+		#region List and Bundle Validity Checks
+
+		[Then(@"the List of AllergyIntolerances should be valid")]
         public void TheListOfAllergyIntolerancesShouldBeValid()
         {
             Lists.ForEach(list =>

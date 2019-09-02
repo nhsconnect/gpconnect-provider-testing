@@ -134,7 +134,7 @@ Scenario: Retrieve the allergy structured record section including resolved alle
 Scenario: Retrieve the allergy structured record section excluding resolved allergies for a patient with no allergies coding
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient5"
-		And I add the allergies parameter with resolvedAllergies set to "false"
+		And I add the allergies parameter with resolvedAllergies set to "false"		
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -281,3 +281,49 @@ Scenario:  structured record for a patient that is not in the database
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+
+#Sara testing notes 29/08/2019
+Scenario Outline: Sara test Multiple parameters
+	Given I configure the default "GpcGetStructuredRecord" request
+	And I add an NHS Number parameter for "patient1"
+	And I add multiple parameters "<parameter>"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+	And sara check response
+	And the Bundle should contain a list with the title "<Bundle>"
+	And the patient resource in the bundle should contain meta data profile and version id
+	
+	
+Examples: 
+| parameter                             | pp1  | pp2  | Outcome | Bundle           |
+| includeAllergies, includeImmunisation | null | null | 200     | Allergies and adverse reactions |
+
+
+
+
+Scenario: Sara test Uncategorised parameter
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I add the allergies parameter with resolvedAllergies set to "true"
+		And I add the uncategorised parameter
+		When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+
+Scenario: Sara test consultation parameter
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I add the allergies parameter with resolvedAllergies set to "true"
+		And I add the consultation parameter "3"
+		When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+
+Scenario: Sara test problem parameter
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I add the allergies parameter with resolvedAllergies set to "true"
+		And I add the problem parameter "active" "major"
+		When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+
+	
+	
