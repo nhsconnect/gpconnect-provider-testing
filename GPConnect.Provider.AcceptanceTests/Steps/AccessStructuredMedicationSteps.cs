@@ -11,8 +11,9 @@
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
     using GPConnect.Provider.AcceptanceTests.Steps;
+	using GPConnect.Provider.AcceptanceTests.Logger;
 
-    [Binding]
+	[Binding]
     public sealed class AccessStructuredMedicationSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
@@ -1007,6 +1008,6 @@
 
             });
         }
-        #endregion
-    }
+		#endregion
+	}
 }

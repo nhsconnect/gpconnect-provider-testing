@@ -93,503 +93,456 @@
 			};
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
 		}
-		//Sara testing notes 29/08/2019
-
-		[Given(@"I add multiple parameters ""(.*)""")]
-		public void GivenIAddMultipleParameters(string parameter)
-		{
-			Given($"I add the allergies parameter with resolvedAllergies set to \"false\"");
-			Given($"I add the immunisations parameter");
-			Given($"I add the uncategorised parameter");
-
-		} 
-			
-		[Given(@"I add the immunisations parameter")]
-		public void GivenIAddTheImmunisationsParameter()
-		{
-			ParameterComponent param = new ParameterComponent();
-			param.Name = FhirConst.GetStructuredRecordParams.kImmunisations;
-			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
-		}
-		//need to sort out date format yyyy-mm-dd
-		[Given(@"I add the uncategorised parameter")]
-		public void GivenIAddTheUncategorisedParameter()
-		{
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kUncategorisedData, (Base)TimePeriodHelper.GetDefaultTimePeriod()),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kUncategorised, tuples);
-		}
-
-		[Given(@"I add the consultation parameter ""(.*)""")]
-		public void GivenIAddTheConsultationParameter(string partValue)
-		{
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)TimePeriodHelper.GetDefaultTimePeriod()),
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base)new FhirString((partValue)))
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-		}
-
-		[Given(@"I add the problems parameter ""(.*)"",""(.*)""")]
-		public void GivenIAddTheProblemsParameter(string partStatus, string partSignificanceValue)
-		{
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new FhirString ((partStatus))),
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new FhirString ((partSignificanceValue)))
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
-		}
 
 		#endregion
 
 		#region List and Bundle Validity Checks
 
 		[Then(@"the List of AllergyIntolerances should be valid")]
-        public void TheListOfAllergyIntolerancesShouldBeValid()
-        {
-            Lists.ForEach(list =>
-            {
-                AccessRecordSteps.BaseListParametersAreValid(list);
+		public void TheListOfAllergyIntolerancesShouldBeValid()
+		{
+			Lists.ForEach(list =>
+			{
+				AccessRecordSteps.BaseListParametersAreValid(list);
 
-// Added 1.2.1 RMB 1/10/2018
-                list.Meta.VersionId.ShouldBeNull("List Meta VersionId should be Null");
-                list.Meta.LastUpdated.ShouldBeNull("List Meta LastUpdated should be Null");
+				// Added 1.2.1 RMB 1/10/2018
+				list.Meta.VersionId.ShouldBeNull("List Meta VersionId should be Null");
+				list.Meta.LastUpdated.ShouldBeNull("List Meta LastUpdated should be Null");
 
-                //Alergy specific checks
-                CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+				//Alergy specific checks
+				CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
 
-                if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
-                {
-                    list.Code.Coding.First().Code.Equals("886921000000105");
-                } else if (list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies))
-                {
-                    // Changed from TBD to 1103671000000101 for 1.2.0 RMB 7/8/2018
-                    list.Code.Coding.First().Code.Equals("1103671000000101");
-// Amended github ref 89
-// RMB 9/10/2018				
-// git hub ref 174 snomed code display set to Ended allergies
-// RMB 23/1/19
-//					list.Code.Coding.First().Display.ShouldBe("Ended allergies (record artifact)");
-					list.Code.Coding.First().Display.ShouldBe("Ended allergies");					
-                }
+				if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
+				{
+					list.Code.Coding.First().Code.Equals("886921000000105");
+				} else if (list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies))
+				{
+					// Changed from TBD to 1103671000000101 for 1.2.0 RMB 7/8/2018
+					list.Code.Coding.First().Code.Equals("1103671000000101");
+					// Amended github ref 89
+					// RMB 9/10/2018				
+					// git hub ref 174 snomed code display set to Ended allergies
+					// RMB 23/1/19
+					//					list.Code.Coding.First().Display.ShouldBe("Ended allergies (record artifact)");
+					list.Code.Coding.First().Display.ShouldBe("Ended allergies");
+				}
 
-                if (list.Entry.Count > 0)
-                {
-                    list.Entry.ForEach(entry =>
-                    {
-                        entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
-                        entry.Item.Reference.ShouldMatch("AllergyIntolerance/.+|#.+");
-                        if (entry.Item.IsContainedReference)
-                        {
-                            string id = entry.Item.Reference.Substring(1);
-                            List<Resource> contained = list.Contained.Where(allergy => allergy.Id.Equals(id)).ToList();
-                            contained.Count.ShouldBe(1);
-                            contained.ForEach(allergy =>
-                            {
-                                AllergyIntolerance allergyIntolerance = (AllergyIntolerance)allergy;
-                                allergyIntolerance.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved);
-                            });
-                        }
-                    });
-                }
+				if (list.Entry.Count > 0)
+				{
+					list.Entry.ForEach(entry =>
+					{
+						entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
+						entry.Item.Reference.ShouldMatch("AllergyIntolerance/.+|#.+");
+						if (entry.Item.IsContainedReference)
+						{
+							string id = entry.Item.Reference.Substring(1);
+							List<Resource> contained = list.Contained.Where(allergy => allergy.Id.Equals(id)).ToList();
+							contained.Count.ShouldBe(1);
+							contained.ForEach(allergy =>
+							{
+								AllergyIntolerance allergyIntolerance = (AllergyIntolerance)allergy;
+								allergyIntolerance.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved);
+							});
+						}
+					});
+				}
 
-                if (list.Entry.Count == 0)
-                {
-                    list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
-                    list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
-                }
-            });
-        }
-
-
-        [Then(@"the Bundle should contain ""(.*)"" allergies")]
-        public void TheBundleShouldContainAllergies(int number)
-        {
-            ActiveAllergyIntolerances.Count.ShouldBe(number, "An incorrect number of allergies was returned for the patient.");
-        }
-
-        [Then(@"the Bundle should contain ""(.*)"" lists")]
-        public void TheBundleShouldContainLists(int number)
-        {
-            Lists.Count.ShouldBe(number, "An incorrect number of lists was returned with the bundle.");
-        }
-
-        [Then(@"the Bundle should contain a list with the title ""(.*)""")]
-        public void TheBundleShouldContainAListWithTheTitleAndEntries(string title)
-        {
-            getListsWithTitle(title).ShouldHaveSingleItem();
-        }
-
-        [Then(@"the Bundle should contain the correct number of allergies")]
-        public void TheBundleShouldContainTheCorrectNumberOfAllergies()
-        {
-            List active = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kActiveAllergies)).ToList().First();
-
-            ActiveAllergyIntolerances.Count.ShouldBe(active.Entry.Count);
-        }
-
-        [Then(@"the Bundle should not contain a list with the title ""(.*)""")]
-        public void TheBundleShouldNotContainAListWithTheTitle(string title)
-        {
-            getListsWithTitle(title).ShouldBeEmpty();
-        }
-
-        private List<List> getListsWithTitle(string title)
-        {
-            return Lists
-                    .Where(list => list.Title.Equals(title))
-                    .ToList();
-        }
-
-        [Then(@"the Lists are valid for a patient with no allergies")]
-        public void TheListsAreValidForAPatientWithNoAllergies()
-        {
-            Lists.ForEach(list =>
-           {
-               list.Entry.ShouldBeEmpty();
-               list.Note.ShouldNotBeNull();
-               list.Note.ShouldHaveSingleItem();
-               list.Note.First().Text.ShouldBe("Information not available");
-               list.EmptyReason.ShouldNotBeNull();
-               list.EmptyReason.Coding.Count.ShouldBe(1);
-// git hub ref 158
-// RMB 9/1/19			   
-               list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kListEmptyReason);
-// Amended for github ref 87
-// RMB 9/10/2018			   
-               list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
-// Amended for github ref 172
-// RMB 24/1/19			   			   
-               list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
-           });
-        }
-
-        [Then(@"the Lists are valid for a patient with explicit no allergies coding")]
-        public void TheListsAreValidForAPatientWithExplicitNoAllergiesCoding()
-        {
-            Lists.ForEach(list =>
-            {
-                if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
-                {
-                    ActiveAllergyIntolerances.Count.Equals(1);
-                    ActiveAllergyIntolerances.ForEach(allergy =>
-                    {
-                        allergy.Code.Coding.First().Code.ShouldNotBeNull();
-                    });
-                }
-            });
-        }
-
-        [Then(@"the Lists are valid for a patient with allergies")]
-        public void TheListsAreValidForAPatientWithAllergies()
-        {
-            Lists.ForEach(list =>
-            {
-                list.EmptyReason.ShouldBeNull("ist empty reason should be null");
-                list.Note.ForEach(note =>
-                {
-                    note.Text.ShouldNotContain("no known allergies");
-                });
-            });
-        }
-
-        [Then(@"the Lists are valid for a patient without allergies")]
-        public void TheListsAreValidForAPatientWithooutAllergies()
-        {
-            Lists.ForEach(list =>
-            {
-                //list.EmptyReason.ShouldNotBeNull();
-                list.Extension.ForEach(extension =>
-                {
-                    extension.Url.ShouldNotBeNull();
-                });
-                //list.Note.ForEach(note =>
-                //{
-                //    note.Text.ShouldNotContain("no known allergies");
-                //});
-            });
-        }
-
-        #endregion
-
-        #region Allergy Intolerance Validity Checks
-
-        [Then(@"the AllergyIntolerance should be valid")]
-        public void TheAllergyIntoleranceShouldBeValid()
-        {
-            AllAllergyIntolerances.AddRange(ActiveAllergyIntolerances);
-
-            //Get the 'contained' resolved allergies from the resolved list
-            List<List> resolved = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies)).ToList();
-            if (resolved.Count > 0)
-            {
-                List<Resource> resolvedAllergies = resolved.First().Contained.Where(resource => resource.ResourceType.Equals(ResourceType.AllergyIntolerance)).ToList();
-                resolvedAllergies.ForEach(resource =>
-                {
-                    AllergyIntolerance allergy = (AllergyIntolerance)resource;
-                    AllAllergyIntolerances.Add(allergy);
-                });
-            }
-
-            TheAllergyIntoleranceRecorderShouldbeValid();
-            TheAllergyIntoleranceClinicalStatusShouldbeValid();
-            TheAllergyIntoleranceAssertedDateShouldBeValid();
-            TheAllergyIntoleranceIdShouldBeValid();
-
-            // Added check for Allergy Identifier should be set and be a GUID RMB 07-08-2016
-            TheAllergyIntoleranceIdentifierShouldBeValid();
-
-            TheAllergyIntoleranceMetadataShouldBeValid();
-            TheAllergyIntolerancePatientShouldBeValidAndResolvable();
-            TheAllergyIntoleranceVerificationStatusShouldbeValid();
-            TheAllergyIntoleranceReactionShouldBeValid();
-            TheAllergyIntoleranceEndDateShouldBeValid();
-            TheAllergyIntoleranceCodeShouldbeValid();
-            TheListOfAllergyIntolerancesShouldBeValid();
-            TheAllergyIntoleranceCategoryShouldbeValid();
-            TheAllergyIntoleranceEncounterShouldBeValid();
-            // Added 1.2.1 RMB 1/10/2018
-            TheAllergyIntoleranceNotInUseShouldBeValid();
-        }
-
-        private void TheAllergyIntoleranceEncounterShouldBeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                Extension encounter = allergy.GetExtension(FhirConst.StructureDefinitionSystems.kExtEncounter);
-                if (encounter != null)
-                {
-                    ResourceReference encRef = (ResourceReference)encounter.Value;
-                    encRef.Reference.StartsWith("Encounter/");
-                }
-            });
-        }
-
-        private void TheAllergyIntoleranceRecorderShouldbeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                allergy.Recorder.ShouldNotBeNull("AllergyIntolerance Recorder cannot be null");
-            });
-        }
-
-        private void TheAllergyIntoleranceMetadataShouldBeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergyIntolerance =>
-            {
-                CheckForValidMetaDataInResource(allergyIntolerance, FhirConst.StructureDefinitionSystems.kAllergyIntolerance);
-            });
-        }
-
-        private void TheAllergyIntoleranceIdShouldBeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                allergy.Id.ShouldNotBeNullOrWhiteSpace("Id must be set");
-            });
-        }
-
-        //PG 10-4-2019 #190 - Updated Code to check that GUID is valid
-        private void TheAllergyIntoleranceIdentifierShouldBeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                allergy.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
-                if (allergy.Identifier.Count == 1)
-                {
-                    var identifier = allergy.Identifier.First();
-                    identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-                    FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
-
-                    //new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
-                    Guid guidResult;
-                    Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("AllergyIntolerance identifier GUID is not valid or Null");
+				if (list.Entry.Count == 0)
+				{
+					list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
+					list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
+				}
+			});
+		}
 
 
-                }
-            });
-        }
+		[Then(@"the Bundle should contain ""(.*)"" allergies")]
+		public void TheBundleShouldContainAllergies(int number)
+		{
+			ActiveAllergyIntolerances.Count.ShouldBe(number, "An incorrect number of allergies was returned for the patient.");
+		}
 
-        private void TheAllergyIntoleranceClinicalStatusShouldbeValid()
-        {
-            ActiveAllergyIntolerances.ForEach(allergy =>
-            {
-                allergy.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Active);
-            });
+		[Then(@"the Bundle should contain ""(.*)"" lists")]
+		public void TheBundleShouldContainLists(int number)
+		{
+			Lists.Count.ShouldBe(number, "An incorrect number of lists was returned with the bundle.");
+		}
 
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                allergy.ClinicalStatus.ShouldNotBeNull("AllergyIntolerance ClinicalStatus cannot be null");
-                allergy.ClinicalStatus.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceClinicalStatus>($"AllergyIntolerance ClinicalStatus is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceClinicalStatus}");
-                allergy.ClinicalStatus.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Inactive, "The clinical status should never be set to inactive");
-            });
-        }
+		[Then(@"the Bundle should contain a list with the title ""(.*)""")]
+		public void TheBundleShouldContainAListWithTheTitleAndEntries(string title)
+		{
+			getListsWithTitle(title).ShouldHaveSingleItem();
+		}
 
-        private void TheAllergyIntoleranceVerificationStatusShouldbeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                allergy.VerificationStatus.ShouldNotBeNull("AllergyIntolerance VerificationStatus cannot be null");
-                allergy.VerificationStatus.ShouldBe(AllergyIntolerance.AllergyIntoleranceVerificationStatus.Unconfirmed);
-            });
-        }
+		[Then(@"the Bundle should contain the correct number of allergies")]
+		public void TheBundleShouldContainTheCorrectNumberOfAllergies()
+		{
+			List active = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kActiveAllergies)).ToList().First();
 
-        private void TheAllergyIntoleranceCategoryShouldbeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
+			ActiveAllergyIntolerances.Count.ShouldBe(active.Entry.Count);
+		}
 
-                allergy.Category.ShouldNotBeNull("AllergyIntolerance Category cannot be null");
-                allergy.Category.ToList().ForEach(category =>
-               {
-                   category.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceCategory>($"AllergyIntolerance Category is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceCategory}");
-                   category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Biologic);
-                   category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Food);
-               });
-            });
-        }
+		[Then(@"the Bundle should not contain a list with the title ""(.*)""")]
+		public void TheBundleShouldNotContainAListWithTheTitle(string title)
+		{
+			getListsWithTitle(title).ShouldBeEmpty();
+		}
 
-        private void TheAllergyIntoleranceCodeShouldbeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                allergy.Code.Coding.ShouldNotBeNull("AllergyIntolerance Code coding cannot be null");
+		private List<List> getListsWithTitle(string title)
+		{
+			return Lists
+					.Where(list => list.Title.Equals(title))
+					.ToList();
+		}
 
-                allergy.Code.Coding.ForEach(coding =>
-                {
-                    coding.System.ShouldNotBeNull("Code should not be null");
-                });
-            });
-        }
+		[Then(@"the Lists are valid for a patient with no allergies")]
+		public void TheListsAreValidForAPatientWithNoAllergies()
+		{
+			Lists.ForEach(list =>
+		   {
+			   list.Entry.ShouldBeEmpty();
+			   list.Note.ShouldNotBeNull();
+			   list.Note.ShouldHaveSingleItem();
+			   list.Note.First().Text.ShouldBe("Information not available");
+			   list.EmptyReason.ShouldNotBeNull();
+			   list.EmptyReason.Coding.Count.ShouldBe(1);
+			   // git hub ref 158
+			   // RMB 9/1/19			   
+			   list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kListEmptyReason);
+			   // Amended for github ref 87
+			   // RMB 9/10/2018			   
+			   list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
+			   // Amended for github ref 172
+			   // RMB 24/1/19			   			   
+			   list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
+		   });
+		}
 
-        private void TheAllergyIntoleranceAssertedDateShouldBeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                allergy.AssertedDate.ShouldNotBeNullOrEmpty();
-            });
-        }
+		[Then(@"the Lists are valid for a patient with explicit no allergies coding")]
+		public void TheListsAreValidForAPatientWithExplicitNoAllergiesCoding()
+		{
+			Lists.ForEach(list =>
+			{
+				if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
+				{
+					ActiveAllergyIntolerances.Count.Equals(1);
+					ActiveAllergyIntolerances.ForEach(allergy =>
+					{
+						allergy.Code.Coding.First().Code.ShouldNotBeNull();
+					});
+				}
+			});
+		}
 
-        private void TheAllergyIntoleranceEndDateShouldBeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                if (allergy.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved))
-                {
-                    Extension endAllergy = allergy.GetExtension(FhirConst.StructureDefinitionSystems.kAllergyEndExt);
-                    endAllergy.ShouldNotBeNull();
-                    Extension endDate = endAllergy.GetExtension("endDate");
-                    endDate.ShouldNotBeNull();
-                    endDate.Value.ShouldNotBeNull();
-                    Extension endReason = endAllergy.GetExtension("reasonEnded");
-                    endReason.ShouldNotBeNull();
-                    endReason.Value.ShouldNotBeNull();
-                }
-            });
-        }
+		[Then(@"the Lists are valid for a patient with allergies")]
+		public void TheListsAreValidForAPatientWithAllergies()
+		{
+			Lists.ForEach(list =>
+			{
+				list.EmptyReason.ShouldBeNull("ist empty reason should be null");
+				list.Note.ForEach(note =>
+				{
+					note.Text.ShouldNotContain("no known allergies");
+				});
+			});
+		}
 
-        private void TheAllergyIntolerancePatientShouldBeValidAndResolvable()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                var reference = allergy.Patient.Reference;
-                reference.ShouldStartWith("Patient/");
-// git hub ref 159
-// RMB 14/1/19
-//                var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PatientRead, reference);
-//                resource.GetType().ShouldBe(typeof(Patient));
-            });
-        }
+		[Then(@"the Lists are valid for a patient without allergies")]
+		public void TheListsAreValidForAPatientWithooutAllergies()
+		{
+			Lists.ForEach(list =>
+			{
+				//list.EmptyReason.ShouldNotBeNull();
+				list.Extension.ForEach(extension =>
+				{
+					extension.Url.ShouldNotBeNull();
+				});
+				//list.Note.ForEach(note =>
+				//{
+				//    note.Text.ShouldNotContain("no known allergies");
+				//});
+			});
+		}
 
-        private void TheAllergyIntoleranceReactionShouldBeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy => {
-                if (allergy.Reaction != null)
-                {
-                    allergy.Reaction.Count.ShouldBeLessThanOrEqualTo(1);
-// git hub ref 173
-// RMB 4/2/19 - debug for testing code should have been removed
-//                  if (allergy.Reaction.Count == 0)
-//                   {
-//                        allergy.Reaction.Count.ShouldBe(1);
-//                   }               
-// git hub ref 173
-// RMB 23/1/19
-                    if (allergy.Reaction.Any()) {
-                        AllergyIntolerance.ReactionComponent reaction = allergy.Reaction[0];
-                        if (reaction.Manifestation != null)
-                        {
-                            reaction.Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
+		#endregion
 
-                            if (reaction.Manifestation.Count == 1)
-                            {
-                                if (reaction.Severity != null)
-                                {
-                                    reaction.Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
+		#region Allergy Intolerance Validity Checks
 
-                                    var codableConcept = reaction.Manifestation.First();
+		[Then(@"the AllergyIntolerance should be valid")]
+		public void TheAllergyIntoleranceShouldBeValid()
+		{
+			AllAllergyIntolerances.AddRange(ActiveAllergyIntolerances);
 
-                                    var codingDisplay = codableConcept.Coding.First().Display;
+			//Get the 'contained' resolved allergies from the resolved list
+			List<List> resolved = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies)).ToList();
+			if (resolved.Count > 0)
+			{
+				List<Resource> resolvedAllergies = resolved.First().Contained.Where(resource => resource.ResourceType.Equals(ResourceType.AllergyIntolerance)).ToList();
+				resolvedAllergies.ForEach(resource =>
+				{
+					AllergyIntolerance allergy = (AllergyIntolerance)resource;
+					AllAllergyIntolerances.Add(allergy);
+				});
+			}
 
-                                    // codingDisplay.ShouldBe("nullFlavor NI", "AllergyIntolerance.reaction.manifestation SHOULD be coded as the nullFlavor NI");
+			TheAllergyIntoleranceRecorderShouldbeValid();
+			TheAllergyIntoleranceClinicalStatusShouldbeValid();
+			TheAllergyIntoleranceAssertedDateShouldBeValid();
+			TheAllergyIntoleranceIdShouldBeValid();
 
-                                }
-                            }
-                        }
+			// Added check for Allergy Identifier should be set and be a GUID RMB 07-08-2016
+			TheAllergyIntoleranceIdentifierShouldBeValid();
 
-                        if (reaction.ExposureRoute != null)
-                        {
-                            reaction.ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
-                        }
+			TheAllergyIntoleranceMetadataShouldBeValid();
+			TheAllergyIntolerancePatientShouldBeValidAndResolvable();
+			TheAllergyIntoleranceVerificationStatusShouldbeValid();
+			TheAllergyIntoleranceReactionShouldBeValid();
+			TheAllergyIntoleranceEndDateShouldBeValid();
+			TheAllergyIntoleranceCodeShouldbeValid();
+			TheListOfAllergyIntolerancesShouldBeValid();
+			TheAllergyIntoleranceCategoryShouldbeValid();
+			TheAllergyIntoleranceEncounterShouldBeValid();
+			// Added 1.2.1 RMB 1/10/2018
+			TheAllergyIntoleranceNotInUseShouldBeValid();
+		}
 
-                        reaction.Note.ShouldBeEmpty();
-                        reaction.Onset.ShouldBeNull("Allergy Reaction Onset should be Null");
-                        reaction.Substance.ShouldBeNull("Allergy Reaction Substance should be Null");
-                    }
-                }
-            });
-        }
-        // Added 1.2.0 RMB 15/8/2018
+		private void TheAllergyIntoleranceEncounterShouldBeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				Extension encounter = allergy.GetExtension(FhirConst.StructureDefinitionSystems.kExtEncounter);
+				if (encounter != null)
+				{
+					ResourceReference encRef = (ResourceReference)encounter.Value;
+					encRef.Reference.StartsWith("Encounter/");
+				}
+			});
+		}
 
-        [Then(@"the Lists are valid for a patient with legacy endReason")]
-        public void theListsarevalidforapatientwithlegacyendReason()
-        {
-            checktheListsarevalidforapatientwithlegacyendReason();
-        }
+		private void TheAllergyIntoleranceRecorderShouldbeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				allergy.Recorder.ShouldNotBeNull("AllergyIntolerance Recorder cannot be null");
+			});
+		}
 
-        // Added test for 'No information available' 1.2.0 RMB 7/8/2018
-        private void checktheListsarevalidforapatientwithlegacyendReason()
-        {
-            List<List> resolved = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies)).ToList();
-            if (resolved.Count > 0)
-            {
-                List<Resource> resolvedAllergies = resolved.First().Contained.Where(resource => resource.ResourceType.Equals(ResourceType.AllergyIntolerance)).ToList();
-                resolvedAllergies.ForEach(resource =>
-                {
-                    AllergyIntolerance endedAllergy = (AllergyIntolerance)resource;
-                    Extension endAllergy = endedAllergy.GetExtension(FhirConst.StructureDefinitionSystems.kAllergyEndExt);
-                    endAllergy.ShouldNotBeNull();
-                    Extension endReason = endAllergy.GetExtension("reasonEnded");
-                    endReason.Value.ShouldNotBeNull();
-                    endReason.Value.ToString().ShouldBe("No information available");
+		private void TheAllergyIntoleranceMetadataShouldBeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergyIntolerance =>
+			{
+				CheckForValidMetaDataInResource(allergyIntolerance, FhirConst.StructureDefinitionSystems.kAllergyIntolerance);
+			});
+		}
 
-                });
-            }
-        }
+		private void TheAllergyIntoleranceIdShouldBeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				allergy.Id.ShouldNotBeNullOrWhiteSpace("Id must be set");
+			});
+		}
 
-        // Added 1.2.1 RMB 1/10/2018        
-        [Then(@"the AllergyIntolerance Not In Use should be valid")]
-        public void TheAllergyIntoleranceNotInUseShouldBeValid()
-        {
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                allergy.Meta.VersionId.ShouldBeNull("Allergy Meta VersionID should be Null");
-                allergy.Meta.LastUpdated.ShouldBeNull("Allergy Meta LastUpdated should be Null");
+		//PG 10-4-2019 #190 - Updated Code to check that GUID is valid
+		private void TheAllergyIntoleranceIdentifierShouldBeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				allergy.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+				if (allergy.Identifier.Count == 1)
+				{
+					var identifier = allergy.Identifier.First();
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
+					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
 
-            });
-        }
+							//new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
+							Guid guidResult;
+					Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("AllergyIntolerance identifier GUID is not valid or Null");
 
-    }
+
+				}
+			});
+		}
+
+		private void TheAllergyIntoleranceClinicalStatusShouldbeValid()
+		{
+			ActiveAllergyIntolerances.ForEach(allergy =>
+			{
+				allergy.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Active);
+			});
+
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				allergy.ClinicalStatus.ShouldNotBeNull("AllergyIntolerance ClinicalStatus cannot be null");
+				allergy.ClinicalStatus.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceClinicalStatus>($"AllergyIntolerance ClinicalStatus is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceClinicalStatus}");
+				allergy.ClinicalStatus.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Inactive, "The clinical status should never be set to inactive");
+			});
+		}
+
+		private void TheAllergyIntoleranceVerificationStatusShouldbeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				allergy.VerificationStatus.ShouldNotBeNull("AllergyIntolerance VerificationStatus cannot be null");
+				allergy.VerificationStatus.ShouldBe(AllergyIntolerance.AllergyIntoleranceVerificationStatus.Unconfirmed);
+			});
+		}
+
+		private void TheAllergyIntoleranceCategoryShouldbeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+
+				allergy.Category.ShouldNotBeNull("AllergyIntolerance Category cannot be null");
+				allergy.Category.ToList().ForEach(category =>
+			   {
+				   category.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceCategory>($"AllergyIntolerance Category is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceCategory}");
+				   category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Biologic);
+				   category.ShouldNotBeSameAs(AllergyIntolerance.AllergyIntoleranceCategory.Food);
+			   });
+			});
+		}
+
+		private void TheAllergyIntoleranceCodeShouldbeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				allergy.Code.Coding.ShouldNotBeNull("AllergyIntolerance Code coding cannot be null");
+
+				allergy.Code.Coding.ForEach(coding =>
+				{
+					coding.System.ShouldNotBeNull("Code should not be null");
+				});
+			});
+		}
+
+		private void TheAllergyIntoleranceAssertedDateShouldBeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				allergy.AssertedDate.ShouldNotBeNullOrEmpty();
+			});
+		}
+
+		private void TheAllergyIntoleranceEndDateShouldBeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				if (allergy.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved))
+				{
+					Extension endAllergy = allergy.GetExtension(FhirConst.StructureDefinitionSystems.kAllergyEndExt);
+					endAllergy.ShouldNotBeNull();
+					Extension endDate = endAllergy.GetExtension("endDate");
+					endDate.ShouldNotBeNull();
+					endDate.Value.ShouldNotBeNull();
+					Extension endReason = endAllergy.GetExtension("reasonEnded");
+					endReason.ShouldNotBeNull();
+					endReason.Value.ShouldNotBeNull();
+				}
+			});
+		}
+
+		private void TheAllergyIntolerancePatientShouldBeValidAndResolvable()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				var reference = allergy.Patient.Reference;
+				reference.ShouldStartWith("Patient/");
+						// git hub ref 159
+						// RMB 14/1/19
+						//                var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PatientRead, reference);
+						//                resource.GetType().ShouldBe(typeof(Patient));
+					});
+		}
+
+		private void TheAllergyIntoleranceReactionShouldBeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy => {
+				if (allergy.Reaction != null)
+				{
+					allergy.Reaction.Count.ShouldBeLessThanOrEqualTo(1);
+					// git hub ref 173
+					// RMB 4/2/19 - debug for testing code should have been removed
+					//                  if (allergy.Reaction.Count == 0)
+					//                   {
+					//                        allergy.Reaction.Count.ShouldBe(1);
+					//                   }               
+					// git hub ref 173
+					// RMB 23/1/19
+					if (allergy.Reaction.Any()) {
+						AllergyIntolerance.ReactionComponent reaction = allergy.Reaction[0];
+						if (reaction.Manifestation != null)
+						{
+							reaction.Manifestation.Count.ShouldBeLessThanOrEqualTo(1);
+
+							if (reaction.Manifestation.Count == 1)
+							{
+								if (reaction.Severity != null)
+								{
+									reaction.Severity.ShouldBeOfType<AllergyIntolerance.AllergyIntoleranceSeverity>($"AllergyIntolerance Severity is not a valid value within the value set {FhirConst.ValueSetSystems.kVsAllergyIntoleranceSeverity}");
+
+									var codableConcept = reaction.Manifestation.First();
+
+									var codingDisplay = codableConcept.Coding.First().Display;
+
+									// codingDisplay.ShouldBe("nullFlavor NI", "AllergyIntolerance.reaction.manifestation SHOULD be coded as the nullFlavor NI");
+
+								}
+							}
+						}
+
+						if (reaction.ExposureRoute != null)
+						{
+							reaction.ExposureRoute.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
+						}
+
+						reaction.Note.ShouldBeEmpty();
+						reaction.Onset.ShouldBeNull("Allergy Reaction Onset should be Null");
+						reaction.Substance.ShouldBeNull("Allergy Reaction Substance should be Null");
+					}
+				}
+			});
+		}
+		// Added 1.2.0 RMB 15/8/2018
+
+		[Then(@"the Lists are valid for a patient with legacy endReason")]
+		public void theListsarevalidforapatientwithlegacyendReason()
+		{
+			checktheListsarevalidforapatientwithlegacyendReason();
+		}
+
+		// Added test for 'No information available' 1.2.0 RMB 7/8/2018
+		private void checktheListsarevalidforapatientwithlegacyendReason()
+		{
+			List<List> resolved = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies)).ToList();
+			if (resolved.Count > 0)
+			{
+				List<Resource> resolvedAllergies = resolved.First().Contained.Where(resource => resource.ResourceType.Equals(ResourceType.AllergyIntolerance)).ToList();
+				resolvedAllergies.ForEach(resource =>
+				{
+					AllergyIntolerance endedAllergy = (AllergyIntolerance)resource;
+					Extension endAllergy = endedAllergy.GetExtension(FhirConst.StructureDefinitionSystems.kAllergyEndExt);
+					endAllergy.ShouldNotBeNull();
+					Extension endReason = endAllergy.GetExtension("reasonEnded");
+					endReason.Value.ShouldNotBeNull();
+					endReason.Value.ToString().ShouldBe("No information available");
+
+				});
+			}
+		}
+
+		// Added 1.2.1 RMB 1/10/2018        
+		[Then(@"the AllergyIntolerance Not In Use should be valid")]
+		public void TheAllergyIntoleranceNotInUseShouldBeValid()
+		{
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				allergy.Meta.VersionId.ShouldBeNull("Allergy Meta VersionID should be Null");
+				allergy.Meta.LastUpdated.ShouldBeNull("Allergy Meta LastUpdated should be Null");
+
+			});
+		}
+
+	}
 }
 #endregion

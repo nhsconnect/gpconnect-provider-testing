@@ -213,41 +213,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			CheckForValidMetaDataInResource(_httpContext.FhirResponse.Locations, "http://fhir.nhs.net/StructureDefinition/CareConnect-GPC-Location-1");
 		}
 
-		[Then(@"sara check response")]
-		public void saraCheckResponse()
-		{
-			var entries = _httpContext.FhirResponse.Entries;
-
-			entries.ForEach(entry =>
-			{
-
-				if (entry.Resource.ResourceType.ToString() == "OperationOutcome")
-				{
-					Console.WriteLine("STOP");
-					var issues = entry.Resource.i
-					
-				}
-			//	foreach (
-			//		{
-			//		issue.code.ShouldBe("not-supported");
-					Console.WriteLine("STOP");
-			//	}
-			//)}
-
-
-
-				
-				//	if (entry.resourcetype ="OperationOutcome")
-				//		{
-				//	issue.code.ShouldBe("not-supported");
-				//	issue.severity.ShouldBe("warning");
-				//	issue.details.coding.system.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
-				//	issue.details.coding.code.ShouldBe("NOT_IMPLEMENTED");
-				//	issue.details.coding.display.ShouldBe("Not implemented");
-			});
-
-		}
-
 		public void CheckForValidMetaDataInResource<T>(List<T> resources, string profileId) where T : Resource
 		{
 			resources.ForEach(resource =>
@@ -283,62 +248,5 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			_httpContext.FhirResponse.Bundle.Entry.Count(ent => ent.Resource.ResourceType.Equals(resourceType)).ShouldBe(0, customMessage);
 		}
 
-		public void ThenTheResponseShouldContainAOperationOutcomeResource()
-		{
-			TestOperationOutcomeResource();
-		}
-
-		public void saraTestForOperationOutcome(string errorCode)
-		{
-			var entries = _httpContext.FhirResponse.Entries;
-
-			entries.ForEach(entry =>
-			{
-				Console.WriteLine("STOP");
-			//	if (entry.resourcetype ="OperationOutcome")
-			//		{
-			//	issue.code.ShouldBe("not-supported");
-			//	issue.severity.ShouldBe("warning");
-			//	issue.details.coding.system.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
-			//	issue.details.coding.code.ShouldBe("NOT_IMPLEMENTED");
-			//	issue.details.coding.display.ShouldBe("Not implemented");
-		    });
-
-			//in EntryComponent
-			
-					
-						
-			//			foreach issue in issues
-			//			variable issues = entry.issues
-
-			//var operationOutcome = (OperationOutcome)resource;
-
-			//operationOutcome.Meta.ShouldNotBeNull();
-			////operationOutcome.Meta.Profile.ShouldAllBe(profile => profile.Equals("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1"));
-
-			//operationOutcome.Issue?.Count.ShouldBeGreaterThanOrEqualTo(1);
-
-			//operationOutcome.Issue?.ForEach(issue =>
-
-			//	{
-			//		issue.code.ShouldBe("not-supported");
-			//		issue.severity.ShouldBe("warning");
-			//		issue.details.coding.system.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
-			//		issue.details.coding.code.ShouldBe("NOT_IMPLEMENTED");
-			//		issue.details.coding.display.ShouldBe("Not implemented");
-
-			//		if unsupportedParameter
-			//				{
-			//			issue.details.text.ShouldBe("\<parameter-name\> is an unrecognised parameter");
-			//			issue.diagnostics.ShouldBe("\<parameter-name|>");
-			//		}
-
-			//		else unsupportedPartParameter
-			//				{
-			//			issue.details.text.ShouldBe("\<parameter-name\>.\<part-parameter-name\> is an unrecognised parameter");
-			//			issue.diagnostics.ShouldBe("\<parameter-name\>.\<part-parameter-name\>"");
-			//				}
-			//	});
-		}
 	}
 }
