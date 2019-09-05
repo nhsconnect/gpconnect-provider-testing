@@ -11,6 +11,8 @@
     using GPConnect.Provider.AcceptanceTests.Enum;
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
+    using GPConnect.Provider.AcceptanceTests.Logger;
+    using System.Text.RegularExpressions;
 
     [Binding]
     public sealed class AccessStructuredAllergySteps : BaseSteps
@@ -262,6 +264,70 @@
                 //});
             });
         }
+
+
+        [Then(@"Check the list contains the following warning ""(.*)""")]
+        public void CheckTheListContainsTheFollowingWarning(string WarningToCheckFor)
+        {
+            Lists.ForEach(list =>
+            {
+                var found = list.Extension
+                    .Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtListWarningCode))
+                    .Where(extension => extension.Value.ToString().Equals(WarningToCheckFor)).ToList();
+
+                if (found.Count() == 1)
+                    Log.WriteLine("Found Warning : " + WarningToCheckFor + " in List : " +list.Title);
+                
+                found.Count().ShouldBe(1, "Unable to Find Warning : " + WarningToCheckFor + " in LIst : " + list.Title);
+            });
+        }
+
+
+        [Then(@"Check the warning ""(.*)"" has associated note ""(.*)""")]
+        public void CheckTheListContainsTheFollowingNote(string warning,string noteToCheckFor)
+        {
+            Lists.ForEach(list =>
+            {
+                if (warning != "data-in-transit")
+                {
+                    var matches = list.Note
+                    .Where(note => note.Text.Contains(noteToCheckFor));
+
+                    if (matches.Count() == 1)
+                        Log.WriteLine("Found Note : " + noteToCheckFor + " in List : " + list.Title);
+
+                    matches.Count().ShouldBe(1, "Unable to Find Note : " + noteToCheckFor + "in LIst : " + list.Title);
+                }
+                //Process data-in-transit separatly due to date being variable in message
+                else
+                {
+                    Regex regex = new Regex("(.*)dd-Mmm-yyyy(.*)");
+                    string noteWithRegex = regex.Replace(noteToCheckFor, "$1.*$2");
+                    Regex findNoteRegex = new Regex(noteWithRegex);
+
+                    var found = false;
+                    MatchCollection matches;
+                    foreach (var note in list.Note)
+                    {
+                        matches = findNoteRegex.Matches(note.Text);
+                        if (matches.Count == 1)
+                        {
+                            found = true;
+                            Log.WriteLine("Warning Note Found : " + noteToCheckFor + " in List : " + list.Title);
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        found.ShouldBeTrue("Unable to Find Warning Note : " + noteToCheckFor + " in LIst : " + list.Title);
+                        Log.WriteLine("Note Not Found For Warning: " + noteToCheckFor + " in List : " + list.Title);
+                    }
+
+                }
+            });
+        }
+
+
 
         #endregion
 

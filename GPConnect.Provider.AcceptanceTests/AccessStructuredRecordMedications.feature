@@ -351,3 +351,22 @@ Scenario:  structured record for a patient that has inactive flag
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+
+
+	#PG 5/9/2019 - #289
+	Scenario Outline: Structured Medications Check warning codes and assoicated notes for a patient
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the medication parameter with includePrescriptionIssues set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the Bundle should contain "1" lists
+		And the List of MedicationStatements should be valid
+		And Check the list contains the following warning "<Warning>"
+	And Check the warning "<Warning>" has associated note "<Note>"
+	Examples:
+	| Warning             | Note                                                                                                                       |
+	| confidential-items   | Items excluded due to confidentiality and/or patient preferences.                                                           |
+	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
+	| data-awaiting-filing | Patient data may be incomplete as there is data supplied by a third party awaiting review before becoming available.        |
+	
