@@ -27,7 +27,7 @@
 		}
 
 		[Then(@"Check the operation outcome returns the correct text and diagnotics ""([^""]*)""")]
-		public void checkTheOperationOutcomeCheckThatDiagnosticReturnsRelevant(string parameters)
+		public void checkTheOperationOutcomeReturnsTheCorrectTextAndDiagnostics(string parameters)
 		{
 			var entries = _httpContext.FhirResponse.Entries;
 			entries.ForEach(entry =>
@@ -57,7 +57,7 @@
 		public void checkTheOperationOutcomeForEachUnsupportedStructuredRequest()
 		{
 			var entries = _httpContext.FhirResponse.Entries;
-			string paramsToCheck = "includeImmunisations,includeProblems,includeConsultations,includeUncategorisedData, include a rubbish one";
+			string paramsToCheck = "includeImmunisations,includeProblems,includeConsultations,includeUncategorisedData,inventedParameter";
 
 			var parameterList = paramsToCheck.Split(',');
 			entries.ForEach(entry =>
@@ -65,51 +65,61 @@
 
 				if (entry.Resource.ResourceType.ToString() == "OperationOutcome")
 				{
-
-					foreach (var param in parameterList)
+					//check number of issues in operation outcome matches expected number
+					if (((Hl7.Fhir.Model.OperationOutcome)entry.Resource).Issue.Count() == parameterList.Count())
 					{
 
-						bool found = false;
 
-						foreach (var issue in ((Hl7.Fhir.Model.OperationOutcome)entry.Resource).Issue)
+						foreach (var param in parameterList)
 						{
-							if (issue.Details.Text == (param + " is an unrecognised parameter"))
+
+							bool found = false;
+
+							foreach (var issue in ((Hl7.Fhir.Model.OperationOutcome)entry.Resource).Issue)
 							{
-								found = true;
-								break;
+								if (issue.Details.Text == (param + " is an unrecognised parameter"))
+								{
+									issue.Code.ToString().ShouldBe("NotSupported");
+									issue.Severity.ToString().ShouldBe("Warning");
+
+									issue.Details.Coding[0].System.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
+									issue.Details.Coding[0].Code.ShouldBe("NOT_IMPLEMENTED");
+									issue.Details.Coding[0].Display.ShouldBe("Not implemented");
+								    issue.Diagnostics.ShouldBe(param);
+																		
+								
+									found = true;
+									break;
+								}
 							}
 
-							//issue.Code.ToString().ShouldBe("NotSupported");
-							//issue.Severity.ToString().ShouldBe("Warning");
+							if (!found)
+							{
+								Log.WriteLine("The operation outcome issue not found for:" + param);
+								found.ShouldBeTrue("operation outcome issue not found for:" + param);
+							}
+							else
+							{
+								Log.WriteLine("operation outcome issue found for:" + param);
 
-							//issue.Details.Coding[0].System.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
-							//issue.Details.Coding[0].Code.ShouldBe("NOT_IMPLEMENTED");
-							//issue.Details.Coding[0].Display.ShouldBe("Not implemented");
-							//issue.Details.Text.ShouldContain(parameters + " is an unrecognised parameter");
-							//issue.Diagnostics.ShouldContain(parameters);
-
-							//Log.WriteLine("The response is not returning the expected value for " + parameters);
-
-						}
-
-						if (!found)
-						{
-							Log.WriteLine("operation outcome issue not found for:" + param);
-							found.ShouldBeTrue("operation outcome issue not found for:" + param);
-						}
-						else
-						{
-							Log.WriteLine("operation outcome issue not found for:" + param);
-
+							}
 						}
 					}
+					else
+					{
+						var message = "the number of Operational Outcome issues(" + ((Hl7.Fhir.Model.OperationOutcome)entry.Resource).Issue.Count().ToString() +
+						") does not match expected(" + parameterList.Count().ToString() + ")";
+						Log.WriteLine(message);
+						((Hl7.Fhir.Model.OperationOutcome)entry.Resource).Issue.Count().ShouldBe(parameterList.Count(), message);
+					}
 				}
+
 			}
 			);
 		}
 
-		[Then(@"Check the operation outcome returns the correct text and diagnotics ""([^""]*)"" and ""([^""]*)""")]
-		public void checkTheOperationOutcomeCheckThatDiagnosticReturnsRelevant(string parameter, string partparameter)
+		[Then(@"Check the operation outcome returns the correct text and diagnostics ""([^""]*)"" and ""([^""]*)""")]
+		public void checkTheOperationOutcomeReturnsTheCorrectTextAndDiagnostics(string parameter, string partparameter)
 		{
 			var entries = _httpContext.FhirResponse.Entries;
 
@@ -154,13 +164,27 @@
 			Given($"I add the uncategorised parameter with optional parameters");
 			Given($"I add the consultation parameter with optional parameters");
 			Given($"I add the problems parameter with optional parameters");
+			
 		}
+
 		[Given(@"I add the immunisations parameter")]
 		public void GivenIAddTheImmunisationsParameter()
 		{
 			ParameterComponent param = new ParameterComponent();
 			param.Name = FhirConst.GetStructuredRecordParams.kImmunisations;
 			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+		}
+
+		[Given(@"I duplicate a parameter")]
+		public void GivenIDuplicateParameter()
+		{
+			ParameterComponent param = new ParameterComponent();
+			param.Name = FhirConst.GetStructuredRecordParams.kImmunisations;
+			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+
+			ParameterComponent param1 = new ParameterComponent();
+			param1.Name = FhirConst.GetStructuredRecordParams.kImmunisations;
+			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param1);
 		}
 
 		[Given(@"I add allergies parameter with invalid ""(.*)""")]
@@ -174,8 +198,8 @@
 
 		}
 
-		[Given(@"I add allergies parameter with invalid part parameter2nd")]
-		public void GivenIAddAllergiesParameterWithInvalidPartParameter2Nd()
+		[Given(@"I add allergies parameter with invalid part parameter boolean")]
+		public void GivenIAddAllergiesParameterWithInvalidPartParameterBoolean()
 		{
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[]
 			{
@@ -186,7 +210,7 @@
 		}
 
 		[Given(@"I add the uncategorised parameter with optional parameters")]
-		public void GivenIAddTheUncategorisedParameter()
+		public void GivenIAddTheUncategorisedParameterWithOptionalParameters()
 		{
 			var backDate = DateTime.UtcNow.AddDays(-10);
 			var futureDate = DateTime.UtcNow.AddDays(5);
@@ -200,7 +224,7 @@
 		}
 
 		[Given(@"I add the consultation parameter with optional parameters")]
-		public void GivenIAddTheConsultationParameter()
+		public void GivenIAddTheConsultationParameterWithOptionalParameters()
 		{
 			var backDate = DateTime.UtcNow.AddDays(-10);
 			var futureDate = DateTime.UtcNow.AddDays(5);
@@ -230,7 +254,7 @@
 		}
 
 		[Given(@"I add the problems parameter with optional parameters")]
-		public void GivenIAddTheProblemsParameter()
+		public void GivenIAddTheProblemsParameterWithOptionalParameters()
 		{
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
 				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new FhirString ("active")),
@@ -239,32 +263,21 @@
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
 		}
 
-		//[Given(@"I send an invalid Consultations parameter invalid part parameters")]
-		//public void GivenISendAnInvalidConsultationsParameterContainingValidPartParameters()
-		//{
-		//	var backDate = DateTime.UtcNow.AddDays(-10);
-		//	var futureDate = DateTime.UtcNow.AddDays(5);
-		//	var startDate = backDate.ToString("yyyy-MM-dd");
-		//	var endDate = futureDate.ToString("yyyy-MM-dd");
+		[Given(@"I add 2 success and 2 unsupported with invalid parameters details")]
+		public void GivenIAdd2InvalidParametersAndPartParameters()
+		{
 
-		//	IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-		//		Tuple.Create("ConsultationSearchPeriod"), (Base)new FhirBoolean(true)),
-		//		Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base)new FhirString(null))
-		//	};
-		//	_httpContext.HttpRequestConfiguration.BodyParameters.Add("Consultations", tuples);
-		//}
+			Given($"I add the medication parameter with includePrescriptionIssues set to \"false\"");
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create("madeUp", (Base)new FhirString ("madeUpValue1")),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new FhirString ("madeUpValue2"))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add("madeUpProblems", tuples);
 
-		//[Given(@"I add allergies parameter with invalid ""(.*)""")]
-		//public void GivenIAddAllergiesParameterWithInvalid(string rubbishPartParameter)
-		//{
-		//	IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[]
-		//	{
-		//		Tuple.Create("RubbishPartParameter", (Base)new FhirBoolean(true))
-		//		};
-		//	_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
-
-		//}
-
+			ParameterComponent param = new ParameterComponent();
+			param.Name = "madeUpImmunisations";
+			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+		}
 	}
 }
 
