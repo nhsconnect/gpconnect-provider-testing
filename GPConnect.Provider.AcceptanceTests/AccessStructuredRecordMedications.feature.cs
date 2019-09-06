@@ -841,36 +841,123 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Structured Medications Check warning codes and assoicated notes for a patient")]
-        [NUnit.Framework.TestCaseAttribute("confidential-items", "Items excluded due to confidentiality and/or patient preferences.", null)]
+        [NUnit.Framework.DescriptionAttribute("Structured Medications Patient doing a GP Transfter has data-in-transit Warning a" +
+            "nd Note")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
         [NUnit.Framework.TestCaseAttribute("data-in-transit", "Patient record transfer from previous GP practice not yet complete; information r" +
             "ecorded before dd-Mmm-yyyy may be missing.", null)]
-        [NUnit.Framework.TestCaseAttribute("data-awaiting-filing", "Patient data may be incomplete as there is data supplied by a third party awaitin" +
-            "g review before becoming available.", null)]
-        public virtual void StructuredMedicationsCheckWarningCodesAndAssoicatedNotesForAPatient(string warning, string note, string[] exampleTags)
+        public virtual void StructuredMedicationsPatientDoingAGPTransfterHasData_In_TransitWarningAndNote(string warning, string note, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Medications Check warning codes and assoicated notes for a patient", null, exampleTags);
-#line 357
+            string[] @__tags = new string[] {
+                    "1.2.4"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Medications Patient doing a GP Transfter has data-in-transit Warning a" +
+                    "nd Note", null, @__tags);
+#line 358
  this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 358
- testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 359
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 360
-  testRunner.And("I add the medication parameter with includePrescriptionIssues set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an NHS Number parameter for \"patient13\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 361
- testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add the medication parameter with includePrescriptionIssues set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 362
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 363
-  testRunner.And("the Bundle should contain \"1\" lists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 364
-  testRunner.And("the List of MedicationStatements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Bundle should contain \"1\" lists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 365
-  testRunner.And(string.Format("Check the list contains the following warning \"{0}\"", warning), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the List of MedicationStatements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 366
- testRunner.And(string.Format("Check the warning \"{0}\" has associated note \"{1}\"", warning, note), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("Check the list contains the following warning \"{0}\"", warning), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 367
+  testRunner.And(string.Format("Check the warning \"{0}\" has associated note \"{1}\"", warning, note), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Medications Patient with a Confidential Medication receives warning co" +
+            "de and note in response")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
+        [NUnit.Framework.TestCaseAttribute("confidential-items", "Items excluded due to confidentiality and/or patient preferences.", null)]
+        public virtual void StructuredMedicationsPatientWithAConfidentialMedicationReceivesWarningCodeAndNoteInResponse(string warning, string note, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "1.2.4"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Medications Patient with a Confidential Medication receives warning co" +
+                    "de and note in response", null, @__tags);
+#line 375
+ this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 376
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 377
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 378
+  testRunner.And("I add the medication parameter with includePrescriptionIssues set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 379
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 380
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 381
+  testRunner.And("the Bundle should contain \"1\" lists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 382
+  testRunner.And("the List of MedicationStatements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 383
+  testRunner.And(string.Format("Check the list contains the following warning \"{0}\"", warning), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 384
+  testRunner.And(string.Format("Check the warning \"{0}\" has associated note \"{1}\"", warning, note), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Medications Patient Who Has Data Awaiting Filing Flag receives the dat" +
+            "a-awaiting-filing Warning and Note")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
+        [NUnit.Framework.TestCaseAttribute("data-awaiting-filing", "Patient data may be incomplete as there is data supplied by a third party awaitin" +
+            "g review before becoming available.", null)]
+        public virtual void StructuredMedicationsPatientWhoHasDataAwaitingFilingFlagReceivesTheData_Awaiting_FilingWarningAndNote(string warning, string note, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "1.2.4"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Medications Patient Who Has Data Awaiting Filing Flag receives the dat" +
+                    "a-awaiting-filing Warning and Note", null, @__tags);
+#line 391
+ this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 392
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 393
+  testRunner.And("I add an NHS Number parameter for \"patient16\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 394
+  testRunner.And("I add the medication parameter with includePrescriptionIssues set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 395
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 396
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 397
+  testRunner.And("the Bundle should contain \"1\" lists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 398
+  testRunner.And("the List of MedicationStatements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 399
+  testRunner.And(string.Format("Check the list contains the following warning \"{0}\"", warning), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 400
+  testRunner.And(string.Format("Check the warning \"{0}\" has associated note \"{1}\"", warning, note), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

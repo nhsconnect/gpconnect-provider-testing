@@ -204,7 +204,25 @@
                list.Entry.ShouldBeEmpty();
                list.Note.ShouldNotBeNull();
                list.Note.ShouldHaveSingleItem();
-               list.Note.First().Text.ShouldBe("Information not available");
+               //#289 PG 6/9/2019 - changed as more notes added
+               //list.Note.First().Text.ShouldBe("Information not available");
+               var found = false;
+               foreach (var note in list.Note)
+               {
+                   if (note.Text.Contains("Information not available"))
+                       found = true;
+               }
+
+               if (!found)
+               {
+                   Log.WriteLine("Warning not Found : Information not available");
+                   found.ShouldBeTrue("Warning not Found : Information not available");
+               }
+               else
+               {
+                   Log.WriteLine("Warning Found : Information not available");
+               }
+
                list.EmptyReason.ShouldNotBeNull();
                list.EmptyReason.Coding.Count.ShouldBe(1);
 // git hub ref 158

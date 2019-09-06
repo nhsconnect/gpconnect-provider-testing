@@ -805,33 +805,78 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Structured Allergies Check warning codes and assoicated notes for a patient")]
-        [NUnit.Framework.TestCaseAttribute("confidential-items", "Items excluded due to confidentiality and/or patient preferences.", null)]
+        [NUnit.Framework.DescriptionAttribute("Structured Allergies Patient doing a GP Transfter has data-in-transit Warning and" +
+            " Note")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
         [NUnit.Framework.TestCaseAttribute("data-in-transit", "Patient record transfer from previous GP practice not yet complete; information r" +
             "ecorded before dd-Mmm-yyyy may be missing.", null)]
-        [NUnit.Framework.TestCaseAttribute("data-awaiting-filing", "Patient data may be incomplete as there is data supplied by a third party awaitin" +
-            "g review before becoming available.", null)]
-        public virtual void StructuredAllergiesCheckWarningCodesAndAssoicatedNotesForAPatient(string warning, string note, string[] exampleTags)
+        public virtual void StructuredAllergiesPatientDoingAGPTransfterHasData_In_TransitWarningAndNote(string warning, string note, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Allergies Check warning codes and assoicated notes for a patient", null, exampleTags);
-#line 286
+            string[] @__tags = new string[] {
+                    "1.2.4"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Allergies Patient doing a GP Transfter has data-in-transit Warning and" +
+                    " Note", null, @__tags);
+#line 288
  this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 287
- testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 288
-  testRunner.And("I add an NHS Number parameter for \"patient16\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 289
-  testRunner.And("I add the allergies parameter with resolvedAllergies set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 290
- testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add an NHS Number parameter for \"patient13\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 291
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I add the allergies parameter with resolvedAllergies set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 292
-  testRunner.And("the Bundle should contain \"2\" lists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 293
-  testRunner.And(string.Format("Check the list contains the following warning \"{0}\"", warning), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 294
+  testRunner.And("the Bundle should contain \"2\" lists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 295
+  testRunner.And(string.Format("Check the list contains the following warning \"{0}\"", warning), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 296
+  testRunner.And(string.Format("Check the warning \"{0}\" has associated note \"{1}\"", warning, note), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Allergies Patient Who Has Data Awaiting Filing Flag receives the data-" +
+            "awaiting-filing Warning and Note")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
+        [NUnit.Framework.TestCaseAttribute("data-awaiting-filing", "Patient data may be incomplete as there is data supplied by a third party awaitin" +
+            "g review before becoming available.", null)]
+        public virtual void StructuredAllergiesPatientWhoHasDataAwaitingFilingFlagReceivesTheData_Awaiting_FilingWarningAndNote(string warning, string note, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "1.2.4"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Allergies Patient Who Has Data Awaiting Filing Flag receives the data-" +
+                    "awaiting-filing Warning and Note", null, @__tags);
+#line 303
+ this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 304
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 305
+  testRunner.And("I add an NHS Number parameter for \"patient16\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 306
+  testRunner.And("I add the allergies parameter with resolvedAllergies set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 307
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 308
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 309
+  testRunner.And("the Bundle should contain \"2\" lists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 310
+  testRunner.And(string.Format("Check the list contains the following warning \"{0}\"", warning), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 311
   testRunner.And(string.Format("Check the warning \"{0}\" has associated note \"{1}\"", warning, note), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
