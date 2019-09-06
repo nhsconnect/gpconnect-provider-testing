@@ -425,78 +425,87 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient without the resolved" +
-            " allergies parameter")]
-        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithoutTheResolvedAllergiesParameter()
+            " allergies parameter expected success")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
+        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithoutTheResolvedAllergiesParameterExpectedSuccess()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient without the resolved" +
-                    " allergies parameter", null, ((string[])(null)));
-#line 154
-this.ScenarioInitialize(scenarioInfo);
-            this.ScenarioStart();
-#line 155
- testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    " allergies parameter expected success", null, new string[] {
+                        "1.2.4"});
 #line 156
-  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
 #line 157
-  testRunner.And("I add the allergies parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 158
- testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 159
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I add the allergies parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 160
-  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with the include pre" +
-            "scription issues parameter")]
-        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithTheIncludePrescriptionIssuesParameter()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with the include pre" +
-                    "scription issues parameter", null, ((string[])(null)));
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 161
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 162
-this.ScenarioInitialize(scenarioInfo);
-            this.ScenarioStart();
-#line 163
- testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 164
-  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 165
-  testRunner.And("I add the allergies parameter with includePrescriptionIssues", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 166
- testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 167
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 168
-  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Check the operation outcome returns PARAMETER_NOT_FOUND \"includeAllergies\" and \"i" +
+                    "ncludeResolvedAllergies\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with an invalid incl" +
-            "ude parameter")]
-        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithAnInvalidIncludeParameter()
+        [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record to include prescription issues parameter e" +
+            "xpected success")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
+        public virtual void RetrieveTheAllergyStructuredRecordToIncludePrescriptionIssuesParameterExpectedSuccess()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with an invalid incl" +
-                    "ude parameter", null, ((string[])(null)));
-#line 170
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record to include prescription issues parameter e" +
+                    "xpected success", null, new string[] {
+                        "1.2.4"});
+#line 166
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 171
+#line 167
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 172
+#line 168
   testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
-  testRunner.And("I add an invalid allergies parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
+#line 169
+  testRunner.And("I add the allergies parameter with includePrescriptionIssues", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 170
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 175
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 171
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 172
+  testRunner.And("Check the operation outcome returns the correct text and diagnotics \"includePresc" +
+                    "riptionIssues\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with an uknown param" +
+            "eter expected success")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
+        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithAnUknownParameterExpectedSuccess()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with an uknown param" +
+                    "eter expected success", null, new string[] {
+                        "1.2.4"});
 #line 176
-  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 177
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 178
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 179
+  testRunner.And("I add an unknown allergies parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 180
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 181
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 182
+  testRunner.And("Check the operation outcome returns the correct text and diagnotics \"inlcudeUnkno" +
+                    "wnAllergies\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -506,20 +515,20 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAnInvalidNHSNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for an invalid NHS number", null, ((string[])(null)));
-#line 178
+#line 184
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 179
+#line 185
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 180
+#line 186
   testRunner.And("I add an NHS Number parameter for an invalid NHS Number", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
+#line 187
   testRunner.And("I add the allergies parameter with resolvedAllergies set to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+#line 188
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 183
+#line 189
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 184
+#line 190
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -530,20 +539,20 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAnEmptyNHSNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for an empty NHS number", null, ((string[])(null)));
-#line 186
+#line 192
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 187
+#line 193
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 188
+#line 194
   testRunner.And("I add an NHS Number parameter with an empty NHS Number", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 189
+#line 195
   testRunner.And("I add the allergies parameter with resolvedAllergies set to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 190
+#line 196
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 191
+#line 197
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 192
+#line 198
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -554,20 +563,20 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAnInvalidIdentifierSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for an invalid Identifier System", null, ((string[])(null)));
-#line 194
+#line 200
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 195
+#line 201
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 196
+#line 202
   testRunner.And("I add an NHS Number parameter for \"patient1\" with an invalid Identifier System", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 197
+#line 203
   testRunner.And("I add the allergies parameter with resolvedAllergies set to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
+#line 204
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 199
+#line 205
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 200
+#line 206
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -578,20 +587,20 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAnEmptyIdentifierSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for an empty Identifier System", null, ((string[])(null)));
-#line 202
+#line 208
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 203
+#line 209
 testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 204
+#line 210
   testRunner.And("I add an NHS Number parameter for \"patient1\" with an empty Identifier System", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 205
+#line 211
   testRunner.And("I add the allergies parameter with resolvedAllergies set to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 206
+#line 212
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 207
+#line 213
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 208
+#line 214
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -602,54 +611,34 @@ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", (
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAnInvalidParameterType()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for an invalid parameter type", null, ((string[])(null)));
-#line 210
-this.ScenarioInitialize(scenarioInfo);
-            this.ScenarioStart();
-#line 211
- testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 212
-  testRunner.And("I add an NHS Number parameter for \"patient1\" using an invalid parameter type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 213
-  testRunner.And("I add the allergies parameter with resolvedAllergies set to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
- testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 215
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 216
-  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with a timePeriod")]
-        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithATimePeriod()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with a timePeriod", null, ((string[])(null)));
-#line 218
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 219
+#line 217
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 218
+  testRunner.And("I add an NHS Number parameter for \"patient1\" using an invalid parameter type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 219
+  testRunner.And("I add the allergies parameter with resolvedAllergies set to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 220
-  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 221
-  testRunner.And("I add the allergies parameter with a timePeriod", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 222
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 223
+#line 221
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 224
+#line 222
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with a start date")]
-        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithAStartDate()
+        [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with a timePeriod ex" +
+            "pected success")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
+        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithATimePeriodExpectedSuccess()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with a start date", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with a timePeriod ex" +
+                    "pected success", null, new string[] {
+                        "1.2.4"});
 #line 226
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -658,37 +647,69 @@ this.ScenarioInitialize(scenarioInfo);
 #line 228
   testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 229
-  testRunner.And("I add the allergies parameter with a start date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the allergies parameter with a timePeriod", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 230
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 231
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 232
-  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Check the operation outcome returns the correct text and diagnotics \"TimePeriod\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with an end date")]
-        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithAnEndDate()
+        [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with a start date on" +
+            "ly expected success")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
+        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithAStartDateOnlyExpectedSuccess()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with an end date", null, ((string[])(null)));
-#line 234
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with a start date on" +
+                    "ly expected success", null, new string[] {
+                        "1.2.4"});
+#line 236
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 235
- testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 236
-  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 237
-  testRunner.And("I add the allergies parameter with an end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 238
- testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 239
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I add the allergies parameter with a start date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 240
-  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 241
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 242
+  testRunner.And("Check the operation outcome returns the correct text and diagnotics \"TimePeriod\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with an end date onl" +
+            "y expected success")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
+        public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithAnEndDateOnlyExpectedSuccess()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with an end date onl" +
+                    "y expected success", null, new string[] {
+                        "1.2.4"});
+#line 246
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 247
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 248
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 249
+  testRunner.And("I add the allergies parameter with an end date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 250
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 251
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 252
+  testRunner.And("Check the operation outcome returns the correct text and diagnotics \"TimePeriod\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -698,18 +719,18 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithRecorder()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with recorder", null, ((string[])(null)));
-#line 242
+#line 254
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 243
+#line 255
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 244
+#line 256
   testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 245
+#line 257
   testRunner.And("I add the allergies parameter with resolvedAllergies set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 246
+#line 258
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 247
+#line 259
  testRunner.Then("the response should contain the recorder reference", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -720,27 +741,27 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void CheckAllergyWarningCodeIsPopulatedForAPatient()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check allergy warning code is populated for a patient", null, ((string[])(null)));
-#line 249
+#line 261
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 250
+#line 262
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 251
+#line 263
  testRunner.And("I add an NHS Number parameter for \"patient17\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 252
+#line 264
  testRunner.And("I add the allergies parameter with resolvedAllergies set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 253
+#line 265
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 254
+#line 266
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 255
+#line 267
  testRunner.And("the Bundle should contain \"2\" lists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 256
+#line 268
  testRunner.And("the Bundle should contain a list with the title \"Allergies and adverse reactions\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 257
+#line 269
  testRunner.And("the Bundle should contain a list with the title \"Ended allergies\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 258
+#line 270
  testRunner.And("the Lists are valid for a patient without allergies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -751,29 +772,29 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void CheckAllergyLegacyEndReason()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check allergy legacy endReason", null, ((string[])(null)));
-#line 262
+#line 274
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 263
+#line 275
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 264
+#line 276
  testRunner.And("I add an NHS Number parameter for \"patient16\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 265
+#line 277
  testRunner.And("I add the allergies parameter with resolvedAllergies set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 266
+#line 278
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 267
+#line 279
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 268
+#line 280
  testRunner.And("the Bundle should contain \"2\" lists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 269
+#line 281
  testRunner.And("the Bundle should contain a list with the title \"Allergies and adverse reactions\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 270
+#line 282
  testRunner.And("the Bundle should contain a list with the title \"Ended allergies\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 271
+#line 283
  testRunner.And("the List of AllergyIntolerances should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 272
+#line 284
  testRunner.And("the Lists are valid for a patient with legacy endReason", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -784,20 +805,20 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void StructuredRecordForAPatientThatIsNotInTheDatabase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("structured record for a patient that is not in the database", null, ((string[])(null)));
-#line 277
+#line 289
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 278
+#line 290
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 279
+#line 291
  testRunner.And("I add an NHS Number parameter for \"patientNotInSystem\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 280
+#line 292
  testRunner.And("I add the allergies parameter with resolvedAllergies set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 281
+#line 293
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 282
+#line 294
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 283
+#line 295
   testRunner.And("the response should be a OperationOutcome resource with error code \"PATIENT_NOT_F" +
                     "OUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

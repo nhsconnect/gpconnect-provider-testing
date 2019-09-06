@@ -148,6 +148,66 @@
 			});
 		}
 
+		[Then(@"Check the operation outcome returns PARAMETER_NOT_FOUND ""([^""]*)"" and ""([^""]*)""")]
+		public void checkTheOperationOutcomeReturnsParameterNotFound(string parameter, string partparameter)
+		{
+			var entries = _httpContext.FhirResponse.Entries;
+
+			entries.ForEach(entry =>
+			{
+
+				if (entry.Resource.ResourceType.ToString() == "OperationOutcome")
+				{
+
+					foreach (var issue in ((Hl7.Fhir.Model.OperationOutcome)entry.Resource).Issue)
+					{
+
+						issue.Code.ToString().ShouldBe("Required");
+						issue.Severity.ToString().ShouldBe("Warning");
+
+						issue.Details.Coding[0].System.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
+						issue.Details.Coding[0].Code.ShouldBe("PARAMETER_NOT_FOUND");
+						issue.Details.Coding[0].Display.ShouldBe("Parameter not found");
+						issue.Details.Text.ShouldBe("Miss parameter part : " + partparameter);
+						issue.Diagnostics.ShouldBe(parameter);
+						Log.WriteLine("This has not met the expected response of PARAMETER_NOT_FOUND for " + parameter);
+
+					}
+
+				}
+			});
+		}
+
+		[Then(@"Check the operation outcome returns INVALID_PARAMETER")]
+		public void checkTheOperationOutcomeReturnsInvalidParameter(string parameter, string partparameter)
+		{
+			var entries = _httpContext.FhirResponse.Entries;
+
+			entries.ForEach(entry =>
+			{
+
+				if (entry.Resource.ResourceType.ToString() == "OperationOutcome")
+				{
+
+					foreach (var issue in ((Hl7.Fhir.Model.OperationOutcome)entry.Resource).Issue)
+					{
+
+						issue.Code.ToString().ShouldBe("Invalid");
+						issue.Severity.ToString().ShouldBe("Warning");
+
+						issue.Details.Coding[0].System.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
+						issue.Details.Coding[0].Code.ShouldBe("INVALID_PARAMETER");
+						issue.Details.Coding[0].Display.ShouldBe("Invalid Parameter");
+						issue.Details.Text.ShouldBe("Invalid date used");
+						issue.Diagnostics.ShouldBe(parameter + "." + partparameter);
+						Log.WriteLine("This has not met the expected response of INVALID_PARAMETER for " + parameter);
+
+					}
+
+				}
+			});
+		}
+
 
 		[Given(@"The request only contains mandatory parameters")]
 		public void GivenTheRequestOnlyContainsMandatoryParameters()

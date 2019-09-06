@@ -72,10 +72,10 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Check success when no Clinical information in request")]
-        public virtual void CheckSuccessWhenNoClinicalInformationInRequest()
+        [NUnit.Framework.DescriptionAttribute("Structured request with one parameter no Clinical information expected success")]
+        public virtual void StructuredRequestWithOneParameterNoClinicalInformationExpectedSuccess()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check success when no Clinical information in request", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request with one parameter no Clinical information expected success", null, ((string[])(null)));
 #line 4
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -95,10 +95,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Check success with one operation outcome returned with unsupported parameter")]
-        public virtual void CheckSuccessWithOneOperationOutcomeReturnedWithUnsupportedParameter()
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with two parameters expected success with operation outco" +
+            "me")]
+        public virtual void StructuredRequestSentWithTwoParametersExpectedSuccessWithOperationOutcome()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check success with one operation outcome returned with unsupported parameter", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with two parameters expected success with operation outco" +
+                    "me", null, ((string[])(null)));
 #line 11
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -123,12 +125,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("check success with one operation outcome returned with invalid string part parame" +
-            "ter")]
-        public virtual void CheckSuccessWithOneOperationOutcomeReturnedWithInvalidStringPartParameter()
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with two parameters one bad part parameter expected succe" +
+            "ss with operation outcome")]
+        public virtual void StructuredRequestSentWithTwoParametersOneBadPartParameterExpectedSuccessWithOperationOutcome()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("check success with one operation outcome returned with invalid string part parame" +
-                    "ter", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with two parameters one bad part parameter expected succe" +
+                    "ss with operation outcome", null, ((string[])(null)));
 #line 20
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -153,12 +155,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Check success with one operation outcome returned with invalid boolean part param" +
-            "eter")]
-        public virtual void CheckSuccessWithOneOperationOutcomeReturnedWithInvalidBooleanPartParameter()
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with two parameters one invalid boolean part parameter ex" +
+            "pected success with operation outcome")]
+        public virtual void StructuredRequestSentWithTwoParametersOneInvalidBooleanPartParameterExpectedSuccessWithOperationOutcome()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check success with one operation outcome returned with invalid boolean part param" +
-                    "eter", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with two parameters one invalid boolean part parameter ex" +
+                    "pected success with operation outcome", null, ((string[])(null)));
 #line 29
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -183,50 +185,24 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Regression - Sensitive patient containing an unsupported parameter")]
-        public virtual void Regression_SensitivePatientContainingAnUnsupportedParameter()
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with two invalid parameters expected failure")]
+        public virtual void StructuredRequestSentWithTwoInvalidParametersExpectedFailure()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Regression - Sensitive patient containing an unsupported parameter", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with two invalid parameters expected failure", null, ((string[])(null)));
 #line 38
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 39
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 40
- testRunner.And("I add an NHS Number parameter for \"patient9\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
- testRunner.And("I send a request that contains all forward compatable structured parameters with " +
-                    "optional parameters", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
-    testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 43
- testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 44
- testRunner.And("the response should be a OperationOutcome resource with error code \"PATIENT_NOT_F" +
-                    "OUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Regression - All invalid parameter values in request")]
-        public virtual void Regression_AllInvalidParameterValuesInRequest()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Regression - All invalid parameter values in request", null, ((string[])(null)));
-#line 46
-this.ScenarioInitialize(scenarioInfo);
-            this.ScenarioStart();
-#line 47
- testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 48
  testRunner.And("I add an NHS Number parameter for \"patient1\" using an invalid parameter type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
+#line 41
  testRunner.And("I send an invalid Consultations parameter containing valid part parameters", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
+#line 42
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 51
+#line 43
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 52
+#line 44
     testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_NHS_N" +
                     "UMBER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -234,28 +210,29 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Regression - request that contain only the mandatory values for structured reques" +
-            "t")]
-        public virtual void Regression_RequestThatContainOnlyTheMandatoryValuesForStructuredRequest()
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with Sensitive patient containing an unsupported paramete" +
+            "r")]
+        public virtual void StructuredRequestSentWithSensitivePatientContainingAnUnsupportedParameter()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Regression - request that contain only the mandatory values for structured reques" +
-                    "t", null, ((string[])(null)));
-#line 54
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with Sensitive patient containing an unsupported paramete" +
+                    "r", null, ((string[])(null)));
+#line 46
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 55
+#line 47
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
- testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
- testRunner.And("The request only contains mandatory parameters", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
- testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 59
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 60
- testRunner.And("the patient resource in the bundle should contain meta data profile and version i" +
-                    "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 48
+ testRunner.And("I add an NHS Number parameter for \"patient9\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 49
+ testRunner.And("I send a request that contains all forward compatable structured parameters with " +
+                    "optional parameters", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
+    testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 51
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 52
+ testRunner.And("the response should be a OperationOutcome resource with error code \"PATIENT_NOT_F" +
+                    "OUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

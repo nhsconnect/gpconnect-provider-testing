@@ -45,13 +45,13 @@
 			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
 		}
 
-		[Given(@"I add an invalid allergies parameter")]
-		public void GivenIAddAnInvalidAllergiesParameter()
+		[Given(@"I add an unknown allergies parameter")]
+		public void GivenIAddAnUnknownAllergiesParameter()
 		{
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
 				Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
 			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add("inlcudeInvalidAllergies", tuples);
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add("inlcudeUnknownAllergies", tuples);
 		}
 
 		[Given(@"I add the allergies parameter with includePrescriptionIssues")]
