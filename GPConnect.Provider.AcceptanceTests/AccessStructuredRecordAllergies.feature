@@ -283,9 +283,9 @@ Scenario:  structured record for a patient that is not in the database
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
 
-	#PG 30/8/2019 - #289
-	@1.2.4
-	Scenario Outline: Structured Allergies Patient Has multiple Warnings and Associated Notes
+#PG 30/8/2019 - #289
+@1.2.4
+Scenario Outline: Structured Allergies Patient Has multiple Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient16"
 		And I add the allergies parameter with resolvedAllergies set to "true"
