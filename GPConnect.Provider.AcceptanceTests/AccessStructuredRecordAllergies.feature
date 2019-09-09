@@ -1,6 +1,7 @@
 ﻿@structuredrecord
 Feature: AccessStructuredRecordAllergies
 
+@1.2.4
 Scenario Outline: Retrieve the allergy structured record section for a patient including resolved allergies
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -35,6 +36,7 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		| patient13 |
 ## removed github ref 91 		| patient15 |
 
+@1.2.4
 Scenario Outline: Retrieve the allergy structured record section for a patient excluding resolved allergies
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -181,6 +183,7 @@ Scenario: Retrieve the allergy structured record section for a patient with an u
 	Then the response status code should indicate success
 		And Check the operation outcome returns the correct text and diagnotics "inlcudeUnknownAllergies"
 
+@1.2.4
 Scenario: Retrieve the allergy structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
@@ -205,6 +208,7 @@ Scenario: Retrieve the allergy structured record section for an invalid Identifi
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
+@1.2.4
 Scenario: Retrieve the allergy structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
