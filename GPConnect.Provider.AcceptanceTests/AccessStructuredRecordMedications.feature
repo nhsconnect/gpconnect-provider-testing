@@ -126,7 +126,7 @@ Scenario: Retrieve the medication structured record section for a patient withou
 		And I add the medications parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
-		And Check the operation outcome returns PARAMETER_NOT_FOUND "includeMedication" and "includePrescriptionIssues" 
+		And Check the operation outcome returns PARAMETER_NOT_FOUND for Medication
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4

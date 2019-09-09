@@ -460,8 +460,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 163
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 164
-  testRunner.And("Check the operation outcome returns PARAMETER_NOT_FOUND \"includeAllergies\" and \"i" +
-                    "ncludeResolvedAllergies\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Check the operation outcome returns PARAMETER_NOT_FOUND for Allergies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

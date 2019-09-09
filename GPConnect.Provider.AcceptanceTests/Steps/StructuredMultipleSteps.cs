@@ -85,9 +85,9 @@
 									issue.Details.Coding[0].System.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
 									issue.Details.Coding[0].Code.ShouldBe("NOT_IMPLEMENTED");
 									issue.Details.Coding[0].Display.ShouldBe("Not implemented");
-								    issue.Diagnostics.ShouldBe(param);
-																		
-								
+									issue.Diagnostics.ShouldBe(param);
+
+
 									found = true;
 									break;
 								}
@@ -148,10 +148,46 @@
 			});
 		}
 
-		[Then(@"Check the operation outcome returns PARAMETER_NOT_FOUND ""([^""]*)"" and ""([^""]*)""")]
-		public void checkTheOperationOutcomeReturnsParameterNotFound(string parameter, string partparameter)
+		[Then(@"Check the operation outcome returns PARAMETER_NOT_FOUND for Allergies")]
+		public void checkTheOperationOutcomeReturnsParameterNotFoundForAllergies()
 		{
 			var entries = _httpContext.FhirResponse.Entries;
+			var parameter = "includeAllergies";
+			var partparameter = "includeResolvedAllergies";
+
+
+			entries.ForEach(entry =>
+			{
+
+				if (entry.Resource.ResourceType.ToString() == "OperationOutcome")
+				{
+
+					foreach (var issue in ((Hl7.Fhir.Model.OperationOutcome)entry.Resource).Issue)
+					{
+
+						issue.Code.ToString().ShouldBe("Required");
+						issue.Severity.ToString().ShouldBe("Warning");
+
+						issue.Details.Coding[0].System.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
+						issue.Details.Coding[0].Code.ShouldBe("PARAMETER_NOT_FOUND");
+						issue.Details.Coding[0].Display.ShouldBe("Parameter not found");
+						issue.Details.Text.ShouldBe("Miss parameter part : " + partparameter);
+						issue.Diagnostics.ShouldBe(parameter);
+						Log.WriteLine("This has not met the expected response of PARAMETER_NOT_FOUND for " + parameter);
+
+					}
+
+				}
+			});
+		}
+
+		[Then(@"Check the operation outcome returns PARAMETER_NOT_FOUND for Medication")]
+		public void checkTheOperationOutcomeReturnsParameterNotFoundForMedication()
+		{
+			var entries = _httpContext.FhirResponse.Entries;
+			var parameter = "includeMedication";
+			var partparameter = "includePrescriptionIssues";
+
 
 			entries.ForEach(entry =>
 			{
@@ -179,9 +215,11 @@
 		}
 
 		[Then(@"Check the operation outcome returns INVALID_PARAMETER")]
-		public void checkTheOperationOutcomeReturnsInvalidParameter(string parameter, string partparameter)
+		public void checkTheOperationOutcomeReturnsInvalid_Parameter()
 		{
 			var entries = _httpContext.FhirResponse.Entries;
+			var parameter = "includeMedication";
+			var partparameter = "medicationSearchFromDate";
 
 			entries.ForEach(entry =>
 			{
@@ -200,7 +238,7 @@
 						issue.Details.Coding[0].Display.ShouldBe("Invalid Parameter");
 						issue.Details.Text.ShouldBe("Invalid date used");
 						issue.Diagnostics.ShouldBe(parameter + "." + partparameter);
-						Log.WriteLine("This has not met the expected response of INVALID_PARAMETER for " + parameter);
+						Log.WriteLine("This has not met the expected response of INVALID_PARAMETER for " + parameter + "." + partparameter);
 
 					}
 
@@ -224,7 +262,7 @@
 			Given($"I add the uncategorised parameter with optional parameters");
 			Given($"I add the consultation parameter with optional parameters");
 			Given($"I add the problems parameter with optional parameters");
-			
+
 		}
 
 		[Given(@"I add the immunisations parameter")]
