@@ -1,4 +1,4 @@
-﻿namespace GPConnect.Provider.AcceptanceTests.Steps
+namespace GPConnect.Provider.AcceptanceTests.Steps
 {
 	using Constants;
 	using Context;
@@ -12,6 +12,8 @@
 	using static Hl7.Fhir.Model.Parameters;
 	using GPConnect.Provider.AcceptanceTests.Helpers;
 	using GPConnect.Provider.AcceptanceTests.Steps;
+	using GPConnect.Provider.AcceptanceTests.Logger;
+    using System.Text.RegularExpressions;
 
 	[Binding]
 	public sealed class AccessStructuredAllergySteps : BaseSteps
@@ -198,24 +200,42 @@
 		[Then(@"the Lists are valid for a patient with no allergies")]
 		public void TheListsAreValidForAPatientWithNoAllergies()
 		{
-			Lists.ForEach(list =>
-		   {
-			   list.Entry.ShouldBeEmpty();
-			   list.Note.ShouldNotBeNull();
-			   list.Note.ShouldHaveSingleItem();
-			   list.Note.First().Text.ShouldBe("Information not available");
-			   list.EmptyReason.ShouldNotBeNull();
-			   list.EmptyReason.Coding.Count.ShouldBe(1);
-			   // git hub ref 158
-			   // RMB 9/1/19			   
-			   list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kListEmptyReason);
-			   // Amended for github ref 87
-			   // RMB 9/10/2018			   
-			   list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
-			   // Amended for github ref 172
-			   // RMB 24/1/19			   			   
-			   list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
-		   });
+			 Lists.ForEach(list =>
+           {
+               list.Entry.ShouldBeEmpty();
+               list.Note.ShouldNotBeNull();
+               list.Note.ShouldHaveSingleItem();
+               //#289 PG 6/9/2019 - changed as more notes added
+               //list.Note.First().Text.ShouldBe("Information not available");
+               var found = false;
+               foreach (var note in list.Note)
+               {
+                   if (note.Text.Contains("Information not available"))
+                       found = true;
+               }
+
+               if (!found)
+               {
+                   Log.WriteLine("Warning not Found : Information not available");
+                   found.ShouldBeTrue("Warning not Found : Information not available");
+               }
+               else
+               {
+                   Log.WriteLine("Warning Found : Information not available");
+               }
+
+               list.EmptyReason.ShouldNotBeNull();
+               list.EmptyReason.Coding.Count.ShouldBe(1);
+// git hub ref 158
+// RMB 9/1/19			   
+               list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kListEmptyReason);
+// Amended for github ref 87
+// RMB 9/10/2018			   
+               list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
+// Amended for github ref 172
+// RMB 24/1/19			   			   
+               list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
+           });
 		}
 
 		[Then(@"the Lists are valid for a patient with explicit no allergies coding")]
@@ -264,6 +284,72 @@
 			});
 		}
 
+		
+        [Then(@"Check the list contains the following warning ""(.*)""")]
+        public void CheckTheListContainsTheFollowingWarning(string WarningToCheckFor)
+        {
+            Lists.ForEach(list =>
+            {
+                var found = list.Extension
+                    .Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtListWarningCode))
+                    .Where(extension => extension.Value.ToString().Equals(WarningToCheckFor)).ToList();
+
+                if (found.Count() == 1)
+                    Log.WriteLine("Found Warning : " + WarningToCheckFor + " in List : " +list.Title);
+                
+                found.Count().ShouldBe(1, "Unable to Find Warning : " + WarningToCheckFor + " in LIst : " + list.Title);
+            });
+        }
+
+
+        [Then(@"Check the warning ""(.*)"" has associated note ""(.*)""")]
+        public void CheckTheListContainsTheFollowingNote(string warning,string noteToCheckFor)
+        {
+            Lists.ForEach(list =>
+            {
+                if (warning != "data-in-transit")
+                {
+                    var matches = list.Note
+                    .Where(note => note.Text.Contains(noteToCheckFor));
+
+                    if (matches.Count() == 1)
+                        Log.WriteLine("Found Note : " + noteToCheckFor + " in List : " + list.Title);
+
+                    matches.Count().ShouldBe(1, "Unable to Find Note : " + noteToCheckFor + "in LIst : " + list.Title);
+                }
+                //Process data-in-transit separatly due to date being variable in message
+                else
+                {
+                    Regex regex = new Regex("(.*)dd-Mmm-yyyy(.*)");
+                    string noteWithRegex = regex.Replace(noteToCheckFor, "$1.*$2");
+                    Regex findNoteRegex = new Regex(noteWithRegex);
+
+                    var found = false;
+                    MatchCollection matches;
+                    foreach (var note in list.Note)
+                    {
+                        matches = findNoteRegex.Matches(note.Text);
+                        if (matches.Count == 1)
+                        {
+                            found = true;
+                            Log.WriteLine("Warning Note Found : " + noteToCheckFor + " in List : " + list.Title);
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        found.ShouldBeTrue("Unable to Find Warning Note : " + noteToCheckFor + " in LIst : " + list.Title);
+                        Log.WriteLine("Note Not Found For Warning: " + noteToCheckFor + " in List : " + list.Title);
+                    }
+
+                }
+            });
+        }
+
+
+
+		
+		
 		#endregion
 
 		#region Allergy Intolerance Validity Checks

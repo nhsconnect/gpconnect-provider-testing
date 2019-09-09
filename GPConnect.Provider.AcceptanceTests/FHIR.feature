@@ -34,14 +34,15 @@ Scenario: CapabilityStatement profile supports the RegisterPatient operation
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Operations should contain "gpc.registerpatient"
 
-# github ref 132
-# RMB 29/10/2018
+#132 - RMB 29/10/2018
+#292 - PG 30/8/2019 - added check for correct url on operation
 Scenario: CapabilityStatement profile supports the GetStructuredRecord operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
-
+	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
+	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.8a" 
+	
 Scenario: Fhir content type test where Accept header is JSON and request payload is XML
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+xml"

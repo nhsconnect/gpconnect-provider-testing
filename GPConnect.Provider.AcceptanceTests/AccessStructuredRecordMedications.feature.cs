@@ -923,6 +923,47 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Medications Patient Has multiple Warnings and Associated Notes")]
+        [NUnit.Framework.CategoryAttribute("1.2.4")]
+        [NUnit.Framework.TestCaseAttribute("data-in-transit", "Patient record transfer from previous GP practice not yet complete; information r" +
+            "ecorded before dd-Mmm-yyyy may be missing.", null)]
+        [NUnit.Framework.TestCaseAttribute("data-awaiting-filing", "Patient data may be incomplete as there is data supplied by a third party awaitin" +
+            "g review before becoming available.", null)]
+        public virtual void StructuredMedicationsPatientHasMultipleWarningsAndAssociatedNotes(string warning, string note, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "1.2.4"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Medications Patient Has multiple Warnings and Associated Notes", null, @__tags);
+#line 358
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 359
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 360
+  testRunner.And("I add an NHS Number parameter for \"patient16\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 361
+  testRunner.And("I add the medication parameter with includePrescriptionIssues set to \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 362
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 363
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 364
+  testRunner.And("the Bundle should contain \"1\" lists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 365
+  testRunner.And("the List of MedicationStatements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 366
+  testRunner.And(string.Format("Check the list contains the following warning \"{0}\"", warning), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 367
+  testRunner.And(string.Format("Check the warning \"{0}\" has associated note \"{1}\"", warning, note), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

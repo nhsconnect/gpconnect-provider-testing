@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using GPConnect.Provider.AcceptanceTests.Helpers;
 using TechTalk.SpecFlow;
+using System.IO;
+using GPConnect.Provider.AcceptanceTests.Context;
 
 namespace GPConnect.Provider.AcceptanceTests.Logger
 {
@@ -72,6 +74,32 @@ namespace GPConnect.Provider.AcceptanceTests.Logger
             var log = (LogBuffer)ScenarioContext.Current[ScenarioLogKey];
             foreach (var message in log)
                 Console.WriteLine(message);
+
+            if (AppSettingsHelper.TraceOutputConsoleLog)
+                DumpLogToFile();
+        }
+
+
+        public static void DumpLogToFile()
+        {
+            var consoleLogPathandFileName = Path.Combine(GlobalContext.TraceDirectory, ScenarioContext.Current.ScenarioInfo.Title + "-" + GlobalContext.ScenarioIndex.ToString() + @"\ConsoleLog.txt");
+
+            try
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(consoleLogPathandFileName))
+                {
+                    var log = (LogBuffer)ScenarioContext.Current[ScenarioLogKey];
+
+                    foreach (var message in log)
+                        file.WriteLine(message);
+                }
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine("Exception writing ConsoleLog.txt :" + Ex.Message);
+
+            }
+
         }
 
         private const string ScenarioLogKey = "ScenarioLog";
