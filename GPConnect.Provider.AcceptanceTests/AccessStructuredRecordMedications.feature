@@ -370,25 +370,9 @@ Scenario:  structured record for a patient that has inactive flag
 	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
 
 
-	#PG 5/9/2019 - #289
-	@1.2.4
-	Scenario Outline: Structured Medications Patient with a Confidential Medication receives warning code and note in response
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient2"
-		And I add the medication parameter with includePrescriptionIssues set to "true"
-	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And the Bundle should contain "1" lists
-		And the List of MedicationStatements should be valid
-		And Check the list contains the following warning "<Warning>"
-		And Check the warning "<Warning>" has associated note "<Note>"
-	Examples:
-	| Warning             | Note                                                                                                                       |
-	| confidential-items   | Items excluded due to confidentiality and/or patient preferences.                                                           |
-	
 	#PG 6/9/2019 - #289
 	@1.2.4
-	Scenario Outline: Structured Medications Patient Who Has Data Awaiting Filing Flag receives the data-awaiting-filing Warning and Note
+	Scenario Outline: Structured Medications Patient Has multiple Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient16"
 		And I add the medication parameter with includePrescriptionIssues set to "true"
@@ -400,4 +384,5 @@ Scenario:  structured record for a patient that has inactive flag
 		And Check the warning "<Warning>" has associated note "<Note>"
 	Examples:
 	| Warning             | Note                                                                                                                       |
+	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
 	| data-awaiting-filing | Patient data may be incomplete as there is data supplied by a third party awaiting review before becoming available.        |

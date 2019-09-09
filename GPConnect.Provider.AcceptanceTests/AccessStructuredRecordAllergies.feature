@@ -285,22 +285,7 @@ Scenario:  structured record for a patient that is not in the database
 
 	#PG 30/8/2019 - #289
 	@1.2.4
-	Scenario Outline: Structured Allergies Patient doing a GP Transfter has data-in-transit Warning and Note
-	Given I configure the default "GpcGetStructuredRecord" request 
-		And I add an NHS Number parameter for "patient13"
-		And I add the allergies parameter with resolvedAllergies set to "true"
-	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And the Bundle should contain "2" lists
-		And Check the list contains the following warning "<Warning>"
-		And Check the warning "<Warning>" has associated note "<Note>"
-	Examples:
-	| Warning             | Note                                                                                                                       |
-	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
-
-	#PG 6/9/2019 - #289
-	@1.2.4
-	Scenario Outline: Structured Allergies Patient Who Has Data Awaiting Filing Flag receives the data-awaiting-filing Warning and Note
+	Scenario Outline: Structured Allergies Patient Has multiple Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient16"
 		And I add the allergies parameter with resolvedAllergies set to "true"
@@ -311,4 +296,6 @@ Scenario:  structured record for a patient that is not in the database
 		And Check the warning "<Warning>" has associated note "<Note>"
 	Examples:
 	| Warning             | Note                                                                                                                       |
+	| confidential-items   | Items excluded due to confidentiality and/or patient preferences.                                                           |
 	| data-awaiting-filing | Patient data may be incomplete as there is data supplied by a third party awaiting review before becoming available.        |
+	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
