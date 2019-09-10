@@ -16,7 +16,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using System.Text.RegularExpressions;
 
 	[Binding]
-	public sealed class AccessStructuredAllergySteps : BaseSteps
+	public sealed class StructuredAllergySteps : BaseSteps
 	{
 		private readonly HttpContext _httpContext;
 		private List<AllergyIntolerance> AllAllergyIntolerances = new List<AllergyIntolerance>();
@@ -24,7 +24,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		private List<List> Lists => _httpContext.FhirResponse.Lists;
 		private Bundle Bundle => _httpContext.FhirResponse.Bundle;
 
-		public AccessStructuredAllergySteps(HttpSteps httpSteps, HttpContext httpContext)
+		public StructuredAllergySteps(HttpSteps httpSteps, HttpContext httpContext)
 			: base(httpSteps)
 		{
 			_httpContext = httpContext;

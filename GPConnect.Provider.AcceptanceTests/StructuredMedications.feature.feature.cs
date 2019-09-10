@@ -25,7 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "AccessStructuredRecordMedications.feature"
+#line 1 "StructuredMedications.feature.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]

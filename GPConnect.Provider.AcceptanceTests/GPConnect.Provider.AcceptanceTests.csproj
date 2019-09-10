@@ -168,8 +168,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessStructuredRecordAllergies.feature.cs" />
-    <Compile Include="AccessStructuredRecordMedications.feature.cs" />
     <Compile Include="AppointmentAmend.feature.cs" />
     <Compile Include="AppointmentBook.feature.cs" />
     <Compile Include="AppointmentCancel.feature.cs" />
@@ -255,8 +253,9 @@
     <Compile Include="SearchForFreeSlots.feature.cs" />
     <Compile Include="Security.feature.cs" />
     <Compile Include="SSP.feature.cs" />
-    <Compile Include="Steps\AccessStructuredMedicationSteps.cs" />
-    <Compile Include="Steps\AccessStructuredAllergySteps.cs" />
+    <Compile Include="Steps\StructuredImmunizationsSteps.cs" />
+    <Compile Include="Steps\StructuredMedicationSteps.cs" />
+    <Compile Include="Steps\StructuredAllergySteps.cs" />
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
     <Compile Include="Steps\AppointmentReadSteps.cs" />
     <Compile Include="Steps\AppointmentRetrieveSteps.cs" />
@@ -292,11 +291,17 @@
     <Compile Include="Helpers\HttpParameterHelper.cs" />
     <Compile Include="Helpers\JwtHelper.cs" />
     <Compile Include="Steps\StructuredMultipleSteps.cs" />
+    <Compile Include="Steps\StructuredUncategorisedSteps.cs" />
     <Compile Include="Steps\TeardownSteps.cs" />
+    <Compile Include="StructuredAllergies.feature.cs" />
+    <Compile Include="StructuredImmunizations.feature.cs" />
+    <Compile Include="StructuredMedications.feature.feature.cs" />
     <Compile Include="StructuredMultipleRequests.feature.cs" />
+    <Compile Include="StructuredUncategorised.feature.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AccessStructuredRecordMedications.feature" />
+    <None Include="StructuredImmunizations.feature" />
+    <None Include="StructuredMedications.feature.feature" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -309,7 +314,7 @@
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
-    <None Include="AccessStructuredRecordAllergies.feature" />
+    <None Include="StructuredAllergies.feature" />
     <None Include="AppointmentBook.feature" />
     <None Include="AppointmentCancel.feature" />
     <None Include="FHIR.feature" />
@@ -333,6 +338,7 @@
     <None Include="AppointmentAmend.feature" />
     <None Include="StructuredMultipleRequests.feature" />
     <None Include="SSP.feature" />
+    <None Include="StructuredUncategorised.feature" />
     <None Include="validation.xml.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -14,7 +14,7 @@
   	using GPConnect.Provider.AcceptanceTests.Logger;
 
 	[Binding]
-    public sealed class AccessStructuredMedicationSteps : BaseSteps
+    public sealed class StructuredMedicationSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
 
@@ -24,7 +24,7 @@
         private List<List> Lists => _httpContext.FhirResponse.Lists;
         private Bundle Bundle => _httpContext.FhirResponse.Bundle;
 
-        public AccessStructuredMedicationSteps(HttpSteps httpSteps, HttpContext httpContext)
+        public StructuredMedicationSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
         {
             _httpContext = httpContext;
