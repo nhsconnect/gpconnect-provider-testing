@@ -17,7 +17,7 @@
             public const string kAllergies = "includeAllergies";
             public const string kMedication = "includeMedication";
 			//sara testing notes 29/08/19
-			public const string kImmunisations = "includeImmunisations";
+			public const string kImmunizations = "includeImmunisations";
 			public const string kUncategorised = "includeUncategorisedData";
 			public const string kUncategorisedData = "uncategorisedDataSearchPeriod";
 			public const string kConsultations = "includeConsultations";

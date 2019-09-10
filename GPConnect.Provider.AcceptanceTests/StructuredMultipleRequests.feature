@@ -13,7 +13,7 @@ Scenario: Structured request with one parameter no Clinical information expected
 Scenario: Structured request sent with two parameters expected success with operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1"
-	And I add the immunisations parameter
+	And I add the immunizations parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 	And Check the operation outcome returns the correct text and diagnotics "includeImmunisations"

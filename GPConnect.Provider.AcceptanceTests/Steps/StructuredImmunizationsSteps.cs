@@ -24,11 +24,11 @@
         }
 
 
-        [Given(@"I add the immunisations parameter")]
-        public void GivenIAddTheImmunisationsParameter()
+        [Given(@"I add the immunizations parameter")]
+        public void GivenIAddTheImmunizationsParameter()
         {
             ParameterComponent param = new ParameterComponent();
-            param.Name = FhirConst.GetStructuredRecordParams.kImmunisations;
+            param.Name = FhirConst.GetStructuredRecordParams.kImmunizations;
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
