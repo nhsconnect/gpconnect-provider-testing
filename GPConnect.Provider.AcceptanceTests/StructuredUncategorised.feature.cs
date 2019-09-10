@@ -72,11 +72,11 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Pete Get Structured Uncategorised")]
+        [NUnit.Framework.DescriptionAttribute("Verify Uncategorised structured record for a Patient with Uncategorised")]
         [NUnit.Framework.CategoryAttribute("1.3.0")]
-        public virtual void PeteGetStructuredUncategorised()
+        public virtual void VerifyUncategorisedStructuredRecordForAPatientWithUncategorised()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pete Get Structured Uncategorised", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Uncategorised structured record for a Patient with Uncategorised", null, new string[] {
                         "1.3.0"});
 #line 5
  this.ScenarioInitialize(scenarioInfo);
