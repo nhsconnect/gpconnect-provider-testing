@@ -269,11 +269,11 @@
 		public void GivenIDuplicateParameter()
 		{
 			ParameterComponent param = new ParameterComponent();
-			param.Name = FhirConst.GetStructuredRecordParams.kImmunisations;
+			param.Name = FhirConst.GetStructuredRecordParams.kImmunizations;
 			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
 
 			ParameterComponent param1 = new ParameterComponent();
-			param1.Name = FhirConst.GetStructuredRecordParams.kImmunisations;
+			param1.Name = FhirConst.GetStructuredRecordParams.kImmunizations;
 			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param1);
 		}
 
