@@ -24,16 +24,20 @@
         }
 
 
+		[Given(@"I add the uncategorised parameter with optional parameters")]
+		public void GivenIAddTheUncategorisedParameterWithOptionalParameters()
+		{
+			var backDate = DateTime.UtcNow.AddDays(-10);
+			var futureDate = DateTime.UtcNow.AddDays(5);
+			var startDate = backDate.ToString("yyyy-MM-dd");
+			var endDate = futureDate.ToString("yyyy-MM-dd");
 
-        [Given(@"I add the Uncategorised parameter")]
-        public void GivenIAddTheUncategorisedParameter()
-        {
-            ParameterComponent param = new ParameterComponent();
-            param.Name = FhirConst.GetStructuredRecordParams.kUncategorised;
-            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
-        }
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kUncategorisedData, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kUncategorised, tuples);
+		}
 
-
-    }
+	}
 }
 

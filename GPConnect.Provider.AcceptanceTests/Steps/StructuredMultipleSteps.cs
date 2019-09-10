@@ -265,14 +265,6 @@
 
 		}
 
-		[Given(@"I add the immunisations parameter")]
-		public void GivenIAddTheImmunisationsParameter()
-		{
-			ParameterComponent param = new ParameterComponent();
-			param.Name = FhirConst.GetStructuredRecordParams.kImmunisations;
-			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
-		}
-
 		[Given(@"I duplicate a parameter")]
 		public void GivenIDuplicateParameter()
 		{
@@ -305,20 +297,6 @@
 				};
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
 
-		}
-
-		[Given(@"I add the uncategorised parameter with optional parameters")]
-		public void GivenIAddTheUncategorisedParameterWithOptionalParameters()
-		{
-			var backDate = DateTime.UtcNow.AddDays(-10);
-			var futureDate = DateTime.UtcNow.AddDays(5);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
-
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kUncategorisedData, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kUncategorised, tuples);
 		}
 
 		[Given(@"I add the consultation parameter with optional parameters")]
