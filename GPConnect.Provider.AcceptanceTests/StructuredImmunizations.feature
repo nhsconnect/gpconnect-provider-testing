@@ -22,22 +22,6 @@ Feature: StructuredImmunizations
 	| Patient  |
 	| patient2 |
 		
-		#look to add below
-		
-	
-	#	And the Medications should be valid
-	#	And the Medication Statements should be valid
-	#	And the Medication Requests should be valid
-	#	And the List of MedicationStatements should be valid
-	#	And the Medication Requests should not contain any issues
-	
-
-	#Examples:
-	#	| Patient  |
-	#	| patient2 |
-	#	| patient3 |
-	#	| patient5 |
-	#	| patient12 |
 
 @1.3.0
 Scenario: Retrieve the immunizations structured record section for an invalid NHS number
@@ -97,7 +81,9 @@ Scenario: Retrieve the immunizations structured record for a patient that has no
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "patient4"
-		And the Bundle should contain "1" lists
+	    #TODO need to add check entry.resource.note ="Information not available"  and entry.resource.emptyReason = "noContent"
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
+		And check the response does not contain an operation outcome
+			
