@@ -2,13 +2,31 @@
 Feature: StructuredUncategorised
 	
 @1.3.0
-	Scenario: Verify Uncategorised Data structured record for a Patient with Uncategorised
+Scenario Outline: Verify Uncategorised Data structured record for a Patient with Uncategorised
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient2"
+		And I add an NHS Number parameter for "<Patient>"
 		And I add the uncategorised data parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
-	And the response should be a Bundle resource of type "collection"
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "<Patient>"
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid 
+		And The Observation Resources are Valid
+		#And The Observation Resources Do Not Include Not In Use Fields
+		And the Bundle should contain "1" lists
+		#check list
+		#Check LIst does not include not in use fields.
+	Examples:
+	| Patient  |
+	| patient2 |
+
+
 
 @1.3.0
 Scenario: Retrieve the uncategorised data structured record section for an invalid NHS number

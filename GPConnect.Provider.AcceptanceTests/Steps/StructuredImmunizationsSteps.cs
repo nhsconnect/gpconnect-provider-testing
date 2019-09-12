@@ -35,8 +35,8 @@
         }
 
 
-        [Then(@"The Immunization Resource is Valid")]
-        public void GivenTheImmunizationResourceIsValid()
+        [Then(@"The Immunization Resources are Valid")]
+        public void GivenTheImmunizationResourcesAreValid()
         {
 
             Immunizations.ForEach(immunization =>
@@ -47,17 +47,21 @@
                 //Check Meta Profile
                 CheckForValidMetaDataInResource(immunization, FhirConst.StructureDefinitionSystems.kImmunization);
 
-                //recordedDate Extension
-                //tbd
+               //recordedDate Extension
+               var dateRecorded = immunization.GetExtension(FhirConst.StructureDefinitionSystems.kDateRecorded);
+               DateTime daterecordedOut;
+               DateTime.TryParse(dateRecorded.Value.ToString(), out daterecordedOut).ShouldBeTrue("Daterecorded is Not a valid DateTime");
 
-                //vaccinationProcedure
-                immunization.GetExtension(" https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-VaccinationProcedure-1").ShouldNotBeNull();
+               //vaccinationProcedure Extension
+               immunization.GetExtension(FhirConst.StructureDefinitionSystems.kVaccinationProcedure).ShouldNotBeNull();
 
-                //identifier
-                immunization.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+               //check codableconcept for vaccinationProcedure?
+
+               //identifier
+               immunization.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 immunization.Identifier.ForEach(identifier =>
                    {
-                       identifier.System.Equals("https://fhir.nhs.uk/Id/cross-care-setting-identifier").ShouldBeTrue("Cross Care Setting Identfier NOT Found");
+                       identifier.System.Equals(FhirConst.ValueSetSystems.kCrossCareIdentifier).ShouldBeTrue("Cross Care Setting Identfier NOT Found");
 
                        identifier.Value.ShouldNotBeNullOrEmpty("Identifier Value Is Null or Not Valid");
                         //Guid guidResult;
@@ -88,8 +92,8 @@
 
         }
 
-        [Then(@"The Immunization Resource Does Not Include Not In Use Fields")]
-        public void GivenTheImmunizationResourceDoesNotIncludeMustNotFields()
+        [Then(@"The Immunization Resources Do Not Include Not In Use Fields")]
+        public void GivenTheImmunizationResourcesDoNotIncludeNotInUseFields()
         {
 
             Immunizations.ForEach(immunization =>

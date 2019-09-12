@@ -16,8 +16,10 @@
 	public sealed class StructuredUncategorisedSteps : BaseSteps
 	{
 		private readonly HttpContext _httpContext;
+        private List<Observation> Observations => _httpContext.FhirResponse.Observations;
+        private List<List> Lists => _httpContext.FhirResponse.Lists;
 
-		public StructuredUncategorisedSteps(HttpSteps httpSteps, HttpContext httpContext)
+        public StructuredUncategorisedSteps(HttpSteps httpSteps, HttpContext httpContext)
 			: base(httpSteps)
 		{
 			_httpContext = httpContext;
@@ -47,6 +49,34 @@
 				_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
 			}
 		}
-	}
+
+        [Then(@"The Observation Resources are Valid")]
+        public void GivenTheObservationResourcesareValid()
+        {
+
+            Observations.ForEach(observation =>
+            {
+                //ID
+                observation.Id.ShouldNotBeNullOrEmpty();
+
+                //Check Meta Profile
+                CheckForValidMetaDataInResource(observation, FhirConst.StructureDefinitionSystems.kObservation);
+
+                ////status
+                observation.Status.ToString().ShouldBe("final", StringCompareShould.IgnoreCase);
+
+                //Check Patient reference is contained in bundle
+                observation.Subject.Reference.ShouldContain("Patient/", "Patient reference Not Found");
+               
+
+            });
+
+
+        }
+
+
+
+
+    }
 }
 

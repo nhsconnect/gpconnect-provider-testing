@@ -115,8 +115,8 @@
             public const string kVsNullFlavour = "http://hl7.org/fhir/ValueSet/v3-NullFlavor";
 			
             // Added for 1.2.0 RMB 7/8/2018
-			public const string kVsAllergyIntoleranceIdentifierSystem = "https://fhir.nhs.uk/Id/cross-care-setting-identifier";		
-			
+			public const string kVsAllergyIntoleranceIdentifierSystem = "https://fhir.nhs.uk/Id/cross-care-setting-identifier";
+            public const string kCrossCareIdentifier = "https://fhir.nhs.uk/Id/cross-care-setting-identifier";
             public const string kVsAllergyIntoleranceClinicalStatus = "http://hl7.org/fhir/stu3/valueset-allergy-clinical-status.html";
             public const string kVsAllergyIntoleranceCategory = "http://hl7.org/fhir/stu3/valueset-allergy-intolerance-category.html";
             public const string kVsAllergyIntoleranceCode = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-AllergyCode-1";
@@ -174,6 +174,9 @@
             public const string kList = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1";
             public const string kSpecial = "http://hl7.org/fhir/special-values";
             public const string kImmunization = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Immunization-1";
+            public const string kObservation = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Observation-1";
+            public const string kDateRecorded = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-DateRecorded-1";
+            public const string kVaccinationProcedure = "https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-VaccinationProcedure-1";
 
             // git hub ref 158
             // RMB 9/1/19			

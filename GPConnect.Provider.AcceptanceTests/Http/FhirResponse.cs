@@ -28,6 +28,7 @@
         public List<MedicationRequest> MedicationRequests => GetResources<MedicationRequest>();
         public List<List> Lists => GetResources<List>();
         public List<Immunization> Immunizations => GetResources<Immunization>();
+        public List<Observation> Observations => GetResources<Observation>();
 
         private List<T> GetResources<T>() where T : Resource
         {
@@ -65,7 +66,9 @@
             {typeof(Medication), ResourceType.Medication},
             {typeof(MedicationStatement), ResourceType.MedicationStatement},
             {typeof(MedicationRequest), ResourceType.MedicationRequest},
-            {typeof(Immunization), ResourceType.Immunization}
+            {typeof(Immunization), ResourceType.Immunization},
+            {typeof(Observation), ResourceType.Observation}
+            
         };
     }
 }
