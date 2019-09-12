@@ -2,6 +2,7 @@
 Feature: AccessStructuredRecordMedications
 
 @1.2.4
+@1.3.0
 Scenario Outline: Retrieve the medication structured record section for a patient including prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -23,6 +24,8 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
+		And check the response does not contain an operation outcome
+
 	Examples:
 		| Patient   |
 		| patient2  |
@@ -31,7 +34,8 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient12 |
 		| patient16 |
 
-@1.2.4		
+@1.2.4	
+@1.3.0
 Scenario Outline: Retrieve the medication structured record section for a patient excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -53,6 +57,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
+		And check the response does not contain an operation outcome
 	Examples:
 		| Patient  |
 		| patient2 |
@@ -130,6 +135,7 @@ Scenario: Retrieve the medication structured record section for a patient withou
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4
+@1.3.0
 Scenario: Retrieve the medication structured record section for a patient with an invalid include parameter
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -137,6 +143,7 @@ Scenario: Retrieve the medication structured record section for a patient with a
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And Check the operation outcome returns the correct text and diagnotics "includeInvalidMedications"
+		And Check the number of issues in the operation outcome "1"
 
 @1.2.4
 Scenario: Retrieve the medication structured record section for an invalid NHS number
@@ -280,6 +287,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 # RMB 5/11/2018
 #SJD 06/09/2019 #295 amended invalid date formats to allow for forward compatability for 1.3.0
 @1.2.4
+@1.3.0
 Scenario Outline: Retrieve the medication structured record section for a patient with invalid start date
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -296,6 +304,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 
 #SJD 06/09/2019 #295 invalid date formats are now accepted under forward compatability for 1.3.0
 @1.2.4
+@1.3.0
 Scenario Outline: Retrieve the medication structured record expected success with invalid date used operation outcome 
 Retrieve the allergy structured record section for a patient with an end date only expected success
 	Given I configure the default "GpcGetStructuredRecord" request

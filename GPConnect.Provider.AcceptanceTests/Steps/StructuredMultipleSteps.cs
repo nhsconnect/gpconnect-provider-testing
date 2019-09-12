@@ -13,7 +13,7 @@
 	using Context;
 	using static Hl7.Fhir.Model.Parameters;
 	using Hl7.Fhir.Model;
-
+	using NUnit.Framework;
 
 	[Binding]
 	public sealed class StructuredMultipleSteps : BaseSteps
@@ -53,11 +53,12 @@
 				}
 			});
 		}
+		
 		[Then(@"Check the operation outcome for each unsupported structured request")]
 		public void checkTheOperationOutcomeForEachUnsupportedStructuredRequest()
 		{
 			var entries = _httpContext.FhirResponse.Entries;
-			string paramsToCheck = "includeImmunisations,includeProblems,includeConsultations,includeUncategorisedData,inventedParameter";
+			string paramsToCheck = "includeMadeUpParam,madeUpImmunizations,includeConsults";
 
 			var parameterList = paramsToCheck.Split(',');
 			entries.ForEach(entry =>
@@ -118,7 +119,7 @@
 			);
 		}
 
-		[Then(@"Check the operation outcome returns the correct text and diagnostics ""([^""]*)"" and ""([^""]*)""")]
+		[Then(@"Check the operation outcome returns the correct text and diagnostics includes ""([^""]*)"" and ""([^""]*)""")]
 		public void checkTheOperationOutcomeReturnsTheCorrectTextAndDiagnostics(string parameter, string partparameter)
 		{
 			var entries = _httpContext.FhirResponse.Entries;
@@ -254,14 +255,14 @@
 			Given($"I add the medication parameter with includePrescriptionIssues set to \"false\"");
 		}
 
-		[Given(@"I send a request that contains all forward compatable structured parameters with optional parameters")]
-		public void GivenISendARequestThatContainsAllForwardCompatibleStructuredParametersWithOptionalParameters()
+		[Given(@"I send a request that contains known multiple structured parameters including optional part parameters")]
+		public void GivenISendARequestThatContainsKnownMultipleStructuredParametersIncludingOptionalPartParameters()
 		{
 			Given($"I add the allergies parameter with resolvedAllergies set to \"true\"");
-			Given($"I add the immunisations parameter");
-			Given($"I add the uncategorised parameter with optional parameters");
-			Given($"I add the consultation parameter with optional parameters");
-			Given($"I add the problems parameter with optional parameters");
+			Given($"I add the immunizations parameter");
+			Given($"I add the uncategorised data parameter");
+			// not yet coded in 1.3.0 Given($"I add the consultation parameter with optional parameters");
+			// not yet coded in 1.3.0 Given($"I add the problems parameter with optional parameters");
 
 		}
 
@@ -354,6 +355,80 @@
 			param.Name = "madeUpImmunisations";
 			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
 		}
+
+		[Given(@"I add 3 invalid structured parameters and or part parameters")]
+		public void GivenIAdd3InvalidStructuredParametersAndOrPartParameters()
+		{
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create("madeUpPartParam1", (Base)new FhirString ("madeUpValue1")),
+				Tuple.Create("madeUpPartParam2", (Base)new FhirString ("madeUpValue2"))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add("includeMadeUpParam", tuples);
+
+			ParameterComponent param = new ParameterComponent();
+			param.Name = "madeUpImmunizations";
+			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+
+			ParameterComponent param2 = new ParameterComponent();
+			param2.Name = "includeConsults";
+			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param2);
+		}
+		
+
+
+		//SJD added 11/09/2019 release 1.3.0
+		[Then(@"Check the number of issues in the operation outcome ""([^""]*)""")]
+		public void checkTheNumberOfIssuesInTheOperationalOutcome(int issueCount)
+		{
+			var entries = _httpContext.FhirResponse.Entries;
+			var foundFlag = false;
+			entries.ForEach(entry =>
+			{
+				if (entry.Resource.ResourceType.ToString() == "OperationOutcome")
+				{
+					((OperationOutcome)entry.Resource).Issue.Count().ShouldBe(issueCount);
+					foundFlag = true;
+
+				}
+		
+			});
+			if (!foundFlag)
+			{
+				var message = "There was no Operation Outcome contained in the response";
+				Log.WriteLine(message);
+				Assert.Fail(message);
+			}
+		}
+
+		//SJD added 11/09/2019 release 1.3.0
+		[Then(@"check the response does not contain an operation outcome")]
+		public void checkTheResponseDoesNotContainAnOperationalOutcome()
+		{
+			var entries = _httpContext.FhirResponse.Entries;
+			var foundFlag = false;
+			entries.ForEach(entry =>
+			{
+				if (entry.Resource.ResourceType.ToString() == "OperationOutcome")
+				{
+					((OperationOutcome)entry.Resource).Issue.Count().Equals(null);
+					foundFlag = true;
+
+				}
+
+			});
+			if (!foundFlag)
+			{
+				var passMessage = "Pass no operation Outcome found in response";
+				Log.WriteLine(passMessage);
+				Assert.Pass(passMessage);
+			}
+			if (foundFlag)
+			{
+				var failMessage = "Fail An operation Outcome was returned unexpectedly in the response";
+				Log.WriteLine(failMessage);
+				Assert.Fail(failMessage);
+			}
+		}
 	}
 }
-
