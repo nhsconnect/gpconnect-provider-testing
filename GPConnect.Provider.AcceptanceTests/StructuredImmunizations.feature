@@ -18,6 +18,11 @@ Feature: StructuredImmunizations
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
+		And The Immunization Resource is Valid
+		And The Immunization Resource Does Not Include Not In Use Fields
+		And the Bundle should contain "1" lists
+		And The Immunization List is Valid
+		And The Immunization List Does Not Include Not In Use Fields
 	Examples:
 	| Patient  |
 	| patient2 |

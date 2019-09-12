@@ -173,8 +173,10 @@
             public const string kMedicationRequest = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1";
             public const string kList = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1";
             public const string kSpecial = "http://hl7.org/fhir/special-values";
-// git hub ref 158
-// RMB 9/1/19			
+            public const string kImmunization = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Immunization-1";
+
+            // git hub ref 158
+            // RMB 9/1/19			
             public const string kListEmptyReason = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-ListEmptyReasonCode-1";			
 
             //Extensions
