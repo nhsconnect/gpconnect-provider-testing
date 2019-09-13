@@ -53,29 +53,64 @@
         [Then(@"The Observation Resources are Valid")]
         public void GivenTheObservationResourcesareValid()
         {
-
             Observations.ForEach(observation =>
             {
-                //ID
                 observation.Id.ShouldNotBeNullOrEmpty();
-
-                //Check Meta Profile
                 CheckForValidMetaDataInResource(observation, FhirConst.StructureDefinitionSystems.kObservation);
-
-                ////status
                 observation.Status.ToString().ShouldBe("final", StringCompareShould.IgnoreCase);
-
-                //Check Patient reference is contained in bundle
                 observation.Subject.Reference.ShouldContain("Patient/", "Patient reference Not Found");
-               
-
             });
+        }
 
-
+        [Then(@"The Observation Resources Do Not Include Not In Use Fields")]
+        public void GivenTheObservationResourcesDoNotIncludeNotInUseFields()
+        {
+            Observations.ForEach(observation =>
+            {
+                observation.BasedOn.Count().ShouldBe(0, "BasedOn is Not Supposed to be Sent - Not In Use Field");
+                observation.Category.Count().ShouldBe(0, "Category is Not Supposed to be Sent - Not In Use Field");
+                observation.DataAbsentReason.ShouldBeNull("DataAbsentReason is Not Supposed to be Sent - Not In Use Field");
+                observation.Interpretation.ShouldBeNull("Interpretation is Not Supposed to be Sent - Not In Use Field");
+                observation.BodySite.ShouldBeNull("BodySite is Not Supposed to be Sent - Not In Use Field");
+                observation.Method.ShouldBeNull("Method is Not Supposed to be Sent - Not In Use Field");
+                observation.Specimen.ShouldBeNull("Specimen is Not Supposed to be Sent - Not In Use Field");
+                observation.Device.ShouldBeNull("Device is Not Supposed to be Sent - Not In Use Field");
+            });
         }
 
 
+        [Then(@"The Observation List is Valid")]
+        public void GivenTheObservationListisValid()
+        {
 
+            Lists.ForEach(list =>
+            {
+                list.Title.ShouldBe("Miscellaneous record", "List Title is Incorrect");
+                CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+
+                list.Status.ShouldBeOfType<List.ListStatus>("Status List is of wrong type.");
+                list.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to completed");
+
+                list.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+                list.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+
+                list.Code.Coding.ForEach(coding =>
+                {
+                    coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
+                    coding.Code.ShouldBe("826501000000100", "Code is not Correct");
+                    coding.Display.ShouldNotBeNullOrEmpty("Display Should not be Null or Empty");
+                });
+
+                list.Subject.Reference.ShouldContain("Patient/", "Patient reference Not Found");
+
+                list.Entry.ForEach(entry =>
+                {
+                    string guidToFind = entry.Item.Reference.Replace("Observation/", "");
+                    Observations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Observation");
+                });
+            });
+
+        }
 
     }
 }

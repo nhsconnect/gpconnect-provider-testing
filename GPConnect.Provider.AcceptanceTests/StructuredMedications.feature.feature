@@ -1,5 +1,5 @@
 ﻿@structuredrecord
-Feature: AccessStructuredRecordMedications
+Feature: StructuredMedications
 
 @1.2.4
 @1.3.0

@@ -21,7 +21,7 @@ Scenario Outline: Verify Immunizations structured record for a Patient with Immu
 		And The Immunization Resources Do Not Include Not In Use Fields
 		And the Bundle should contain "1" lists
 		And The Immunization List is Valid
-		And The Immunization List Does Not Include Not In Use Fields
+		And The Structured List Does Not Include Not In Use Fields
 	Examples:
 	| Patient  |
 	| patient2 |

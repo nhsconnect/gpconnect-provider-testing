@@ -1,5 +1,5 @@
 ﻿@structuredrecord
-Feature: AccessStructuredRecordAllergies
+Feature: StructuredAllergies
 
 @1.2.4
 @1.3.0

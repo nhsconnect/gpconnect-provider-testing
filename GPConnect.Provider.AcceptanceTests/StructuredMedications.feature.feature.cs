@@ -18,9 +18,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("AccessStructuredRecordMedications")]
+    [NUnit.Framework.DescriptionAttribute("StructuredMedications")]
     [NUnit.Framework.CategoryAttribute("structuredrecord")]
-    public partial class AccessStructuredRecordMedicationsFeature
+    public partial class StructuredMedicationsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -32,7 +32,7 @@ namespace GPConnect.Provider.AcceptanceTests
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AccessStructuredRecordMedications", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredMedications", null, ProgrammingLanguage.CSharp, new string[] {
                         "structuredrecord"});
             testRunner.OnFeatureStart(featureInfo);
         }

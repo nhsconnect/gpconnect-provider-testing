@@ -16,6 +16,7 @@
     {
         private readonly HttpContext _httpContext;
         private Bundle Bundle => _httpContext.FhirResponse.Bundle;
+        private List<List> Lists => _httpContext.FhirResponse.Lists;
 
         public AccessRecordSteps(HttpSteps httpSteps, HttpContext httpContext) 
             : base(httpSteps)
@@ -254,6 +255,19 @@
         {
             return !(null == subject.Reference && null == subject.Identifier);
         }
+
+        [Then(@"The Structured List Does Not Include Not In Use Fields")]
+        public void GivenTheStructuredListDoesNotIncludeMustNotFields()
+        {
+            Lists.ForEach(list =>
+            {
+                list.Id.ShouldBeNull("List Id is Not Supposed to be Sent - Not In Use Field");
+                list.Meta.VersionId.ShouldBeNull("List Meta.VersionId is Not Supposed to be Sent - Not In Use Field");
+                list.Meta.LastUpdated.ShouldBeNull("List Meta.LastUpdated is Not Supposed to be Sent - Not In Use Field");
+                list.Source.ShouldBeNull("List Source is Not Supposed to be Sent - Not In Use Field");
+            });
+        }
+
 
         #endregion
 

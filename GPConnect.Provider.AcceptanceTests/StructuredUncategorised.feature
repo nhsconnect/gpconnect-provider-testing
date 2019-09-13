@@ -18,10 +18,10 @@ Scenario Outline: Verify Uncategorised Data structured record for a Patient with
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
 		And The Observation Resources are Valid
-		#And The Observation Resources Do Not Include Not In Use Fields
+		And The Observation Resources Do Not Include Not In Use Fields
 		And the Bundle should contain "1" lists
-		#check list
-		#Check LIst does not include not in use fields.
+		And The Observation List is Valid
+		And The Structured List Does Not Include Not In Use Fields
 	Examples:
 	| Patient  |
 	| patient2 |
