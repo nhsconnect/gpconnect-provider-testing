@@ -29,7 +29,7 @@ Scenario Outline: Verify Uncategorised Data structured record for a Patient with
 
 
 @1.3.0
-Scenario: Retrieve the uncategorised data structured record section for an invalid NHS number
+Scenario: Retrieve uncategorised data structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
 		And I add the uncategorised data parameter
@@ -38,7 +38,7 @@ Scenario: Retrieve the uncategorised data structured record section for an inval
 		And the response should be a OperationOutcome resource
 
 @1.3.0
-Scenario: Retrieve the uncategorised data structured record section for an empty NHS number
+Scenario: Retrieve uncategorised data structured record section for an empty NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter with an empty NHS Number
 		And I add the uncategorised data parameter
@@ -47,7 +47,7 @@ Scenario: Retrieve the uncategorised data structured record section for an empty
 		And the response should be a OperationOutcome resource
 
 @1.3.0
-Scenario: Retrieve the uncategorised data structured record section for an invalid Identifier System
+Scenario: Retrieve uncategorised data structured record section for an invalid Identifier System
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
 		And I add the uncategorised data parameter
@@ -56,7 +56,7 @@ Scenario: Retrieve the uncategorised data structured record section for an inval
 		And the response should be a OperationOutcome resource
 
 @1.3.0
-Scenario: Retrieve the uncategorised data structured record section for an empty Identifier System
+Scenario: Retrieve uncategorised data structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
 		And I add the uncategorised data parameter
@@ -65,7 +65,7 @@ Given I configure the default "GpcGetStructuredRecord" request
 		And the response should be a OperationOutcome resource
 
 @1.3.0
-Scenario: Retrieve the uncategorised data structured record for a patient that has sensitive flag
+Scenario: Retrieve uncategorised data structured record for a patient that has sensitive flag
 	Given I configure the default "GpcGetStructuredRecord" request 
 	And I add an NHS Number parameter for "patient9"
 	And I add the uncategorised data parameter
@@ -74,7 +74,7 @@ Scenario: Retrieve the uncategorised data structured record for a patient that h
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
 @1.3.0
-Scenario: Retrieve the uncategorised data structured record for a patient that has no uncategorised data
+Scenario: Retrieve uncategorised data structured record for a patient that has no uncategorised data
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
 		And I add the uncategorised data parameter
@@ -86,9 +86,50 @@ Scenario: Retrieve the uncategorised data structured record for a patient that h
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "patient4"
-		#TODO need to add check entry.resource.note ="Information not available"  and entry.resource.emptyReason = "noContent"
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
 		And check the response does not contain an operation outcome
+		And check structured list contains a note and emptyReason when no data in section
+
+@1.3.0
+#TODO look at method as not using date parameter 
+Scenario Outline: Retrieve the uncategorised data structured record with invalid dates expected success to include an operation outcome 
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I add the uncategorised data parameter with date permutations "<startDate>" and "<endDate>"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And Check the operation outcome returns INVALID_PARAMETER for "<Parameter>" and "<PartParameter>"
+
+	Examples:
+		| startDate                 | endDate                   | Parameter                | PartParameter                 |
+		| 2014                      | 2016-01-01                | includeUncategorisedData | uncategorisedDataSearchPeriod |
+		| 2014-02                   | 2014-08-20                | includeUncategorisedData | uncategorisedDataSearchPeriod |
+		| 2015-10-23T11:08:32       | 2016-11-01                | includeUncategorisedData | uncategorisedDataSearchPeriod |
+		| 2015-10-23T11:08:32+00:00 | 2019-10-01                | includeUncategorisedData | uncategorisedDataSearchPeriod |
+		| 2014-01-01                | 2016                      | includeUncategorisedData | uncategorisedDataSearchPeriod |
+		| 2014-02-01                | 2014-08                   | includeUncategorisedData | uncategorisedDataSearchPeriod |
+		| 2015-10-01                | 2016-11-23T11:08:32       | includeUncategorisedData | uncategorisedDataSearchPeriod |
+		| 2014-01-01                | 2015-10-23T11:08:32+00:00 | includeUncategorisedData | uncategorisedDataSearchPeriod |
 		
+
+@1.3.0
+#TODO look at method as not using date parameter 
+Scenario Outline: Retrieve the uncategorised data structured record with valid dates expected success to not include an operation outcome 
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I add the uncategorised data parameter with date permutations "<startDate>" and "<endDate>"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+	And check the response does not contain an operation outcome
+
+	Examples:
+		| startDate  | endDate    | Comments                           |
+		|       |         | all data returned                  |
+		| 2014-02-01 |         | all data after start date returned |
+		|         | 2016-11-01 | all data on or before end date     |
+		
+	
+	
+	

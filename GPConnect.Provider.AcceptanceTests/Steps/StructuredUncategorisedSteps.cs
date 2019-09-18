@@ -49,8 +49,23 @@
 				_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
 			}
 		}
+		//TODO
+		[Given(@"I add the uncategorised data parameter with date permutations ""([^""]*)"" and ""([^""]*)""")]
+		public void GivenIAddTheUncategorisedDataParameterWithDatePermutations(string start, string end)
+		{
+			var backDate = (DateTime.UtcNow.AddDays(-10), (start));
+			var futureDate = (DateTime.UtcNow.AddDays(5),(end));
+			var startDate = backDate.ToString("yyyy-MM-dd");
+			var endDate = futureDate.ToString("yyyy-MM-dd");
+			
 
-        [Then(@"The Observation Resources are Valid")]
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kUncategorisedData, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kUncategorised, tuples);
+		}
+
+		[Then(@"The Observation Resources are Valid")]
         public void GivenTheObservationResourcesareValid()
         {
             Observations.ForEach(observation =>
