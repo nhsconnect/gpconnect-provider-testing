@@ -49,10 +49,17 @@
              DateTime daterecordedOut;
              DateTime.TryParse(dateRecorded.Value.ToString(), out daterecordedOut).ShouldBeTrue("Daterecorded is Not a valid DateTime");
 
-             immunization.GetExtension(FhirConst.StructureDefinitionSystems.kVaccinationProcedure).ShouldNotBeNull();
-
-             //check codableconcept for vaccinationProcedure?
-
+             List<Extension> vaccinationProcedure = immunization.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kVaccinationProcedure)).ToList();
+             vaccinationProcedure.Count.ShouldBeLessThanOrEqualTo(1);
+             if (vaccinationProcedure.Count == 1)
+               {
+                   CodeableConcept clinicalSetting = (CodeableConcept)vaccinationProcedure.First().Value;
+                   clinicalSetting.Coding.Count.Equals(1);
+                   clinicalSetting.Coding.First().System.Equals(FhirConst.CodeSystems.kCCSnomed);
+                   clinicalSetting.Coding.First().Code.ShouldNotBeNullOrEmpty();
+                   clinicalSetting.Coding.First().Display.ShouldNotBeNullOrEmpty();
+               }
+             
             immunization.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
             immunization.Identifier.ForEach(identifier =>
                {
