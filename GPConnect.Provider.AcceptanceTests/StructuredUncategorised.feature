@@ -22,11 +22,10 @@ Scenario Outline: Verify Uncategorised Data structured record for a Patient with
 		And the Bundle should contain "1" lists
 		And The Observation List is Valid
 		And The Structured List Does Not Include Not In Use Fields
+		And check the response does not contain an operation outcome
 	Examples:
 	| Patient  |
 	| patient2 |
-
-
 
 @1.3.0
 Scenario: Retrieve uncategorised data structured record section for an invalid NHS number
@@ -93,14 +92,14 @@ Scenario: Retrieve uncategorised data structured record for a patient that has n
 		And check structured list contains a note and emptyReason when no data in section
 
 @1.3.0
-#TODO look at method as not using date parameter 
 Scenario Outline: Retrieve the uncategorised data structured record with invalid dates expected success to include an operation outcome 
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient1"
+		And I add an NHS Number parameter for "patient2"
 		And I add the uncategorised data parameter with date permutations "<startDate>" and "<endDate>"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And Check the operation outcome returns INVALID_PARAMETER for "<Parameter>" and "<PartParameter>"
+		And Check the number of issues in the operation outcome "1"
 
 	Examples:
 		| startDate                 | endDate                   | Parameter                | PartParameter                 |
@@ -113,23 +112,25 @@ Scenario Outline: Retrieve the uncategorised data structured record with invalid
 		| 2015-10-01                | 2016-11-23T11:08:32       | includeUncategorisedData | uncategorisedDataSearchPeriod |
 		| 2014-01-01                | 2015-10-23T11:08:32+00:00 | includeUncategorisedData | uncategorisedDataSearchPeriod |
 		
-
 @1.3.0
-#TODO look at method as not using date parameter 
-Scenario Outline: Retrieve the uncategorised data structured record with valid dates expected success to not include an operation outcome 
+Scenario Outline: Retrieve the uncategorised data structured record with start date in future expected success with operation outcome 
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient1"
-		And I add the uncategorised data parameter with date permutations "<startDate>" and "<endDate>"
+		And I add an NHS Number parameter for "patient2"
+		And I add the uncategorised data parameter with future start date
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
-	And check the response does not contain an operation outcome
+		And Check the operation outcome returns INVALID_PARAMETER for "<Parameter>" and "<PartParameter>"
+		And Check the number of issues in the operation outcome "1"
 
 	Examples:
-		| startDate  | endDate    | Comments                           |
-		|       |         | all data returned                  |
-		| 2014-02-01 |         | all data after start date returned |
-		|         | 2016-11-01 | all data on or before end date     |
-		
-	
-	
-	
+		| Parameter                | PartParameter                 |
+		| includeUncategorisedData | uncategorisedDataSearchPeriod |
+
+@1.3.0
+Scenario: Retrieve the uncategorised data structured record with period dates equal to current date expected success no operation outcome
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the uncategorised data parameter with current date
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And check the response does not contain an operation outcome

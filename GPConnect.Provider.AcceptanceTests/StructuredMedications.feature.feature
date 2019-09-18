@@ -296,11 +296,12 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 	Examples:
-		| StartDate                 | 
-		| X2014                      | 
-		| X2014-02                   | 
-		| X2015-10-23T11:08:32       | 
-		| X2015-10-23T11:08:32+00:00 | 
+		| StartDate                  |
+		| X2014                      |
+		| X2014-02                   |
+		| X2015-10-23T11:08:32       |
+		| X2015-10-23T11:08:32+00:00 |
+		|                            | 
 
 #SJD 06/09/2019 #295 invalid date formats are now accepted under forward compatability for 1.3.0
 @1.2.4

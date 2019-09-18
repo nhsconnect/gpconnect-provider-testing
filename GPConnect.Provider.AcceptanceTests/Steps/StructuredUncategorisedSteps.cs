@@ -49,15 +49,38 @@
 				_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
 			}
 		}
-		//TODO
+		
 		[Given(@"I add the uncategorised data parameter with date permutations ""([^""]*)"" and ""([^""]*)""")]
 		public void GivenIAddTheUncategorisedDataParameterWithDatePermutations(string start, string end)
 		{
-			var backDate = (DateTime.UtcNow.AddDays(-10), (start));
-			var futureDate = (DateTime.UtcNow.AddDays(5),(end));
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kUncategorisedData, (Base)FhirHelper.GetTimePeriod(start, end)),
+				
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kUncategorised, tuples);
+		}
+
+		[Given(@"I add the uncategorised data parameter with future start date")]
+		public void GivenIAddTheUncategorisedDataParameterWithFutureStartDate()
+		{
+			var backDate = DateTime.UtcNow.AddDays(+10);
+			var futureDate = DateTime.UtcNow.AddDays(+15);
 			var startDate = backDate.ToString("yyyy-MM-dd");
 			var endDate = futureDate.ToString("yyyy-MM-dd");
-			
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kUncategorisedData, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kUncategorised, tuples);
+		}
+
+		[Given(@"I add the uncategorised data parameter with current date")]
+		public void GivenIAddTheUncategorisedDataParameterWithCurrentDate()
+		{
+			var backDate = DateTime.UtcNow;
+			var futureDate = DateTime.UtcNow;
+			var startDate = backDate.ToString("yyyy-MM-dd");
+			var endDate = futureDate.ToString("yyyy-MM-dd");
 
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
 				Tuple.Create(FhirConst.GetStructuredRecordParams.kUncategorisedData, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
