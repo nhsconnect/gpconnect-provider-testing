@@ -182,7 +182,7 @@
                     }
                     catch
                     {
-                        Log.WriteLine("Exception writing JSONResponse to Output File");
+                        Log.WriteLine("Warning : Exception writing JSONResponse to Output File - May not be A JSON Response");
                     }
 
                 }
@@ -212,7 +212,7 @@
                     }
                     catch
                     {
-                        Log.WriteLine("Exception writing JSONRequestBody to Output File");
+                        Log.WriteLine("Warning : Exception writing JSONRequestBody to Output File - May Not be a JSON RequestBody");
                     }
 
                 }
