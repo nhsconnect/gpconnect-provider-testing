@@ -13,6 +13,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static bool TraceOutputJSONResponse => Get<bool>("traceOutputJSONResponse");
         public static bool TraceOutputJWT => Get<bool>("traceOutputJWT");
         public static bool TraceOutputJSONRequestBody => Get<bool>("traceOutputJSONRequestBody");
+        public static bool TraceOutputConsoleLog => Get<bool>("traceOutputConsoleLog");
 
         // Data Settings
         public static string DataDirectory => Get<string>("dataDirectory");

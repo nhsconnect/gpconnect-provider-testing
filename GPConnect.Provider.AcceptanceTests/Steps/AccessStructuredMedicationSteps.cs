@@ -11,8 +11,9 @@
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
     using GPConnect.Provider.AcceptanceTests.Steps;
+  	using GPConnect.Provider.AcceptanceTests.Logger;
 
-    [Binding]
+	[Binding]
     public sealed class AccessStructuredMedicationSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
@@ -180,9 +181,28 @@
                         list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
                     }
                     list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
-// Added git hub ref 88
-// RMB 9/10/2018
-                    list.Note.First().Text.ShouldBe("Information not available");
+                    // Added git hub ref 88
+                    // RMB 9/10/2018
+                    //#289 PG 6/9/2019 - changed as more notes added
+                    //list.Note.First().Text.ShouldBe("Information not available");
+                   
+                    var found = false;
+                    foreach (var note in list.Note)
+                    {
+                        if (note.Text.Contains("Information not available"))
+                            found = true;
+                    }
+
+                    if (!found)
+                    {
+                        Log.WriteLine("Warning not Found : Information not available");
+                        found.ShouldBeTrue("Warning not Found : Information not available");
+                    }
+                    else
+                    {
+                        Log.WriteLine("Warning Found : Information not available");
+                    }
+
                 }
                 else
                 {
@@ -1007,6 +1027,6 @@
 
             });
         }
-        #endregion
-    }
+		#endregion
+	}
 }
