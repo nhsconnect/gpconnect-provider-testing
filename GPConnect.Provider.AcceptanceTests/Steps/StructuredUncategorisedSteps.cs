@@ -158,11 +158,19 @@
 
                 list.Subject.Reference.ShouldContain("Patient/", "Patient reference Not Found");
 
-                list.Entry.ForEach(entry =>
+                //check number of Observations matches number in list
+                if (Observations.Count() != list.Entry.Count())
                 {
-                    string guidToFind = entry.Item.Reference.Replace("Observation/", "");
-                    Observations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Observation");
-                });
+                    Observations.Count().ShouldBe(list.Entry.Count(), "Number of Observations does not match the number in the List");
+                }
+                else
+                {
+                    list.Entry.ForEach(entry =>
+                    {
+                        string guidToFind = entry.Item.Reference.Replace("Observation/", "");
+                        Observations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Observation");
+                    });
+                }
             });
 
         }
