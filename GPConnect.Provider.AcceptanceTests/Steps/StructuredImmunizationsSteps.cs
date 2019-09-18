@@ -130,11 +130,20 @@
 
                 list.Subject.Reference.ShouldContain("Patient/", "Patient reference Not Found");
 
-                list.Entry.ForEach(entry =>
+
+                //check number of Immunizations matches number in list
+                if (Immunizations.Count() != list.Entry.Count())
                 {
-                    string guidToFind = entry.Item.Reference.Replace("Immunization/", "");
-                    Immunizations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Immunization");
-                });
+                    Immunizations.Count().ShouldBe(list.Entry.Count(), "Number of Immunizations does not match the number in the List");
+                }
+                else
+                {
+                    list.Entry.ForEach(entry =>
+                    {
+                        string guidToFind = entry.Item.Reference.Replace("Immunization/", "");
+                        Immunizations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Immunization");
+                    });
+                }
             });
 
         }
