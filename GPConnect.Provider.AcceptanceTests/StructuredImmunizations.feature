@@ -85,9 +85,9 @@ Scenario: Retrieve the immunizations structured record for a patient that has no
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "patient4"
-	    #TODO need to add check entry.resource.note ="Information not available"  and entry.resource.emptyReason = "noContent"
-		And the Patient Id should be valid
+	   	And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
 		And check the response does not contain an operation outcome
+		And check structured list contains a note and emptyReason when no data in section
 			
