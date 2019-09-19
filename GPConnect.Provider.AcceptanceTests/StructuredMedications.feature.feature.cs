@@ -944,8 +944,6 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.CategoryAttribute("1.2.4")]
         [NUnit.Framework.TestCaseAttribute("data-in-transit", "Patient record transfer from previous GP practice not yet complete; information r" +
             "ecorded before dd-Mmm-yyyy may be missing.", null)]
-        [NUnit.Framework.TestCaseAttribute("data-awaiting-filing", "Patient data may be incomplete as there is data supplied by a third party awaitin" +
-            "g review before becoming available.", null)]
         public virtual void StructuredMedicationsPatientHasMultipleWarningsAndAssociatedNotes(string warning, string note, string[] exampleTags)
         {
             string[] @__tags = new string[] {

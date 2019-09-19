@@ -328,5 +328,4 @@ Scenario Outline: Structured Allergies Patient Has multiple Warnings and Associa
 	Examples:
 	| Warning             | Note                                                                                                                       |
 	| confidential-items   | Items excluded due to confidentiality and/or patient preferences.                                                           |
-	| data-awaiting-filing | Patient data may be incomplete as there is data supplied by a third party awaiting review before becoming available.        |
 	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |

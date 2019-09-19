@@ -410,4 +410,3 @@ Scenario Outline: Structured Medications Patient Has multiple Warnings and Assoc
 	Examples:
 	| Warning             | Note                                                                                                                       |
 	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
-	| data-awaiting-filing | Patient data may be incomplete as there is data supplied by a third party awaiting review before becoming available.        |

@@ -97,23 +97,24 @@
                 observation.Id.ShouldNotBeNullOrEmpty();
                 CheckForValidMetaDataInResource(observation, FhirConst.StructureDefinitionSystems.kObservation);
                 observation.Status.ToString().ShouldBe("final", StringCompareShould.IgnoreCase);
-                observation.Subject.Reference.ShouldContain("Patient/", "Patient reference Not Found");
+
+                Patients.Where(p => p.Id == (observation.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 
                 observation.Code.ShouldNotBeNull("Code Element should not be null");
 
-                //observation.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
-                //observation.Identifier.ForEach(identifier =>
-                //{
-                //    identifier.System.Equals(FhirConst.ValueSetSystems.kCrossCareIdentifier).ShouldBeTrue("Cross Care Setting Identfier NOT Found");
+                observation.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+                observation.Identifier.ForEach(identifier =>
+                {
+                    identifier.System.Equals(FhirConst.ValueSetSystems.kCrossCareIdentifier).ShouldBeTrue("Cross Care Setting Identfier NOT Found");
 
-                //    //identifier.Value format is still being debated, hence notnull check
-                //    identifier.Value.ShouldNotBeNullOrEmpty("Identifier Value Is Null or Not Valid");
-                //    //Guid guidResult;
-                //    //Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("Immunization identifier GUID is not valid or Null");
-                //});
+                    //identifier.Value format is still being debated, hence notnull check
+                    identifier.Value.ShouldNotBeNullOrEmpty("Identifier Value Is Null or Not Valid");
+                    //Guid guidResult;
+                    //Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("Immunization identifier GUID is not valid or Null");
+                });
 
-                //observation.Issued.ShouldBeNull("Issued is Mandatory Fields and Should be included in th payload");
-                //observation.Performer.Count().ShouldNotBeNull("Performer is Null and should not be");
+                observation.Issued.ShouldNotBeNull("Issued is Mandatory Fields and Should be included in th payload");
+                observation.Performer.First().Reference.ShouldNotBeNull("Performer is Null and should not be");
 
             });
         }

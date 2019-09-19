@@ -874,8 +874,6 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Structured Allergies Patient Has multiple Warnings and Associated Notes")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
         [NUnit.Framework.TestCaseAttribute("confidential-items", "Items excluded due to confidentiality and/or patient preferences.", null)]
-        [NUnit.Framework.TestCaseAttribute("data-awaiting-filing", "Patient data may be incomplete as there is data supplied by a third party awaitin" +
-            "g review before becoming available.", null)]
         [NUnit.Framework.TestCaseAttribute("data-in-transit", "Patient record transfer from previous GP practice not yet complete; information r" +
             "ecorded before dd-Mmm-yyyy may be missing.", null)]
         public virtual void StructuredAllergiesPatientHasMultipleWarningsAndAssociatedNotes(string warning, string note, string[] exampleTags)
