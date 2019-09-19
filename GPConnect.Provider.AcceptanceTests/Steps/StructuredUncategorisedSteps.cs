@@ -18,6 +18,7 @@
 		private readonly HttpContext _httpContext;
         private List<Observation> Observations => _httpContext.FhirResponse.Observations;
         private List<List> Lists => _httpContext.FhirResponse.Lists;
+        private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
         public StructuredUncategorisedSteps(HttpSteps httpSteps, HttpContext httpContext)
 			: base(httpSteps)
@@ -137,9 +138,12 @@
         [Then(@"The Observation List is Valid")]
         public void GivenTheObservationListisValid()
         {
+            var obvList = Lists.Where(l => l.Title == "Miscellaneous record");
 
-            Lists.ForEach(list =>
+            if (obvList.Count() == 1)
             {
+                var list = obvList.First();
+
                 list.Title.ShouldBe("Miscellaneous record", "List Title is Incorrect");
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
 
@@ -156,7 +160,7 @@
                     coding.Display.ShouldNotBeNullOrEmpty("Display Should not be Null or Empty");
                 });
 
-                list.Subject.Reference.ShouldContain("Patient/", "Patient reference Not Found");
+                Patients.Where(p => p.Id == (list.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 
                 //check number of Observations matches number in list
                 if (Observations.Count() != list.Entry.Count())
@@ -171,10 +175,12 @@
                         Observations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Observation");
                     });
                 }
-            });
-
+            }
+            else
+            {
+                obvList.Count().ShouldBe(1, "Expected One Observation List But Found Zero or more than 1");
+            }
         }
-
     }
 }
 

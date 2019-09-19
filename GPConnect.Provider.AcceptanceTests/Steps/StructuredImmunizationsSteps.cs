@@ -18,6 +18,7 @@
         private readonly HttpContext _httpContext;
         private List<Immunization> Immunizations => _httpContext.FhirResponse.Immunizations;
         private List<List> Lists => _httpContext.FhirResponse.Lists;
+        private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
         public StructuredImmunizationsSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -79,7 +80,10 @@
                    code.Code.ShouldNotBeNullOrWhiteSpace("VaccineCode.Coding.Code.Code is Null or WhiteSpace");
                });
 
-            immunization.Patient.Reference.ShouldContain("Patient/", "Patient reference Not Found");
+
+            Patients.Where(p => p.Id == (immunization.Patient.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+            
+
             immunization.PrimarySource.ShouldBeOfType<bool>();
 
            });
@@ -108,9 +112,12 @@
         [Then(@"The Immunization List is Valid")]
         public void GivenTheImmunizationListisValid()
         {
+            var immList = Lists.Where(l => l.Title == "Immunisations");
 
-            Lists.ForEach(list =>
+            if (immList.Count() == 1)
             {
+                 var list = immList.First();
+                
                 list.Title.ShouldBe("Immunisations", "List Title is Incorrect");
                 CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
 
@@ -127,9 +134,7 @@
                     coding.Display.ShouldNotBeNullOrEmpty("Display Should not be Null or Empty");
                 });
 
-
-                list.Subject.Reference.ShouldContain("Patient/", "Patient reference Not Found");
-
+                Patients.Where(p => p.Id == (list.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 
                 //check number of Immunizations matches number in list
                 if (Immunizations.Count() != list.Entry.Count())
@@ -144,9 +149,17 @@
                         Immunizations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Immunization");
                     });
                 }
-            });
+            }
+            else
+            {
+                immList.Count().ShouldBe(1, "Expected One immunization List But Found Zero or more than 1");
+            }
+
 
         }
-    
+
+      
+
+
     }
 }

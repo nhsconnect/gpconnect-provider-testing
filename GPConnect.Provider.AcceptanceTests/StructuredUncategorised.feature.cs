@@ -403,12 +403,12 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the uncategorised data structured record with period dates equal to curr" +
-            "ent date expected success")]
+            "ent date expected success no operation outcome")]
         [NUnit.Framework.CategoryAttribute("1.3.0")]
-        public virtual void RetrieveTheUncategorisedDataStructuredRecordWithPeriodDatesEqualToCurrentDateExpectedSuccess()
+        public virtual void RetrieveTheUncategorisedDataStructuredRecordWithPeriodDatesEqualToCurrentDateExpectedSuccessNoOperationOutcome()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the uncategorised data structured record with period dates equal to curr" +
-                    "ent date expected success", null, new string[] {
+                    "ent date expected success no operation outcome", null, new string[] {
                         "1.3.0"});
 #line 130
 this.ScenarioInitialize(scenarioInfo);
