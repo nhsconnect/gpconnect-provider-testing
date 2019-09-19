@@ -1,7 +1,7 @@
 ﻿@structuredrecord
 Feature: StructuredMultipleRequests
 
-@1.3.0
+@1.3.1
 Scenario: Structured request with one parameter and no Clinical information expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1"
@@ -9,7 +9,7 @@ Scenario: Structured request with one parameter and no Clinical information expe
 	Then the response status code should indicate success
 	And the patient resource in the bundle should contain meta data profile and version id
 
-@1.3.0
+@1.3.1
 Scenario: Structured request sent with three parameters expected success with operation outcome for unknown allergies part parameter
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient2"
@@ -21,7 +21,7 @@ Scenario: Structured request sent with three parameters expected success with op
 	And the patient resource in the bundle should contain meta data profile and version id
 	And Check the number of issues in the operation outcome "1"
 	
-@1.3.0	
+@1.3.1	
 Scenario: Structured request sent with multpile parameters expected success with no operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient2"
@@ -32,7 +32,7 @@ Scenario: Structured request sent with multpile parameters expected success with
 	And check the response does not contain an operation outcome
 	
 
-@1.3.0
+@1.3.1
 Scenario: Structured request sent with two parameters one invalid boolean part parameter expected success with operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1"
@@ -43,7 +43,7 @@ Scenario: Structured request sent with two parameters one invalid boolean part p
 	And the patient resource in the bundle should contain meta data profile and version id
 	And Check the number of issues in the operation outcome "1"
 
-@1.3.0
+@1.3.1
 Scenario: Structured request sent with multiple parameters and part parameters with expected success including operation outcomes
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1"
@@ -54,7 +54,7 @@ Scenario: Structured request sent with multiple parameters and part parameters w
 	And the patient resource in the bundle should contain meta data profile and version id
 	And Check the number of issues in the operation outcome "3"
 
-@1.3.0
+@1.3.1
 Scenario: Structured request sent with two invalid parameters expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1" using an invalid parameter type
@@ -63,7 +63,7 @@ Scenario: Structured request sent with two invalid parameters expected failure
 	Then the response status code should be "400"
     And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
 
-@1.3.0
+@1.3.1
 Scenario: Structured request sent with multiple parameters for a Sensitive patient expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient9"

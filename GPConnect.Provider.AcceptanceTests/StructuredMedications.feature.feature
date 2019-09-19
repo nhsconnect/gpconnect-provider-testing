@@ -1,8 +1,7 @@
 ﻿@structuredrecord
 Feature: StructuredMedications
 
-@1.2.4
-@1.3.0
+@1.2.4 @1.3.1
 Scenario Outline: Retrieve the medication structured record section for a patient including prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -34,8 +33,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient12 |
 		| patient16 |
 
-@1.2.4	
-@1.3.0
+@1.2.4	@1.3.1
 Scenario Outline: Retrieve the medication structured record section for a patient excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -134,8 +132,7 @@ Scenario: Retrieve the medication structured record section for a patient withou
 		And Check the operation outcome returns PARAMETER_NOT_FOUND for Medication
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4
-@1.3.0
+@1.2.4 @1.3.1
 Scenario: Retrieve the medication structured record section for a patient with an invalid include parameter
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -286,8 +283,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 # github ref 127
 # RMB 5/11/2018
 #SJD 06/09/2019 #295 amended invalid date formats to allow for forward compatability for 1.3.0
-@1.2.4
-@1.3.0
+@1.2.4 @1.3.1
 Scenario Outline: Retrieve the medication structured record section for a patient with invalid start date
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -304,8 +300,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		|                            | 
 
 #SJD 06/09/2019 #295 invalid date formats are now accepted under forward compatability for 1.3.0
-@1.2.4
-@1.3.0
+@1.2.4 @1.3.1
 Scenario Outline: Retrieve the medication structured record expected success with invalid date used includes an operation outcome 
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -396,7 +391,7 @@ Scenario:  structured record for a patient that has inactive flag
 
 
 #PG 6/9/2019 - #289
-@1.2.4
+@1.2.4 @1.3.1
 Scenario Outline: Structured Medications Patient Has multiple Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient16"

@@ -73,12 +73,12 @@ namespace GPConnect.Provider.AcceptanceTests
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Uncategorised Data structured record for a Patient with Uncategorised")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         public virtual void VerifyUncategorisedDataStructuredRecordForAPatientWithUncategorised(string patient, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.3.0"};
+                    "1.3.1"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -136,11 +136,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve uncategorised data structured record section for an invalid NHS number")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveUncategorisedDataStructuredRecordSectionForAnInvalidNHSNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve uncategorised data structured record section for an invalid NHS number", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 31
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -162,11 +162,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve uncategorised data structured record section for an empty NHS number")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveUncategorisedDataStructuredRecordSectionForAnEmptyNHSNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve uncategorised data structured record section for an empty NHS number", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 40
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -189,12 +189,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve uncategorised data structured record section for an invalid Identifier S" +
             "ystem")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveUncategorisedDataStructuredRecordSectionForAnInvalidIdentifierSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve uncategorised data structured record section for an invalid Identifier S" +
                     "ystem", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 49
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -217,12 +217,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve uncategorised data structured record section for an empty Identifier Sys" +
             "tem")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveUncategorisedDataStructuredRecordSectionForAnEmptyIdentifierSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve uncategorised data structured record section for an empty Identifier Sys" +
                     "tem", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 58
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -245,12 +245,12 @@ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", (
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve uncategorised data structured record for a patient that has sensitive fl" +
             "ag")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveUncategorisedDataStructuredRecordForAPatientThatHasSensitiveFlag()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve uncategorised data structured record for a patient that has sensitive fl" +
                     "ag", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 67
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -274,12 +274,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve uncategorised data structured record for a patient that has no uncategor" +
             "ised data")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveUncategorisedDataStructuredRecordForAPatientThatHasNoUncategorisedData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve uncategorised data structured record for a patient that has no uncategor" +
                     "ised data", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 76
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -325,7 +325,7 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the uncategorised data structured record with invalid dates expected suc" +
             "cess to include an operation outcome")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         [NUnit.Framework.TestCaseAttribute("2014", "2016-01-01", "includeUncategorisedData", "uncategorisedDataSearchPeriod", null)]
         [NUnit.Framework.TestCaseAttribute("2014-02", "2014-08-20", "includeUncategorisedData", "uncategorisedDataSearchPeriod", null)]
         [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32", "2016-11-01", "includeUncategorisedData", "uncategorisedDataSearchPeriod", null)]
@@ -337,7 +337,7 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void RetrieveTheUncategorisedDataStructuredRecordWithInvalidDatesExpectedSuccessToIncludeAnOperationOutcome(string startDate, string endDate, string parameter, string partParameter, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.3.0"};
+                    "1.3.1"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -368,12 +368,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the uncategorised data structured record with start date in future expec" +
             "ted success with operation outcome")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         [NUnit.Framework.TestCaseAttribute("includeUncategorisedData", "uncategorisedDataSearchPeriod", null)]
         public virtual void RetrieveTheUncategorisedDataStructuredRecordWithStartDateInFutureExpectedSuccessWithOperationOutcome(string parameter, string partParameter, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.3.0"};
+                    "1.3.1"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -404,12 +404,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the uncategorised data structured record with period dates equal to curr" +
             "ent date expected success no operation outcome")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveTheUncategorisedDataStructuredRecordWithPeriodDatesEqualToCurrentDateExpectedSuccessNoOperationOutcome()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the uncategorised data structured record with period dates equal to curr" +
                     "ent date expected success no operation outcome", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 130
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

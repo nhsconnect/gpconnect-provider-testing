@@ -74,12 +74,12 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request with one parameter and no Clinical information expected succes" +
             "s")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void StructuredRequestWithOneParameterAndNoClinicalInformationExpectedSuccess()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request with one parameter and no Clinical information expected succes" +
                     "s", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -101,12 +101,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with three parameters expected success with operation out" +
             "come for unknown allergies part parameter")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void StructuredRequestSentWithThreeParametersExpectedSuccessWithOperationOutcomeForUnknownAllergiesPartParameter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with three parameters expected success with operation out" +
                     "come for unknown allergies part parameter", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 13
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -137,12 +137,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with multpile parameters expected success with no operati" +
             "on outcome")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void StructuredRequestSentWithMultpileParametersExpectedSuccessWithNoOperationOutcome()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with multpile parameters expected success with no operati" +
                     "on outcome", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 25
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -169,12 +169,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with two parameters one invalid boolean part parameter ex" +
             "pected success with operation outcome")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void StructuredRequestSentWithTwoParametersOneInvalidBooleanPartParameterExpectedSuccessWithOperationOutcome()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with two parameters one invalid boolean part parameter ex" +
                     "pected success with operation outcome", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 36
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -203,12 +203,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with multiple parameters and part parameters with expecte" +
             "d success including operation outcomes")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void StructuredRequestSentWithMultipleParametersAndPartParametersWithExpectedSuccessIncludingOperationOutcomes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with multiple parameters and part parameters with expecte" +
                     "d success including operation outcomes", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 47
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -235,11 +235,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with two invalid parameters expected failure")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void StructuredRequestSentWithTwoInvalidParametersExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with two invalid parameters expected failure", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 58
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -263,12 +263,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with multiple parameters for a Sensitive patient expected" +
             " failure")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void StructuredRequestSentWithMultipleParametersForASensitivePatientExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with multiple parameters for a Sensitive patient expected" +
                     " failure", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 67
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

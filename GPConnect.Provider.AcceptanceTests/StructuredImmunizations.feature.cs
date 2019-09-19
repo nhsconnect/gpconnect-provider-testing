@@ -73,12 +73,12 @@ namespace GPConnect.Provider.AcceptanceTests
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Immunizations structured record for a Patient with Immunizations")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         public virtual void VerifyImmunizationsStructuredRecordForAPatientWithImmunizations(string patient, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.3.0"};
+                    "1.3.1"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -134,11 +134,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the immunizations structured record section for an invalid NHS number")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveTheImmunizationsStructuredRecordSectionForAnInvalidNHSNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the immunizations structured record section for an invalid NHS number", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 31
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -160,11 +160,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the immunizations structured record section for an empty NHS number")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveTheImmunizationsStructuredRecordSectionForAnEmptyNHSNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the immunizations structured record section for an empty NHS number", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 40
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -187,12 +187,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the immunizations structured record section for an invalid Identifier Sy" +
             "stem")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveTheImmunizationsStructuredRecordSectionForAnInvalidIdentifierSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the immunizations structured record section for an invalid Identifier Sy" +
                     "stem", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 49
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -215,12 +215,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the immunizations structured record section for an empty Identifier Syst" +
             "em")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveTheImmunizationsStructuredRecordSectionForAnEmptyIdentifierSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the immunizations structured record section for an empty Identifier Syst" +
                     "em", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 58
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -243,12 +243,12 @@ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", (
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the immunizations structured record for a patient that has sensitive fla" +
             "g")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveTheImmunizationsStructuredRecordForAPatientThatHasSensitiveFlag()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the immunizations structured record for a patient that has sensitive fla" +
                     "g", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 67
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -272,12 +272,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the immunizations structured record for a patient that has no immunizati" +
             "ons")]
-        [NUnit.Framework.CategoryAttribute("1.3.0")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
         public virtual void RetrieveTheImmunizationsStructuredRecordForAPatientThatHasNoImmunizations()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the immunizations structured record for a patient that has no immunizati" +
                     "ons", null, new string[] {
-                        "1.3.0"});
+                        "1.3.1"});
 #line 76
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
