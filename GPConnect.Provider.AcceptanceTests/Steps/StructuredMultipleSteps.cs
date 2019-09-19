@@ -53,7 +53,7 @@
 				}
 			});
 		}
-		
+
 		[Then(@"Check the operation outcome for each unsupported structured request")]
 		public void checkTheOperationOutcomeForEachUnsupportedStructuredRequest()
 		{
@@ -149,12 +149,11 @@
 			});
 		}
 
-		[Then(@"Check the operation outcome returns PARAMETER_NOT_FOUND for Allergies")]
-		public void checkTheOperationOutcomeReturnsParameterNotFoundForAllergies()
+		[Then(@"Check the operation outcome PARAMETER_NOT_FOUND for ""([^""]*)"" and ""([^""]*)""")]
+		public void checkTheOperationOutcomeParameterNotFoundFor(string parameter, string partparameter)
 		{
 			var entries = _httpContext.FhirResponse.Entries;
-			var parameter = "includeAllergies";
-			var partparameter = "includeResolvedAllergies";
+			
 
 
 			entries.ForEach(entry =>
@@ -181,12 +180,12 @@
 				}
 			});
 		}
-		
+
 		[Then(@"Check the operation outcome returns INVALID_PARAMETER for ""([^""]*)"" and ""([^""]*)""")]
 		public void checkTheOperationOutcomeReturnsInvalidParameterFor(string parameter, string partparameter)
 		{
 			var entries = _httpContext.FhirResponse.Entries;
-			
+
 
 			entries.ForEach(entry =>
 			{
@@ -203,7 +202,7 @@
 						issue.Details.Coding[0].System.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
 						issue.Details.Coding[0].Code.ShouldBe("INVALID_PARAMETER");
 						issue.Details.Coding[0].Display.ShouldBe("Invalid Parameter");
-						issue.Details.Text.ShouldBe("Invalid date used");
+						issue.Details.Text.ShouldContain("Invalid date used");
 						issue.Diagnostics.ShouldBe(parameter + "." + partparameter);
 						Log.WriteLine("This has not met the expected response of INVALID_PARAMETER for " + parameter + "." + partparameter);
 
@@ -338,7 +337,7 @@
 			param2.Name = "includeConsults";
 			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param2);
 		}
-		
+
 
 
 		//SJD added 11/09/2019 release 1.3.0
@@ -355,7 +354,7 @@
 					foundFlag = true;
 
 				}
-		
+
 			});
 			if (!foundFlag)
 			{
@@ -384,7 +383,7 @@
 				var failMessage = "Test failed as an unexpected operation outcome found in response";
 				Log.WriteLine(failMessage);
 				foundFlag.ShouldBeFalse(failMessage);
-								
+
 			}
 			else
 			{
