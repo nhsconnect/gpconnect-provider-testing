@@ -428,6 +428,37 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Retrieve the uncategorised data structured record startDate after endDate expecte" +
+            "d success with operation outcome")]
+        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        public virtual void RetrieveTheUncategorisedDataStructuredRecordStartDateAfterEndDateExpectedSuccessWithOperationOutcome()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the uncategorised data structured record startDate after endDate expecte" +
+                    "d success with operation outcome", null, new string[] {
+                        "1.3.1"});
+#line 139
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 140
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 141
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 142
+  testRunner.And("I add the uncategorised data parameter start date after endDate", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 143
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 144
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 145
+  testRunner.And("Check the operation outcome returns INVALID_PARAMETER for \"includeUncategorisedDa" +
+                    "ta\" and \"uncategorisedDataSearchPeriod\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 146
+  testRunner.And("Check the number of issues in the operation outcome \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

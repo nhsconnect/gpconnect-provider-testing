@@ -214,7 +214,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 Scenario Outline: Retrieve the medication structured record section for a patient with a start date
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
-		And I add the medications parameter with a start date
+		And I add the medications parameter with a start date equal to current date
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -292,7 +292,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
-	Examples:
+Examples:
 		| StartDate                  |
 		| X2014                      |
 		| X2014-02                   |
@@ -309,6 +309,7 @@ Scenario Outline: Retrieve the medication structured record expected success wit
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And Check the operation outcome returns INVALID_PARAMETER for "<Parameter>" and "<PartParameter>"
+		And Check the number of issues in the operation outcome "1"
 
 	Examples:
 		| StartDate                 | Parameter         | PartParameter            |
@@ -406,3 +407,17 @@ Scenario Outline: Structured Medications Patient Has multiple Warnings and Assoc
 	Examples:
 	| Warning             | Note                                                                                                                       |
 	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
+
+	#SJD 20/09/2019
+	@1.3.1
+	Scenario: Retrieve the medication structured record startDate in future expected success with an operation outcome
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I add the medications parameter with a start date greater than current date
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And Check the operation outcome returns INVALID_PARAMETER for "includeMedication" and "medicationSearchFromDate"
+		And Check the number of issues in the operation outcome "1"
+	
+	
+	

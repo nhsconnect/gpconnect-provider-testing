@@ -100,7 +100,7 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
-        [Given(@"I add the medications parameter with a start date")]
+        [Given(@"I add the medications parameter with a start date equal to current date")]
         public void GivenIAddTheMedicationsParameterWithAStartDate()
         {
             var tempDate = DateTime.UtcNow;
@@ -114,7 +114,21 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
-        [Given(@"I add the medications parameter with an end date")]
+		[Given(@"I add the medications parameter with a start date greater than current date")]
+		public void GivenIAddTheMedicationsParameterWithAStartDateGreaterThanCurrentDate()
+		{
+			var tempDate = DateTime.UtcNow.AddDays(+1);
+			var startDate = tempDate.ToString("yyyy-MM-dd");
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+						Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+//                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnlyFormatted("yyyy-MM-dd"))               
+            Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetStartDate(startDate))
+		};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
+		}
+
+		[Given(@"I add the medications parameter with an end date")]
         public void GivenIAddTheMedicationsParameterWithAnEndPeriod()
         {
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
