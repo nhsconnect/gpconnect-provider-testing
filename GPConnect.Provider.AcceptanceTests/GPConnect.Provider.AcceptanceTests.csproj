@@ -253,6 +253,7 @@
     <Compile Include="SearchForFreeSlots.feature.cs" />
     <Compile Include="Security.feature.cs" />
     <Compile Include="SSP.feature.cs" />
+    <Compile Include="Steps\StructuredConsultationsSteps.cs" />
     <Compile Include="Steps\StructuredImmunizationsSteps.cs" />
     <Compile Include="Steps\StructuredMedicationSteps.cs" />
     <Compile Include="Steps\StructuredAllergySteps.cs" />
@@ -294,12 +295,14 @@
     <Compile Include="Steps\StructuredUncategorisedSteps.cs" />
     <Compile Include="Steps\TeardownSteps.cs" />
     <Compile Include="StructuredAllergies.feature.cs" />
+    <Compile Include="StructuredConsultations.feature.cs" />
     <Compile Include="StructuredImmunizations.feature.cs" />
     <Compile Include="StructuredMedications.feature.feature.cs" />
     <Compile Include="StructuredMultipleRequests.feature.cs" />
     <Compile Include="StructuredUncategorised.feature.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="StructuredConsultations.feature" />
     <None Include="StructuredImmunizations.feature" />
     <None Include="StructuredMedications.feature.feature" />
     <None Include="App.config">
