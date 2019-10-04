@@ -178,9 +178,20 @@
 
 
         }
+		//SJD 04/10/2019 for 1.3.1
+		[Given(@"I add a madeUp consultation part parameter")]
+		public void GivenIAddAMadeUpConsultationPartParameter()
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create("madeUp", (Base)new FhirString ("madeUpValue1")),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+
+		}
 
 
-    }
+
+	}
 
 
 }

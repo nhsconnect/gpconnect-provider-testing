@@ -55,13 +55,14 @@ Scenario: Structured request sent with multiple parameters and part parameters w
 	And Check the number of issues in the operation outcome "3"
 
 @1.3.1
+#SJD 04/10/2019 changed the response code as per specification for invalid parameter	
 Scenario: Structured request sent with two invalid parameters expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1" using an invalid parameter type
 	And I send an invalid Consultations parameter containing valid part parameters
 	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should be "400"
-    And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 @1.3.1
 Scenario: Structured request sent with multiple parameters for a Sensitive patient expected failure
