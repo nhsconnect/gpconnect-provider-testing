@@ -292,6 +292,7 @@
     <Compile Include="Helpers\HttpParameterHelper.cs" />
     <Compile Include="Helpers\JwtHelper.cs" />
     <Compile Include="Steps\StructuredMultipleSteps.cs" />
+    <Compile Include="Steps\StructuredProblemsSteps.cs" />
     <Compile Include="Steps\StructuredUncategorisedSteps.cs" />
     <Compile Include="Steps\TeardownSteps.cs" />
     <Compile Include="StructuredAllergies.feature.cs" />
@@ -299,6 +300,7 @@
     <Compile Include="StructuredImmunizations.feature.cs" />
     <Compile Include="StructuredMedications.feature.feature.cs" />
     <Compile Include="StructuredMultipleRequests.feature.cs" />
+    <Compile Include="StructuredProblems.feature.cs" />
     <Compile Include="StructuredUncategorised.feature.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -341,6 +343,7 @@
     <None Include="AppointmentAmend.feature" />
     <None Include="StructuredMultipleRequests.feature" />
     <None Include="SSP.feature" />
+    <None Include="StructuredProblems.feature" />
     <None Include="StructuredUncategorised.feature" />
     <None Include="validation.xml.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
