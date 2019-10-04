@@ -39,16 +39,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
 		}
 
-		[Given(@"I add the allergies parameter")]
-		public void GivenIAddTheAllergiesParameter()
+		[Given(@"I add the allergies parameter without mandatory part parameter")]
+		public void GivenIAddTheAllergiesParameterWithoutMandatoryPartParameter()
 		{
 			ParameterComponent param = new ParameterComponent();
 			param.Name = FhirConst.GetStructuredRecordParams.kAllergies;
 			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
 		}
 
-		[Given(@"I add an unknown allergies parameter")]
-		public void GivenIAddAnUnknownAllergiesParameter()
+		[Given(@"I add an unknown allergies parameter name")]
+		public void GivenIAddAnUnknownAllergiesParameterName()
 		{
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
 				Tuple.Create(FhirConst.GetStructuredRecordParams.kResolvedAllergies, (Base)new FhirBoolean(false))
@@ -56,8 +56,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add("inlcudeUnknownAllergies", tuples);
 		}
 
-		[Given(@"I add the allergies parameter with includePrescriptionIssues")]
-		public void GivenIAddTheAllergiesParameterWithIncludePrescriptionIssues()
+		[Given(@"I add the allergies parameter with mandatory part parameter and includePrescriptionIssues")]
+		public void GivenIAddTheAllergiesParameterWithMandatoryPartParameterAndIncludePrescriptionIssues()
 		{
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
 				Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
@@ -66,8 +66,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
 		}
 
-		[Given(@"I add the allergies parameter with a timePeriod")]
-		public void GivenIAddTheAllergiesParameterWithATimePeriod()
+		[Given(@"I add the allergies parameter with mandatory parameter and additional parameter")]
+		public void GivenIAddTheAllergiesParameterWithMandatoryParameterAndAdditionalParameter()
 		{
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
 				Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetDefaultTimePeriod()),
@@ -76,8 +76,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
 		}
 
-		[Given(@"I add the allergies parameter with a start date")]
-		public void GivenIAddTheAllergiesParameterWithAStartPeriod()
+		[Given(@"I add the allergies parameter with mandatory part parameter start date")]
+		public void GivenIAddTheAllergiesParameterWithMandatoryPartParameterStartDate()
 		{
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
 				Tuple.Create(FhirConst.GetStructuredRecordParams.kTimePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnly()),
