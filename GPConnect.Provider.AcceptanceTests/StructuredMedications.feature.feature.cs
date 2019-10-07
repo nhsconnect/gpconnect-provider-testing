@@ -364,14 +364,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for a patient without the inclu" +
-            "dePrescriptionIssue parameter")]
+        [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for a patient without the manda" +
+            "tory includePrescriptionIssue parameter")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
         [NUnit.Framework.CategoryAttribute("1.3.1")]
-        public virtual void RetrieveTheMedicationStructuredRecordSectionForAPatientWithoutTheIncludePrescriptionIssueParameter()
+        public virtual void RetrieveTheMedicationStructuredRecordSectionForAPatientWithoutTheMandatoryIncludePrescriptionIssueParameter()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the medication structured record section for a patient without the inclu" +
-                    "dePrescriptionIssue parameter", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the medication structured record section for a patient without the manda" +
+                    "tory includePrescriptionIssue parameter", null, new string[] {
                         "1.2.4",
                         "1.3.1"});
 #line 126
@@ -397,14 +397,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for a patient without mandatory" +
-            " partParameter plus unknown partParameter expected failure")]
+        [NUnit.Framework.DescriptionAttribute("Verify that when the medication parameter is labelled incorrectly with correct ma" +
+            "ndatory partParameter returns success")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
         [NUnit.Framework.CategoryAttribute("1.3.1")]
-        public virtual void RetrieveTheMedicationStructuredRecordSectionForAPatientWithoutMandatoryPartParameterPlusUnknownPartParameterExpectedFailure()
+        public virtual void VerifyThatWhenTheMedicationParameterIsLabelledIncorrectlyWithCorrectMandatoryPartParameterReturnsSuccess()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the medication structured record section for a patient without mandatory" +
-                    " partParameter plus unknown partParameter expected failure", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify that when the medication parameter is labelled incorrectly with correct ma" +
+                    "ndatory partParameter returns success", null, new string[] {
                         "1.2.4",
                         "1.3.1"});
 #line 137
@@ -415,16 +415,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 139
   testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
-  testRunner.And("I add an incorrect partParameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add an incorrectly named medication parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 141
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 142
- testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 143
-  testRunner.And("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Check the operation outcome returns the correct text and diagnotics \"includeInval" +
+                    "idMedications\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 144
-  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
-                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Check the number of issues in the operation outcome \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

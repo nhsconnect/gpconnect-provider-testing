@@ -77,8 +77,8 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(partParam);
         }
 
-		[Given(@"I add an incorrect partParameter")]
-		public void GivenIAddAnIncorrectPartParameter()
+		[Given(@"I add an incorrectly named medication parameter")]
+		public void GivenIAddAnIncorrectlyNamedMedicationParameter()
 		{
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),

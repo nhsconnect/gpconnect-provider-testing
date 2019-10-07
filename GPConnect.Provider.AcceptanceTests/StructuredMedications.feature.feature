@@ -123,7 +123,7 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4 @1.3.1
-Scenario: Retrieve the medication structured record section for a patient without the includePrescriptionIssue parameter
+Scenario: Retrieve the medication structured record section for a patient without the mandatory includePrescriptionIssue parameter
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
 		And I add the medications parameter without mandatory partParameter
@@ -134,14 +134,14 @@ Scenario: Retrieve the medication structured record section for a patient withou
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4 @1.3.1
-Scenario: Retrieve the medication structured record section for a patient without mandatory partParameter plus unknown partParameter expected failure
+Scenario: Verify that when the medication parameter is labelled incorrectly with correct mandatory partParameter returns success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
-		And I add an incorrect partParameter
+		And I add an incorrectly named medication parameter
 	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate failure
-		And the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+	Then the response status code should indicate success
+		And Check the operation outcome returns the correct text and diagnotics "includeInvalidMedications"
+		And Check the number of issues in the operation outcome "1"
 
 @1.2.4
 Scenario: Retrieve the medication structured record section for an invalid NHS number
