@@ -344,7 +344,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 102
   testRunner.And("Check the operation outcome returns the correct text and diagnostics includes \"in" +
-                    "cludeImmunisations\" and \"unknownParameter\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "cludeImmunisations\" and \"madeUp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
   testRunner.And("Check the number of issues in the operation outcome \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

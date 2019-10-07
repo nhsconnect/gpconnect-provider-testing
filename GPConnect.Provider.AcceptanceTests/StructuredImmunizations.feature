@@ -99,5 +99,5 @@ Scenario: Retrieve the immunizations structured record with a madeUp partParamet
 		And I add a madeUp immunizations part parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
-		And Check the operation outcome returns the correct text and diagnostics includes "includeImmunisations" and "unknownParameter"
+		And Check the operation outcome returns the correct text and diagnostics includes "includeImmunisations" and "madeUp"
 		And Check the number of issues in the operation outcome "1"

@@ -93,14 +93,14 @@ Scenario: Retrieve uncategorised data structured record for a patient that has n
 		And check structured list contains a note and emptyReason when no data in section
 
 @1.3.1
-Scenario Outline: Retrieve the uncategorised data structured record with invalid dates expected success to include an operation outcome 
+Scenario Outline: Retrieve the uncategorised data structured record with invalid dates expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
 		And I add the uncategorised data parameter with date permutations "<startDate>" and "<endDate>"
 	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And Check the operation outcome returns INVALID_PARAMETER for "<Parameter>" and "<PartParameter>"
-		And Check the number of issues in the operation outcome "1"
+	Then the response status code should indicate failure
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 	Examples:
 		| startDate                 | endDate                   | Parameter                | PartParameter                 |

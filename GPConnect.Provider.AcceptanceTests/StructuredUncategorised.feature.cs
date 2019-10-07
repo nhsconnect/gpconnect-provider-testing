@@ -325,8 +325,8 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Retrieve the uncategorised data structured record with invalid dates expected suc" +
-            "cess to include an operation outcome")]
+        [NUnit.Framework.DescriptionAttribute("Retrieve the uncategorised data structured record with invalid dates expected fai" +
+            "lure")]
         [NUnit.Framework.CategoryAttribute("1.3.1")]
         [NUnit.Framework.TestCaseAttribute("2014", "2016-01-01", "includeUncategorisedData", "uncategorisedDataSearchPeriod", null)]
         [NUnit.Framework.TestCaseAttribute("2014-02", "2014-08-20", "includeUncategorisedData", "uncategorisedDataSearchPeriod", null)]
@@ -336,7 +336,7 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("2014-02-01", "2014-08", "includeUncategorisedData", "uncategorisedDataSearchPeriod", null)]
         [NUnit.Framework.TestCaseAttribute("2015-10-01", "2016-11-23T11:08:32", "includeUncategorisedData", "uncategorisedDataSearchPeriod", null)]
         [NUnit.Framework.TestCaseAttribute("2014-01-01", "2015-10-23T11:08:32+00:00", "includeUncategorisedData", "uncategorisedDataSearchPeriod", null)]
-        public virtual void RetrieveTheUncategorisedDataStructuredRecordWithInvalidDatesExpectedSuccessToIncludeAnOperationOutcome(string startDate, string endDate, string parameter, string partParameter, string[] exampleTags)
+        public virtual void RetrieveTheUncategorisedDataStructuredRecordWithInvalidDatesExpectedFailure(string startDate, string endDate, string parameter, string partParameter, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "1.3.1"};
@@ -344,8 +344,8 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the uncategorised data structured record with invalid dates expected suc" +
-                    "cess to include an operation outcome", null, @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the uncategorised data structured record with invalid dates expected fai" +
+                    "lure", null, @__tags);
 #line 96
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -358,11 +358,12 @@ this.ScenarioInitialize(scenarioInfo);
 #line 100
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 101
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 102
-  testRunner.And(string.Format("Check the operation outcome returns INVALID_PARAMETER for \"{0}\" and \"{1}\"", parameter, partParameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
-  testRunner.And("Check the number of issues in the operation outcome \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
