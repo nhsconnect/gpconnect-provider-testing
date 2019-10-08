@@ -40,9 +40,9 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
-        [Given(@"I add the medications parameter")]
-        public void GivenIAddTheMedicationsParameter()
-        {
+		[Given(@"I add the medications parameter without mandatory partParameter")]
+		public void GivenIAddTheMedicationsParameterWithoutMandatoryParameter()
+		{
             ParameterComponent param = new ParameterComponent();
             param.Name = FhirConst.GetStructuredRecordParams.kMedication;
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
@@ -78,9 +78,9 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(partParam);
         }
 
-        [Given(@"I add an invalid medications parameter")]
-        public void GivenIAddAnInvalidMedicationsParameter()
-        {
+		[Given(@"I add an incorrectly named medication parameter")]
+		public void GivenIAddAnIncorrectlyNamedMedicationParameter()
+		{
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
             };

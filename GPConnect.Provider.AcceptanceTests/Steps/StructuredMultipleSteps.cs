@@ -224,8 +224,8 @@
 			Given($"I add the allergies parameter with resolvedAllergies set to \"true\"");
 			Given($"I add the immunizations parameter");
 			Given($"I add the uncategorised data parameter");
-			// not yet coded in 1.3.0 Given($"I add the consultation parameter with optional parameters");
-			// not yet coded in 1.3.0 Given($"I add the problems parameter with optional parameters");
+			// not yet developed in 1.3.1 Given($"I add the consultation parameter with optional parameters");
+			Given($"I add the problems parameter");
 
 		}
 
@@ -267,13 +267,14 @@
 		public void GivenIAddTheConsultationParameterWithOptionalParameters()
 		{
 			var backDate = DateTime.UtcNow.AddDays(-10);
-			var futureDate = DateTime.UtcNow.AddDays(5);
+			var futureDate = DateTime.UtcNow.AddDays(-5);
 			var startDate = backDate.ToString("yyyy-MM-dd");
 			var endDate = futureDate.ToString("yyyy-MM-dd");
 
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
 				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base)new FhirString("3"))
+				//can only have one of the partParameters
+			//	Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base)new FhirString("3"))
 			};
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
 		}
@@ -293,12 +294,12 @@
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add("Consultations", tuples);
 		}
 
-		[Given(@"I add the problems parameter with optional parameters")]
-		public void GivenIAddTheProblemsParameterWithOptionalParameters()
+		[Given(@"I add the problems parameter")]
+		public void GivenIAddTheProblemsParameter()
 		{
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new FhirString ("active")),
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new FhirString ("major"))
+				//not yet dev in 1.3.1 Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new FhirString ("active")),
+				//not yet dev in 1.3.1 Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new FhirString ("major"))
 			};
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
 		}
@@ -319,8 +320,8 @@
 			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
 		}
 
-		[Given(@"I add 3 invalid structured parameters and or part parameters")]
-		public void GivenIAdd3InvalidStructuredParametersAndOrPartParameters()
+		[Given(@"I add 3 unknown structured parameters including part parameters")]
+		public void GivenIAdd3UnknownStructuredParametersIncludingPartParameters()
 		{
 
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {

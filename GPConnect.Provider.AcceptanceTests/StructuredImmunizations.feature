@@ -66,10 +66,11 @@ Given I configure the default "GpcGetStructuredRecord" request
 @1.3.1
 Scenario: Retrieve the immunizations structured record for a patient that has sensitive flag
 	Given I configure the default "GpcGetStructuredRecord" request 
-	And I add an NHS Number parameter for "patient9"
-	And I add the immunizations parameter
+		And I add an NHS Number parameter for "patient9"
+		And I add the immunizations parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
+		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
 @1.3.1
@@ -90,4 +91,13 @@ Scenario: Retrieve the immunizations structured record for a patient that has no
 		And the Organization Id should be valid 
 		And check the response does not contain an operation outcome
 		And check structured list contains a note and emptyReason when no data in section
-			
+		
+@1.3.1 
+Scenario: Retrieve the immunizations structured record with a madeUp partParameter
+	Given I configure the default "GpcGetStructuredRecord" request 
+		And I add an NHS Number parameter for "patient2"
+		And I add a madeUp immunizations part parameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And Check the operation outcome returns the correct text and diagnostics includes "includeImmunisations" and "madeUp"
+		And Check the number of issues in the operation outcome "1"
