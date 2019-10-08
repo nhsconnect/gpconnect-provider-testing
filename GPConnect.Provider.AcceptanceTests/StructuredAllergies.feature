@@ -155,22 +155,22 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the Lists are valid for a patient with explicit no allergies coding
 		And the List of AllergyIntolerances should be valid
 
-#SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4 @1.3.1
-Scenario: Retrieve the allergy structured record section for a patient without the resolved allergies parameter expected success
+@1.2.4 @1.3.1 04/10/2019
+Scenario: Retrieve the allergy structured record section for a patient without the resolved allergies parameter expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
-		And I add the allergies parameter
+		And I add the allergies parameter without mandatory part parameter
 	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And Check the operation outcome PARAMETER_NOT_FOUND for "includeAllergies" and "includeResolvedAllergies"
+	Then the response status code should indicate failure
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4 @1.3.1
-Scenario: Retrieve the allergy structured record to include unknown prescription issues parameter expected success with operational outcome
+Scenario: Retrieve the allergy structured record with additional include unknown prescription issues parameter expected success with operational outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
-		And I add the allergies parameter with includePrescriptionIssues
+		And I add the allergies parameter with mandatory part parameter and includePrescriptionIssues
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And Check the operation outcome returns the correct text and diagnotics "includePrescriptionIssues"
@@ -182,7 +182,7 @@ Scenario: Retrieve the allergy structured record to include unknown prescription
 Scenario: Retrieve the allergy structured record section for a patient with an uknown parameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
-		And I add an unknown allergies parameter
+		And I add an unknown allergies parameter name
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And Check the operation outcome returns the correct text and diagnotics "inlcudeUnknownAllergies"
@@ -237,10 +237,10 @@ Scenario: Retrieve the allergy structured record section for an invalid paramete
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4
 @1.3.1
-Scenario: Retrieve the allergy structured record section for a patient with a timePeriod expected success
+Scenario: Retrieve the allergy structured record section for a patient with additional timePeriod parameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
-		And I add the allergies parameter with a timePeriod
+		And I add the allergies parameter with mandatory parameter and additional parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And Check the operation outcome returns the correct text and diagnotics "TimePeriod"
@@ -248,21 +248,10 @@ Scenario: Retrieve the allergy structured record section for a patient with a ti
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4 @1.3.1
-Scenario: Retrieve the allergy structured record section for a patient with a start date only expected success
+Scenario: Retrieve the allergy structured record section for a patient with additional start date parameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
-		And I add the allergies parameter with a start date
-	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And Check the operation outcome returns the correct text and diagnotics "TimePeriod"
-		And Check the number of issues in the operation outcome "1"
-
-#SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4 @1.3.1
-Scenario: Retrieve the allergy structured record section for a patient with an end date only expected success
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient1"
-		And I add the allergies parameter with an end date
+		And I add the allergies parameter with mandatory part parameter start date
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And Check the operation outcome returns the correct text and diagnotics "TimePeriod"
@@ -277,38 +266,39 @@ Scenario: Retrieve the allergy structured record section for a patient with reco
 
 Scenario: Check allergy warning code is populated for a patient
 	Given I configure the default "GpcGetStructuredRecord" request 
-	And I add an NHS Number parameter for "patient17"
-	And I add the allergies parameter with resolvedAllergies set to "true"
+		And I add an NHS Number parameter for "patient17"
+		And I add the allergies parameter with resolvedAllergies set to "true"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
-	And the Bundle should contain "2" lists
-	And the Bundle should contain a list with the title "Allergies and adverse reactions"
-	And the Bundle should contain a list with the title "Ended allergies"
-	And the Lists are valid for a patient without allergies
+		And the Bundle should contain "2" lists
+		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Ended allergies"
+		And the Lists are valid for a patient without allergies
 
 	# Added 1.2.0 RMB 15/8/2018
 
 Scenario: Check allergy legacy endReason
 	Given I configure the default "GpcGetStructuredRecord" request 
-	And I add an NHS Number parameter for "patient16"
-	And I add the allergies parameter with resolvedAllergies set to "true"
+		And I add an NHS Number parameter for "patient16"
+		And I add the allergies parameter with resolvedAllergies set to "true"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
-	And the Bundle should contain "2" lists
-	And the Bundle should contain a list with the title "Allergies and adverse reactions"
-	And the Bundle should contain a list with the title "Ended allergies"
-	And the List of AllergyIntolerances should be valid
-	And the Lists are valid for a patient with legacy endReason
+		And the Bundle should contain "2" lists
+		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Ended allergies"
+		And the List of AllergyIntolerances should be valid
+		And the Lists are valid for a patient with legacy endReason
 
 # Added for github ref 110 (Demonstrator)
 # 1.2.1 RMB 15/10/2018
 
 Scenario:  structured record for a patient that is not in the database 
 	Given I configure the default "GpcGetStructuredRecord" request 
-	And I add an NHS Number parameter for "patientNotInSystem"
-	And I add the allergies parameter with resolvedAllergies set to "true"
+		And I add an NHS Number parameter for "patientNotInSystem"
+		And I add the allergies parameter with resolvedAllergies set to "true"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
+		And the response status code should be "404"		
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
 #PG 30/8/2019 - #289

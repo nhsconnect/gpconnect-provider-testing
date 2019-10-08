@@ -64,10 +64,10 @@
 		[Given(@"I add the uncategorised data parameter with future start date")]
 		public void GivenIAddTheUncategorisedDataParameterWithFutureStartDate()
 		{
-			var backDate = DateTime.UtcNow.AddDays(+10);
-			var futureDate = DateTime.UtcNow.AddDays(+15);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
+			var futureStartDate = DateTime.UtcNow.AddDays(+10);
+			var futureEndDate = DateTime.UtcNow.AddDays(+15);
+			var startDate = futureStartDate.ToString("yyyy-MM-dd");
+			var endDate = futureEndDate.ToString("yyyy-MM-dd");
 
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
 				Tuple.Create(FhirConst.GetStructuredRecordParams.kUncategorisedData, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),

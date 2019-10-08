@@ -35,8 +35,17 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
+		[Given(@"I add a madeUp immunizations part parameter")]
+		public void GivenIAddAMadeUpImmunizationsPartParameter()
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create("madeUp", (Base)new FhirString ("madeUpValue1")),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kImmunizations, tuples);
 
-        [Then(@"The Immunization Resources are Valid")]
+		}
+
+		[Then(@"The Immunization Resources are Valid")]
         public void GivenTheImmunizationResourcesAreValid()
         {
 
