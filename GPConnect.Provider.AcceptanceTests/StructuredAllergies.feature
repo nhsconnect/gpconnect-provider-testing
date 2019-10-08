@@ -232,8 +232,7 @@ Scenario: Retrieve the allergy structured record section for an invalid paramete
 		And the response should be a OperationOutcome resource
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4
-@1.3.1
+@1.2.4 @1.3.1
 Scenario: Retrieve the allergy structured record section for a patient with additional timePeriod parameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"

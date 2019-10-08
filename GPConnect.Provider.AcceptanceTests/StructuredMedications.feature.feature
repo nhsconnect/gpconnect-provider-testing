@@ -121,7 +121,6 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		| patient5 |
 		| patient12 |
 		
-#SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4 @1.3.1
 Scenario: Retrieve the medication structured record section for a patient without the mandatory includePrescriptionIssue parameter
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -395,7 +394,6 @@ Scenario Outline: Structured Medications Patient Has multiple Warnings and Assoc
 	| Warning             | Note                                                                                                                       |
 	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
 
-	#SJD 20/09/2019
 	@1.3.1
 	Scenario: Retrieve the medication structured record with startDate in the future - expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
