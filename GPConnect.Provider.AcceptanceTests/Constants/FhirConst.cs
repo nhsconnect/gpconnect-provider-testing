@@ -83,8 +83,8 @@
             public const string kRelationshipStatus = "http://hl7.org/fhir/v2/0131";
             public const string kLocationType = "http://hl7.org/fhir/v3/RoleCode";
             public const string kLocationPhysicalType = "http://hl7.org/fhir/stu3/location-physical-type.html";
-
             public const string kCCSnomed = "http://snomed.info/sct";
+            public const string kListOrder = "http://hl7.org/fhir/list-order";
         }
 
         internal static class ValueSetSystems

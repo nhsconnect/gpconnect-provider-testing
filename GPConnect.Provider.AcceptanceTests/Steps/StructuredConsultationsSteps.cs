@@ -22,6 +22,7 @@
         private List<List> Lists => _httpContext.FhirResponse.Lists;
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
         private List<Condition> Problems => _httpContext.FhirResponse.Conditions;
+        private Bundle Bundle => _httpContext.FhirResponse.Bundle;
 
         public StructuredConsultationsSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -36,6 +37,76 @@
             param.Name = FhirConst.GetStructuredRecordParams.kConsultations;
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
+
+
+        [Then(@"I Check the Consultations List")]
+        public void ThenIChecktheConsultationsList()
+        {
+
+            Lists.Where(l => l.Code.Coding.First().Code == "999999999999999").Count().ShouldBe(1, "Failed to Find ONE Consultations list using Snomed Code." );
+            var consultationsList = Lists.Where(l => l.Code.Coding.First().Code == "999999999999999").First();
+            consultationsList.Code.Coding.First().Display.ShouldBe("List of Consultations");
+            consultationsList.Id.ShouldNotBeNullOrEmpty("The Consultations List Has No ID");
+            CheckForValidMetaDataInResource(consultationsList, FhirConst.StructureDefinitionSystems.kList);
+            consultationsList.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to current");
+            consultationsList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+            consultationsList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+            Patients.Where(p => p.Id == (consultationsList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+            consultationsList.Date.ShouldNotBeNull();
+            
+            
+            CodeableConcept orderedBy = (CodeableConcept)consultationsList.OrderedBy;
+            orderedBy.Coding.Count.Equals(1);
+            orderedBy.Coding.First().System.Equals(FhirConst.CodeSystems.kListOrder);
+
+            consultationsList.Title.ShouldBe("Consultation", "Consultation List Title is Incorrect");
+
+            //check Count of Encounters referenced vs Encounters in Bundle
+            consultationsList.Entry.Count().ShouldBe(Encounters.Count());
+
+            //check each encounter is included in the bundle
+            string pattern = @"(.*/)(.*)";
+            consultationsList.Entry.ForEach(entry =>
+            {
+                string refToFind = Regex.Replace(entry.Item.Reference, pattern, "$2");
+                Bundle.GetResources()
+                            .Where(resource => resource.ResourceType.Equals(ResourceType.Encounter))
+                            .Where(resource => resource.Id == refToFind)
+                            .ToList().Count().ShouldBe(1,"Encounter resource type Not Found");
+            });
+
+            //Check each encounter reference is included on a consultation
+            var ConsultationLists = Lists.Where(l => l.Code.Coding.First().Code == "325851000000107" ).ToList();
+            ConsultationLists.ForEach(list =>
+            {                 
+                consultationsList.Entry.Where(entry => entry.Item.Reference == list.Encounter.Reference).Count().ShouldBe(1, "Encounter Reference on Consultation not found in Consultations List :" + list.Encounter.Reference);
+            });
+
+
+
+
+        }
+
+           
+       [Then(@"The Consultations Lists Does Not Include Not In Use Fields")]
+        public void GivenTheConsultatatonsListsDoesNotIncludeNotInUseFields()
+        {
+            var ConsultationLists = Lists.Where(l => l.Code.Coding.First().Code == "999999999999999" ||
+                                                   l.Code.Coding.First().Code == "325851000000107" ||
+                                                   l.Code.Coding.First().Code == "25851000000105" ||
+                                                   l.Code.Coding.First().Code == "24781000000107").ToList();
+
+            ConsultationLists.ForEach(list =>
+            {
+                list.Identifier.Count().ShouldBe(0);
+                list.Source.ShouldBeNull();
+                list.Note.Count().ShouldBe(0);
+                list.Entry.Where(entry => entry.Flag != null).Count().ShouldBe(0, "Entry.flag should not be used");
+                list.Entry.Where(entry => entry.Deleted != null).Count().ShouldBe(0, "Entry.Deleted should not be used");
+                list.Entry.Where(entry => entry.Date != null).Count().ShouldBe(0, "Entry.Date should not be used");
+            });
+        }
+
 
 
         //PG - 1.3.1 - Function to check Consultations references are included in bundle
@@ -133,6 +204,7 @@
         [Then(@"I Check The Problems List")]
         public void ThenICheckTheProblemsList()
         {
+
             var probList = Lists.Where(l => l.Title == "Problems");
 
             if (probList.Count() == 1)

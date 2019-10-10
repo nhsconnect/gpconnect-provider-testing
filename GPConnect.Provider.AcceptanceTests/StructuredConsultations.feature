@@ -17,9 +17,14 @@ Scenario: Verify Consultations structured record for a Patient
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		And I Check the Consultations Resource linking
+		And I Check the Consultations List
+		And The Consultations Lists Does Not Include Not In Use Fields
+		#And I Check the Consultations Resource linking
 		#And The Immunization Resources Do Not Include Not In Use Fields
-		And I Check The Problems List
+		#And I Check The Problems List
+		
+		#TODO -add in check for problems list ( mandatory fields and NOT IN USE fields)
+
 
 @1.3.1
 Scenario: Retrieve consultations structured record for a patient that has no consultation data
