@@ -39,8 +39,8 @@
         }
 
 
-        [Then(@"I Check the Consultations List")]
-        public void ThenIChecktheConsultationsList()
+        [Then(@"I Check the Consultations List is Valid")]
+        public void ThenIChecktheConsultationsListisValid()
         {
             //Check for List using Snomed Code
             Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultations).ToList().Count().ShouldBe(1, "Failed to Find ONE Consultations list using Snomed Code." );
@@ -123,8 +123,8 @@
 
 
 
-        [Then(@"I Check the Consultation Lists")]
-        public void ThenIChecktheConsultationLists()
+        [Then(@"I Check the Consultation Lists are Valid")]
+        public void ThenIChecktheConsultationListsareValid()
         {
             //Check atleast one Consultation List exists using Snomed Code
             Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultation).ToList().Count().ShouldBeGreaterThan(0, "Failed to Find ONE Consultation list using Snomed Code.");
@@ -181,7 +181,7 @@
         }
 
 
-        [Then(@"I Check the Topic Lists")]
+        [Then(@"I Check the Topic Lists are Valid")]
         public void ThenIChecktheTopicLists()
         {
             //Get all Topic lists
@@ -226,31 +226,71 @@
                 //Encounter Ref is checked in Consultations List Check
 
                 //-----------------------------------
-                //Mkae below into a function to be re-used by headings function for checkign clincal items
+                //Make below into a function to be re-used by headings function for checkign clincal items
                 //-----------------------------------
 
                 //Check Linked Clinical or headings Exist
+                string pattern = @"(.*)(/)(.*)";
+                var topicEntries = topicList.Entry;
 
-                //loop each item/reference
+                //check each Topic Entry
+                foreach (var topicEntry in topicEntries)
+                {
+                    if (topicEntry.Item.Reference != null)
+                    {
+                        string refToFind = Regex.Replace(topicEntry.Item.Reference, pattern, "$3");
+                        string refTypeToFind = Regex.Replace(topicEntry.Item.Reference, pattern, "$1");
 
-                //if List (heading) - check exists type and id
+                        //If List - ie Header
+                        if (topicEntry.Item.Reference.StartsWith("List/"))
+                        {
+                            Bundle.GetResources()
+                                .Where(resource => resource.ResourceType.Equals(ResourceType.List))
+                                .Where(resource => resource.Id == refToFind)
+                                .ToList().Count().ShouldBe(1, "Heading List resource Not Found");
+                        }
+                        else
+                        {
+                            //Switch on Clincal Item type
+                            switch (refTypeToFind)
+                            {
+                                case "Allergy":
+                                 break;
+                                    
+                                case "Immunization":
+                                break;
 
-                //else
-                //get first part of string to work out the type
+                                case "Medicationrequest":
+                                    break;
 
-                //switch based on type
-                //  if medication request
-                //check object tyope and id exists
-                //check related meds items exist
-                //if observation
-                //check object tyope and id exists
-                //if immunization
+                                //unknown type ignore - could be not supported message
+                                default:
+                                    break;
+                            }
+
+                        }
+                    }
+                }
+                        //loop each item/reference
+
+                        //if List (heading) - check exists type and id
+
+                        //else
+                        //get first part of string to work out the type
+
+                        //switch based on type
+                        //  if medication request
+                        //check object tyope and id exists
+                        //check related meds items exist
+                        //if observation
+                        //check object tyope and id exists
+                        //if immunization
 
 
 
 
 
-            });
+                    });
 
 
             //Check Atleast One Topic is linked to a Problem (as per data requirements)

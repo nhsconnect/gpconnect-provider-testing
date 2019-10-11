@@ -17,10 +17,10 @@ Scenario: Verify Consultations structured record for a Patient
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		And I Check the Consultations List
-		And I Check the Consultation Lists
+		And I Check the Consultations List is Valid
+		And I Check the Consultation Lists are Valid
 		And I Check All The Consultation Lists Do Not Include Not In Use Fields
-		And I Check the Topic Lists
+		And I Check the Topic Lists are Valid
 		#And I Check the Consultations Resource linking
 		#And The Immunization Resources Do Not Include Not In Use Fields
 		#And I Check The Problems List
