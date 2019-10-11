@@ -151,7 +151,7 @@
 // github ref 127
 // RMB 5/11/2018
         [Given(@"I set a medications period parameter start date to ""([^ ""]*)""")]
-        public void GivenISetAMedicationsTimeAParameterStartDateToAndEndDateTo(string startDate)
+        public void GivenISetAMedicationsTimeAParameterStartDateTo(string startDate)
         {
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),

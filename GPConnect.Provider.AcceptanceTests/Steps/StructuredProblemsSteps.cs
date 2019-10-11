@@ -36,5 +36,60 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
-    }
+		[Given(@"I add the problems parameter with filterStatus ""(.*)""")]
+		public void GivenIAddTheProblemsParameterWithfilterStatus(string value)
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new Code (value))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
+		}
+		
+		[Given(@"I add the problems parameter with filterSignificance ""(.*)""")]
+		public void GivenIAddTheProblemsParameterWithFilterSignificance(string value)
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new Code (value))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
+		}
+
+		[Given(@"I add the problems parameter including status and significance value ""([^ ""]*)"" ""([^ ""]*)""")]
+		public void GivenIAddTheProblemsParameterIncludingStatusAndSignificanceValue(string statusValue , string sigValue)
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new Code (statusValue)),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new Code (sigValue ))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
+		}
+
+		[Given(@"I add the problems parameter including repeating filter pairs")]
+		public void GivenIAddTheProblemsParameterIncludingRepeatingFilterPairs()
+		{
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new Code ("active")),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new Code ("minor")),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new Code("inactive")),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new Code("major"))
+
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
+		}
+				
+
+		[Given(@"I add a madeUpProblems part parameter")]
+		public void GivenIAddAMadeUpProblemsPartParameter()
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create("madeUpProblems", (Base)new Code ("madeUpProblemsValue1")),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
+
+		}
+	}
 }
+
+
+

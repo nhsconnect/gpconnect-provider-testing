@@ -299,9 +299,10 @@ Examples:
 		| X2014-02                   |
 		| X2015-10-23T11:08:32       |
 		| X2015-10-23T11:08:32+00:00 |
-		|                            | 
-		| 2014                      | 
-		| 2014-02                   | 
+		|                            |
+		| 2014                       |
+		| 2014-02                    |
+		| null                       |
 
 Scenario: Retrieve the medication structured record section for a patient with medication prescribed elsewhere
 	Given I configure the default "GpcGetStructuredRecord" request
