@@ -2,6 +2,15 @@
 {
     internal static class FhirConst
     {
+        internal static class GetSnoMedParams
+        {
+            public const string kConsultations = "999999999999999";
+            public const string kConsultation = "325851000000107";
+            public const string kTopics = "25851000000105";
+            public const string kHeadings = "24781000000107";
+        }
+
+
         internal static class GetCareRecordParams
         {
             public const string kPatientNHSNumber = "patientNHSNumber";
@@ -143,6 +152,7 @@
             public const string kExtListClinicalSetting = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-ClinicalSetting-1";
             public const string kExtEncounter = "http://hl7.org/fhir/StructureDefinition/encounter-associatedEncounter";
             public const string kExtPrescriptionAgency = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-PrescribingAgency-1";
+            public const string kExtProblem = "https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-RelatedProblemHeader-1";
             public const string kCCExtRegistrationStatus = "registrationStatus";
             public const string kCCExtRegistrationType = "registrationType";
             public const string kCCExtRegistrationPeriod = "registrationPeriod";
@@ -220,12 +230,16 @@
         {
             public const string kActiveAllergies = "Allergies and adverse reactions";
             public const string kResolvedAllergies = "Ended allergies";
-//
-// Added github ref 89
-// RMB 9/10/2018
-//
+
+            // Added github ref 89 // RMB 9/10/2018
             public const string kEndedAllergies = "Ended allergies (record artifact)";
             public const string kMedications = "Medications and medical devices";
+
+            public const string kConsultations = "Consultation";
+            public const string kConsultation = "Surgery Consultation";
+            public const string kTopics = "25851000000105";
+            public const string kHeadings = "24781000000107";
+
         }
     }
 }

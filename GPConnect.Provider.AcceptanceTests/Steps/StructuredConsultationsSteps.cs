@@ -42,24 +42,39 @@
         [Then(@"I Check the Consultations List")]
         public void ThenIChecktheConsultationsList()
         {
-
-            Lists.Where(l => l.Code.Coding.First().Code == "999999999999999").Count().ShouldBe(1, "Failed to Find ONE Consultations list using Snomed Code." );
-            var consultationsList = Lists.Where(l => l.Code.Coding.First().Code == "999999999999999").First();
+            //Check for List using Snomed Code
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultations).ToList().Count().ShouldBe(1, "Failed to Find ONE Consultations list using Snomed Code." );
+            var consultationsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultations).First();
+            
+            //Check Code display has correct display value
             consultationsList.Code.Coding.First().Display.ShouldBe("List of Consultations");
+
+            //Check ID
             consultationsList.Id.ShouldNotBeNullOrEmpty("The Consultations List Has No ID");
+
+            //Check Meta Profile
             CheckForValidMetaDataInResource(consultationsList, FhirConst.StructureDefinitionSystems.kList);
+
+            //Check List Status
             consultationsList.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to current");
+
+            //Check Mode
             consultationsList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
             consultationsList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+
+            //Check Patients Ref Exists
             Patients.Where(p => p.Id == (consultationsList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+
+            //Check Date
             consultationsList.Date.ShouldNotBeNull();
             
-            
+            //Check OrderedBy Condable Concept
             CodeableConcept orderedBy = (CodeableConcept)consultationsList.OrderedBy;
             orderedBy.Coding.Count.Equals(1);
             orderedBy.Coding.First().System.Equals(FhirConst.CodeSystems.kListOrder);
 
-            consultationsList.Title.ShouldBe("Consultation", "Consultation List Title is Incorrect");
+            //Check List Title
+            consultationsList.Title.ShouldBe(FhirConst.ListTitles.kConsultations, "Consultations List Title is Incorrect");
 
             //check Count of Encounters referenced vs Encounters in Bundle
             consultationsList.Entry.Count().ShouldBe(Encounters.Count());
@@ -76,7 +91,7 @@
             });
 
             //Check each encounter reference is included on a consultation
-            var ConsultationLists = Lists.Where(l => l.Code.Coding.First().Code == "325851000000107" ).ToList();
+            var ConsultationLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultation ).ToList();
             ConsultationLists.ForEach(list =>
             {                 
                 consultationsList.Entry.Where(entry => entry.Item.Reference == list.Encounter.Reference).Count().ShouldBe(1, "Encounter Reference on Consultation not found in Consultations List :" + list.Encounter.Reference);
@@ -87,14 +102,13 @@
 
         }
 
-           
-       [Then(@"The Consultations Lists Does Not Include Not In Use Fields")]
-        public void GivenTheConsultatatonsListsDoesNotIncludeNotInUseFields()
+        [Then(@"I Check All The Consultation Lists Do Not Include Not In Use Fields")]
+        public void GivenTheConsultatatonsListDoesNotIncludeNotInUseFields()
         {
-            var ConsultationLists = Lists.Where(l => l.Code.Coding.First().Code == "999999999999999" ||
-                                                   l.Code.Coding.First().Code == "325851000000107" ||
-                                                   l.Code.Coding.First().Code == "25851000000105" ||
-                                                   l.Code.Coding.First().Code == "24781000000107").ToList();
+            var ConsultationLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultations ||
+                                                   l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultation ||
+                                                   l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kTopics ||
+                                                   l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kHeadings).ToList();
 
             ConsultationLists.ForEach(list =>
             {
@@ -109,12 +123,169 @@
 
 
 
+        [Then(@"I Check the Consultation Lists")]
+        public void ThenIChecktheConsultationLists()
+        {
+            //Check atleast one Consultation List exists using Snomed Code
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultation).ToList().Count().ShouldBeGreaterThan(0, "Failed to Find ONE Consultation list using Snomed Code.");
+
+            //Get all Consultation lists
+            var AllConsultationLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultation).ToList();
+
+            AllConsultationLists.ForEach(consultationList =>
+            {
+                //Check Code display has correct display value
+                consultationList.Code.Coding.First().Display.ShouldBe("Consultation");
+
+                //Check ID
+                consultationList.Id.ShouldNotBeNullOrEmpty("The Consultations List Has No ID");
+
+                //Check Meta Profile
+                CheckForValidMetaDataInResource(consultationList, FhirConst.StructureDefinitionSystems.kList);
+
+                //Check List Status
+                consultationList.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to current");
+
+                //Check Mode
+                consultationList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+                consultationList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+
+                //Check Patients Ref Exists
+                Patients.Where(p => p.Id == (consultationList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+
+                //Check Date
+                consultationList.Date.ShouldNotBeNull();
+
+                //Check OrderedBy Condable Concept
+                CodeableConcept orderedBy = (CodeableConcept)consultationList.OrderedBy;
+                orderedBy.Coding.Count.Equals(1);
+                orderedBy.Coding.First().System.Equals(FhirConst.CodeSystems.kListOrder);
+
+                //Check List Title (removed as title is required not mandatory)
+                //consultationList.Title.ShouldBe(FhirConst.ListTitles.kConsultation, "Consultation List Title is Incorrect");
+
+                //Encounter Ref is checked in Consultations List Check
+
+                //Check each Entry/Item/Reference points to a resource that exists
+                string pattern = @"(.*/)(.*)";
+                consultationList.Entry.ForEach(entry =>
+                {
+                    string refToFind = Regex.Replace(entry.Item.Reference, pattern, "$2");
+                    Bundle.GetResources()
+                                .Where(resource => resource.ResourceType.Equals(ResourceType.List))
+                                .Where(resource => resource.Id == refToFind)
+                                .ToList().Count().ShouldBe(1, "Topic List resource Not Found");
+                });
+
+            });
+        }
+
+
+        [Then(@"I Check the Topic Lists")]
+        public void ThenIChecktheTopicLists()
+        {
+            //Get all Topic lists
+            var AllTopicLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kTopics).ToList();
+
+            //check have atleast one Topic as per Data Requirements
+            AllTopicLists.Count().ShouldBeGreaterThan(0, "No Topics Found in response. Patient is supposed to have Consultation linked to a Topic");
+
+            AllTopicLists.ForEach(topicList =>
+            {
+
+                // Check Code display has correct display value
+                topicList.Code.Coding.First().Display.ShouldBe("Topic (EHR)");
+
+                //Check ID
+                topicList.Id.ShouldNotBeNullOrEmpty("The Topic List Has No ID");
+
+                //Check Meta Profile
+                CheckForValidMetaDataInResource(topicList, FhirConst.StructureDefinitionSystems.kList);
+
+                //Check List Status
+                topicList.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to current");
+
+                //Check Mode
+                topicList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+                topicList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+
+                //Check Patients Ref Exists
+                Patients.Where(p => p.Id == (topicList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+
+                //Check Date
+                topicList.Date.ShouldNotBeNull();
+
+                //Check OrderedBy Condable Concept
+                CodeableConcept orderedBy = (CodeableConcept)topicList.OrderedBy;
+                orderedBy.Coding.Count.Equals(1);
+                orderedBy.Coding.First().System.Equals(FhirConst.CodeSystems.kListOrder);
+
+                //Check List Title (removed as title is required not mandatory)
+                //topicList.Title.ShouldBe(FhirConst.ListTitles.kConsultation, "Topic List Title is Incorrect");
+
+                //Encounter Ref is checked in Consultations List Check
+
+                //-----------------------------------
+                //Mkae below into a function to be re-used by headings function for checkign clincal items
+                //-----------------------------------
+
+                //Check Linked Clinical or headings Exist
+
+                //loop each item/reference
+
+                //if List (heading) - check exists type and id
+
+                //else
+                //get first part of string to work out the type
+
+                //switch based on type
+                //  if medication request
+                //check object tyope and id exists
+                //check related meds items exist
+                //if observation
+                //check object tyope and id exists
+                //if immunization
+
+
+
+
+
+            });
+
+
+            //Check Atleast One Topic is linked to a Problem (as per data requirements)
+            var found = false;
+            AllTopicLists.ForEach(topicList =>
+            {
+                var problems = topicList.Extension.Where(e => e.Url == FhirConst.StructureDefinitionSystems.kExtProblem).ToList();
+
+                //check each Problem reference exists in bundle
+                string pattern = @"(.*/)(.*)";
+                problems.ForEach(problem =>
+                {
+                    string refToFind = Regex.Replace(((Hl7.Fhir.Model.ResourceReference)problem.Value).Reference, pattern, "$2");
+                    
+                    int count = Bundle.GetResources()
+                                .Where(resource => resource.ResourceType.Equals(ResourceType.Condition))
+                                .Where(resource => resource.Id == refToFind)
+                                .ToList().Count();
+                    if (count >= 1)
+                        found = true;
+
+                });
+            });
+
+            //check had atleast one topic is related to a problem as per data requirements for test
+            found.ShouldBeTrue("Failed : No Topic Lists have a related problem as per the Data requirements for Test");
+        }
+
+
         //PG - 1.3.1 - Function to check Consultations references are included in bundle
         [Then(@"I Check the Consultations Resource linking")]
         public void ThenIChecktheConsultationsResourcelinking()
         {
             //find all consultations lists (find snowmed code)
-            var consultationsList = Lists.Where(l => l.Code.Coding.First().Code == "325851000000107");
+            var consultationsList = Lists.Where(l => l.Code.Coding.First().Code == "999999");
             string pattern = @"(.*/)(.*)";
 
             consultationsList.Count().ShouldBeGreaterThan(0, "Failed to Find any Consultation lists with Snomed Code for Consultations");
