@@ -18,12 +18,14 @@ Scenario: Verify Consultations structured record for a Patient
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
 		And I Check the Consultations List is Valid
+		And The Consultations List Does Not Include Not In Use Fields
 		And I Check the Consultation Lists are Valid
 		And I Check All The Consultation Lists Do Not Include Not In Use Fields
 		And I Check the Topic Lists are Valid
-		#And I Check the Consultations Resource linking
-		#And The Immunization Resources Do Not Include Not In Use Fields
-		#And I Check The Problems List
+		And I Check the Heading Lists are Valid
+		And I Check The Problems List
+
+		#Check Each Encounter is valid
 		
 		#TODO -add in check for problems list ( mandatory fields and NOT IN USE fields)
 
