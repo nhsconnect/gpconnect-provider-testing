@@ -12,6 +12,7 @@
     using GPConnect.Provider.AcceptanceTests.Helpers;
     using GPConnect.Provider.AcceptanceTests.Steps;
   	using GPConnect.Provider.AcceptanceTests.Logger;
+	using NUnit.Framework;
 
 	[Binding]
     public sealed class AccessStructuredMedicationSteps : BaseSteps
@@ -21,8 +22,8 @@
         private List<Medication> Medications => _httpContext.FhirResponse.Medications;
         private List<MedicationStatement> MedicationStatements => _httpContext.FhirResponse.MedicationStatements;
         private List<MedicationRequest> MedicationRequests => _httpContext.FhirResponse.MedicationRequests;
-        private List<List> Lists => _httpContext.FhirResponse.Lists;
-        private Bundle Bundle => _httpContext.FhirResponse.Bundle;
+		private List<Hl7.Fhir.Model.List> Lists => _httpContext.FhirResponse.Lists;
+		private Bundle Bundle => _httpContext.FhirResponse.Bundle;
 
         public AccessStructuredMedicationSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -964,27 +965,35 @@
             });
         }
 
-        [Then(@"the MedicationRequest repeat information should be valid")]
+		//#310 - SJD 14/10/2019 - Changed logic to look for extension when repeat or repeat dispensing with intent=plan
+		[Then(@"the MedicationRequest repeat information should be valid")]
         public void TheMedicationRequestRepeatInformationShouldbeValid()
         {
             MedicationRequests.ForEach(medRequest =>
             {
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
-                // added medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan ) 
-                if (prescriptionType.Coding.First().Display.Equals("Repeat") && medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan))
-                {
+				//Repeats Plans - Check two Extensions are sent
+				if ((prescriptionType.Coding.First().Display.Equals("Repeat") || prescriptionType.Coding.First().Display.Equals("Repeat dispensing")) && medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan))
+				{
                     Extension repeatInformation = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRepeatInformation);
-                   repeatInformation.Extension.Count.ShouldBeGreaterThan(0);
-
-                    Extension rpi = repeatInformation.GetExtension("numberOfRepeatPrescriptionsIssued");
-                    rpi.Value.ShouldNotBeNull();
-                }
-                else
-                { 
+					if (repeatInformation != null)
+					{
+						repeatInformation.GetExtension("numberOfRepeatPrescriptionsIssued").ShouldNotBeNull();
+						repeatInformation.GetExtension("numberOfRepeatPrescriptionsAllowed").ShouldNotBeNull();
+					}
+					else
+					{
+						Assert.Fail("Repeat or Repeat dispensing Medication Request Should have Repeat Information Extension. Failing MedRequest ID: " + medRequest.Id.ToString());
+					}
+				}
+				//Acute etc - Check No Repeat extensions sent
+				else
+				{ 
                     Extension repeatInformation = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRepeatInformation);
                     if (repeatInformation != null)
                     {
-                        repeatInformation.GetExtension("numberOfRepeatPrescriptionsAllowed").ShouldBeNull();
+						repeatInformation.GetExtension("numberOfRepeatPrescriptionsIssued").ShouldBeNull();
+						repeatInformation.GetExtension("numberOfRepeatPrescriptionsAllowed").ShouldBeNull();
                     }
                 }
             });

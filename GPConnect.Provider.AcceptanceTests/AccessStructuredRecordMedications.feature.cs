@@ -671,6 +671,11 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("2014-02", null)]
         [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32", null)]
         [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32+00:00", null)]
+        [NUnit.Framework.TestCaseAttribute("X2014", null)]
+        [NUnit.Framework.TestCaseAttribute("X2014-02", null)]
+        [NUnit.Framework.TestCaseAttribute("X2015-10-23T11:08:32", null)]
+        [NUnit.Framework.TestCaseAttribute("X2015-10-23T11:08:32+00:00", null)]
+        [NUnit.Framework.TestCaseAttribute("", null)]
         public virtual void RetrieveTheMedicationStructuredRecordExpectedFailureWithInvalidDateUsedOperationOutcome(string startDate, string[] exampleTags)
         {
             string[] @__tags = new string[] {
