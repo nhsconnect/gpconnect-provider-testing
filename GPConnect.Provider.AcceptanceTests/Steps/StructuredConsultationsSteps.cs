@@ -121,32 +121,8 @@
                 //Check Code display has correct display value
                 consultationList.Code.Coding.First().Display.ShouldBe("Consultation");
 
-                //Check ID
-                consultationList.Id.ShouldNotBeNullOrEmpty("The Consultations List Has No ID");
-
-                //Check Meta Profile
-                CheckForValidMetaDataInResource(consultationList, FhirConst.StructureDefinitionSystems.kList);
-
-                //Check List Status
-                consultationList.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to current");
-
-                //Check Mode
-                consultationList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
-                consultationList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
-
-                //Check Patients Ref Exists
-                Patients.Where(p => p.Id == (consultationList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
-
-                //Check Date
-                consultationList.Date.ShouldNotBeNull();
-
-                //Check OrderedBy Condable Concept
-                CodeableConcept orderedBy = (CodeableConcept)consultationList.OrderedBy;
-                orderedBy.Coding.Count.Equals(1);
-                orderedBy.Coding.First().System.Equals(FhirConst.CodeSystems.kListOrder);
-
-                //Check List Title (removed as title is required not mandatory)
-                //consultationList.Title.ShouldBe(FhirConst.ListTitles.kConsultation, "Consultation List Title is Incorrect");
+                //Check Common Mandatory fields
+                VerifyCommonConsultationListMandatoryFields(consultationList);
 
                 //Encounter Ref is checked in Consultations List Check
 
@@ -201,32 +177,8 @@
                 // Check Code display has correct display value
                 topicList.Code.Coding.First().Display.ShouldBe("Topic (EHR)");
 
-                //Check ID
-                topicList.Id.ShouldNotBeNullOrEmpty("The Topic List Has No ID");
-
-                //Check Meta Profile
-                CheckForValidMetaDataInResource(topicList, FhirConst.StructureDefinitionSystems.kList);
-
-                //Check List Status
-                topicList.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to current");
-
-                //Check Mode
-                topicList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
-                topicList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
-
-                //Check Patients Ref Exists
-                Patients.Where(p => p.Id == (topicList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
-
-                //Check Date
-                topicList.Date.ShouldNotBeNull();
-
-                //Check OrderedBy Condable Concept
-                CodeableConcept orderedBy = (CodeableConcept)topicList.OrderedBy;
-                orderedBy.Coding.Count.Equals(1);
-                orderedBy.Coding.First().System.Equals(FhirConst.CodeSystems.kListOrder);
-
-                //Check List Title (removed as title is required not mandatory)
-                //topicList.Title.ShouldBe(FhirConst.ListTitles.kConsultation, "Topic List Title is Incorrect");
+                //Check Common Mandatory fields
+                VerifyCommonConsultationListMandatoryFields(topicList);
 
                 //Encounter Ref is checked in Consultations List Check
 
@@ -313,32 +265,8 @@
                 // Check Code display has correct display value
                 headingList.Code.Coding.First().Display.ShouldBe("Category (EHR)");
 
-                //Check ID
-                headingList.Id.ShouldNotBeNullOrEmpty("The Heading List Has No ID");
-
-                //Check Meta Profile
-                CheckForValidMetaDataInResource(headingList, FhirConst.StructureDefinitionSystems.kList);
-
-                //Check List Status
-                headingList.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to current");
-
-                //Check Mode
-                headingList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
-                headingList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
-
-                //Check Patients Ref Exists
-                Patients.Where(p => p.Id == (headingList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
-
-                //Check Date
-                headingList.Date.ShouldNotBeNull();
-
-                //Check OrderedBy Condable Concept
-                CodeableConcept orderedBy = (CodeableConcept)headingList.OrderedBy;
-                orderedBy.Coding.Count.Equals(1);
-                orderedBy.Coding.First().System.Equals(FhirConst.CodeSystems.kListOrder);
-
-                //Check List Title (removed as title is required not mandatory)
-                //headingList.Title.ShouldBe(FhirConst.ListTitles.kConsultation, "Heading List Title is Incorrect");
+                //Check Common Mandatory fields
+                VerifyCommonConsultationListMandatoryFields(headingList);
 
                 //Encounter Ref is checked in Consultations List Check
 
@@ -427,7 +355,6 @@
 
 		}
 
-        //PG - 14/10/2019 - Added for 1.3.1
         public void CheckResourceExists<T>(T resourceType, string resourceID)
         {
             Bundle.GetResources()
@@ -438,7 +365,7 @@
             Logger.Log.WriteLine("Found Linked resource : " + resourceID + " Of Type : " + resourceType);
 
         }
-
+        
         public void VerifyResourceReferenceExists(string refTypeToFind, string refToFind)
         {
             //Switch on Clincal Item type
@@ -483,16 +410,33 @@
             }
         }
 
-        public void VerifyCommonConsultationListMandatoryFields()
+        public void VerifyCommonConsultationListMandatoryFields(List listToCheck)
         {
+            //Check ID
+            listToCheck.Id.ShouldNotBeNullOrEmpty("The Consultations List Has No ID");
 
+            //Check Meta Profile
+            CheckForValidMetaDataInResource(listToCheck, FhirConst.StructureDefinitionSystems.kList);
+
+            //Check List Status
+            listToCheck.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to current");
+
+            //Check Mode
+            listToCheck.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+            listToCheck.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+
+            //Check Patients Ref Exists
+            Patients.Where(p => p.Id == (listToCheck.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+
+            //Check Date
+            listToCheck.Date.ShouldNotBeNull();
+
+            //Check OrderedBy Condable Concept
+            CodeableConcept orderedBy = (CodeableConcept)listToCheck.OrderedBy;
+            orderedBy.Coding.Count.Equals(1);
+            orderedBy.Coding.First().System.Equals(FhirConst.CodeSystems.kListOrder);
 
         }
-
-
-    
-
-
 
     }
 
