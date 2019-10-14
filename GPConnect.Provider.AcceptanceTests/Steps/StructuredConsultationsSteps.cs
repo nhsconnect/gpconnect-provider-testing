@@ -107,6 +107,66 @@
             consultationsList.Source.ShouldBeNull("List Source is Not Supposed to be Sent - Not In Use Field");
         }
 
+        [Then(@"I Check the Encounters are Valid")]
+        public void ThenIChecktheEncountersareValid()
+        {
+            //check atleast one
+            Encounters.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One Encounter in response as per Data requirements");
+
+            Encounters.ForEach(encounter =>
+            {
+                //Check Id
+                encounter.Id.ShouldNotBeNullOrEmpty();
+
+                //Check Meta.profile
+                CheckForValidMetaDataInResource(encounter, FhirConst.StructureDefinitionSystems.kEncounter);
+
+                //Check Identfier
+                encounter.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+                encounter.Identifier.ForEach(identifier =>
+                {
+                    identifier.System.Equals(FhirConst.ValueSetSystems.kCrossCareIdentifier).ShouldBeTrue("Cross Care Setting Identfier NOT Found");
+
+                    //identifier.Value format is still being debated, hence notnull check
+                    identifier.Value.ShouldNotBeNullOrEmpty("Identifier Value Is Null or Not Valid");
+                    //Guid guidResult;
+                    //Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("Immunization identifier GUID is not valid or Null");
+                });
+
+                //Check Status
+                encounter.Status.ToString().ShouldNotBeNull("Encounter Status should not be null");
+
+                //Check type
+                encounter.Type.ShouldNotBeEmpty("Encounter Type should not be null");
+
+                //Check Subject/patient
+                Patients.Where(p => p.Id == (encounter.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+
+                //Check Participant
+
+            });
+
+
+        }
+
+        [Then(@"I Check the Encounters Do Not Include Not in Use Fields")]
+        public void ThenIChecktheEncountersDoNotIncludeNotinUseFields()
+        {
+
+            //check atleast one
+            Encounters.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One Encounter in response as per Data requirements");
+
+            Encounters.ForEach(encounter =>
+            {
+                encounter.StatusHistory.ShouldBeNull("Failed Encounter Check: StatusHistory Is a Not In Use Field");
+
+            });
+
+        }
+
+               
+        
+
         [Then(@"I Check the Consultation Lists are Valid")]
         public void ThenIChecktheConsultationListsareValid()
         {

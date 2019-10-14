@@ -19,6 +19,8 @@ Scenario: Verify Consultations structured record for a Patient
 		And the Organization Id should be valid 
 		And I Check the Consultations List is Valid
 		And The Consultations List Does Not Include Not In Use Fields
+		And I Check the Encounters are Valid
+		And I Check the Encounters Do Not Include Not in Use Fields
 		And I Check the Consultation Lists are Valid
 		And I Check All The Consultation Lists Do Not Include Not In Use Fields
 		And I Check the Topic Lists are Valid
