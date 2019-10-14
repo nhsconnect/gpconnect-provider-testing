@@ -145,11 +145,26 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
-        #endregion
+		[Given(@"I add the medication parameter with mandatory parameter plus unknown part parameter")]
+		public void GivenIAddTheMedicationsParameterWithmandatoryParameterPlusUnknownPartParameter()
+		{
+			var tempDate = DateTime.UtcNow.AddYears(-2);
+			var startDate = tempDate.ToString("yyyy-MM-dd");
 
-        #region List and Bundle Checks
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[]
+		{
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(true)),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetStartDate(startDate)),
+				Tuple.Create("madeUpProblems", (Base)new Code ("madeUpProblemsValue1"))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
+		}
 
-        [Then(@"the List of MedicationStatements should be valid")]
+		#endregion
+
+		#region List and Bundle Checks
+
+		[Then(@"the List of MedicationStatements should be valid")]
         public void TheListOfMedicationStatementsShouldBeValid()
         {
             Lists.ShouldHaveSingleItem("The medications data must contain a single list.");
