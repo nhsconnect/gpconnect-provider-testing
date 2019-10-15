@@ -106,16 +106,25 @@
 		[Then(@"The Observation Resources are Valid")]
         public void GivenTheObservationResourcesareValid()
         {
+        
             Observations.ForEach(observation =>
             {
+                //Check Id
                 observation.Id.ShouldNotBeNullOrEmpty();
+
+                //Check Meta.profile
                 CheckForValidMetaDataInResource(observation, FhirConst.StructureDefinitionSystems.kObservation);
+
+                //Chck Status
                 observation.Status.ToString().ShouldBe("final", StringCompareShould.IgnoreCase);
 
+                //Check Patient
                 Patients.Where(p => p.Id == (observation.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 
+                //Check Code
                 observation.Code.ShouldNotBeNull("Code Element should not be null");
 
+                //Check Identifier
                 observation.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 observation.Identifier.ForEach(identifier =>
                 {
@@ -127,7 +136,10 @@
                     //Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("Immunization identifier GUID is not valid or Null");
                 });
 
+                //Check Issued
                 observation.Issued.ShouldNotBeNull("Issued is Mandatory Fields and Should be included in th payload");
+
+                //Check Performer
                 observation.Performer.First().Reference.ShouldNotBeNull("Performer is Null and should not be");
 
             });
@@ -153,47 +165,46 @@
         [Then(@"The Observation List is Valid")]
         public void GivenTheObservationListisValid()
         {
-            var obvList = Lists.Where(l => l.Title == "Miscellaneous record");
+            //Check there is ONE Observation snomed code
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).ToList().Count().ShouldBe(1, "Failed to Find ONE Uncategorised  list using Snomed Code.");
 
-            if (obvList.Count() == 1)
+            //Get Var to List
+            var obvList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).First();
+
+            //Check title
+            obvList.Title.ShouldBe("Miscellaneous record", "List Title is Incorrect");
+            CheckForValidMetaDataInResource(obvList, FhirConst.StructureDefinitionSystems.kList);
+
+            //Check Status
+            obvList.Status.ShouldBeOfType<List.ListStatus>("Status List is of wrong type.");
+            obvList.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to completed");
+
+            //Check Mode
+            obvList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+            obvList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+
+            //Check Code
+            obvList.Code.Coding.ForEach(coding =>
             {
-                var list = obvList.First();
+                coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
+                coding.Display.ShouldNotBeNullOrEmpty("Display Should not be Null or Empty");
+            });
 
-                list.Title.ShouldBe("Miscellaneous record", "List Title is Incorrect");
-                CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+            //Check Patient
+            Patients.Where(p => p.Id == (obvList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 
-                list.Status.ShouldBeOfType<List.ListStatus>("Status List is of wrong type.");
-                list.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to completed");
-
-                list.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
-                list.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
-
-                list.Code.Coding.ForEach(coding =>
-                {
-                    coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
-                    coding.Code.ShouldBe("826501000000100", "Code is not Correct");
-                    coding.Display.ShouldNotBeNullOrEmpty("Display Should not be Null or Empty");
-                });
-
-                Patients.Where(p => p.Id == (list.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
-
-                //check number of Observations matches number in list
-                if (Observations.Count() != list.Entry.Count())
-                {
-                    Observations.Count().ShouldBe(list.Entry.Count(), "Number of Observations does not match the number in the List");
-                }
-                else
-                {
-                    list.Entry.ForEach(entry =>
-                    {
-                        string guidToFind = entry.Item.Reference.Replace("Observation/", "");
-                        Observations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Observation");
-                    });
-                }
+            //check number of Observations matches number in list
+            if (Observations.Count() != obvList.Entry.Count())
+            {
+                Observations.Count().ShouldBe(obvList.Entry.Count(), "Number of Observations does not match the number in the List");
             }
             else
             {
-                obvList.Count().ShouldBe(1, "Expected One Observation List But Found Zero or more than 1");
+                obvList.Entry.ForEach(entry =>
+                {
+                    string guidToFind = entry.Item.Reference.Replace("Observation/", "");
+                    Observations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Observation");
+                });
             }
         }
     }

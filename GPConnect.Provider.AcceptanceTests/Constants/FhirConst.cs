@@ -9,6 +9,8 @@
             public const string kTopics = "25851000000105";
             public const string kHeadings = "24781000000107";
             public const string kProblems = "717711000000103";
+            public const string kImmunizations = "1102181000000102";
+            public const string kUncategorised = "826501000000100";
         }
 
 
@@ -241,8 +243,8 @@
 
             public const string kConsultations = "Consultation";
             public const string kConsultation = "Surgery Consultation";
-            public const string kTopics = "25851000000105";
-            public const string kHeadings = "24781000000107";
+            public const string kTopics = "?????";
+            public const string kHeadings = "?????";
 
         }
     }
