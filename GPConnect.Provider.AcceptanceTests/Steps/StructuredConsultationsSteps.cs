@@ -143,7 +143,21 @@
                 Patients.Where(p => p.Id == (encounter.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 
                 //Check Participant
+                var found = false;
+                encounter.Participant.ForEach(participant =>
+                {
+                    participant.Type.ForEach(type =>
+                    {
+                        type.Coding.ForEach(code =>
+                        {
+                            if (code.System == FhirConst.CodeSystems.kCcPartipationType && code.Code == "AUTH")
+                                found = true;
+                        });
+                    });
+                });
 
+               found.ShouldBeTrue("Failed to Find Participant.type with value of AUTH");
+                
             });
 
 
@@ -152,21 +166,26 @@
         [Then(@"I Check the Encounters Do Not Include Not in Use Fields")]
         public void ThenIChecktheEncountersDoNotIncludeNotinUseFields()
         {
-
             //check atleast one
             Encounters.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One Encounter in response as per Data requirements");
 
             Encounters.ForEach(encounter =>
             {
-                encounter.StatusHistory.ShouldBeNull("Failed Encounter Check: StatusHistory Is a Not In Use Field");
-
+                encounter.StatusHistory.Count().ShouldBe(0, "Failed Encounter Check: StatusHistory Should not be used - Not In Use Field");
+                encounter.Class.ShouldBeNull("Failed Encounter Check: Class Should not be used - Not In Use Field");
+                encounter.ClassHistory.Count().ShouldBe(0, "Failed Encounter Check: ClassHistory Should not be used - Not In Use Field");
+                encounter.Priority.ShouldBeNull("Failed Encounter Check: Priority Should not be used - Not In Use Field");
+                encounter.EpisodeOfCare.Count().ShouldBe(0, "Failed Encounter Check: EpisodeOfCare Should not be used - Not In Use Field");
+                encounter.IncomingReferral.Count().ShouldBe(0, "Failed Encounter Check: IncomingReferral Should not be used - Not In Use Field");
+                encounter.Appointment.ShouldBeNull("Failed Encounter Check: Appointment Should not be used - Not In Use Field");
+                encounter.Reason.Count().ShouldBe(0, "Failed Encounter Check: Reason Should not be used - Not In Use Field");
+                encounter.Diagnosis.Count().ShouldBe(0, "Failed Encounter Check: Diagnosis Should not be used - Not In Use Field");
+                encounter.Account.Count().ShouldBe(0, "Failed Encounter Check: Account Should not be used - Not In Use Field");
+                encounter.Hospitalization.ShouldBeNull("Failed Encounter Check: Hospitalization Should not be used - Not In Use Field");
+                encounter.PartOf.ShouldBeNull("Failed Encounter Check: IncomingReferral Should not be used - Not In Use Field");
             });
-
         }
-
-               
-        
-
+   
         [Then(@"I Check the Consultation Lists are Valid")]
         public void ThenIChecktheConsultationListsareValid()
         {
@@ -357,55 +376,73 @@
         [Then(@"I Check The Problems List")]
         public void ThenICheckTheProblemsList()
         {
+            //Check there is ONE Problems List with snomed code
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(1, "Failed to Find ONE Problems list using Snomed Code.");
 
-            var probList = Lists.Where(l => l.Title == "Problems");
+            //Get Var to List
+            var problemsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).First();
 
-            if (probList.Count() == 1)
-            {
-                var list = probList.First();
+            //Check title
+            problemsList.Title.ShouldBe("Problems", "Problems List Title is Incorrect");
 
-                list.Title.ShouldBe("Problems", "Problems List Title is Incorrect");
-                CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+            //Check Meta.profile
+            CheckForValidMetaDataInResource(problemsList, FhirConst.StructureDefinitionSystems.kList);
 
-                list.Status.ShouldBeOfType<List.ListStatus>("Status List is of wrong type.");
-                list.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to completed");
+            //Check Status
+            problemsList.Status.ShouldBeOfType<List.ListStatus>("Status List is of wrong type.");
+            problemsList.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to completed");
 
-                list.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
-                list.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+            //Check Mode
+            problemsList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+            problemsList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
 
-                list.Code.Coding.ForEach(coding =>
+            //Check Code
+            problemsList.Code.Coding.ForEach(coding =>
                 {
                     coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
-                    coding.Code.ShouldBe("717711000000103", "Code is not Correct");
                     coding.Display.ShouldNotBeNullOrEmpty("Display Should not be Null or Empty");
                 });
 
-                Patients.Where(p => p.Id == (list.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+            //Check subject/patient ref
+            Patients.Where(p => p.Id == (problemsList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 
-                //check number of Conditions matches number in list
-                if (Conditions.Count() != list.Entry.Count())
-                {
-                    Conditions.Count().ShouldBe(list.Entry.Count(), "Number of Conditions does not match the number in the List");
-                }
-                else
-                {
-                    list.Entry.ForEach(entry =>
-                    {
-                        string guidToFind = entry.Item.Reference.Replace("Condition/", "");
-                        Conditions.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Condition");
-                    });
-                }
+            //check number of Conditions matches number in list
+            if (Conditions.Count() != problemsList.Entry.Count())
+            {
+                Conditions.Count().ShouldBe(problemsList.Entry.Count(), "Number of Conditions does not match the number in the List");
             }
             else
             {
-                probList.Count().ShouldBe(1, "Expected One Problems List But Found Zero or more than 1");
+                //Check each references condition is present in bundle
+                problemsList.Entry.ForEach(entry =>
+                {
+                    string guidToFind = entry.Item.Reference.Replace("Condition/", "");
+                    Conditions
+                        .Where(resource => resource.ResourceType.Equals(ResourceType.Condition))
+                        .Where(c => c.Id == guidToFind)
+                        .Count().ShouldBe(1, "Not Found Reference to Condition");
+                });
             }
+        }
+        
+        [Then(@"I Check The Problems List Does Not Include Not In Use Fields")]
+        public void ThenICheckTheProblemsListDoesNotIncludeNotInUseFields()
+        {
+            //Check there is ONE Problems List with snomed code
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(1, "Failed to Find ONE Problems list using Snomed Code.");
 
+            //Get Var to List
+            var problemsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).First();
+
+            //Check that - Not In Use Fields are not present
+            problemsList.Id.ShouldBeNull("List Id is Not Supposed to be Sent - Not In Use Field");
+            problemsList.Meta.VersionId.ShouldBeNull("List Meta.VersionId is Not Supposed to be Sent - Not In Use Field");
+            problemsList.Meta.LastUpdated.ShouldBeNull("List Meta.LastUpdated is Not Supposed to be Sent - Not In Use Field");
+            problemsList.Source.ShouldBeNull("List Source is Not Supposed to be Sent - Not In Use Field");
 
         }
 
-		//SJD 04/10/2019 for 1.3.1
-		[Given(@"I add a madeUp consultation part parameter")]
+        [Given(@"I add a madeUp consultation part parameter")]
 		public void GivenIAddAMadeUpConsultationPartParameter()
 		{
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {

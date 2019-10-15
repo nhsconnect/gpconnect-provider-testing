@@ -26,11 +26,8 @@ Scenario: Verify Consultations structured record for a Patient
 		And I Check the Topic Lists are Valid
 		And I Check the Heading Lists are Valid
 		And I Check The Problems List
-
-		#Check Each Encounter is valid
-		
-		#TODO -add in check for problems list ( mandatory fields and NOT IN USE fields)
-
+		And I Check The Problems List Does Not Include Not In Use Fields
+	
 
 @1.3.1
 Scenario: Retrieve consultations structured record for a patient that has no consultation data

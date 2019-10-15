@@ -8,6 +8,7 @@
             public const string kConsultation = "325851000000107";
             public const string kTopics = "25851000000105";
             public const string kHeadings = "24781000000107";
+            public const string kProblems = "717711000000103";
         }
 
 
@@ -77,6 +78,7 @@
             public const string kCcLanguageAbilityProficiency = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-LanguageAbilityProficiency-1";
             public const string kCcNhsNumVerification = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1";
             public const string kCcPresriptionType = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-PrescriptionType-1";
+            public const string kCcPartipationType = "http://terminology.hl7.org/CodeSystem/v3-ParticipationType";
 
             //STU3
             public const string kNameUse = "http://hl7.org/fhir/name-use";
