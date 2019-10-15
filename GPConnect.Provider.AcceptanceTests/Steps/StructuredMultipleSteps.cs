@@ -180,39 +180,40 @@
 				}
 			});
 		}
+		
+		// #311 14/10/2019 SJD removed as revision of spec
+		//[Then(@"Check the operation outcome returns PARAMETER_NOT_FOUND for Medication")]
+		//public void checkTheOperationOutcomeReturnsParameterNotFoundForMedication()
+		//{
+		//	var entries = _httpContext.FhirResponse.Entries;
+		//	var parameter = "includeMedication";
+		//	var partparameter = "includePrescriptionIssues";
 
-		[Then(@"Check the operation outcome returns PARAMETER_NOT_FOUND for Medication")]
-		public void checkTheOperationOutcomeReturnsParameterNotFoundForMedication()
-		{
-			var entries = _httpContext.FhirResponse.Entries;
-			var parameter = "includeMedication";
-			var partparameter = "includePrescriptionIssues";
 
+		//	entries.ForEach(entry =>
+		//	{
 
-			entries.ForEach(entry =>
-			{
+		//		if (entry.Resource.ResourceType.ToString() == "OperationOutcome")
+		//		{
 
-				if (entry.Resource.ResourceType.ToString() == "OperationOutcome")
-				{
+		//			foreach (var issue in ((Hl7.Fhir.Model.OperationOutcome)entry.Resource).Issue)
+		//			{
 
-					foreach (var issue in ((Hl7.Fhir.Model.OperationOutcome)entry.Resource).Issue)
-					{
+		//				issue.Code.ToString().ShouldBe("Required");
+		//				issue.Severity.ToString().ShouldBe("Warning");
 
-						issue.Code.ToString().ShouldBe("Required");
-						issue.Severity.ToString().ShouldBe("Warning");
+		//				issue.Details.Coding[0].System.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
+		//				issue.Details.Coding[0].Code.ShouldBe("PARAMETER_NOT_FOUND");
+		//				issue.Details.Coding[0].Display.ShouldBe("Parameter not found");
+		//				issue.Details.Text.ShouldBe("Miss parameter part : " + partparameter);
+		//				issue.Diagnostics.ShouldBe(parameter);
+		//				Log.WriteLine("This has not met the expected response of PARAMETER_NOT_FOUND for " + parameter);
 
-						issue.Details.Coding[0].System.ShouldBe("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1");
-						issue.Details.Coding[0].Code.ShouldBe("PARAMETER_NOT_FOUND");
-						issue.Details.Coding[0].Display.ShouldBe("Parameter not found");
-						issue.Details.Text.ShouldBe("Miss parameter part : " + partparameter);
-						issue.Diagnostics.ShouldBe(parameter);
-						Log.WriteLine("This has not met the expected response of PARAMETER_NOT_FOUND for " + parameter);
+		//			}
 
-					}
-
-				}
-			});
-		}
+		//		}
+		//	});
+		//}
 
 		[Then(@"Check the operation outcome returns INVALID_PARAMETER")]
 		public void checkTheOperationOutcomeReturnsInvalid_Parameter()
@@ -375,6 +376,30 @@
 			ParameterComponent param = new ParameterComponent();
 			param.Name = "madeUpImmunisations";
 			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+		}
+
+		//SJD added 14/10/2019 to check for multiple operation outcomes 
+		[Then(@"Check the number of issues in the operation outcome ""([^""]*)""")]
+		public void checkTheNumberOfIssuesInTheOperationalOutcome(int issueCount)
+		{
+			var entries = _httpContext.FhirResponse.Entries;
+			var foundFlag = false;
+			entries.ForEach(entry =>
+			{
+				if (entry.Resource.ResourceType.ToString() == "OperationOutcome")
+				{
+					((OperationOutcome)entry.Resource).Issue.Count().ShouldBe(issueCount);
+					foundFlag = true;
+
+				}
+
+			});
+			if (!foundFlag)
+			{
+				var message = "Test failed as NO operation outcome found in the response";
+				Log.WriteLine(message);
+				foundFlag.ShouldBeTrue(message);
+			}
 		}
 	}
 }

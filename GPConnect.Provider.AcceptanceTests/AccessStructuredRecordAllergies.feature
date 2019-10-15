@@ -153,19 +153,19 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the Lists are valid for a patient with explicit no allergies coding
 		And the List of AllergyIntolerances should be valid
 
-#SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4
-Scenario: Retrieve the allergy structured record section for a patient without the resolved allergies parameter expected success
+Scenario: Retrieve the allergy structured record section for a patient without the resolved allergies partParameter expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
 		And I add the allergies parameter
 	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And Check the operation outcome returns PARAMETER_NOT_FOUND for Allergies
+	Then the response status code should indicate failure
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4
-Scenario: Retrieve the allergy structured record to include prescription issues parameter expected success
+Scenario: Retrieve the allergy structured record to include an extra prescription issues parameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
 		And I add the allergies parameter with includePrescriptionIssues
@@ -223,7 +223,8 @@ Scenario: Retrieve the allergy structured record section for an invalid paramete
 		And I add the allergies parameter with resolvedAllergies set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4
