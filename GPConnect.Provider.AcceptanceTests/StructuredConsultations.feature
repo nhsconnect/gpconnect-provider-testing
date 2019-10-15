@@ -65,7 +65,6 @@ Scenario: Verify Consultations structured record for a Patient includeConsultati
 		#And I Check The Problems List
 		And check the response does not contain an operation outcome
 
-@1.3.1
 Scenario: Retrieve consultations structured record for a patient that has no consultation data
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
@@ -87,7 +86,6 @@ Scenario: Retrieve consultations structured record for a patient that has no con
 		And check structured list contains a note and emptyReason when no data in section
 		And check the response does not contain an operation outcome
 
-@1.3.1
 Scenario: Retrieve consultations structured record with startDate only expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -109,7 +107,6 @@ Scenario: Retrieve consultations structured record with startDate only expected 
 		#And I Check The Problems List
 		And check the response does not contain an operation outcome
 
-@1.3.1
 Scenario: Retrieve consultations structured record with endDate value only expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -131,7 +128,6 @@ Scenario: Retrieve consultations structured record with endDate value only expec
 		#And I Check The Problems List
 		And check the response does not contain an operation outcome
 
-@1.3.1
 Scenario: Retrieve consultations structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
@@ -140,7 +136,6 @@ Scenario: Retrieve consultations structured record section for an invalid NHS nu
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record section for an empty NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter with an empty NHS Number
@@ -149,7 +144,6 @@ Scenario: Retrieve consultations structured record section for an empty NHS numb
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record section for an invalid Identifier System
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
@@ -158,7 +152,6 @@ Scenario: Retrieve consultations structured record section for an invalid Identi
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
@@ -167,7 +160,6 @@ Given I configure the default "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record for a patient that has sensitive flag 
 	Given I configure the default "GpcGetStructuredRecord" request 
 	And I add an NHS Number parameter for "patient9"
@@ -177,7 +169,6 @@ Scenario: Retrieve consultations structured record for a patient that has sensit
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
-@1.3.1
 Scenario: Retrieve consultations Structured record where consultationSearchPeriod part parameter is greater than the current date expected failure
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -187,7 +178,6 @@ Given I configure the default "GpcGetStructuredRecord" request
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.3.1
 Scenario: Retrieve consultations structured record where start date of the consultationSearchPeriod part parameter is greater than the end date expected failure
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -197,7 +187,6 @@ Given I configure the default "GpcGetStructuredRecord" request
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.3.1
 Scenario: Retrieve Consultations structured record with both partparameters consultationSearchPeriod and includeNumberOfMostRecent applied expected failure
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -207,7 +196,6 @@ Given I configure the default "GpcGetStructuredRecord" request
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-@1.3.1
 Scenario: Retrieve Consultations structured record malformed with partParameter only expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -217,7 +205,6 @@ Scenario: Retrieve Consultations structured record malformed with partParameter 
 		And Check the operation outcome returns the correct text and diagnotics "consultationSearchPeriod"
 		And Check the number of issues in the operation outcome "1"
 
-@1.3.1
 Scenario Outline: Retrieve the Consultations structured record section with invalid date values
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"

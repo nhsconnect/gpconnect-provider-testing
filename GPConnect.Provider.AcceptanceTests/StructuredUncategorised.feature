@@ -27,7 +27,6 @@ Scenario Outline: Verify Uncategorised Data structured record for a Patient with
 	| Patient  |
 	| patient2 |
 
-@1.3.1
 Scenario: Retrieve uncategorised data structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
@@ -36,7 +35,6 @@ Scenario: Retrieve uncategorised data structured record section for an invalid N
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve uncategorised data structured record section for an empty NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter with an empty NHS Number
@@ -45,7 +43,6 @@ Scenario: Retrieve uncategorised data structured record section for an empty NHS
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve uncategorised data structured record section for an invalid Identifier System
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
@@ -54,7 +51,6 @@ Scenario: Retrieve uncategorised data structured record section for an invalid I
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve uncategorised data structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
@@ -63,7 +59,6 @@ Given I configure the default "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve uncategorised data structured record for a patient that has sensitive flag
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient9"
@@ -73,7 +68,6 @@ Scenario: Retrieve uncategorised data structured record for a patient that has s
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
-@1.3.1
 Scenario: Retrieve uncategorised data structured record for a patient that has no uncategorised data
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
@@ -92,7 +86,6 @@ Scenario: Retrieve uncategorised data structured record for a patient that has n
 		And check the response does not contain an operation outcome
 		And check structured list contains a note and emptyReason when no data in section
 
-@1.3.1
 Scenario Outline: Retrieve the uncategorised data structured record with invalid dates expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -113,7 +106,6 @@ Scenario Outline: Retrieve the uncategorised data structured record with invalid
 		| 2015-10-01                | 2016-11-23T11:08:32       | includeUncategorisedData | uncategorisedDataSearchPeriod |
 		| 2014-01-01                | 2015-10-23T11:08:32+00:00 | includeUncategorisedData | uncategorisedDataSearchPeriod |
 
-@1.3.1
 Scenario: Retrieve the uncategorised data structured record with uncategorisedDataSearchPeriod in future expected failure 
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -123,7 +115,6 @@ Scenario: Retrieve the uncategorised data structured record with uncategorisedDa
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.3.1
 Scenario: Retrieve the uncategorised data structured record with period dates equal to current date expected success and no operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -132,7 +123,6 @@ Scenario: Retrieve the uncategorised data structured record with period dates eq
 	Then the response status code should indicate success
 		And check the response does not contain an operation outcome
 
-@1.3.1
 Scenario: Retrieve the uncategorised data structured record startDate after endDate expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
