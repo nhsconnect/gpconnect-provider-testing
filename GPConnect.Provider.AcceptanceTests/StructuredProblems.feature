@@ -24,10 +24,10 @@ Scenario: Verify Problems structured record for a Patient
 		And check the response does not contain an operation outcome
 
 
-Scenario: Retrieve problems structured record with status partParameter expected success
+Scenario Outline: Retrieve problems structured record with status partParameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
-		And I add the problems parameter with filterStatus "active"
+		And I add the problems parameter with filterStatus "<value>"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -39,15 +39,11 @@ Scenario: Retrieve problems structured record with status partParameter expected
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#TODO And I Check the Problems Resource linking
-		#TODO And I Check Problems is valid
-		#TODO And I Check The Problems Resources Do Not Include Not In Use Fields
-		#TODO And I Check The Problems List
 		And check the response does not contain an operation outcome
-#Examples:  
-#	| value    |
-#	| active   |
-#	| inactive |
+Examples:  
+	| value    |
+	| active   |
+	| inactive |
 
 Scenario Outline: Retrieve problems structured record with significance partParameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -64,10 +60,6 @@ Scenario Outline: Retrieve problems structured record with significance partPara
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#TODO And I Check the Problems Resource linking
-		#TODO And I Check Problems is valid
-		#TODO And I Check The Problems Resources Do Not Include Not In Use Fields
-		#TODO And I Check The Problems List
 		And check the response does not contain an operation outcome
 Examples:  
 	| value |
@@ -89,10 +81,6 @@ Scenario Outline: Retrieve problems structured record with status and significan
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#TODO And I Check the Problems Resource linking
-		#TODO And I Check Problems is valid
-		#TODO And I Check The Problems Resources Do Not Include Not In Use Fields
-		#TODO And I Check The Problems List
 		And check the response does not contain an operation outcome
 Examples: 
 	| statusValue | sigValue |
@@ -117,7 +105,7 @@ Scenario: Retrieve problems structured record for a patient that has no problems
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#And I Check Consultations is valid
+		And I Check The Problems List
 		And check the response does not contain an operation outcome
 		And check structured list contains a note and emptyReason when no data in section
 		And check the response does not contain an operation outcome
@@ -138,7 +126,6 @@ Scenario: Retrieve problems structured record for a patient that has repeating p
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#And I Check Consultations is valid
 		And check the response does not contain an operation outcome
 
 Scenario Outline: Retrieve problems structured record with invalid status partParameter expected failure

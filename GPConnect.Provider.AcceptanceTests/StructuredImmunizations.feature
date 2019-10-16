@@ -1,7 +1,6 @@
 ﻿@structuredrecord
 Feature: StructuredImmunizations
 	
-@1.3.1
 Scenario: Verify Immunizations structured record for a Patient with Immunizations
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -23,7 +22,6 @@ Scenario: Verify Immunizations structured record for a Patient with Immunization
 		And The Immunization List is Valid
 		And The Structured List Does Not Include Not In Use Fields	
 
-@1.3.1
 Scenario: Retrieve the immunizations structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number

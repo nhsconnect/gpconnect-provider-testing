@@ -44,10 +44,16 @@ Scenario: Verify Consultations structured record for a Patient includeConsultati
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#And I Check the Consultations Resource linking
-		#And I Check Consultations is valid
-		#And I Check The Consultations Resources Do Not Include Not In Use Fields
-		#And I Check The Problems List
+		And I Check the Consultations List is Valid
+		And The Consultations List Does Not Include Not In Use Fields
+		And I Check the Encounters are Valid
+		And I Check the Encounters Do Not Include Not in Use Fields
+		And I Check the Consultation Lists are Valid
+		And I Check All The Consultation Lists Do Not Include Not In Use Fields
+		And I Check the Topic Lists are Valid
+		And I Check the Heading Lists are Valid
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields	
 		And check the response does not contain an operation outcome
 
 Scenario: Verify Consultations structured record for a Patient includeConsultation and consultationsMostRecent partParameter
@@ -65,10 +71,16 @@ Scenario: Verify Consultations structured record for a Patient includeConsultati
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#And I Check the Consultations Resource linking
-		#And I Check Consultations is valid
-		#And I Check The Consultations Resources Do Not Include Not In Use Fields
-		#And I Check The Problems List
+		And I Check the Consultations List is Valid
+		And The Consultations List Does Not Include Not In Use Fields
+		And I Check the Encounters are Valid
+		And I Check the Encounters Do Not Include Not in Use Fields
+		And I Check the Consultation Lists are Valid
+		And I Check All The Consultation Lists Do Not Include Not In Use Fields
+		And I Check the Topic Lists are Valid
+		And I Check the Heading Lists are Valid
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields	
 		And check the response does not contain an operation outcome
 
 Scenario: Retrieve consultations structured record for a patient that has no consultation data
@@ -87,8 +99,6 @@ Scenario: Retrieve consultations structured record for a patient that has no con
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#And I Check Consultations is valid
-		And check the response does not contain an operation outcome
 		And check structured list contains a note and emptyReason when no data in section
 		And check the response does not contain an operation outcome
 
@@ -107,11 +117,18 @@ Scenario: Retrieve consultations structured record with startDate only expected 
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#And I Check the Consultations Resource linking
-		#And I Check Consultations is valid
-		#And I Check The Consultations Resources Do Not Include Not In Use Fields
-		#And I Check The Problems List
+		And I Check the Consultations List is Valid
+		And The Consultations List Does Not Include Not In Use Fields
+		And I Check the Encounters are Valid
+		And I Check the Encounters Do Not Include Not in Use Fields
+		And I Check the Consultation Lists are Valid
+		And I Check All The Consultation Lists Do Not Include Not In Use Fields
+		And I Check the Topic Lists are Valid
+		And I Check the Heading Lists are Valid
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields	
 		And check the response does not contain an operation outcome
+		
 
 Scenario: Retrieve consultations structured record with endDate value only expected success
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -128,10 +145,16 @@ Scenario: Retrieve consultations structured record with endDate value only expec
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#And I Check the Consultations Resource linking
-		#And I Check Consultations is valid
-		#And I Check The Consultations Resources Do Not Include Not In Use Fields
-		#And I Check The Problems List
+		And I Check the Consultations List is Valid
+		And The Consultations List Does Not Include Not In Use Fields
+		And I Check the Encounters are Valid
+		And I Check the Encounters Do Not Include Not in Use Fields
+		And I Check the Consultation Lists are Valid
+		And I Check All The Consultation Lists Do Not Include Not In Use Fields
+		And I Check the Topic Lists are Valid
+		And I Check the Heading Lists are Valid
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields	
 		And check the response does not contain an operation outcome
 
 Scenario: Retrieve consultations structured record section for an invalid NHS number
