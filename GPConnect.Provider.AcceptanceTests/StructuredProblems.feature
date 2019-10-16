@@ -139,13 +139,11 @@ Scenario: Retrieve problems structured record for a patient that has REPEATING p
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should be valid for patient "patient4"
+		And the Bundle should be valid for patient "patient2"
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
 		#And I Check Consultations is valid
-		And check the response does not contain an operation outcome
-		And check structured list contains a note and emptyReason when no data in section
 		And check the response does not contain an operation outcome
 
 @1.3.1
