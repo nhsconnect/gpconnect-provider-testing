@@ -26,7 +26,6 @@
 			_httpContext = httpContext;
 		}
 
-
 		[Given(@"I add the uncategorised data parameter with optional parameters")]
 		public void GivenIAddTheUncategorisedDataParameterWithOptionalParameters()
 		{
@@ -106,7 +105,9 @@
 		[Then(@"The Observation Resources are Valid")]
         public void GivenTheObservationResourcesareValid()
         {
-        
+            //check atleast one
+            Observations.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One Observation in response as per Data requirements");
+
             Observations.ForEach(observation =>
             {
                 //Check Id
@@ -160,7 +161,6 @@
                 observation.Device.ShouldBeNull("Device is Not Supposed to be Sent - Not In Use Field");
             });
         }
-
 
         [Then(@"The Observation List is Valid")]
         public void GivenTheObservationListisValid()

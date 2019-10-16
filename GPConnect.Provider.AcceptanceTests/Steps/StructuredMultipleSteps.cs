@@ -339,8 +339,6 @@
 			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param2);
 		}
 
-
-
 		//SJD added 11/09/2019 release 1.3.0
 		[Then(@"Check the number of issues in the operation outcome ""([^""]*)""")]
 		public void checkTheNumberOfIssuesInTheOperationalOutcome(int issueCount)

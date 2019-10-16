@@ -157,6 +157,7 @@
             public const string kExtEncounter = "http://hl7.org/fhir/StructureDefinition/encounter-associatedEncounter";
             public const string kExtPrescriptionAgency = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-PrescribingAgency-1";
             public const string kExtProblem = "https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-RelatedProblemHeader-1";
+            public const string kExtProblemSignificance = "https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-ProblemSignificance-1";
             public const string kCCExtRegistrationStatus = "registrationStatus";
             public const string kCCExtRegistrationType = "registrationType";
             public const string kCCExtRegistrationPeriod = "registrationPeriod";
@@ -192,6 +193,7 @@
             public const string kDateRecorded = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-DateRecorded-1";
             public const string kVaccinationProcedure = "https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-VaccinationProcedure-1";
             public const string kEncounter = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-Encounter-1";
+            public const string kProblems = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-ProblemHeader-Condition-1";
             
 
             // git hub ref 158
