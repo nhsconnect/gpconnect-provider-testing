@@ -29,6 +29,8 @@
         public List<List> Lists => GetResources<List>();
         public List<Immunization> Immunizations => GetResources<Immunization>();
         public List<Observation> Observations => GetResources<Observation>();
+        public List<Encounter> Encounters => GetResources<Encounter>();
+        public List<Condition> Conditions => GetResources<Condition>();
 
         private List<T> GetResources<T>() where T : Resource
         {
@@ -67,8 +69,10 @@
             {typeof(MedicationStatement), ResourceType.MedicationStatement},
             {typeof(MedicationRequest), ResourceType.MedicationRequest},
             {typeof(Immunization), ResourceType.Immunization},
-            {typeof(Observation), ResourceType.Observation}
-            
+            {typeof(Observation), ResourceType.Observation},
+            {typeof(Encounter), ResourceType.Encounter},
+            {typeof(Condition), ResourceType.Condition}
+
         };
     }
 }

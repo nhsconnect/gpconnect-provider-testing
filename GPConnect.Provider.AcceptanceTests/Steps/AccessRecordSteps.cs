@@ -66,11 +66,12 @@
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, NhsNumberHelper.GetIdentifierWithEmptySystem(nhsNumber));
 		}
 
+		//SJD 03/10/2019 changed method so now creates an invalid parameter
 		[Given(@"I add an NHS Number parameter for ""(.*)"" using an invalid parameter type")]
 		public void AddANhsNumberParameterForUsingAnInvalidParameterType(string patient)
 		{
 			var nhsNumber = GlobalContext.PatientNhsNumberMap[patient];
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, new FhirString(nhsNumber));
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add("invalidNHSNumberParam", NhsNumberHelper.GetDefaultIdentifier(nhsNumber));
 		}
 
 		#endregion

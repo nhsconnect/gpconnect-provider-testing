@@ -175,14 +175,16 @@ Given I configure the default "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 		
-@1.2.4
+@1.3.1
+#SJD 04/10/2019 changed the response code as per specification for invalid parameter	
 Scenario: Retrieve the medication structured record section for an invalid parameter type
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" using an invalid parameter type
 		And I add the medication parameter with includePrescriptionIssues set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
-		And the response should be a OperationOutcome resource
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 @1.2.4
 Scenario Outline: Retrieve the medication structured record section for a patient with a timePeriod
