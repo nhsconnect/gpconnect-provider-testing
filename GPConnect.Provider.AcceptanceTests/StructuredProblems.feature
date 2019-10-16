@@ -23,8 +23,6 @@ Scenario: Verify Problems structured record for a Patient
 		#TODO And I Check The Problems List
 		And check the response does not contain an operation outcome
 
-
-@1.3.1
 Scenario: Retrieve problems structured record with status partParameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -50,7 +48,6 @@ Scenario: Retrieve problems structured record with status partParameter expected
 #	| active   |
 #	| inactive |
 
-@1.3.1
 Scenario Outline: Retrieve problems structured record with significance partParameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -76,7 +73,6 @@ Examples:
 	| major |
 	| minor |
 
-@1.3.1
 Scenario Outline: Retrieve problems structured record with status and significance partParameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -104,7 +100,6 @@ Examples:
 	| inactive    | major    |
 	| inactive    | minor    |
 
-@1.3.1
 Scenario: Retrieve problems structured record for a patient that has no problems data
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
@@ -126,8 +121,7 @@ Scenario: Retrieve problems structured record for a patient that has no problems
 		And check structured list contains a note and emptyReason when no data in section
 		And check the response does not contain an operation outcome
 
-@1.3.1
-Scenario: Retrieve problems structured record for a patient that has REPEATING pair values expected success
+Scenario: Retrieve problems structured record for a patient that has repeating pair values expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
 		And I add the problems parameter including repeating filter pairs
@@ -146,7 +140,6 @@ Scenario: Retrieve problems structured record for a patient that has REPEATING p
 		#And I Check Consultations is valid
 		And check the response does not contain an operation outcome
 
-@1.3.1
 Scenario Outline: Retrieve problems structured record with invalid status partParameter expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -163,8 +156,6 @@ Examples:
 	| null       |
 	| off        |
 	
-	
-@1.3.1
 Scenario Outline: Retrieve problems structured record with invalid significance partParameter expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -179,7 +170,6 @@ Examples:
 	| null  |
 	| off   |
 
-@1.3.1
 Scenario Outline: Retrieve problems structured record with invalid status and significance partParameter expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -194,7 +184,6 @@ Examples:
 	| active      | low      |
 	| resolved    | major    |
 
-@1.3.1
 Scenario: Retrieve Problems structured record with made up partParameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -203,8 +192,7 @@ Scenario: Retrieve Problems structured record with made up partParameter expecte
 	Then the response status code should indicate success
 		And Check the operation outcome returns the correct text and diagnotics "madeUpProblems"
 		And Check the number of issues in the operation outcome "1"
-	
-@1.3.1
+
 Scenario: Retrieve consultations structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
@@ -213,7 +201,6 @@ Scenario: Retrieve consultations structured record section for an invalid NHS nu
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record section for an empty NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter with an empty NHS Number
@@ -222,7 +209,6 @@ Scenario: Retrieve consultations structured record section for an empty NHS numb
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record section for an invalid Identifier System
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
@@ -231,7 +217,6 @@ Scenario: Retrieve consultations structured record section for an invalid Identi
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
@@ -240,7 +225,6 @@ Given I configure the default "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record for a patient that has sensitive flag 
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient9"

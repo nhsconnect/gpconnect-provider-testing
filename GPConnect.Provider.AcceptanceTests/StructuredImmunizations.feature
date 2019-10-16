@@ -26,8 +26,6 @@ Scenario Outline: Verify Immunizations structured record for a Patient with Immu
 	| Patient  |
 	| patient2 |
 		
-
-@1.3.1
 Scenario: Retrieve the immunizations structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
@@ -36,7 +34,6 @@ Scenario: Retrieve the immunizations structured record section for an invalid NH
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve the immunizations structured record section for an empty NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter with an empty NHS Number
@@ -45,7 +42,6 @@ Scenario: Retrieve the immunizations structured record section for an empty NHS 
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve the immunizations structured record section for an invalid Identifier System
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
@@ -54,7 +50,6 @@ Scenario: Retrieve the immunizations structured record section for an invalid Id
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve the immunizations structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
@@ -63,7 +58,6 @@ Given I configure the default "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve the immunizations structured record for a patient that has sensitive flag
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient9"
@@ -73,7 +67,6 @@ Scenario: Retrieve the immunizations structured record for a patient that has se
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
-@1.3.1
 Scenario: Retrieve the immunizations structured record for a patient that has no immunizations
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
@@ -91,8 +84,7 @@ Scenario: Retrieve the immunizations structured record for a patient that has no
 		And the Organization Id should be valid 
 		And check the response does not contain an operation outcome
 		And check structured list contains a note and emptyReason when no data in section
-		
-@1.3.1 
+
 Scenario: Retrieve the immunizations structured record with a madeUp partParameter
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient2"
