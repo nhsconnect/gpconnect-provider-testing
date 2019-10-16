@@ -2,10 +2,10 @@
 Feature: StructuredConsultations
 
 @1.3.1 @WIP
-Scenario: Verify Consultations structured record for a Patient
+Scenario: Verify Consultations structured record for a Patient includeConsultation only
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
-		And I add the Consultations parameter
+		And I add the includeConsultations parameter only
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -26,14 +26,56 @@ Scenario: Verify Consultations structured record for a Patient
 		And I Check the Topic Lists are Valid
 		And I Check the Heading Lists are Valid
 		And I Check The Problems List
-		And I Check The Problems List Does Not Include Not In Use Fields
-	
+		And I Check The Problems List Does Not Include Not In Use Fields	
+		And check the response does not contain an operation outcome
 
-@1.3.1
+Scenario: Verify Consultations structured record for a Patient includeConsultation and consultationSearchPeriod partParameter
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the consultation parameter with consultationSearchPeriod partParameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient2"
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid 
+		#And I Check the Consultations Resource linking
+		#And I Check Consultations is valid
+		#And I Check The Consultations Resources Do Not Include Not In Use Fields
+		#And I Check The Problems List
+		And check the response does not contain an operation outcome
+
+Scenario: Verify Consultations structured record for a Patient includeConsultation and consultationsMostRecent partParameter
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the consultation parameter with consultationsMostRecent partParameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient2"
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid 
+		#And I Check the Consultations Resource linking
+		#And I Check Consultations is valid
+		#And I Check The Consultations Resources Do Not Include Not In Use Fields
+		#And I Check The Problems List
+		And check the response does not contain an operation outcome
+
 Scenario: Retrieve consultations structured record for a patient that has no consultation data
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
-		And I add the Consultations parameter
+		And I add the consultation parameter with consultationSearchPeriod partParameter
+		And I add the medication parameter with includePrescriptionIssues set to "true"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -45,67 +87,155 @@ Scenario: Retrieve consultations structured record for a patient that has no con
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
+		#And I Check Consultations is valid
 		And check the response does not contain an operation outcome
 		And check structured list contains a note and emptyReason when no data in section
+		And check the response does not contain an operation outcome
 
-@1.3.1
+Scenario: Retrieve consultations structured record with startDate only expected success
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the consultation parameter with startDate only 		
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient2"
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid 
+		#And I Check the Consultations Resource linking
+		#And I Check Consultations is valid
+		#And I Check The Consultations Resources Do Not Include Not In Use Fields
+		#And I Check The Problems List
+		And check the response does not contain an operation outcome
+
+Scenario: Retrieve consultations structured record with endDate value only expected success
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the consultation parameter with endDate only 		
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient2"
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid 
+		#And I Check the Consultations Resource linking
+		#And I Check Consultations is valid
+		#And I Check The Consultations Resources Do Not Include Not In Use Fields
+		#And I Check The Problems List
+		And check the response does not contain an operation outcome
+
 Scenario: Retrieve consultations structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
-		And I add the Consultations parameter
+		And I add the includeConsultations parameter only
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record section for an empty NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter with an empty NHS Number
-		And I add the Consultations parameter
+		And I add the includeConsultations parameter only
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record section for an invalid Identifier System
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
-		And I add the Consultations parameter
+		And I add the includeConsultations parameter only
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
 Scenario: Retrieve consultations structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
-		And I add the Consultations parameter
+		And I add the includeConsultations parameter only
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.3.1
-Scenario: Retrieve consultations structured record for a patient that has sensitive flag
+Scenario: Retrieve consultations structured record for a patient that has sensitive flag 
 	Given I configure the default "GpcGetStructuredRecord" request 
 	And I add an NHS Number parameter for "patient9"
-	And I add the Consultations parameter
+	And I add the includeConsultations parameter only
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
-#SJD TODO
+Scenario: Retrieve consultations Structured record where consultationSearchPeriod part parameter is greater than the current date expected failure
+Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the consultation parameter with consultationSearchPeriod partParameter in the future
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-#Retrieve Consultations Structured response where consultationSearchPeriod part parameter is greater than the current date expected failure
-#Retrieve Consultations Structured response where start date of the consultationSearchPeriod part parameter is greater than the end date expected failure
-#Retrieve Consultations Structured response with both partparameters consultationSearchPeriod and includeNumberOfMostRecent applied expected failure
-#Retrieve Consultations Structured response with consultationSearchPeriod and startDate value only expected success
-#Retrieve Consultations Structured response with consultationSearchPeriod and endDate value only expected success
+Scenario: Retrieve consultations structured record where start date of the consultationSearchPeriod part parameter is greater than the end date expected failure
+Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the consultation parameter with consultationSearchPeriod partParameter startDate greater than endDate
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-#SJD TODO need to understand how these actually works
-#Retrieve a Draft Consultations Structure response expected success
-#Retrieve Consultations Structured response where Confidential items flagged expected response with message to identify - is this success or failure? 
-#Retrieve Consultations Structured response where Linked to single resource expected success 
-#Retrieve Consultations Structured response where Linked to multile resources expected success
-#Retrieve Consultations Structured response where Unsupported clinical items need to understand is this just Consultations - not understanding how this works
-#Create a test around auto generated Topic - is this the same as DRAFT ???
+Scenario: Retrieve Consultations structured record with both partparameters consultationSearchPeriod and includeNumberOfMostRecent applied expected failure
+Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the consultation parameter with both partParameters
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+Scenario: Retrieve Consultations structured record malformed with partParameter only expected success
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add malformed Consultations request partParameter only
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And Check the operation outcome returns the correct text and diagnotics "consultationSearchPeriod"
+		And Check the number of issues in the operation outcome "1"
+
+Scenario Outline: Retrieve the Consultations structured record section with invalid date values
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I set a consultations period parameter "<startDate>" to "<endDate>"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+Examples:
+		| startDate                  | endDate                    |
+		| StartDate                  | endDate                    |
+		| X2014                      | 2015-12-01                 |
+		| X2014-02                   | 2015-12-01                 |
+		| X2015-10-23T11:08:32       | 2016-01-12                 |
+		| X2015-10-23T11:08:32+00:00 | 2015-10-30                 |
+		|                            | 2019-01-01                 |
+		| 2014                       | 2015-01-01                 |
+		| 2014-02                    | 2016-01-30                 |
+		| null                       | 2019-11-11                 |
+		| null                       | null                       |
+		|                            |                            |
+		| 2015-12-01                 |                            |
+		| 2015-12-01                 | X2016-02                   |
+		| 2015-12-01                 | X2016-10-23T11:08:32       |
+		| 2015-12-01                 | X2016-10-23T11:08:32+00:00 |
+		| 2015-12-01                 | 2015                      |
+		| 2015-12-01                 | 2016-02                    |
+		| 2015-12-01                 | null                       |
+		| 2018                       | 2019                       |

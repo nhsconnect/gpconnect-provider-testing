@@ -464,6 +464,160 @@
 
         }
 
+
+        [Given(@"I add the includeConsultations parameter only")]
+		public void GivenIAddTheConsultationsParameterOnly()
+		{
+			ParameterComponent param = new ParameterComponent();
+			param.Name = FhirConst.GetStructuredRecordParams.kConsultations;
+			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+		}
+
+		[Given(@"I add malformed Consultations request partParameter only")]
+		public void GivenIAddMalformedConsultationsRequestPartParameterOnly()
+		{
+			ParameterComponent param = new ParameterComponent();
+			param.Name = FhirConst.GetStructuredRecordParams.kConsultationSearch;
+			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+		}
+
+		[Given(@"I add the consultation parameter with consultationSearchPeriod partParameter")]
+		public void GivenIAddTheConsultationParameterWithConsultationSearchPeriodParameter()
+		{
+			var backDate = DateTime.UtcNow.AddDays(-101);
+			var futureDate = DateTime.UtcNow.AddDays(-1);
+			var startDate = backDate.ToString("yyyy-MM-dd");
+			var endDate = futureDate.ToString("yyyy-MM-dd");
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+		}
+
+		[Given(@"I add the consultation parameter with consultationSearchPeriod partParameter in the future")]
+		public void GivenIAddTheConsultationParameterWithConsultationSearchPeriodParameterInTheFuture()
+		{
+			var backDate = DateTime.UtcNow.AddDays(1);
+			var futureDate = DateTime.UtcNow.AddDays(1);
+			var startDate = backDate.ToString("yyyy-MM-dd");
+			var endDate = futureDate.ToString("yyyy-MM-dd");
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+		}
+
+
+		[Given(@"I add the consultation parameter with startDate only")]
+		public void GivenIAddTheConsultationParameterWithStartDateOnly()
+		{
+			var backDate = DateTime.UtcNow.AddDays(-1);
+			var futureDate = DateTime.UtcNow.AddDays(-1);
+			var startDate = backDate.ToString("yyyy-MM-dd");
+			//var endDate = futureDate.ToString("yyyy-MM-dd");
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, null)),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+		}
+
+		[Given(@"I add the consultation parameter with endDate only")]
+		public void GivenIAddTheConsultationParameterWithEndDateOnly()
+		{
+			var backDate = DateTime.UtcNow.AddDays(-1);
+			var futureDate = DateTime.UtcNow.AddDays(-1);
+			//var startDate = backDate.ToString("yyyy-MM-dd");
+			var endDate = futureDate.ToString("yyyy-MM-dd");
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(null,endDate)),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+		}
+
+		[Given(@"I add the consultation parameter with consultationSearchPeriod partParameter startDate greater than endDate")]
+		public void GivenIAddTheConsultationParameterWithConsultationSearchPeriodParameterStartDateGreaterThanEndDate()
+		{
+			var backDate = DateTime.UtcNow.AddDays(-5);
+			var futureDate = DateTime.UtcNow.AddDays(-6);
+			var startDate = backDate.ToString("yyyy-MM-dd");
+			var endDate = futureDate.ToString("yyyy-MM-dd");
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+		}
+
+		[Given(@"I add the consultation parameter with consultationsMostRecent partParameter")]
+		public void GivenIAddTheConsultationParameterWithConsultationMostRecentPartParameter()
+		{
+			var backDate = DateTime.UtcNow.AddDays(-10);
+			var futureDate = DateTime.UtcNow.AddDays(-5);
+			var startDate = backDate.ToString("yyyy-MM-dd");
+			var endDate = futureDate.ToString("yyyy-MM-dd");
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base) new Integer(3)),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+		}
+
+		[Given(@"I add the consultation parameter with both partParameters")]
+		public void GivenIAddTheConsultationParameterWithWithBothPartParameter()
+		{
+			var backDate = DateTime.UtcNow.AddDays(-10);
+			var futureDate = DateTime.UtcNow.AddDays(-5);
+			var startDate = backDate.ToString("yyyy-MM-dd");
+			var endDate = futureDate.ToString("yyyy-MM-dd");
+
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base) new Integer(4)),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+		}
+
+
+		[Given(@"I send an unknownConsultations parameterName containing valid part parameter")]
+		public void GivenISendAnUnknownConsultationsParameterNameContainingValidPartParameters()
+		{
+			var backDate = DateTime.UtcNow.AddDays(-10);
+			var futureDate = DateTime.UtcNow.AddDays(5);
+			var startDate = backDate.ToString("yyyy-MM-dd");
+			var endDate = futureDate.ToString("yyyy-MM-dd");
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add("unknownConsultations", tuples);
+		}
+
+		[Given(@"I add a madeUp consultations part parameter")]
+		public void GivenIAddAMadeUpConsultationPartParameter()
+		{
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create("madeUp", (Base)new FhirString ("madeUpValue1")),
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+
+		}
+
+		[Given(@"I set a consultations period parameter ""([^ ""]*)"" to ""([^ ""]*)""")]
+		public void GivenISetAConsultationsPeriodParameterTo(string startDate, string endDate)
+		{
+					   			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate))
+			};
+			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+
+		}
+
+
     }
 
 

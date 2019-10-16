@@ -60,7 +60,10 @@ Scenario: Structured request sent with valid partParameter for includeAllergies 
 Scenario: Structured request sent with multpile parameters expected success and no operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
-		And I send a request that contains known multiple structured parameters including optional part parameters
+		And I add the Problems parameter
+		And I add the includeConsultations parameter only
+		And I add the immunizations parameter
+		And I add the uncategorised data parameter
     When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the patient resource in the bundle should contain meta data profile and version id
@@ -93,7 +96,7 @@ Scenario: Structured request sent with multiple parameters and part parameters w
 Scenario: Structured request sent with two invalid parameters expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" using an invalid parameter type
-		And I send an invalid Consultations parameter containing valid part parameters
+		And I send an unknownConsultations parameterName containing valid part parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"

@@ -153,7 +153,7 @@
 		public void checkTheOperationOutcomeParameterNotFoundFor(string parameter, string partparameter)
 		{
 			var entries = _httpContext.FhirResponse.Entries;
-			
+
 
 
 			entries.ForEach(entry =>
@@ -218,16 +218,6 @@
 			Given($"I add the medication parameter with includePrescriptionIssues set to \"false\"");
 		}
 
-		[Given(@"I send a request that contains known multiple structured parameters including optional part parameters")]
-		public void GivenISendARequestThatContainsKnownMultipleStructuredParametersIncludingOptionalPartParameters()
-		{
-			Given($"I add the allergies parameter with resolvedAllergies set to \"true\"");
-			Given($"I add the immunizations parameter");
-			Given($"I add the uncategorised data parameter");
-			// not yet developed in 1.3.1 Given($"I add the consultation parameter with optional parameters");
-			Given($"I add the problems parameter");
-
-		}
 
 		[Given(@"I duplicate a parameter")]
 		public void GivenIDuplicateParameter()
@@ -261,47 +251,6 @@
 				};
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kAllergies, tuples);
 
-		}
-
-		[Given(@"I add the consultation parameter with optional parameters")]
-		public void GivenIAddTheConsultationParameterWithOptionalParameters()
-		{
-			var backDate = DateTime.UtcNow.AddDays(-10);
-			var futureDate = DateTime.UtcNow.AddDays(-5);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
-
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
-				//can only have one of the partParameters
-			//	Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base)new FhirString("3"))
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-		}
-
-		[Given(@"I send an invalid Consultations parameter containing valid part parameters")]
-		public void GivenISendAnInvalidConsultationsParameterContainingValidPartParameters()
-		{
-			var backDate = DateTime.UtcNow.AddDays(-10);
-			var futureDate = DateTime.UtcNow.AddDays(5);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
-
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base)new FhirString("3"))
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add("Consultations", tuples);
-		}
-
-		[Given(@"I add the problems parameter")]
-		public void GivenIAddTheProblemsParameter()
-		{
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				//not yet dev in 1.3.1 Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new FhirString ("active")),
-				//not yet dev in 1.3.1 Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new FhirString ("major"))
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
 		}
 
 		[Given(@"I add 2 success and 2 unsupported with invalid parameters details")]
