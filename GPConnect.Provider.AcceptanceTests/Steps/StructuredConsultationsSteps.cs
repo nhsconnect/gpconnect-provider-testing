@@ -597,16 +597,6 @@
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add("unknownConsultations", tuples);
 		}
 
-		[Given(@"I add a madeUp consultations part parameter")]
-		public void GivenIAddAMadeUpConsultationPartParameter()
-		{
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create("madeUp", (Base)new FhirString ("madeUpValue1")),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-
-		}
-
 		[Given(@"I set a consultations period parameter ""([^ ""]*)"" to ""([^ ""]*)""")]
 		public void GivenISetAConsultationsPeriodParameterTo(string startDate, string endDate)
 		{
