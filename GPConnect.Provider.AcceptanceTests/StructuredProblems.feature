@@ -60,6 +60,10 @@ Scenario Outline: Retrieve problems structured record with significance partPara
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
 		And check the response does not contain an operation outcome
 Examples:  
 	| value |
@@ -79,15 +83,20 @@ Scenario Outline: Retrieve problems structured record with status and significan
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "patient2"
 		And the Patient Id should be valid
+		And I Check The Problems List
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
 		And check the response does not contain an operation outcome
 Examples: 
 	| statusValue | sigValue |
 	| active      | major    |
 	| active      | minor    |
-	| inactive    | major    |
-	| inactive    | minor    |
+	#| inactive    | major    |
+	#| inactive    | minor    |
 
 Scenario: Retrieve problems structured record for a patient that has no problems data
 	Given I configure the default "GpcGetStructuredRecord" request

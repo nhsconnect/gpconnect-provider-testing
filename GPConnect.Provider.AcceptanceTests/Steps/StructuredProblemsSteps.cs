@@ -126,7 +126,7 @@
                 if (problemExtensions.Count == 1)
                 {
                     CodeableConcept clinicalSetting = (CodeableConcept)problemExtensions.First().Value;
-                    clinicalSetting.Coding.First().Code.ShouldBe("major");
+                    clinicalSetting.Coding.First().Code.ShouldBeOneOf("major", "minor");
                 }
 
                 //Check identifier
