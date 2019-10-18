@@ -240,8 +240,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         if (tableBannerText2Matches.Count >= 1)
                             matchflag = true;
 
-                        if (matchflag)
-                            matchflag.ShouldBeTrue("All data items text not found");
+                        matchflag.ShouldBeTrue("All data items text not found");
 
                     }
                 }
@@ -431,9 +430,65 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
+        [Then(@"The Response HTML ""([^""]*)"" Should Contain The date banner Class Attribute")]
+        public void ThenTheResponseHTMLShouldContainThedatebannerClassAttribute(string headingsToFind)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        //Split List Of Headers into List
+                        var headerList = headingsToFind.Split(',');
 
+                        var html = section.Text.Div;
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(html);
+                        headerList.ToList().ForEach(headerToFind =>
+                        {
+                            //var testHTML = "<h1>Summary</h1><div><h2>Last 3 Encounters</h2><div class=\"gptransfer-banner\"><p>GP transfer banner</p></div><div class=\"content-banner\"><p>Content banner</p></div><div class=\"date-banner\"><p>All relevant items</p></div><div>";
+                            //htmlDoc.LoadHtml(testHTML);
 
+                            var headingNode = htmlDoc.DocumentNode.Descendants("h2").Where(t => t.InnerHtml.Equals(headerToFind)).FirstOrDefault();
 
+                            if (headingNode != null)
+                            {
+                                //looping all div's as there maybe many banner divs
+                                var allDivNodes = headingNode.ParentNode.ChildNodes
+                                    .Where(c => c.Name == "div")
+                                    .ToList();
+
+                                var found = false;
+                                allDivNodes.ForEach(i =>
+                                {
+                                    var foundAttrib = i.Attributes.Where(a => a.Value == "date-banner");
+                                    if (foundAttrib.Count() >= 1)
+                                    {
+                                        found = true;
+                                        Logger.Log.WriteLine("Found Div with Attribute class = date-banner - under Heading : " + headerToFind);
+                                    }
+                                });
+
+                                if (!found)
+                                    Assert.Fail("No date-banner class attribute found for heading H2:" + headerToFind);
+                            }
+                            else
+                            {
+                                Assert.Fail("Heading H2 : " + headerToFind + " - Not Found, so unable to check for date-banner class attribute");
+
+                            }
+                        });
+                
+                    }
+                }
+            }
         }
+
+
+
+
+    }
     }
 
