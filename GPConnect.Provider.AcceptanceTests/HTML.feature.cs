@@ -772,13 +772,25 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Check html Date banners have the date-banner class attribute")]
+        [NUnit.Framework.DescriptionAttribute("Check html Date banners have the date banner class attribute")]
         [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,C" +
             "urrent Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current" +
-            " Repeat Medication,pete2", null)]
-        public virtual void CheckHtmlDateBannersHaveTheDate_BannerClassAttribute(string patient, string code, string headingsToCheck, string[] exampleTags)
+            " Repeat Medication", "h2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ADM", "Administrative Items", "h1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reaction" +
+            "s", "h2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "CLI", "Clinical Items", "h1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ENC", "Encounters", "h1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "IMM", "Immunisations", "h1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat M" +
+            "edication,All Medication,All Medication Issues", "h2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "OBS", "Observations", "h1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Prob" +
+            "lems and Issues", "h2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "REF", "Referrals", "h1", null)]
+        public virtual void CheckHtmlDateBannersHaveTheDateBannerClassAttribute(string patient, string code, string headingsToCheck, string headingType, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check html Date banners have the date-banner class attribute", null, exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check html Date banners have the date banner class attribute", null, exampleTags);
 #line 418
  this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -799,8 +811,8 @@ this.FeatureBackground();
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 425
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 426
-  testRunner.And(string.Format("The Response HTML \"{0}\" Should Contain The date banner Class Attribute", headingsToCheck), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 427
+  testRunner.And(string.Format("The HTML \"{0}\" of the type \"{1}\" Should Contain The date banner Class Attribute", headingsToCheck, headingType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

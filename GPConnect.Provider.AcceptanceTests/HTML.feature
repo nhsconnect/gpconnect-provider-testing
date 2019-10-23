@@ -415,7 +415,7 @@ Scenario Outline: check when no date range supplied should contain default date 
 
 
 	#202  -PG 18-10-2019
-	Scenario Outline: Check html Date banners have the date-banner class attribute
+	Scenario Outline: Check html Date banners have the date banner class attribute
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "<Patient>"
@@ -423,15 +423,17 @@ Scenario Outline: check when no date range supplied should contain default date 
 		Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And The Response HTML "<HeadingsToCheck>" Should Contain The date banner Class Attribute
+		And The HTML "<HeadingsToCheck>" of the type "<HeadingType>" Should Contain The date banner Class Attribute
 	Examples:
-		 | Patient  | Code | HeadingsToCheck                                                                                                                                                                     |
-		 | patient2 | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication,pete2 |
-		 #| patient2 | SUM  | Last 3 Encounters   |
-		 #| Patient  | Code | TableIDToCheck   | DateColumns |
-		 #| patient2 | SUM  | all-tab-curr     | 1           |
-		 #| patient2 | SUM  | enc-tab          | 1           |
-		 #| patient2 | SUM  | med-tab-acu-med  | 2           |
-		 #| patient2 | SUM  | med-tab-curr-rep | 2,6,9       |
-		 #| patient2 | SUM  | prb-tab-act      | 1           |
-		 #| patient2 | SUM  | prb-tab-majinact | 1,2         |
+		 | Patient  | Code | HeadingsToCheck                                                                                                                                                                     | HeadingType |
+		 | patient2 | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication | h2          |
+		 | patient2 | ADM  | Administrative Items                                                                                                                                                                | h1          |
+		 | patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                  | h2          |
+		 | patient2 | CLI  | Clinical Items                                                                                                                                                                      | h1          |
+		 | patient2 | ENC  | Encounters                                                                                                                                                                          | h1          |
+		 | patient2 | IMM  | Immunisations                                                                                                                                                                       | h1          |
+		 | patient2 | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                     | h2          |
+		 | patient2 | OBS  | Observations                                                                                                                                                                        | h1          |
+		 | patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                    | h2          |
+		 | patient2 | REF  | Referrals                                                                                                                                                                         | h1          |
+		
