@@ -25,7 +25,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "Html.feature"
+#line 1 "HTML.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
