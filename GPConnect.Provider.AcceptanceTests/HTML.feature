@@ -345,6 +345,7 @@ Scenario Outline: check when no date range supplied should contain default date 
 
 
 	#202  -PG 14-8-2019
+	@0.7.2
 	Scenario Outline: Check html table ids are present and in correct order
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -368,6 +369,7 @@ Scenario Outline: check when no date range supplied should contain default date 
 		 | patient2 | SUM  | enc-tab,prb-tab-act,prb-tab-majinact,all-tab-curr,med-tab-acu-med,med-tab-curr-rep |
 
 	#202  -PG 15-8-2019
+	@0.7.2
 	Scenario Outline: Check html tables have date column class attribute for date columns
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -403,18 +405,9 @@ Scenario Outline: check when no date range supplied should contain default date 
 		 | patient2 | SUM  | prb-tab-act      | 1           |
 		 | patient2 | SUM  | prb-tab-majinact | 1,2         |
 
-		 #202 - Check Gp Transfer banner add test
-
-		 #And check for this text from tim - check in Spec
-		 #Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing
-
-		 ##also add in check for 
-		 #date-banner
-		 #med-item-column
-		 #grouping 
-
 
 	#202  -PG 18-10-2019
+	@0.7.2
 	Scenario Outline: Check html Date banners have the date banner class attribute
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -437,3 +430,51 @@ Scenario Outline: check when no date range supplied should contain default date 
 		 | patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                    | h2          |
 		 | patient2 | REF  | Referrals                                                                                                                                                                         | h1          |
 		
+
+	#202  -PG 24-10-2019
+	@0.7.2
+	Scenario Outline: Check HTML response includes GP Transfer banners
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		When I request the FHIR "gpc.getcarerecord" Patient Type operation
+		Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		#And The HTML "<HeadingsToCheck>" of the type "<HeadingType>" Should Contain The date banner Class Attribute
+	Examples:
+		 | Patient  | Code | HeadingsToCheck                                                                                                                                                                     | HeadingType |
+		 | patient13 | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication | h2          |
+		 #| patient2 | ADM  | Administrative Items                                                                                                                                                                | h1          |
+		 #| patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                  | h2          |
+		 #| patient2 | CLI  | Clinical Items                                                                                                                                                                      | h1          |
+		 #| patient2 | ENC  | Encounters                                                                                                                                                                          | h1          |
+		 #| patient2 | IMM  | Immunisations                                                                                                                                                                       | h1          |
+		 #| patient2 | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                     | h2          |
+		 #| patient2 | OBS  | Observations                                                                                                                                                                        | h1          |
+		 #| patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                    | h2          |
+		 #| patient2 | REF  | Referrals   
+		 
+		
+
+	#202  -PG 24-10-2019
+	@0.7.2
+	Scenario Outline: Check HTML Medication Views and the Grouping of Entries
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		When I request the FHIR "gpc.getcarerecord" Patient Type operation
+		Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And I Check All Medication Issues are summarised correctly in All Medications
+		#And The Grouped Sections Exist in Table "<TablesToCheck>"
+	Examples:
+		 | Patient  | Code | TablesToCheck    |
+		 | patient2 | MED  | med-tab-all-sum,med-tab-all-iss |
+
+
+ #TODO (or finish)
+		 #202 - Check Gp Transfer banner add test
+		 #And check for this text from tim - check in Spec
+		 #Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing

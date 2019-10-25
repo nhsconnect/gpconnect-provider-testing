@@ -414,9 +414,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     HttpContext.SaveHTMLReponseToDisk(Path.Combine(scenarioDirectory, "HTMLResponse.txt"));
                 }
-                catch
+                catch(Exception Ex)
                 {
-                    Log.WriteLine("Exception writing HTMLResponse to Output File - Reponse May not Include HTML");
+                    Log.WriteLine("Exception writing HTMLResponse to Output File - Reponse May not Include HTML. Exception Message : " + Ex.Message);
                 }
             }
 

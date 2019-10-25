@@ -10,6 +10,8 @@ using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
 using HtmlAgilityPack;
 using System.Linq;
+using GPConnect.Provider.AcceptanceTests.Data;
+using System.Collections.Generic;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
@@ -129,6 +131,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         var headerList = listOfTableHeadersInOrder.Split(',');
                         Regex regexHeaderSection = new Regex("<thead[\\w\\W]*?thead>");
                         MatchCollection tableHeaderSectionMatches = regexHeaderSection.Matches(html);
+
                         if (tableHeaderSectionMatches.Count < pageSectionIndex) {
                             Log.WriteLine("The table header count doesn't match the expected.");
                             Assert.Fail("The table header count doesn't match the expected.");
@@ -358,6 +361,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
+        //202  -PG 24-10-2019
         [Then(@"the html table ""([^""]*)"" has a date-column class attribute on these ""([^""]*)""")]
         public void TheHtmlTtableHasaDateColumnClassAttributeOnTheHtmlResponsetableColumns(string TableId, string ListOfColumnsToCheck)
         {
@@ -430,6 +434,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
+        //202  -PG 24-10-2019
         [Then(@"The HTML ""([^""]*)"" of the type ""([^""]*)"" Should Contain The date banner Class Attribute")]
         public void ThenTheResponseHTMLShouldContainThedatebannerClassAttribute(string headingsToFind, string headingType)
         {
@@ -507,9 +512,189 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        //202  -PG 24-10-2019
+        [Then(@"The Grouped Sections Exist in Table ""(.*)""")]
+        public void AndTheGroupedSectionsExistinTable(string tablesToCheck)
+        {
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var tablesList = tablesToCheck.Split(',');
+                        var html = section.Text.Div;
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(html);
 
 
+                        tablesList.ToList().ForEach(tableToCheck =>
+                        {
+
+                            var table = htmlDoc.DocumentNode.Descendants("table").Where(t => t.Id.Equals(tableToCheck)).FirstOrDefault();
+
+                            if (table != null)
+                            {
+                                //String groupItemFound
+                                foreach (HtmlNode row in table.SelectNodes("./tbody//tr"))
+                                {
+                                    var tdNodes = row.SelectNodes(".//td");
+
+                                    //If to ignore Grouped by row
+                                    if (tdNodes.ToArray().Count() != 1)
+                                    {
+
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                var failureMessage = ("Unable to Check Grouping Exists Becuase Table Not Found : " + tableToCheck);
+                                Log.WriteLine(failureMessage);
+                                Assert.Fail(failureMessage);
+                            }
+
+                        });
+
+                    }
+                }
+            }
+        }
+
+
+        //202  -PG 25-10-2019
+        [Then(@"I Check All Medication Issues are summarised correctly in All Medications")]
+        public void ICheckAllMedicationIssuesaresummarisedcorrectlyinAllMedications()
+        {
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        //var tablesList = tablesToCheck.Split(',');
+                        var html = section.Text.Div;
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(html);
+
+                        var AllMedsTableID = "med-tab-all-sum";
+                        var AllMedIssuesTableID = "med-tab-all-iss";
+                        
+                        var allMedIssuesstable = htmlDoc.DocumentNode.Descendants("table").Where(t => t.Id.Equals(AllMedIssuesTableID)).FirstOrDefault();
+
+                        List<AllMedicationIssues> readAllMedIssues = new List<AllMedicationIssues>();
+
+                        if (allMedIssuesstable != null)
+                        { 
+                            foreach (HtmlNode row in allMedIssuesstable.SelectNodes("./tbody//tr"))
+                            {
+                                var tdNodes = row.SelectNodes(".//td");
+                                if (tdNodes.ToArray().Count() != 1)
+                                {
+
+                                    AllMedicationIssues newAllMedIssuesrecord = new AllMedicationIssues();
+
+                                    newAllMedIssuesrecord.Type = tdNodes[0].InnerHtml;
+                                    newAllMedIssuesrecord.IssueDate = tdNodes[1].InnerHtml;
+                                    newAllMedIssuesrecord.MedicationItem = tdNodes[2].InnerHtml;
+                                    newAllMedIssuesrecord.DosageInstruction = tdNodes[3].InnerHtml;
+                                    newAllMedIssuesrecord.Quantity = tdNodes[4].InnerHtml;
+                                    newAllMedIssuesrecord.DaysDuration = tdNodes[5].InnerHtml;
+                                    newAllMedIssuesrecord.AdditionalInformation = tdNodes[6].InnerHtml;
+
+                                    readAllMedIssues.Add(newAllMedIssuesrecord);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var failureMessage = ("Unable to Check All Issues as Table Not Found : " + allMedIssuesstable);
+                            Log.WriteLine(failureMessage);
+                            Assert.Fail(failureMessage);
+                        }
+
+                        var MedItemGroupingQuery = from medIssue in readAllMedIssues
+                                                    group medIssue by new { medIssue.Type, medIssue.MedicationItem, medIssue.DosageInstruction, medIssue.Quantity, medIssue.DaysDuration, medIssue.AdditionalInformation } into g
+                                                    orderby g.Key.MedicationItem
+                                                    select new { Type = g.Key.Type, StartDate = g.Min(x => Convert.ToDateTime(x.IssueDate)),MedicationItem = g.Key.MedicationItem, DosageInstruction = g.Key.DosageInstruction,Quantity = g.Key.Quantity ,LastIssued = g.Max(x => Convert.ToDateTime(x.IssueDate)),AdditionalInfo = g.Key.AdditionalInformation, NumberOfPrescriptionsIssued = g.Count()};
+
+
+                        var allMedstable = htmlDoc.DocumentNode.Descendants("table").Where(t => t.Id.Equals(AllMedsTableID)).FirstOrDefault();
+
+                        //Compare grouped results from "All Medication Issues" with "All Medication" Table
+                        MedItemGroupingQuery.ToList().ForEach(item =>
+                        {
+                            if (CheckTableHasARowThatMatches(allMedstable, item))
+                            {
+                                var message = ("Matched Table Row.\n Looking For : " + item.ToString());
+                                Log.WriteLine(message);
+                            }
+                            else
+                            {
+                                Assert.Fail("Failed to Find Row in All Medication Table That matched the Grouped Entry From the \"All Medication Issues Table\".\n Could not Find : " + item.ToString());
+                            }
+
+                        });                   
+
+                    }
+                }
+            }
+
+
+        }
+
+        //202  -PG 25-10-2019
+        public bool CheckTableHasARowThatMatches(HtmlNode htmlNode, dynamic groupedResult)
+        {
+            var foundFlag = false;
+            if (htmlNode != null)
+            {
+
+                //use a for loop to check the order at the same time.
+
+                foreach (HtmlNode row in htmlNode.SelectNodes("./tbody//tr"))
+                {
+                    var tdNodes = row.SelectNodes(".//td");
+
+                    //Ignore Grouping Rows
+                    if (tdNodes.ToArray().Count() != 1)
+                    {
+                        //Loop Each Node and see if any row matches
+                        if (tdNodes[0].InnerHtml == groupedResult.Type 
+                            && Convert.ToDateTime(tdNodes[1].InnerHtml) == groupedResult.StartDate
+                            && tdNodes[2].InnerHtml == groupedResult.MedicationItem
+                            && tdNodes[3].InnerHtml == groupedResult.DosageInstruction
+                            && tdNodes[4].InnerHtml == groupedResult.Quantity
+                            && Convert.ToDateTime(tdNodes[5].InnerHtml) == groupedResult.LastIssued
+                            && Convert.ToInt32(tdNodes[6].InnerHtml) == groupedResult.NumberOfPrescriptionsIssued
+                            && tdNodes[8].InnerHtml == groupedResult.AdditionalInfo
+                            )
+                        {
+                            foundFlag = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var failureMessage = ("Unable to Check ALL Medication Data as Table Not Found" );
+                Log.WriteLine(failureMessage);
+                Assert.Fail(failureMessage);
+            }
+
+
+            if (foundFlag)
+                return true;
+            else
+                return false;
+        }
 
     }
-    }
+}
 
