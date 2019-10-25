@@ -627,19 +627,40 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         var allMedstable = htmlDoc.DocumentNode.Descendants("table").Where(t => t.Id.Equals(AllMedsTableID)).FirstOrDefault();
 
                         //Compare grouped results from "All Medication Issues" with "All Medication" Table
-                        MedItemGroupingQuery.ToList().ForEach(item =>
-                        {
-                            if (CheckTableHasARowThatMatches(allMedstable, item))
-                            {
-                                var message = ("Matched Table Row.\n Looking For : " + item.ToString());
-                                Log.WriteLine(message);
-                            }
-                            else
-                            {
-                                Assert.Fail("Failed to Find Row in All Medication Table That matched the Grouped Entry From the \"All Medication Issues Table\".\n Could not Find : " + item.ToString());
-                            }
 
-                        });                   
+
+                        CheckAllMedsTableMatchesGroupedResultsFromAllMedIssues(allMedstable, MedItemGroupingQuery);
+
+                        //todo convert to using for loop and pass index into function so we can check position in table at same time
+                        
+                        //for (int i = 0; i < MedItemGroupingQuery.Count()-1; i++)
+                        //{
+                        //    if (CheckTableHasARowThatMatches(allMedstable, MedItemGroupingQuery.ToArray()[i],i))
+                        //    {
+                        //        var message = ("Matched Table Row.\n Looking For : " + MedItemGroupingQuery.ToArray()[i].ToString());
+                        //        Log.WriteLine(message);
+                        //    }
+                        //    else
+                        //    {
+                        //        Assert.Fail("Failed to Find Row in All Medication Table That matched the Grouped Entry From the \"All Medication Issues Table\".\n Could not Find : " + MedItemGroupingQuery.ToArray()[i].ToString());
+                        //    }
+
+
+                        //}
+
+                        //MedItemGroupingQuery.ToList().ForEach(item =>
+                        //{
+                        //    if (CheckTableHasARowThatMatches(allMedstable, item))
+                        //    {
+                        //        var message = ("Matched Table Row.\n Looking For : " + item.ToString());
+                        //        Log.WriteLine(message);
+                        //    }
+                        //    else
+                        //    {
+                        //        Assert.Fail("Failed to Find Row in All Medication Table That matched the Grouped Entry From the \"All Medication Issues Table\".\n Could not Find : " + item.ToString());
+                        //    }
+
+                        //});                   
 
                     }
                 }
@@ -649,13 +670,48 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         //202  -PG 25-10-2019
-        public bool CheckTableHasARowThatMatches(HtmlNode htmlNode, dynamic groupedResult)
+        
+        //public bool CheckTableHasARowThatMatches(HtmlNode htmlNode, dynamic groupedResult,int indexToCheck)
+        public bool CheckAllMedsTableMatchesGroupedResultsFromAllMedIssues(HtmlNode htmlNode, IEnumerable<dynamic> groupedResults)
         {
             var foundFlag = false;
             if (htmlNode != null)
             {
 
+
                 //use a for loop to check the order at the same time.
+                var AllRows = htmlNode.SelectNodes("./tbody//tr");
+                var filteredRows = AllRows.ToList().Where(r => r.SelectNodes(".//td").Count() != 1);
+
+                //to check order loop Grouped Antries We Expect
+                for (int i = 0; i < groupedResults.Count() - 1; i++)
+                {
+
+                    //Loop Rows in All Meds to See if they match outter loop
+                    for (int r = 0; r < filteredRows.Count() - 1; r++)
+                    {
+                        var tdNodes = filteredRows.ToArray()[r].SelectNodes(".//td");
+
+                        if ( groupedResults.ToArray()[i].Type == tdNodes[0].InnerHtml
+                            && groupedResults.ToArray()[i].StartDate == tdNodes[1].InnerHtml
+
+                            )
+                        {
+
+                        }
+                        else
+                        {
+                            Assert.Fail(failureMessage);
+                        }
+
+                    }
+
+
+                }
+
+
+
+               
 
                 foreach (HtmlNode row in htmlNode.SelectNodes("./tbody//tr"))
                 {
