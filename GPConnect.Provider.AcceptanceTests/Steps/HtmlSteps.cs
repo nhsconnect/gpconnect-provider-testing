@@ -512,59 +512,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
-        //202  -PG 24-10-2019
-        [Then(@"The Grouped Sections Exist in Table ""(.*)""")]
-        public void AndTheGroupedSectionsExistinTable(string tablesToCheck)
-        {
-
-            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
-            {
-                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
-                {
-                    Composition composition = (Composition)entry.Resource;
-                    foreach (Composition.SectionComponent section in composition.Section)
-                    {
-                        var tablesList = tablesToCheck.Split(',');
-                        var html = section.Text.Div;
-                        var htmlDoc = new HtmlDocument();
-                        htmlDoc.LoadHtml(html);
-
-
-                        tablesList.ToList().ForEach(tableToCheck =>
-                        {
-
-                            var table = htmlDoc.DocumentNode.Descendants("table").Where(t => t.Id.Equals(tableToCheck)).FirstOrDefault();
-
-                            if (table != null)
-                            {
-                                //String groupItemFound
-                                foreach (HtmlNode row in table.SelectNodes("./tbody//tr"))
-                                {
-                                    var tdNodes = row.SelectNodes(".//td");
-
-                                    //If to ignore Grouped by row
-                                    if (tdNodes.ToArray().Count() != 1)
-                                    {
-
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                var failureMessage = ("Unable to Check Grouping Exists Becuase Table Not Found : " + tableToCheck);
-                                Log.WriteLine(failureMessage);
-                                Assert.Fail(failureMessage);
-                            }
-
-                        });
-
-                    }
-                }
-            }
-        }
-
-
+        
         //202  -PG 25-10-2019
         [Then(@"I Check All Medication Issues are summarised correctly in All Medications")]
         public void ICheckAllMedicationIssuesaresummarisedcorrectlyinAllMedications()
@@ -679,6 +627,84 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             if (!foundValidHTMLFlag)
                 Assert.Fail("Test Step Failed as No Valid HTML wasd Found or Tested");
 
+        }
+
+
+        //202  -PG 26-10-2019 - Function to check that the grouping html is correct and has class 
+        [Then(@"The Grouped Sections Are Valid And Have Class Attributes")]
+        public void AndTheGroupedSectionsExistinTable()
+        {
+
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+
+                        string tablesToCheck = "med-tab-all-sum,med-tab-all-iss";
+                        var tablesList = tablesToCheck.Split(',');
+                        var html = section.Text.Div;
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(html);
+
+                        tablesList.ToList().ForEach(tableToCheck =>
+                        {
+
+                            var table = htmlDoc.DocumentNode.Descendants("table").Where(t => t.Id.Equals(tableToCheck)).FirstOrDefault();
+
+                            if (table != null)
+                            {
+                                string currentGrouping = "";
+                                int countDataRowsFound = 0;
+
+                                foreach (HtmlNode row in table.SelectNodes("./tbody//tr"))
+                                {
+                                    var tdNodes = row.SelectNodes(".//td");
+                                    
+                                    //If Grouped By Row
+                                    if (tdNodes.ToArray().Count() == 1)
+                                    {
+                                        //get Grouping Text
+                                        currentGrouping = tdNodes[0].InnerText;
+                                        countDataRowsFound = 0;
+
+                                        //Check grouping Row has Class Attribute med-item-column
+                                        tdNodes[0].Attributes["class"].Value.Equals("med-item-column").ShouldBeTrue("Failed to Find med-item-column Class on Grouping Row In Table");
+                                        Logger.Log.WriteLine("Table : " + tableToCheck + " - Found med-item-column Class Attribute for Grouping : " + currentGrouping);
+
+                                    }
+                                    //Else Data Row
+                                    else
+                                    {
+                                        if (tdNodes[2].InnerHtml == currentGrouping)
+                                        {
+                                            countDataRowsFound++;
+                                            string message = "Table : " + tableToCheck + " - Grouping : " + currentGrouping +  " Has Matched Medical Item\n\tExpected : " + currentGrouping + "\n\tMedical item " + countDataRowsFound + " - Actual : " + tdNodes[2].InnerHtml;
+                                            Logger.Log.WriteLine(message);
+                                        }
+                                        else
+                                        {
+                                            string failureMessage = "Table : " + tableToCheck + " - Medical Item Does Not Match Grouping : " + currentGrouping + "\n\tExpected : " + currentGrouping + "\n\tMedical Item " + countDataRowsFound + " - Actual : " + tdNodes[2].InnerHtml;
+                                            Logger.Log.WriteLine(failureMessage);
+                                            Assert.Fail(failureMessage);
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                var failureMessage = ("Unable to Check Grouping Exists Becuase Table Not Found : " + tableToCheck);
+                                Log.WriteLine(failureMessage);
+                                Assert.Fail(failureMessage);
+                            }
+
+                        });
+
+                    }
+                }
+            }
         }
 
 

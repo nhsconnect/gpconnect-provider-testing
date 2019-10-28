@@ -880,16 +880,10 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check HTML Medication Views and the Grouping of Entries")]
         [NUnit.Framework.CategoryAttribute("0.7.2")]
-        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "med-tab-all-sum,med-tab-all-iss", null)]
-        public virtual void CheckHTMLMedicationViewsAndTheGroupingOfEntries(string patient, string code, string tablesToCheck, string[] exampleTags)
+        public virtual void CheckHTMLMedicationViewsAndTheGroupingOfEntries()
         {
-            string[] @__tags = new string[] {
-                    "0.7.2"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check HTML Medication Views and the Grouping of Entries", null, @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check HTML Medication Views and the Grouping of Entries", null, new string[] {
+                        "0.7.2"});
 #line 462
  this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -901,7 +895,8 @@ this.FeatureBackground();
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 465
-  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I author a request for the \"MED\" care record section for config patient \"patient2" +
+                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 466
   testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 467
@@ -912,6 +907,8 @@ this.FeatureBackground();
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 470
   testRunner.And("I Check All Medication Issues are summarised correctly in All Medications", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 472
+  testRunner.And("The Grouped Sections Are Valid And Have Class Attributes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

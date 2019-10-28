@@ -459,22 +459,18 @@ Scenario Outline: check when no date range supplied should contain default date 
 
 	#202  -PG 24-10-2019
 	@0.7.2
-	Scenario Outline: Check HTML Medication Views and the Grouping of Entries
+	Scenario: Check HTML Medication Views and the Grouping of Entries
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
-		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		And I author a request for the "MED" care record section for config patient "patient2"
 		When I request the FHIR "gpc.getcarerecord" Patient Type operation
 		Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And I Check All Medication Issues are summarised correctly in All Medications
-		#And The Grouped Sections Exist in Table "<TablesToCheck>"
-	Examples:
-		 | Patient  | Code | TablesToCheck    |
-		 | patient2 | MED  | med-tab-all-sum,med-tab-all-iss |
-
-
- #TODO (or finish)
+		And The Grouped Sections Are Valid And Have Class Attributes
+	
+		 #TODO (or finish)
 		 #202 - Check Gp Transfer banner add test
 		 #And check for this text from tim - check in Spec
 		 #Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing
