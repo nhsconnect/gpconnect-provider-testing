@@ -569,6 +569,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"I Check All Medication Issues are summarised correctly in All Medications")]
         public void ICheckAllMedicationIssuesaresummarisedcorrectlyinAllMedications()
         {
+            bool foundValidHTMLFlag = false;
 
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
@@ -577,7 +578,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Composition composition = (Composition)entry.Resource;
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
-                        //var tablesList = tablesToCheck.Split(',');
                         var html = section.Text.Div;
                         var htmlDoc = new HtmlDocument();
                         htmlDoc.LoadHtml(html);
@@ -587,6 +587,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         
                         var allMedIssuesstable = htmlDoc.DocumentNode.Descendants("table").Where(t => t.Id.Equals(AllMedIssuesTableID)).FirstOrDefault();
 
+                        //Scrape Data From All Med Issues Table
                         List<AllMedicationIssues> readAllMedIssues = new List<AllMedicationIssues>();
 
                         if (allMedIssuesstable != null)
@@ -618,138 +619,68 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             Assert.Fail(failureMessage);
                         }
 
+                        //Split data into groups expected to be seen in All Medication Table
                         var MedItemGroupingQuery = from medIssue in readAllMedIssues
                                                     group medIssue by new { medIssue.Type, medIssue.MedicationItem, medIssue.DosageInstruction, medIssue.Quantity, medIssue.DaysDuration, medIssue.AdditionalInformation } into g
                                                     orderby g.Key.MedicationItem
                                                     select new { Type = g.Key.Type, StartDate = g.Min(x => Convert.ToDateTime(x.IssueDate)),MedicationItem = g.Key.MedicationItem, DosageInstruction = g.Key.DosageInstruction,Quantity = g.Key.Quantity ,LastIssued = g.Max(x => Convert.ToDateTime(x.IssueDate)),AdditionalInfo = g.Key.AdditionalInformation, NumberOfPrescriptionsIssued = g.Count()};
 
 
-                        var allMedstable = htmlDoc.DocumentNode.Descendants("table").Where(t => t.Id.Equals(AllMedsTableID)).FirstOrDefault();
-
                         //Compare grouped results from "All Medication Issues" with "All Medication" Table
-
-
-                        CheckAllMedsTableMatchesGroupedResultsFromAllMedIssues(allMedstable, MedItemGroupingQuery);
-
-                        //todo convert to using for loop and pass index into function so we can check position in table at same time
                         
-                        //for (int i = 0; i < MedItemGroupingQuery.Count()-1; i++)
-                        //{
-                        //    if (CheckTableHasARowThatMatches(allMedstable, MedItemGroupingQuery.ToArray()[i],i))
-                        //    {
-                        //        var message = ("Matched Table Row.\n Looking For : " + MedItemGroupingQuery.ToArray()[i].ToString());
-                        //        Log.WriteLine(message);
-                        //    }
-                        //    else
-                        //    {
-                        //        Assert.Fail("Failed to Find Row in All Medication Table That matched the Grouped Entry From the \"All Medication Issues Table\".\n Could not Find : " + MedItemGroupingQuery.ToArray()[i].ToString());
-                        //    }
-
-
-                        //}
-
-                        //MedItemGroupingQuery.ToList().ForEach(item =>
-                        //{
-                        //    if (CheckTableHasARowThatMatches(allMedstable, item))
-                        //    {
-                        //        var message = ("Matched Table Row.\n Looking For : " + item.ToString());
-                        //        Log.WriteLine(message);
-                        //    }
-                        //    else
-                        //    {
-                        //        Assert.Fail("Failed to Find Row in All Medication Table That matched the Grouped Entry From the \"All Medication Issues Table\".\n Could not Find : " + item.ToString());
-                        //    }
-
-                        //});                   
-
-                    }
-                }
-            }
-
-
-        }
-
-        //202  -PG 25-10-2019
-        
-        //public bool CheckTableHasARowThatMatches(HtmlNode htmlNode, dynamic groupedResult,int indexToCheck)
-        public bool CheckAllMedsTableMatchesGroupedResultsFromAllMedIssues(HtmlNode htmlNode, IEnumerable<dynamic> groupedResults)
-        {
-            var foundFlag = false;
-            if (htmlNode != null)
-            {
-
-
-                //use a for loop to check the order at the same time.
-                var AllRows = htmlNode.SelectNodes("./tbody//tr");
-                var filteredRows = AllRows.ToList().Where(r => r.SelectNodes(".//td").Count() != 1);
-
-                //to check order loop Grouped Antries We Expect
-                for (int i = 0; i < groupedResults.Count() - 1; i++)
-                {
-
-                    //Loop Rows in All Meds to See if they match outter loop
-                    for (int r = 0; r < filteredRows.Count() - 1; r++)
-                    {
-                        var tdNodes = filteredRows.ToArray()[r].SelectNodes(".//td");
-
-                        if ( groupedResults.ToArray()[i].Type == tdNodes[0].InnerHtml
-                            && groupedResults.ToArray()[i].StartDate == tdNodes[1].InnerHtml
-
-                            )
+                        //CheckAllMedsTableMatchesGroupedResultsFromAllMedIssues(allMedstable, MedItemGroupingQuery);
+                        var allMedstable = htmlDoc.DocumentNode.Descendants("table").Where(t => t.Id.Equals(AllMedsTableID)).FirstOrDefault();
+                        if (allMedstable != null)
                         {
 
+                            var AllRows = allMedstable.SelectNodes("./tbody//tr");
+                            var AllMedsFilteredRows = AllRows.ToList().Where(r => r.SelectNodes(".//td").Count() != 1);
+
+                            //Check we have the correct number of rows (excluding Grouping Rows)
+                            AllMedsFilteredRows.Count().ShouldBe(MedItemGroupingQuery.Count(), "Number of Medication Items does not match what is Expected");
+
+                            //Check Order of summaried Items and each of the items fields matche the expected
+                            for (int i = 0; i < MedItemGroupingQuery.Count(); i++)
+                            {
+                                var tdNodes = AllMedsFilteredRows.ToArray()[i].SelectNodes(".//td");
+
+                                if (tdNodes[0].InnerHtml == MedItemGroupingQuery.ToArray()[i].Type
+                                  && Convert.ToDateTime(tdNodes[1].InnerHtml) == MedItemGroupingQuery.ToArray()[i].StartDate
+                                  && tdNodes[2].InnerHtml == MedItemGroupingQuery.ToArray()[i].MedicationItem
+                                  && tdNodes[3].InnerHtml == MedItemGroupingQuery.ToArray()[i].DosageInstruction
+                                  && tdNodes[4].InnerHtml == MedItemGroupingQuery.ToArray()[i].Quantity
+                                  && Convert.ToDateTime(tdNodes[5].InnerHtml) == MedItemGroupingQuery.ToArray()[i].LastIssued
+                                  && Convert.ToInt32(tdNodes[6].InnerHtml) == MedItemGroupingQuery.ToArray()[i].NumberOfPrescriptionsIssued
+                                  && tdNodes[8].InnerHtml == MedItemGroupingQuery.ToArray()[i].AdditionalInfo
+                                 )
+                                {
+                                    Logger.Log.WriteLine("All Medication row Verified for Entry : " + AllMedsFilteredRows.ToArray()[i].InnerHtml.ToString());
+                                    foundValidHTMLFlag = true;
+                                }
+                                else
+                                {
+                                    var failureMessage = ("Failed to Compare All Medications Row with Expected\n Expected : " + MedItemGroupingQuery.ToArray()[i].ToString() + "\nActual : " + AllMedsFilteredRows.ToArray()[i].InnerHtml.ToString());
+                                    Logger.Log.WriteLine(failureMessage);
+                                    Assert.Fail(failureMessage);
+                                }
+                            }
                         }
                         else
                         {
+                            var failureMessage = ("Unable to Find Table :" + AllMedsTableID);
+                            Log.WriteLine(failureMessage);
                             Assert.Fail(failureMessage);
                         }
-
-                    }
-
-
-                }
-
-
-
-               
-
-                foreach (HtmlNode row in htmlNode.SelectNodes("./tbody//tr"))
-                {
-                    var tdNodes = row.SelectNodes(".//td");
-
-                    //Ignore Grouping Rows
-                    if (tdNodes.ToArray().Count() != 1)
-                    {
-                        //Loop Each Node and see if any row matches
-                        if (tdNodes[0].InnerHtml == groupedResult.Type 
-                            && Convert.ToDateTime(tdNodes[1].InnerHtml) == groupedResult.StartDate
-                            && tdNodes[2].InnerHtml == groupedResult.MedicationItem
-                            && tdNodes[3].InnerHtml == groupedResult.DosageInstruction
-                            && tdNodes[4].InnerHtml == groupedResult.Quantity
-                            && Convert.ToDateTime(tdNodes[5].InnerHtml) == groupedResult.LastIssued
-                            && Convert.ToInt32(tdNodes[6].InnerHtml) == groupedResult.NumberOfPrescriptionsIssued
-                            && tdNodes[8].InnerHtml == groupedResult.AdditionalInfo
-                            )
-                        {
-                            foundFlag = true;
-                            break;
-                        }
                     }
                 }
-            }
-            else
-            {
-                var failureMessage = ("Unable to Check ALL Medication Data as Table Not Found" );
-                Log.WriteLine(failureMessage);
-                Assert.Fail(failureMessage);
+
             }
 
+            if (!foundValidHTMLFlag)
+                Assert.Fail("Test Step Failed as No Valid HTML wasd Found or Tested");
 
-            if (foundFlag)
-                return true;
-            else
-                return false;
         }
+
 
     }
 }
