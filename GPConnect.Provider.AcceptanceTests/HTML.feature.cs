@@ -841,10 +841,14 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check HTML response includes GP Transfer banners")]
         [NUnit.Framework.CategoryAttribute("0.7.2")]
-        [NUnit.Framework.TestCaseAttribute("patient13", "SUM", "Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,C" +
-            "urrent Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current" +
-            " Repeat Medication", "h2", null)]
-        public virtual void CheckHTMLResponseIncludesGPTransferBanners(string patient, string code, string headingsToCheck, string headingType, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("patient13", "SUM", "Summary", null)]
+        [NUnit.Framework.TestCaseAttribute("patient13", "ADM", "Administrative Items", null)]
+        [NUnit.Framework.TestCaseAttribute("patient13", "ALL", "Allergies and Adverse Reactions", null)]
+        [NUnit.Framework.TestCaseAttribute("patient13", "CLI", "Clinical Items", null)]
+        [NUnit.Framework.TestCaseAttribute("patient13", "ENC", "Encounters", null)]
+        [NUnit.Framework.TestCaseAttribute("patient13", "IMM", "Immunisations", null)]
+        [NUnit.Framework.TestCaseAttribute("patient13", "MED", "Medications", null)]
+        public virtual void CheckHTMLResponseIncludesGPTransferBanners(string patient, string code, string headingsToCheck, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "0.7.2"};
@@ -873,6 +877,8 @@ this.FeatureBackground();
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 443
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 444
+  testRunner.And(string.Format("The GP Transfer Banner is Present Below all Section \"{0}\"", headingsToCheck), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -884,30 +890,30 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check HTML Medication Views and the Grouping of Entries", null, new string[] {
                         "0.7.2"});
-#line 462
+#line 472
  this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 4
 this.FeatureBackground();
-#line 463
+#line 473
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 464
+#line 474
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 465
+#line 475
   testRunner.And("I author a request for the \"MED\" care record section for config patient \"patient2" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 466
+#line 476
   testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 467
+#line 477
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 468
+#line 478
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 469
+#line 479
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 470
+#line 480
   testRunner.And("I Check All Medication Issues are summarised correctly in All Medications", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 472
+#line 481
   testRunner.And("The Grouped Sections Are Valid And Have Class Attributes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

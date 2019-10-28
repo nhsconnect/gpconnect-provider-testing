@@ -441,12 +441,24 @@ Scenario Outline: check when no date range supplied should contain default date 
 		Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		#And The HTML "<HeadingsToCheck>" of the type "<HeadingType>" Should Contain The date banner Class Attribute
+		And The GP Transfer Banner is Present Below all Section "<HeadingsToCheck>"
 	Examples:
-		 | Patient  | Code | HeadingsToCheck                                                                                                                                                                     | HeadingType |
-		 | patient13 | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication | h2          |
-		 #| patient2 | ADM  | Administrative Items                                                                                                                                                                | h1          |
-		 #| patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                  | h2          |
+		 | Patient   | Code | HeadingsToCheck                 |
+		 | patient13 | SUM  | Summary                         |
+		 | patient13 | ADM  | Administrative Items            |
+		 | patient13 | ALL  | Allergies and Adverse Reactions |
+		 | patient13 | CLI  | Clinical Items                  |
+		 | patient13 | ENC  | Encounters                      |
+		 | patient13 | IMM  | Immunisations                   |
+		 | patient13 | MED  | Medications                     |
+		 
+		 | patient13 | OBS  | Observations                                                                                                                                                                        | h1          |
+		 #| patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                    | h2          |
+		 #| patient2 | REF  | Referrals   
+		 
+			#	 | patient13 | SUM  | Summary |
+		 #| patient13 | ADM  | Administrative Items                                                                                                                                                                | h1          |
+		 #| patient13 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                  | h2          |
 		 #| patient2 | CLI  | Clinical Items                                                                                                                                                                      | h1          |
 		 #| patient2 | ENC  | Encounters                                                                                                                                                                          | h1          |
 		 #| patient2 | IMM  | Immunisations                                                                                                                                                                       | h1          |
@@ -454,8 +466,6 @@ Scenario Outline: check when no date range supplied should contain default date 
 		 #| patient2 | OBS  | Observations                                                                                                                                                                        | h1          |
 		 #| patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                    | h2          |
 		 #| patient2 | REF  | Referrals   
-		 
-		
 
 	#202  -PG 24-10-2019
 	@0.7.2

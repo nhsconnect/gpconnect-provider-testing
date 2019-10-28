@@ -463,28 +463,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                     .ToList();
 
                                 var found = false;
-                                
-                                if (headingType == "h2")
-                                {
-                                    topDivNodes.ForEach(i =>
-                                    {
-                                        var foundAttrib = i.Attributes.Where(a => a.Value == "date-banner");
 
-                                        if (foundAttrib.Count() >= 1)
-                                        {
-                                            found = true;
-                                            Logger.Log.WriteLine("Found Div with Attribute class = date-banner - under Heading : " + headerToFind);
-                                        }
-                                    });
-                                }
-                                //Else h1 - date-banner is nested in a div in a div unlike h2
-                                else
-                                {
-                                    var lowerDivNodes = topDivNodes.First().ChildNodes
-                                                        .Where(c => c.Name == "div")
-                                                        .ToList();
 
-                                    lowerDivNodes.ForEach(i =>
+                                topDivNodes.ForEach(i =>
                                     {
                                         var foundAttrib = i.Attributes.Where(a => a.Value == "date-banner");
 
@@ -495,7 +476,39 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                         }
                                     });
 
-                                }
+
+                                //if (headingType == "h2")
+                                //{
+                                //    topDivNodes.ForEach(i =>
+                                //    {
+                                //        var foundAttrib = i.Attributes.Where(a => a.Value == "date-banner");
+
+                                //        if (foundAttrib.Count() >= 1)
+                                //        {
+                                //            found = true;
+                                //            Logger.Log.WriteLine("Found Div with Attribute class = date-banner - under Heading : " + headerToFind);
+                                //        }
+                                //    });
+                                //}
+                                ////Else h1 - date-banner is nested in a div in a div unlike h2
+                                //else
+                                //{
+                                //    var lowerDivNodes = topDivNodes.First().ChildNodes
+                                //                        .Where(c => c.Name == "div")
+                                //                        .ToList();
+
+                                //    lowerDivNodes.ForEach(i =>
+                                //    {
+                                //        var foundAttrib = i.Attributes.Where(a => a.Value == "date-banner");
+
+                                //        if (foundAttrib.Count() >= 1)
+                                //        {
+                                //            found = true;
+                                //            Logger.Log.WriteLine("Found Div with Attribute class = date-banner - under Heading : " + headerToFind);
+                                //        }
+                                //    });
+
+                                //}
 
                                 if (!found)
                                     Assert.Fail("No date-banner class attribute found for heading : " + headerToFind + " of Type : " + headingType);
@@ -511,7 +524,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
-
         
         //202  -PG 25-10-2019
         [Then(@"I Check All Medication Issues are summarised correctly in All Medications")]
@@ -629,7 +641,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
-
         //202  -PG 26-10-2019 - Function to check that the grouping html is correct and has class 
         [Then(@"The Grouped Sections Are Valid And Have Class Attributes")]
         public void AndTheGroupedSectionsExistinTable()
@@ -706,7 +717,64 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
             }
         }
+        
+        //202  -PG 28-10-2019
+        [Then(@"The GP Transfer Banner is Present Below all Section ""(.*)""")]
+        public void ThenTheGPTransferBannerisPresentonallSections(string headingsToFind)
+        {
+            //todo maybe add check, we atleast get one section or fail.
 
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+                {
+                    Composition composition = (Composition)entry.Resource;
+                    foreach (Composition.SectionComponent section in composition.Section)
+                    {
+                        var headerList = headingsToFind.Split(',');
+                        var html = section.Text.Div;
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(html);
+
+                        headerList.ToList().ForEach(headerToFind =>
+                        {
+                            var headingNode = htmlDoc.DocumentNode.Descendants("h1").Where(t => t.InnerHtml.Equals(headerToFind)).FirstOrDefault();
+
+                            if (headingNode != null)
+                            {
+                                var topDivNodes = headingNode.ParentNode.ChildNodes
+                                    .Where(c => c.Name == "div")
+                                    .ToList();
+
+                                var found = false;
+
+
+                                topDivNodes.ForEach(i =>
+                                {
+                                    var foundAttrib = i.Attributes.Where(a => a.Value == "gptransfer-banner");
+
+                                    if (foundAttrib.Count() >= 1)
+                                    {
+                                        found = true;
+                                        Logger.Log.WriteLine("Found Div with Attribute class = gptransfer-banner - under Heading : " + headerToFind);
+                                    }
+                                });
+
+
+                                if (!found)
+                                    Assert.Fail("No date-banner class attribute found for heading : " + headerToFind + " of Type : " + "h1");
+                            }
+                            else
+                            {
+                                Assert.Fail("Heading Type: " + "h1" + " - Heading Name : " + headerToFind + " - Not Found, so unable to check for gptransfer-banner class attribute");
+
+                            }
+                        });
+
+                    }
+                }
+            }
+        }
 
     }
 }
