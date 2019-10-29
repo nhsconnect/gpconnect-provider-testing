@@ -305,10 +305,10 @@ Scenario:  structured record for a patient that is not in the database
 Scenario Outline: Structured Allergies Patient Has multiple Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient16"
-		And I add the allergies parameter with resolvedAllergies set to "true"
+		And I add the allergies parameter with resolvedAllergies set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
-		And the Bundle should contain "2" lists
+		And the Bundle should contain "1" lists
 		And Check the list contains the following warning "<Warning>"
 		And Check the warning "<Warning>" has associated note "<Note>"
 	Examples:
