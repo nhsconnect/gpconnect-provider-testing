@@ -540,6 +540,9 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             var html = htmlGenerated.ToString();
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(html);
+
+            htmlDoc.OptionOutputAsXml = true;
+
             var formattedOutput = System.Xml.Linq.XElement.Parse(htmlDoc.DocumentNode.OuterHtml).ToString();
             File.WriteAllText(filename, formattedOutput);
         }
