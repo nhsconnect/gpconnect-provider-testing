@@ -53,6 +53,7 @@ Scenario Outline: HTML should not contain disallowed elements
 		#| INV  |
 		#| PAT  |
 
+@0.7.2
 # 197 03/05/2019 SJD changes to Medication view - removed duplicated tests
 # 201 14/05/2019 SJD Summary Page re-ordering
 # 195 17/07/2019 removed single tables as not inside a <h2> tag
@@ -67,15 +68,11 @@ Scenario Outline: html sub section headers present
 		And the html should contain sub section headers in coma seperated list "<Headers>"
 	Examples:
 		| Patient  | Code | Headers                                                                            |
-		| patient1 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
-		| patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions |
-		| patient1  | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                    |
 		| patient2  | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                    |
-		| patient1  | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                   |
 		| patient2  | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                   |
-		| patient1  | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication |
 		| patient2  | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication |
 
+@0.7.2
 # 197 03/05/2019 SJD changes to Medication view tables
 # 201 14/05/2019 SJD Summary Page re-ordering tables
 Scenario Outline: html table headers present and in order that is expected
@@ -114,6 +111,7 @@ Scenario Outline: html table headers present and in order that is expected
 		# patient2 | INV 
 		# patient2 | PAT  
 
+#28/10/2019 SJD removed unecessary duplicated tests against patient 1
 Scenario Outline: filtered sections should contain date range section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -126,39 +124,25 @@ Scenario Outline: filtered sections should contain date range section banner
 		And the response html should contain the applied date range text "<TextStartDate>" to "<TextEndDate>"
 	Examples:
 		| Code | Patient  | StartDateTime | EndDateTime | TextStartDate | TextEndDate |
-		| ADM  | patient1 | 2014-05-03    | 2016-09-14  | 03-May-2014   | 14-Sep-2016 |
 		| ADM  | patient2 | 2014-05-03    | 2016-09-14  | 03-May-2014   | 14-Sep-2016 |
-		| CLI  | patient1 | 2014-02-03    | 2016-01-24  | 03-Feb-2014   | 24-Jan-2016 |
 		| CLI  | patient2 | 2014-02-03    | 2016-01-24  | 03-Feb-2014   | 24-Jan-2016 |
-		| ENC  | patient1 | 1982-10-05    | 2016-09-01  | 05-Oct-1982   | 01-Sep-2016 |
 		| ENC  | patient2 | 1982-10-05    | 2016-09-01  | 05-Oct-1982   | 01-Sep-2016 |
-		| REF  | patient1 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
 		| REF  | patient2 | 2014-03-21    | 2016-12-14  | 21-Mar-2014   | 14-Dec-2016 |
-		| ADM  | patient1 | 2014-05       | 2016-09     | 01-May-2014   | 30-Sep-2016 |
 		| ADM  | patient2 | 2014-05       | 2016-09     | 01-May-2014   | 30-Sep-2016 |
-		| CLI  | patient1 | 2014-02       | 2016-01     | 01-Feb-2014   | 31-Jan-2016 |
 		| CLI  | patient2 | 2014-02       | 2016-01     | 01-Feb-2014   | 31-Jan-2016 |
-		| ENC  | patient1 | 2014-10       | 2016-09     | 01-Oct-2014   | 30-Sep-2016 |
 		| ENC  | patient2 | 2014-10       | 2016-09     | 01-Oct-2014   | 30-Sep-2016 |
-		| REF  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 31-Dec-2016 |
 		| REF  | patient2 | 2014-03       | 2016-12     | 01-Mar-2014   | 31-Dec-2016 |
-		| ADM  | patient1 | 1992          | 2016        | 01-Jan-1992   | 31-Dec-2016 |
 		| ADM  | patient2 | 1992          | 2016        | 01-Jan-1992   | 31-Dec-2016 |
-		| CLI  | patient1 | 2014          | 2017        | 01-Jan-2014   | 31-Dec-2017 |
 		| CLI  | patient2 | 2014          | 2017        | 01-Jan-2014   | 31-Dec-2017 |
-		| ENC  | patient1 | 2012          | 2014        | 01-Jan-2012   | 31-Dec-2014 |
 		| ENC  | patient2 | 2012          | 2014        | 01-Jan-2012   | 31-Dec-2014 |
-		| REF  | patient1 | 2016          | 2016        | 01-Jan-2016   | 31-Dec-2016 |
 		| REF  | patient2 | 2016          | 2016        | 01-Jan-2016   | 31-Dec-2016 |
-		| MED  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 31-Dec-2016 |
 		| MED  | patient2 | 2014-02-03    | 2016-01-24  | 03-Feb-2014   | 24-Jan-2016 |
-		| OBS  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 31-Dec-2016 |
 		| OBS  | patient2 | 2014-02-03    | 2016-01-24  | 03-Feb-2014   | 24-Jan-2016 |
-		| PRB  | patient1 | 2014-03       | 2016-12     | 01-Mar-2014   | 31-Dec-2016 |
 		| PRB  | patient2 | 2014-02-03    | 2016-01-24  | 03-Feb-2014   | 24-Jan-2016 |
 	#	| INV ||||||
 	#	| PAT ||||||
 
+@0.7.2
 # issue 193 sado1 2/4/19 - To check banner when no end date provided
 Scenario Outline: should contain the applied start banner
 	Given I am using the default server
@@ -180,6 +164,7 @@ Scenario Outline: should contain the applied start banner
 		| OBS  | patient2 | 2016-09       | 01-Sep-2016   |
 		| ADM  | patient1 | 2016-12       | 01-Dec-2016   |
 		
+@0.7.2
 # issue 193 SJD 01/05/19 - To check banner when no start date provided		
 Scenario Outline: should contain the banner All data items until 
 	Given I am using the default server
@@ -201,6 +186,7 @@ Scenario Outline: should contain the banner All data items until
 		| OBS  | patient2 | 2016-09     | 30-Sep-2016 |
 		| ADM  | patient2 | 2016-12     | 31-Dec-2016 |
 
+#28/10/2019 SJD removed unecessary duplicated tests against patient 1
 Scenario Outline: sections should contain the all data items section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -212,25 +198,15 @@ Scenario Outline: sections should contain the all data items section banner
 		And the response html should contain the all data items text
 	Examples:
 		| Code | Patient  |
-		| ADM  | patient1 |
 		| ADM  | patient2 |
-		| CLI  | patient1 |
 		| CLI  | patient2 |
-		| ENC  | patient1 |
 		| ENC  | patient2 |
-		| SUM  | patient1 |
 		| SUM  | patient2 |
-		| REF  | patient1 |
 		| REF  | patient2 |
-		| ALL  | patient1 |
 		| ALL  | patient2 |
-		| IMM  | patient1 |
 		| IMM  | patient2 |
-		| MED  | patient1 |
 		| MED  | patient2 |
-		| OBS  | patient1 |
 		| OBS  | patient2 |
-		| PRB  | patient1 |
 		| PRB  | patient2 |
 	#	| INV ||||||
 	#	| PAT ||||||
@@ -255,6 +231,8 @@ Scenario Outline: filtered sections should return no data available html banner
 	#	| INV ||||||
 	#	| PAT ||||||
 
+
+@0.7.2
 #197 SJD 03/05/2019 Update to Medication view
 # 201 14/05/2019 SJD Summary Page re-ordering
 Scenario Outline: sections should return no data available html banner
@@ -320,6 +298,7 @@ Scenario Outline: Check html for non html formatting
 	   #| INV  |
 	   #| PAT  |           
 
+@0.7.2
 #issue 194 sado1 01/04/2019 Test null value in StartDateTime and EndDateTime
 Scenario Outline: check when no date range supplied should contain default date range section banner
 	Given I am using the default server
@@ -341,6 +320,7 @@ Scenario Outline: check when no date range supplied should contain default date 
 		| OBS  | patient2 |               |             |
 		| ADM  | patient2 |               |             |
 
+@0.7.2
 #195 SJD 24/07/2019 – when consumer date range applied to a section and subsections do not support a date filter - MUST display banner
 Scenario Outline: section date filter applied but date filter not supported in subsection - not applied banner displayed
 	Given I am using the default server
@@ -359,6 +339,7 @@ Scenario Outline: section date filter applied but date filter not supported in s
 		| MED  | patient2 | 2018-04-20    | 2018-04-30  | Current Repeat Medication         |
 		| MED  | patient2 | 2018-04-20    | 2018-04-30  | Discontinued Repeat Medication    |
 	
+@0.7.2
 #195 SJD 24/07/2019 h1 header tags 
 Scenario Outline: html section headers inside correct tag
 	Given I am using the default server
@@ -382,9 +363,9 @@ Scenario Outline: html section headers inside correct tag
 		| patient1 | REF  | Referrals                       |
 		| patient2 | SUM  | Summary                         |
 
-		#202  -PG 14-8-2019
-	@0.7.2
-	Scenario Outline: Check html table ids are present and in correct order
+#202  -PG 14-8-2019
+@0.7.2
+Scenario Outline: Check html table ids are present and in correct order
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "<Patient>"
@@ -406,9 +387,9 @@ Scenario Outline: html section headers inside correct tag
 		 | patient2 | REF  | ref-tab                                                                            |
 		 | patient2 | SUM  | enc-tab,prb-tab-act,prb-tab-majinact,all-tab-curr,med-tab-acu-med,med-tab-curr-rep |
 
-	#202  -PG 15-8-2019
-	@0.7.2
-	Scenario Outline: Check html tables have date column class attribute for date columns
+#202  -PG 15-8-2019
+@0.7.2
+Scenario Outline: Check html tables have date column class attribute for date columns
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "<Patient>"
@@ -444,9 +425,9 @@ Scenario Outline: html section headers inside correct tag
 		 | patient2 | SUM  | prb-tab-majinact | 1,2         |
 
 
-	#202  -PG 18-10-2019
-	@0.7.2
-	Scenario Outline: Check html Date banners have the date banner class attribute
+#202  -PG 18-10-2019
+@0.7.2
+Scenario Outline: Check html Date banners have the date banner class attribute
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "<Patient>"
@@ -469,9 +450,9 @@ Scenario Outline: html section headers inside correct tag
 		 | patient2 | REF  | Referrals                                                                                                                                                                         | h1          |
 		
 
-	#202  -PG 24-10-2019
-	@0.7.2
-	Scenario Outline: Check HTML response includes GP Transfer banners
+#202  -PG 24-10-2019
+@0.7.2
+Scenario Outline: Check HTML response includes GP Transfer banners
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "<Patient>"
@@ -493,9 +474,9 @@ Scenario Outline: html section headers inside correct tag
 		 | patient13 | PRB  | Problems and Issues             |
 		 | patient13 | REF  | Referrals                       |
 
-	#202  -PG 24-10-2019
-	@0.7.2
-	Scenario: Check HTML Medication Views and the Grouping of Entries
+#202  -PG 24-10-2019
+@0.7.2
+Scenario: Check HTML Medication Views and the Grouping of Entries
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "MED" care record section for config patient "patient2"
@@ -506,3 +487,14 @@ Scenario Outline: html section headers inside correct tag
 		And I Check All Medication Issues are summarised correctly in All Medications
 		And The Grouped Sections Are Valid And Have Class Attributes
 		
+@0.7.2
+# 195 18/10/2019 SJD Subsection banner displayed
+Scenario: Discontinued repeat medication subsection banner displayed with expected message
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "MED" care record section for config patient "patient2"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And The Response Html Should Contain The Discontinued Repeat Medication Banner Text

@@ -841,6 +841,32 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 Assert.Fail("No gptransfer-banner class attribute found for heading : " + headingToFind + " of Type : " + "h1");
         }
 
+		//issue 195 SJD 24/10/19 
+		[Then(@"The Response Html Should Contain The Discontinued Repeat Medication Banner Text")]
+		public void ThenTheResponseHTMLShouldContainTheDiscontinuedRepeatMedicationBannerText()
+		{
+
+			foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+			{
+				var found = false;
+				if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+				{
+					Composition composition = (Composition)entry.Resource;
+					foreach (Composition.SectionComponent section in composition.Section)
+					{
+						var html = section.Text.Div;
+						string expectedDiscontinuedRepeatBanner = "<p>All repeat medication ended by a clinician action</p>";
+						html.ShouldContain(expectedDiscontinuedRepeatBanner, Case.Insensitive);
+						found = true;
+					}
+					if (!found)
+					{
+						Assert.Fail("Expected Discontinued Repeat Banner not returned");
+					}
+				}
+			}
+		}
+
 
 	}
 }
