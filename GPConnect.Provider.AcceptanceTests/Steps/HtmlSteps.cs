@@ -130,17 +130,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 					{
 						var html = section.Text.Div;
 						var headerList = listOfTableHeadersInOrder.Split(',');
+
 						Regex regexHeaderSection = new Regex("<thead[\\w\\W]*?thead>");
 						MatchCollection tableHeaderSectionMatches = regexHeaderSection.Matches(html);
+
 						if (tableHeaderSectionMatches.Count < pageSectionIndex) { 
 							Log.WriteLine("The table header count doesn't match the expected.");
 							Assert.Fail("The table header count doesn't match the expected.");
-						} else {
+
+						}
+                        else
+                        {
 							string tableHeaderSectionHTML = tableHeaderSectionMatches[pageSectionIndex - 1].Value;
 							Log.WriteLine("HeaderSection = " + tableHeaderSectionHTML);
+
 							Regex regexHeaders = new Regex("<th>[^<]*</th>");
 							MatchCollection matchesForTableHeadersInHTML = regexHeaders.Matches(tableHeaderSectionHTML);
+
 							Log.WriteLine("Number of <th> headers in html {0}, expected {1}", matchesForTableHeadersInHTML.Count, headerList.Length);
+
 							if (headerList.Length != matchesForTableHeadersInHTML.Count)
 							{
 								Log.WriteLine("The number of table headers in HTML section does not match the required number of headers.");
@@ -486,8 +494,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"The HTML ""([^""]*)"" of the type ""([^""]*)"" Should Contain The date banner Class Attribute")]
         public void ThenTheResponseHTMLShouldContainThedatebannerClassAttribute(string headingsToFind, string headingType)
         {
-            //todo maybe add check, we atleast get one section or fail.
-
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
                 if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
@@ -523,40 +529,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                             Logger.Log.WriteLine("Found Div with Attribute class = date-banner - under Heading : " + headerToFind);
                                         }
                                     });
-
-
-                                //if (headingType == "h2")
-                                //{
-                                //    topDivNodes.ForEach(i =>
-                                //    {
-                                //        var foundAttrib = i.Attributes.Where(a => a.Value == "date-banner");
-
-                                //        if (foundAttrib.Count() >= 1)
-                                //        {
-                                //            found = true;
-                                //            Logger.Log.WriteLine("Found Div with Attribute class = date-banner - under Heading : " + headerToFind);
-                                //        }
-                                //    });
-                                //}
-                                ////Else h1 - date-banner is nested in a div in a div unlike h2
-                                //else
-                                //{
-                                //    var lowerDivNodes = topDivNodes.First().ChildNodes
-                                //                        .Where(c => c.Name == "div")
-                                //                        .ToList();
-
-                                //    lowerDivNodes.ForEach(i =>
-                                //    {
-                                //        var foundAttrib = i.Attributes.Where(a => a.Value == "date-banner");
-
-                                //        if (foundAttrib.Count() >= 1)
-                                //        {
-                                //            found = true;
-                                //            Logger.Log.WriteLine("Found Div with Attribute class = date-banner - under Heading : " + headerToFind);
-                                //        }
-                                //    });
-
-                                //}
 
                                 if (!found)
                                     Assert.Fail("No date-banner class attribute found for heading : " + headerToFind + " of Type : " + headingType);
