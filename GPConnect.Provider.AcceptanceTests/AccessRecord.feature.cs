@@ -2513,6 +2513,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Ensure Retrieve the care record sections for senstive patients returns patient no" +
             "t found")]
+        [NUnit.Framework.CategoryAttribute("0.7.2")]
         [NUnit.Framework.TestCaseAttribute("ADM", null)]
         [NUnit.Framework.TestCaseAttribute("ALL", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", null)]
@@ -2525,29 +2526,35 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("SUM", null)]
         public virtual void EnsureRetrieveTheCareRecordSectionsForSenstivePatientsReturnsPatientNotFound(string code, string[] exampleTags)
         {
+            string[] @__tags = new string[] {
+                    "0.7.2"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure Retrieve the care record sections for senstive patients returns patient no" +
-                    "t found", null, exampleTags);
-#line 1167
+                    "t found", null, @__tags);
+#line 1168
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 4
 this.FeatureBackground();
-#line 1168
- testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1169
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1170
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1170
-  testRunner.And("I am requesting the record for config patient \"patient9\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1171
-  testRunner.And(string.Format("I am requesting the \"{0}\" care record section", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am requesting the record for config patient \"patient9\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1172
- testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I am requesting the \"{0}\" care record section", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1173
- testRunner.Then("the response status code should indicate notfound", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1174
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate notfound", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1175
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1176
   testRunner.And("the JSON response should be a OperationOutcome resource with error code \"PATIENT_" +
                     "NOT_FOUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

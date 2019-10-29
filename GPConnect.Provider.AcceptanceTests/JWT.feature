@@ -1,4 +1,4 @@
-﻿@jwt
+﻿@jwt @0.7.2
 Feature: JWT
 
 Background:

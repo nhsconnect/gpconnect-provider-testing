@@ -21,6 +21,7 @@ Background:
 		| patient14          | 9000000014 |
 		| patient15          | 9000000015 |
 
+@0.7.2
 Scenario Outline: HTML should not contain disallowed elements
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -53,10 +54,11 @@ Scenario Outline: HTML should not contain disallowed elements
 		#| INV  |
 		#| PAT  |
 
-@0.7.2
+
 # 197 03/05/2019 SJD changes to Medication view - removed duplicated tests
 # 201 14/05/2019 SJD Summary Page re-ordering
 # 195 17/07/2019 removed single tables as not inside a <h2> tag
+@0.7.2
 Scenario Outline: html sub section headers present
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -72,9 +74,10 @@ Scenario Outline: html sub section headers present
 		| patient2  | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                   |
 		| patient2  | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication |
 
-@0.7.2
+
 # 197 03/05/2019 SJD changes to Medication view tables
 # 201 14/05/2019 SJD Summary Page re-ordering tables
+@0.7.2
 Scenario Outline: html table headers present and in order that is expected
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -111,7 +114,9 @@ Scenario Outline: html table headers present and in order that is expected
 		# patient2 | INV 
 		# patient2 | PAT  
 
+
 #28/10/2019 SJD removed unecessary duplicated tests against patient 1
+@0.7.2
 Scenario Outline: filtered sections should contain date range section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -142,8 +147,9 @@ Scenario Outline: filtered sections should contain date range section banner
 	#	| INV ||||||
 	#	| PAT ||||||
 
-@0.7.2
+
 # issue 193 sado1 2/4/19 - To check banner when no end date provided
+@0.7.2
 Scenario Outline: should contain the applied start banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -164,8 +170,9 @@ Scenario Outline: should contain the applied start banner
 		| OBS  | patient2 | 2016-09       | 01-Sep-2016   |
 		| ADM  | patient1 | 2016-12       | 01-Dec-2016   |
 		
+
+# issue 193 SJD 01/05/19 - To check banner when no start date provided	
 @0.7.2
-# issue 193 SJD 01/05/19 - To check banner when no start date provided		
 Scenario Outline: should contain the banner All data items until 
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -186,7 +193,9 @@ Scenario Outline: should contain the banner All data items until
 		| OBS  | patient2 | 2016-09     | 30-Sep-2016 |
 		| ADM  | patient2 | 2016-12     | 31-Dec-2016 |
 
+
 #28/10/2019 SJD removed unecessary duplicated tests against patient 1
+@0.7.2
 Scenario Outline: sections should contain the all data items section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -211,6 +220,7 @@ Scenario Outline: sections should contain the all data items section banner
 	#	| INV ||||||
 	#	| PAT ||||||
 	
+@0.7.2
 Scenario Outline: filtered sections should return no data available html banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -231,10 +241,9 @@ Scenario Outline: filtered sections should return no data available html banner
 	#	| INV ||||||
 	#	| PAT ||||||
 
-
-@0.7.2
 #197 SJD 03/05/2019 Update to Medication view
 # 201 14/05/2019 SJD Summary Page re-ordering
+@0.7.2
 Scenario Outline: sections should return no data available html banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -272,6 +281,7 @@ Scenario Outline: sections should return no data available html banner
 	#	 INV ||||||
 	#	 PAT ||||||
 
+@0.7.2
 Scenario Outline: Check html for non html formatting
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -298,8 +308,9 @@ Scenario Outline: Check html for non html formatting
 	   #| INV  |
 	   #| PAT  |           
 
-@0.7.2
+
 #issue 194 sado1 01/04/2019 Test null value in StartDateTime and EndDateTime
+@0.7.2
 Scenario Outline: check when no date range supplied should contain default date range section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -320,8 +331,9 @@ Scenario Outline: check when no date range supplied should contain default date 
 		| OBS  | patient2 |               |             |
 		| ADM  | patient2 |               |             |
 
-@0.7.2
+
 #195 SJD 24/07/2019 – when consumer date range applied to a section and subsections do not support a date filter - MUST display banner
+@0.7.2
 Scenario Outline: section date filter applied but date filter not supported in subsection - not applied banner displayed
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -339,8 +351,9 @@ Scenario Outline: section date filter applied but date filter not supported in s
 		| MED  | patient2 | 2018-04-20    | 2018-04-30  | Current Repeat Medication         |
 		| MED  | patient2 | 2018-04-20    | 2018-04-30  | Discontinued Repeat Medication    |
 	
-@0.7.2
+
 #195 SJD 24/07/2019 h1 header tags 
+@0.7.2
 Scenario Outline: html section headers inside correct tag
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -487,8 +500,9 @@ Scenario: Check HTML Medication Views and the Grouping of Entries
 		And I Check All Medication Issues are summarised correctly in All Medications
 		And The Grouped Sections Are Valid And Have Class Attributes
 		
-@0.7.2
+
 # 195 18/10/2019 SJD Subsection banner displayed
+@0.7.2
 Scenario: Discontinued repeat medication subsection banner displayed with expected message
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
