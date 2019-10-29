@@ -643,7 +643,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         //202  -PG 26-10-2019 - Function to check that the grouping html is correct and has class 
         [Then(@"The Grouped Sections Are Valid And Have Class Attributes")]
-        public void AndTheGroupedSectionsExistinTable()
+        public void AndTheGroupedSectionsAreValidAndHaveClassAttributes()
         {
 
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
@@ -719,10 +719,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
         
         //202  -PG 28-10-2019
-        [Then(@"The GP Transfer Banner is Present Below all Section ""(.*)""")]
-        public void ThenTheGPTransferBannerisPresentonallSections(string headingsToFind)
+        [Then(@"The GP Transfer Banner is Present Below Heading ""(.*)""")]
+        public void ThenTheGPTransferBannerisPresentBelowHeading(string headingToFind)
         {
-            //todo maybe add check, we atleast get one section or fail.
+            bool foundBannerFlag = false;
 
             foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
             {
@@ -731,49 +731,66 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     Composition composition = (Composition)entry.Resource;
                     foreach (Composition.SectionComponent section in composition.Section)
                     {
-                        var headerList = headingsToFind.Split(',');
                         var html = section.Text.Div;
                         var htmlDoc = new HtmlDocument();
                         htmlDoc.LoadHtml(html);
 
-                        headerList.ToList().ForEach(headerToFind =>
+                        var headingNode = htmlDoc.DocumentNode.Descendants("h1").Where(t => t.InnerHtml.Equals(headingToFind)).FirstOrDefault();
+
+                        if (headingNode != null)
                         {
-                            var headingNode = htmlDoc.DocumentNode.Descendants("h1").Where(t => t.InnerHtml.Equals(headerToFind)).FirstOrDefault();
+                            var topDivNodes = headingNode.ParentNode.ChildNodes
+                                .Where(c => c.Name == "div")
+                                .ToList();
 
-                            if (headingNode != null)
+                            topDivNodes.ForEach(node =>
                             {
-                                var topDivNodes = headingNode.ParentNode.ChildNodes
-                                    .Where(c => c.Name == "div")
-                                    .ToList();
+                                var foundAttrib = node.Attributes.Where(a => a.Value == "gptransfer-banner");
 
-                                var found = false;
-
-
-                                topDivNodes.ForEach(i =>
+                                if (foundAttrib.Count() >= 1)
                                 {
-                                    var foundAttrib = i.Attributes.Where(a => a.Value == "gptransfer-banner");
+                                    Logger.Log.WriteLine("Found Div with Attribute class = gptransfer-banner - under Heading : " + headingToFind);
 
-                                    if (foundAttrib.Count() >= 1)
+                                    //Checking That GP Transfer Text included a date in format dd-Mmm-yyyy
+                                    Regex regex = new Regex(@"(([0-9])|([0-2][0-9])|([3][0-1]))\-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\-\d{4}");
+                                    Match matches = regex.Match(node.InnerText);
+
+                                    if (matches.Success)
                                     {
-                                        found = true;
-                                        Logger.Log.WriteLine("Found Div with Attribute class = gptransfer-banner - under Heading : " + headerToFind);
+                                        DateTime dt;
+                                        if (DateTime.TryParse(matches.Value, out dt) == true)
+                                        {
+                                            Logger.Log.WriteLine("Found Date Time in Correct Format in GP Tranfer banner Text : " + node.InnerText);
+                                            foundBannerFlag = true;
+                                        }
+                                        else
+                                        {
+                                            var failureMessage = "Failed to Find a Date Format in the GP transfer Banner Text : " + node.InnerText;
+                                            Logger.Log.WriteLine(failureMessage);
+                                            Assert.Fail(failureMessage);
+                                        }
+
                                     }
-                                });
+                                    else
+                                    { 
+                                        var failMessage = "Failed to Find a string with a Date Contained in as per spec";
+                                        Logger.Log.WriteLine(failMessage);
+                                        Assert.Fail(failMessage);    
+                                    }
+                                }
+                            });
 
-
-                                if (!found)
-                                    Assert.Fail("No date-banner class attribute found for heading : " + headerToFind + " of Type : " + "h1");
-                            }
-                            else
-                            {
-                                Assert.Fail("Heading Type: " + "h1" + " - Heading Name : " + headerToFind + " - Not Found, so unable to check for gptransfer-banner class attribute");
-
-                            }
-                        });
-
+                        }
+                        else
+                        {
+                            Assert.Fail("Heading Type: " + "h1" + " - Heading Name : " + headingToFind + " - Not Found, so unable to check for gptransfer-banner class attribute");
+                        }
                     }
                 }
             }
+
+            if (!foundBannerFlag)
+                Assert.Fail("No gptransfer-banner class attribute found for heading : " + headingToFind + " of Type : " + "h1");
         }
 
     }

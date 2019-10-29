@@ -441,9 +441,9 @@ Scenario Outline: check when no date range supplied should contain default date 
 		Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And The GP Transfer Banner is Present Below all Section "<HeadingsToCheck>"
+		And The GP Transfer Banner is Present Below Heading "<HeadingToCheck>"
 	Examples:
-		 | Patient   | Code | HeadingsToCheck                 |
+		 | Patient   | Code | HeadingToCheck                 |
 		 | patient13 | SUM  | Summary                         |
 		 | patient13 | ADM  | Administrative Items            |
 		 | patient13 | ALL  | Allergies and Adverse Reactions |
@@ -451,21 +451,9 @@ Scenario Outline: check when no date range supplied should contain default date 
 		 | patient13 | ENC  | Encounters                      |
 		 | patient13 | IMM  | Immunisations                   |
 		 | patient13 | MED  | Medications                     |
-		 
-		 | patient13 | OBS  | Observations                                                                                                                                                                        | h1          |
-		 #| patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                    | h2          |
-		 #| patient2 | REF  | Referrals   
-		 
-			#	 | patient13 | SUM  | Summary |
-		 #| patient13 | ADM  | Administrative Items                                                                                                                                                                | h1          |
-		 #| patient13 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                  | h2          |
-		 #| patient2 | CLI  | Clinical Items                                                                                                                                                                      | h1          |
-		 #| patient2 | ENC  | Encounters                                                                                                                                                                          | h1          |
-		 #| patient2 | IMM  | Immunisations                                                                                                                                                                       | h1          |
-		 #| patient2 | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                     | h2          |
-		 #| patient2 | OBS  | Observations                                                                                                                                                                        | h1          |
-		 #| patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                    | h2          |
-		 #| patient2 | REF  | Referrals   
+		 | patient13 | OBS  | Observations                    |
+		 | patient13 | PRB  | Problems and Issues             |
+		 | patient13 | REF  | Referrals                       |
 
 	#202  -PG 24-10-2019
 	@0.7.2
@@ -479,8 +467,3 @@ Scenario Outline: check when no date range supplied should contain default date 
 		And the JSON response should be a Bundle resource
 		And I Check All Medication Issues are summarised correctly in All Medications
 		And The Grouped Sections Are Valid And Have Class Attributes
-	
-		 #TODO (or finish)
-		 #202 - Check Gp Transfer banner add test
-		 #And check for this text from tim - check in Spec
-		 #Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing

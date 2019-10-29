@@ -848,7 +848,10 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("patient13", "ENC", "Encounters", null)]
         [NUnit.Framework.TestCaseAttribute("patient13", "IMM", "Immunisations", null)]
         [NUnit.Framework.TestCaseAttribute("patient13", "MED", "Medications", null)]
-        public virtual void CheckHTMLResponseIncludesGPTransferBanners(string patient, string code, string headingsToCheck, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("patient13", "OBS", "Observations", null)]
+        [NUnit.Framework.TestCaseAttribute("patient13", "PRB", "Problems and Issues", null)]
+        [NUnit.Framework.TestCaseAttribute("patient13", "REF", "Referrals", null)]
+        public virtual void CheckHTMLResponseIncludesGPTransferBanners(string patient, string code, string headingToCheck, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "0.7.2"};
@@ -878,7 +881,7 @@ this.FeatureBackground();
 #line 443
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 444
-  testRunner.And(string.Format("The GP Transfer Banner is Present Below all Section \"{0}\"", headingsToCheck), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("The GP Transfer Banner is Present Below Heading \"{0}\"", headingToCheck), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -890,30 +893,30 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check HTML Medication Views and the Grouping of Entries", null, new string[] {
                         "0.7.2"});
-#line 472
+#line 460
  this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 4
 this.FeatureBackground();
-#line 473
+#line 461
  testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 474
+#line 462
   testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
                     "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 475
+#line 463
   testRunner.And("I author a request for the \"MED\" care record section for config patient \"patient2" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 476
+#line 464
   testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 477
+#line 465
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 478
+#line 466
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 479
+#line 467
   testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 480
+#line 468
   testRunner.And("I Check All Medication Issues are summarised correctly in All Medications", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 481
+#line 469
   testRunner.And("The Grouped Sections Are Valid And Have Class Attributes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
