@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using Newtonsoft.Json;
 using Hl7.Fhir.Serialization;
+using HtmlAgilityPack;
 // ReSharper disable ClassNeverInstantiated.Global
 
 namespace GPConnect.Provider.AcceptanceTests.Context
@@ -517,13 +518,9 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public void SaveJSONResponseToDisk(string filename)
         {
             var jsonBody = ScenarioContext.Get<string>(Context.kResponseBody);
-            
             var JSONResponse = JToken.Parse(jsonBody);
-
             string jsonPrettyPrinted = JsonConvert.SerializeObject(JSONResponse, Formatting.Indented);
             File.WriteAllText(@filename, jsonPrettyPrinted);
-
-
         }
 
         public void SaveJSONRequestBodyToDisk(string filename)
@@ -531,6 +528,20 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             var JSONRquestBody = JsonConvert.DeserializeObject(this.RequestBody);
             string jsonPrettyPrinted = JsonConvert.SerializeObject(JSONRquestBody, Formatting.Indented);
             File.WriteAllText(@filename, jsonPrettyPrinted);
+        }
+
+        public void SaveHTMLReponseToDisk(string filename)
+        {
+            var jsonBody = ScenarioContext.Get<string>(Context.kResponseBody);
+            var JSONResponse = JToken.Parse(jsonBody);
+
+            //Extract HTML Response if requested
+            var htmlGenerated = JSONResponse["entry"][0]["resource"]["section"][0]["text"]["div"];
+            var html = htmlGenerated.ToString();
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(html);
+            var formattedOutput = System.Xml.Linq.XElement.Parse(htmlDoc.DocumentNode.OuterHtml).ToString();
+            File.WriteAllText(filename, formattedOutput);
         }
 
     }

@@ -381,3 +381,128 @@ Scenario Outline: html section headers inside correct tag
 		| patient2 | PRB  | Problems and Issues             |
 		| patient1 | REF  | Referrals                       |
 		| patient2 | SUM  | Summary                         |
+
+		#202  -PG 14-8-2019
+	@0.7.2
+	Scenario Outline: Check html table ids are present and in correct order
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the html response contains all the following table ids "<TableIDs>"
+	Examples:
+		 | Patient  | Code | TableIDs                                                                           |
+		 | patient2 | ADM  | adm-tab                                                                            |
+		 | patient2 | MED  | med-tab-acu-med,med-tab-curr-rep,med-tab-dis-rep,med-tab-all-sum,med-tab-all-iss   |
+		 | patient2 | ALL  | all-tab-curr,all-tab-hist                                                          |
+		 | patient2 | CLI  | cli-tab                                                                            |
+		 | patient2 | ENC  | enc-tab                                                                            |
+		 | patient2 | IMM  | imm-tab                                                                            |
+		 | patient2 | OBS  | obs-tab                                                                            |
+		 | patient2 | PRB  | prb-tab-act,prb-tab-majinact,prb-tab-othinact                                      |
+		 | patient2 | REF  | ref-tab                                                                            |
+		 | patient2 | SUM  | enc-tab,prb-tab-act,prb-tab-majinact,all-tab-curr,med-tab-acu-med,med-tab-curr-rep |
+
+	#202  -PG 15-8-2019
+	@0.7.2
+	Scenario Outline: Check html tables have date column class attribute for date columns
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		When I request the FHIR "gpc.getcarerecord" Patient Type operation
+		Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the html table "<TableIDToCheck>" has a date-column class attribute on these "<DateColumns>"
+	Examples:
+		 | Patient  | Code | TableIDToCheck   | DateColumns |
+		 | patient2 | ADM  | adm-tab          | 1           |
+		 | patient2 | MED  | med-tab-acu-med  | 2           |
+		 | patient2 | MED  | med-tab-curr-rep | 2,6,9       |
+		 | patient2 | MED  | med-tab-dis-rep  | 6           |
+		 | patient2 | MED  | med-tab-all-sum  | 2,6         |
+		 | patient2 | MED  | med-tab-all-iss  | 2           |
+		 | patient2 | ALL  | all-tab-curr     | 1           |
+		 | patient2 | ALL  | all-tab-hist     | 1,2         |
+		 | patient2 | CLI  | cli-tab          | 1           |
+		 | patient2 | CLI  | cli-tab          | 1           |
+		 | patient2 | ENC  | enc-tab          | 1           |
+		 | patient2 | IMM  | imm-tab          | 1           |
+		 | patient2 | OBS  | obs-tab          | 1           |
+		 | patient2 | PRB  | prb-tab-act      | 1           |
+		 | patient2 | PRB  | prb-tab-majinact | 1,2         |
+		 | patient2 | PRB  | prb-tab-othinact | 1,2         |
+		 | patient2 | REF  | ref-tab          | 1           |
+		 | patient2 | SUM  | all-tab-curr     | 1           |
+		 | patient2 | SUM  | enc-tab          | 1           |
+		 | patient2 | SUM  | med-tab-acu-med  | 2           |
+		 | patient2 | SUM  | med-tab-curr-rep | 2,6,9       |
+		 | patient2 | SUM  | prb-tab-act      | 1           |
+		 | patient2 | SUM  | prb-tab-majinact | 1,2         |
+
+
+	#202  -PG 18-10-2019
+	@0.7.2
+	Scenario Outline: Check html Date banners have the date banner class attribute
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		When I request the FHIR "gpc.getcarerecord" Patient Type operation
+		Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And The HTML "<HeadingsToCheck>" of the type "<HeadingType>" Should Contain The date banner Class Attribute
+	Examples:
+		 | Patient  | Code | HeadingsToCheck                                                                                                                                                                     | HeadingType |
+		 | patient2 | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication | h2          |
+		 | patient2 | ADM  | Administrative Items                                                                                                                                                                | h1          |
+		 | patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                  | h2          |
+		 | patient2 | CLI  | Clinical Items                                                                                                                                                                      | h1          |
+		 | patient2 | ENC  | Encounters                                                                                                                                                                          | h1          |
+		 | patient2 | IMM  | Immunisations                                                                                                                                                                       | h1          |
+		 | patient2 | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                     | h2          |
+		 | patient2 | OBS  | Observations                                                                                                                                                                        | h1          |
+		 | patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                    | h2          |
+		 | patient2 | REF  | Referrals                                                                                                                                                                         | h1          |
+		
+
+	#202  -PG 24-10-2019
+	@0.7.2
+	Scenario Outline: Check HTML response includes GP Transfer banners
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		When I request the FHIR "gpc.getcarerecord" Patient Type operation
+		Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And The GP Transfer Banner is Present Below Heading "<HeadingToCheck>"
+	Examples:
+		 | Patient   | Code | HeadingToCheck                 |
+		 | patient13 | SUM  | Summary                         |
+		 | patient13 | ADM  | Administrative Items            |
+		 | patient13 | ALL  | Allergies and Adverse Reactions |
+		 | patient13 | CLI  | Clinical Items                  |
+		 | patient13 | ENC  | Encounters                      |
+		 | patient13 | IMM  | Immunisations                   |
+		 | patient13 | MED  | Medications                     |
+		 | patient13 | OBS  | Observations                    |
+		 | patient13 | PRB  | Problems and Issues             |
+		 | patient13 | REF  | Referrals                       |
+
+	#202  -PG 24-10-2019
+	@0.7.2
+	Scenario: Check HTML Medication Views and the Grouping of Entries
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "MED" care record section for config patient "patient2"
+		When I request the FHIR "gpc.getcarerecord" Patient Type operation
+		Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And I Check All Medication Issues are summarised correctly in All Medications
+		And The Grouped Sections Are Valid And Have Class Attributes
+		

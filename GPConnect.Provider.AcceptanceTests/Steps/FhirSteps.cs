@@ -372,7 +372,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
                 catch
                 {
-                    Log.WriteLine("Exception writing JSONResponse to Output File");
+                    Log.WriteLine("Exception writing JSONResponse to Output File - Reponse May Not be JSON");
                 }
 
             }
@@ -401,12 +401,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
                 catch
                 {
-                    Log.WriteLine("Exception writing JSONRequestBody to Output File");
+                    Log.WriteLine("Exception writing JSONRequestBody to Output File - Request May Not be JSON");
                 }
 
             }
 
-
+            //Output Pretty Printed HTML from the Reponse Payload
+            if (AppSettingsHelper.TraceOutputHTMLResponse)
+            {
+                //Output HTML From Reponse
+                try
+                {
+                    HttpContext.SaveHTMLReponseToDisk(Path.Combine(scenarioDirectory, "HTMLResponse.txt"));
+                }
+                catch(Exception Ex)
+                {
+                    Log.WriteLine("Exception writing HTMLResponse to Output File - Reponse May not Include HTML. Exception Message : " + Ex.Message);
+                }
+            }
 
         }
 
