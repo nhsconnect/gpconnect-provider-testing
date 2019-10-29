@@ -8,6 +8,10 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using TechTalk.SpecFlow;
 using static Hl7.Fhir.Model.Bundle;
+using HtmlAgilityPack;
+using System.Linq;
+using GPConnect.Provider.AcceptanceTests.Data;
+using System.Collections.Generic;
 
 namespace GPConnect.Provider.AcceptanceTests.Steps
 {
