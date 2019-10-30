@@ -599,11 +599,33 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             Assert.Fail(failureMessage);
                         }
 
-                        //Split data into groups expected to be seen in All Medication Table
-                        var MedItemGroupingQuery = from medIssue in readAllMedIssues
+                            //Split data into groups expected to be seen in All Medication Table
+                            var MedItemGroupingQuery = from medIssue in readAllMedIssues
                                                     group medIssue by new { medIssue.Type, medIssue.MedicationItem, medIssue.DosageInstruction, medIssue.Quantity, medIssue.DaysDuration, medIssue.AdditionalInformation } into g
                                                     orderby g.Key.MedicationItem
                                                     select new { Type = g.Key.Type, StartDate = g.Min(x => Convert.ToDateTime(x.IssueDate)),MedicationItem = g.Key.MedicationItem, DosageInstruction = g.Key.DosageInstruction,Quantity = g.Key.Quantity ,LastIssued = g.Max(x => Convert.ToDateTime(x.IssueDate)),AdditionalInfo = g.Key.AdditionalInformation, NumberOfPrescriptionsIssued = g.Count()};
+
+                        //Check Data requirements have been Met
+
+                        //Check That All Medication has two or more uniqe medications
+                        if (readAllMedIssues.Count() <= 1)
+                        {
+                            //Should be more than one row in the All Medication Table as Per Data requirements
+                            var failureMessage = "Test data requirements Not Met - Need atleast 2 Unique Medications in the All Medication Table";
+                            Logger.Log.WriteLine(failureMessage);
+                            Assert.Fail(failureMessage);
+
+                        }
+
+                        //Check Have atleast One Summaried Item, with a Number Of Prescriptions Issued of 2 or more
+                        if (MedItemGroupingQuery.Where(medItem => (Convert.ToInt32(medItem.NumberOfPrescriptionsIssued)) >= 2).Count() == 0)
+                        {
+                            //No medications with a quantity of 2 or more found
+                            var failureMessage = "Test data requirements Not Met - Need atleast 4 Unique Medication issues and atleast one medication that has been issued more than twice";
+                            Logger.Log.WriteLine(failureMessage);
+                            Assert.Fail(failureMessage);
+                        }
+
 
 
                         //Compare grouped results from "All Medication Issues" with "All Medication" Table
