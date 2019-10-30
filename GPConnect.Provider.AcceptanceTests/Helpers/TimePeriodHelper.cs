@@ -50,9 +50,6 @@
         {
             var date = DateTime.UtcNow.Date.ToLocalTime();
 
-            //Test that local machine is using BST when in that time period
-            date.IsDaylightSavingTime().ShouldBeTrue("The PC running these tests is not using BST time adjustment and will cause tests to fail - Switch On in Windows Time Settings");
-
             return new Period(new FhirDateTime(date), new FhirDateTime(date.AddDays(days)));
         }
 
@@ -62,9 +59,6 @@
             
             var date = DateTime.UtcNow.Date.ToLocalTime().AddDays(1);
 
-            //Test that local machine is using BST when in that time period
-            date.IsDaylightSavingTime().ShouldBeTrue("The PC running these tests is not using BST time adjustment and will cause tests to fail - Switch On in Windows Time Settings");
-
             return new Period(new FhirDateTime(date), new FhirDateTime(date.AddDays(days)));
         }
 
@@ -72,9 +66,6 @@
         public static Period GetTimePeriodStartDateFormatEndDateFormat(string startDateFormat, string endDateFormat, int days = 3)
         {
             var date = DateTime.UtcNow.ToLocalTime();
-
-            //Test that local machine is using BST when in that time period
-            date.IsDaylightSavingTime().ShouldBeTrue("The PC running these tests is not using BST time adjustment and will cause tests to fail - Switch On in Windows Time Settings");
 
             var startDate = date.ToString(startDateFormat);
             var endDate = date.AddDays(days).ToString(endDateFormat);
