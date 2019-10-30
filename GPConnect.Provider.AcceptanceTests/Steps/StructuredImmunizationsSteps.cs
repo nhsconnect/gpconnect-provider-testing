@@ -11,8 +11,8 @@
     using GPConnect.Provider.AcceptanceTests.Enum;
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
-
-    [Binding]
+	
+	[Binding]
     public sealed class StructuredImmunizationsSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
@@ -63,7 +63,10 @@
                 //Check daterecorded
                 var dateRecorded = immunization.GetExtension(FhirConst.StructureDefinitionSystems.kDateRecorded);
                 DateTime daterecordedOut;
-                DateTime.TryParse(dateRecorded.Value.ToString(), out daterecordedOut).ShouldBeTrue("Daterecorded is Not a valid DateTime");
+				if (dateRecorded != null)
+					DateTime.TryParse(dateRecorded.Value.ToString(), out daterecordedOut).ShouldBeTrue("Daterecorded is Not a valid DateTime");
+				else
+					NUnit.Framework.Assert.Fail("DateRecorded is null");
 
                 //Check vaccinationProcedure
                 List<Extension> vaccinationProcedure = immunization.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kVaccinationProcedure)).ToList();
