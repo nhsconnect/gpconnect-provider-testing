@@ -69,11 +69,11 @@ Scenario Outline: html sub section headers present
 		And the JSON response should be a Bundle resource
 		And the html should contain sub section headers in coma seperated list "<Headers>"
 	Examples:
-		| Patient  | Code | Headers                                                                            |
-		| patient2  | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                    |
-		| patient2  | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                   |
-		| patient2  | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication |
-
+		| Patient  | Code | Headers                                                                                                                                                                             |
+		| patient2 | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                     |
+		| patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                    |
+		| patient2 | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication |
+		| patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                  |
 
 # 197 03/05/2019 SJD changes to Medication view tables
 # 201 14/05/2019 SJD Summary Page re-ordering tables
@@ -421,7 +421,6 @@ Scenario Outline: Check html tables have date column class attribute for date co
 		 | patient2 | MED  | med-tab-all-iss  | 2           |
 		 | patient2 | ALL  | all-tab-curr     | 1           |
 		 | patient2 | ALL  | all-tab-hist     | 1,2         |
-		 | patient2 | CLI  | cli-tab          | 1           |
 		 | patient2 | CLI  | cli-tab          | 1           |
 		 | patient2 | ENC  | enc-tab          | 1           |
 		 | patient2 | IMM  | imm-tab          | 1           |
