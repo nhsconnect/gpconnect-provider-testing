@@ -839,26 +839,68 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		[Then(@"The Response Html Should Contain The Discontinued Repeat Medication Banner Text")]
 		public void ThenTheResponseHTMLShouldContainTheDiscontinuedRepeatMedicationBannerText()
 		{
+			var foundTextFlag = false;
+			var foundClassAttribFlag = false;
 
 			foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
 			{
-				var found = false;
+
+				
 				if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
 				{
 					Composition composition = (Composition)entry.Resource;
 					foreach (Composition.SectionComponent section in composition.Section)
 					{
 						var html = section.Text.Div;
+						var htmlDoc = new HtmlDocument();
+						htmlDoc.LoadHtml(html);
+
+						var headingNode = htmlDoc.DocumentNode.Descendants("h2").Where(t => t.InnerHtml.Equals("Discontinued Repeat Medication")).FirstOrDefault();
+
+						if (headingNode != null)
+						{
+							var topDivNodes = headingNode.ParentNode.ChildNodes
+								.Where(c => c.Name == "div")
+								.ToList();
+
+							topDivNodes.ForEach(node =>
+							{
+								var foundAttrib = node.Attributes.Where(a => a.Value == "content-banner");
+
+								if (foundAttrib.Count() >= 1)
+								{
+									Logger.Log.WriteLine("Found Div with Attribute class = content-banner - under Heading : Discontinued Repeat Medication");
+									foundClassAttribFlag = true;
+								}
+
+							});
+						}
+						else
+						{
+							Assert.Fail("Heading : Discontinued Repeat Medication Not Found, so unable to check for content-banner class attribute");
+
+						}
+
+						if (!foundClassAttribFlag)
+						{
+							Assert.Fail("Expected Content Banner Not Found");
+						}
+
+
+						//var html = section.Text.Div;
 						string expectedDiscontinuedRepeatBanner = "<p>All repeat medication ended by a clinician action</p>";
 						html.ShouldContain(expectedDiscontinuedRepeatBanner, Case.Insensitive);
-						found = true;
+						foundTextFlag = true;
 					}
-					if (!found)
-					{
-						Assert.Fail("Expected Discontinued Repeat Banner not returned");
-					}
+					
 				}
 			}
+
+			if (!foundTextFlag)
+			{
+				Assert.Fail("Expected Discontinued Repeat Banner not returned");
+			}
+
 		}
 
 
