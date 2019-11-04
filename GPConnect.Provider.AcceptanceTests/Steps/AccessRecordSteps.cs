@@ -286,7 +286,7 @@
 
 				  {
 					  noteMatch.Count().ShouldBe(1, "Unable to Find Note : Information not available");
-					  list.EmptyReason.Text.ShouldContain("noContent");
+					  list.EmptyReason.Text.ShouldContain("no-content-recorded");
 
 					  foundFlag = true;
 				  }
