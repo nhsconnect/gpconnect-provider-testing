@@ -1,7 +1,7 @@
 ﻿@structuredrecord
 Feature: StructuredConsultations
 
-@1.3.1 @WIP
+@1.3.1
 Scenario: Verify Consultations structured record for a Patient includeConsultation only
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -87,7 +87,6 @@ Scenario: Retrieve consultations structured record for a patient that has no con
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
 		And I add the consultation parameter with consultationSearchPeriod partParameter
-		And I add the medication parameter with includePrescriptionIssues set to "true"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"

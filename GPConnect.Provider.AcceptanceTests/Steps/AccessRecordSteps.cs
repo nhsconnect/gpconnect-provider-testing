@@ -272,38 +272,37 @@
 
 		[Then(@"check structured list contains a note and emptyReason when no data in section")]
 		public void GivenTheStructuredListContainsANoteAndEmptyReasonWhenNoDataInSection()
-
 		{
 			Lists.ForEach(list =>
 		  {
-			  var foundFlag = false;
-
-			  {
-				  var noteMatch = list.Note
-				 .Where(note => note.Text.Contains("Information not available"));
+                //Check Note Element
+			    var noteFoundFlag = false;
+				var noteMatch = list.Note.Where(note => note.Text.Contains("Information not available"));
 				  
-				  if (noteMatch.Count() == 1)
+				if (noteMatch.Count() >= 1)
+				{
+					noteMatch.Count().ShouldBeGreaterThanOrEqualTo(1, "Unable to Find Note : Information not available");
+                    noteFoundFlag = true;
+				}
 
-				  {
-					  noteMatch.Count().ShouldBe(1, "Unable to Find Note : Information not available");
-					  list.EmptyReason.Text.ShouldContain("no-content-recorded");
+				if (noteFoundFlag)
+				{
+					Log.WriteLine("Found Note : Information not available");
+				}
+				else
+				{
+					Log.WriteLine("Note with message Information not available Not Found");
+                    noteFoundFlag.ShouldBeTrue("Note with message Information not available Not Found");
+				}
 
-					  foundFlag = true;
-				  }
+                //Check EmptyReason
+                list.EmptyReason.ShouldNotBeNull("EmptyReason should not be null for List: ");
+                list.EmptyReason.Coding.Count.ShouldBe(1);
+                list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kListEmptyReason);
+                list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
+                list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
 
-				  if (foundFlag)
-				  {
-					  Log.WriteLine("Found Note : Information not available");
-				  }
-
-				  else
-				  {
-					  Log.WriteLine("Note and emptyReason do not match the expected content");
-					  foundFlag.ShouldBeTrue("Note and emptyReason do not match the expected content");
-				  }
-
-			  }
-		  });
+          });
 		}
 
 
