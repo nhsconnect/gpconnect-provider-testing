@@ -11,8 +11,8 @@
     using GPConnect.Provider.AcceptanceTests.Enum;
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
-	
-	[Binding]
+ 
+    [Binding]
     public sealed class StructuredImmunizationsSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
@@ -118,10 +118,13 @@
 
         [Then(@"The Immunization Resources Do Not Include Not In Use Fields")]
         public void GivenTheImmunizationResourcesDoNotIncludeNotInUseFields()
-        {
+        {            
             Immunizations.ForEach(immunization =>
             {
-                immunization.Explanation.ReasonNotGiven.Count().ShouldBe(0, ".Explanation.ReasonNotGiven is Not Supposed to be Sent - Not In Use Field");
+                if (immunization.Explanation != null)
+                    if(immunization.Explanation.ReasonNotGiven != null) 
+                        immunization.Explanation.ReasonNotGiven.Count().ShouldBe(0, ".Explanation.ReasonNotGiven is Not Supposed to be Sent - Not In Use Field");
+
                 immunization.Reaction.Count().ShouldBe(0, "Reaction is Not Supposed to be Sent - Not In Use Field");
 
                 immunization.VaccinationProtocol.ForEach(vaccinationprotocol =>
