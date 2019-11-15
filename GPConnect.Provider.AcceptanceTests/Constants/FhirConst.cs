@@ -193,8 +193,8 @@
             public const string kDateRecorded = "https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-DateRecorded-1";
             public const string kVaccinationProcedure = "https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-VaccinationProcedure-1";
             public const string kEncounter = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-Encounter-1";
-            public const string kProblems = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-ProblemHeader-Condition-1";
-            
+            public const string kProblems = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProblemHeader-Condition-1";
+             
 
             // git hub ref 158
             // RMB 9/1/19			
