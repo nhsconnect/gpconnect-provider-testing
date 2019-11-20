@@ -184,10 +184,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             count.ShouldBe(1);
         }
 
-        [Then(@"the JSON response bundle should be type document")]
-        public void ThenTheJSONResponseBundleShouldBeTypeDocument()
+		//SJD 20/11/2019 changed Bundle Type to searchset as per spec
+		[Then(@"the JSON response bundle should be type searchset")]
+        public void ThenTheJSONResponseBundleShouldBeTypeSearchset()
         {
-            ((Bundle)FhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Document);
+            ((Bundle)FhirContext.FhirResponseResource).Type.ShouldBe(BundleType.Searchset);
         }
 
         [Then(@"the JSON response bundle should contain the composition resource as the first entry")]
