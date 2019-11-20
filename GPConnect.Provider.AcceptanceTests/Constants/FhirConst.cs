@@ -4,7 +4,7 @@
     {
         internal static class GetSnoMedParams
         {
-            public const string kConsultations = "999999999999999";
+            public const string kConsultations = "1149501000000101";
             public const string kConsultation = "325851000000107";
             public const string kTopics = "25851000000105";
             public const string kHeadings = "24781000000107";
@@ -243,7 +243,7 @@
             public const string kEndedAllergies = "Ended allergies (record artifact)";
             public const string kMedications = "Medications and medical devices";
 
-            public const string kConsultations = "Consultation";
+            public const string kConsultations = "List of Consultations";
             public const string kConsultation = "Surgery Consultation";
             public const string kTopics = "?????";
             public const string kHeadings = "?????";
