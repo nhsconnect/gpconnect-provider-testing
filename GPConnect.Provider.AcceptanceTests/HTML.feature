@@ -195,6 +195,7 @@ Scenario Outline: should contain the banner All data items until
 
 
 #28/10/2019 SJD removed unecessary duplicated tests against patient 1
+#20/11/2019 SJD removed SUM, IMM & ALL as don't support date filtering
 @0.7.2
 Scenario Outline: sections should contain the all data items section banner
 	Given I am using the default server
@@ -210,10 +211,7 @@ Scenario Outline: sections should contain the all data items section banner
 		| ADM  | patient2 |
 		| CLI  | patient2 |
 		| ENC  | patient2 |
-		| SUM  | patient2 |
 		| REF  | patient2 |
-		| ALL  | patient2 |
-		| IMM  | patient2 |
 		| MED  | patient2 |
 		| OBS  | patient2 |
 		| PRB  | patient2 |
@@ -438,6 +436,7 @@ Scenario Outline: Check html tables have date column class attribute for date co
 
 
 #202  -PG 18-10-2019
+# SJD 20/11/19 removed SUM, ALL, IMM and MED subsections with no date filtering
 @0.7.2
 Scenario Outline: Check html Date banners have the date banner class attribute
 	Given I am using the default server
@@ -449,17 +448,14 @@ Scenario Outline: Check html Date banners have the date banner class attribute
 		And the JSON response should be a Bundle resource
 		And The HTML "<HeadingsToCheck>" of the type "<HeadingType>" Should Contain The date banner Class Attribute
 	Examples:
-		 | Patient  | Code | HeadingsToCheck                                                                                                                                                                     | HeadingType |
-		 | patient2 | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication | h2          |
-		 | patient2 | ADM  | Administrative Items                                                                                                                                                                | h1          |
-		 | patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                  | h2          |
-		 | patient2 | CLI  | Clinical Items                                                                                                                                                                      | h1          |
-		 | patient2 | ENC  | Encounters                                                                                                                                                                          | h1          |
-		 | patient2 | IMM  | Immunisations                                                                                                                                                                       | h1          |
-		 | patient2 | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication,All Medication,All Medication Issues                                                     | h2          |
-		 | patient2 | OBS  | Observations                                                                                                                                                                        | h1          |
-		 | patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues                                                                                    | h2          |
-		 | patient2 | REF  | Referrals                                                                                                                                                                         | h1          |
+		 | Patient  | Code | HeadingsToCheck                                                                                  | HeadingType |
+		 | patient2 | ADM  | Administrative Items                                                                             | h1          |
+		 | patient2 | CLI  | Clinical Items                                                                                   | h1          |
+		 | patient2 | ENC  | Encounters                                                                                       | h1          |
+		 | patient2 | MED  | All Medication,All Medication Issues                                                             | h2          |
+		 | patient2 | OBS  | Observations                                                                                     | h1          |
+		 | patient2 | PRB  | Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Problems and Issues | h2          |
+		 | patient2 | REF  | Referrals                                                                                        | h1          |
 		
 
 #202  -PG 24-10-2019
