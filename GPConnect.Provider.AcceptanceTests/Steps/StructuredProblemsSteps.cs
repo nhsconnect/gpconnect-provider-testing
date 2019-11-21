@@ -147,9 +147,6 @@
                 //check category
                 problem.Category.Where(c => c.Coding.First().Code == "problem-list-item").Count().ShouldBe(1);
 
-                //check code
-                //TODO - Query ouutstanding with Pete s - requirements not clear.
-
                 //Check assertedDate
                 problem.AssertedDate.ShouldNotBeNull();
 
