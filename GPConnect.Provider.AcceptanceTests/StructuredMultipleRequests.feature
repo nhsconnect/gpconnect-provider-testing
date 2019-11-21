@@ -100,15 +100,3 @@ Scenario: Structured request sent with two invalid parameters expected failure
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-
-@1.3.1
-Scenario: Structured request sent with multiple parameters for a Sensitive patient expected failure
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient9"
-		And I add the medication parameter with includePrescriptionIssues set to "true"
-		And I add allergies parameter with invalid part parameter boolean
-    When I make the "GpcGetStructuredRecord" request
-	Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
-
-
