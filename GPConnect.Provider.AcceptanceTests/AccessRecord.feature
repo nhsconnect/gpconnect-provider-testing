@@ -361,7 +361,7 @@ Scenario Outline: response bundle should contain composition as the first entry
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And the JSON response bundle should be type document
+		And the JSON response bundle should be type searchset
 		And the JSON response bundle should contain the composition resource as the first entry
 	Examples:
 		| Code |
