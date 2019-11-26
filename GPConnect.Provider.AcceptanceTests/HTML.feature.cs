@@ -1083,6 +1083,55 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check if date filtering is unsupported the date banner class attribute is not pre" +
+            "sent in response")]
+        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,C" +
+            "urrent Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current" +
+            " Repeat Medication", "h2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reaction" +
+            "s", "h2", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "IMM", "Immunisations", "h1", null)]
+        [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat M" +
+            "edication", "h2", null)]
+        public virtual void CheckIfDateFilteringIsUnsupportedTheDateBannerClassAttributeIsNotPresentInResponse(string patient, string code, string headingsToCheck, string headingType, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "0.7.2"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check if date filtering is unsupported the date banner class attribute is not pre" +
+                    "sent in response", null, @__tags);
+#line 513
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line 514
+ testRunner.Given("I am using the default server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 515
+  testRunner.And("I am performing the \"urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarer" +
+                    "ecord\" interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 516
+  testRunner.And(string.Format("I author a request for the \"{0}\" care record section for config patient \"{1}\"", code, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 517
+  testRunner.When("I request the FHIR \"gpc.getcarerecord\" Patient Type operation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 518
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 519
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 520
+  testRunner.And("the JSON response should be a Bundle resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 521
+  testRunner.And(string.Format("The HTML \"{0}\" of the type \"{1}\" Should Not Contain The date banner Class Attribu" +
+                        "te", headingsToCheck, headingType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

@@ -507,3 +507,22 @@ Scenario: Discontinued repeat medication subsection banner displayed with expect
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
 		And The Response Html Should Contain The Discontinued Repeat Medication Banner Text
+
+#SJD 26/11/2019 
+@0.7.2
+Scenario Outline: Check if date filtering is unsupported the date banner class attribute is not present in response 
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		When I request the FHIR "gpc.getcarerecord" Patient Type operation
+		Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And The HTML "<HeadingsToCheck>" of the type "<HeadingType>" Should Not Contain The date banner Class Attribute
+	Examples:
+		 | Patient  | Code | HeadingsToCheck                                                                                                                                                                     | HeadingType |
+		 | patient2 | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication | h2          |
+		 | patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                  | h2          |
+		 | patient2 | IMM  | Immunisations                                                                                                                                                                       | h1          |
+		 | patient2 | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication                                                                                          | h2          |
+
