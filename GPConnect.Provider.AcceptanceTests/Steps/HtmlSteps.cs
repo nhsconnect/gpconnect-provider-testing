@@ -931,23 +931,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 									.Where(c => c.Name == "div")
 									.ToList();
 
-								var found = false;
-
-
 								topDivNodes.ForEach(i =>
 								{
-									var foundAttrib = i.Attributes.Where(a => a.Value == "date-banner");
+								var foundAttrib = i.Attributes.Where(a => a.Value == "date-banner");
 
-									if (foundAttrib.Count() >= 1)
-									{
-										found = true;
-										Assert.Fail("Unexpected date-banner class attribute found for heading : " + headerToFind + " of Type : " + headingType); ;
+								if (foundAttrib.Count() >= 1)
+								{
+									var failMessage = "Unexpected date-banner class attribute for heading : " + headerToFind + " of Type : " + headingType;								
+										Logger.Log.WriteLine(failMessage);
+										Assert.Fail(failMessage);
 									}
 								});
 
-								if (!found)
-									
-								Logger.Log.WriteLine("No Attribute class = date-banner returned - under Heading : " + headerToFind);
+								var passMessage = "Pass test as Attribute class = date-banner NOT returned - under Heading : " + headerToFind;
+								Logger.Log.WriteLine(passMessage);
 							}
 							else
 							{
