@@ -243,7 +243,7 @@
             public const string kEndedAllergies = "Ended allergies (record artifact)";
             public const string kMedications = "Medications and medical devices";
 
-            public const string kConsultations = "List of Consultations";
+            public const string kConsultations = "List of consultations";
             public const string kConsultation = "Surgery Consultation";
             public const string kTopics = "?????";
             public const string kHeadings = "?????";
