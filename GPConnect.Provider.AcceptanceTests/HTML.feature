@@ -250,7 +250,6 @@ Scenario Outline: sections should return no data available html banner
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And the response html should contain the all data items text
 		And the response html should contain the no data available html banner in section "<Section>"
 	Examples:
 		| Code | Patient  | Section                                    |
