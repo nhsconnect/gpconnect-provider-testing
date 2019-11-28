@@ -186,6 +186,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			}
 		}
 
+		// #317 SJD 26/11/2019 text change
 		// #270 SJD 22/7/19 included single quotes around date banner
 		//issue 193 SJD 01/05/19 no end date provided
 		[Then(@"the response html should contain the applied start date banner text ""([^""]*)""")]
@@ -199,13 +200,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 					foreach (Composition.SectionComponent section in composition.Section)
 					{
 						var html = section.Text.Div;
-						string expectedTimePeriodBanner = "<p>All data items from '" + fromDate +"'</p>";
+						string expectedTimePeriodBanner = "<p>Data items from '" + fromDate +"'</p>";
 						html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
 					}
 				}
 			}
 		}
 
+		// #317 SJD 26/11/2019 text change
 		// #270 SJD 22/7/19 included single quotes around date banner
 		//issue 193 SJD 01/05/19 no start date provided
 		[Then(@"the response html should contain the applied end date banner text ""([^""]*)""")]
@@ -219,7 +221,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 					foreach (Composition.SectionComponent section in composition.Section)
 					{
 						var html = section.Text.Div;
-						string expectedTimePeriodBanner = "<p>All data items until '" + toDate + "'</p>";
+						string expectedTimePeriodBanner = "<p>Data items until '" + toDate + "'</p>";
 						html.ShouldContain(expectedTimePeriodBanner, Case.Insensitive);
 					}
 				}
@@ -324,7 +326,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 					{
 						Log.WriteLine("The Date filter not displayed for the expected subsection");
 						var html = section.Text.Div;
-						string expectedDateBanner = "<h2>" + subSectionTitle + "</h2><div class=\"date-banner\"><p>Date filter not applied</p>";
+						string expectedDateBanner = "<div class=\"date-banner\"><p>Date filter not applied</p>";
 						html.ShouldContain(expectedDateBanner, Case.Sensitive);
 					}
 				}
@@ -903,6 +905,58 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 		}
 
+		//issue #319 SJD 28-11-2019
+		[Then(@"The HTML ""([^""]*)"" ""([^""]*)"" should not contain the date banner class attribute")]
+		public void ThenTheHTMLShouldNotContainTheDateBannerClassAttribute(string headingsToFind, string headingType)
+		{
+			foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+			{
+				if (entry.Resource.ResourceType.Equals(ResourceType.Composition))
+				{
+					Composition composition = (Composition)entry.Resource;
+					foreach (Composition.SectionComponent section in composition.Section)
+					{
+						var headerList = headingsToFind.Split(',');
+						var html = section.Text.Div;
+						var htmlDoc = new HtmlDocument();
+						htmlDoc.LoadHtml(html);
 
+						headerList.ToList().ForEach(headerToFind =>
+						{
+							var headingNode = htmlDoc.DocumentNode.Descendants(headingType).Where(t => t.InnerHtml.Equals(headerToFind)).FirstOrDefault();
+
+							if (headingNode != null)
+							{
+								var topDivNodes = headingNode.ParentNode.ChildNodes
+									.Where(c => c.Name == "div")
+									.ToList();
+
+								topDivNodes.ForEach(i =>
+								{
+								var foundAttrib = i.Attributes.Where(a => a.Value == "date-banner");
+
+								if (foundAttrib.Count() >= 1)
+								{
+									var failMessage = "Unexpected date-banner class attribute for heading : " + headerToFind + " of Type : " + headingType;								
+										Logger.Log.WriteLine(failMessage);
+										Assert.Fail(failMessage);
+									}
+								});
+
+								var passMessage = "Pass test as Attribute class = date-banner NOT returned - under Heading : " + headerToFind;
+								Logger.Log.WriteLine(passMessage);
+							}
+							else
+							{
+								Assert.Fail("Heading Type: " + headingType + " - Heading Name : " + headerToFind + " - Not Found, so unable to check for date-banner class attribute");
+
+							}
+						});
+
+					}
+				}
+			}
+		}
+		
 	}
 }
