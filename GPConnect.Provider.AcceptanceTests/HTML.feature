@@ -344,10 +344,9 @@ Scenario Outline: section date filter applied but date filter not supported in s
 	Examples:
 		| Code | Patient  | StartDateTime | EndDateTime | subSection                        |
 		| MED  | patient2 | 2018-04-20    | 2018-04-30  | Acute Medication (Last 12 Months) |
-		| PRB  | patient2 | 2018-04-20    | 2018-04-30  | Active Problems and Issues        |
 		| MED  | patient2 | 2018-04-20    | 2018-04-30  | Current Repeat Medication         |
 		| MED  | patient2 | 2018-04-20    | 2018-04-30  | Discontinued Repeat Medication    |
-	
+	    | PRB  | patient2 | 2018-04-20    | 2018-04-30  | Active Problems and Issues        |
 
 #195 SJD 24/07/2019 h1 header tags 
 @0.7.2
@@ -445,7 +444,7 @@ Scenario Outline: Check html Date banners have the date banner class attribute
 		Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And The HTML "<HeadingsToCheck>" of the type "<HeadingType>" Should Contain The date banner Class Attribute
+		And The HTML "<HeadingsToCheck>" of the type "<HeadingType>" Should Contain The date banner Class Attribute		
 	Examples:
 		 | Patient  | Code | HeadingsToCheck                                                                                  | HeadingType |
 		 | patient2 | ADM  | Administrative Items                                                                             | h1          |
@@ -507,9 +506,9 @@ Scenario: Discontinued repeat medication subsection banner displayed with expect
 		And the JSON response should be a Bundle resource
 		And The Response Html Should Contain The Discontinued Repeat Medication Banner Text
 
-#SJD 26/11/2019 
+# 319 SJD 28/11/2019 unsupported date filters
 @0.7.2
-Scenario Outline: Check if date filtering is unsupported the date banner class attribute is not present in response 
+Scenario Outline: Check that the date banner class is not present when sections do not support date filters
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "<Patient>"
@@ -517,11 +516,12 @@ Scenario Outline: Check if date filtering is unsupported the date banner class a
 		Then the response status code should indicate success
 		And the response body should be FHIR JSON
 		And the JSON response should be a Bundle resource
-		And The HTML "<HeadingsToCheck>" of the type "<HeadingType>" Should Not Contain The date banner Class Attribute
+		And The HTML "<HeadingsToCheck>" "<HeadingType>" should not contain the date banner class attribute
+		
 	Examples:
 		 | Patient  | Code | HeadingsToCheck                                                                                                                                                                     | HeadingType |
 		 | patient2 | SUM  | Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,Current Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current Repeat Medication | h2          |
 		 | patient2 | ALL  | Current Allergies and Adverse Reactions,Historical Allergies and Adverse Reactions                                                                                                  | h2          |
 		 | patient2 | IMM  | Immunisations                                                                                                                                                                       | h1          |
-		 | patient2 | MED  | Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat Medication                                                                                          | h2          |
+		 
 

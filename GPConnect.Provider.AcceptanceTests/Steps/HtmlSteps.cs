@@ -326,7 +326,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 					{
 						Log.WriteLine("The Date filter not displayed for the expected subsection");
 						var html = section.Text.Div;
-						string expectedDateBanner = "<h2>" + subSectionTitle + "</h2><div class=\"date-banner\"><p>Date filter not applied</p>";
+						string expectedDateBanner = "<div class=\"date-banner\"><p>Date filter not applied</p>";
 						html.ShouldContain(expectedDateBanner, Case.Sensitive);
 					}
 				}
@@ -905,9 +905,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 		}
 
-		//SJD 26-11-2019
-		[Then(@"The HTML ""([^""]*)"" of the type ""([^""]*)"" Should Not Contain The date banner Class Attribute")]
-		public void ThenTheResponseHTMLShouldNotContainThedatebannerClassAttribute(string headingsToFind, string headingType)
+		//issue #319 SJD 28-11-2019
+		[Then(@"The HTML ""([^""]*)"" ""([^""]*)"" should not contain the date banner class attribute")]
+		public void ThenTheHTMLShouldNotContainTheDateBannerClassAttribute(string headingsToFind, string headingType)
 		{
 			foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
 			{
