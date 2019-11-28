@@ -45,7 +45,7 @@
             var consultationsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultations).First();
 
             //Check Code display has correct display value
-            consultationsList.Code.Coding.First().Display.ShouldBe("List of Consultations");
+            consultationsList.Code.Coding.First().Display.ShouldBe("List of consultations");
             consultationsList.Code.Coding.ForEach(coding =>
             {
                 coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
