@@ -13,7 +13,7 @@
     using GPConnect.Provider.AcceptanceTests.Steps;
   	using GPConnect.Provider.AcceptanceTests.Logger;
     using NUnit.Framework;
-
+  
     [Binding]
     public sealed class StructuredMedicationSteps : BaseSteps
     {
@@ -92,6 +92,19 @@
         public void GivenIAddTheMedicationsParameterWithATimePeriod()
         {
             var tempDate = DateTime.UtcNow.AddYears(-2);
+            var startDate = tempDate.ToString("yyyy-MM-dd");
+
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetStartDate(startDate))
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
+        }
+
+        [Given(@"I add the medications parameter to search from ""(.*)"" years back")]
+        public void GivenIAddTheMedicationsParameterToSearchFrom(int yearsToSearchBack)
+        {
+            var tempDate = DateTime.UtcNow.AddYears(-yearsToSearchBack);
             var startDate = tempDate.ToString("yyyy-MM-dd");
 
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
@@ -576,7 +589,51 @@
             });
         }
 
-        private void checkDateIsInRange(Boolean useStart, Boolean useEnd, DateTime toCheck) {
+        [Then(@"the MedicationStatement EffectiveDate is Greater Than Search Date of ""(.*)"" years ago")]
+        private void TheMedicationStatementEffectiveDateIsGreaterThanSearchDate(int yearsToSearchBack)
+        {
+            DateTime searchDate = DateTime.UtcNow.AddYears(-yearsToSearchBack);
+
+            MedicationStatements.ForEach(medStatement =>
+            {
+                if (medStatement.Effective != null)
+                {
+                    if (medStatement.Effective.TypeName.Contains("Period"))
+                    {
+                        Period effectivePeriod = (Period)medStatement.Effective;
+                        var foundValidDateFlag = false;
+                        
+                        //check start and end date and ensure atleast one is greater than search date
+                        if (DateTime.Parse(effectivePeriod.Start) >= searchDate || DateTime.Parse(effectivePeriod.End) >= searchDate)
+                        {
+                            foundValidDateFlag = true;
+                        }
+
+                        if(!foundValidDateFlag)
+                            Assert.Fail("Effective Date start or end should be greater than search date");
+                    }
+                    else
+                    {
+                        var effectiveDateTime = medStatement.Effective;
+                        effectiveDateTime.ShouldBeOfType<FhirDateTime>();
+                        DateTime effectiveDateToCheck = DateTime.Parse(effectiveDateTime.ToString());
+                        effectiveDateToCheck.ShouldBeGreaterThanOrEqualTo(searchDate);
+                        effectiveDateToCheck.ShouldBeLessThanOrEqualTo(DateTime.UtcNow);
+                    }
+
+                }
+                else
+                {
+                    medStatement.DateAsserted.ShouldNotBeNull();
+                    DateTime dateAsserted = DateTime.Parse(medStatement.DateAsserted);
+                    dateAsserted.ShouldBeGreaterThanOrEqualTo(searchDate);
+                    dateAsserted.ShouldBeLessThanOrEqualTo(DateTime.UtcNow);
+                }
+
+            });
+        }
+
+            private void checkDateIsInRange(Boolean useStart, Boolean useEnd, DateTime toCheck) {
             DateTime start = DateTime.UtcNow.AddYears(-2);
             DateTime end = DateTime.UtcNow;
 

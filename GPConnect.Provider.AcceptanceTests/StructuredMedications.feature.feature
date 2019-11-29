@@ -187,10 +187,10 @@ Scenario: Retrieve the medication structured record section for an invalid param
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 @1.2.4
-Scenario Outline: Retrieve the medication structured record section for a patient with a timePeriod
+Scenario: Retrieve the medication structured record section for a patient with a timePeriod
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "<Patient>"
-		And I add the medications parameter with a timePeriod
+		And I add an NHS Number parameter for "patient2"
+		And I add the medications parameter to search from "3" years back
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -198,92 +198,14 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should be valid for patient "<Patient>"
+		And the Bundle should be valid for patient "patient2"
 		And the Bundle should contain "1" lists
 		And the Medications should be valid
 		And the Medication Statements should be valid
 		And the Medication Requests should be valid
 		And the List of MedicationStatements should be valid
-		And the MedicationStatement dates are with the default period with start "true" and end "true"
-	Examples:
-		| Patient  |
-		| patient2 |
-		| patient3 |
-		| patient5 |
-		| patient12 |
+		And the MedicationStatement EffectiveDate is Greater Than Search Date of "3" years ago	
 
-Scenario Outline:  Retrieve the medication structured record section for a patient with a start date equal to system date
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "<Patient>"
-		And I add the medications parameter with a start date equal to current date
-	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "collection"
-		And the response meta profile should be for "structured"
-		And the patient resource in the bundle should contain meta data profile and version id
-		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
-		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should be valid for patient "<Patient>"
-		And the Bundle should contain "1" lists
-		And the Medications should be valid
-		And the Medication Statements should be valid
-		And the Medication Requests should be valid
-		And the List of MedicationStatements should be valid
-		And the MedicationStatement dates are with the default period with start "true" and end "false"
-	Examples:
-		| Patient  |
-		| patient2 |
-		| patient3 |
-		| patient5 |
-		| patient12 |
-#
-# github ref 127 end date tests removed RMB 5/11/2018
-#Scenario Outline: Retrieve the medication structured record section for a patient with an end date
-#	Given I configure the default "GpcGetStructuredRecord" request
-#		And I add an NHS Number parameter for "<Patient>"
-#		And I add the medications parameter with an end date
-#	When I make the "GpcGetStructuredRecord" request
-#	Then the response status code should indicate success
-#		And the response should be a Bundle resource of type "collection"
-#		And the response meta profile should be for "structured"
-#		And the patient resource in the bundle should contain meta data profile and version id
-#		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
-#		And if the response bundle contains an organization resource it should contain meta data profile and version id
-#		And the Bundle should be valid for patient "<Patient>"
-#		And the Bundle should contain "1" lists
-#		And the Medications should be valid
-#		And the Medication Statements should be valid
-#		And the Medication Requests should be valid
-#		And the List of MedicationStatements should be valid
-#		And the MedicationStatement dates are with the default period with start "false" and end "true"
-#	Examples:
-#		| Patient  |
-#		| patient2 |
-#		| patient3 |
-#		| patient5 |
-#		| patient12 |
-#
-#Scenario Outline: Retrieve the medication structured record section for a patient with invalid time period
-#	Given I configure the default "GpcGetStructuredRecord" request
-#		And I add an NHS Number parameter for "patient1"
-#		And I set a medications period parameter start date to "<StartDate>" and end date to "<EndDate>"
-#	When I make the "GpcGetStructuredRecord" request
-#	Then the response status code should indicate failure
-#		And the response should be a OperationOutcome resource
-#	Examples:
-#		| StartDate                 | EndDate                   |
-#		| 2014                      | 2016-02-02                |
-#		| 2014-02                   | 2016-02-02                |
-#		| 2015-10-23T11:08:32       | 2016-02-02                |
-#		| 2015-10-23T11:08:32+00:00 | 2016-02-02                |
-#		| 2016-02-02                | 2017                      |
-#		| 2016-02-02                | 2017-02                   |
-#		| 2016-02-02                | 2017-10-23T11:08:32       |
-#		| 2016-02-02                | 2017-10-23T11:08:32+00:00 |
-#		| 2014-02-02                | 2012-02-02                |
-#
-# github ref 127
-# RMB 5/11/2018
 @1.2.4 @1.3.1
 Scenario Outline: Retrieve the medication structured record section for a patient with invalid date values
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -320,7 +242,6 @@ Scenario: Retrieve the medication structured record section for a patient with m
 		And the Medication Statements should be valid
 		And the Medication Requests should be valid
 		And the List of MedicationStatements should be valid
-		And the MedicationStatement dates are with the default period with start "false" and end "true"
 		And the MedicationStatement for prescriptions prescribed elsewhere should be valid
 
 Scenario: Check warning code is populated for a patient
