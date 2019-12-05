@@ -347,7 +347,15 @@
                 teleCom.Use?.ShouldBeOfType<ContactPoint.ContactPointUse>($"{from} Use is not a valid value within the value set {FhirConst.CodeSystems.kNContactPointUse}");
             });
         }
-    }
+
+		//#320 SJD 04/12/2019 
+		[Given(@"I add a Practitioner Identifier parameter with unknown value")]
+		public void AddAPractitionerIdentifierParameterWithUnknownValue()
+		{
+			_httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", FhirConst.IdentifierSystems.kPracSDSUserId + '|' + "unknownSDSUserID");
+		}
+
+	}
 }
 
 
