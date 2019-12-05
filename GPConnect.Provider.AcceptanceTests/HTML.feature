@@ -311,6 +311,7 @@ Scenario Outline: check when empty date range supplied a 422 invalid Param error
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
 		And I author a request for the "<Code>" care record section for config patient "<Patient>"
+		And I set a time period parameter start date to "<StartDateTime>" and end date to "<EndDateTime>"
 	When I request the FHIR "gpc.getcarerecord" Patient Type operation
 		Then the response status code should be "422"
 		And the response body should be FHIR JSON
