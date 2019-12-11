@@ -148,7 +148,7 @@
                 problem.AssertedDate.ShouldNotBeNull();
 
                 //Check asserter               
-                if (!(problem.Asserter.Reference.Contains("Practitioner/") || problem.Asserter.Reference.Contains("Unknown")))
+                if (!(problem.Asserter.Reference.Contains("Practitioner/") || problem.Asserter.Display.Contains("Unknown")))
                     NUnit.Framework.Assert.Fail("Problem Asserter.Reference should either be a Practitioner Reference or Unknown. Found :" + problem.Asserter.Reference);
                 
                 //CheckSubejct/patient
