@@ -721,11 +721,11 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Verify Problems Linked to Consultations are included and valid in reponse")]
+        [NUnit.Framework.DescriptionAttribute("Verify Problems Linked to Consultations are included and valid in response")]
         [NUnit.Framework.CategoryAttribute("1.3.1")]
-        public virtual void VerifyProblemsLinkedToConsultationsAreIncludedAndValidInReponse()
+        public virtual void VerifyProblemsLinkedToConsultationsAreIncludedAndValidInResponse()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Problems Linked to Consultations are included and valid in reponse", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Problems Linked to Consultations are included and valid in response", null, new string[] {
                         "1.3.1"});
 #line 256
 this.ScenarioInitialize(scenarioInfo);

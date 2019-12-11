@@ -12,7 +12,7 @@
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
     using System.Text.RegularExpressions;
-
+ 
     [Binding]
     public sealed class StructuredProblemsSteps : BaseSteps
     {
@@ -122,13 +122,10 @@
 
                 //Check extension[problemSignificance]
                 List<Extension> problemExtensions = problem.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemSignificance)).ToList();
-                problemExtensions.Count.ShouldBeLessThanOrEqualTo(1);
-                if (problemExtensions.Count == 1)
-                {
-                    CodeableConcept clinicalSetting = (CodeableConcept)problemExtensions.First().Value;
-                    clinicalSetting.Coding.First().Code.ShouldBeOneOf("major", "minor");
-                }
-
+                problemExtensions.Count.ShouldBe(1);
+                Code clinicalSetting = (Code)problemExtensions.First().Value;
+                clinicalSetting.Value.ShouldBeOneOf("major", "minor");
+                
                 //Check identifier
                 problem.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 problem.Identifier.ForEach(identifier =>
@@ -146,13 +143,14 @@
 
                 //check category
                 problem.Category.Where(c => c.Coding.First().Code == "problem-list-item").Count().ShouldBe(1);
-
+                
                 //Check assertedDate
                 problem.AssertedDate.ShouldNotBeNull();
 
-                //Check asserter
-                problem.Asserter.Reference.ShouldStartWith("Practitioner/");
-
+                //Check asserter               
+                if (!(problem.Asserter.Reference.Contains("Practitioner/") || problem.Asserter.Reference.Contains("Unknown")))
+                    NUnit.Framework.Assert.Fail("Problem Asserter.Reference should either be a Practitioner Reference or Unknown. Found :" + problem.Asserter.Reference);
+                
                 //CheckSubejct/patient
                 Patients.Where(p => p.Id == (problem.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 

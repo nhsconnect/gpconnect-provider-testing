@@ -253,7 +253,7 @@ Examples:
 		| 2018                       | 2019                       |
 
 @1.3.1
-Scenario: Verify Problems Linked to Consultations are included and valid in reponse
+Scenario: Verify Problems Linked to Consultations are included and valid in response
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
 		And I add the includeConsultations parameter only

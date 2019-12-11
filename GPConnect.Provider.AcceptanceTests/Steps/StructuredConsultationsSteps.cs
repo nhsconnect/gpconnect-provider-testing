@@ -298,22 +298,38 @@
             var found = false;
             AllTopicLists.ForEach(topicList =>
             {
-                var problems = topicList.Extension.Where(e => e.Url == FhirConst.StructureDefinitionSystems.kExtProblem).ToList();
-
-                //check each Problem reference exists in bundle
-                string pattern = @"(.*/)(.*)";
-                problems.ForEach(problem =>
+                try
                 {
-                    string refToFind = Regex.Replace(((Hl7.Fhir.Model.ResourceReference)problem.Value).Reference, pattern, "$2");
-                    
-                    int count = Bundle.GetResources()
-                                .Where(resource => resource.ResourceType.Equals(ResourceType.Condition))
-                                .Where(resource => resource.Id == refToFind)
-                                .ToList().Count();
-                    if (count >= 1)
-                        found = true;
+                    var problemHeaders = topicList.Extension.Where(e => e.Url == FhirConst.StructureDefinitionSystems.kExtProblem).ToList();
+                 
+                    //check each Problem reference exists in bundle
+                    string pattern = @"(.*/)(.*)";
+                    problemHeaders.ForEach(problemHeader =>
+                    {
+                        var ProbHeaderExtensions = ((Extension)problemHeader).Extension;
 
-                });
+                        ProbHeaderExtensions.ForEach(phe =>
+                        {
+                            string refToFind = Regex.Replace(((Hl7.Fhir.Model.ResourceReference)phe.Value).ReferenceElement.Value, pattern, "$2");
+
+                            int count = Bundle.GetResources()
+                                        .Where(resource => resource.ResourceType.Equals(ResourceType.Condition))
+                                        .Where(resource => resource.Id == refToFind)
+                                        .ToList().Count();
+                            if (count >= 1)
+                                found = true;
+
+                        });
+
+                    });
+
+
+                }
+                catch (Exception)
+                {
+                }
+
+                
             });
 
             //check had atleast one topic is related to a problem as per data requirements for test
