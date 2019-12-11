@@ -149,7 +149,7 @@
 
                 //Check asserter               
                 if (!(problem.Asserter.Reference.Contains("Practitioner/") || problem.Asserter.Display.Contains("Unknown")))
-                    NUnit.Framework.Assert.Fail("Problem Asserter.Reference should either be a Practitioner Reference or Unknown. Found :" + problem.Asserter.Reference);
+                    NUnit.Framework.Assert.Fail("Problem Asserter.Reference should either be a Practitioner Reference or Asserter Display should be Unknown");
                 
                 //CheckSubejct/patient
                 Patients.Where(p => p.Id == (problem.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
