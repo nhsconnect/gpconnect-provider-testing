@@ -196,32 +196,33 @@ Scenario: Fhir content type test where Accept header is JSON and _format paramet
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-Scenario: FHIR content type test where Invalid content type application/xml is sent
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I set the request content type to "application/xml"
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate unsupported media type error
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
-
-Scenario: FHIR content type test where Invalid content type application/json is sent
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I set the request content type to "applicaiton/json"
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate unsupported media type error
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
-
-Scenario: FHIR content type test where Invalid content type sent text/xml
-	Given I am using the default server
-		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
-		And I set the request content type to "text/xml"
-	When I make a GET request to "/metadata"
-	Then the response status code should indicate unsupported media type error
-		And the response body should be FHIR JSON
-		And the JSON response should be a OperationOutcome resource
+## SJD 04/12/2019 removed test as an invalid test but been added to the wish list to check agaisnt a POST interaction in the future
+#Scenario: FHIR content type test where Invalid content type application/xml is sent
+#	Given I am using the default server
+#		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+#		And I set the request content type to "application/xml"
+#	When I make a GET request to "/metadata"
+#	Then the response status code should indicate unsupported media type error
+#		And the response body should be FHIR JSON
+#		And the JSON response should be a OperationOutcome resource
+#
+#Scenario: FHIR content type test where Invalid content type application/json is sent
+#	Given I am using the default server
+#		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+#		And I set the request content type to "applicaiton/json"
+#	When I make a GET request to "/metadata"
+#	Then the response status code should indicate unsupported media type error
+#		And the response body should be FHIR JSON
+#		And the JSON response should be a OperationOutcome resource
+#
+#Scenario: FHIR content type test where Invalid content type sent text/xml
+#	Given I am using the default server
+#		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
+#		And I set the request content type to "text/xml"
+#	When I make a GET request to "/metadata"
+#	Then the response status code should indicate unsupported media type error
+#		And the response body should be FHIR JSON
+#		And the JSON response should be a OperationOutcome resource
 
 Scenario: Fhir content type test where Accept header is unsupported media type and request payload is JSON
 	Given I am using the default server
