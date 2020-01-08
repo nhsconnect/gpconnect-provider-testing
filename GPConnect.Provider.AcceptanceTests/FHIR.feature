@@ -1,7 +1,7 @@
 ﻿@fhir
 Feature: FHIR
 
-@1.2.4
+@1.2.4 @1.2.5
 Scenario: Fhir Get MetaData
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request

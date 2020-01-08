@@ -75,6 +75,7 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for a patient including prescri" +
             "ption issues")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
+        [NUnit.Framework.CategoryAttribute("1.2.5")]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         [NUnit.Framework.TestCaseAttribute("patient3", null)]
         [NUnit.Framework.TestCaseAttribute("patient5", null)]
@@ -83,7 +84,8 @@ namespace GPConnect.Provider.AcceptanceTests
         public virtual void RetrieveTheMedicationStructuredRecordSectionForAPatientIncludingPrescriptionIssues(string patient, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.4"};
+                    "1.2.4",
+                    "1.2.5"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -144,6 +146,7 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for a patient excluding prescri" +
             "ption issues")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
+        [NUnit.Framework.CategoryAttribute("1.2.5")]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         [NUnit.Framework.TestCaseAttribute("patient3", null)]
         [NUnit.Framework.TestCaseAttribute("patient5", null)]
@@ -151,7 +154,8 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void RetrieveTheMedicationStructuredRecordSectionForAPatientExcludingPrescriptionIssues(string patient, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.4"};
+                    "1.2.4",
+                    "1.2.5"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
