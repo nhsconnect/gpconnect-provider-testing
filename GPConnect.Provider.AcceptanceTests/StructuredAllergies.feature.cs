@@ -450,14 +450,12 @@ this.ScenarioInitialize(scenarioInfo);
             " allergies parameter expected failure")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
         [NUnit.Framework.CategoryAttribute("1.3.1")]
-        [NUnit.Framework.CategoryAttribute("04/10/2019")]
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithoutTheResolvedAllergiesParameterExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient without the resolved" +
                     " allergies parameter expected failure", null, new string[] {
                         "1.2.4",
-                        "1.3.1",
-                        "04/10/2019"});
+                        "1.3.1"});
 #line 159
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

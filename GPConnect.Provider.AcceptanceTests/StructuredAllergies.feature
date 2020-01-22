@@ -155,7 +155,7 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the Lists are valid for a patient with explicit no allergies coding
 		And the List of AllergyIntolerances should be valid
 
-@1.2.4 @1.3.1 04/10/2019
+@1.2.4 @1.3.1
 Scenario: Retrieve the allergy structured record section for a patient without the resolved allergies parameter expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
