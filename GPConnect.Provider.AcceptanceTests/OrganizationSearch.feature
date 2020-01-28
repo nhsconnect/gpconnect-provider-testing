@@ -1,7 +1,7 @@
-﻿@organization
+﻿@organization @1.2.3-Full-Pack @foundations @foundations-Full-Pack
 Feature: OrganizationSearch
 
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario Outline: Organization search success
 	Given I configure the default "OrganizationSearch" request
 		And I add an Organization Identifier parameter with System "<System>" and Value "<Value>"

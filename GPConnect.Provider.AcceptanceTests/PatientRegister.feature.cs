@@ -20,6 +20,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("PatientRegister")]
     [NUnit.Framework.CategoryAttribute("patient")]
+    [NUnit.Framework.CategoryAttribute("1.2.3-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("foundations")]
+    [NUnit.Framework.CategoryAttribute("foundations-Full-Pack")]
     public partial class PatientRegisterFeature
     {
         
@@ -33,7 +36,10 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PatientRegister", null, ProgrammingLanguage.CSharp, new string[] {
-                        "patient"});
+                        "patient",
+                        "1.2.3-Full-Pack",
+                        "foundations",
+                        "foundations-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -128,11 +134,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Register patient without gender element")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void RegisterPatientWithoutGenderElement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient without gender element", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 27
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -432,11 +438,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Register patient with invalid patient resource with additional element")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void RegisterPatientWithInvalidPatientResourceWithAdditionalElement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient with invalid patient resource with additional element", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 161
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -485,11 +491,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Register patient which alread exists on the system as a normal patient")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void RegisterPatientWhichAlreadExistsOnTheSystemAsANormalPatient()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient which alread exists on the system as a normal patient", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 179
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1009,13 +1015,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Register patient setting JWT request type to invalid type")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient/*.read", null)]
         [NUnit.Framework.TestCaseAttribute("organization/*.read", null)]
         public virtual void RegisterPatientSettingJWTRequestTypeToInvalidType(string jWTType, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.3"};
+                    "1.2.3-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -1073,11 +1079,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Register patient and check preferred branch")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void RegisterPatientAndCheckPreferredBranch()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Register patient and check preferred branch", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 460
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1212,13 +1218,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Register patient with Multiple Address Use types")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("Home", "Temp", null)]
         [NUnit.Framework.TestCaseAttribute("Temp", "Home", null)]
         public virtual void RegisterPatientWithMultipleAddressUseTypes(string use1, string use2, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.3"};
+                    "1.2.3-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

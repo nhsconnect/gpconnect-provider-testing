@@ -20,6 +20,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("LocationRead")]
     [NUnit.Framework.CategoryAttribute("location")]
+    [NUnit.Framework.CategoryAttribute("1.2.3-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("foundations")]
+    [NUnit.Framework.CategoryAttribute("foundations-Full-Pack")]
     public partial class LocationReadFeature
     {
         
@@ -33,7 +36,10 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LocationRead", null, ProgrammingLanguage.CSharp, new string[] {
-                        "location"});
+                        "location",
+                        "1.2.3-Full-Pack",
+                        "foundations",
+                        "foundations-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,14 +80,14 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Location read successful request validate the response contains logical identifie" +
             "r")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("SIT1", null)]
         [NUnit.Framework.TestCaseAttribute("SIT2", null)]
         [NUnit.Framework.TestCaseAttribute("SIT3", null)]
         public virtual void LocationReadSuccessfulRequestValidateTheResponseContainsLogicalIdentifier(string location, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.3"};
+                    "1.2.3-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -226,13 +232,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Location read resource conforms to GP-Connect specification")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("application/fhir+json", "JSON", null)]
         [NUnit.Framework.TestCaseAttribute("application/fhir+xml", "XML", null)]
         public virtual void LocationReadResourceConformsToGP_ConnectSpecification(string header, string bodyFormat, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.3"};
+                    "1.2.3-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

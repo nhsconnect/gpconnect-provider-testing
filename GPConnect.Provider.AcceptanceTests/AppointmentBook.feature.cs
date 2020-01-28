@@ -19,7 +19,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("AppointmentBook")]
-    [NUnit.Framework.CategoryAttribute("appointment")]
+    [NUnit.Framework.CategoryAttribute("appointments")]
+    [NUnit.Framework.CategoryAttribute("appointments-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("1.2.3-Full-Pack")]
     public partial class AppointmentBookFeature
     {
         
@@ -33,7 +35,9 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AppointmentBook", null, ProgrammingLanguage.CSharp, new string[] {
-                        "appointment"});
+                        "appointments",
+                        "appointments-Full-Pack",
+                        "1.2.3-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -73,11 +77,11 @@ namespace GPConnect.Provider.AcceptanceTests
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Book single appointment for patient")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void BookSingleAppointmentForPatient()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -150,12 +154,12 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Book single appointment for patient with Extensions")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("true", "true", "true", null)]
         public virtual void BookSingleAppointmentForPatientWithExtensions(string orgType, string deliveryChannel, string pracRole, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.3"};
+                    "1.2.3-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -193,11 +197,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Book single appointment for patient without organisation type")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void BookSingleAppointmentForPatientWithoutOrganisationType()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for patient without organisation type", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 60
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1104,11 +1108,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Book appointment with name removed from booking organization")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void BookAppointmentWithNameRemovedFromBookingOrganization()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with name removed from booking organization", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 444
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1176,11 +1180,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Book appointment with a description")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void BookAppointmentWithADescription()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book appointment with a description", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 471
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

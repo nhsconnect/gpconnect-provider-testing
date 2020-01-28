@@ -20,6 +20,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("PractitionerSearch")]
     [NUnit.Framework.CategoryAttribute("practitioner")]
+    [NUnit.Framework.CategoryAttribute("1.2.3-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("foundations")]
+    [NUnit.Framework.CategoryAttribute("foundations-Full-Pack")]
     public partial class PractitionerSearchFeature
     {
         
@@ -33,7 +36,10 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PractitionerSearch", null, ProgrammingLanguage.CSharp, new string[] {
-                        "practitioner"});
+                        "practitioner",
+                        "1.2.3-Full-Pack",
+                        "foundations",
+                        "foundations-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -73,14 +79,14 @@ namespace GPConnect.Provider.AcceptanceTests
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Practitioner search success and validate the practitioner identifiers")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("practitioner1", "1", "0", null)]
         [NUnit.Framework.TestCaseAttribute("practitioner2", "1", "1", null)]
         [NUnit.Framework.TestCaseAttribute("practitioner3", "1", "2", null)]
         public virtual void PractitionerSearchSuccessAndValidateThePractitionerIdentifiers(string value, string entrySize, string roleSize, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.3"};
+                    "1.2.3-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -346,11 +352,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Practitioner search multiple identifier parameter failure")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void PractitionerSearchMultipleIdentifierParameterFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Practitioner search multiple identifier parameter failure", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 127
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

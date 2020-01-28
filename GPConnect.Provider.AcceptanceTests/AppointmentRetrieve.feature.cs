@@ -19,7 +19,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("AppointmentRetrieve")]
-    [NUnit.Framework.CategoryAttribute("appointment")]
+    [NUnit.Framework.CategoryAttribute("appointments")]
+    [NUnit.Framework.CategoryAttribute("appointments-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("1.2.3-Full-Pack")]
     public partial class AppointmentRetrieveFeature
     {
         
@@ -33,7 +35,9 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AppointmentRetrieve", null, ProgrammingLanguage.CSharp, new string[] {
-                        "appointment"});
+                        "appointments",
+                        "appointments-Full-Pack",
+                        "1.2.3-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -104,12 +108,12 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I perform a successful retrieve appointment with Extensions")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient1", "true", "true", "true", null)]
         public virtual void IPerformASuccessfulRetrieveAppointmentWithExtensions(string patientName, string orgType, string deliveryChannel, string pracRole, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.3"};
+                    "1.2.3-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -151,14 +155,14 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve multiple appointment retrived")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient4", "1", null)]
         [NUnit.Framework.TestCaseAttribute("patient5", "3", null)]
         [NUnit.Framework.TestCaseAttribute("patient6", "2", null)]
         public virtual void AppointmentRetrieveMultipleAppointmentRetrived(string patient, string numberOfAppointments, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.3"};
+                    "1.2.3-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

@@ -1,10 +1,10 @@
-﻿@practitioner
+﻿@practitioner @1.2.3-Full-Pack @foundations @foundations-Full-Pack
 Feature: PractitionerSearch
 
 # Common
 # JWT is hard coded value and it should probably be considered what JWT requested resource should be, organization but which?
 # Compress successful tests into one possibly // For clarity it may be better to keep successful seperated as if one failes it is easier to see where the problem is
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario Outline: Practitioner search success and validate the practitioner identifiers
 	Given I configure the default "PractitionerSearch" request		
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "<Value>"
@@ -123,7 +123,7 @@ Scenario Outline: Practitioner search add accept header and _format parameter to
 		| application/fhir+xml  | application/fhir+json | JSON       |
 		| application/fhir+xml  | application/fhir+xml  | XML        |
 
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario: Practitioner search multiple identifier parameter failure
 	Given I configure the default "PractitionerSearch" request
 		And I add a Practitioner Identifier parameter with SDS User Id System and Value "practitioner2"

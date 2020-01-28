@@ -1,4 +1,4 @@
-﻿@structuredrecord
+﻿@structured @structured-Full-Pack @1.2.3-Full-Pack
 Feature: AccessStructuredRecordAllergies
 
 Scenario Outline: Retrieve the allergy structured record section for a patient including resolved allergies

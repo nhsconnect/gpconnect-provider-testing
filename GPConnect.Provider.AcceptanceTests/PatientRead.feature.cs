@@ -20,6 +20,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("PatientRead")]
     [NUnit.Framework.CategoryAttribute("patient")]
+    [NUnit.Framework.CategoryAttribute("1.2.3-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("foundations")]
+    [NUnit.Framework.CategoryAttribute("foundations-Full-Pack")]
     public partial class PatientReadFeature
     {
         
@@ -33,7 +36,10 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PatientRead", null, ProgrammingLanguage.CSharp, new string[] {
-                        "patient"});
+                        "patient",
+                        "1.2.3-Full-Pack",
+                        "foundations",
+                        "foundations-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -306,11 +312,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Read patient returned should conform to the GPconnect specification")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void ReadPatientReturnedShouldConformToTheGPconnectSpecification()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read patient returned should conform to the GPconnect specification", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 106
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

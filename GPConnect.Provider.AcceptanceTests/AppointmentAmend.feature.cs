@@ -19,7 +19,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("AppointmentAmend")]
-    [NUnit.Framework.CategoryAttribute("appointment")]
+    [NUnit.Framework.CategoryAttribute("appointments")]
+    [NUnit.Framework.CategoryAttribute("appointments-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("1.2.3-Full-Pack")]
     public partial class AppointmentAmendFeature
     {
         
@@ -33,7 +35,9 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AppointmentAmend", null, ProgrammingLanguage.CSharp, new string[] {
-                        "appointment"});
+                        "appointments",
+                        "appointments-Full-Pack",
+                        "1.2.3-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,14 +78,14 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I perform a successful amend appointment and check the returned appointment resou" +
             "rces are in the future")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient1", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         [NUnit.Framework.TestCaseAttribute("patient3", null)]
         public virtual void IPerformASuccessfulAmendAppointmentAndCheckTheReturnedAppointmentResourcesAreInTheFuture(string patient, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.3"};
+                    "1.2.3-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -594,11 +598,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Amend appointment with Comment and Description")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         public virtual void AmendAppointmentWithCommentAndDescription()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Amend appointment with Comment and Description", null, new string[] {
-                        "1.2.3"});
+                        "1.2.3-IncrementalAndRegression"});
 #line 246
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

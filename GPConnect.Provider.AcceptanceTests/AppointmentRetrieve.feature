@@ -1,4 +1,4 @@
-﻿@appointment
+﻿@appointments @appointments-Full-Pack @1.2.3-Full-Pack
 Feature: AppointmentRetrieve
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
@@ -11,7 +11,7 @@ Scenario: Appointment retrieve success valid id where appointment resource retur
 		And the response should be a Bundle resource of type "searchset"
 		And the Bundle should contain no Appointments
 
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario Outline: I perform a successful retrieve appointment with Extensions
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
@@ -32,7 +32,7 @@ Scenario Outline: I perform a successful retrieve appointment with Extensions
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
 
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario Outline: Appointment retrieve multiple appointment retrived
 	Given I create "<numberOfAppointments>" Appointments for Patient "<patient>" and Organization Code "ORG1"
 	Given I get the Patient for Patient Value "<patient>"

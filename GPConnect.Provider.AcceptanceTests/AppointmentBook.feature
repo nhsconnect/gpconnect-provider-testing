@@ -1,7 +1,7 @@
-﻿@appointment
+﻿@appointments @appointments-Full-Pack @1.2.3-Full-Pack
 Feature: AppointmentBook
 
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario: Book single appointment for patient
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -39,7 +39,7 @@ Scenario Outline: Book single appointment for patient with optional elements
 		| true    | true            | false    |
 		| true    | true            | true     |
 
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario Outline: Book single appointment for patient with Extensions
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -56,7 +56,7 @@ Scenario Outline: Book single appointment for patient with Extensions
 		| OrgType | DeliveryChannel | PracRole |
 		| true    | true            | true     |
 
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario: Book single appointment for patient without organisation type
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -440,7 +440,7 @@ Scenario: Book appointment invalid response check caching headers exist
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 		And the required cacheing headers should be present in the response
 
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario: Book appointment with name removed from booking organization
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -467,7 +467,7 @@ Scenario: Book appointment with telecom removed from booking organization
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario: Book appointment with a description
 	Given I get an existing patients nshNumber
 		And I store the Patient

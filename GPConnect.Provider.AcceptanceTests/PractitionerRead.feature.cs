@@ -20,6 +20,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("PractitionerRead")]
     [NUnit.Framework.CategoryAttribute("practitioner")]
+    [NUnit.Framework.CategoryAttribute("1.2.3-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("foundations")]
+    [NUnit.Framework.CategoryAttribute("foundations-Full-Pack")]
     public partial class PractitionerReadFeature
     {
         
@@ -33,7 +36,10 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PractitionerRead", null, ProgrammingLanguage.CSharp, new string[] {
-                        "practitioner"});
+                        "practitioner",
+                        "1.2.3-Full-Pack",
+                        "foundations",
+                        "foundations-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -73,14 +79,14 @@ namespace GPConnect.Provider.AcceptanceTests
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Practitioner read successful request validate all of response")]
-        [NUnit.Framework.CategoryAttribute("1.2.3")]
+        [NUnit.Framework.CategoryAttribute("1.2.3-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("practitioner1", "0", null)]
         [NUnit.Framework.TestCaseAttribute("practitioner2", "1", null)]
         [NUnit.Framework.TestCaseAttribute("practitioner3", "2", null)]
         public virtual void PractitionerReadSuccessfulRequestValidateAllOfResponse(string practitioner, string numberOfRoleIdentifiers, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.3"};
+                    "1.2.3-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

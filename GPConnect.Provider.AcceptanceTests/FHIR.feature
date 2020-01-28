@@ -1,4 +1,4 @@
-﻿@fhir
+﻿@fhir @1.2.3-Full-Pack @appointments-Full-Pack @structured-Full-Pack @foundations-Full-Pack
 Feature: FHIR
 
 Scenario: Fhir Get MetaData

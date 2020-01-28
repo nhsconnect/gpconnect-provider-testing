@@ -1,4 +1,4 @@
-﻿@jwt @1.2.3
+﻿@jwt @1.2.3-IncrementalAndRegression @1.2.3-Full-Pack @appointments-Full-Pack @structured-Full-Pack @foundations-Full-Pack
 Feature: JWT
 
 Scenario: JWT - Bearer Token - not base 64 encoded

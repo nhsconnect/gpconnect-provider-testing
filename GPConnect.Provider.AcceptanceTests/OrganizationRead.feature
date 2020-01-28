@@ -1,7 +1,7 @@
-﻿@organization
+﻿@organization @1.2.3-Full-Pack @foundations @foundations-Full-Pack
 Feature: OrganizationRead
 
-@1.2.3
+@1.2.3-IncrementalAndRegression
 Scenario: Organization Read successful request validate all of response
 	Given I get the Organization for Organization Code "ORG1"
 		And I store the Organization

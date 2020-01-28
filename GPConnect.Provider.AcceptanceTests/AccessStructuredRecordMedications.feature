@@ -1,4 +1,4 @@
-﻿@structuredrecord
+﻿@structured @structured-Full-Pack @1.2.3-Full-Pack
 Feature: AccessStructuredRecordMedications
 
 Scenario Outline: Retrieve the medication structured record section for a patient including prescription issues
