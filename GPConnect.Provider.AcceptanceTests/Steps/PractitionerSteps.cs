@@ -163,7 +163,7 @@
             {
                 practitioner.Identifier.ForEach(identifier =>
                 {
-                    identifier.System.ShouldBeOneOf(FhirConst.IdentifierSystems.kPracSDSUserId, FhirConst.IdentifierSystems.kPracRoleProfile);
+                    identifier.System.ShouldBeOneOf(FhirConst.IdentifierSystems.kPracSDSUserId, FhirConst.IdentifierSystems.kPracRoleProfile, FhirConst.IdentifierSystems.kPracGMP);
                 });
             });
         }
