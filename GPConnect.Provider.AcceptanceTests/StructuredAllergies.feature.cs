@@ -19,7 +19,8 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("StructuredAllergies")]
-    [NUnit.Framework.CategoryAttribute("structuredrecord")]
+    [NUnit.Framework.CategoryAttribute("structured")]
+    [NUnit.Framework.CategoryAttribute("structuredallergies")]
     public partial class StructuredAllergiesFeature
     {
         
@@ -33,7 +34,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredAllergies", null, ProgrammingLanguage.CSharp, new string[] {
-                        "structuredrecord"});
+                        "structured",
+                        "structuredallergies"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

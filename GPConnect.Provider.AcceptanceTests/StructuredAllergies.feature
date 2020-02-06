@@ -1,4 +1,4 @@
-﻿@structuredrecord
+﻿@structured @structuredallergies
 Feature: StructuredAllergies
 
 @1.2.4 @1.3.1

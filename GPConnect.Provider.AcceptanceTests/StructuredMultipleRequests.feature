@@ -1,4 +1,4 @@
-﻿@structuredrecord
+﻿@structured @structuredmultiplerequests
 Feature: StructuredMultipleRequests
 
 @1.3.1

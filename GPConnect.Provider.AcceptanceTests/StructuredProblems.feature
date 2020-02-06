@@ -1,4 +1,4 @@
-﻿@structuredrecord
+﻿@structured @structuredproblems
 Feature: StructuredProblems
 
 @1.3.1
@@ -117,7 +117,6 @@ Scenario: Retrieve problems structured record for a patient that has no problems
 		And I Check The Problems List
 		And check the response does not contain an operation outcome
 		And check structured list contains a note and emptyReason when no data in section
-		And check the response does not contain an operation outcome
 
 Scenario: Retrieve problems structured record for a patient that has repeating pair values expected success
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -190,7 +189,7 @@ Scenario: Retrieve Problems structured record with made up partParameter expecte
 		And Check the operation outcome returns the correct text and diagnotics "madeUpProblems"
 		And Check the number of issues in the operation outcome "1"
 
-Scenario: Retrieve consultations structured record section for an invalid NHS number
+Scenario: Retrieve Problems structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
 		And I add the Problems parameter
@@ -198,7 +197,7 @@ Scenario: Retrieve consultations structured record section for an invalid NHS nu
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-Scenario: Retrieve consultations structured record section for an empty NHS number
+Scenario: Retrieve Problems structured record section for an empty NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter with an empty NHS Number
 		And I add the Problems parameter
@@ -206,7 +205,7 @@ Scenario: Retrieve consultations structured record section for an empty NHS numb
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-Scenario: Retrieve consultations structured record section for an invalid Identifier System
+Scenario: Retrieve Problems structured record section for an invalid Identifier System
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
 		And I add the Problems parameter
@@ -214,7 +213,7 @@ Scenario: Retrieve consultations structured record section for an invalid Identi
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-Scenario: Retrieve consultations structured record section for an empty Identifier System
+Scenario: Retrieve Problems structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
 		And I add the Problems parameter
@@ -222,7 +221,7 @@ Given I configure the default "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-Scenario: Retrieve consultations structured record for a patient that has sensitive flag 
+Scenario: Retrieve Problems structured record for a patient that has sensitive flag 
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient9"
 		And I add the Problems parameter
@@ -231,4 +230,40 @@ Scenario: Retrieve consultations structured record for a patient that has sensit
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
+@1.3.2
+Scenario: Verify response for a Patient with Problems linked to all clinical item types
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the Problems parameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient2"
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
+		And check the response does not contain an operation outcome
+		And Check there is a Linked MedicationRequest resource that has been included in the response
+		And Check there is a Linked Medication resource that has been included in the response
 
+		#And Check the Medications List resources are included in response
+		#And Check Linked Allergies Clinical resources are included in response
+		#And Check the Allergies List resources are included in response
+		#And Check Linked Immunization Clinical resources are included in response
+		#And Check the Immunization List resources are included in response
+		#And Check Linked Uncategorised Clinical resources are included in response
+		#And Check the Uncategorised List resources are included in response
+		#And Check Linked Consultation Clinical resources are included in response
+		#And Check the Consultation List resources are included in response
+		#And Check Linked problems Clinical resources are included in response
+		And check that the bundle does not contain any duplicate resources
+
+		# move test to the top and remove the orginal possitive test

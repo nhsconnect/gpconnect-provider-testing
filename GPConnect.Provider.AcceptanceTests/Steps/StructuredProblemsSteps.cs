@@ -20,6 +20,10 @@
         private List<List> Lists => _httpContext.FhirResponse.Lists;
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
         private List<Condition> Problems => _httpContext.FhirResponse.Conditions;
+        private Bundle Bundle => _httpContext.FhirResponse.Bundle;
+        private List<Medication> Medications => _httpContext.FhirResponse.Medications;
+        private List<MedicationStatement> MedicationStatements => _httpContext.FhirResponse.MedicationStatements;
+        private List<MedicationRequest> MedicationRequests => _httpContext.FhirResponse.MedicationRequests;
 
         public StructuredProblemsSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -225,6 +229,114 @@
                 Tuple.Create("madeUpProblems", (Base)new Code ("madeUpProblemsValue1")),
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
+
+        }
+
+        public void CheckResourceExists<T>(T resourceType, string resourceID)
+        {
+            Bundle.GetResources()
+                           .Where(resource => resource.ResourceType.Equals(resourceType))
+                           .Where(resource => resource.Id == resourceID)
+                           .ToList().Count().ShouldBe(1, "Linked Resource : " + resourceType.ToString() + " - Not Found ID : " + resourceID);
+
+            Logger.Log.WriteLine("Found Linked resource : " + resourceID + " Of Type : " + resourceType);
+
+        }
+
+        public void VerifyResourceReferenceExists(string refTypeToFind, string fullRefToFind)
+        {
+
+            string pattern = @"(.*/)(.*)";
+            string refToFind = Regex.Replace(fullRefToFind, pattern, "$2");
+
+            //Switch on Clincal Item type
+            switch (refTypeToFind)
+            {
+                case "Observation":
+                    CheckResourceExists(ResourceType.Observation, refToFind);
+                    break;
+
+                case "AllergyIntolerance":
+                    CheckResourceExists(ResourceType.AllergyIntolerance, refToFind);
+                    break;
+
+                case "Medication":
+                    CheckResourceExists(ResourceType.Medication, refToFind);
+                    break;
+
+                case "MedicationStatement":
+                    CheckResourceExists(ResourceType.MedicationStatement, refToFind);
+                    break;
+
+                case "MedicationRequest":
+                    CheckResourceExists(ResourceType.MedicationRequest, refToFind);
+                    break;
+
+                case "Immunization":
+                    CheckResourceExists(ResourceType.Immunization, refToFind);
+                    break;
+
+                case "Condition":
+                    CheckResourceExists(ResourceType.Condition, refToFind);
+                    break;
+
+                case "Appointment":
+                    CheckResourceExists(ResourceType.Appointment, refToFind);
+                    break;
+
+                //unknown type ignore - could be not supported message
+                default:
+                    Logger.Log.WriteLine("Ignored, Entry/Item/Reference for : " + refTypeToFind);
+                    break;
+            }
+        }
+
+        [Then(@"Check there is a Linked MedicationRequest resource that has been included in the response")]
+        public void ThenCheckLinkedMedicationRequestClinicalresourcesareincludedinresponse()
+        {
+            //check there is a problem with a MedicationRequest linked            
+            var found = false;
+            string refToFind = "";
+      
+            foreach (var p in Problems)
+            { 
+                Condition problem = (Condition)p;
+                List<Extension> problemRelatedContentExtensions = p.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemRelatedContent)).ToList();
+
+                foreach (var rcc in problemRelatedContentExtensions)
+                {
+                    ResourceReference rr = (ResourceReference)rcc.Value;
+                    if (rr.Reference.StartsWith("MedicationRequest/"))
+                    {
+                        refToFind = rr.Reference;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
+                    break;
+            };
+
+            found.ShouldBeTrue("Fail : No Problems found with a linked MedicationRequest");
+
+
+            //check that MedicationRequest linked has been included in response.
+            VerifyResourceReferenceExists("MedicationRequest", refToFind);
+
+
+        }
+
+        [Then(@"Check there is a Linked Medication resource that has been included in the response")]
+        public void ThenCheckthereisaLinkedMedicationresourcethathasbeenincludedintheresponse()
+        {
+            //Loop all medRequests and check has a medication reference and also exists in response.
+            MedicationRequests.ForEach(medr =>
+            {
+                string rr = ((ResourceReference)medr.Medication).Reference;
+
+                VerifyResourceReferenceExists("Medication", rr);
+
+            });
 
         }
 

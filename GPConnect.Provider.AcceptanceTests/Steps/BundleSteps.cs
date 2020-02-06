@@ -5,11 +5,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 	using Context;
 	using GPConnect.Provider.AcceptanceTests.Logger;
 	using Hl7.Fhir.Model;
-	using NUnit.Framework;
+    using Hl7.Fhir.Serialization;
+    using Newtonsoft.Json.Linq;
+    using NUnit.Framework;
 	using Shouldly;
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
+    using System.IO;
+    using System.Linq;
 	using TechTalk.SpecFlow;
 	using static Hl7.Fhir.Model.Bundle;
 
@@ -17,8 +20,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 	public sealed class BundleSteps : BaseSteps
 	{
 		private readonly HttpContext _httpContext;
+        private List<Medication> Medications => _httpContext.FhirResponse.Medications;
+        private List<MedicationStatement> MedicationStatements => _httpContext.FhirResponse.MedicationStatements;
+        private List<MedicationRequest> MedicationRequests => _httpContext.FhirResponse.MedicationRequests;
+        private List<AllergyIntolerance> ActiveAllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
+        private List<Observation> Observations => _httpContext.FhirResponse.Observations;
+        private List<Encounter> Encounters => _httpContext.FhirResponse.Encounters;
+        private List<Condition> Problems => _httpContext.FhirResponse.Conditions;
+        private List<Immunization> Immunizations => _httpContext.FhirResponse.Immunizations;
 
-		public BundleSteps(HttpSteps httpSteps, HttpContext httpContext) : base(httpSteps)
+        public BundleSteps(HttpSteps httpSteps, HttpContext httpContext) : base(httpSteps)
 		{
 			_httpContext = httpContext;
 		}
@@ -248,5 +259,59 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			_httpContext.FhirResponse.Bundle.Entry.Count(ent => ent.Resource.ResourceType.Equals(resourceType)).ShouldBe(0, customMessage);
 		}
 
-	}
+
+        [Then(@"check that the bundle does not contain any duplicate resources")]
+        public void ThenCheckThatTheBundleDoesNotContainAnyDuplicateResources()
+        {
+            //Check Meds for Duplicates
+            Medications.ForEach(itemToCheck =>
+            {
+                (Medications.Where(m => m.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Medication Resource Found with ID : " + itemToCheck.Id);
+            });
+
+            //Check MedicationStatements for Duplicates
+            MedicationStatements.ForEach(itemToCheck =>
+            {
+                (MedicationStatements.Where(m => m.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate MedicationStatement Resource Found with ID : " + itemToCheck.Id);
+            });
+
+            // Check MedicationRequests for Duplicates
+            MedicationRequests.ForEach(itemToCheck =>
+            {
+                 (MedicationRequests.Where(m => m.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate MedicationRequests Resource Found with ID : " + itemToCheck.Id);
+            });
+
+            // Check ActiveAllergyIntolerances for Duplicates
+            ActiveAllergyIntolerances.ForEach(itemToCheck =>
+            {
+                (ActiveAllergyIntolerances.Where(a => a.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate ActiveAllergyIntolerances Resource Found with ID : " + itemToCheck.Id);
+            });
+
+            // Check Observations for Duplicates
+            Observations.ForEach(itemToCheck =>
+            {
+                (Observations.Where(o => o.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Observations Resource Found with ID : " + itemToCheck.Id);
+            });
+
+            // Check Immunizations for Duplicates
+            Immunizations.ForEach(itemToCheck =>
+            {
+                (Immunizations.Where(i => i.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Immunizations Resource Found with ID : " + itemToCheck.Id);
+            });
+
+            // Check Encounters for Duplicates
+            Encounters.ForEach(itemToCheck =>
+            {
+                (Encounters.Where(e => e.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Encounters Resource Found with ID : " + itemToCheck.Id);
+            });
+
+            // Check Problems for Duplicates
+            Problems.ForEach(itemToCheck =>
+            {
+                (Problems.Where(p => p.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Problems Resource Found with ID : " + itemToCheck.Id);
+            });
+
+        }
+     
+    }
 }

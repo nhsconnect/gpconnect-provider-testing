@@ -1,4 +1,4 @@
-﻿@structuredrecord
+﻿@structured @structureduncategorised
 Feature: StructuredUncategorised
 	
 @1.3.1

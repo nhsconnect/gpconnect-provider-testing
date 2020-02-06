@@ -1,4 +1,4 @@
-﻿@structuredrecord
+﻿@structured @structuredconsultations
 Feature: StructuredConsultations
 
 @1.3.1
@@ -276,9 +276,8 @@ Scenario: Verify Problems Linked to Consultations are included and valid in resp
 		And I Check All The Consultation Lists Do Not Include Not In Use Fields
 		And I Check the Topic Lists are Valid
 		And I Check the Heading Lists are Valid
-		#Removed from 1.3.1 - will be re-introduced in 1.3.2
-		#And I Check The Problems List
-		#And I Check The Problems List Does Not Include Not In Use Fields	
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields	
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And check the response does not contain an operation outcome

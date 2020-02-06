@@ -1,4 +1,4 @@
-﻿@structuredrecord
+﻿@structured @structuredimmunizations
 Feature: StructuredImmunizations
 	
 Scenario: Verify Immunizations structured record for a Patient with Immunizations
