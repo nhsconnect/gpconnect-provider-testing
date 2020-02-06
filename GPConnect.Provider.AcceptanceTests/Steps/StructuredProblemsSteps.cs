@@ -245,7 +245,6 @@
 
         public void VerifyResourceReferenceExists(string refTypeToFind, string fullRefToFind)
         {
-
             string pattern = @"(.*/)(.*)";
             string refToFind = Regex.Replace(fullRefToFind, pattern, "$2");
 
@@ -294,7 +293,7 @@
         [Then(@"Check there is a Linked MedicationRequest resource that has been included in the response")]
         public void ThenCheckLinkedMedicationRequestClinicalresourcesareincludedinresponse()
         {
-            //check there is a problem with a MedicationRequest linked            
+            //check there is atleast one problem with a MedicationRequest linked            
             var found = false;
             string refToFind = "";
       
@@ -319,26 +318,76 @@
 
             found.ShouldBeTrue("Fail : No Problems found with a linked MedicationRequest");
 
-
             //check that MedicationRequest linked has been included in response.
             VerifyResourceReferenceExists("MedicationRequest", refToFind);
-
 
         }
 
         [Then(@"Check there is a Linked Medication resource that has been included in the response")]
         public void ThenCheckthereisaLinkedMedicationresourcethathasbeenincludedintheresponse()
         {
+            bool found = false;
             //Loop all medRequests and check has a medication reference and also exists in response.
             MedicationRequests.ForEach(medr =>
             {
                 string rr = ((ResourceReference)medr.Medication).Reference;
-
                 VerifyResourceReferenceExists("Medication", rr);
-
+                found = true;
             });
 
+            found.ShouldBeTrue("Fail : No MedicationRequest found with a linked Medication");
+
         }
+
+
+
+        [Then(@"Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication")]
+        public void ThenCheckthereisaMedicationStatementresourcethatislinkedtotheMedicationRequestandMedication()
+        {
+            bool medStatementFound = false;
+            bool medFound = false;
+            bool medRequestFound = false;
+
+            //loop all MedicationStatements
+            MedicationStatements.ForEach(medS =>
+            {
+               
+                //resultString += "\tMedication Reference : " + ((Hl7.Fhir.Model.ResourceReference)ms.Medication).Reference + checkClinicalResourceExists(((Hl7.Fhir.Model.ResourceReference)ms.Medication).Reference) + "\n";
+                //resultString += "\tBasedOn : " + ms.BasedOn.First().Reference + checkClinicalResourceExists(ms.BasedOn.First().Reference);
+
+                //check link to medication exists
+                string medRefToCheck = ((ResourceReference)medS.Medication).Reference;
+                if (medRefToCheck.StartsWith("Medication/"))
+                {
+                    //check Resource Exists
+                    VerifyResourceReferenceExists("Medication", medRefToCheck);
+                    medFound = true;
+                }
+
+                //Check Link to MedicationRequest
+                string medrRefToCheck = medS.BasedOn.First().Reference;
+                if (medrRefToCheck.StartsWith("MedicationRequest/"))
+                {
+                    //check Resource Exists
+                    VerifyResourceReferenceExists("MedicationRequest", medrRefToCheck);
+                    medRequestFound = true;
+                }
+
+
+                //Assert have found Medication reference and resource
+                medFound.ShouldBeTrue("Fail : No link to a Medication found on MedicationStatement - ID : " + medRefToCheck);
+                
+                //Assert have found MedicationRequest reference and resource
+                medRequestFound.ShouldBeTrue("Fail : No link to a MedicationRequest found on MedicationStatement - ID : " + medrRefToCheck);
+
+                medStatementFound = true;
+                
+            });
+
+            medStatementFound.ShouldBeTrue("Fail : No MedicationStatements found");
+
+        }
+
 
     }
 }

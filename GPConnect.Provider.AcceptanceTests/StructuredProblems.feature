@@ -253,6 +253,8 @@ Scenario: Verify response for a Patient with Problems linked to all clinical ite
 		And check the response does not contain an operation outcome
 		And Check there is a Linked MedicationRequest resource that has been included in the response
 		And Check there is a Linked Medication resource that has been included in the response
+		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
+		And check that the bundle does not contain any duplicate resources
 
 		#And Check the Medications List resources are included in response
 		#And Check Linked Allergies Clinical resources are included in response
@@ -264,6 +266,6 @@ Scenario: Verify response for a Patient with Problems linked to all clinical ite
 		#And Check Linked Consultation Clinical resources are included in response
 		#And Check the Consultation List resources are included in response
 		#And Check Linked problems Clinical resources are included in response
-		And check that the bundle does not contain any duplicate resources
+		
 
 		# move test to the top and remove the orginal possitive test

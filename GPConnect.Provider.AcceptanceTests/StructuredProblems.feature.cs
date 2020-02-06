@@ -696,7 +696,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 255
   testRunner.And("Check there is a Linked Medication resource that has been included in the respons" +
                     "e", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 267
+#line 256
+  testRunner.And("Check there is a MedicationStatement resource that is linked to the MedicationReq" +
+                    "uest and Medication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 257
   testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
