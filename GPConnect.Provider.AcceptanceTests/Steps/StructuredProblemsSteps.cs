@@ -339,8 +339,6 @@
 
         }
 
-
-
         [Then(@"Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication")]
         public void ThenCheckthereisaMedicationStatementresourcethatislinkedtotheMedicationRequestandMedication()
         {
@@ -351,10 +349,6 @@
             //loop all MedicationStatements
             MedicationStatements.ForEach(medS =>
             {
-               
-                //resultString += "\tMedication Reference : " + ((Hl7.Fhir.Model.ResourceReference)ms.Medication).Reference + checkClinicalResourceExists(((Hl7.Fhir.Model.ResourceReference)ms.Medication).Reference) + "\n";
-                //resultString += "\tBasedOn : " + ms.BasedOn.First().Reference + checkClinicalResourceExists(ms.BasedOn.First().Reference);
-
                 //check link to medication exists
                 string medRefToCheck = ((ResourceReference)medS.Medication).Reference;
                 if (medRefToCheck.StartsWith("Medication/"))
@@ -373,7 +367,6 @@
                     medRequestFound = true;
                 }
 
-
                 //Assert have found Medication reference and resource
                 medFound.ShouldBeTrue("Fail : No link to a Medication found on MedicationStatement - ID : " + medRefToCheck);
                 
@@ -387,6 +380,29 @@
             medStatementFound.ShouldBeTrue("Fail : No MedicationStatements found");
 
         }
+      
+        [Then(@"Check the Medications List resources are included in response")]
+        public void ThenChecktheMedicationsListresourcesareincludedinresponse()
+        {       
+            //Check List is Present
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).ToList().Count().ShouldBe(1, "Failed to Find Medications list using Snomed Code.");
+            var medsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).First();
+
+            bool foundMedStatement = false;
+
+            medsList.Entry.ForEach(e =>
+            {
+                //Check references is to a MedicationStatement
+                e.Item.Reference.ShouldStartWith("MedicationStatement/");
+
+                //Checkresource has been inluded in response
+                VerifyResourceReferenceExists("MedicationStatement", e.Item.Reference);
+                foundMedStatement = true;
+            });
+
+            foundMedStatement.ShouldBeTrue("Fail : No MedicationStatements Linked on Medications List");
+        }
+
 
 
     }

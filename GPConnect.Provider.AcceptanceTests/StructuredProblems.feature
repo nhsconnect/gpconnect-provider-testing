@@ -251,12 +251,13 @@ Scenario: Verify response for a Patient with Problems linked to all clinical ite
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And check the response does not contain an operation outcome
+		And Check the Medications List resources are included in response
 		And Check there is a Linked MedicationRequest resource that has been included in the response
 		And Check there is a Linked Medication resource that has been included in the response
 		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
 		And check that the bundle does not contain any duplicate resources
-
-		#And Check the Medications List resources are included in response
+		
+		
 		#And Check Linked Allergies Clinical resources are included in response
 		#And Check the Allergies List resources are included in response
 		#And Check Linked Immunization Clinical resources are included in response

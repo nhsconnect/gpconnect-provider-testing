@@ -11,6 +11,8 @@
             public const string kProblems = "717711000000103";
             public const string kImmunizations = "1102181000000102";
             public const string kUncategorised = "826501000000100";
+            public const string kMeds = "933361000000108";
+            
         }
 
 
