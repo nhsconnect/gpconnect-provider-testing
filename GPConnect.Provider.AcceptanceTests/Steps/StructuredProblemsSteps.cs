@@ -490,6 +490,75 @@
             Logger.Log.WriteLine("Info : Found Active Allergies list and Linked Allergy");
         }
 
+
+        [Then(@"Check a Problem is linked to an ""(.*)"" that is also included in response with its list")]
+        public void ThenCheckaProblemislinkedtoanthatisalsoincludedinresponsewithalist(string resourceType)
+        {
+
+            //MAKE GENRIC FOR EACH TYPE
+
+            //loop problems and look for linked Allergy
+            var found = false;
+            string refToFind = "";
+
+            foreach (var p in Problems)
+            {
+                Condition problem = (Condition)p;
+                List<Extension> problemRelatedContentExtensions = p.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemRelatedContent)).ToList();
+
+                foreach (var rcc in problemRelatedContentExtensions)
+                {
+                    ResourceReference rr = (ResourceReference)rcc.Value;
+                    if (rr.Reference.StartsWith("AllergyIntolerance/"))
+                    {
+                        refToFind = rr.Reference;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
+                    break;
+            };
+
+            found.ShouldBeTrue("Fail : No Problems found with a linked AllergyIntolerance");
+
+            //check that AllergyIntolerance linked has been included in response.
+            VerifyResourceReferenceExists("AllergyIntolerance", refToFind);
+
+            //Check List is Present
+
+            //switch on resourcetype to check for appropriate list
+            //switch (resourceType)
+            //{
+            //    default:
+            //}
+
+
+
+
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).ToList().Count().ShouldBe(1, "Failed to Find Active Allergies list using Snomed Code.");
+            var activeAllergiesList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).First();
+
+            bool foundActiveAllergiesList = false;
+
+            activeAllergiesList.Entry.ForEach(a =>
+            {
+                //Check references is to a AllergyIntolerance
+                a.Item.Reference.ShouldStartWith("AllergyIntolerance/");
+
+                //Checkresource has been inluded in response
+                VerifyResourceReferenceExists("AllergyIntolerance", a.Item.Reference);
+                foundActiveAllergiesList = true;
+            });
+
+            foundActiveAllergiesList.ShouldBeTrue("Fail : No Allergies Linked on Allergies List");
+            Logger.Log.WriteLine("Info : Found Active Allergies list and Linked Allergy");
+        }
+
+
+
+
+
         [Then(@"I load a fake response")]
         public void ThenIloadafakeresponse()
         {

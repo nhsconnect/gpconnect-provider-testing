@@ -710,6 +710,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 260
   testRunner.And("Check a Problem is linked to an Allergy and that Allergy list and resource are in" +
                     "cluded in response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 261
+  testRunner.And("Check a Problem is linked to an \"Immunization\" that is also included in response " +
+                    "with a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -258,17 +258,19 @@ Scenario: Verify response for a Patient with Problems linked to all supported cl
 		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
 		And Check the Medications List resource is included in response
 		And Check a Problem is linked to an Allergy and that Allergy list and resource are included in response
-		
-		
-		#And Check Linked Immunization Clinical resources are included in response
-		#And Check the Immunization List resources are included in response
-		#And Check Linked Uncategorised Clinical resources are included in response
-		#And Check the Uncategorised List resources are included in response
-		#And Check Only links to Consultations have been included in the response
-		#And Check the Consultation List resources are NOT included in response
-		#And Check Linked problems Clinical resources are included in response
-		
+		And Check a Problem is linked to an "Immunization" that is also included in response with its list
 
+		#And Check a Problem is linked to an Immunization and that Immunization list and resource are included in response
+		#And Check a Problem is linked to an Uncategorised and that Uncategorised list and resource are included in response
+		#And Check a Problem is linked to another problem and has been included in response
+	
+		#And Check Only links to Consultations have been included in the response
+		#(include check that no consultation lists are included)
+
+		
+		#TODO
 		# move test to the top and remove the orginal possitive test
 
+		#And Check a Problem is linked to an "Immunization" that is also included in response with a list
+		
 
