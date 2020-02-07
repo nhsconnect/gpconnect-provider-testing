@@ -231,7 +231,7 @@ Scenario: Retrieve Problems structured record for a patient that has sensitive f
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
 @1.3.2
-Scenario: Verify response for a Patient with Problems linked to all clinical item types
+Scenario: Verify response for a Patient with Problems linked to all supported clinical item types
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
 		And I add the Problems parameter
@@ -246,27 +246,29 @@ Scenario: Verify response for a Patient with Problems linked to all clinical ite
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
+		And I load a fake response
+		And check that the bundle does not contain any duplicate resources
 		And I Check The Problems List
 		And I Check The Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And check the response does not contain an operation outcome
-		And Check the Medications List resources are included in response
-		And Check there is a Linked MedicationRequest resource that has been included in the response
+		And Check a Problem is Linked to a MedicationRequest resource that has been included in the response
 		And Check there is a Linked Medication resource that has been included in the response
 		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
-		And check that the bundle does not contain any duplicate resources
+		And Check the Medications List resource is included in response
+		And Check a Problem is linked to an Allergy and that Allergy list and resource are included in response
 		
 		
-		#And Check Linked Allergies Clinical resources are included in response
-		#And Check the Allergies List resources are included in response
 		#And Check Linked Immunization Clinical resources are included in response
 		#And Check the Immunization List resources are included in response
 		#And Check Linked Uncategorised Clinical resources are included in response
 		#And Check the Uncategorised List resources are included in response
-		#And Check Linked Consultation Clinical resources are included in response
-		#And Check the Consultation List resources are included in response
+		#And Check Only links to Consultations have been included in the response
+		#And Check the Consultation List resources are NOT included in response
 		#And Check Linked problems Clinical resources are included in response
 		
 
 		# move test to the top and remove the orginal possitive test
+
+

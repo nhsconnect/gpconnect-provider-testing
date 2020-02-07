@@ -12,7 +12,10 @@
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
     using System.Text.RegularExpressions;
- 
+    using Newtonsoft.Json.Linq;
+    using Hl7.Fhir.Serialization;
+    using System.IO;
+
     [Binding]
     public sealed class StructuredProblemsSteps : BaseSteps
     {
@@ -129,7 +132,7 @@
                 problemExtensions.Count.ShouldBe(1);
                 Code clinicalSetting = (Code)problemExtensions.First().Value;
                 clinicalSetting.Value.ShouldBeOneOf("major", "minor");
-                
+
                 //Check identifier
                 problem.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 problem.Identifier.ForEach(identifier =>
@@ -147,14 +150,14 @@
 
                 //check category
                 problem.Category.Where(c => c.Coding.First().Code == "problem-list-item").Count().ShouldBe(1);
-                
+
                 //Check assertedDate
                 problem.AssertedDate.ShouldNotBeNull();
 
                 //Check asserter               
                 if (!(problem.Asserter.Reference.Contains("Practitioner/") || problem.Asserter.Display.Contains("Unknown")))
                     NUnit.Framework.Assert.Fail("Problem Asserter.Reference should either be a Practitioner Reference or Asserter Display should be Unknown");
-                
+
                 //CheckSubejct/patient
                 Patients.Where(p => p.Id == (problem.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 
@@ -234,12 +237,28 @@
 
         public void CheckResourceExists<T>(T resourceType, string resourceID)
         {
-            Bundle.GetResources()
+            //Bundle.GetResources()
+            //               .Where(resource => resource.ResourceType.Equals(resourceType))
+            //               .Where(resource => resource.Id == resourceID)
+            //               .ToList().Count().ShouldBe(1, "Linked Resource : " + resourceType.ToString() + " - Not Found ID : " + resourceID);
+
+            var count = Bundle.GetResources()
                            .Where(resource => resource.ResourceType.Equals(resourceType))
                            .Where(resource => resource.Id == resourceID)
-                           .ToList().Count().ShouldBe(1, "Linked Resource : " + resourceType.ToString() + " - Not Found ID : " + resourceID);
+                           .ToList().Count();
 
-            Logger.Log.WriteLine("Found Linked resource : " + resourceID + " Of Type : " + resourceType);
+            if (count == 1) //only one found
+            {
+                Logger.Log.WriteLine("Info : Found Linked Resource : " + resourceType.ToString() + " - Found ID: " + resourceID);
+            }
+            else if (count > 1) //more than one
+            {
+                count.ShouldBe(1, "Fail : Duplicate Resource Found : " + resourceType.ToString() + " - Duplicate ID : " + resourceID);
+            }
+            else //none found
+            {
+                count.ShouldBe(1, "Fail : Resource NOT Found : " + resourceType.ToString() + " - Missing ID : " + resourceID);
+            }
 
         }
 
@@ -283,6 +302,10 @@
                     CheckResourceExists(ResourceType.Appointment, refToFind);
                     break;
 
+                case "Encounter":
+                    CheckResourceExists(ResourceType.Encounter, refToFind);
+                    break;
+
                 //unknown type ignore - could be not supported message
                 default:
                     Logger.Log.WriteLine("Ignored, Entry/Item/Reference for : " + refTypeToFind);
@@ -290,15 +313,15 @@
             }
         }
 
-        [Then(@"Check there is a Linked MedicationRequest resource that has been included in the response")]
-        public void ThenCheckLinkedMedicationRequestClinicalresourcesareincludedinresponse()
+        [Then(@"Check a Problem is Linked to a MedicationRequest resource that has been included in the response")]
+        public void ThenCheckaProblemisLinkedtoaMedicationRequestresourcethathasbeenincludedintheresponse()
         {
             //check there is atleast one problem with a MedicationRequest linked            
             var found = false;
             string refToFind = "";
-      
+
             foreach (var p in Problems)
-            { 
+            {
                 Condition problem = (Condition)p;
                 List<Extension> problemRelatedContentExtensions = p.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemRelatedContent)).ToList();
 
@@ -336,7 +359,7 @@
             });
 
             found.ShouldBeTrue("Fail : No MedicationRequest found with a linked Medication");
-
+            Logger.Log.WriteLine("Info : MedicationRequest found with a link to a Medication");
         }
 
         [Then(@"Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication")]
@@ -350,40 +373,52 @@
             MedicationStatements.ForEach(medS =>
             {
                 //check link to medication exists
-                string medRefToCheck = ((ResourceReference)medS.Medication).Reference;
-                if (medRefToCheck.StartsWith("Medication/"))
+                string medRefToCheck = "";
+                if (medS.Medication != null)
                 {
-                    //check Resource Exists
-                    VerifyResourceReferenceExists("Medication", medRefToCheck);
-                    medFound = true;
+                    medRefToCheck = ((ResourceReference)medS.Medication).Reference;
+                    if (medRefToCheck.StartsWith("Medication/"))
+                    {
+                        //check Resource Exists
+                        VerifyResourceReferenceExists("Medication", medRefToCheck);
+                        medFound = true;
+                    }
                 }
 
                 //Check Link to MedicationRequest
-                string medrRefToCheck = medS.BasedOn.First().Reference;
-                if (medrRefToCheck.StartsWith("MedicationRequest/"))
+                string medrRefToCheck = "";
+                if (medS.BasedOn != null)
                 {
-                    //check Resource Exists
-                    VerifyResourceReferenceExists("MedicationRequest", medrRefToCheck);
-                    medRequestFound = true;
+                    if (medS.BasedOn.Count() >= 1)
+                    {
+                        medrRefToCheck = medS.BasedOn.First().Reference;
+                        if (medrRefToCheck.StartsWith("MedicationRequest/"))
+                        {
+                            //check Resource Exists
+                            VerifyResourceReferenceExists("MedicationRequest", medrRefToCheck);
+                            medRequestFound = true;
+                        }
+                    }
                 }
 
                 //Assert have found Medication reference and resource
-                medFound.ShouldBeTrue("Fail : No link to a Medication found on MedicationStatement - ID : " + medRefToCheck);
-                
+                medFound.ShouldBeTrue("Fail : No link to a Medication found on MedicationStatement - ID : " + medS.Id);
+
                 //Assert have found MedicationRequest reference and resource
-                medRequestFound.ShouldBeTrue("Fail : No link to a MedicationRequest found on MedicationStatement - ID : " + medrRefToCheck);
+                medRequestFound.ShouldBeTrue("Fail : No link to a MedicationRequest found on MedicationStatement - ID : " + medS.Id);
 
                 medStatementFound = true;
-                
+
             });
 
             medStatementFound.ShouldBeTrue("Fail : No MedicationStatements found");
+            Logger.Log.WriteLine("Info : Found MedicationStatements");
 
         }
-      
-        [Then(@"Check the Medications List resources are included in response")]
-        public void ThenChecktheMedicationsListresourcesareincludedinresponse()
-        {       
+
+        [Then(@"Check the Medications List resource is included in response")]
+        public void ThenChecktheMedicationsListresourceareincludedinresponse()
+        {
             //Check List is Present
             Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).ToList().Count().ShouldBe(1, "Failed to Find Medications list using Snomed Code.");
             var medsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).First();
@@ -401,9 +436,68 @@
             });
 
             foundMedStatement.ShouldBeTrue("Fail : No MedicationStatements Linked on Medications List");
+            Logger.Log.WriteLine("Info : Found MedicationStatements Linked on Medications List");
         }
 
+        [Then(@"Check a Problem is linked to an Allergy and that Allergy list and resource are included in response")]
+        public void ThenCheckaProblemislinkedtoanAllergyandthatAllergylistandresourceareincludedinresponse()
+        {
+            //loop problems and look for linked Allergy
+            var found = false;
+            string refToFind = "";
+
+            foreach (var p in Problems)
+            {
+                Condition problem = (Condition)p;
+                List<Extension> problemRelatedContentExtensions = p.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemRelatedContent)).ToList();
+
+                foreach (var rcc in problemRelatedContentExtensions)
+                {
+                    ResourceReference rr = (ResourceReference)rcc.Value;
+                    if (rr.Reference.StartsWith("AllergyIntolerance/"))
+                    {
+                        refToFind = rr.Reference;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
+                    break;
+            };
+
+            found.ShouldBeTrue("Fail : No Problems found with a linked AllergyIntolerance");
+
+            //check that AllergyIntolerance linked has been included in response.
+            VerifyResourceReferenceExists("AllergyIntolerance", refToFind);
+
+            //Check List is Present
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).ToList().Count().ShouldBe(1, "Failed to Find Active Allergies list using Snomed Code.");
+            var activeAllergiesList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).First();
+
+            bool foundActiveAllergiesList = false;
+
+            activeAllergiesList.Entry.ForEach(a =>
+            {
+                //Check references is to a AllergyIntolerance
+                a.Item.Reference.ShouldStartWith("AllergyIntolerance/");
+
+                //Checkresource has been inluded in response
+                VerifyResourceReferenceExists("AllergyIntolerance", a.Item.Reference);
+                foundActiveAllergiesList = true;
+            });
+
+            foundActiveAllergiesList.ShouldBeTrue("Fail : No Allergies Linked on Allergies List");
+            Logger.Log.WriteLine("Info : Found Active Allergies list and Linked Allergy");
+        }
+
+        [Then(@"I load a fake response")]
+        public void ThenIloadafakeresponse()
+        {
+            JObject o1 = JObject.Parse(File.ReadAllText(@"C:\development\allergies-response.txt"));
+            var jsonParser = new FhirJsonParser();
+            _httpContext.FhirResponse.Resource = jsonParser.Parse<Resource>(o1.ToString());
 
 
+        }
     }
 }
