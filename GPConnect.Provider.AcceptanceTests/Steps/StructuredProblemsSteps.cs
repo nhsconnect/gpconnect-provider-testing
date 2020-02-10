@@ -27,6 +27,9 @@
         private List<Medication> Medications => _httpContext.FhirResponse.Medications;
         private List<MedicationStatement> MedicationStatements => _httpContext.FhirResponse.MedicationStatements;
         private List<MedicationRequest> MedicationRequests => _httpContext.FhirResponse.MedicationRequests;
+        private List<AllergyIntolerance> ActiveAllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
+        private List<Observation> Observations => _httpContext.FhirResponse.Observations;
+        private List<Immunization> Immunizations => _httpContext.FhirResponse.Immunizations;
 
         public StructuredProblemsSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -346,8 +349,8 @@
 
         }
 
-        [Then(@"Check there is a Linked Medication resource that has been included in the response")]
-        public void ThenCheckthereisaLinkedMedicationresourcethathasbeenincludedintheresponse()
+        [Then(@"Check the MedicationRequests have a link to a medication that has been included in response")]
+        public void ThenChecktheMedicationRequestshavealinktoamedicationthathasbeenincludedinresponse()
         {
             bool found = false;
             //Loop all medRequests and check has a medication reference and also exists in response.
@@ -416,8 +419,8 @@
 
         }
 
-        [Then(@"Check the Medications List resource is included in response")]
-        public void ThenChecktheMedicationsListresourceareincludedinresponse()
+        [Then(@"Check the Medications List resource has been included in response")]
+        public void ThenChecktheMedicationsListresourcehasbeenincludedinresponse()
         {
             //Check List is Present
             Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).ToList().Count().ShouldBe(1, "Failed to Find Medications list using Snomed Code.");
@@ -439,10 +442,11 @@
             Logger.Log.WriteLine("Info : Found MedicationStatements Linked on Medications List");
         }
 
-        [Then(@"Check a Problem is linked to an Allergy and that Allergy list and resource are included in response")]
-        public void ThenCheckaProblemislinkedtoanAllergyandthatAllergylistandresourceareincludedinresponse()
+
+        [Then(@"Check a Problem is linked to an ""(.*)"" that is also included in the response with its list")]
+        public void ThenCheckaProblemislinkedtoanthatisalsoincludedintheresponsewithalist(string resourceType)
         {
-            //loop problems and look for linked Allergy
+            //loop problems and check one has been linked to the clincal item type
             var found = false;
             string refToFind = "";
 
@@ -454,10 +458,11 @@
                 foreach (var rcc in problemRelatedContentExtensions)
                 {
                     ResourceReference rr = (ResourceReference)rcc.Value;
-                    if (rr.Reference.StartsWith("AllergyIntolerance/"))
+                    if (rr.Reference.StartsWith((resourceType + "/")))
                     {
                         refToFind = rr.Reference;
                         found = true;
+                        Logger.Log.WriteLine("Info : Found Clincal Item of type : " + resourceType + " - with ID : " + refToFind);
                         break;
                     }
                 }
@@ -465,104 +470,98 @@
                     break;
             };
 
-            found.ShouldBeTrue("Fail : No Problems found with a linked AllergyIntolerance");
+            found.ShouldBeTrue("Fail : No Problems found to be linked to a  " + resourceType + " - resource type");
 
-            //check that AllergyIntolerance linked has been included in response.
-            VerifyResourceReferenceExists("AllergyIntolerance", refToFind);
+            //check that Linked Clincal resource has been included in response.
+            VerifyResourceReferenceExists(resourceType, refToFind);
 
             //Check List is Present
-            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).ToList().Count().ShouldBe(1, "Failed to Find Active Allergies list using Snomed Code.");
-            var activeAllergiesList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).First();
+            //Switch on Clinical Item type 
+            Hl7.Fhir.Model.List listToCheck = new Hl7.Fhir.Model.List();
 
-            bool foundActiveAllergiesList = false;
-
-            activeAllergiesList.Entry.ForEach(a =>
+            switch (resourceType)
             {
-                //Check references is to a AllergyIntolerance
-                a.Item.Reference.ShouldStartWith("AllergyIntolerance/");
-
-                //Checkresource has been inluded in response
-                VerifyResourceReferenceExists("AllergyIntolerance", a.Item.Reference);
-                foundActiveAllergiesList = true;
-            });
-
-            foundActiveAllergiesList.ShouldBeTrue("Fail : No Allergies Linked on Allergies List");
-            Logger.Log.WriteLine("Info : Found Active Allergies list and Linked Allergy");
-        }
-
-
-        [Then(@"Check a Problem is linked to an ""(.*)"" that is also included in response with its list")]
-        public void ThenCheckaProblemislinkedtoanthatisalsoincludedinresponsewithalist(string resourceType)
-        {
-
-            //MAKE GENRIC FOR EACH TYPE
-
-            //loop problems and look for linked Allergy
-            var found = false;
-            string refToFind = "";
-
-            foreach (var p in Problems)
-            {
-                Condition problem = (Condition)p;
-                List<Extension> problemRelatedContentExtensions = p.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemRelatedContent)).ToList();
-
-                foreach (var rcc in problemRelatedContentExtensions)
-                {
-                    ResourceReference rr = (ResourceReference)rcc.Value;
-                    if (rr.Reference.StartsWith("AllergyIntolerance/"))
-                    {
-                        refToFind = rr.Reference;
-                        found = true;
-                        break;
-                    }
-                }
-                if (found)
+                case "AllergyIntolerance":
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).ToList().Count().ShouldBe(1, "Failed to Find Active Allergies list using Snomed Code.");
+                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).First();
+                    Logger.Log.WriteLine("Info : Found Allergies List with Snomed ID : " + FhirConst.GetSnoMedParams.kActiveAllergies);
                     break;
-            };
 
-            found.ShouldBeTrue("Fail : No Problems found with a linked AllergyIntolerance");
+                case "Observation": //uncat
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).ToList().Count().ShouldBe(1, "Failed to Find Observation's list using Snomed Code.");
+                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).First();
+                    Logger.Log.WriteLine("Info : Found Observation List with Snomed ID : " + FhirConst.GetSnoMedParams.kUncategorised);
+                    break;
 
-            //check that AllergyIntolerance linked has been included in response.
-            VerifyResourceReferenceExists("AllergyIntolerance", refToFind);
+                case "Immunization":
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).ToList().Count().ShouldBe(1, "Failed to Find Immunization list using Snomed Code.");
+                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).First();
+                    Logger.Log.WriteLine("Info : Found Immunization List with Snomed ID : " + FhirConst.GetSnoMedParams.kImmunizations);
+                    break;
 
-            //Check List is Present
+                case "Condition":
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(1, "Failed to Find Problems list using Snomed Code.");
+                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).First();
+                    Logger.Log.WriteLine("Info : Found Problems List with Snomed ID : " + FhirConst.GetSnoMedParams.kProblems);
+                    break;
 
-            //switch on resourcetype to check for appropriate list
-            //switch (resourceType)
-            //{
-            //    default:
-            //}
+                //unknown type ignore - could be not supported message
+                default:
+                    Logger.Log.WriteLine("Info : Ignored, ResourceType for : " + resourceType);
+                    break;
+            }
+                    
 
+            //Check List has atleast one link to a clincal of item of correct type
+            bool foundClincalItemOnList = false;
 
-
-
-            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).ToList().Count().ShouldBe(1, "Failed to Find Active Allergies list using Snomed Code.");
-            var activeAllergiesList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).First();
-
-            bool foundActiveAllergiesList = false;
-
-            activeAllergiesList.Entry.ForEach(a =>
+            listToCheck.Entry.ForEach(a =>
             {
                 //Check references is to a AllergyIntolerance
-                a.Item.Reference.ShouldStartWith("AllergyIntolerance/");
+                a.Item.Reference.ShouldStartWith((resourceType + "/"));
 
                 //Checkresource has been inluded in response
-                VerifyResourceReferenceExists("AllergyIntolerance", a.Item.Reference);
-                foundActiveAllergiesList = true;
+                VerifyResourceReferenceExists(resourceType, a.Item.Reference);
+                foundClincalItemOnList = true;
             });
 
-            foundActiveAllergiesList.ShouldBeTrue("Fail : No Allergies Linked on Allergies List");
-            Logger.Log.WriteLine("Info : Found Active Allergies list and Linked Allergy");
+            foundClincalItemOnList.ShouldBeTrue("Fail : List for : " + resourceType + "-Does not contain any references to clinical item of type : " + resourceType);
+            Logger.Log.WriteLine("Info : List Found for : " + resourceType + "- contains references to clinical item of type : " + resourceType);
+
+
+            //check count of item linked on list with items of that type in bundle as itegrity check
+            switch (resourceType)
+            {
+                case "AllergyIntolerance":
+                    ActiveAllergyIntolerances.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString() );
+                    break;
+
+                case "Observation": //uncat
+                    Observations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    break;
+
+                case "Immunization":
+                    Immunizations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    break;
+
+                case "Condition":
+                    Problems.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    break;
+
+                //unknown type ignore - could be not supported message
+                default:
+                    Logger.Log.WriteLine("Ignored Count Chcek for ResourceType : " + resourceType);
+                    break;
+            }
+
+
         }
-
-
-
-
 
         [Then(@"I load a fake response")]
         public void ThenIloadafakeresponse()
         {
-            JObject o1 = JObject.Parse(File.ReadAllText(@"C:\development\allergies-response.txt"));
+            JObject o1 = JObject.Parse(File.ReadAllText(@"C:\development\response-immunizations.txt"));
             var jsonParser = new FhirJsonParser();
             _httpContext.FhirResponse.Resource = jsonParser.Parse<Resource>(o1.ToString());
 

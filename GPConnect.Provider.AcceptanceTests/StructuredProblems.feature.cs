@@ -707,12 +707,12 @@ this.ScenarioInitialize(scenarioInfo);
                     "uest and Medication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 259
   testRunner.And("Check the Medications List resource is included in response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 260
-  testRunner.And("Check a Problem is linked to an Allergy and that Allergy list and resource are in" +
-                    "cluded in response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 261
+  testRunner.And("Check a Problem is linked to an \"AllergyIntolerance\" that is also included in res" +
+                    "ponse with its list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 262
   testRunner.And("Check a Problem is linked to an \"Immunization\" that is also included in response " +
-                    "with a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "with its list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

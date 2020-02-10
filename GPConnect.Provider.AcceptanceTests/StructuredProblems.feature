@@ -254,11 +254,11 @@ Scenario: Verify response for a Patient with Problems linked to all supported cl
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And check the response does not contain an operation outcome
 		And Check a Problem is Linked to a MedicationRequest resource that has been included in the response
-		And Check there is a Linked Medication resource that has been included in the response
+		And Check the MedicationRequests have a link to a medication that has been included in response
 		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
-		And Check the Medications List resource is included in response
-		And Check a Problem is linked to an Allergy and that Allergy list and resource are included in response
-		And Check a Problem is linked to an "Immunization" that is also included in response with its list
+		And Check the Medications List resource has been included in response
+		And Check a Problem is linked to an "AllergyIntolerance" that is also included in the response with its list
+		And Check a Problem is linked to an "Immunization" that is also included in the response with its list
 
 		#And Check a Problem is linked to an Immunization and that Immunization list and resource are included in response
 		#And Check a Problem is linked to an Uncategorised and that Uncategorised list and resource are included in response
