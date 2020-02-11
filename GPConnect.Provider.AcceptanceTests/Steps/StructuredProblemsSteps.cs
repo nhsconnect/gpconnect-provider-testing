@@ -30,6 +30,7 @@
         private List<AllergyIntolerance> ActiveAllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
         private List<Observation> Observations => _httpContext.FhirResponse.Observations;
         private List<Immunization> Immunizations => _httpContext.FhirResponse.Immunizations;
+        private List<Encounter> Encounters => _httpContext.FhirResponse.Encounters;
 
         public StructuredProblemsSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -462,7 +463,7 @@
                     {
                         refToFind = rr.Reference;
                         found = true;
-                        Logger.Log.WriteLine("Info : Found Clincal Item of type : " + resourceType + " - with ID : " + refToFind);
+                        Logger.Log.WriteLine("Info : Problem - Found Linked Clincal Item of type : " + resourceType + " - with ID : " + refToFind);
                         break;
                     }
                 }
@@ -539,14 +540,17 @@
 
                 case "Observation": //uncat
                     Observations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
                     break;
 
                 case "Immunization":
                     Immunizations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
                     break;
 
                 case "Condition":
                     Problems.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
                     break;
 
                 //unknown type ignore - could be not supported message
@@ -558,10 +562,82 @@
 
         }
 
+
+        [Then(@"Check that a Problem is linked to a consultation but only a reference is sent in response")]
+        public void ThenCheckthataProblemislinkedtoaconsultationbutonlyareferenceissentinresponse()
+        {
+            //loop problems and check have atleast one enoucnter ref and that encounter resource is NOT included in bundle.
+            var found = false;
+
+            foreach (var p in Problems)
+            {
+                Condition problem = (Condition)p;
+                List<Extension> problemRelatedContentExtensions = p.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemRelatedContent)).ToList();
+
+                foreach (var rcc in problemRelatedContentExtensions)
+                {
+                    ResourceReference rr = (ResourceReference)rcc.Value;
+                    if (rr.Reference.StartsWith("Encounter/"))
+                    {
+                        var fullRefToFind = rr.Reference;
+                        found = true;
+                        Logger.Log.WriteLine("Info : Problem - Found with Link To an Encounter with ID : " + fullRefToFind);
+
+                        //check any Encounter References are not inluded in bundle
+                        string pattern = @"(.*/)(.*)";
+                        string refToFind = Regex.Replace(fullRefToFind, pattern, "$2");
+
+                        //check doesnt exist in bundle
+                        Encounters.Where(e => e.Id == refToFind).Count().ShouldBe(0, "Fail : Found Encounter when there are Not supposed to be any returned for a problems only call");
+
+                        Logger.Log.WriteLine("Info : Encounter Reference Checked and Encounter resource is not included in bundle with ID : " + refToFind);
+                    }
+                }
+            };
+
+            found.ShouldBeTrue("Fail : No Problems found with a link to an Encounter as per the data requirements for this test");
+
+            //check no Encounters in bundle
+            Encounters.Count().ShouldBe(0, "Fail : Found Encounters when No Encounters are supposed to be returned in a problems only request");
+            Logger.Log.WriteLine("Info : No Encounters Found in bundle as Expected");
+
+            //check no Consultations lists in bundle
+
+            //Check Consultation lists do not exxist in response
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultation)
+                .ToList().Count()
+                .ShouldBe(0, "Fail :Consultation List Found - Expect No Consultation List is sent");
+           Logger.Log.WriteLine("Info : No Consultation List Found as Expected");
+
+
+            //Check Consultations List is not Included
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultations)
+                .ToList().Count()
+                .ShouldBe(0, "Fail : Found atleast 1 Consultations list using Snomed Code. - Expect NONE");
+            Logger.Log.WriteLine("Info : No Consultations List Found as Expected");
+
+
+            //Check No Heading List is sent
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kHeadings)
+                .ToList().Count()
+                .ShouldBe(0, "Fail : Found atleast 1 Heading list using Snomed Code. - Expect NONE");
+            Logger.Log.WriteLine("Info : No Heading List Found as Expected");
+
+
+            //Check No Topic List is sent
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kTopics)
+                .ToList().Count()
+                .ShouldBe(0, "Fail : Found atleast 1 Topic list using Snomed Code. - Expect NONE");
+            Logger.Log.WriteLine("Info : No Topic List Found as Expected");
+
+            
+        }
+
+
         [Then(@"I load a fake response")]
         public void ThenIloadafakeresponse()
         {
-            JObject o1 = JObject.Parse(File.ReadAllText(@"C:\development\response-immunizations.txt"));
+            JObject o1 = JObject.Parse(File.ReadAllText(@"C:\development\response-probs-consultations.txt"));
             var jsonParser = new FhirJsonParser();
             _httpContext.FhirResponse.Resource = jsonParser.Parse<Resource>(o1.ToString());
 
