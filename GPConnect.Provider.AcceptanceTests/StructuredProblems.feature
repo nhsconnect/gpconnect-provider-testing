@@ -238,5 +238,3 @@ Scenario: Retrieve Problems structured record for a patient that has sensitive f
 	Then the response status code should indicate failure
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
-
-				

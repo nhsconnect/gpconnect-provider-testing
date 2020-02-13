@@ -22,6 +22,12 @@
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
         private List<Condition> Problems => _httpContext.FhirResponse.Conditions;
         private Bundle Bundle => _httpContext.FhirResponse.Bundle;
+        private List<AllergyIntolerance> ActiveAllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
+        private List<Observation> Observations => _httpContext.FhirResponse.Observations;
+        private List<Immunization> Immunizations => _httpContext.FhirResponse.Immunizations;
+        private List<Medication> Medications => _httpContext.FhirResponse.Medications;
+        private List<MedicationStatement> MedicationStatements => _httpContext.FhirResponse.MedicationStatements;
+        private List<MedicationRequest> MedicationRequests => _httpContext.FhirResponse.MedicationRequests;
 
         public StructuredConsultationsSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -402,7 +408,7 @@
             Bundle.GetResources()
                            .Where(resource => resource.ResourceType.Equals(resourceType))
                            .Where(resource => resource.Id == resourceID)
-                           .ToList().Count().ShouldBe(1, "Resource Not Found : " + resourceID);
+                           .ToList().Count().ShouldBe(1, "Fail : Linked Resource Not Contained in Response - type : " + resourceType + " - ID : " + resourceID);
 
             Logger.Log.WriteLine("Found Linked resource : " + resourceID + " Of Type : " + resourceType);
 
@@ -623,6 +629,163 @@
 
 		}
 
+        [Then(@"I Check that a Topic or Heading is linked to an ""(.*)"" and that is included in response with a list")]
+        public void GivenICheckthataTopicorHeadingislinkedtoanandthatisincludedinresponsewithalist(string resourcetypeToCheck)
+        {
+            //Check If ResourceType is linked on a Topic
+            bool foundAndVerified = false;
+
+            //loop all topics grabbing all clincal item refs
+            var AllTopicLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kTopics).ToList();
+
+            AllTopicLists.ForEach(topicList =>
+            {
+                var topicEntries = topicList.Entry;
+                string pattern = @"(.*)(/)(.*)";
+
+                foreach (var topicEntry in topicEntries)
+                {
+                    if (topicEntry.Item.Reference != null)
+                    {
+                        string refToFind = Regex.Replace(topicEntry.Item.Reference, pattern, "$3");
+                        string refTypeToFind = Regex.Replace(topicEntry.Item.Reference, pattern, "$1");
+
+                        //If List - ie Header
+                        if (topicEntry.Item.Reference.StartsWith((resourcetypeToCheck + "/")))
+                        {
+                            VerifyResourceReferenceExists(refTypeToFind, refToFind);
+                            foundAndVerified = true;
+                        }
+                    }
+                }
+            });
+
+
+            //If Not on a Topic - Check If ResourceType is linked on a Heading
+            if (!foundAndVerified)
+            {
+                var AllHeadingLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kHeadings).ToList();
+                
+                //loop all topics grabbing all clincal item refs
+                AllHeadingLists.ForEach(headingList =>
+                {
+                    string pattern = @"(.*)(/)(.*)";
+                    var headingEntries = headingList.Entry;
+
+                    foreach (var headingEntry in headingEntries)
+                    {
+                        if (headingEntry.Item.Reference != null)
+                        {
+                            string refToFind = Regex.Replace(headingEntry.Item.Reference, pattern, "$3");
+                            string refTypeToFind = Regex.Replace(headingEntry.Item.Reference, pattern, "$1");
+
+                            if (headingEntry.Item.Reference.StartsWith((resourcetypeToCheck + "/")))
+                            {
+                                VerifyResourceReferenceExists(refTypeToFind, refToFind);
+                                foundAndVerified = true;
+                            }
+                        }
+                    }
+
+                });
+
+            }
+
+            foundAndVerified.ShouldBeTrue("Fail : Expected Clinical Item of type : " + resourcetypeToCheck + " - to be Linked to a Topic or Heading");
+
+            //check clinical item has the correct list in response
+            Hl7.Fhir.Model.List listToCheck = new Hl7.Fhir.Model.List();
+            switch (resourcetypeToCheck)
+            {
+                case "AllergyIntolerance":
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).ToList().Count().ShouldBe(1, "Failed to Find Active Allergies list using Snomed Code.");
+                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).First();
+                    Logger.Log.WriteLine("Info : Found Allergies List with Snomed ID : " + FhirConst.GetSnoMedParams.kActiveAllergies);
+                    break;
+
+                case "Observation": //uncat
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).ToList().Count().ShouldBe(1, "Failed to Find Observation's list using Snomed Code.");
+                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).First();
+                    Logger.Log.WriteLine("Info : Found Observation List with Snomed ID : " + FhirConst.GetSnoMedParams.kUncategorised);
+                    break;
+
+                case "Immunization":
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).ToList().Count().ShouldBe(1, "Failed to Find Immunization list using Snomed Code.");
+                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).First();
+                    Logger.Log.WriteLine("Info : Found Immunization List with Snomed ID : " + FhirConst.GetSnoMedParams.kImmunizations);
+                    break;
+
+                case "MedicationRequest":
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).ToList().Count().ShouldBe(1, "Failed to Find Medications list using Snomed Code.");
+                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).First();
+                    Logger.Log.WriteLine("Info : Found Medications List with Snomed ID : " + FhirConst.GetSnoMedParams.kMeds);
+                    break;
+
+                //unknown type ignore - could be not supported message
+                default:
+                    Logger.Log.WriteLine("Info : Ignored, ResourceType for : " + resourcetypeToCheck);
+                    break;
+            }
+
+            //Check all Items on List are in response
+            bool foundClincalItemOnList = false;
+            listToCheck.Entry.ForEach(a =>
+            {
+                string pattern = @"(.*)(/)(.*)";
+                string refToFind = Regex.Replace(a.Item.Reference, pattern, "$3");
+
+                //Check references is to the type wanted
+                if (resourcetypeToCheck == "MedicationRequest")
+                {
+                    a.Item.Reference.ShouldStartWith(("MedicationStatement" + "/"));
+                    //Check resource has been inluded in response
+                    VerifyResourceReferenceExists("MedicationStatement", refToFind);
+                    foundClincalItemOnList = true;
+                }
+                else
+                {
+                    a.Item.Reference.ShouldStartWith((resourcetypeToCheck + "/"));
+                    //Check resource has been inluded in response
+                    VerifyResourceReferenceExists(resourcetypeToCheck, refToFind);
+                    foundClincalItemOnList = true;
+                }
+         
+            });
+
+            foundClincalItemOnList.ShouldBeTrue("Fail : List for : " + resourcetypeToCheck + "-Does not contain any references to clinical item of type : " + resourcetypeToCheck);
+            Logger.Log.WriteLine("Info : List Found for : " + resourcetypeToCheck + "- contains references to clinical item of type : " + resourcetypeToCheck);
+
+
+            //check count of item linked on list with items of that type in bundle as itegrity check
+            switch (resourcetypeToCheck)
+            {
+                case "AllergyIntolerance":
+                    ActiveAllergyIntolerances.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourcetypeToCheck);
+                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourcetypeToCheck + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
+                    break;
+
+                case "Observation": //uncat
+                    Observations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourcetypeToCheck);
+                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourcetypeToCheck + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
+                    break;
+
+                case "Immunization":
+                    Immunizations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourcetypeToCheck);
+                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourcetypeToCheck + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
+                    break;
+
+                case "MedicationRequest":
+                    MedicationStatements.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : MedicationStatements" );
+                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourcetypeToCheck + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
+                    break;
+
+                //unknown type ignore - could be not supported message
+                default:
+                    Logger.Log.WriteLine("Ignored Count Chcek for ResourceType : " + resourcetypeToCheck);
+                    break;
+            }
+
+        }
 
     }
 

@@ -239,84 +239,6 @@
 
         }
 
-        public void CheckResourceExists<T>(T resourceType, string resourceID)
-        {
-            //Bundle.GetResources()
-            //               .Where(resource => resource.ResourceType.Equals(resourceType))
-            //               .Where(resource => resource.Id == resourceID)
-            //               .ToList().Count().ShouldBe(1, "Linked Resource : " + resourceType.ToString() + " - Not Found ID : " + resourceID);
-
-            var count = Bundle.GetResources()
-                           .Where(resource => resource.ResourceType.Equals(resourceType))
-                           .Where(resource => resource.Id == resourceID)
-                           .ToList().Count();
-
-            if (count == 1) //only one found
-            {
-                Logger.Log.WriteLine("Info : Found Linked Resource : " + resourceType.ToString() + " - Found ID: " + resourceID);
-            }
-            else if (count > 1) //more than one
-            {
-                count.ShouldBe(1, "Fail : Duplicate Resource Found : " + resourceType.ToString() + " - Duplicate ID : " + resourceID);
-            }
-            else //none found
-            {
-                count.ShouldBe(1, "Fail : Resource NOT Found : " + resourceType.ToString() + " - Missing ID : " + resourceID);
-            }
-
-        }
-
-        public void VerifyResourceReferenceExists(string refTypeToFind, string fullRefToFind)
-        {
-            string pattern = @"(.*/)(.*)";
-            string refToFind = Regex.Replace(fullRefToFind, pattern, "$2");
-
-            //Switch on Clincal Item type
-            switch (refTypeToFind)
-            {
-                case "Observation":
-                    CheckResourceExists(ResourceType.Observation, refToFind);
-                    break;
-
-                case "AllergyIntolerance":
-                    CheckResourceExists(ResourceType.AllergyIntolerance, refToFind);
-                    break;
-
-                case "Medication":
-                    CheckResourceExists(ResourceType.Medication, refToFind);
-                    break;
-
-                case "MedicationStatement":
-                    CheckResourceExists(ResourceType.MedicationStatement, refToFind);
-                    break;
-
-                case "MedicationRequest":
-                    CheckResourceExists(ResourceType.MedicationRequest, refToFind);
-                    break;
-
-                case "Immunization":
-                    CheckResourceExists(ResourceType.Immunization, refToFind);
-                    break;
-
-                case "Condition":
-                    CheckResourceExists(ResourceType.Condition, refToFind);
-                    break;
-
-                case "Appointment":
-                    CheckResourceExists(ResourceType.Appointment, refToFind);
-                    break;
-
-                case "Encounter":
-                    CheckResourceExists(ResourceType.Encounter, refToFind);
-                    break;
-
-                //unknown type ignore - could be not supported message
-                default:
-                    Logger.Log.WriteLine("Ignored, Entry/Item/Reference for : " + refTypeToFind);
-                    break;
-            }
-        }
-
         [Then(@"Check a Problem is Linked to a MedicationRequest resource that has been included in the response")]
         public void ThenCheckaProblemisLinkedtoaMedicationRequestresourcethathasbeenincludedintheresponse()
         {
@@ -359,6 +281,8 @@
             {
                 string rr = ((ResourceReference)medr.Medication).Reference;
                 VerifyResourceReferenceExists("Medication", rr);
+                //string checkText = "Check if " + "Medication" + " resource with ID " + rr + " exists in the bundle";
+                //Given(checkText);
                 found = true;
             });
 
@@ -633,11 +557,83 @@
             
         }
 
+        public void CheckResourceExists<T>(T resourceType, string resourceID)
+        {
+            var count = Bundle.GetResources()
+                           .Where(resource => resource.ResourceType.Equals(resourceType))
+                           .Where(resource => resource.Id == resourceID)
+                           .ToList().Count();
+
+            if (count == 1) //only one found
+            {
+                Logger.Log.WriteLine("Info : Found Linked Resource : " + resourceType.ToString() + " - Found ID: " + resourceID);
+            }
+            else if (count > 1) //more than one
+            {
+                count.ShouldBe(1, "Fail : Duplicate Resource Found : " + resourceType.ToString() + " - Duplicate ID : " + resourceID);
+            }
+            else //none found
+            {
+                count.ShouldBe(1, "Fail : Resource NOT Found : " + resourceType.ToString() + " - Missing ID : " + resourceID);
+            }
+
+        }
+
+        public void VerifyResourceReferenceExists(string refTypeToFind, string fullRefToFind)
+        {
+            string pattern = @"(.*/)(.*)";
+            string refToFind = Regex.Replace(fullRefToFind, pattern, "$2");
+
+            //Switch on Clincal Item type
+            switch (refTypeToFind)
+            {
+                case "Observation":
+                    CheckResourceExists(ResourceType.Observation, refToFind);
+                    break;
+
+                case "AllergyIntolerance":
+                    CheckResourceExists(ResourceType.AllergyIntolerance, refToFind);
+                    break;
+
+                case "Medication":
+                    CheckResourceExists(ResourceType.Medication, refToFind);
+                    break;
+
+                case "MedicationStatement":
+                    CheckResourceExists(ResourceType.MedicationStatement, refToFind);
+                    break;
+
+                case "MedicationRequest":
+                    CheckResourceExists(ResourceType.MedicationRequest, refToFind);
+                    break;
+
+                case "Immunization":
+                    CheckResourceExists(ResourceType.Immunization, refToFind);
+                    break;
+
+                case "Condition":
+                    CheckResourceExists(ResourceType.Condition, refToFind);
+                    break;
+
+                case "Appointment":
+                    CheckResourceExists(ResourceType.Appointment, refToFind);
+                    break;
+
+                case "Encounter":
+                    CheckResourceExists(ResourceType.Encounter, refToFind);
+                    break;
+
+                //unknown type ignore - could be not supported message
+                default:
+                    Logger.Log.WriteLine("Ignored, Entry/Item/Reference for : " + refTypeToFind);
+                    break;
+            }
+        }
 
         [Then(@"I load a fake response")]
         public void ThenIloadafakeresponse()
         {
-            JObject o1 = JObject.Parse(File.ReadAllText(@"C:\development\response-probs-consultations.txt"));
+            JObject o1 = JObject.Parse(File.ReadAllText(@"C:\development\response-consultations.txt"));
             var jsonParser = new FhirJsonParser();
             _httpContext.FhirResponse.Resource = jsonParser.Parse<Resource>(o1.ToString());
 

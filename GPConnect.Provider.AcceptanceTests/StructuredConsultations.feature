@@ -1,8 +1,8 @@
 ﻿@structured @structuredconsultations
 Feature: StructuredConsultations
 
-@1.3.1
-Scenario: Verify Consultations structured record for a Patient includeConsultation only
+@1.3.2
+Scenario: Verify Consultations Response for a Patient with Topic or Headings linked to all supported clinical items and a problem
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
 		And I add the includeConsultations parameter only
@@ -13,6 +13,7 @@ Scenario: Verify Consultations structured record for a Patient includeConsultati
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And check that the bundle does not contain any duplicate resources
 		And the Bundle should be valid for patient "patient2"
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
@@ -26,6 +27,16 @@ Scenario: Verify Consultations structured record for a Patient includeConsultati
 		And I Check the Topic Lists are Valid
 		And I Check the Heading Lists are Valid	
 		And check the response does not contain an operation outcome
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
+		And I Check that a Topic or Heading is linked to an "AllergyIntolerance" and that is included in response with a list
+		And I Check that a Topic or Heading is linked to an "Immunization" and that is included in response with a list
+		And I Check that a Topic or Heading is linked to an "Observation" and that is included in response with a list
+		And I Check that a Topic or Heading is linked to an "MedicationRequest" and that is included in response with a list
+		And Check the MedicationRequests have a link to a medication that has been included in response
+		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
 
 Scenario: Verify Consultations structured record for a Patient includeConsultation and consultationSearchPeriod partParameter
 	Given I configure the default "GpcGetStructuredRecord" request
