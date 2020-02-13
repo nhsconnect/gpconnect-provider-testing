@@ -56,20 +56,6 @@ Scenario: Structured request sent with valid partParameter for includeAllergies 
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	
-@1.3.1	
-Scenario: Structured request sent with multpile parameters expected success and no operation outcome
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient2"
-		And I add the Problems parameter
-		And I add the includeConsultations parameter only
-		And I add the immunizations parameter
-		And I add the uncategorised data parameter
-    When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And the patient resource in the bundle should contain meta data profile and version id
-		And check the response does not contain an operation outcome
-	
-
 @1.3.1
 Scenario: Structured request sent with two parameters and an invalid boolean part parameter expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -100,3 +86,18 @@ Scenario: Structured request sent with two invalid parameters expected failure
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+
+@1.3.2	
+Scenario: Structured request sent with multpile parameters expected success and no operation outcome
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the medication parameter with includePrescriptionIssues set to "true"
+		And I add the allergies parameter with resolvedAllergies set to "true"
+		And I add the includeConsultations parameter only
+		And I add the immunizations parameter
+		And I add the uncategorised data parameter
+		And I add the Problems parameter
+    When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the patient resource in the bundle should contain meta data profile and version id
+		And check the response does not contain an operation outcome

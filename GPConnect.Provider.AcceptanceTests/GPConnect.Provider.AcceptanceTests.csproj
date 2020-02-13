@@ -298,7 +298,7 @@
     <Compile Include="StructuredAllergies.feature.cs" />
     <Compile Include="StructuredConsultations.feature.cs" />
     <Compile Include="StructuredImmunizations.feature.cs" />
-    <Compile Include="StructuredMedications.feature.feature.cs" />
+    <Compile Include="StructuredMedications.feature.cs" />
     <Compile Include="StructuredMultipleRequests.feature.cs" />
     <Compile Include="StructuredProblems.feature.cs" />
     <Compile Include="StructuredUncategorised.feature.cs" />
@@ -306,7 +306,7 @@
   <ItemGroup>
     <None Include="StructuredConsultations.feature" />
     <None Include="StructuredImmunizations.feature" />
-    <None Include="StructuredMedications.feature.feature" />
+    <None Include="StructuredMedications.feature" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
