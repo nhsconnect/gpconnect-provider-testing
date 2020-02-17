@@ -39,12 +39,13 @@ Scenario: CapabilityStatement profile supports the RegisterPatient operation
 #132 - RMB 29/10/2018
 #292 - PG 30/8/2019 - added check for correct url on operation
 @1.2.4
+@1.2.6
 Scenario: CapabilityStatement profile supports the GetStructuredRecord operation
 	Given I configure the default "MetadataRead" request
-	When I make the "MetadataRead" request
+	When I make the "MetaDataRead" request
 	Then the response status code should indicate success
 	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
-	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.8" 
+	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.12" 
 	
 Scenario: Fhir content type test where Accept header is JSON and request payload is XML
 	Given I configure the default "MetadataRead" request
@@ -142,3 +143,53 @@ Scenario: endpoint should support gzip compression for metadata endpoint and con
 		And the response should be gzip encoded
 		And the response body should be FHIR JSON
 		And the Response Resource should be a CapabilityStatement
+
+@1.2.6 
+Scenario Outline: CapabilityStatement profile supports the GetMetaDataRead operation
+Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
+	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.12" 
+    And the CapabilityStatement Profile should contain the correct reference and version history "<urlToCheck>" 
+Examples: 
+| urlToCheck                                                                         |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1             |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1        |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Practitioner-1        |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-PractitionerRole-1    |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Location-1            |
+| https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1          |
+| https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Appointment-1               |
+| https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Schedule-1                  |
+| https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Slot-1                      |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-AllergyIntolerance-1  |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Medication-1          |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1 |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1   |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1                |
+| https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1   |
+          
+
+@1.2.6 
+Scenario Outline: CapabilityStatement profile supports the GetStructuredMetaDataRead operation
+Given I configure the default "StructuredMetaDataRead" request
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
+	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.12" 
+    And the CapabilityStatement Profile should contain the correct reference and version history "<urlToCheck>" 
+Examples: 
+| urlToCheck                                                                                      |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1/_history/1.8             |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1/_history/1.4        |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Practitioner-1/_history/1.2        |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-PractitionerRole-1/_history/1.2    |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-AllergyIntolerance-1/_history/1.6  |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Medication-1/_history/1.2          |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1/_history/1.6 |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1/_history/1.5   |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1/_history/1.1                |
+| https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1/_history/1.3   |
+| https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_history/1.2          |
+          

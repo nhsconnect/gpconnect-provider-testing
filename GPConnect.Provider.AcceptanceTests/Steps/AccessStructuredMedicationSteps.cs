@@ -32,11 +32,11 @@
         }
 
         #region Medication Parameters
-
+		//SJD need furhter work on
         [Given(@"I add the medication parameter with includePrescriptionIssues set to ""(.*)""")]
         public void GivenIAddTheMedicationsParameterWithIncludePrescriptionIssuesSetTo(string partValue)
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(Boolean.Parse(partValue))) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(Boolean.Parse(null))) };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
@@ -159,6 +159,22 @@
 				Tuple.Create("madeUpProblems", (Base)new Code ("madeUpProblemsValue1"))
 			};
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
+		}
+		//SJD this needs further work on
+		//SJD 10/02/20 @1.2.6
+		[Given(@"I add the medication request with empty partParameter values")]
+		public void IAddTheMedicationRequestWithEmptyPartParameterValues()
+		{
+			var tempDate = DateTime.UtcNow.AddYears(-2);
+			var startDate = tempDate.ToString("yyyy-MM-dd");
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[]
+				{
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(null)),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetStartDate(null)),
+				
+			};
+		_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
 		}
 
 		#endregion
