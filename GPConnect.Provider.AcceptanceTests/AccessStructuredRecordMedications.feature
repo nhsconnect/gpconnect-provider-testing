@@ -287,7 +287,6 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 
 @1.2.4
 Scenario Outline: Retrieve the medication structured record expected failure with invalid date used operation outcome 
-Retrieve the allergy structured record section for a patient with an end date only expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
 		And I set a medications period parameter start date to "<StartDate>" 
@@ -400,25 +399,10 @@ Scenario Outline: Structured Medications Patient Has multiple Warnings and Assoc
 
 #SJD 10/02/20
 @1.2.6-IncrementalAndRegression
-Scenario: Retrieve the medication structured record from request with empty values for the parameter parts
+Scenario: Retrieve the medication structured record from request with empty values for the parameter parts expect Failure
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient2"
-		And I add the medication request with empty partParameter values
+		And I add an NHS Number parameter for "patient1"
+		And I set a medications period parameter start date to "" 
 	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "collection"
-		And the response meta profile should be for "structured"
-		And the patient resource in the bundle should contain meta data profile and version id
-		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
-		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should be valid for patient "patient2"
-		And the Bundle should contain "1" lists
-		And the Medications should be valid
-		And the Medication Statements should be valid
-		And the Medication Requests should be valid
-		And the List of MedicationStatements should be valid
-		And there should only be one order request for acute prescriptions
-		And the Patient Id should be valid
-		And the Practitioner Id should be valid
-		And the Organization Id should be valid
-	
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
