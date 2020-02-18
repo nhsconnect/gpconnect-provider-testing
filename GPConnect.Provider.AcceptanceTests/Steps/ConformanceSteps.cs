@@ -160,13 +160,12 @@
 		//SJD 1.2.6
 		[Then(@"the CapabilityStatement Profile should contain the correct reference and version history ""(.*)""")]
 		public void theCapabilityStatementProfileShouldContainTheCorrectReferencesAndVersionHistory(string urlToCheck)
-	
 		{
 			CapabilityStatements.ForEach(capabilityStatement =>
 			{
 				List<ResourceReference> profiles = capabilityStatement.Profile;
 				profiles.Where(p => p.Reference == urlToCheck).Count().ShouldBe(1, "Fail : Mismatch of expected profile.reference  " + urlToCheck);
-		
+                Logger.Log.WriteLine("Info : Found Profile in CapabilityStatement : " + urlToCheck);
 			});
 		}	
 	}
