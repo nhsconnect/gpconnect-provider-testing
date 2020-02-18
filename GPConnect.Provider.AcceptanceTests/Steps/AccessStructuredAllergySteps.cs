@@ -434,25 +434,25 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		}
 
 		//PG 10-4-2019 #190 - Updated Code to check that GUID is valid
-		//SJD 1.2.6 - relaxed GUID check as no longer constrained to GUID
+		//SJD/PG 1.2.6 - relaxed GUID check as no longer constrained to GUID
 		private void TheAllergyIntoleranceIdentifierShouldBeValid()
 		{			
 			AllAllergyIntolerances.ForEach(allergy =>
 			{
-				allergy.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+				allergy.Identifier.Count.ShouldBeGreaterThan(0, "Fail : There should be at least 1 Identifier system/value pair");
 				if (allergy.Identifier.Count == 1)
 				{
 					var identifier = allergy.Identifier.First();
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must not be null");
-					identifier.Value.ShouldNotBeNullOrWhiteSpace("Identifier Value must not be null");
-					//FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Fail : Identifier system must not be null");
 
-							//new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
-					//		Guid guidResult;
-					//Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("AllergyIntolerance identifier GUID is not valid or Null");
+                    //FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
 
+                    //new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
+                    //		Guid guidResult;
+                    //Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("AllergyIntolerance identifier GUID is not valid or Null");
 
-				}
+                    identifier.Value.ShouldNotBeNullOrWhiteSpace("Fail : Identifier Value must not be null");
+                }
 			});
 		}
 
